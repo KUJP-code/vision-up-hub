@@ -1,0 +1,30 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - "bin/{rails,rake}"
+    - "bin/bundle"
+    - "app/helpers"
+    - "spec/helpers"
+    - !ruby/regexp /old_and_unused\.rb$/
+  NewCops: enable
+  TargetRubyVersion: 3.2.2
+
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Rails/I18nLocaleTexts:
+  Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+Style/Documentation:
+  Enabled: false

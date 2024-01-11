@@ -1,0 +1,5 @@
+.bg-green-300.fixed.top-0.right-0.p-3.text-white
+  - flash.each do |type, msg|
+    %div{ class: type == 'notice' ? 'bg-green-300' : 'bg-red-300' }
+      = msg
+    %button{ type: 'button' } Haha can't close me

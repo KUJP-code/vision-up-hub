@@ -1,0 +1,4 @@
+#!/home/brett/.rbenv/versions/3.2.2/bin/ruby
+require_relative "../config/boot"
+require "rake"
+Rake.application.run
