@@ -1,0 +1,11 @@
+-# locals: (course_id:, path:)
+
+- split_path = path.split('/')
+
+%nav.flex.gap-3.px-3
+  - split_path.each_with_index do |p, i|
+    - active_class = i == split_path.length - 1 ? 'bg-blue-400' : 'bg-blue-200'
+    = link_to "/#{p}",
+              course_path(id: course_id,
+                          path: split_path[0..i].join('/')),
+              class: "rounded p-2 #{active_class}"

@@ -1,0 +1,9 @@
+-# locals: (course_id:, path:)
+
+%form.flex.gap-2{ data: { controller: 'new-folder' } }
+  %input{ data: { 'new-folder-target': 'currentPath' },
+          type: 'hidden', value: path }
+  %input{ data: { 'new-folder-target': 'folderName' } }
+  %button.border.border-black{ data: { action: 'click->new-folder#create' },
+                               type: 'submit' }
+    Create New Folder

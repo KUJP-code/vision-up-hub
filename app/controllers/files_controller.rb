@@ -16,6 +16,6 @@ class FilesController < ApplicationController
         filename: upload.original_filename
       )
     end
-    redirect_to course_path(Course.find_by(root_path: @path))
+    redirect_to course_path(id: Course.find(params[:course_id]), path: @path)
   end
 end

@@ -1,14 +1,15 @@
-%main.text-center
+.flex.flex-col.justify-center.items-center.text-center
   %h1.flex.justify-center.items-center.gap-3.text-3xl
     = @course.name
     = render 'courses/privacy_badge', released: @course.released
   %h3.text-xl= @course.description
   = link_to 'Edit', edit_course_path(@course)
 
-  = form_with url: files_path do |f|
-    = f.hidden_field :path, value: @course.root_path
-    = f.file_field :files,
-                   multiple: true
-    = f.submit 'Upload'
+= render 'files/breadcrumb', course_id: @course.id, path: @path
 
-  = render 'files/file_table', files: @files
+.flex.justify-center.p-2
+  = render 'files/upload_form', course_id: @course.id, path: @path
+  .flex-grow
+  = render 'files/new_folder', course_id: @course.id, path: @path
+
+= render 'files/file_table', files: @files
