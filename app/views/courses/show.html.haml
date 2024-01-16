@@ -5,7 +5,7 @@
   %h3.text-xl= @course.description
   = link_to 'Edit', edit_course_path(@course)
 
-  = form_with url: uploads_path do |f|
+  = form_with url: files_path do |f|
     = f.hidden_field :path, value: @course.root_path
     = f.file_field :files,
                    multiple: true

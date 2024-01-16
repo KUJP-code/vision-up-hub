@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   resources :courses, except: %i[destroy]
-  resources :uploads
+  resources :files, only: %i[create show]
   devise_for :users
 
   # Health check endpoint

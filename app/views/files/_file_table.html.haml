@@ -8,11 +8,16 @@
       %th Extension
       %th Size
       %th Downloads
+      %th Download Button
   %tbody
     - files.each do |file|
       %tr
         %td= file.key
         %td= file.filename.base
-        %td .#{file.filename.extension}
+        %td= file.filename.extension_with_delimiter
         %td= number_to_human_size(file.byte_size)
         %td= file.download_count
+        %td
+          = link_to 'Download', file_path(file.id),
+                    target: '_blank',
+                    rel: 'noopener noreferrer'

@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
-class UploadsController < ApplicationController
+class FilesController < ApplicationController
+  def show
+    @file = ActiveStorage::Blob.find(params[:id])
+    send_data @file.download, filename: @file.filename.to_s
+  end
+
   def create
     @path = params[:path]
     @uploads = params[:files]
