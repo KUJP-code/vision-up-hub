@@ -41,6 +41,11 @@ gem 'devise-i18n', '~> 1.12'
 # Template views in HAML
 gem 'haml-rails', '~> 2.1'
 
+group :production, :development do
+  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  gem 'rack-mini-profiler'
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
@@ -50,9 +55,14 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
 
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  # gem 'rack-mini-profiler'
+  # Check for N+1 queries
+  gem 'bullet'
 
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem 'spring'
+end
+
+group :test do
   # Use rubocop
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
@@ -62,6 +72,10 @@ group :development do
   # RSpec for testing
   gem 'rspec-rails'
 
+  # Capybara for system testing
+  gem 'capybara'
+  gem 'capybara-screenshot'
+
   # FactoryBot for test data
   gem 'factory_bot_rails'
 
@@ -70,7 +84,4 @@ group :development do
 
   # Pundit matchers for authorization testing
   gem 'pundit-matchers'
-
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem 'spring'
 end
