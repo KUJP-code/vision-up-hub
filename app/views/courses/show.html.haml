@@ -1,7 +1,14 @@
-%h1= @course.name
-%h3= @course.description
-%p{ class: @course.public ? 'bg-green-500' : 'bg-yellow-300' }
-  = @course.public ? 'Public' : 'Private'
-= link_to 'Edit', edit_course_path(@course)
+%main.text-center
+  %h1.flex.justify-center.items-center.gap-3.text-3xl
+    = @course.name
+    = render 'courses/privacy_badge', released: @course.released
+  %h3.text-xl= @course.description
+  = link_to 'Edit', edit_course_path(@course)
 
-%p= @course.root_path
+  = form_with url: uploads_path do |f|
+    = f.hidden_field :path, value: @course.root_path
+    = f.file_field :files,
+                   multiple: true
+    = f.submit 'Upload'
+
+  = render 'files/file_table', files: @files

@@ -1,0 +1,6 @@
+-# locals: (released:)
+
+- shared_classes = 'rounded p-1 text-sm '
+
+%p{ class: shared_classes + (released ? 'bg-green-500' : 'bg-yellow-300') }
+  = released ? 'Public' : 'Private'

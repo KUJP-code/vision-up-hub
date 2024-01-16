@@ -7,7 +7,9 @@ class CoursesController < ApplicationController
     @courses = Course.all
   end
 
-  def show; end
+  def show
+    @files = ActiveStorage::Blob.all
+  end
 
   def new
     @course = Course.new
@@ -37,7 +39,7 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name, :root_path, :description, :public)
+    params.require(:course).permit(:name, :root_path, :description, :released)
   end
 
   def set_course

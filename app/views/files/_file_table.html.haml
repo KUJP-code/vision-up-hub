@@ -1,0 +1,18 @@
+-# locals (files:)
+
+%table
+  %thead
+    %tr
+      %th Key
+      %th Filename
+      %th Extension
+      %th Size
+      %th Downloads
+  %tbody
+    - files.each do |file|
+      %tr
+        %td= file.key
+        %td= file.filename.base
+        %td .#{file.filename.extension}
+        %td= number_to_human_size(file.byte_size)
+        %td= file.download_count
