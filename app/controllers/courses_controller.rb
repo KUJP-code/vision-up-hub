@@ -9,7 +9,22 @@ class CoursesController < ApplicationController
 
   def show; end
 
+  def new
+    @course = Course.new
+  end
+
   def edit; end
+
+  def create
+    @course = Course.new(course_params)
+    if @course.save
+      redirect_to @course
+    else
+      render :new,
+             status: :unprocessable_entity,
+             alert: 'Course could not be created'
+    end
+  end
 
   def update
     if @course.update(course_params)

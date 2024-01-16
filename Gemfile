@@ -55,6 +55,12 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'web-console'
 
+  # Use rubocop
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+
   # Check for N+1 queries
   gem 'bullet'
 
@@ -63,12 +69,6 @@ group :development do
 end
 
 group :test do
-  # Use rubocop
-  gem 'rubocop', require: false
-  gem 'rubocop-performance', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
-
   # RSpec for testing
   gem 'rspec-rails'
 

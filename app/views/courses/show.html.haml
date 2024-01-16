@@ -1,0 +1,7 @@
+%h1= @course.name
+%h3= @course.description
+%p{ class: @course.public ? 'bg-green-500' : 'bg-yellow-300' }
+  = @course.public ? 'Public' : 'Private'
+= link_to 'Edit', edit_course_path(@course)
+
+%p= @course.root_path

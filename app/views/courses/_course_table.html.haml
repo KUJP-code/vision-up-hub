@@ -1,0 +1,10 @@
+-# locals: (courses:)
+
+%table
+  %thead
+    %tr
+      %th Name
+  %tbody
+    - courses.each do |course|
+      %tr
+        %td= link_to course.name, course_path(course)
