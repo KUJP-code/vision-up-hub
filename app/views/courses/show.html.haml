@@ -12,4 +12,4 @@
   .flex-grow
   = render 'files/new_folder', course_id: @course.id, path: @path
 
-= render 'files/file_table', files: @files
+= render 'files/file_table', course_id: @course.id, files: @files, path: @path

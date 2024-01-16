@@ -1,4 +1,8 @@
--# locals (files:)
+-# locals (course_id:, files:, path:)
+
+- folders = files.map { |f| f.key.gsub(path, '').gsub(f.filename.to_s, '') }.uniq[1..]
+- files = files.reject { |f| folders.any? { |folder| f.key.include?(folder) } } if folders
+- back_path = path.split('/')[0..-2].join('/')
 
 %table.w-full.text-center
   %thead
@@ -10,6 +14,11 @@
       %th Downloads
       %th Download Button
   %tbody
+    %tr
+      %td.fw-bold{ colspan: 6 }= link_to '...', course_path(id: course_id, path: back_path)
+    - folders&.each do |folder|
+      %tr
+        %td.fw-bold{ colspan: 6 }= link_to folder, course_path(id: course_id, path: path + folder)
     - files.each do |file|
       %tr
         %td= file.key
