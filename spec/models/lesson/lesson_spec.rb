@@ -7,14 +7,6 @@ RSpec.describe Lesson do
     expect(build(:lesson)).to be_valid
   end
 
-  it 'rejects days less than 1' do
-    expect(build(:lesson, day: 0)).not_to be_valid
-  end
-
-  it 'rejects days greater than 7' do
-    expect(build(:lesson, day: 8)).not_to be_valid
-  end
-
   it 'rejects weeks less than 1' do
     expect(build(:lesson, week: 0)).not_to be_valid
   end

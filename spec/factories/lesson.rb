@@ -7,6 +7,6 @@ FactoryBot.define do
     summary { 'Summary for test lesson' }
     category { :english_class }
     week { 1 }
-    day { 1 }
+    day { :monday }
   end
 end
