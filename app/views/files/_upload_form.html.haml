@@ -1,7 +1,6 @@
--# locals: (course_id:, path:)
+-# locals: (path:)
 
 = form_with url: files_path do |f|
-  = f.hidden_field :course_id, value: course_id
   = f.hidden_field :path, value: path
   = f.file_field :files, multiple: true
   = f.submit 'Upload Files'

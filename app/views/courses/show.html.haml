@@ -5,11 +5,4 @@
   %h3.text-xl= @course.description
   = link_to 'Edit', edit_course_path(@course)
 
-= render 'files/breadcrumb', course_id: @course.id, path: @path
-
-.flex.justify-center.p-2
-  = render 'files/upload_form', course_id: @course.id, path: @path
-  .flex-grow
-  = render 'files/new_folder', course_id: @course.id, path: @path
-
 = render 'files/file_table', course_id: @course.id, files: @files, path: @path

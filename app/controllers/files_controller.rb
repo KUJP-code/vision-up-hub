@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class FilesController < ApplicationController
+  def index
+    @path = params[:path]
+    @files = @path ? ActiveStorage::Blob.where('key LIKE ?', "%#{@path}%") : ActiveStorage::Blob.all
+  end
+
   def show
     @file = ActiveStorage::Blob.find(params[:id])
     @file.update(download_count: @file.download_count + 1)
@@ -17,6 +22,6 @@ class FilesController < ApplicationController
         filename: upload.original_filename
       )
     end
-    redirect_to course_path(id: Course.find(params[:course_id]), path: @path)
+    redirect_to files_path(path: @path)
   end
 end
