@@ -8,6 +8,7 @@ require_relative '../config/environment'
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'capybara/rspec'
 
 # Checks for pending migrations and applies them before tests are run.
 begin
@@ -55,6 +56,12 @@ RSpec.configure do |config|
   # Allow short versions of FactoryBot methods
   config.include FactoryBot::Syntax::Methods
 
-  # Use route helpers in request specs
+  # Use route and Devies helpers in request specs
   config.include Rails.application.routes.url_helpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
+
+  # Use Rack::Test by default for system specs
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
 end
