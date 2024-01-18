@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :courses, except: %i[destroy]
+  resources :organisations, except: %i[destroy] do
+    resources :users
+  end
+  resources :courses, except: %i[destroy] do
+    resources :lessons, except: %i[destroy]
+  end
   resources :files, only: %i[create index show]
-  resources :lessons, except: %i[destroy]
   devise_for :users
 
   # Health check endpoint

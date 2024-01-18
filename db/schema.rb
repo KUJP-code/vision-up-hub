@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_18_052812) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_18_072321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,10 +61,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_052812) do
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "steps", default: [], array: true
+    t.string "links", default: [], array: true
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
+  create_table "organisations", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "student_count", default: 0
+    t.string "notes", default: ""
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "role", default: 0
+    t.bigint "organisation_id", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -85,6 +98,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_052812) do
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -92,4 +106,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_052812) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "lessons", "courses"
+  add_foreign_key "users", "organisations"
 end
