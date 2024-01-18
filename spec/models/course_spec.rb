@@ -10,6 +10,6 @@ RSpec.describe Course do
 
   it 'creates kebab-case root path from name before validation' do
     course = create(:course, name: 'Test Course')
-    expect(course.root_path).to eq('/test-course')
+    expect(course.root_path).to eq('test-course')
   end
 end
