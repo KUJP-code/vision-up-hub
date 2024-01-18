@@ -1,0 +1,36 @@
+-# locals: (lesson:)
+
+= form_with model: lesson,
+            url: course_lessons_path,
+            id: 'lesson-form' do |f|
+  .flex.flex-col.gap-2
+    = f.label :title
+    = f.text_field :title
+
+  .flex.flex-col.gap-2
+    = f.label :summary
+    = f.text_area :summary
+
+  .flex.flex-col.gap-2
+    = f.label :subcategory
+    = f.select :subcategory,
+               Lesson::DailyActivity.subcategories.keys.map { |k| [k.titleize, k] },
+               {}
+
+  .flex.flex-col.gap-2
+    = f.label :week
+    = f.number_field :week, min: 1, max: 52
+
+  .flex.flex-col.gap-2
+    = f.label :day
+    = f.select :day, Lesson.days.transform_keys(&:capitalize)
+
+  .flex.flex-col.gap-2
+    = f.label :steps
+    = f.text_area :steps, value: lesson.steps.join("\n")
+
+  .flex.flex-col.gap-2
+    = f.label :links
+    = f.text_area :links, value: lesson.links.join("\n")
+
+  = f.submit class: 'btn btn-primary'
