@@ -5,6 +5,8 @@ class Course < ApplicationRecord
 
   validates :name, :root_path, presence: true
 
+  has_many :lessons, dependent: :destroy
+
   private
 
   def set_root_path

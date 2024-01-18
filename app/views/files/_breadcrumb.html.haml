@@ -9,7 +9,7 @@
 %nav.flex.gap-3.px-3
   = link_to 'root',
             files_path,
-            class: "rounded p-2 #{current == '' ? 'bg-blue-400' : 'bg-blue-200'}"
+            class: "rounded p-2 #{path ? 'bg-blue-200' : 'bg-blue-400'}"
   - if path
     - split_path.each_with_index do |p, i|
       = link_to "/#{p}",
