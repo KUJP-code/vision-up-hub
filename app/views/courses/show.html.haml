@@ -3,6 +3,9 @@
     = @course.name
     = render 'courses/privacy_badge', released: @course.released
   %h3.text-xl= @course.description
-  = link_to 'Edit', edit_course_path(@course)
-
-= render 'files/file_table', course_id: @course.id, files: @files, path: @path
+  = link_to 'Edit',
+            edit_course_path(@course),
+            class: 'btn btn-primary'
+  = link_to 'View uploaded files for this course',
+            files_path(path: @course.root_path),
+            class: 'btn btn-primary'

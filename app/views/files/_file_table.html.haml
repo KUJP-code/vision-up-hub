@@ -23,11 +23,13 @@
       %th Download Button
   %tbody
     %tr
-      - if back_path
+      - if back_path && back_path != ''
         %td.fw-bold{ colspan: 6 }= link_to '...', files_path(path: back_path)
+      - elsif back_path && back_path == ''
+        %td.fw-bold{ colspan: 6 }= link_to '...', files_path
     - folders&.each do |folder|
       %tr
-        %td.fw-bold{ colspan: 6 }= link_to folder, files_path(path: "#{path || ''}#{folder}/")
+        %td.fw-bold{ colspan: 6 }= link_to folder, files_path(path: "#{path || ''}#{folder}")
     - files.each do |file|
       %tr
         %td= file.key

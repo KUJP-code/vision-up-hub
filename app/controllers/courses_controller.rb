@@ -7,10 +7,7 @@ class CoursesController < ApplicationController
     @courses = Course.all
   end
 
-  def show
-    @path = params[:path].presence || @course.root_path
-    @files = ActiveStorage::Blob.where('key LIKE ?', "%#{@path}%")
-  end
+  def show; end
 
   def new
     @course = Course.new
