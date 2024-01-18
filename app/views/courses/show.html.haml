@@ -9,3 +9,10 @@
   = link_to 'View uploaded files for this course',
             files_path(path: @course.root_path),
             class: 'btn btn-primary'
+  %details#add-lesson
+    %summary Add a lesson
+    .flex.flex-col
+      - Lesson.categories.each_key do |category|
+        = link_to category.humanize,
+                  new_course_lesson_path(@course, category:),
+                  id: "add-#{category.tr('_', '-')}"
