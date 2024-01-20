@@ -1,0 +1,12 @@
+-# locals: (lesson:)
+
+= form_with model: lesson,
+            url: course_lessons_path,
+            id: 'lesson_form' do |f|
+  = render 'lessons/shared_fields', f:
+
+  .flex.flex-col.gap-2
+    = f.label :subtype
+    = f.select :subtype,
+               Exercise.subtypes.keys.map { |k| [k.titleize, k] },
+               {}
