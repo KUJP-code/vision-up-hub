@@ -6,6 +6,6 @@ class ApplicationController < ActionController::Base
   private
 
   def authorize_profiling
-    Rack::MiniProfiler.authorize_request if current_user&.admin?
+    Rack::MiniProfiler.authorize_request if current_user&.is?('Admin')
   end
 end

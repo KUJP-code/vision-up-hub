@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
   create_table "lessons", force: :cascade do |t|
     t.string "title", null: false
     t.string "summary", null: false
-    t.integer "category", null: false
+    t.string "type"
     t.integer "week", null: false
     t.integer "day", null: false
     t.bigint "course_id", null: false
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
     t.datetime "updated_at", null: false
     t.string "steps", default: [], array: true
     t.string "links", default: [], array: true
+    t.integer "subtype"
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
@@ -76,7 +77,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "role", default: 0
+    t.string "type", default: "Teacher"
     t.bigint "organisation_id", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false

@@ -12,7 +12,7 @@
   %details#add-lesson
     %summary Add a lesson
     .flex.flex-col
-      - Lesson.categories.each_key do |category|
-        = link_to category.humanize,
-                  new_course_lesson_path(@course, category:),
-                  id: "add-#{category.tr('_', '-')}"
+      - Lesson::TYPES.each do |type|
+        = link_to split_on_capitals(type),
+                  new_course_lesson_path(@course, type:),
+                  id: "add_#{type.underscore}"

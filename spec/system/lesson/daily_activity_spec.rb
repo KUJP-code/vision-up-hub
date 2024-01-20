@@ -6,28 +6,28 @@ RSpec.describe 'creating a DailyActivity lesson' do
   let!(:course) { create(:course) }
 
   before do
-    sign_in create(:user, role: :curriculum)
+    sign_in create(:user, :curriculum)
   end
 
   it 'can create a daily activity lesson' do
     visit course_path(course)
     find_by_id('add-lesson').click
-    click_on 'add-daily-activity'
-    within '#lesson-form' do
-      fill_in 'lesson_title', with: 'Test Lesson'
-      fill_in 'lesson_summary', with: 'Summary for test lesson'
-      select 'Games', from: 'lesson_subcategory'
-      fill_in 'lesson_week', with: 1
-      select 'Wednesday', from: 'lesson_day'
-      fill_in 'lesson_steps', with: 'Step 1, Step 2, Step 3'
-      fill_in 'lesson_links', with: 'Example link, http://example.com, Seasonal, https://kids-up.app'
-      click_on 'Create Lesson'
+    click_link 'add_daily_activity'
+    within '#daily_activity_form' do
+      fill_in 'daily_activity_title', with: 'Test Daily Activity'
+      fill_in 'daily_activity_summary', with: 'Summary for test daily activity'
+      select 'Games', from: 'daily_activity_subtype'
+      fill_in 'daily_activity_week', with: 1
+      select 'Wednesday', from: 'daily_activity_day'
+      fill_in 'daily_activity_steps', with: 'Step 1, Step 2, Step 3'
+      fill_in 'daily_activity_links', with: 'Example link, http://example.com, Seasonal, https://kids-up.app'
+      click_button 'Create Daily activity'
     end
-    expect(page).to have_content('Test Lesson')
-    expect(page).to have_content('Summary for test lesson')
+    expect(page).to have_content('Test Daily Activity')
+    expect(page).to have_content('Summary for test daily activity')
     expect(page).to have_content('Daily Activity')
     expect(page).to have_content('Discovery')
-    expect(page).to have_selector('.step', count: 3)
-    expect(page).to have_selector('a.lesson-link', count: 2)
+    expect(page).to have_css('.step', count: 3)
+    expect(page).to have_css('a.lesson-link', count: 2)
   end
 end

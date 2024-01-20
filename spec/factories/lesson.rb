@@ -2,10 +2,11 @@
 
 FactoryBot.define do
   factory :lesson do
+    initialize_with { type.constantize.new }
     course
     title { 'Test Lesson' }
     summary { 'Summary for test lesson' }
-    category { :english_class }
+    type { 'EnglishClass' }
     week { 1 }
     day { :monday }
   end

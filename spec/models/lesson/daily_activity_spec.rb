@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Lesson::DailyActivity do
+RSpec.describe DailyActivity do
   it 'has a valid factory' do
-    expect(build(:lesson, :daily_activity)).to be_valid
+    expect(build(:daily_activity)).to be_valid
   end
 end

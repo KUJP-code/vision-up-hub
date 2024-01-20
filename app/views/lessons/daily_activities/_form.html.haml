@@ -2,7 +2,7 @@
 
 = form_with model: lesson,
             url: course_lessons_path,
-            id: 'lesson-form' do |f|
+            id: 'daily_activity_form' do |f|
   .flex.flex-col.gap-2
     = f.label :title
     = f.text_field :title
@@ -12,9 +12,9 @@
     = f.text_area :summary
 
   .flex.flex-col.gap-2
-    = f.label :subcategory
-    = f.select :subcategory,
-               Lesson::DailyActivity.subcategories.keys.map { |k| [k.titleize, k] },
+    = f.label :subtype
+    = f.select :subtype,
+               DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
                {}
 
   .flex.flex-col.gap-2

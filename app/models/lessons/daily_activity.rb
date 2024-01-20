@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Lesson::DailyActivity < Lesson
-  enum subcategory: {
+class DailyActivity < Lesson
+  enum subtype: {
     discovery: 0,
     brain_training: 1,
     dance: 2,

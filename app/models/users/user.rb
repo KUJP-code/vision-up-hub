@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  TYPES = %w[Admin CurriculumManager SchoolManager OrgAdmin Sales Teacher].freeze
+
   validates :name, presence: true
-  enum role: {
-    teacher: 0,
-    school_manager: 1,
-    org_admin: 2,
-    sales: 3,
-    curriculum: 4,
-    admin: 5,
-    default: :teacher
-  }
+  validates :type, inclusion: { in: TYPES }
 
   belongs_to :organisation
 
   devise :confirmable, :database_authenticatable, :lockable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  def is?(type)
+    self.type == type
+  end
 end
