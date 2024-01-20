@@ -3,27 +3,13 @@
 = form_with model: lesson,
             url: course_lessons_path,
             id: 'daily_activity_form' do |f|
-  .flex.flex-col.gap-2
-    = f.label :title
-    = f.text_field :title
-
-  .flex.flex-col.gap-2
-    = f.label :summary
-    = f.text_area :summary
+  = render 'lessons/shared_fields', f:
 
   .flex.flex-col.gap-2
     = f.label :subtype
     = f.select :subtype,
                DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
                {}
-
-  .flex.flex-col.gap-2
-    = f.label :week
-    = f.number_field :week, min: 1, max: 52
-
-  .flex.flex-col.gap-2
-    = f.label :day
-    = f.select :day, Lesson.days.transform_keys(&:capitalize)
 
   .flex.flex-col.gap-2
     = f.label :steps
