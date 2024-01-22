@@ -1,0 +1,17 @@
+-# locals: (f:, lesson:)
+
+= f.hidden_field :type, value: lesson.type
+
+.flex.flex-col.gap-2
+  = f.label :subtype
+  = f.select :subtype,
+             DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
+             {}
+
+.flex.flex-col.gap-2
+  = f.label :steps
+  = f.text_area :steps, value: lesson.steps.join("\n")
+
+.flex.flex-col.gap-2
+  = f.label :links
+  = f.text_area :links, value: lesson.links.join("\n")
