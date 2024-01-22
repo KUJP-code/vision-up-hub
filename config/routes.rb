@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   end
   resources :courses, except: %i[destroy] do
     resources :lessons, except: %i[destroy]
-    resources :daily_activities, only: %i[create]
-    resources :exercises, only: %i[create]
+    resources :daily_activities, only: %i[create update]
+    resources :exercises, only: %i[create update]
   end
   resources :files, only: %i[create index show]
   devise_for :users

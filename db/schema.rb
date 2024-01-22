@@ -61,8 +61,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "steps", default: [], array: true
-    t.string "links", default: [], array: true
+    t.jsonb "steps", default: []
+    t.jsonb "links", default: {}
     t.integer "subtype"
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end

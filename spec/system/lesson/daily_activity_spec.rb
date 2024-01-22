@@ -19,15 +19,15 @@ RSpec.describe 'creating a DailyActivity lesson' do
       select 'Games', from: 'daily_activity_subtype'
       fill_in 'daily_activity_week', with: 1
       select 'Wednesday', from: 'daily_activity_day'
-      fill_in 'daily_activity_steps', with: 'Step 1, Step 2, Step 3'
-      fill_in 'daily_activity_links', with: 'Example link, http://example.com, Seasonal, https://kids-up.app'
+      fill_in 'daily_activity_steps', with: "Step 1\nStep 2\nStep 3"
+      fill_in 'daily_activity_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       click_button 'Create Daily activity'
     end
     expect(page).to have_content('Test Daily Activity')
     expect(page).to have_content('Summary for test daily activity')
     expect(page).to have_content('Daily Activity')
-    expect(page).to have_content('Discovery')
+    expect(page).to have_content('Games')
     expect(page).to have_css('.step', count: 3)
-    expect(page).to have_css('a.lesson-link', count: 2)
+    expect(page).to have_css('a.lesson_link', count: 2)
   end
 end

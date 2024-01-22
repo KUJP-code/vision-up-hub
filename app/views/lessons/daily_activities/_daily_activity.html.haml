@@ -1,0 +1,18 @@
+-# locals: (lesson:)
+
+.flex.flex-col.flex-grow
+  %h3.text-lg Steps
+  %ol.list-decimal.list-inside
+    - lesson.steps.each do |step|
+      %li.step= step
+
+.flex.flex-col.flex-grow.items-center
+  %h3.text-lg Links
+  %ul.list-disc
+    - lesson.links.each do |text, link|
+      %li
+        = link_to text, link, class: 'lesson_link'
+
+= link_to 'Edit',
+          edit_course_lesson_path(lesson.course, lesson),
+          class: 'w-full'

@@ -18,11 +18,22 @@ class DailyActivitiesController < ApplicationController
     end
   end
 
+  def update
+    @daily_activity = Lesson.find(params[:id])
+
+    if @daily_activity.update(daily_activity_params)
+      redirect_to course_lesson_url(@daily_activity.course, @daily_activity),
+                  notice: 'Daily activity was successfully updated.'
+    else
+      render 'lessons/edit',
+             status: :unprocessable_entity,
+             alert: 'Daily activity could not be updated'
+    end
+  end
+
   private
 
   def daily_activity_params
-    params.require(:daily_activity)
-          .permit(:links, :subtype, :steps)
-          .merge(lesson_params(:daily_activity))
+    params.require(:daily_activity).permit(:title, :summary, :subtype, :type, :week, :day, :steps, :links)
   end
 end

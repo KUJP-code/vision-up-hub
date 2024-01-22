@@ -1,0 +1,11 @@
+%main.flex.flex-wrap.text-center
+  .w-full.flex.flex-col.text-semibold
+    %h1.text-3xl= @lesson.title
+    %h3.text-xl= link_to @course.name, course_path(@course)
+    %h3.text-xl
+      #{@lesson.type}#{' - ' + @lesson.subtype.capitalize if @lesson.subtype}
+    %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
+    %p= @lesson.summary
+
+  = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
+           lesson: @lesson

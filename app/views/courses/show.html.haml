@@ -9,6 +9,7 @@
   = link_to 'View uploaded files for this course',
             files_path(path: @course.root_path),
             class: 'btn btn-primary'
+  %h2.text-2xl Lessons
   %details#add-lesson
     %summary Add a lesson
     .flex.flex-col
@@ -16,3 +17,6 @@
         = link_to split_on_capitals(type),
                   new_course_lesson_path(@course, type:),
                   id: "add_#{type.underscore}"
+  - @course.lessons.each do |l|
+    = link_to l.title,
+              course_lesson_path(@course, l)
