@@ -3,7 +3,7 @@
 = form_with model: lesson,
             url: course_lessons_path,
             id: 'daily_activity_form' do |f|
-  = render 'lessons/shared_fields', f:
+  = render 'lessons/shared_fields', f:, lesson:
 
   .flex.flex-col.gap-2
     = f.label :subtype

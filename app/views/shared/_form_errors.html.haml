@@ -1,0 +1,5 @@
+-# locals: (resource:)
+
+.flex.flex-col.text-white.bg-red-500
+  - resource.errors.full_messages.each do |msg|
+    %p= msg

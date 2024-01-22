@@ -2,6 +2,8 @@
 
 = form_with model: course,
             class: 'flex flex-col gap-3' do |f|
+  = render 'shared/form_errors', resource: course
+
   .flex.flex-col.gap-1.items-center
     = f.label :name
     = f.text_field :name,
