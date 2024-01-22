@@ -9,6 +9,7 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
+require 'database_cleaner-active_record'
 
 # Checks for pending migrations and applies them before tests are run.
 begin
@@ -26,7 +27,7 @@ RSpec.configure do |config|
 
   # Manage test data with DatabaseCleaner
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:transaction)
+    DatabaseCleaner.clean_with(:truncation)
   end
 
   config.before(:all) do
