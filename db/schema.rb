@@ -56,6 +56,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
     t.string "title", null: false
     t.string "summary", null: false
     t.string "type"
+    t.integer "level", null: false
     t.integer "week", null: false
     t.integer "day", null: false
     t.bigint "course_id", null: false

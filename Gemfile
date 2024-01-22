@@ -85,3 +85,5 @@ group :test do
   # Pundit matchers for authorization testing
   gem 'pundit-matchers'
 end
+
+gem "prawn", "~> 2.4"

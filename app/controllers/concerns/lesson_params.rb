@@ -5,7 +5,7 @@ module LessonParams
 
   included do
     def lesson_params
-      %i[course_id day summary title type week]
+      %i[course_id day level summary title type week]
     end
   end
 end

@@ -21,6 +21,10 @@
     = f.label :day
     = f.select :day, Lesson.days.to_h { |k, _v| [k.capitalize, k] }
 
+  .flex.flex-col.gap-2
+    = f.label :level
+    = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
+
   = render "lessons/#{lesson.type.pluralize.underscore}/fields", f:, lesson:
 
   = f.submit

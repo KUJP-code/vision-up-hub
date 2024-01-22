@@ -18,4 +18,17 @@ RSpec.describe DailyActivity do
     saved_links = create(:daily_activity, links: link_input).links
     expect(saved_links).to eq(link_hash)
   end
+
+  it 'correctly sets level' do
+    expect(create(:daily_activity, level: :kindy).level).to eq('kindy')
+  end
+
+  context 'when generating PDF guide' do
+    it "saves at 'course_root_path/week_?/day/daily_activity/level/guide.pdf'" do
+      daily_activity = create(:daily_activity, week: 1, day: :monday, level: :kindy)
+      key = daily_activity.guide.blob.key
+      expected_path = "#{daily_activity.course.root_path}/week_1/monday/daily_activity/kindy/guide.pdf"
+      expect(key).to eq(expected_path)
+    end
+  end
 end

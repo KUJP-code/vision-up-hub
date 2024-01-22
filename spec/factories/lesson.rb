@@ -6,6 +6,7 @@ FactoryBot.define do
     course
     title { 'Test Lesson' }
     summary { 'Summary for test lesson' }
+    level { :kindy }
     type { 'EnglishClass' }
     week { 1 }
     day { :monday }
