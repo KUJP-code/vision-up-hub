@@ -4,10 +4,8 @@ module LessonParams
   extend ActiveSupport::Concern
 
   included do
-    private
-
-    def lesson_params(type)
-      params.require(type).permit(:course_id, :day, :summary, :title, :type, :week)
+    def lesson_params
+      %i[course_id day summary title type week]
     end
   end
 end

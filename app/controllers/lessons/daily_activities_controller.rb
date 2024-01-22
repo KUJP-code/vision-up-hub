@@ -34,6 +34,7 @@ class DailyActivitiesController < ApplicationController
   private
 
   def daily_activity_params
-    params.require(:daily_activity).permit(:title, :summary, :subtype, :type, :week, :day, :steps, :links)
+    da_params = %i[links steps subtype]
+    params.require(:daily_activity).permit(lesson_params + da_params)
   end
 end
