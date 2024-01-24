@@ -33,5 +33,7 @@ class Lesson < ApplicationRecord
 
   belongs_to :course
 
-  has_one_attached :guide
+  has_one_attached :guide do |g|
+    g.variant :thumb, resize_to_limit: [400, 400], convert: :avif, preprocessed: true
+  end
 end

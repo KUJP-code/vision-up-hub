@@ -10,6 +10,6 @@ class Course < ApplicationRecord
   private
 
   def set_root_path
-    self.root_path = name.parameterize
+    self.root_path = name.tr(' ', '').underscore
   end
 end

@@ -11,7 +11,7 @@
               target: '_blank',
               rel: 'noopener',
               class: 'guide_link border' do
-      = image_tag @lesson.guide.preview(resize_to_limit: [400, 400]),
+      = image_tag @lesson.guide.preview(:thumb),
                   class: 'guide_image w-full'
       %h3.text-xl Download Guide
 

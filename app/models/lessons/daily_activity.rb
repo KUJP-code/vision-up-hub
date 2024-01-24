@@ -14,16 +14,30 @@ class DailyActivity < Lesson
   }
 
   def save_guide
-    key = "#{course.root_path}/week_#{week}/#{day}/daily_activity/#{level}/guide.pdf"
-    pdf = generate_guide_tempfile
-    guide.purge
-    guide.attach(io: pdf, filename: 'guide.pdf', content_type: 'application/pdf', key:)
+    key = "#{course.root_path}/week_#{week}/#{day}/daily_activity/#{level}/#{Time.zone.now.to_i}guide.pdf"
+    pdf_io = guide_tempfile
+    guide.attach(io: pdf_io, filename: 'guide.pdf', content_type: 'application/pdf', key:)
+    pdf_io
   end
 
-  def generate_guide_tempfile
+  private
+
+  def set_links
+    return unless links.instance_of?(String)
+
+    pairs = links.split("\n")
+    self.links = pairs.to_h { |pair| pair.split(':', 2).map(&:strip) }
+  end
+
+  def set_steps
+    return unless steps.instance_of?(String)
+
+    self.steps = steps.split("\n")
+  end
+
+  def guide_tempfile
     Tempfile.create do |f|
       generate_guide.render_file(f)
-      f.flush
       File.open(f)
     end
   end
@@ -44,20 +58,5 @@ class DailyActivity < Lesson
     end
 
     pdf
-  end
-
-  private
-
-  def set_links
-    return unless links.instance_of?(String)
-
-    pairs = links.split("\n")
-    self.links = pairs.to_h { |pair| pair.split(':', 2).map(&:strip) }
-  end
-
-  def set_steps
-    return unless steps.instance_of?(String)
-
-    self.steps = steps.split("\n")
   end
 end
