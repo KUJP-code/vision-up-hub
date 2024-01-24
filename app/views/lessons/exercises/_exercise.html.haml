@@ -1,0 +1,9 @@
+-# locals: (lesson:)
+
+.flex.flex-wrap.p-3
+  .flex.flex-col.flex-grow.items-center
+    %h3.text-lg Links
+    %ul.list-disc
+      - lesson.links.each do |text, link|
+        %li
+          = link_to text, link, class: 'lesson_link'
