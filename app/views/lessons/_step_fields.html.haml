@@ -1,0 +1,6 @@
+-# locals: (f:, lesson:)
+
+.flex.flex-col.gap-2
+  = f.label :steps
+  = f.text_area :steps, value: lesson.steps.join("\n")
+  %small Separate steps with new lines

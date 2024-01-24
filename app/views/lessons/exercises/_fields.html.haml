@@ -2,10 +2,4 @@
 
 = f.hidden_field :type, value: lesson.type
 
-.flex.flex-col.gap-2
-  = f.label :links
-  = f.text_area :links, value: stringify_links(lesson.links)
-  %small
-    %p Separate links with new lines and format like:
-    %p Link One Text: https://example.com
-    %p Link Two Text: https://example2.com
+= render 'lessons/link_fields', f:, lesson:
