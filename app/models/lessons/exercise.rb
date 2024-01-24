@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Exercise < Lesson
+  include Linkable
+
   before_validation :set_links
 
   def save_guide
@@ -11,13 +13,6 @@ class Exercise < Lesson
   end
 
   private
-
-  def set_links
-    return unless links.instance_of?(String)
-
-    pairs = links.split("\n")
-    self.links = pairs.to_h { |pair| pair.split(':', 2).map(&:strip) }
-  end
 
   def guide_tempfile
     Tempfile.create do |f|

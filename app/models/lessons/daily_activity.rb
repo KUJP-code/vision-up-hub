@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
+  include Linkable, Steppable
+
   before_validation :set_links, :set_steps
 
   enum subtype: {
@@ -21,19 +23,6 @@ class DailyActivity < Lesson
   end
 
   private
-
-  def set_links
-    return unless links.instance_of?(String)
-
-    pairs = links.split("\n")
-    self.links = pairs.to_h { |pair| pair.split(':', 2).map(&:strip) }
-  end
-
-  def set_steps
-    return unless steps.instance_of?(String)
-
-    self.steps = steps.split("\n")
-  end
 
   def guide_tempfile
     Tempfile.create do |f|

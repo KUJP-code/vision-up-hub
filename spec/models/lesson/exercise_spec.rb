@@ -20,24 +20,7 @@ RSpec.describe Exercise do
     expect(build(:exercise)).to be_valid
   end
 
-  context 'when parsing links' do
-    let(:link_hash) do
-      { 'Example link' => 'http://example.com',
-        'Seasonal' => 'http://example.com/seasonal' }
-    end
-
-    it 'saves links as hash, pairs split by line and value split by colon' do
-      expect(exercise.links).to eq(link_hash)
-    end
-
-    it 'strips unnecessary whitespace' do
-      whitespace_activity = create(
-        :exercise,
-        links: "Example link:  http://example.com\n     Seasonal:http://example.com/seasonal"
-      )
-      expect(whitespace_activity.links).to eq(link_hash)
-    end
-  end
+  it_behaves_like 'linkable'
 
   context 'when generating PDF guide' do
     it "saves at 'course_root_path/week_?/day/exercise/level/timestampguide.pdf'" do

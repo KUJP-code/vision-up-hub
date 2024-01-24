@@ -21,28 +21,8 @@ RSpec.describe DailyActivity do
     expect(build(:daily_activity)).to be_valid
   end
 
-  it 'saves steps as an array split on new lines' do
-    expect(daily_activity.steps).to eq(['Step 1', 'Step 2'])
-  end
-
-  context 'when parsing links' do
-    let(:link_hash) do
-      { 'Example link' => 'http://example.com',
-        'Seasonal' => 'http://example.com/seasonal' }
-    end
-
-    it 'saves links as hash, pairs split by line and value split by colon' do
-      expect(daily_activity.links).to eq(link_hash)
-    end
-
-    it 'strips unnecessary whitespace' do
-      whitespace_activity = create(
-        :daily_activity,
-        links: "Example link:  http://example.com\n     Seasonal:http://example.com/seasonal"
-      )
-      expect(whitespace_activity.links).to eq(link_hash)
-    end
-  end
+  it_behaves_like 'linkable'
+  it_behaves_like 'steppable'
 
   it 'correctly sets level' do
     expect(create(:daily_activity, level: :kindy).level).to eq('kindy')
