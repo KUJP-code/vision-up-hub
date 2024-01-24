@@ -3,9 +3,14 @@
     %h1.text-3xl= @lesson.title
     %h3.text-xl= link_to @course.name, course_path(@course)
     %h3.text-xl
-      #{@lesson.type}#{' - ' + @lesson.subtype.capitalize if @lesson.subtype}
+      #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
     %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
     %p= @lesson.summary
+    = link_to 'Download Lesson Guide',
+              file_path(@lesson.guide.blob),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'guide_link'
 
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
            lesson: @lesson

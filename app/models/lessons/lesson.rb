@@ -5,8 +5,6 @@ class Lesson < ApplicationRecord
 
   TYPES = %w[DailyActivity EnglishClass Exercise Phonics].freeze
 
-  after_validation :save_guide
-
   validates :day, :level, :title, :type, :summary, :week, presence: true
   validates :week, comparison: { greater_than: 0, less_than: 53 }
   validates :type, inclusion: { in: TYPES }

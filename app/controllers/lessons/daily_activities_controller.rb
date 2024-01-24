@@ -3,6 +3,8 @@
 class DailyActivitiesController < ApplicationController
   include LessonParams
 
+  after_action :save_guide, only: %i[create update]
+
   def create
     course = Course.find(params[:course_id])
     @daily_activity = course.lessons.new(daily_activity_params)
@@ -36,5 +38,9 @@ class DailyActivitiesController < ApplicationController
   def daily_activity_params
     da_params = %i[links steps subtype]
     params.require(:daily_activity).permit(lesson_params + da_params)
+  end
+
+  def save_guide
+    @daily_activity.save_guide
   end
 end

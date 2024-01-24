@@ -41,6 +41,9 @@ gem 'devise-i18n', '~> 1.12'
 # Template views in HAML
 gem 'haml-rails', '~> 2.1'
 
+# Use prawn to generate PDFs
+gem 'prawn', '~> 2.4'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
@@ -84,6 +87,7 @@ group :test do
 
   # Pundit matchers for authorization testing
   gem 'pundit-matchers'
-end
 
-gem "prawn", "~> 2.4"
+  # pdf-inspector for PDF testing
+  gem 'pdf-inspector', require: 'pdf/inspector'
+end

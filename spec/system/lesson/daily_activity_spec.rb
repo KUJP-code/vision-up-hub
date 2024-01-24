@@ -30,5 +30,6 @@ RSpec.describe 'creating a DailyActivity lesson' do
     expect(page).to have_content('Games')
     expect(page).to have_css('.step', count: 3)
     expect(page).to have_css('a.lesson_link', count: 2)
+    expect(page).to have_css('a.guide_link', count: 1)
   end
 end

@@ -13,20 +13,10 @@ class DailyActivity < Lesson
     drawing: 6
   }
 
-  private
-
-  def set_links
-    pairs = links.split("\n")
-    self.links = pairs.to_h { |pair| pair.split(':', 2) }
-  end
-
-  def set_steps
-    self.steps = steps.split("\n")
-  end
-
   def save_guide
     key = "#{course.root_path}/week_#{week}/#{day}/daily_activity/#{level}/guide.pdf"
     pdf = generate_guide_tempfile
+    guide.purge
     guide.attach(io: pdf, filename: 'guide.pdf', content_type: 'application/pdf', key:)
   end
 
@@ -39,8 +29,35 @@ class DailyActivity < Lesson
   end
 
   def generate_guide
-    Prawn::Document.new do
-      text 'Test Pdf'
+    pdf = Prawn::Document.new
+
+    pdf.text title, size: 24
+    pdf.text summary
+    pdf.text "Week #{week}"
+    pdf.text day.capitalize
+    pdf.text subtype.capitalize
+    pdf.text 'Steps:', size: 18
+    steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }
+    pdf.text 'Links:', size: 18
+    links.each do |k, v|
+      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", :inline_format => true
     end
+
+    pdf
+  end
+
+  private
+
+  def set_links
+    return unless links.instance_of?(String)
+
+    pairs = links.split("\n")
+    self.links = pairs.to_h { |pair| pair.split(':', 2).map(&:strip) }
+  end
+
+  def set_steps
+    return unless steps.instance_of?(String)
+
+    self.steps = steps.split("\n")
   end
 end

@@ -3,14 +3,14 @@
 FactoryBot.define do
   factory :daily_activity do
     course
-    title { 'Test Lesson' }
-    summary { 'Summary for test lesson' }
+    title { 'Test Daily Activity' }
+    summary { 'Summary for test daily activity' }
     week { 1 }
-    day { :monday }
+    day { :wednesday }
     level { :kindy }
     type { 'DailyActivity' }
     subtype { :discovery }
-    steps { 'Step 1, Step 2' }
-    links { 'Example link, http://example.com' }
+    steps { "Step 1\nStep 2" }
+    links { "Example link:http://example.com\nSeasonal:http://example.com/seasonal" }
   end
 end
