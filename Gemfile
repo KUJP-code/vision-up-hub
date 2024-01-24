@@ -44,6 +44,11 @@ gem 'haml-rails', '~> 2.1'
 # Use prawn to generate PDFs
 gem 'prawn', '~> 2.4'
 
+# Generate PDF previews
+gem 'image_processing', '~> 1.2'
+gem 'poppler'
+gem 'ruby-vips'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'

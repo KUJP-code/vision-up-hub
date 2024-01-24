@@ -40,7 +40,7 @@ class DailyActivity < Lesson
     steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }
     pdf.text 'Links:', size: 18
     links.each do |k, v|
-      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", :inline_format => true
+      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
     end
 
     pdf

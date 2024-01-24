@@ -1,16 +1,23 @@
-%main.flex.flex-wrap.text-center
-  .w-full.flex.flex-col.text-semibold
-    %h1.text-3xl= @lesson.title
-    %h3.text-xl= link_to @course.name, course_path(@course)
-    %h3.text-xl
-      #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
-    %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
-    %p= @lesson.summary
-    = link_to 'Download Lesson Guide',
-              file_path(@lesson.guide.blob),
+%main.flex.flex-col.text-center
+  .flex.p-3
+    %div{ class: 'flex flex-col basis-5/6 text-start text-semibold' }
+      %h1.text-3xl= @lesson.title
+      %h3.text-xl= link_to @course.name, course_path(@course)
+      %h3.text-xl
+        #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
+      %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
+      %p= @lesson.summary
+    = link_to file_path(@lesson.guide.blob),
               target: '_blank',
               rel: 'noopener',
-              class: 'guide_link'
+              class: 'guide_link border' do
+      = image_tag @lesson.guide.preview(resize_to_limit: [400, 400]),
+                  class: 'guide_image w-full'
+      %h3.text-xl Download Guide
 
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
            lesson: @lesson
+
+  = link_to 'Edit',
+            edit_course_lesson_path(@lesson.course, @lesson),
+            class: 'w-full'
