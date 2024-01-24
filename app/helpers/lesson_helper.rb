@@ -2,6 +2,10 @@
 
 module LessonHelper
   def stringify_links(links)
-    links.map { |k, v| "#{k}:#{v}" }.join("\n")
+    if links.instance_of?(Hash)
+      links.map { |k, v| "#{k}:#{v}" }.join("\n")
+    else
+      links
+    end
   end
 end

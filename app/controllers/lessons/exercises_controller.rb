@@ -23,10 +23,11 @@ class ExercisesController < ApplicationController
   def update
     @exercise = Lesson.find(params[:id])
 
-    if @exercise.update(exercise_params)
+    if @exercise.update!(exercise_params)
       redirect_to course_lesson_url(@exercise.course, @exercise),
                   notice: 'Exercise was successfully updated.'
     else
+      @lesson = @exercise
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Exercise could not be updated'
@@ -41,6 +42,6 @@ class ExercisesController < ApplicationController
   end
 
   def save_guide
-    @exercise.save_guide
+    @exercise.valid? && @exercise.save_guide
   end
 end

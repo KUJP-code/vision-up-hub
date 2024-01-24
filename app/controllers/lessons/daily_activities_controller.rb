@@ -27,6 +27,7 @@ class DailyActivitiesController < ApplicationController
       redirect_to course_lesson_url(@daily_activity.course, @daily_activity),
                   notice: 'Daily activity was successfully updated.'
     else
+      @lesson = @daily_activity
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Daily activity could not be updated'
@@ -41,6 +42,6 @@ class DailyActivitiesController < ApplicationController
   end
 
   def save_guide
-    @daily_activity.save_guide
+    @daily_activity.valid? && @daily_activity.save_guide
   end
 end

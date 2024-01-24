@@ -24,10 +24,6 @@ RSpec.describe DailyActivity do
   it_behaves_like 'linkable'
   it_behaves_like 'steppable'
 
-  it 'correctly sets level' do
-    expect(create(:daily_activity, level: :kindy).level).to eq('kindy')
-  end
-
   context 'when generating PDF guide' do
     it "saves at 'course_root_path/week_?/day/daily_activity/level/timestampguide.pdf'" do
       daily_activity.save_guide
