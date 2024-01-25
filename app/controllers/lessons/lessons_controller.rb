@@ -5,6 +5,10 @@ class LessonsController < ApplicationController
   before_action :set_courses, only: %i[new edit]
   after_action :save_guide, only: %i[create update]
 
+  def index
+    @lessons = Lesson.all
+  end
+
   def show
     @courses = @lesson.courses
   end

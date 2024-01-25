@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class DailyActivitiesController < LessonsController
+  def index
+    @lessons = DailyActivity.all
+  end
+
   def create
     @lesson = Lesson.new(daily_activity_params)
 

@@ -26,7 +26,6 @@
     = f.label :level
     = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
 
-  = lesson.course_lessons.size
   = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
     = render('course_lessons/fields', f: cl_f, courses:, lesson:)
 

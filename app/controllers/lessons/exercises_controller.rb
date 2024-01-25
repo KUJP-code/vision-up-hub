@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class ExercisesController < LessonsController
+  def index
+    @lessons = Exercise.order(title: :desc)
+  end
+
   def create
     @lesson = Lesson.new(exercise_params)
 

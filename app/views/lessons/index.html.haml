@@ -1,0 +1,12 @@
+%nav.flex.justify-around
+  %h3.text-lg.fw-semibold Lesson Type:
+  = link_to 'All', lessons_path
+  - Lesson::TYPES.each do |type|
+    = link_to split_on_capitals(type),
+              send("#{type.pluralize.underscore}_path")
+%main
+  %ul.list-disc.list-inside
+    - @lessons.each do |lesson|
+      %li
+        = link_to lesson.title,
+                  lesson_path(lesson)
