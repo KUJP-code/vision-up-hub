@@ -1,0 +1,17 @@
+-# locals: (courses:, f:, lesson:)
+
+.fields-wrapper{ 'data-new-record' => f.object.new_record?.to_s }
+  = f.hidden_field :lesson_id, value: lesson.id
+
+  = f.label :course_id
+  = f.select :course_id,
+             courses,
+             include_blank: true
+
+  - if f.object.new_record?
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove' }
+      Remove from Course
+  - else
+    .form-check
+      = f.check_box :_destroy
+      = f.label :_destroy

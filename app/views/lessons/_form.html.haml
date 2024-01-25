@@ -1,9 +1,9 @@
--# locals: (lesson:)
+-# locals: (courses:, lesson:)
 
 = form_with model: lesson,
-            url: [lesson.course, lesson],
-            id: "#{lesson.type.underscore}_form",
-            class: 'form' do |f|
+            html: { id: "#{lesson.type.underscore}_form",
+                    class: 'form',
+                    data: { controller: 'fields' } } do |f|
   = render 'shared/form_errors', resource: lesson
 
   .form-group
@@ -26,6 +26,21 @@
     = f.label :level
     = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
 
-  = render "lessons/#{lesson.type.pluralize.underscore}/fields", f:, lesson:
+  = lesson.course_lessons.size
+  = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
+    = render('course_lessons/fields', f: cl_f, courses:, lesson:)
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :course_lessons,
+                   lesson.course_lessons.new,
+                   child_index: 'CHILD' do |cl_f|
+      = render('course_lessons/fields', f: cl_f, courses:, lesson:)
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+    Add Course
+
+  = render("lessons/#{lesson.type.pluralize.underscore}/fields", f:, lesson:)
 
   = f.submit class: 'btn btn-primary'

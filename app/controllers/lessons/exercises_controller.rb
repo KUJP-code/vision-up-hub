@@ -2,11 +2,10 @@
 
 class ExercisesController < LessonsController
   def create
-    course = Course.find(params[:course_id])
-    @lesson = course.lessons.new(exercise_params)
+    @lesson = Lesson.new(exercise_params)
 
     if @lesson.save
-      redirect_to course_lesson_url(course, @lesson),
+      redirect_to lesson_url(@lesson),
                   notice: 'Exercise was successfully created.'
     else
       render 'lessons/new',
@@ -17,7 +16,7 @@ class ExercisesController < LessonsController
 
   def update
     if @lesson.update!(exercise_params)
-      redirect_to course_lesson_url(@lesson.course, @lesson),
+      redirect_to lesson_url(@lesson),
                   notice: 'Exercise was successfully updated.'
     else
       render 'lessons/edit',

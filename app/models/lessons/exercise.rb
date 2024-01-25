@@ -6,7 +6,7 @@ class Exercise < Lesson
   before_validation :set_links
 
   def save_guide
-    key = "#{course.root_path}/week_#{week}/#{day}/exercise/#{level}/#{Time.zone.now.to_i}guide.pdf"
+    key = "exercise/#{level}/#{Time.zone.now.to_i}_#{underscored_title}_guide.pdf"
     pdf_io = guide_tempfile
     guide.attach(io: pdf_io, filename: 'guide.pdf', content_type: 'application/pdf', key:)
     pdf_io

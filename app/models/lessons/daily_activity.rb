@@ -16,7 +16,7 @@ class DailyActivity < Lesson
   }
 
   def save_guide
-    key = "#{course.root_path}/week_#{week}/#{day}/daily_activity/#{level}/#{Time.zone.now.to_i}guide.pdf"
+    key = "daily_activity/#{level}/#{subtype}/#{Time.zone.now.to_i}_#{underscored_title}_guide.pdf"
     pdf_io = guide_tempfile
     guide.attach(io: pdf_io, filename: 'guide.pdf', content_type: 'application/pdf', key:)
     pdf_io

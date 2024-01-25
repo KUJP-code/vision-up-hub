@@ -36,5 +36,12 @@ class Lesson < ApplicationRecord
   end
 
   has_many :course_lessons, dependent: :destroy
+  accepts_nested_attributes_for :course_lessons, allow_destroy: true
   has_many :courses, through: :course_lessons
+
+  private
+
+  def underscored_title
+    title.parameterize(separator: '_')
+  end
 end

@@ -2,7 +2,10 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application";
+import { application } from "./application"
 
-import NewFolderController from "./new_folder_controller";
-application.register("new-folder", NewFolderController);
+import FieldsController from "./fields_controller"
+application.register("fields", FieldsController)
+
+import NewFolderController from "./new_folder_controller"
+application.register("new-folder", NewFolderController)

@@ -26,7 +26,7 @@ RSpec.describe Exercise do
     it "saves at 'course_root_path/week_?/day/exercise/level/timestampguide.pdf'" do
       exercise.save_guide
       key = exercise.guide.blob.key
-      expected_path = %r{#{exercise.course.root_path}/week_1/monday/exercise/kindy/\d*guide.pdf}
+      expected_path = %r{exercise/kindy/\d*_test_exercise_guide.pdf}
       expect(key).to match(expected_path)
     end
 
