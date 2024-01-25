@@ -31,9 +31,10 @@ class Lesson < ApplicationRecord
     specialist: 8
   }
 
-  belongs_to :course
-
   has_one_attached :guide do |g|
     g.variant :thumb, resize_to_limit: [400, 400], convert: :avif, preprocessed: true
   end
+
+  has_many :course_lessons, dependent: :destroy
+  has_many :courses, through: :course_lessons
 end

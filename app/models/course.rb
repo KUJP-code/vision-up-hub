@@ -5,7 +5,8 @@ class Course < ApplicationRecord
 
   validates :name, :root_path, presence: true
 
-  has_many :lessons, dependent: :destroy
+  has_many :course_lessons, dependent: :destroy
+  has_many :lessons, through: :course_lessons
 
   private
 

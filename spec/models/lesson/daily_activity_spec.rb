@@ -25,10 +25,10 @@ RSpec.describe DailyActivity do
   it_behaves_like 'steppable'
 
   context 'when generating PDF guide' do
-    it "saves at 'course_root_path/week_?/day/daily_activity/level/timestampguide.pdf'" do
+    it "saves at 'daily_activity/level/subtype/timestamp_lesson_name_guide.pdf'" do
       daily_activity.save_guide
       key = daily_activity.guide.blob.key
-      expected_path = %r{#{daily_activity.course.root_path}/week_1/monday/daily_activity/kindy/\d*guide.pdf}
+      expected_path = %r{/daily_activity/kindy/discovery/\d*_test_daily_activity_guide.pdf}
       expect(key).to match(expected_path)
     end
 

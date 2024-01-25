@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_25_051935) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "course_lessons", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.bigint "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_lessons_on_course_id"
+    t.index ["lesson_id"], name: "index_course_lessons_on_lesson_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "name", null: false
     t.string "root_path", null: false
@@ -59,13 +68,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
     t.integer "level", null: false
     t.integer "week", null: false
     t.integer "day", null: false
-    t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "steps", default: []
     t.jsonb "links", default: {}
     t.integer "subtype"
-    t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
   create_table "organisations", force: :cascade do |t|
@@ -107,6 +114,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_18_154139) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "lessons", "courses"
+  add_foreign_key "course_lessons", "courses"
+  add_foreign_key "course_lessons", "lessons"
   add_foreign_key "users", "organisations"
 end

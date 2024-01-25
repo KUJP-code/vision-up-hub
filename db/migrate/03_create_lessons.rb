@@ -7,7 +7,6 @@ class CreateLessons < ActiveRecord::Migration[7.1]
       t.integer :level, null: false
       t.integer :week, null: false
       t.integer :day, null: false
-      t.references :course, null: false, foreign_key: true
 
       t.timestamps
     end
