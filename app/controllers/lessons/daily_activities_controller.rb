@@ -1,19 +1,14 @@
 # frozen_string_literal: true
 
-class DailyActivitiesController < ApplicationController
-  include LessonParams
-
-  after_action :save_guide, only: %i[create update]
-
+class DailyActivitiesController < LessonsController
   def create
     course = Course.find(params[:course_id])
-    @daily_activity = course.lessons.new(daily_activity_params)
+    @lesson = course.lessons.new(daily_activity_params)
 
-    if @daily_activity.save
-      redirect_to course_lesson_url(course, @daily_activity),
+    if @lesson.save
+      redirect_to course_lesson_url(course, @lesson),
                   notice: 'Daily activity was successfully created.'
     else
-      @lesson = @daily_activity
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Daily activity could not be created'
@@ -21,13 +16,12 @@ class DailyActivitiesController < ApplicationController
   end
 
   def update
-    @daily_activity = Lesson.find(params[:id])
+    @lesson = Lesson.find(params[:id])
 
-    if @daily_activity.update(daily_activity_params)
-      redirect_to course_lesson_url(@daily_activity.course, @daily_activity),
+    if @lesson.update(daily_activity_params)
+      redirect_to course_lesson_url(@lesson.course, @lesson),
                   notice: 'Daily activity was successfully updated.'
     else
-      @lesson = @daily_activity
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Daily activity could not be updated'
@@ -39,9 +33,5 @@ class DailyActivitiesController < ApplicationController
   def daily_activity_params
     da_params = %i[links steps subtype]
     params.require(:daily_activity).permit(lesson_params + da_params)
-  end
-
-  def save_guide
-    @daily_activity.valid? && @daily_activity.save_guide
   end
 end
