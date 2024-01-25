@@ -1,20 +1,20 @@
 -# locals: (course: @course)
 
 = form_with model: course,
-            class: 'flex flex-col gap-3' do |f|
+            class: 'form' do |f|
   = render 'shared/form_errors', resource: course
 
-  .flex.flex-col.gap-1.items-center
+  .form-group
     = f.label :name
     = f.text_field :name,
                    readonly: course.persisted?,
                    disabled: course.persisted?
 
-  .flex.flex-col.gap-1.items-center
+  .form-group
     = f.label :description
     = f.text_area :description
 
-  .flex.flex-col.gap-1.items-center
+  .form-group
     = f.label :released
     = f.check_box :released
 
