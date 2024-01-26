@@ -1,14 +1,13 @@
--# locals: (course: @course)
+-# locals: (course:, lessons:)
 
 = form_with model: course,
-            class: 'form' do |f|
+            html: { class: 'form',
+                    data: { controller: 'fields' } } do |f|
   = render 'shared/form_errors', resource: course
 
   .form-group
     = f.label :name
-    = f.text_field :name,
-                   readonly: course.persisted?,
-                   disabled: course.persisted?
+    = f.text_field :name
 
   .form-group
     = f.label :description
@@ -17,5 +16,21 @@
   .form-group
     = f.label :released
     = f.check_box :released
+
+  %h3.text-xl.fw-bold Lessons
+
+  = f.fields_for :course_lessons, course.course_lessons do |cl_f|
+    = render('course_lessons/lesson_fields', f: cl_f, course:, lessons:)
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :course_lessons,
+                   course.course_lessons.new,
+                   child_index: 'CHILD' do |cl_f|
+      = render('course_lessons/lesson_fields', f: cl_f, course:, lessons:)
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+    Add lesson
 
   = f.submit class: 'btn btn-primary'

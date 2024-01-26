@@ -2,6 +2,7 @@
 
 class CoursesController < ApplicationController
   before_action :set_course, only: %i[show edit update]
+  before_action :set_lessons, only: %i[new edit]
 
   def index
     @courses = Course.all
@@ -39,10 +40,17 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name, :description, :released)
+    params.require(:course).permit(
+      :name, :description, :released,
+      course_lessons_attributes: %i[id _destroy course_id day lesson_id week]
+    )
   end
 
   def set_course
     @course = Course.find(params[:id])
+  end
+
+  def set_lessons
+    @lessons = Lesson.pluck(:title, :id)
   end
 end
