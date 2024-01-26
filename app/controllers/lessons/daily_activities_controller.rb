@@ -8,7 +8,7 @@ class DailyActivitiesController < LessonsController
   def create
     @lesson = Lesson.new(daily_activity_params)
 
-    if @lesson.save
+    if @lesson.save!
       redirect_to lesson_url(@lesson),
                   notice: 'Daily activity was successfully created.'
     else

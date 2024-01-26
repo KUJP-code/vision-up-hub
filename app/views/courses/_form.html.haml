@@ -20,13 +20,19 @@
   %h3.text-xl.fw-bold Lessons
 
   = f.fields_for :course_lessons, course.course_lessons do |cl_f|
-    = render('course_lessons/lesson_fields', f: cl_f, course:, lessons:)
+    = render('course_lessons/fields',
+             collection: lessons,
+             f: cl_f,
+             resource: course)
 
   %template{ 'data-fields-target' => 'template' }
     = f.fields_for :course_lessons,
                    course.course_lessons.new,
                    child_index: 'CHILD' do |cl_f|
-      = render('course_lessons/lesson_fields', f: cl_f, course:, lessons:)
+      = render('course_lessons/fields',
+               collection: lessons,
+               f: cl_f,
+               resource: course)
 
   %div{ 'data-fields-target' => 'target' }
 
