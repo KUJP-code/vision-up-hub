@@ -54,7 +54,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_051935) do
 
   create_table "courses", force: :cascade do |t|
     t.string "name", null: false
-    t.string "root_path", null: false
     t.string "description", default: ""
     t.boolean "released", default: false
     t.datetime "created_at", null: false

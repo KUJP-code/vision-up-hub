@@ -37,7 +37,7 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:name, :root_path, :description, :released)
+    params.require(:course).permit(:name, :description, :released)
   end
 
   def set_course

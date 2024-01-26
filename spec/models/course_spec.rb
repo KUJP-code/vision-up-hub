@@ -7,9 +7,4 @@ RSpec.describe Course do
     course = build(:course)
     expect(course).to be_valid
   end
-
-  it 'creates kebab-case root path from name before validation' do
-    course = create(:course, name: 'Test Course')
-    expect(course.root_path).to eq('test_course')
-  end
 end

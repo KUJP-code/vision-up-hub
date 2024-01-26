@@ -7,9 +7,6 @@
     = link_to 'Edit',
               edit_course_path(@course),
               class: 'btn btn-primary'
-    = link_to 'View uploaded files for this course',
-              files_path(path: @course.root_path),
-              class: 'btn btn-primary'
 
   %h2.text-2xl Lessons
   %details.border.border-black.p-2.cursor-pointer#add-lesson

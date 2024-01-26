@@ -23,7 +23,7 @@ RSpec.describe Exercise do
   it_behaves_like 'linkable'
 
   context 'when generating PDF guide' do
-    it "saves at 'course_root_path/week_?/day/exercise/level/timestampguide.pdf'" do
+    it "saves at 'exercise/level/timestamp_lesson_name_guide.pdf'" do
       exercise.save_guide
       key = exercise.guide.blob.key
       expected_path = %r{exercise/kindy/\d*_test_exercise_guide.pdf}
