@@ -4,6 +4,8 @@ module Steppable
   extend ActiveSupport::Concern
 
   included do
+    before_validation :set_steps
+
     private
 
     def set_steps

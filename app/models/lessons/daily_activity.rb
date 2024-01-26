@@ -3,8 +3,6 @@
 class DailyActivity < Lesson
   include Linkable, Steppable
 
-  before_validation :set_links, :set_steps
-
   enum subtype: {
     discovery: 0,
     brain_training: 1,

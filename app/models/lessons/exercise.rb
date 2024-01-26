@@ -3,8 +3,6 @@
 class Exercise < Lesson
   include Linkable
 
-  before_validation :set_links
-
   def save_guide
     filename = "#{Time.zone.now.to_i}_#{title.parameterize(separator: '_')}_guide.pdf"
     key = "exercise/#{level}/" + filename

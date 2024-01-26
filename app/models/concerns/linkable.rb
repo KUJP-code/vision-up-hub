@@ -4,6 +4,8 @@ module Linkable
   extend ActiveSupport::Concern
 
   included do
+    before_validation :set_links
+
     private
 
     def set_links
