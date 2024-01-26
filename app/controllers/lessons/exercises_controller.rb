@@ -32,7 +32,7 @@ class ExercisesController < LessonsController
   private
 
   def exercise_params
-    e_params = %i[links]
+    e_params = %i[image links]
     params.require(:exercise).permit(lesson_params + e_params)
   end
 end

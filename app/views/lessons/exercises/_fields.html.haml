@@ -2,4 +2,9 @@
 
 = f.hidden_field :type, value: lesson.type
 
+.form-group
+  = f.label :image, 'PDF Image'
+  = f.file_field :image,
+                 accept: %w[image/jpeg image/png]
+
 = render 'lessons/link_fields', f:, lesson:
