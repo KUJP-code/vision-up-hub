@@ -1,11 +1,16 @@
 %main.flex.flex-col.text-center
   .flex.p-3
-    %div{ class: 'flex flex-col basis-5/6 text-start text-semibold' }
+    %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
       %h1.text-3xl= @lesson.title
-      %h3.text-xl Used in the following courses:
-      - @courses.each do |c|
-        = link_to c.name,
-                  course_path(c)
+
+      - if @courses.any?
+        %h3.text-xl Used in the following courses:
+        - @courses.each do |c|
+          = link_to c.name,
+                    course_path(c)
+      - else
+        %h3.text-xl Not used in any courses
+
       %h3.text-xl
         #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
       %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
@@ -23,4 +28,4 @@
 
   = link_to 'Edit',
             edit_lesson_path(@lesson),
-            class: 'w-full'
+            class: 'btn btn-info w-full'

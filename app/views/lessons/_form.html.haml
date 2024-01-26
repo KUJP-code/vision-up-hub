@@ -27,13 +27,13 @@
     = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
 
   = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
-    = render('course_lessons/fields', f: cl_f, courses:, lesson:)
+    = render('course_lessons/course_fields', f: cl_f, courses:, lesson:)
 
   %template{ 'data-fields-target' => 'template' }
     = f.fields_for :course_lessons,
                    lesson.course_lessons.new,
                    child_index: 'CHILD' do |cl_f|
-      = render('course_lessons/fields', f: cl_f, courses:, lesson:)
+      = render('course_lessons/course_fields', f: cl_f, courses:, lesson:)
 
   %div{ 'data-fields-target' => 'target' }
 

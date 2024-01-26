@@ -7,7 +7,9 @@ class CoursesController < ApplicationController
     @courses = Course.all
   end
 
-  def show; end
+  def show
+    @lessons = @course.lessons.select(:id, :title, :type)
+  end
 
   def new
     @course = Course.new
