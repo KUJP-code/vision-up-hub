@@ -15,16 +15,10 @@
     = f.text_area :summary
 
   .form-group
-    = f.label :week
-    = f.number_field :week, min: 1, max: 52
-
-  .form-group
-    = f.label :day
-    = f.select :day, Lesson.days.to_h { |k, _v| [k.capitalize, k] }
-
-  .form-group
     = f.label :level
     = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
+
+  %h3.w-full.text-xl.font-bold Courses
 
   = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
     = render('course_lessons/course_fields', f: cl_f, courses:, lesson:)

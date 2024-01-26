@@ -5,8 +5,6 @@ FactoryBot.define do
     initialize_with { type.constantize.new }
     title { 'Test Lesson' }
     summary { 'Summary for test lesson' }
-    week { 1 }
-    day { :wednesday }
     level { :kindy }
   end
 end

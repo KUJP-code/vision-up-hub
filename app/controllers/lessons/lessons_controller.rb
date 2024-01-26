@@ -32,7 +32,8 @@ class LessonsController < ApplicationController
 
   def lesson_params
     [:day, :level, :summary, :title, :type, :week,
-     { course_lessons_attributes: %i[id course_id lesson_id _destroy] }]
+     { course_lessons_attributes:
+       %i[id _destroy course_id day lesson_id week] }]
   end
 
   def dummy_route

@@ -8,8 +8,6 @@ RSpec.describe DailyActivity do
       :daily_activity,
       title: 'Test Daily Activity',
       summary: 'Summary for test daily activity',
-      week: 1,
-      day: :monday,
       level: :kindy,
       subtype: :discovery,
       steps: "Step 1\nStep 2",
@@ -32,12 +30,12 @@ RSpec.describe DailyActivity do
       expect(key).to match(expected_path)
     end
 
-    it 'contains title, summary, week, day, subcategory, links and steps' do
+    it 'contains title, summary, subcategory, links and steps' do
       pdf = daily_activity.save_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to contain_exactly(
-          'Test Daily Activity', 'Summary for test daily activity', 'Week 1', 'Monday', 'Discovery',
+          'Test Daily Activity', 'Summary for test daily activity', 'Discovery',
           'Steps:', '1. Step 1', '2. Step 2', 'Links:', 'Example link', 'Seasonal'
         )
     end

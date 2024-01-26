@@ -5,8 +5,6 @@ class CreateLessons < ActiveRecord::Migration[7.1]
       t.string :summary, null: false
       t.string :type
       t.integer :level, null: false
-      t.integer :week, null: false
-      t.integer :day, null: false
 
       t.timestamps
     end

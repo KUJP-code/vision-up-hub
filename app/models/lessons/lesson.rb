@@ -5,19 +5,8 @@ class Lesson < ApplicationRecord
 
   TYPES = %w[DailyActivity EnglishClass Exercise Phonics].freeze
 
-  validates :day, :level, :title, :type, :summary, :week, presence: true
-  validates :week, comparison: { greater_than: 0, less_than: 53 }
+  validates :level, :title, :type, :summary, presence: true
   validates :type, inclusion: { in: TYPES }
-
-  enum day: {
-    sunday: 1,
-    monday: 2,
-    tuesday: 3,
-    wednesday: 4,
-    thursday: 5,
-    friday: 6,
-    saturday: 7
-  }
 
   enum level: {
     kindy: 0,
@@ -39,9 +28,12 @@ class Lesson < ApplicationRecord
   accepts_nested_attributes_for :course_lessons, allow_destroy: true
   has_many :courses, through: :course_lessons
 
-  private
+  def day(course)
+    course_lessons.find_by(course_id: course.id).day.capitalize
+  end
 
-  def underscored_title
-    title.parameterize(separator: '_')
+  def week(course)
+    number = course_lessons.find_by(course_id: course.id).week
+    "Week #{number}"
   end
 end

@@ -16,9 +16,10 @@ class DailyActivity < Lesson
   }
 
   def save_guide
-    key = "daily_activity/#{level}/#{subtype}/#{Time.zone.now.to_i}_#{underscored_title}_guide.pdf"
+    filename = "#{Time.zone.now.to_i}_#{title.parameterize(separator: '_')}_guide.pdf"
+    key = "daily_activity/#{level}/#{subtype}/" + filename
     pdf_io = guide_tempfile
-    guide.attach(io: pdf_io, filename: 'guide.pdf', content_type: 'application/pdf', key:)
+    guide.attach(io: pdf_io, filename:, content_type: 'application/pdf', key:)
     pdf_io
   end
 
@@ -36,8 +37,6 @@ class DailyActivity < Lesson
 
     pdf.text title, size: 24
     pdf.text summary
-    pdf.text "Week #{week}"
-    pdf.text day.capitalize
     pdf.text subtype.capitalize
     pdf.text 'Steps:', size: 18
     steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }

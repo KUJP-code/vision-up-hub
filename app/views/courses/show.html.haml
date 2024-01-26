@@ -16,9 +16,11 @@
         = link_to split_on_capitals(type),
                   new_lesson_path(type:),
                   id: "add_#{type.underscore}"
-  - @lessons.group_by(&:type).each do |type, lessons|
-    %h2.text-2xl= split_on_capitals(type).pluralize
-    %ul.flex.flex-col.gap-1
-      - lessons.each do |l|
-        = link_to l.title,
-                  lesson_path(l)
+  .w-full.flex.flex-wrap.justify-around.gap-3
+    - @lessons.group_by(&:type).each do |type, lessons|
+      .flex.flex-col.gap-1
+        %h2.text-2xl= split_on_capitals(type).pluralize
+        %ul.flex.flex-col.gap-1
+          - lessons.each do |l|
+            = link_to l.title,
+                      lesson_path(l)

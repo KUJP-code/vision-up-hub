@@ -1,17 +1,26 @@
 -# locals: (courses:, f:, lesson:)
 
-.fields-wrapper{ 'data-new-record' => f.object.new_record?.to_s }
+.fields-wrapper.flex.items-center.gap-2{ 'data-new-record' => f.object.new_record?.to_s }
   = f.hidden_field :lesson_id, value: lesson.id
 
-  = f.label :course_id
-  = f.select :course_id,
-             courses,
-             include_blank: true
+  .form-group
+    = f.label :course_id
+    = f.select :course_id,
+               courses,
+               include_blank: true
+
+  .form-group
+    = f.label :week
+    = f.number_field :week, min: 1, max: 52
+
+  .form-group
+    = f.label :day
+    = f.select :day, CourseLesson.days.to_h { |k, _v| [k.capitalize, k] }
 
   - if f.object.new_record?
-    %button.btn.btn-danger{ 'data-action' => 'fields#remove' }
-      Remove from Course
+    %button.w-full.btn.btn-danger{ 'data-action' => 'fields#remove' }
+      Remove
   - else
-    .form-check
+    .w-full.form-check.text-center
       = f.check_box :_destroy
-      = f.label 'Remove from this course', :_destroy
+      = f.label :_destroy, 'Remove from this course'

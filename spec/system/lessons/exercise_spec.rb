@@ -16,8 +16,6 @@ RSpec.describe 'creating an Exercise lesson' do
     within '#exercise_form' do
       fill_in 'exercise_title', with: 'Test Exercise'
       fill_in 'exercise_summary', with: 'Summary for test exercise'
-      fill_in 'exercise_week', with: 1
-      select 'Wednesday', from: 'exercise_day'
       select 'Kindy', from: 'exercise_level'
       fill_in 'exercise_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       click_button 'Create Exercise'

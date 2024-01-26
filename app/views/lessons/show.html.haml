@@ -6,14 +6,13 @@
       - if @courses.any?
         %h3.text-xl Used in the following courses:
         - @courses.each do |c|
-          = link_to c.name,
+          = link_to "#{c.name} on #{@lesson.week(c)} #{@lesson.day(c)}",
                     course_path(c)
       - else
         %h3.text-xl Not used in any courses
 
       %h3.text-xl
         #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
-      %h3.text-xl #{@lesson.day.capitalize}, Week #{@lesson.week}
       %p= @lesson.summary
     = link_to file_path(@lesson.guide.blob),
               target: '_blank',

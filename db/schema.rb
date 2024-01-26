@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_051935) do
   create_table "course_lessons", force: :cascade do |t|
     t.bigint "course_id", null: false
     t.bigint "lesson_id", null: false
+    t.integer "week", null: false
+    t.integer "day", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_course_lessons_on_course_id"
@@ -65,8 +67,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_25_051935) do
     t.string "summary", null: false
     t.string "type"
     t.integer "level", null: false
-    t.integer "week", null: false
-    t.integer "day", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "steps", default: []
