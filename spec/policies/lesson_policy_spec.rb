@@ -7,6 +7,10 @@ RSpec.shared_examples 'writer for LessonPolicy' do
   it { is_expected.to authorize_action(:edit) }
   it { is_expected.to authorize_action(:create) }
   it { is_expected.to authorize_action(:update) }
+
+  it 'scopes to all lessons' do
+    expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.all)
+  end
 end
 
 RSpec.shared_examples 'unauthorized user for LessonPolicy' do
@@ -16,6 +20,10 @@ RSpec.shared_examples 'unauthorized user for LessonPolicy' do
   it { is_expected.not_to authorize_action(:edit) }
   it { is_expected.not_to authorize_action(:create) }
   it { is_expected.not_to authorize_action(:update) }
+
+  it 'scopes to nothing' do
+    expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.none)
+  end
 end
 
 RSpec.describe LessonPolicy do

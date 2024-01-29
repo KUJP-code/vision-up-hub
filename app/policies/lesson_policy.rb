@@ -2,32 +2,42 @@
 
 class LessonPolicy < ApplicationPolicy
   def index?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
   def show?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
   def new?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
   def edit?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
   def update?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
   def create?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    authorized_ku_staff?
   end
 
-  class Scope
+  class Scope < Scope
     def resolve
-      scope
+      authorized_ku_staff? ? scope.all : scope.none
     end
+
+    def authorized_ku_staff?
+      user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    end
+  end
+
+  private
+
+  def authorized_ku_staff?
+    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
   end
 end
