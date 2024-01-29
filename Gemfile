@@ -34,9 +34,12 @@ gem 'tzinfo-data', platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
-# Use Devise for auth
+# Use Devise for authentication
 gem 'devise'
 gem 'devise-i18n', '~> 1.12'
+
+# And Pundit for authorization
+gem 'pundit'
 
 # Template views in HAML
 gem 'haml-rails', '~> 2.1'

@@ -9,8 +9,12 @@ FactoryBot.define do
     password { 'password' }
     type { 'Teacher' }
 
+    trait :admin do
+      type { 'Admin' }
+    end
+
     trait :curriculum do
-      type { 'CurriculumManager' }
+      type { 'Curriculum' }
     end
 
     trait :teacher do

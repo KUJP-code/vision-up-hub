@@ -31,5 +31,10 @@ module Materials
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Locale settings
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+    config.time_zone = 'Tokyo'
+    config.active_record.default_timezone = :local
   end
 end

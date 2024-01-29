@@ -14,6 +14,8 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2.2
 
+Capybara/ClickLinkOrButtonStyle:
+  Enabled: false
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 Metrics/AbcSize:

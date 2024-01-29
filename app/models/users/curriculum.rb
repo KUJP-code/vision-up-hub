@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class CurriculumManager < User
+class Curriculum < User
 end
