@@ -6,7 +6,7 @@ FactoryBot.define do
     organisation
     name { 'Test User' }
     email { 'pC9Xp@example.com' }
-    password { 'password' }
+    password { 'passwordpassword' }
     type { 'Teacher' }
 
     trait :admin do

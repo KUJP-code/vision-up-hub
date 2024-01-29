@@ -4,9 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'creating an Exercise lesson' do
   let!(:course) { create(:course) }
+  let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
-    sign_in create(:user, :writer)
+    user = org.users.create(attributes_for(:user, :writer))
+    sign_in user
   end
 
   it 'can create an exercise lesson' do
