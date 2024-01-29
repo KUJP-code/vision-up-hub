@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       resources :lessons, except: %i[destroy]
       resources :phonics, only: %i[create index update]
       resources :organisations, except: %i[destroy] do
-        resources :curriculums
+        resources :writers
       end
     end
 

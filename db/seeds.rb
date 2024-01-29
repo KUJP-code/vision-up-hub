@@ -2,9 +2,9 @@ require 'factory_bot_rails'
 
 FactoryBot.create(
   :user,
-  :curriculum,
-  email: 'curriculum@example.com',
-  password: 'curriculumpassword',
+  :writer,
+  email: 'writer@example.com',
+  password: 'writerpassword',
 )
 
 daily_activity = FactoryBot.create(:daily_activity)

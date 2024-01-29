@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  TYPES = %w[Admin Curriculum SchoolManager OrgAdmin Sales Teacher].freeze
+  TYPES = %w[Admin SchoolManager OrgAdmin Sales Teacher Writer].freeze
 
   validates :name, presence: true
   validates :type, inclusion: { in: TYPES }

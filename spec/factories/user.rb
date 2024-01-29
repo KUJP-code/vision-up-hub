@@ -13,8 +13,8 @@ FactoryBot.define do
       type { 'Admin' }
     end
 
-    trait :curriculum do
-      type { 'Curriculum' }
+    trait :writer do
+      type { 'Writer' }
     end
 
     trait :teacher do

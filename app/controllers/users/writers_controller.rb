@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CurriculumsController < ApplicationController
+class WritersController < ApplicationController
   def show
     redirect_to courses_path
   end

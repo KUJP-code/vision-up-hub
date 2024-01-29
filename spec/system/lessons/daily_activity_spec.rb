@@ -6,7 +6,7 @@ RSpec.describe 'creating a DailyActivity lesson' do
   let!(:course) { create(:course) }
 
   before do
-    sign_in create(:user, :curriculum)
+    sign_in create(:user, :writer)
   end
 
   it 'can create a daily activity lesson' do

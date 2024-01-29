@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class Curriculum < User
+class Writer < User
 end

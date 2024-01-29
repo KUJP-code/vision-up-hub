@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     locale = params[:locale] || I18n.default_locale
-    locale = :en if current_user&.is?('Admin', 'Curriculum')
+    locale = :en if current_user&.is?('Admin', 'Writer')
     I18n.locale = locale
   end
 end
