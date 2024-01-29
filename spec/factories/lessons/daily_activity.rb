@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :daily_activity, parent: :lesson do
+    title { 'Test Daily Activity' }
     type { 'DailyActivity' }
     subtype { :discovery }
     steps { "Step 1\nStep 2" }
