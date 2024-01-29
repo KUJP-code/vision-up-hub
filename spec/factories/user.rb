@@ -13,12 +13,24 @@ FactoryBot.define do
       type { 'Admin' }
     end
 
-    trait :writer do
-      type { 'Writer' }
+    trait :org_admin do
+      type { 'OrgAdmin' }
+    end
+
+    trait :sales do
+      type { 'Sales' }
+    end
+
+    trait :school_manager do
+      type { 'SchoolManager' }
     end
 
     trait :teacher do
       type { 'Teacher' }
+    end
+
+    trait :writer do
+      type { 'Writer' }
     end
   end
 end
