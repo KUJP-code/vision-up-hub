@@ -3,10 +3,12 @@
 class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[edit show update]
   before_action :set_courses, only: %i[new edit]
+  after_action :verify_authorized, except: %i[index]
+  after_action :verify_policy_scoped, only: %i[index]
   after_action :save_guide, only: %i[create update]
 
   def index
-    @lessons = Lesson.all
+    @lessons = policy_scope(Lesson.all)
   end
 
   def show
@@ -15,7 +17,7 @@ class LessonsController < ApplicationController
 
   def new
     type = params[:type] if Lesson::TYPES.include?(params[:type])
-    @lesson = type.constantize.new
+    @lesson = authorize type.constantize.new
   end
 
   def edit; end
@@ -50,6 +52,6 @@ class LessonsController < ApplicationController
   end
 
   def set_lesson
-    @lesson = Lesson.find(params[:id])
+    @lesson = authorize Lesson.find(params[:id])
   end
 end

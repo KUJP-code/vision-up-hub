@@ -38,4 +38,8 @@ class Lesson < ApplicationRecord
     number = course_lessons.find_by(course_id: course.id).week
     "Week #{number}"
   end
+
+  def self.policy_class
+    LessonPolicy
+  end
 end

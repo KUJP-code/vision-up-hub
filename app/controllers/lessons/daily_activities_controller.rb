@@ -2,11 +2,11 @@
 
 class DailyActivitiesController < LessonsController
   def index
-    @lessons = DailyActivity.all
+    @lessons = policy_scope(DailyActivity.all)
   end
 
   def create
-    @lesson = Lesson.new(daily_activity_params)
+    @lesson = authorize Lesson.new(daily_activity_params)
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),
