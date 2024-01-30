@@ -15,8 +15,13 @@ Rails.application.routes.draw do
       resources :lessons, except: %i[destroy]
       resources :phonics, only: %i[create index update]
       resources :organisations, except: %i[destroy] do
+        resources :admins, except: %i[destroy]
         resources :writers
       end
+    end
+
+    authenticate :user, -> (user) { user.is?('Admin') } do
+      mount PgHero::Engine, at: "pghero"
     end
 
     authenticated :user do

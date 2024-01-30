@@ -5,6 +5,14 @@ FactoryBot.create_list(:organisation, 5)
 
 FactoryBot.create(
   :user,
+  :admin,
+  email: 'admin@gmail.com',
+  password: 'adminadminadmin',
+  organisation: kids_up
+)
+
+FactoryBot.create(
+  :user,
   :writer,
   email: 'writer@example.com',
   password: 'writerpassword',

@@ -55,6 +55,9 @@ gem 'ruby-vips'
 # SolidQueue for background processing
 gem 'solid_queue'
 
+# PgHero for DB stats
+gem 'pghero'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
