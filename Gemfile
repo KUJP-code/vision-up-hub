@@ -52,6 +52,9 @@ gem 'image_processing', '~> 1.2'
 gem 'poppler'
 gem 'ruby-vips'
 
+# SolidQueue for background processing
+gem 'solid_queue'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
