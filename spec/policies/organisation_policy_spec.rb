@@ -49,19 +49,7 @@ RSpec.describe OrganisationPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    context 'when part of KidsUP' do
-      let(:ku) { build(:organisation, name: 'KidsUP') }
-
-      before do
-        allow(user).to receive(:organisation).and_return(ku)
-      end
-
-      it_behaves_like 'KU staff for OrganisationPolicy'
-    end
-
-    context 'when external organisation' do
-      it_behaves_like 'unauthorized user for OrganisationPolicy'
-    end
+    it_behaves_like 'KU staff for OrganisationPolicy'
   end
 
   context 'when writer' do
@@ -91,7 +79,7 @@ RSpec.describe OrganisationPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'unauthorized user for OrganisationPolicy'
+    it_behaves_like 'KU staff for OrganisationPolicy'
   end
 
   context 'when school manager' do

@@ -1,6 +1,7 @@
 require 'factory_bot_rails'
 
 kids_up = FactoryBot.create(:organisation, name: 'KidsUP')
+test_org = FactoryBot.create(:organisation, name: 'Test Org')
 FactoryBot.create_list(:organisation, 5)
 
 FactoryBot.create(
@@ -12,11 +13,11 @@ FactoryBot.create(
 )
 
 User::TYPES.each do |type|
-  org = %w[Admin Sales Writer].include?(type) ? kids_up : FactoryBot.create(:organisation)
+  org = %w[Admin Sales Writer].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
   FactoryBot.create(
     :user,
-    type: type,
+    type.underscore.to_sym,
     email: "#{underscored}@example.com",
     password: "#{underscored}password",
     organisation: org

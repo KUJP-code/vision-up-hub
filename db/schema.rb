@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
     t.jsonb "steps", default: []
     t.jsonb "links", default: {}
     t.integer "subtype"
+  end
+
+  create_table "managements", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "school_manager_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_managements_on_school_id"
+    t.index ["school_manager_id"], name: "index_managements_on_school_manager_id"
   end
 
   create_table "organisations", force: :cascade do |t|
@@ -192,6 +201,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
     t.string "name", null: false
     t.string "type", default: "Teacher"
     t.bigint "organisation_id", null: false
+    t.bigint "school_id"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -214,6 +224,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -221,6 +232,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
+  add_foreign_key "managements", "schools"
+  add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "schools", "organisations"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -228,4 +241,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_101623) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "users", "organisations"
+  add_foreign_key "users", "schools"
 end

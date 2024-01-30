@@ -5,12 +5,12 @@ FactoryBot.define do
     initialize_with { type.constantize.new }
     organisation
     name { 'Test User' }
-    email { 'pC9Xp@example.com' }
+    sequence(:email) { |n| "test_user#{n}@example.com" }
     password { 'passwordpassword' }
-    type { 'Teacher' }
+    type { 'OrgAdmin' }
 
     trait :admin do
-      organisation { create(:organisation, name: 'KidsUP') }
+      organisation factory: :organisation, name: 'KidsUP'
       type { 'Admin' }
     end
 
@@ -19,7 +19,7 @@ FactoryBot.define do
     end
 
     trait :sales do
-      organisation { create(:organisation, name: 'KidsUP') }
+      organisation factory: :organisation, name: 'KidsUP'
       type { 'Sales' }
     end
 
@@ -28,11 +28,12 @@ FactoryBot.define do
     end
 
     trait :teacher do
+      school
       type { 'Teacher' }
     end
 
     trait :writer do
-      organisation { create(:organisation, name: 'KidsUP') }
+      organisation factory: :organisation, name: 'KidsUP'
       type { 'Writer' }
     end
   end

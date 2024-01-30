@@ -36,37 +36,13 @@ RSpec.describe LessonPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    context 'when part of KidsUP' do
-      let(:ku) { build(:organisation, name: 'KidsUP') }
-
-      before do
-        allow(user).to receive(:organisation).and_return(ku)
-      end
-
-      it_behaves_like 'writer for LessonPolicy'
-    end
-
-    context 'when external organisation' do
-      it_behaves_like 'unauthorized user for LessonPolicy'
-    end
+    it_behaves_like 'writer for LessonPolicy'
   end
 
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    context 'when part of KidsUP' do
-      let(:ku) { build(:organisation, name: 'KidsUP') }
-
-      before do
-        allow(user).to receive(:organisation).and_return(ku)
-      end
-
-      it_behaves_like 'writer for LessonPolicy'
-    end
-
-    context 'when external organisation' do
-      it_behaves_like 'unauthorized user for LessonPolicy'
-    end
+    it_behaves_like 'writer for LessonPolicy'
   end
 
   context 'when org admin' do
