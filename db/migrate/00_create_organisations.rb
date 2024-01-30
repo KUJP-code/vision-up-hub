@@ -9,6 +9,7 @@ class CreateOrganisations < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
+    add_index :organisations, :name, unique: true
     add_index :organisations, :email, unique: true
     add_index :organisations, :phone, unique: true
   end
