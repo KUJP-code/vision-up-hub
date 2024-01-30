@@ -10,6 +10,7 @@ FactoryBot.define do
     type { 'Teacher' }
 
     trait :admin do
+      organisation { create(:organisation, name: 'KidsUP') }
       type { 'Admin' }
     end
 
@@ -18,6 +19,7 @@ FactoryBot.define do
     end
 
     trait :sales do
+      organisation { create(:organisation, name: 'KidsUP') }
       type { 'Sales' }
     end
 
@@ -30,6 +32,7 @@ FactoryBot.define do
     end
 
     trait :writer do
+      organisation { create(:organisation, name: 'KidsUP') }
       type { 'Writer' }
     end
   end
