@@ -81,6 +81,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_032143) do
     t.string "notes", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_organisations_on_email", unique: true
+    t.index ["phone"], name: "index_organisations_on_phone", unique: true
   end
 
   create_table "solid_queue_blocked_executions", force: :cascade do |t|

@@ -4,15 +4,24 @@ require 'rails_helper'
 
 RSpec.describe 'creating an organisation' do
   before do
-    sign_in create(:user, :sales)
+    org = create(:organisation, name: 'KidsUP')
+    user = create(:user, :sales, organisation: org)
+    sign_in user
   end
 
-  it 'can create an organisation' do
+  it 'can create an organisation as sales staff' do
     visit organisations_path
     click_link I18n.t('organisations.index.add_organisation')
-    visit new_organisation_path
-    fill_in 'organisation_name', with: 'Test Organisation'
-    click_button 'Create Organisation'
+    within '#org_form' do
+      fill_in 'organisation_name', with: 'Test Organisation'
+      fill_in 'organisation_email', with: 'test@org.jp'
+      fill_in 'organisation_phone', with: '8945902345'
+      fill_in 'organisation_notes', with: 'Test notes for this org'
+    end
+    click_button '登録する'
     expect(page).to have_content('Test Organisation')
+    expect(page).to have_content('test@org.jp')
+    expect(page).to have_content('8945902345')
+    expect(page).to have_content('Test notes for this org')
   end
 end

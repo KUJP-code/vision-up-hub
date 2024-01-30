@@ -4,7 +4,8 @@
             new_organisation_path,
             class: 'btn btn-primary'
 
-%main.flex.flex-wrap.justify-between.gap-3.p-3
+%main.flex.flex-wrap.justify-between.gap-1.p-3
   = render partial: 'organisations/card',
            collection: @organisations,
            as: :organisation
+  .flex-grow

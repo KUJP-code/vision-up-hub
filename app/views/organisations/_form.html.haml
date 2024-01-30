@@ -1,0 +1,19 @@
+-# locals: (org:)
+
+= form_with model: org,
+            html: { id: 'org_form',
+                    class: 'form' } do |f|
+  .form-group
+    = f.label :name, t('.name')
+    = f.text_field :name
+  .form-group
+    = f.label :email, t('.email')
+    = f.text_field :email
+  .form-group
+    = f.label :phone, t('.phone')
+    = f.text_field :phone
+  .form-group
+    = f.label :notes, t('.notes')
+    = f.text_area :notes
+
+  = f.submit class: 'btn btn-primary'
