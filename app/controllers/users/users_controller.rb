@@ -4,8 +4,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[edit show update]
 
   def show
-    type = @user.type.parameterize(separator: '_')
-    path = send(:"organisation_#{type}_path", @user.organisation, @user)
+    type = @user.type.pluralize.parameterize(separator: '_')
+    path = "/organisations/#{@user.organisation_id}/#{type}/#{@user.id}"
     redirect_to path
   end
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.shared_examples 'writer for LessonPolicy' do
   it { is_expected.to authorize_action(:index) }
   it { is_expected.to authorize_action(:show) }

@@ -14,8 +14,13 @@ Rails.application.routes.draw do
       resources :files, only: %i[create index show]
       resources :lessons, except: %i[destroy]
       resources :phonics, only: %i[create index update]
-      resources :organisations, except: %i[destroy] do
+
+      resources :organisations, except: %i[destroy show] do
         resources :admins, except: %i[destroy]
+        resources :org_admins
+        resources :sales
+        resources :school_managers
+        resources :teachers
         resources :writers
       end
     end

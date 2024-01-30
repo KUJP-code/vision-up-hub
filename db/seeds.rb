@@ -11,13 +11,17 @@ FactoryBot.create(
   organisation: kids_up
 )
 
-FactoryBot.create(
-  :user,
-  :writer,
-  email: 'writer@example.com',
-  password: 'writerpassword',
-  organisation: kids_up
-)
+User::TYPES.each do |type|
+  org = %w[Admin Sales Writer].include?(type) ? kids_up : FactoryBot.create(:organisation)
+  underscored = type.parameterize(separator: '_')
+  FactoryBot.create(
+    :user,
+    type: type,
+    email: "#{underscored}@example.com",
+    password: "#{underscored}password",
+    organisation: org
+  )
+end
 
 daily_activity = FactoryBot.create(:daily_activity)
 exercise = FactoryBot.create(:exercise)

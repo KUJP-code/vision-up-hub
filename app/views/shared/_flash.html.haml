@@ -1,6 +1,6 @@
-- classes = 'flex justify-between items-center gap-3 rounded p-2 transition-opacity duration-300'
+- classes = 'flex justify-between items-center gap-2 rounded p-3 transition-opacity duration-300'
 
-.flex.flex-col.fixed.top-3.right-3.text-white
+.flex.flex-col.fixed.top-3.right-3.text-white.text-sm.z-50
   - flash.each do |type, msg|
     %div{ aria: { label: 'Dismiss',
                   live: 'assertive',
@@ -8,7 +8,7 @@
           class: "#{classes} #{type == 'notice' ? 'bg-green-700' : 'bg-red-500'}",
           data: { controller: 'flash', 'flash-target': 'container' } }
       = msg
-      %button{ class: 'flex items-center border border-white rounded font-semibold px-2',
+      %button{ class: 'flex items-center font-semibold px-2 opacity-50 hover:opacity-100',
                data: { action: 'click->flash#dismiss' },
                role: 'alert',
                type: 'button' } X

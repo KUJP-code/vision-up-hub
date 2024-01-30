@@ -76,7 +76,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_032143) do
 
   create_table "organisations", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "student_count", default: 0
+    t.string "email", null: false
+    t.string "phone", null: false
     t.string "notes", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
