@@ -7,5 +7,8 @@ import { application } from "./application"
 import FieldsController from "./fields_controller"
 application.register("fields", FieldsController)
 
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
 import NewFolderController from "./new_folder_controller"
 application.register("new-folder", NewFolderController)
