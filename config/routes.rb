@@ -16,7 +16,11 @@ Rails.application.routes.draw do
       resources :lessons, except: %i[destroy]
       resources :phonics, only: %i[create index update]
 
+      get 'users', to: 'users#index', as: :users
+
       resources :organisations, except: %i[destroy show] do
+        resources :users, except: %i[destroy show]
+
         resources :admins, except: %i[destroy]
         resources :org_admins
         resources :sales

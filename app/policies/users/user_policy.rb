@@ -23,7 +23,7 @@ class UserPolicy < ApplicationPolicy
   private
 
   def authorized_ku_staff?
-    user.is?('Admin', 'Sales') && user.organisation.name == 'KidsUP'
+    user.is?('Admin', 'Sales')
   end
 
   def authorized_org_staff?

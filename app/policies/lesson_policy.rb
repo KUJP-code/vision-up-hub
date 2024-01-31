@@ -31,13 +31,13 @@ class LessonPolicy < ApplicationPolicy
     end
 
     def authorized_ku_staff?
-      user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+      user.is?('Admin', 'Writer')
     end
   end
 
   private
 
   def authorized_ku_staff?
-    user.is?('Admin', 'Writer') && user.organisation.name == 'KidsUP'
+    user.is?('Admin', 'Writer')
   end
 end

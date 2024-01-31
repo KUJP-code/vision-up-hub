@@ -1,14 +1,14 @@
 .flex.flex-col.justify-center.items-center.text-center
-  %h1.flex.justify-center.items-center.gap-3.text-3xl
+  %h1.flex.justify-center.items-center.gap-3
     = @course.name
     = render 'courses/privacy_badge', released: @course.released
-  %h3.text-xl= @course.description
+  %h3= @course.description
   .flex.gap-3
     = link_to 'Edit',
               edit_course_path(@course),
               class: 'btn btn-info'
 
-  %h2.text-2xl Lessons
+  %h2 Lessons
   %details.border.border-black.p-2.cursor-pointer#add-lesson
     %summary Add a lesson
     .flex.flex-col
@@ -19,7 +19,7 @@
   .w-full.flex.flex-wrap.justify-around.gap-3
     - @lessons.group_by(&:type).each do |type, lessons|
       .flex.flex-col.gap-1
-        %h2.text-2xl= split_on_capitals(type).pluralize
+        %h2= split_on_capitals(type).pluralize
         %ul.flex.flex-col.gap-1
           - lessons.each do |l|
             = link_to l.title,

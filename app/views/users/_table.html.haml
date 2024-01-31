@@ -1,0 +1,36 @@
+-# locals: (users:, org: nil)
+
+%table.w-full.text-center
+  %thead
+    %tr
+      %th= t('.name')
+      %th= t('.role')
+      %th= t('.email')
+
+      - if org
+        %th= t('.org')
+
+      - if current_user.is?('Admin')
+        %th= t('.last_signin')
+        %th= t('.last_ip')
+        %th= t('.signin_count')
+
+      %th= t('.created')
+  %tbody
+    - users.each do |user|
+      %tr
+        %td
+          = link_to user.name,
+                    organisation_user_path(user.organisation_id, user)
+        %td= split_on_capitals(user.type)
+        %td= mail_to user.email
+
+        - if org
+          %td= user.organisation.name
+
+        - if current_user.is?('Admin')
+          %td= user.last_sign_in_at
+          %td= user.last_sign_in_ip
+          %td= user.sign_in_count
+
+        %td= user.created_at

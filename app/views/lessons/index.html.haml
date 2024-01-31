@@ -1,5 +1,5 @@
 %nav.flex.justify-around
-  %h3.text-lg.fw-semibold Lesson Type:
+  %h3.fw-semibold Lesson Type:
   = link_to 'All', lessons_path
   - Lesson::TYPES.each do |type|
     = link_to split_on_capitals(type),

@@ -18,7 +18,7 @@
     = f.label :level
     = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
 
-  %h3.text-xl.font-bold Courses
+  %h3.font-bold Courses
 
   = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
     = render('course_lessons/fields',

@@ -5,8 +5,8 @@
     = link_to organisation.name,
               organisation_path(organisation),
               class: 'text-2xl'
-    %h3.text-xl= organisation.email
-    %h3.text-xl= organisation.phone
+    %h3= organisation.email
+    %h3= organisation.phone
   %p= organisation.notes
   = link_to t('.edit_organisation'),
             edit_organisation_path(organisation),

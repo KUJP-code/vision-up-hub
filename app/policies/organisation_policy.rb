@@ -31,7 +31,7 @@ class OrganisationPolicy < ApplicationPolicy
     end
 
     def authorized_ku_staff?
-      user.is?('Admin', 'Sales') && user.organisation.name == 'KidsUP'
+      user.is?('Admin', 'Sales')
     end
   end
 
@@ -42,6 +42,6 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def authorized_ku_staff?
-    user.is?('Admin', 'Sales') && user.organisation.name == 'KidsUP'
+    user.is?('Admin', 'Sales')
   end
 end

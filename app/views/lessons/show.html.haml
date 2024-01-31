@@ -1,17 +1,17 @@
 %main.flex.flex-col.text-center
   .flex.p-3
     %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
-      %h1.text-3xl= @lesson.title
+      %h1= @lesson.title
 
       - if @courses.any?
-        %h3.text-xl Used in the following courses:
+        %h3 Used in the following courses:
         - @courses.each do |c|
           = link_to "#{c.name} on #{@lesson.week(c)} #{@lesson.day(c)}",
                     course_path(c)
       - else
-        %h3.text-xl Not used in any courses
+        %h3 Not used in any courses
 
-      %h3.text-xl
+      %h3
         #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
       %p= @lesson.summary
     = link_to file_path(@lesson.guide.blob),
@@ -20,7 +20,7 @@
               class: 'guide_link border' do
       = image_tag @lesson.guide.preview(:thumb),
                   class: 'guide_image w-full'
-      %h3.text-xl Download Guide
+      %h3 Download Guide
 
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
            lesson: @lesson

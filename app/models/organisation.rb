@@ -7,6 +7,10 @@ class Organisation < ApplicationRecord
   has_many :schools, dependent: :destroy
   has_many :users, dependent: :destroy
 
+  def ku?
+    name == 'KidsUP'
+  end
+
   def students_count
     schools.sum(:students_count)
   end

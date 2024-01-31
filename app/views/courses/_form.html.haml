@@ -17,7 +17,7 @@
     = f.label :released
     = f.check_box :released
 
-  %h3.text-xl.fw-bold Lessons
+  %h3.fw-bold Lessons
 
   = f.fields_for :course_lessons, course.course_lessons do |cl_f|
     = render('course_lessons/fields',

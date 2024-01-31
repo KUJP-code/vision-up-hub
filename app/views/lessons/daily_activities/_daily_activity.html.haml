@@ -2,13 +2,13 @@
 
 .flex.flex-wrap.p-3
   .flex.flex-col.flex-grow
-    %h3.text-lg Steps
+    %h3 Steps
     %ol.list-decimal.list-inside
       - lesson.steps.each do |step|
         %li.step= step
 
   .flex.flex-col.flex-grow.items-center
-    %h3.text-lg Links
+    %h3 Links
     %ul.list-disc
       - lesson.links.each do |text, link|
         %li
