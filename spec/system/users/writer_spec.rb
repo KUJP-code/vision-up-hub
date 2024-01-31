@@ -10,16 +10,16 @@ RSpec.describe 'creating a Writer' do
   end
 
   it 'admin can create a writer' do
-    visit organisation_users_path(organisation)
+    visit organisation_writers_path(organisation)
     click_link 'create_writer'
     expect(page).to have_content 'form'
     within '#writer_form' do
       fill_in 'writer_name', with: 'John'
-      fill_in 'writer_email', with: 'xJpjv@example.com'
+      fill_in 'writer_email', with: 'xjpjv@example.com'
       click_on 'submit_writer'
     end
     expect(page).to have_content 'John'
-    expect(page).to have_content 'xJpjv@example.com'
-    expect(page).to have_content 'You are a Writer'
+    expect(page).to have_content 'xjpjv@example.com'
+    expect(page).to have_content "You're a Writer"
   end
 end

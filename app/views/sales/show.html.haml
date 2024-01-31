@@ -1,0 +1,8 @@
+%main.flex.flex-col.gap-3.p-3
+  %h1 Hi #{@user.name}
+  %h3 You're part of the sales team
+  %h3= @user.email
+
+  = link_to 'Edit',
+            edit_organisation_sale_path(@user.organisation_id, @user),
+            class: 'btn btn-primary'

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class WriterPolicy < ApplicationPolicy
+class SalesPolicy < ApplicationPolicy
   def index?
-    user.is?('Admin')
+    user.is?('Admin', 'Sales')
   end
 
   def show?
-    user.is?('Admin') || managing_self?
+    user.is?('Admin', 'Sales')
   end
 
   def new?
-    user.is?('Admin')
+    user.is?('Admin', 'Sales')
   end
 
   def edit?
@@ -22,7 +22,7 @@ class WriterPolicy < ApplicationPolicy
   end
 
   def create?
-    user.is?('Admin')
+    user.is?('Admin', 'Sales')
   end
 
   def destroy?
@@ -32,6 +32,6 @@ class WriterPolicy < ApplicationPolicy
   private
 
   def managing_self?
-    user.is?('Writer') && record.id == user.id
+    user.is?('Sales') && record.id == user.id
   end
 end

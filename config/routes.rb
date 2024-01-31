@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       get 'users', to: 'users#index', as: :users
 
       resources :organisations, except: %i[destroy show] do
-        resources :users, except: %i[destroy show]
+        resources :users, except: %i[destroy]
 
         resources :admins, except: %i[destroy]
         resources :org_admins

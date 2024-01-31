@@ -1,0 +1,22 @@
+-# locals: (user:)
+
+:ruby
+  path = if user.new_record?
+           organisation_sales_path(organisation_id: user.organisation_id)
+         else
+           organisation_sale_path(@user)
+         end
+
+= form_with model: user,
+            url: path,
+            html: { class: 'form',
+                    data: { controller: 'fields' },
+                    id: 'sales_form' } do |f|
+  = render 'shared/form_errors', resource: @user
+
+  = render 'users/fields', f:
+
+  %p this is a sales staff form
+
+  = f.submit class: 'btn btn-primary',
+             id: 'submit_sales'
