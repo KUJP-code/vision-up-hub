@@ -32,7 +32,6 @@ RSpec.describe UserPolicy do
   let(:school) { create(:school, organisation:) }
 
   before do
-    create(:user, :writer)
     create(:user, :org_admin, organisation:)
     create(:user, :school_manager, organisation:)
     create(:user, :teacher, organisation:, school:)
@@ -75,7 +74,12 @@ RSpec.describe UserPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'authorized KU staff for UserPolicy scope'
+    it 'can access full scope minus other KU staff categories' do
+      create(:user, :writer, organisation: user.organisation)
+      scoped_users = Pundit.policy_scope!(user, User)
+      non_ku_users = User.where(type: Sales::VISIBLE_TYPES)
+      expect(scoped_users).to eq(non_ku_users)
+    end
   end
 
   context 'when school manager' do

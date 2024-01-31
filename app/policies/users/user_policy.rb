@@ -8,8 +8,10 @@ class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       case user.type
-      when 'Admin', 'Sales'
+      when 'Admin'
         scope.all
+      when 'Sales'
+        scope.where(type: user.class::VISIBLE_TYPES)
       when 'OrgAdmin'
         scope.where(organisation_id: user.organisation_id)
       when 'SchoolManager'
