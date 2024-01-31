@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[edit show update]
-  after_action :verify_authorized, only: %i[edit update]
+  after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -35,5 +35,9 @@ class UsersController < ApplicationController
   def set_user
     @user = params[:id] ? User.find(params[:id]) : current_user
     authorize @user
+  end
+
+  def user_params
+    %i[name email password password_confirmation]
   end
 end

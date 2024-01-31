@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'authorized user for AdminPolicy' do
+  it { is_expected.not_to authorize_action(:index) }
   it { is_expected.to authorize_action(:show) }
   it { is_expected.not_to authorize_action(:new) }
   it { is_expected.to authorize_action(:edit) }
@@ -11,6 +12,7 @@ RSpec.shared_examples 'authorized user for AdminPolicy' do
 end
 
 RSpec.shared_examples 'unauthorized user for AdminPolicy' do
+  it { is_expected.not_to authorize_action(:index) }
   it { is_expected.not_to authorize_action(:show) }
   it { is_expected.not_to authorize_action(:new) }
   it { is_expected.not_to authorize_action(:edit) }
