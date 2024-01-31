@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @org = params[:organisation_id] && Organisation.find(params[:organisation_id])
     @users = scoped_users
     @orgs = Organisation.all if current_user.is?('Admin', 'Sales')
+    render 'users/index'
   end
 
   def show
