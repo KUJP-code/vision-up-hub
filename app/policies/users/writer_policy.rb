@@ -2,27 +2,31 @@
 
 class WriterPolicy < ApplicationPolicy
   def index?
-    authorized_ku_staff?
+    user.is?('Admin')
   end
 
   def show?
-    authorized_ku_staff?
+    user.is?('Admin') || managing_self?
   end
 
   def new?
-    authorized_ku_staff?
+    user.is?('Admin')
   end
 
   def edit?
-    authorized_ku_staff?
+    user.is?('Admin') || managing_self?
   end
 
   def update?
-    authorized_ku_staff?
+    user.is?('Admin') || managing_self?
   end
 
   def create?
-    authorized_ku_staff?
+    user.is?('Admin')
+  end
+
+  def destroy?
+    user.is?('Admin')
   end
 
   class Scope < Scope
@@ -37,7 +41,7 @@ class WriterPolicy < ApplicationPolicy
 
   private
 
-  def authorized_ku_staff?
-    user.is?('Admin', 'Writer')
+  def managing_self?
+    user.is?('Writer') && record.id == user.id
   end
 end

@@ -1,0 +1,6 @@
+---
+ja:
+  users:
+    index:
+      org_users: "%{org} ユーザー"
+      users: "ユーザー"

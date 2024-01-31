@@ -1,0 +1,11 @@
+---
+en:
+  users:
+    between_org_nav:
+      orgs: "Filter by Organisation"
+    index:
+      org_users: "%{org} Users"
+      users: "Users"
+    within_org_nav:
+      create_new: "Create new:"
+      roles: "Filter by Role"

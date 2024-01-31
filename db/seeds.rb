@@ -2,7 +2,7 @@ require 'factory_bot_rails'
 
 kids_up = FactoryBot.create(:organisation, name: 'KidsUP')
 test_org = FactoryBot.create(:organisation, name: 'Test Org')
-FactoryBot.create_list(:organisation, 5)
+FactoryBot.create_list(:organisation, 2)
 
 FactoryBot.create(
   :user,
