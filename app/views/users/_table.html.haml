@@ -7,7 +7,7 @@
       %th= t('.role')
       %th= t('.email')
 
-      - if org
+      - if org.nil?
         %th= t('.org')
 
       - if current_user.is?('Admin')
@@ -25,7 +25,7 @@
         %td= split_on_capitals(user.type)
         %td= mail_to user.email
 
-        - if org
+        - if org.nil?
           %td= user.organisation.name
 
         - if current_user.is?('Admin')
