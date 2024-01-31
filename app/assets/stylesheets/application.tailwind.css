@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+	--ku-blue: #5bb6d5;
 	--ku-orange: #f48000;
 }
 
@@ -58,7 +59,7 @@
 	}
 
 	.btn-info {
-		background-color: #5bb6d5;
+		background-color: var(--ku-blue);
 		color: #ffffff;
 	}
 

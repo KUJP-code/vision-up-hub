@@ -1,36 +1,9 @@
 %h1= @org ? t('.org_users', org: @org.name) : t('.users')
 
 - if @orgs
-  %h2= t('.orgs')
-  %nav.flex.flex-wrap.gap-3.p-3
-    = link_to t('.all_users'), users_path, class: 'btn btn-info'
-
-    - @orgs.each do |org|
-      = link_to org.name,
-                organisation_users_path(org),
-                class: 'btn btn-info'
+  = render 'users/between_org_nav', orgs: @orgs
 
 - if @org
-  %h2= t('.roles')
-  %nav.flex.flex-wrap.gap-2.p-3
-    = link_to t('.all_types'),
-              organisation_users_path(@org),
-              class: 'btn btn-info'
-
-    - current_user.class::VISIBLE_TYPES.each do |type|
-      - type_path = send("organisation_#{type.pluralize.underscore}_path", @org.id)
-      = link_to split_on_capitals(type),
-                type_path,
-                class: 'btn btn-info'
-
-  %h2= t('.create_new')
-  %nav.flex.flex-wrap.gap-2.p-3
-    - current_user.class::VISIBLE_TYPES.each do |type|
-      - next if !@org.ku? && User::KU_TYPES.include?(type)
-
-      - type_path = send("new_organisation_#{type.singularize.underscore}_path", @org.id)
-      = link_to split_on_capitals(type),
-                type_path,
-                class: 'btn btn-primary'
+  = render 'users/within_org_nav', org: @org
 
 = render 'users/table', org: @org, users: @users
