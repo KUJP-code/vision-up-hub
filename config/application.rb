@@ -26,8 +26,9 @@ module Materials
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w(assets tasks))
     # Allow nesting models and controllers in subfolders
-    config.autoload_paths += Dir[Rails.root.join('app', 'models', '**/')]
     config.autoload_paths += Dir[Rails.root.join('app', 'controllers', '**/')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', '**/')]
+    config.autoload_paths += Dir[Rails.root.join('app', 'policies', '**/')]
 
     # Don't generate system test files.
     config.generators.system_tests = nil
