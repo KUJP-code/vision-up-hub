@@ -20,4 +20,6 @@
     - type_path = send("new_organisation_#{type.singularize.underscore}_path", org.id)
     = link_to split_on_capitals(type),
               type_path,
-              class: 'btn btn-primary'
+              class: 'btn btn-primary',
+              id: "create_#{type.singularize.underscore}"
+

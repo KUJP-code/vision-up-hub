@@ -83,4 +83,8 @@
 			width: 100%;
 		}
 	}
+
+	.turbo-progress-bar {
+		display: none !important;
+	}
 }

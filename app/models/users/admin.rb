@@ -8,6 +8,6 @@ class Admin < User
   private
 
   def only_at_ku
-    errors.add(:organisation, 'must be "KidsUP"') unless organisation.ku?
+    errors.add(:organisation, 'must be "KidsUP"') unless organisation&.ku?
   end
 end

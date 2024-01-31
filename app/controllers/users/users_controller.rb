@@ -38,6 +38,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    %i[name email password password_confirmation]
+    %i[name email organisation_id password password_confirmation]
   end
 end

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   private
 
   def authorize_profiling
-    Rack::MiniProfiler.authorize_request if current_user&.is?('Admin')
+    Rack::MiniProfiler.authorize_request if !Rails.env.test? && current_user&.is?('Admin')
   end
 
   def set_locale

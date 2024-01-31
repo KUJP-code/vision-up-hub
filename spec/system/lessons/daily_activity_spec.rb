@@ -15,7 +15,7 @@ RSpec.describe 'creating a DailyActivity lesson' do
     visit course_path(course)
     find_by_id('add-lesson').click
     click_link 'add_daily_activity'
-    expect(page).to have_content('form')
+    expect(page).to have_content 'form'
     within '#daily_activity_form' do
       fill_in 'daily_activity_title', with: 'Test Daily Activity'
       fill_in 'daily_activity_summary', with: 'Summary for test daily activity'
