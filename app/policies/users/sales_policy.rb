@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class SalesPolicy < ApplicationPolicy
-  def index?
-    user.is?('Admin', 'Sales')
-  end
-
   def show?
     user.is?('Admin', 'Sales')
   end

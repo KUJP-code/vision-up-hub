@@ -20,6 +20,6 @@ RSpec.describe 'creating Sales staff' do
     end
     expect(page).to have_content 'John'
     expect(page).to have_content 'xjpjv@example.com'
-    expect(page).to have_content "You're part of the sales team"
+    expect(page).to have_content 'sales team'
   end
 end

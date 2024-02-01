@@ -2,13 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe SalesPolicy do
+RSpec.describe OrgAdminPolicy do
   subject(:policy) { described_class.new(user, record) }
 
-  let(:record) { create(:user, :sales) }
+  let(:record) { create(:user, :org_admin) }
 
   context 'when admin' do
     let(:user) { build(:user, :admin) }
+
+    it_behaves_like 'fully authorized user'
+  end
+
+  context 'when sales' do
+    let(:user) { build(:user, :sales) }
 
     it_behaves_like 'fully authorized user'
   end
@@ -19,28 +25,18 @@ RSpec.describe SalesPolicy do
     it_behaves_like 'unauthorized user'
   end
 
-  context 'when sales' do
+  context 'when org admin' do
     context 'when accessing self' do
       let(:user) { record }
 
-      it_behaves_like 'authorized user for all but destroy'
+      it_behaves_like 'authorized user for editing'
     end
 
-    context 'when interacting with other sales staff' do
-      let(:user) { build(:user, :sales) }
+    context 'when accessing other org admin' do
+      let(:user) { build(:user, :org_admin) }
 
-      it { is_expected.to authorize_action(:show) }
-      it { is_expected.to authorize_action(:new) }
-      it { is_expected.not_to authorize_action(:edit) }
-      it { is_expected.to authorize_action(:create) }
-      it { is_expected.not_to authorize_action(:update) }
+      it_behaves_like 'authorized user for viewing'
     end
-  end
-
-  context 'when org admin' do
-    let(:user) { build(:user, :org_admin) }
-
-    it_behaves_like 'unauthorized user'
   end
 
   context 'when school manager' do
