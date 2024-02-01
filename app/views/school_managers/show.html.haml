@@ -1,0 +1,8 @@
+%main.flex.flex-col.gap-3.p-3
+  %h1= t('.greet', name: @user.name)
+  %h3= @user.email
+  %h3 You're a school manager
+
+  = link_to 'Edit',
+            edit_organisation_school_manager_path(@user.organisation_id, @user),
+            class: 'btn btn-primary'

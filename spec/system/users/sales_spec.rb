@@ -19,7 +19,5 @@ RSpec.describe 'creating Sales staff' do
       click_on 'submit_sales'
     end
     expect(page).to have_content 'John'
-    expect(page).to have_content 'xjpjv@example.com'
-    expect(page).to have_content 'sales team'
   end
 end

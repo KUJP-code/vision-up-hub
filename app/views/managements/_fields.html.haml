@@ -1,0 +1,34 @@
+-# locals: (f:, collection:, resource:)
+
+.fields-wrapper.flex.flex-col.gap-3
+  - if resource.instance_of?(SchoolManager)
+    = f.hidden_field :school_manager_id,
+                     value: resource.id
+
+    .form-group
+      = f.label :school_id
+      = f.select :school_id,
+                 collection,
+                 prompt: t('.select_school'),
+                 required: true,
+                 class: 'test'
+
+  - elsif resource.instance_of?(School)
+    = f.hidden_field :school_id,
+                     value: resource.id
+
+    .form-group
+      = f.label :school_manager_id
+      = f.select :school_manager_id,
+                 collection,
+                 prompt: t('.select_manager'),
+                 required: true
+
+  - if resource.new_record?
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove',
+                            type: 'button' }
+      = t('.remove')
+  - else
+    .form-check
+      = f.check_box :_destroy
+      = f.label :_destroy, t('.destroy')

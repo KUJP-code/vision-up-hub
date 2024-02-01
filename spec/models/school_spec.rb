@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe CourseLesson do
+RSpec.describe School do
   it 'has a valid factory' do
-    expect(build(:course_lesson)).to be_valid
+    expect(build(:school)).to be_valid
   end
 end

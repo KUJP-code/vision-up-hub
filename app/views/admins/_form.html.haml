@@ -1,8 +1,7 @@
 -# locals: (user:)
 
 = form_with model: [user.organisation, user],
-            html: { class: 'form',
-                    data: { controller: 'fields' } } do |f|
+            html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @user
 
   = render 'users/fields', f:

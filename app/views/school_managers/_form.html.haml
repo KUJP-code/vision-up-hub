@@ -1,0 +1,39 @@
+-# locals: (schools:, user:)
+
+= form_with model: [user.organisation, user],
+            html: { class: 'form',
+                    data: { controller: 'fields' },
+                    id: 'school_manager_form' } do |f|
+  = render 'shared/form_errors', resource: user
+
+  = render('users/fields', f:)
+
+  - if user.managements.any?
+    = f.fields_for :managements, user.managements do |m_f|
+      = render 'managements/fields',
+               collection: schools,
+               f: m_f,
+               resource: user
+  - else
+    = f.fields_for :managements, user.managements.new do |m_f|
+      = render 'managements/fields',
+               collection: schools,
+               f: m_f,
+               resource: user
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :managements,
+                   user.managements.new(school_manager_id: user.id),
+                   child_index: 'CHILD' do |m_f|
+      = render 'managements/fields',
+               collection: schools,
+               f: m_f,
+               resource: user
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+    Add school
+
+  = f.submit class: 'btn btn-primary',
+             id: 'submit_school_manager'

@@ -12,22 +12,22 @@ class SalesController < UsersController
 
     if @user.save
       redirect_to organisation_sale_path(@user.organisation, @user),
-                  notice: "#{@user.name} successfully created."
+                  notice: t('create_success')
     else
       render :new,
              status: :unprocessable_entity,
-             alert: "Couldn't create sales staff"
+             alert: t('create_failure')
     end
   end
 
   def update
     if @user.update(sales_params)
       redirect_to organisation_sale_path(@user.organisation, @user),
-                  notice: "#{@user.name} successfully updated."
+                  notice: t('update_success')
     else
       render :edit,
              status: :unprocessable_entity,
-             alert: "Couldn't update sales staff"
+             alert: t('update_failure')
     end
   end
 

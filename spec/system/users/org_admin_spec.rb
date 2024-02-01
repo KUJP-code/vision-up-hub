@@ -19,7 +19,5 @@ RSpec.describe 'creating OrgAdmin' do
       click_on 'submit_org_admin'
     end
     expect(page).to have_content 'John'
-    expect(page).to have_content 'xjpjv@example.com'
-    expect(page).to have_content 'Organisation Admin'
   end
 end

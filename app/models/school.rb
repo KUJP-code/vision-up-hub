@@ -5,5 +5,9 @@ class School < ApplicationRecord
 
   belongs_to :organisation
   has_many :managements, dependent: :destroy
+  accepts_nested_attributes_for :managements,
+                                allow_destroy: true,
+                                reject_if: :all_blank
+
   has_many :school_managers, through: :managements
 end

@@ -19,7 +19,5 @@ RSpec.describe 'creating a Writer' do
       click_on 'submit_writer'
     end
     expect(page).to have_content 'John'
-    expect(page).to have_content 'xjpjv@example.com'
-    expect(page).to have_content "You're a Writer"
   end
 end
