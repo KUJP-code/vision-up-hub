@@ -3,6 +3,10 @@
   %h3= @user.email
   %h3 You're a school manager
 
+  %h3= t('.managed_schools')
+  - @user.schools.each do |school|
+    %h3= school.name
+
   = link_to 'Edit',
             edit_organisation_school_manager_path(@user.organisation_id, @user),
             class: 'btn btn-primary'

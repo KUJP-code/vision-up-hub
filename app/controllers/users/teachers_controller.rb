@@ -5,6 +5,11 @@ class TeachersController < UsersController
 
   def new
     @user = authorize Teacher.new(organisation_id: params[:organisation_id])
+    @schools = org_schools
+  end
+
+  def edit
+    @schools = org_schools
   end
 
   def create
@@ -34,12 +39,12 @@ class TeachersController < UsersController
   private
 
   def org_schools
-    @user.organisation.schools.pluck(:name, :id)
+    policy_scope(School).pluck(:name, :id)
   end
 
   def teachers_params
-    sm_params = [managements_attributes: %i[id school_id teacher_id _destroy]]
-    params.require(:teacher).permit(user_params + sm_params)
+    t_params = %i[school_id]
+    params.require(:teacher).permit(user_params + t_params)
   end
 
   def scoped_users

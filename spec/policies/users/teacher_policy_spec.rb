@@ -41,13 +41,22 @@ RSpec.describe TeacherPolicy do
 
   context 'when school manager' do
     context "when manager of teacher's school" do
-      let(:user) { build(:user, :school_manager, schools: [record.school]) }
+      let(:school) { create(:school) }
+      let(:user) { build(:user, :school_manager, schools: [school]) }
+
+      before do
+        school.teachers << record
+      end
 
       it_behaves_like 'fully authorized user'
     end
 
     context 'when manager of different school' do
       let(:user) { build(:user, :school_manager) }
+
+      before do
+        record.save
+      end
 
       it_behaves_like 'unauthorized user'
     end

@@ -27,16 +27,21 @@ class TeacherPolicy < ApplicationPolicy
 
   private
 
+  def ku_staff?
+    user.is?('Admin', 'Sales')
+  end
+
   def managing_self?
     user.is?('Teacher') && record.id == user.id
   end
 
   def org_staff?
     (user.is?('OrgAdmin') && record.organisation_id == user.organisation_id) ||
-      (user.is?('SchoolManager') && user.schools.ids.include?(record.school_id))
+      managed_school_or_nil?
   end
 
-  def ku_staff?
-    user.is?('Admin', 'Sales')
+  def managed_school_or_nil?
+    user.is?('SchoolManager') &&
+      (record.school_id.nil? || user.schools.ids.include?(record.school_id))
   end
 end

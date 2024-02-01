@@ -39,7 +39,7 @@ class SchoolManagersController < UsersController
   private
 
   def org_schools
-    @user.organisation.schools.pluck(:name, :id)
+    policy_scope(School).pluck(:name, :id)
   end
 
   def school_managers_params

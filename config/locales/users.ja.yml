@@ -6,6 +6,9 @@ ja:
   school_managers:
     show:
       greet: "こんにちは、%{name}"
+  teachers:
+    show:
+      greet: "こんにちは、%{name}"
   users:
     index:
       org_users: "%{org} ユーザー"

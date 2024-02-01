@@ -4,6 +4,10 @@ kids_up = FactoryBot.create(:organisation, name: 'KidsUP')
 test_org = FactoryBot.create(:organisation, name: 'Test Org')
 FactoryBot.create_list(:organisation, 2)
 
+Organisation.all.each do |org|
+  org.schools << FactoryBot.create_list(:school, 2)
+end
+
 FactoryBot.create(
   :user,
   :admin,
@@ -21,8 +25,13 @@ User::TYPES.each do |type|
     type.underscore.to_sym,
     email: "#{underscored}@example.com",
     password: "#{underscored}password",
-    organisation: org
+    organisation: org,
+    school_id: type == 'Teacher' ? org.schools.ids.first : nil
   )
+end
+
+SchoolManager.all.each do |manager|
+  manager.schools << manager.organisation.schools.first
 end
 
 daily_activity = FactoryBot.create(:daily_activity)

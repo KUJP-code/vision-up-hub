@@ -10,4 +10,5 @@ class School < ApplicationRecord
                                 reject_if: :all_blank
 
   has_many :school_managers, through: :managements
+  has_many :teachers, dependent: :destroy
 end
