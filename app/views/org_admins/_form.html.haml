@@ -1,0 +1,14 @@
+-# locals: (user:)
+
+= form_with model: [user.organisation, user],
+            html: { class: 'form',
+                    data: { controller: 'fields' },
+                    id: 'org_admin_form' } do |f|
+  = render 'shared/form_errors', resource: @user
+
+  = render 'users/fields', f:
+
+  %p this is an org admin form
+
+  = f.submit class: 'btn btn-primary',
+             id: 'submit_org_admin'
