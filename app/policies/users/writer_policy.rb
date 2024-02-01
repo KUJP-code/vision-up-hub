@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class WriterPolicy < ApplicationPolicy
-  def index?
-    user.is?('Admin')
-  end
-
   def show?
     user.is?('Admin') || managing_self?
   end

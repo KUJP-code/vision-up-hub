@@ -2,15 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'unauthorized user for SalesPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:update) }
-end
-
 RSpec.describe SalesPolicy do
   subject(:policy) { described_class.new(user, record) }
 
@@ -19,20 +10,20 @@ RSpec.describe SalesPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'authorized user'
+    it_behaves_like 'fully authorized user'
   end
 
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    it_behaves_like 'unauthorized user for SalesPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when sales' do
     context 'when accessing self' do
       let(:user) { record }
 
-      it_behaves_like 'authorized user'
+      it_behaves_like 'authorized user for all but destroy'
     end
 
     context 'when interacting with other sales staff' do
@@ -50,18 +41,18 @@ RSpec.describe SalesPolicy do
   context 'when org admin' do
     let(:user) { build(:user, :org_admin) }
 
-    it_behaves_like 'unauthorized user for SalesPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when school manager' do
     let(:user) { build(:user, :school_manager) }
 
-    it_behaves_like 'unauthorized user for SalesPolicy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
 
-    it_behaves_like 'unauthorized user for SalesPolicy'
+    it_behaves_like 'unauthorized user'
   end
 end

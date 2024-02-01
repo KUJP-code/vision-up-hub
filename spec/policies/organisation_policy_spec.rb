@@ -3,38 +3,15 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'KU staff for OrganisationPolicy' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.to authorize_action(:new) }
-  it { is_expected.to authorize_action(:edit) }
-  it { is_expected.to authorize_action(:create) }
-  it { is_expected.to authorize_action(:update) }
+  it_behaves_like 'authorized user for all but destroy'
 
   it 'scopes to all orgs' do
     expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.all)
   end
 end
 
-RSpec.shared_examples 'Org Admin for OrganisationPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.to authorize_action(:update) }
-
-  it 'scopes to nothing' do
-    expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
-  end
-end
-
 RSpec.shared_examples 'unauthorized user for OrganisationPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:update) }
+  it_behaves_like 'unauthorized user'
 
   it 'scopes to nothing' do
     expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
@@ -66,7 +43,16 @@ RSpec.describe OrganisationPolicy do
     context 'when admin of org being accessed' do
       let(:user) { org.users.create(attributes_for(:user, :org_admin)) }
 
-      it_behaves_like 'Org Admin for OrganisationPolicy'
+      it { is_expected.not_to authorize_action(:index) }
+      it { is_expected.to authorize_action(:show) }
+      it { is_expected.not_to authorize_action(:new) }
+      it { is_expected.to authorize_action(:edit) }
+      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.to authorize_action(:update) }
+
+      it 'scopes to nothing' do
+        expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+      end
     end
 
     context 'when admin of other org' do
