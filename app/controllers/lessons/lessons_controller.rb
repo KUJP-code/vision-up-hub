@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LessonsController < ApplicationController
-  before_action :set_lesson, only: %i[edit show update]
+  before_action :set_lesson, only: %i[destroy edit show update]
   before_action :set_courses, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
@@ -28,6 +28,16 @@ class LessonsController < ApplicationController
 
   def update
     dummy_route
+  end
+
+  def destroy
+    if @lesson.destroy
+      redirect_to lessons_path,
+                  notice: 'Lesson was successfully destroyed.'
+    else
+      redirect_to lessons_path,
+                  alert: "Lesson could not be destroyed. Check it's not still in use"
+    end
   end
 
   private

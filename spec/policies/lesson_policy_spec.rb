@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'writer for LessonPolicy' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.to authorize_action(:show) }
-  it { is_expected.to authorize_action(:new) }
-  it { is_expected.to authorize_action(:edit) }
-  it { is_expected.to authorize_action(:create) }
-  it { is_expected.to authorize_action(:update) }
+  it_behaves_like 'fully authorized user'
 
   it 'scopes to all lessons' do
     expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.all)

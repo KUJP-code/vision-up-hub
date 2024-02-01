@@ -25,6 +25,12 @@
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
            lesson: @lesson
 
-  = link_to 'Edit',
-            edit_lesson_path(@lesson),
-            class: 'btn btn-info w-full'
+  .flex.justify-center.gap-3
+    = link_to 'Edit',
+              edit_lesson_path(@lesson),
+              class: 'btn btn-info'
+
+    = link_to 'Delete',
+              lesson_path(@lesson),
+              data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' },
+              class: 'btn btn-danger'

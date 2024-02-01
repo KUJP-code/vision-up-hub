@@ -5,6 +5,8 @@ class Lesson < ApplicationRecord
 
   TYPES = %w[DailyActivity EnglishClass Exercise Phonics].freeze
 
+  before_destroy :check_not_used
+
   validates :level, :title, :type, :summary, presence: true
   validates :type, inclusion: { in: TYPES }
 
@@ -41,5 +43,11 @@ class Lesson < ApplicationRecord
 
   def self.policy_class
     LessonPolicy
+  end
+
+  private
+
+  def check_not_used
+    throw(:abort) if course_lessons.any?
   end
 end

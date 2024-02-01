@@ -8,12 +8,12 @@ Rails.application.routes.draw do
     devise_for :users
 
     authenticate :user do
+      resources :lessons
       resources :courses, except: %i[destroy]
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]
       resources :files, only: %i[create index show]
-      resources :lessons, except: %i[destroy]
       resources :phonics, only: %i[create index update]
 
       get 'users', to: 'users#index', as: :users

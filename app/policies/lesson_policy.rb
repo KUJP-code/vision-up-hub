@@ -25,6 +25,10 @@ class LessonPolicy < ApplicationPolicy
     authorized_ku_staff?
   end
 
+  def destroy?
+    authorized_ku_staff?
+  end
+
   class Scope < Scope
     def resolve
       authorized_ku_staff? ? scope.all : scope.none
