@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating OrgAdmin staff' do
+RSpec.describe 'creating OrgAdmin' do
   let(:organisation) { create(:organisation, name: 'KidsUP') }
 
   before do
     sign_in create(:user, :sales, organisation:)
   end
 
-  it 'sales staff can create orgadmin' do
+  it 'sales staff can create Organisation Admin' do
     visit organisation_org_admins_path(organisation)
     click_link 'create_org_admin'
     expect(page).to have_content 'form'
