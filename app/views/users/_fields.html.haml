@@ -2,19 +2,25 @@
 
 - temp_pass = SecureRandom.hex(10)
 
+= f.hidden_field :organisation_id
+
 .form-group
   = f.label :name
-  = f.text_field :name
+  = f.text_field :name, required: true
 
 .form-group
   = f.label :email
-  = f.email_field :email
+  = f.email_field :email, required: true
 
 - if f.object.new_record?
   .form-group
     = f.label :password
     = f.text_field :password,
-                   value: temp_pass
+                   value: temp_pass,
+                   required: true
 
-  = f.hidden_field :password_confirmation, value: temp_pass
-  = f.hidden_field :organisation_id
+  .form-group
+    = f.label :password_confirmation
+    = f.text_field :password_confirmation,
+                   value: temp_pass,
+                   required: true

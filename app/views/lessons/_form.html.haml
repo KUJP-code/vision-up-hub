@@ -8,15 +8,18 @@
 
   .form-group
     = f.label :title
-    = f.text_field :title
+    = f.text_field :title, required: true
 
   .form-group
     = f.label :summary
-    = f.text_area :summary
+    = f.text_area :summary, required: true
 
   .form-group
     = f.label :level
-    = f.select :level, Lesson.levels.to_h { |k, _v| [k.titleize, k] }
+    = f.select :level,
+               Lesson.levels.to_h { |k, _v| [k.titleize, k] },
+               required: true,
+               prompt: 'Select a level'
 
   %h3.font-bold Courses
 
