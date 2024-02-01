@@ -2,7 +2,7 @@
 
 class OrgAdminPolicy < ApplicationPolicy
   def show?
-    user.is?('Admin', 'Sales', 'OrgAdmin')
+    user.is?('Admin', 'Sales') || admin_of_same_org?
   end
 
   def new?
@@ -26,6 +26,10 @@ class OrgAdminPolicy < ApplicationPolicy
   end
 
   private
+
+  def admin_of_same_org?
+    user.is?('OrgAdmin') && record.organisation_id == user.organisation_id
+  end
 
   def managing_self?
     user.is?('OrgAdmin') && record.id == user.id

@@ -32,10 +32,16 @@ RSpec.describe OrgAdminPolicy do
       it_behaves_like 'authorized user for editing'
     end
 
+    context 'when accessing other admin of same org' do
+      let(:user) { build(:user, :org_admin, organisation: record.organisation) }
+
+      it_behaves_like 'authorized user for viewing'
+    end
+
     context 'when accessing other org admin' do
       let(:user) { build(:user, :org_admin) }
 
-      it_behaves_like 'authorized user for viewing'
+      it_behaves_like 'unauthorized user'
     end
   end
 
