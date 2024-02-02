@@ -55,6 +55,9 @@ gem 'ruby-vips'
 # SolidQueue for background processing
 gem 'solid_queue'
 
+# And mission control to manage SQ jobs
+gem 'mission_control-jobs', '~> 0.1'
+
 # PgHero for DB stats
 gem 'pghero'
 

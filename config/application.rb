@@ -37,5 +37,8 @@ module Materials
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
     config.time_zone = 'Tokyo'
     config.active_record.default_timezone = :local
+
+    # Use SolidQueue for ActiveJob
+    config.active_job.queue_adapter = :solid_queue
   end
 end

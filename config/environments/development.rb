@@ -68,4 +68,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+
+  # Use separate queues per environment
+  config.active_job.queue_name_prefix = "materials_production"
 end

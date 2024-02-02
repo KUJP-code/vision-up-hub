@@ -31,7 +31,8 @@ Rails.application.routes.draw do
     end
 
     authenticate :user, -> (user) { user.is?('Admin') } do
-      mount PgHero::Engine, at: "pghero"
+      mount PgHero::Engine, at: '/pghero'
+      mount MissionControl::Jobs::Engine, at: '/jobs'
     end
 
     authenticated :user do
