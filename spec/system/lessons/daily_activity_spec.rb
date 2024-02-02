@@ -18,7 +18,7 @@ RSpec.describe 'creating a DailyActivity lesson' do
     expect(page).to have_content 'form'
     within '#daily_activity_form' do
       fill_in 'daily_activity_title', with: 'Test Daily Activity'
-      fill_in 'daily_activity_summary', with: 'Summary for test daily activity'
+      fill_in 'daily_activity_goal', with: 'Test Goal'
       select 'Kindy', from: 'daily_activity_level'
       select 'Games', from: 'daily_activity_subtype'
       fill_in 'daily_activity_steps', with: "Step 1\nStep 2\nStep 3"
@@ -26,8 +26,7 @@ RSpec.describe 'creating a DailyActivity lesson' do
       click_button 'Create Daily activity'
     end
     expect(page).to have_content('Test Daily Activity')
-    expect(page).to have_content('Summary for test daily activity')
-    expect(page).to have_content('Daily Activity')
+    expect(page).to have_content('Test Goal')
     expect(page).to have_content('Games')
     expect(page).to have_css('.step', count: 3)
     expect(page).to have_css('a.lesson_link', count: 2)

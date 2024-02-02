@@ -13,11 +13,11 @@ RSpec.describe Exercise do
     )
   end
 
+  it_behaves_like 'linkable'
+
   it 'has a valid factory' do
     expect(build(:exercise)).to be_valid
   end
-
-  it_behaves_like 'linkable'
 
   context 'when generating PDF guide' do
     it "saves at 'exercise/level/timestamp_lesson_name_guide.pdf'" do
@@ -27,12 +27,12 @@ RSpec.describe Exercise do
       expect(key).to match(expected_path)
     end
 
-    it 'contains title, summary and links' do
+    it 'contains title and links' do
       pdf = exercise.save_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to contain_exactly(
-          'Test Exercise', 'Summary for test exercise', 'Links:', 'Example link', 'Seasonal'
+          'Test Exercise', 'Links:', 'Example link', 'Seasonal'
         )
     end
   end

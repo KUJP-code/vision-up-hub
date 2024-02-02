@@ -17,14 +17,14 @@ RSpec.describe 'creating an Exercise lesson' do
     click_link 'add_exercise'
     within '#exercise_form' do
       fill_in 'exercise_title', with: 'Test Exercise'
-      fill_in 'exercise_summary', with: 'Summary for test exercise'
       select 'Kindy', from: 'exercise_level'
+      fill_in 'exercise_goal', with: 'Test Goal'
       fill_in 'exercise_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       click_button 'Create Exercise'
     end
     expect(page).to have_content('Test Exercise')
-    expect(page).to have_content('Summary for test exercise')
     expect(page).to have_content('Exercise')
+    expect(page).to have_content('Test Goal')
     expect(page).to have_css('a.lesson_link', count: 2)
     expect(page).to have_css('a.guide_link', count: 1)
     expect(page).to have_css('img.guide_image', count: 1)

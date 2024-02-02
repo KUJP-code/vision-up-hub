@@ -14,12 +14,12 @@ RSpec.describe DailyActivity do
     )
   end
 
+  it_behaves_like 'linkable'
+  it_behaves_like 'steppable'
+
   it 'has a valid factory' do
     expect(build(:daily_activity)).to be_valid
   end
-
-  it_behaves_like 'linkable'
-  it_behaves_like 'steppable'
 
   context 'when generating PDF guide' do
     it "saves at 'daily_activity/level/subtype/timestamp_lesson_name_guide.pdf'" do
@@ -34,8 +34,8 @@ RSpec.describe DailyActivity do
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to contain_exactly(
-          'Test Daily Activity', 'Summary for test daily activity', 'Discovery',
-          'Steps:', '1. Step 1', '2. Step 2', 'Links:', 'Example link', 'Seasonal'
+          'Test Daily Activity', 'Discovery', 'Steps:', '1. Step 1', '2. Step 2',
+          'Links:', 'Example link', 'Seasonal'
         )
     end
   end

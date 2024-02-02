@@ -43,7 +43,7 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    [:day, :level, :summary, :title, :type, :week,
+    [:goal, :icon, :level, :title, :type,
      { course_lessons_attributes:
        %i[id _destroy course_id day lesson_id week] }]
   end
@@ -58,7 +58,7 @@ class LessonsController < ApplicationController
   end
 
   def set_courses
-    @courses = Course.pluck(:name, :id)
+    @courses = Course.pluck(:title, :id)
   end
 
   def set_lesson

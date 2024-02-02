@@ -3,8 +3,9 @@
 class Lesson < ApplicationRecord
   require 'prawn'
 
-  TYPES = %w[DailyActivity EnglishClass Exercise Phonics].freeze
+  TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
 
+  before_validation :set_icon_path
   before_destroy :check_not_used
 
   validates :goal, :icon, :level, :title, :type, presence: true
@@ -50,5 +51,10 @@ class Lesson < ApplicationRecord
 
   def check_not_used
     throw(:abort) if course_lessons.any?
+  end
+
+  # TODO: actually create this
+  def set_icon_path
+    self.icon = 'dummy path, implement later'
   end
 end

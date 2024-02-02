@@ -11,15 +11,15 @@
     = f.text_field :title, required: true
 
   .form-group
-    = f.label :summary
-    = f.text_area :summary, required: true
-
-  .form-group
     = f.label :level
     = f.select :level,
                Lesson.levels.to_h { |k, _v| [k.titleize, k] },
                required: true,
                prompt: 'Select a level'
+
+  .form-group
+    = f.label :goal
+    = f.text_area :goal
 
   %h3.font-bold Courses
 

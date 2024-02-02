@@ -12,6 +12,7 @@ class DailyActivitiesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Daily activity was successfully created.'
     else
+      set_courses
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Daily activity could not be created'
@@ -23,6 +24,7 @@ class DailyActivitiesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Daily activity was successfully updated.'
     else
+      set_courses
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Daily activity could not be updated'
