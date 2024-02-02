@@ -11,15 +11,16 @@ class Lesson < ApplicationRecord
   validates :type, inclusion: { in: TYPES }
 
   enum level: {
-    kindy: 0,
-    land_one: 1,
-    land_two: 2,
-    sky_one: 3,
-    sky_two: 4,
-    galaxy_one: 5,
-    galaxy_two: 6,
-    keep_up: 7,
-    specialist: 8
+    all: 0,
+    kindy: 1,
+    land_one: 2,
+    land_two: 3,
+    sky_one: 4,
+    sky_two: 5,
+    galaxy_one: 6,
+    galaxy_two: 7,
+    keep_up: 8,
+    specialist: 9
   }
 
   has_one_attached :guide do |g|
