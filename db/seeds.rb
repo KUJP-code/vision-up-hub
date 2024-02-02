@@ -1,48 +1,57 @@
 require 'factory_bot_rails'
+fb = FactoryBot
 
-kids_up = FactoryBot.create(:organisation, name: 'KidsUP')
-test_org = FactoryBot.create(:organisation, name: 'Test Org')
-FactoryBot.create_list(:organisation, 2)
+# Create organisations
+
+kids_up = Organisation.create!(fb.attributes_for(:organisation, name: 'KidsUP'))
+test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org'))
+fb.create_list(:organisation, 2)
 
 Organisation.all.each do |org|
-  org.schools << FactoryBot.create_list(:school, 2)
+  org.schools << fb.create_list(:school, 2)
 end
 
-FactoryBot.create(
+# Create users
+
+Admin.create!(fb.attributes_for(
   :user,
   :admin,
   name: 'Brett',
   email: 'admin@gmail.com',
   password: 'adminadminadmin',
-  organisation: kids_up
-)
+  organisation_id: kids_up.id
+))
 
 User::TYPES.each do |type|
   org = %w[Admin Sales Writer].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
-  FactoryBot.create(
+  User.create!(fb.attributes_for(
     :user,
     type.underscore.to_sym,
     email: "#{underscored}@example.com",
     password: "#{underscored}password",
-    organisation: org,
+    organisation_id: org.id,
     school_id: type == 'Teacher' ? org.schools.ids.first : nil
-  )
+  ))
 end
 
 SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
 end
 
-daily_activity = FactoryBot.create(:daily_activity)
-exercise = FactoryBot.create(:exercise)
+# Create lessons
+
+daily_activity = DailyActivity.create!(fb.attributes_for(:daily_activity))
+exercise = Exercise.create!(fb.attributes_for(:exercise))
 
 Lesson.all.each(&:save_guide)
 
+# Create courses
+
 course_lessons = [
-    FactoryBot.build(:course_lesson, lesson: daily_activity),
-    FactoryBot.build(:course_lesson, lesson: exercise)
+    fb.build(:course_lesson, lesson: daily_activity),
+    fb.build(:course_lesson, lesson: exercise)
 ]
 
-FactoryBot.create(:course, course_lessons: course_lessons)
-FactoryBot.create(:course)
+Course.create!(fb.attributes_for(:course, course_lessons: course_lessons))
+Course.create!(fb.attributes_for(:course))

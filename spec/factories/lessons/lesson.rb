@@ -3,8 +3,9 @@
 FactoryBot.define do
   factory :lesson do
     initialize_with { type.constantize.new }
-    title { 'Test Lesson' }
-    summary { 'Summary for test lesson' }
+    goal { 'Test Goal' }
+    icon { 'test_icon_path.jpg' }
     level { :kindy }
+    title { 'Test Lesson' }
   end
 end

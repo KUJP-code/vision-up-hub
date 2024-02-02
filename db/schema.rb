@@ -55,7 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "title", null: false
     t.string "description", default: ""
     t.boolean "released", default: false
     t.datetime "created_at", null: false
@@ -63,15 +63,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "summary", null: false
-    t.string "type"
+    t.string "goal", null: false
+    t.string "icon", null: false
     t.integer "level", null: false
+    t.string "title", null: false
+    t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "steps", default: []
+    t.jsonb "add_difficulty", default: []
+    t.jsonb "example_sentences", default: []
+    t.jsonb "extra_fun", default: []
+    t.jsonb "instructions", default: []
+    t.jsonb "large_groups", default: []
     t.jsonb "links", default: {}
+    t.jsonb "materials", default: []
+    t.jsonb "notes", default: []
+    t.jsonb "outro", default: []
+    t.jsonb "steps", default: []
     t.integer "subtype"
+    t.string "topic"
+    t.jsonb "vocab", default: []
+    t.jsonb "intro", default: []
   end
 
   create_table "managements", force: :cascade do |t|

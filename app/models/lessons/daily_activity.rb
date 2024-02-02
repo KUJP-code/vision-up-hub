@@ -34,7 +34,6 @@ class DailyActivity < Lesson
     pdf = Prawn::Document.new
 
     pdf.text title, size: 24
-    pdf.text summary
     pdf.text subtype.capitalize
     pdf.text 'Steps:', size: 18
     steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }

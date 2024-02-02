@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :course do
-    name { 'Test Course' }
+    title { 'Test Course' }
   end
 end

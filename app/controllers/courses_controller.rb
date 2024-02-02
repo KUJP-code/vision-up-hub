@@ -41,7 +41,7 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course).permit(
-      :name, :description, :released,
+      :title, :description, :released,
       course_lessons_attributes: %i[id _destroy course_id day lesson_id week]
     )
   end

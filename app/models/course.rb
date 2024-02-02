@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  validates :name, presence: true
+  validates :title, presence: true
 
   has_many :course_lessons, dependent: :destroy
   accepts_nested_attributes_for :course_lessons,

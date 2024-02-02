@@ -26,7 +26,6 @@ class Exercise < Lesson
     pdf = Prawn::Document.new
 
     pdf.text title, size: 24
-    pdf.text summary
     if image.attached?
       pdf.image(
         StringIO.open(image.download),

@@ -7,7 +7,6 @@ RSpec.describe Exercise do
     create(
       :exercise,
       title: 'Test Exercise',
-      summary: 'Summary for test exercise',
       level: :kindy,
       steps: "Step 1\nStep 2",
       links: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"

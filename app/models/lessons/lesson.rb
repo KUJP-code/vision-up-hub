@@ -7,11 +7,11 @@ class Lesson < ApplicationRecord
 
   before_destroy :check_not_used
 
-  validates :level, :title, :type, :summary, presence: true
+  validates :goal, :icon, :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
 
   enum level: {
-    all: 0,
+    all_levels: 0,
     kindy: 1,
     land_one: 2,
     land_two: 3,
