@@ -5,7 +5,6 @@ class LessonsController < ApplicationController
   before_action :set_courses, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
-  after_action :save_guide, only: %i[create update]
 
   def index
     @lessons = policy_scope(Lesson.all)
@@ -51,10 +50,6 @@ class LessonsController < ApplicationController
   def dummy_route
     redirect_to root_url,
                 alert: 'This route should be overwritten when inherited'
-  end
-
-  def save_guide
-    @lesson.valid? && @lesson.save_guide
   end
 
   def set_courses

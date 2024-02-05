@@ -6,6 +6,7 @@ class Lesson < ApplicationRecord
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
 
   before_validation :set_icon_path
+  before_save :attach_guide
   before_destroy :check_not_used
 
   validates :goal, :icon, :level, :title, :type, presence: true
@@ -34,6 +35,16 @@ class Lesson < ApplicationRecord
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
 
+  def attach_guide
+    filename = "#{Time.zone.now}_#{title.parameterize(separator: '_')}_guide.pdf"
+    pdf_io = guide_tempfile
+    pdf_blob = ActiveStorage::Blob.create_and_upload!(
+      io: pdf_io, filename:, content_type: 'application/pdf'
+    )
+    self.guide = pdf_blob
+    pdf_io
+  end
+
   def day(course)
     course_lessons.find_by(course_id: course.id).day.capitalize
   end
@@ -51,6 +62,13 @@ class Lesson < ApplicationRecord
 
   def check_not_used
     throw(:abort) if course_lessons.any?
+  end
+
+  def guide_tempfile
+    Tempfile.create do |f|
+      generate_guide.render_file(f)
+      File.open(f)
+    end
   end
 
   # TODO: actually create this

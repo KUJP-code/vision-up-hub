@@ -22,15 +22,8 @@ RSpec.describe DailyActivity do
   end
 
   context 'when generating PDF guide' do
-    it "saves at 'daily_activity/level/subtype/timestamp_lesson_name_guide.pdf'" do
-      daily_activity.save_guide
-      key = daily_activity.guide.blob.key
-      expected_path = %r{daily_activity/kindy/discovery/\d*_test_daily_activity_guide.pdf}
-      expect(key).to match(expected_path)
-    end
-
     it 'contains title, subcategory, links and steps' do
-      pdf = daily_activity.save_guide
+      pdf = daily_activity.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to contain_exactly(

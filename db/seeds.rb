@@ -44,8 +44,6 @@ end
 daily_activity = DailyActivity.create!(fb.attributes_for(:daily_activity))
 exercise = Exercise.create!(fb.attributes_for(:exercise))
 
-Lesson.all.each(&:save_guide)
-
 # Create courses
 
 course_lessons = [

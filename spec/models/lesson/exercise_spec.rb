@@ -20,15 +20,8 @@ RSpec.describe Exercise do
   end
 
   context 'when generating PDF guide' do
-    it "saves at 'exercise/level/timestamp_lesson_name_guide.pdf'" do
-      exercise.save_guide
-      key = exercise.guide.blob.key
-      expected_path = %r{exercise/kindy/\d*_test_exercise_guide.pdf}
-      expect(key).to match(expected_path)
-    end
-
     it 'contains title and links' do
-      pdf = exercise.save_guide
+      pdf = exercise.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to contain_exactly(

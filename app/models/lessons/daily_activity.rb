@@ -13,14 +13,6 @@ class DailyActivity < Lesson
     drawing: 6
   }
 
-  def save_guide
-    filename = "#{Time.zone.now.to_i}_#{title.parameterize(separator: '_')}_guide.pdf"
-    key = "daily_activity/#{level}/#{subtype}/" + filename
-    pdf_io = guide_tempfile
-    guide.attach(io: pdf_io, filename:, content_type: 'application/pdf', key:)
-    pdf_io
-  end
-
   private
 
   def guide_tempfile

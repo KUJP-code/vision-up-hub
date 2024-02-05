@@ -7,7 +7,7 @@
       - if @courses.any?
         %h3 Used in the following courses:
         - @courses.each do |c|
-          = link_to "#{c.name} on #{@lesson.week(c)} #{@lesson.day(c)}",
+          = link_to "#{c.title} on #{@lesson.week(c)} #{@lesson.day(c)}",
                     course_path(c)
       - else
         %h3 Not used in any courses
