@@ -2,9 +2,10 @@
 
 module Pdfable
   extend ActiveSupport::Concern
-  require 'prawn'
 
   included do
+    require 'prawn/measurement_extensions'
+
     def attach_guide
       filename = "#{Time.zone.now}_#{title.parameterize(separator: '_')}_guide.pdf"
       pdf_io = guide_tempfile

@@ -2,6 +2,7 @@
 
 module ExercisePdf
   extend ActiveSupport::Concern
+  include PdfHeader
 
   included do
     private
@@ -9,7 +10,7 @@ module ExercisePdf
     def generate_guide
       pdf = Prawn::Document.new
 
-      pdf.text title, size: 24
+      pdf_header(pdf)
       if image.attached?
         pdf.image(
           StringIO.open(image.download),

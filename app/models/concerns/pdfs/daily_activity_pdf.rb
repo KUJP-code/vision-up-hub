@@ -2,6 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
+  include PdfHeader
 
   included do
     private
@@ -9,7 +10,7 @@ module DailyActivityPdf
     def generate_guide
       pdf = Prawn::Document.new
 
-      pdf.text title, size: 24
+      pdf_header(pdf)
       pdf.text subtype.capitalize
       pdf.text 'Steps:', size: 18
       steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }
