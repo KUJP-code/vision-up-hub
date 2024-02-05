@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
-  include Linkable, Steppable
+  include Linkable, Listable
+
+  before_validation :listify_steps
 
   enum subtype: {
     discovery: 0,
@@ -14,13 +16,6 @@ class DailyActivity < Lesson
   }
 
   private
-
-  def guide_tempfile
-    Tempfile.create do |f|
-      generate_guide.render_file(f)
-      File.open(f)
-    end
-  end
 
   def generate_guide
     pdf = Prawn::Document.new
@@ -35,5 +30,9 @@ class DailyActivity < Lesson
     end
 
     pdf
+  end
+
+  def listify_steps
+    self.steps = listify(steps, :steps)
   end
 end
