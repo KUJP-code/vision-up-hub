@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  require 'prawn'
+  include Pdfable
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
 
@@ -34,16 +34,6 @@ class Lesson < ApplicationRecord
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
 
-  def attach_guide
-    filename = "#{Time.zone.now}_#{title.parameterize(separator: '_')}_guide.pdf"
-    pdf_io = guide_tempfile
-    pdf_blob = ActiveStorage::Blob.create_and_upload!(
-      io: pdf_io, filename:, content_type: 'application/pdf'
-    )
-    self.guide = pdf_blob
-    pdf_io
-  end
-
   def day(course)
     course_lessons.find_by(course_id: course.id).day.capitalize
   end
@@ -63,10 +53,4 @@ class Lesson < ApplicationRecord
     throw(:abort) if course_lessons.any?
   end
 
-  def guide_tempfile
-    Tempfile.create do |f|
-      generate_guide.render_file(f)
-      File.open(f)
-    end
-  end
 end

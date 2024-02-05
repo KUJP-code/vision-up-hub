@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
-  include Linkable, Listable
+  include DailyActivityPdf, Linkable, Listable
 
   before_validation :listify_steps
 
@@ -16,21 +16,6 @@ class DailyActivity < Lesson
   }
 
   private
-
-  def generate_guide
-    pdf = Prawn::Document.new
-
-    pdf.text title, size: 24
-    pdf.text subtype.capitalize
-    pdf.text 'Steps:', size: 18
-    steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }
-    pdf.text 'Links:', size: 18
-    links.each do |k, v|
-      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
-    end
-
-    pdf
-  end
 
   def listify_steps
     self.steps = listify(steps, :steps)
