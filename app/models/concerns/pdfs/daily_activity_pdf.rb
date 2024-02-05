@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfHeader
+  include PdfHeader, PdfNumList
 
   included do
     private
@@ -12,8 +12,12 @@ module DailyActivityPdf
 
       pdf_header(pdf)
       pdf.text subtype.capitalize
-      pdf.text 'Steps:', size: 18
-      steps.each_with_index { |s, i| pdf.text "#{i + 1}. #{s}" }
+      pdf_num_list(
+        array: steps,
+        dimensions: { height: 5.cm, width: pdf.bounds.width },
+        pdf:,
+        title: 'Steps:'
+      )
       pdf.text 'Links:', size: 18
       links.each do |k, v|
         pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
