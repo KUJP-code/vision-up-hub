@@ -64,7 +64,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
 
   create_table "lessons", force: :cascade do |t|
     t.string "goal", null: false
-    t.string "icon", null: false
     t.integer "level", null: false
     t.string "title", null: false
     t.string "type", null: false

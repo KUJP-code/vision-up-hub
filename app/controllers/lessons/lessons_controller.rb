@@ -42,7 +42,7 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    [:goal, :icon, :level, :title, :type,
+    [:goal, :level, :title, :type,
      { course_lessons_attributes:
        %i[id _destroy course_id day lesson_id week] }]
   end

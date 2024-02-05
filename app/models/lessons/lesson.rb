@@ -5,11 +5,10 @@ class Lesson < ApplicationRecord
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
 
-  before_validation :set_icon_path
   before_save :attach_guide
   before_destroy :check_not_used
 
-  validates :goal, :icon, :level, :title, :type, presence: true
+  validates :goal, :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
 
   enum level: {
@@ -69,10 +68,5 @@ class Lesson < ApplicationRecord
       generate_guide.render_file(f)
       File.open(f)
     end
-  end
-
-  # TODO: actually create this
-  def set_icon_path
-    self.icon = 'dummy path, implement later'
   end
 end
