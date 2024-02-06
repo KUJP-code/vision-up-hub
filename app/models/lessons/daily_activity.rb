@@ -21,8 +21,19 @@ class DailyActivity < Lesson
 
   private
 
+  LISTABLE_ATTRIBUTES = %i[
+    extra_fun
+    intro
+    instructions
+    large_groups
+    materials
+    notes
+    steps
+  ].freeze
+
   def listify_attributes
-    self.extra_fun = listify(extra_fun, :extra_fun)
-    self.steps = listify(steps, :steps)
+    LISTABLE_ATTRIBUTES.each do |attribute|
+      self[attribute] = listify(self[attribute], attribute)
+    end
   end
 end

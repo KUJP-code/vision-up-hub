@@ -23,15 +23,16 @@ class Lesson < ApplicationRecord
     specialist: 9
   }
 
-  has_one_attached :guide do |g|
-    g.variant :thumb, resize_to_limit: [400, 400], convert: :avif, preprocessed: true
-  end
-
   has_many :course_lessons, dependent: :destroy
   accepts_nested_attributes_for :course_lessons,
                                 reject_if: :all_blank,
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
+
+  has_one_attached :guide do |g|
+    g.variant :thumb, resize_to_limit: [400, 400], convert: :avif, preprocessed: true
+  end
+  has_many_attached :resources
 
   def day(course)
     course_lessons.find_by(course_id: course.id).day.capitalize
