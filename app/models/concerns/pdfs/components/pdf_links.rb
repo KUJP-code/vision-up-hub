@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
-module PdfNumList
+module PdfLinks
   include PdfDefaults, PdfRoundedBorder
 
-  def pdf_num_list(
-    array:,
-    dimensions:,
-    pdf:,
-    title:,
-    coords: [0, pdf.cursor]
-  )
+  def pdf_links(links:, dimensions:, pdf:, title:, coords: [0, pdf.cursor])
     pdf.bounding_box(
       coords,
       height: dimensions[:height],
@@ -17,9 +11,8 @@ module PdfNumList
     ) do
       add_border(pdf, dimensions)
       add_title(pdf, title)
-      create_list(array, dimensions, pdf)
+      create_links(links, dimensions, pdf)
     end
-    pdf.move_down GAP
   end
 
   private
@@ -30,19 +23,20 @@ module PdfNumList
     pdf.move_down PADDING
   end
 
-  def create_list(array, dimensions, pdf)
+  def create_links(links, dimensions, pdf)
     pdf.text_box(
-      array_to_list(array),
-      at: [PADDING * 2,
-           dimensions[:height] - HEADING_SIZE - (PADDING * 2)],
+      links_from_pairs(links, pdf),
+      at: [0, dimensions[:height] - HEADING_SIZE - (PADDING * 2)],
       height: dimensions[:height],
       width: dimensions[:width],
       overflow: :shrink_to_fit
     )
   end
 
-  def array_to_list(array)
-    array.map.with_index { |step, i| "#{i + 1}. #{step}" }
-         .join("\n")
+  def links_from_pairs(links, pdf)
+    link_array = links.map do |k, v|
+      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
+    end
+    link_array.join("\n")
   end
 end
