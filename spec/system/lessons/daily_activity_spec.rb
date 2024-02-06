@@ -20,6 +20,8 @@ RSpec.describe 'creating a DailyActivity lesson' do
       fill_in 'daily_activity_goal', with: 'Test Goal'
       select 'Kindy', from: 'daily_activity_level'
       select 'Games', from: 'daily_activity_subtype'
+      fill_in 'daily_activity_intro', with: 'Test Intro'
+      fill_in 'daily_activity_instructions', with: "Test Instructions 1\nTest Instructions 2"
       fill_in 'daily_activity_steps', with: "Step 1\nStep 2\nStep 3"
       fill_in 'daily_activity_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       click_button 'Create Daily activity'
