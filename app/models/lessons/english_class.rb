@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EnglishClass < Lesson
-  include EnglishClassPdf, Listable
+  include Listable
 
   LISTABLE_ATTRIBUTES = %i[example_sentences notes vocab].freeze
 
