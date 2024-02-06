@@ -7,7 +7,8 @@ module Pdfable
     require 'prawn/measurement_extensions'
 
     def attach_guide
-      filename = "#{Time.zone.now}_#{title.parameterize(separator: '_')}_guide.pdf"
+      timestamp = Time.zone.now.strftime('%Y%M%d%H%m%s')
+      filename = "#{timestamp}_#{title.parameterize(separator: '_')}_guide.pdf"
       pdf_io = guide_tempfile
       pdf_blob = ActiveStorage::Blob.create_and_upload!(
         io: pdf_io, filename:, content_type: 'application/pdf'
