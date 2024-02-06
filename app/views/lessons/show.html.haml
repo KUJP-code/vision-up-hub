@@ -16,13 +16,16 @@
 
       %h3
         #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
-    = link_to file_path(@lesson.guide.blob),
-              target: '_blank',
-              rel: 'noopener',
-              class: 'guide_link border' do
-      = image_tag @lesson.guide.preview(:thumb),
-                  class: 'guide_image w-full'
-      %h3 Download Guide
+    - if @lesson.guide.present?
+      = link_to file_path(@lesson.guide.blob),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'guide_link border' do
+        = image_tag @lesson.guide.preview(:thumb),
+                    class: 'guide_image w-full'
+        %h3 Download Guide
+    - else
+      %h3 Guide is being generated, refresh the page in ~10 seconds.
 
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
            lesson: @lesson

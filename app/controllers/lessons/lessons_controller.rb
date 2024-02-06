@@ -5,6 +5,7 @@ class LessonsController < ApplicationController
   before_action :set_courses, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
+  after_action :queue_guide_generation, only: %i[create update]
 
   def index
     @lessons = policy_scope(Lesson.all)
@@ -22,11 +23,11 @@ class LessonsController < ApplicationController
   def edit; end
 
   def create
-    dummy_route
+    @lesson.guide.purge
   end
 
   def update
-    dummy_route
+    @lesson.guide.purge
   end
 
   def destroy
@@ -40,6 +41,8 @@ class LessonsController < ApplicationController
   end
 
   private
+
+  GUIDE_DELAY = "\nNew guide may take up to 30s to generate, refresh the page to check."
 
   def lesson_params
     [:goal, :level, :title, :type,
@@ -58,5 +61,9 @@ class LessonsController < ApplicationController
 
   def set_lesson
     @lesson = authorize Lesson.find(params[:id])
+  end
+
+  def queue_guide_generation
+    AttachGuideJob.perform_later(@lesson)
   end
 end

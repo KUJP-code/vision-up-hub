@@ -5,7 +5,6 @@ class Lesson < ApplicationRecord
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
 
-  before_save :attach_guide
   before_destroy :check_not_used
 
   validates :goal, :level, :title, :type, presence: true
@@ -52,5 +51,4 @@ class Lesson < ApplicationRecord
   def check_not_used
     throw(:abort) if course_lessons.any?
   end
-
 end

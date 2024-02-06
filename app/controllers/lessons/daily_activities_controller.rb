@@ -10,7 +10,7 @@ class DailyActivitiesController < LessonsController
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),
-                  notice: 'Daily activity was successfully created.'
+                  notice: "Daily Activity successfully created! #{GUIDE_DELAY}"
     else
       set_courses
       render 'lessons/new',
@@ -22,7 +22,7 @@ class DailyActivitiesController < LessonsController
   def update
     if @lesson.update(daily_activity_params)
       redirect_to lesson_url(@lesson),
-                  notice: 'Daily activity was successfully updated.'
+                  notice: "Daily activity successfully updated. #{GUIDE_DELAY}"
     else
       set_courses
       render 'lessons/edit',

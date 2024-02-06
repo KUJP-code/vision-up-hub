@@ -3,5 +3,5 @@
 class Exercise < Lesson
   include ExercisePdf, Linkable
 
-  attr_accessor :image
+  has_one_attached :image
 end

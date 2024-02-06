@@ -11,13 +11,17 @@ module ExercisePdf
       pdf = Prawn::Document.new
 
       pdf_header(pdf)
-      pdf.image(
-        image.tempfile.path,
-        position: :right,
-        vposition: :top,
-        width: 200,
-        height: 200
-      )
+      if image.attached?
+        image.blob.open do |file|
+          pdf.image(
+            file.path,
+            position: :right,
+            vposition: :top,
+            width: 200,
+            height: 200
+          )
+        end
+      end
 
       pdf_links(
         links:,

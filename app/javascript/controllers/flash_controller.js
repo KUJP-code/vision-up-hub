@@ -2,28 +2,28 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="flash"
 export default class extends Controller {
-  static targets = ["container"];
+	static targets = ["container"];
 
-  connect() {
-    const hideTimer = setTimeout(() => {
-      this.fadeOut();
-    }, 2000);
-    this.containerTarget.addEventListener("mouseenter", () => {
-      clearTimeout(hideTimer);
-    });
-    this.containerTarget.addEventListener("mouseleave", () => {
-      this.fadeOut();
-    });
-  }
+	connect() {
+		const hideTimer = setTimeout(() => {
+			this.fadeOut();
+		}, 3000);
+		this.containerTarget.addEventListener("mouseenter", () => {
+			clearTimeout(hideTimer);
+		});
+		this.containerTarget.addEventListener("mouseleave", () => {
+			this.fadeOut();
+		});
+	}
 
-  dismiss() {
-    this.fadeOut();
-  }
+	dismiss() {
+		this.fadeOut();
+	}
 
-  fadeOut() {
-    this.containerTarget.classList.add("opacity-0");
-    setTimeout(() => {
-      this.containerTarget.classList.add("hidden");
-    }, 300);
-  }
+	fadeOut() {
+		this.containerTarget.classList.add("opacity-0");
+		setTimeout(() => {
+			this.containerTarget.classList.add("hidden");
+		}, 300);
+	}
 }
