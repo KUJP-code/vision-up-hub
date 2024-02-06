@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfDefaults, PdfHeader, PdfLinks, PdfNumList
+  include PdfDefaults, PdfHeader, PdfLinks, PdfList
 
   included do
     private
@@ -11,11 +11,12 @@ module DailyActivityPdf
       pdf = Prawn::Document.new
 
       pdf_header(pdf, subtitle: subtype.capitalize)
-      pdf_num_list(
+      pdf_list(
         array: steps,
         dimensions: { height: 5.cm, width: pdf.bounds.width },
         pdf:,
-        title: 'Steps:'
+        title: 'Steps:',
+        type: :number
       )
       pdf_links(
         links:,

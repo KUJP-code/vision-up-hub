@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-module PdfNumList
+module PdfList
   include PdfDefaults, PdfRoundedBorder
 
-  def pdf_num_list(
+  def pdf_list(
     array:,
     dimensions:,
     pdf:,
     title:,
-    coords: [0, pdf.cursor]
+    type:
   )
     pdf.bounding_box(
-      coords,
+      [0, pdf.cursor],
       height: dimensions[:height],
       width: dimensions[:width]
     ) do
       add_border(pdf, dimensions)
       add_title(pdf, title)
-      create_list(array, dimensions, pdf)
+      create_list(array, dimensions, type, pdf)
     end
     pdf.move_down GAP
   end
@@ -30,9 +30,9 @@ module PdfNumList
     pdf.move_down PADDING
   end
 
-  def create_list(array, dimensions, pdf)
+  def create_list(array, dimensions, type, pdf)
     pdf.text_box(
-      array_to_list(array),
+      array_to_list(array, type),
       at: [PADDING * 2,
            dimensions[:height] - HEADING_SIZE - (PADDING * 2)],
       height: dimensions[:height],
@@ -41,8 +41,12 @@ module PdfNumList
     )
   end
 
-  def array_to_list(array)
-    array.map.with_index { |step, i| "#{i + 1}. #{step}" }
-         .join("\n")
+  def array_to_list(array, type)
+    if type == :number
+      array.map.with_index { |step, i| "#{i + 1}. #{step}" }
+           .join("\n")
+    else
+      array.map { |step| "• #{step}" }.join("\n")
+    end
   end
 end
