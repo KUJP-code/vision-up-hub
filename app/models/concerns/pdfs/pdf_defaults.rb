@@ -6,4 +6,5 @@ module PdfDefaults
   PADDING = 0.25.cm
   GAP = 0.5.cm
   HEADING_SIZE = 0.5.cm
+  SUBHEADING_SIZE = 0.4.cm
 end

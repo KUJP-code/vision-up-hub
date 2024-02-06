@@ -2,7 +2,7 @@
 
 module ExercisePdf
   extend ActiveSupport::Concern
-  include PdfHeader
+  include PdfHeader, PdfLinks
 
   included do
     private
@@ -21,10 +21,12 @@ module ExercisePdf
         )
       end
 
-      pdf.text 'Links:', size: 18
-      links.each do |k, v|
-        pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
-      end
+      pdf_links(
+        links:,
+        dimensions: { height: 5.cm, width: pdf.bounds.width },
+        pdf:,
+        title: 'Links:'
+      )
 
       pdf
     end

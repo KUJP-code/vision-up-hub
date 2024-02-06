@@ -10,8 +10,7 @@ module DailyActivityPdf
     def generate_guide
       pdf = Prawn::Document.new
 
-      pdf_header(pdf)
-      pdf.text subtype.capitalize, size: HEADING_SIZE
+      pdf_header(pdf, subtitle: subtype.capitalize)
       pdf_num_list(
         array: steps,
         dimensions: { height: 5.cm, width: pdf.bounds.width },
