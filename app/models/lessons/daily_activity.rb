@@ -28,12 +28,4 @@ class DailyActivity < Lesson
   }
 
   has_many_attached :instructions_images
-
-  private
-
-  def listify_attributes
-    LISTABLE_ATTRIBUTES.each do |attribute|
-      self[attribute] = listify(self[attribute], attribute)
-    end
-  end
 end
