@@ -26,7 +26,6 @@ RSpec.describe 'creating an Exercise lesson' do
     expect(page).to have_content('Exercise')
     expect(page).to have_content('Test Goal')
     expect(page).to have_css('a.lesson_link', count: 2)
-    expect(page).to have_css('a.guide_link', count: 1)
-    expect(page).to have_css('img.guide_image', count: 1)
+    expect(page).to have_content('Guide is being generated')
   end
 end
