@@ -44,6 +44,10 @@ end
 daily_activity = DailyActivity.create!(fb.attributes_for(:daily_activity))
 exercise = Exercise.create!(fb.attributes_for(:exercise))
 
+Lesson.all.each do |lesson|
+  AttachGuideJob.perform_later(lesson)
+end
+
 # Create courses
 
 course_lessons = [

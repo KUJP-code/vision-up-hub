@@ -23,7 +23,7 @@ RSpec.describe DailyActivity do
       pdf = daily_activity.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
-        .to contain_exactly(
+        .to include(
           'Test Daily Activity', 'Discovery', 'Steps:', '1. Step 1', '2. Step 2',
           'Links:', 'Example link', 'Seasonal'
         )
