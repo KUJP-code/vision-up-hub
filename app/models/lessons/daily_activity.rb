@@ -3,7 +3,9 @@
 class DailyActivity < Lesson
   include DailyActivityPdf, Linkable, Listable
 
-  before_validation :listify_steps
+  before_validation :listify_attributes
+
+  validates :intro, :instructions, :subtype, presence: true
 
   enum subtype: {
     discovery: 0,
@@ -15,9 +17,12 @@ class DailyActivity < Lesson
     drawing: 6
   }
 
+  has_many_attached :instructions_images
+
   private
 
-  def listify_steps
+  def listify_attributes
+    self.extra_fun = listify(extra_fun, :extra_fun)
     self.steps = listify(steps, :steps)
   end
 end

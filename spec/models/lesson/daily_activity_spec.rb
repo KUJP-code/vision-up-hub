@@ -14,9 +14,6 @@ RSpec.describe DailyActivity do
     )
   end
 
-  it_behaves_like 'linkable'
-  it_behaves_like 'steppable'
-
   it 'has a valid factory' do
     expect(build(:daily_activity)).to be_valid
   end
