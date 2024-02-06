@@ -34,7 +34,7 @@ class EnglishClassesController < LessonsController
   private
 
   def english_class_params
-    ec_params = %i[example_sentences lesson_topic materials notes term title type unit vocab]
+    ec_params = %i[example_sentences lesson_topic notes term title type unit vocab]
     params.require(:english_class).permit(lesson_params + ec_params)
   end
 end

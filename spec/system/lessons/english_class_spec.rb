@@ -15,12 +15,11 @@ RSpec.describe 'creating an EnglishClass lesson' do
     visit course_path(course)
     find_by_id('add-lesson').click
     click_link 'add_english_class'
-    expect(page).to have_content 'form'
     within '#english_class_form' do
       fill_in 'english_class_title', with: 'Test English Class'
       fill_in 'english_class_goal', with: 'Test Goal'
+      select 'Kindy', from: 'english_class_level'
       fill_in 'english_class_example_sentences', with: "Example 1\nExample 2"
-      fill_in 'english_class_materials', with: "Material 1\nMaterial 2"
       fill_in 'english_class_notes', with: "Note 1\nNote 2"
       fill_in 'english_class_term', with: '1'
       fill_in 'english_class_unit', with: '2'

@@ -1,0 +1,13 @@
+-# locals: (lesson:)
+
+.flex.flex-wrap.p-3
+  .flex.flex-col.flex-grow.items-center
+    %h3= lesson.topic
+    %h3 Notes
+    %ul.list-disc
+      - lesson.notes.each do |note|
+        %li= note
+    %h3 Vocabulary
+    %ul.list-disc
+      - lesson.vocab.each do |vocab|
+        %li= vocab

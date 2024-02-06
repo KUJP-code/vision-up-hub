@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :phonics_class, parent: :lesson do
     title { 'Test Phonics Class' }
-    type { 'Phonics' }
+    type { 'PhonicsClass' }
   end
 end

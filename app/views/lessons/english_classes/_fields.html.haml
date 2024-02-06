@@ -1,0 +1,25 @@
+-# locals: (f:, lesson:)
+
+= f.hidden_field :type, value: lesson.type
+
+.flex.gap-2
+  .form-group
+    = f.label :term
+    = f.number_field :term,
+                     minimum: 1,
+                     maximum: 3,
+                     value: lesson.form_term
+
+  .form-group
+    = f.label :unit
+    = f.number_field :unit,
+                     minimum: 1,
+                     maximum: 20,
+                     value: lesson.form_unit
+
+  .form-group
+    = f.label :lesson_topic
+    = f.text_field :lesson_topic, value: lesson.form_topic
+
+- EnglishClass::LISTABLE_ATTRIBUTES.each do |attr|
+  = render('lessons/shared_fields/list_fields', f:, lesson:, symbol: attr)
