@@ -3,6 +3,16 @@
 class DailyActivity < Lesson
   include DailyActivityPdf, Linkable, Listable
 
+  LISTABLE_ATTRIBUTES = %i[
+    extra_fun
+    intro
+    instructions
+    large_groups
+    materials
+    notes
+    steps
+  ].freeze
+
   before_validation :listify_attributes
 
   validates :intro, :instructions, :subtype, presence: true
@@ -20,16 +30,6 @@ class DailyActivity < Lesson
   has_many_attached :instructions_images
 
   private
-
-  LISTABLE_ATTRIBUTES = %i[
-    extra_fun
-    intro
-    instructions
-    large_groups
-    materials
-    notes
-    steps
-  ].freeze
 
   def listify_attributes
     LISTABLE_ATTRIBUTES.each do |attribute|

@@ -1,0 +1,6 @@
+-# locals: (f:, lesson:, symbol:)
+
+.form-group
+  = f.label symbol
+  = f.text_area symbol, value: lesson.send(symbol).join("\n")
+  %small.-mt-1 Separate items with new lines

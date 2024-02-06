@@ -2,11 +2,13 @@
 
 = f.hidden_field :type, value: lesson.type
 
-.flex.flex-col.gap-2
+.form-group
   = f.label :subtype
   = f.select :subtype,
              DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
              {}
 
-= render('lessons/step_fields', f:, lesson:)
-= render 'lessons/link_fields', f:, lesson:
+- DailyActivity::LISTABLE_ATTRIBUTES.each do |attr|
+  = render('lessons/shared_fields/list_fields', f:, lesson:, symbol: attr)
+
+= render('lessons/shared_fields/link_fields', f:, lesson:)

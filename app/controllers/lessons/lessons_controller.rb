@@ -42,7 +42,7 @@ class LessonsController < ApplicationController
 
   private
 
-  GUIDE_DELAY = "\nNew guide may take up to 30s to generate, refresh the page to check."
+  GUIDE_DELAY = "\nNew guide may take up to 10s to generate, refresh the page to check."
 
   def lesson_params
     [:goal, :level, :title, :type,
