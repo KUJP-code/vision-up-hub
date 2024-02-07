@@ -22,7 +22,7 @@ RSpec.describe Exercise do
       pdf = exercise.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
-        .to include('Test Exercise', 'Example link', 'Difficult Idea 1')
+        .to include('Test Exercise', 'Example link', '• Difficult idea 1')
     end
   end
 end
