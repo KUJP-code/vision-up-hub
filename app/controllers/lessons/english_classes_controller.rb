@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EnglishClassesController < LessonsController
+  skip_after_action :queue_guide_generation
+
   def index
     @lessons = policy_scope(EnglishClass.all)
   end
@@ -34,7 +36,7 @@ class EnglishClassesController < LessonsController
   private
 
   def english_class_params
-    ec_params = %i[example_sentences lesson_topic notes term title type unit vocab]
+    ec_params = %i[example_sentences guide lesson_topic notes term title type unit vocab]
     params.require(:english_class).permit(lesson_params + ec_params)
   end
 end
