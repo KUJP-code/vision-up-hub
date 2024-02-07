@@ -34,7 +34,7 @@ class PhonicsClassesController < LessonsController
   private
 
   def phonics_class_params
-    pc_params = %i[add_difficulty extra_fun instructions links materials notes title type]
+    pc_params = %i[add_difficulty extra_fun instructions links materials notes]
     params.require(:phonics_class).permit(lesson_params + pc_params)
   end
 end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :exercises, only: %i[create index update]
       resources :files, only: %i[create index show]
       resources :phonics_classes, only: %i[create index update]
+      resources :stand_show_speaks, only: %i[create index update]
 
       get 'users', to: 'users#index', as: :users
 
