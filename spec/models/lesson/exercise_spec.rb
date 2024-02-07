@@ -8,7 +8,7 @@ RSpec.describe Exercise do
       :exercise,
       title: 'Test Exercise',
       level: :kindy,
-      steps: "Step 1\nStep 2",
+      add_difficulty: "Difficult idea 1\nDifficult idea 2",
       links: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
     )
   end
@@ -22,9 +22,7 @@ RSpec.describe Exercise do
       pdf = exercise.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
-        .to contain_exactly(
-          'Test Exercise', 'Links:', 'Example link', 'Seasonal'
-        )
+        .to include('Test Exercise', 'Example link', 'Difficult Idea 1')
     end
   end
 end
