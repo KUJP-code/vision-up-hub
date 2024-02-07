@@ -3,8 +3,6 @@
 class PhonicsClass < Lesson
   include PhonicsClassPdf, Linkable, Listable
 
-  validates :instructions, presence: true
-
   LISTABLE_ATTRIBUTES = %i[
     add_difficulty
     extra_fun
@@ -12,4 +10,8 @@ class PhonicsClass < Lesson
     materials
     notes
   ].freeze
+
+  before_validation :listify_attributes
+
+  validates :instructions, presence: true
 end
