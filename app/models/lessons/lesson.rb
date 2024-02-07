@@ -30,7 +30,7 @@ class Lesson < ApplicationRecord
   has_many :courses, through: :course_lessons
 
   has_one_attached :guide do |g|
-    g.variant :thumb, resize_to_limit: [400, 400], convert: :avif, preprocessed: true
+    g.variant :thumb, resize_to_limit: [300, 300], convert: :avif, preprocessed: true
   end
   has_many_attached :resources
 

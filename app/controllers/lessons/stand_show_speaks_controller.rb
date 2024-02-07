@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class StandShowSpeaksController < LessonsController
+  skip_after_action :queue_guide_generation
+
   def index
     @lessons = policy_scope(StandShowSpeak.all)
   end
