@@ -11,7 +11,7 @@ RSpec.describe 'creating an EnglishClass lesson' do
     sign_in user
   end
 
-  it 'can create a daily activity lesson' do
+  it 'can create an english class' do
     visit course_path(course)
     find_by_id('add-lesson').click
     click_link 'add_english_class'
