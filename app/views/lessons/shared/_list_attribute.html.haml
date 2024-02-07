@@ -1,0 +1,7 @@
+-# locals: (attr:, lesson:)
+
+.flex.flex-col.flex-grow
+  %h3= attr.to_s.titleize
+  %ol.list-decimal.list-inside
+    - lesson.send(attr).each do |item|
+      %li= item

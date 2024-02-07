@@ -4,6 +4,8 @@
       .flex.gap-2.items-center
         = image_tag icon_path(@lesson), class: 'h-7'
         %h1= @lesson.title
+      %h3
+        #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
       %p= @lesson.goal
 
       - if @courses.any?
@@ -14,8 +16,6 @@
       - else
         %h3 Not used in any courses
 
-      %h3
-        #{@lesson.type}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
     - if @lesson.guide.present?
       = link_to file_path(@lesson.guide.blob),
                 target: '_blank',
