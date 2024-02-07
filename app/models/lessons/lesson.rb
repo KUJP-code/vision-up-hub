@@ -3,7 +3,7 @@
 class Lesson < ApplicationRecord
   include Pdfable
 
-  TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass].freeze
+  TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass StandShowSpeak].freeze
 
   before_destroy :check_not_used
 
