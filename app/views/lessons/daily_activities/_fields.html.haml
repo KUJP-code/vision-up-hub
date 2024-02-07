@@ -9,6 +9,6 @@
              {}
 
 - DailyActivity::LISTABLE_ATTRIBUTES.each do |attr|
-  = render('lessons/shared/list_fields', f:, lesson:, symbol: attr)
+  = render('lessons/shared/list_fields', f:, lesson:, attr:)
 
 = render('lessons/shared/link_fields', f:, lesson:)

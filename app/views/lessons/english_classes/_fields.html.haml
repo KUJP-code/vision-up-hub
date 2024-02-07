@@ -26,4 +26,4 @@
     = f.text_field :lesson_topic, value: lesson.form_topic
 
 - EnglishClass::LISTABLE_ATTRIBUTES.each do |attr|
-  = render('lessons/shared/list_fields', f:, lesson:, symbol: attr)
+  = render('lessons/shared/list_fields', f:, lesson:, attr:)

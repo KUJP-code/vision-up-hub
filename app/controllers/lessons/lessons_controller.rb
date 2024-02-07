@@ -64,6 +64,8 @@ class LessonsController < ApplicationController
   end
 
   def queue_guide_generation
+    return if @lesson.new_record?
+
     AttachGuideJob.perform_later(@lesson)
   end
 end

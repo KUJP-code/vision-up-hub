@@ -7,4 +7,7 @@
   = f.file_field :image,
                  accept: %w[image/jpeg image/png]
 
+- Exercise::LISTABLE_ATTRIBUTES.each do |attr|
+  = render('lessons/shared/list_fields', f:, lesson:, attr:)
+
 = render('lessons/shared/link_fields', f:, lesson:)
