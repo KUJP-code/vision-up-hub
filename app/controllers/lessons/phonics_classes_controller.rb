@@ -10,7 +10,7 @@ class PhonicsClassesController < LessonsController
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),
-                  notice: "Phonics Class successfully created! #{GUIDE_DELAY}"
+                  notice: 'Phonics Class successfully created!'
     else
       set_courses
       render 'lessons/new',
@@ -22,7 +22,7 @@ class PhonicsClassesController < LessonsController
   def update
     if @lesson.update(phonics_class_params)
       redirect_to lesson_url(@lesson),
-                  notice: "Phonics Class successfully updated. #{GUIDE_DELAY}"
+                  notice: 'Phonics Class successfully updated.'
     else
       set_courses
       render 'lessons/edit',

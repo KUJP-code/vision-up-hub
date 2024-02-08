@@ -23,11 +23,11 @@ class LessonsController < ApplicationController
   def edit; end
 
   def create
-    @lesson.guide.purge
+    dummy_route
   end
 
   def update
-    @lesson.guide.purge
+    dummy_route
   end
 
   def destroy
@@ -41,8 +41,6 @@ class LessonsController < ApplicationController
   end
 
   private
-
-  GUIDE_DELAY = "\nNew guide may take up to 10s to generate, refresh the page to check."
 
   def lesson_params
     [:goal, :level, :title, :type,

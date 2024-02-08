@@ -30,6 +30,5 @@ RSpec.describe 'creating an EnglishClass lesson' do
     end
     expect(page).to have_content('Test English Class')
     expect(page).to have_content('Term 1 Unit 2 - Topic')
-    expect(page).to have_content('Guide is being generated')
   end
 end

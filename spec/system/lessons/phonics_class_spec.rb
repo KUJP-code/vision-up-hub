@@ -33,6 +33,5 @@ RSpec.describe 'creating a Phonics lesson' do
     expect(page).to have_content('Extra 1')
     expect(page).to have_content('Note 2')
     expect(page).to have_css('a.lesson_link', count: 2)
-    expect(page).to have_content('Guide is being generated')
   end
 end

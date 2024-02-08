@@ -10,7 +10,7 @@ class ExercisesController < LessonsController
 
     if @lesson.save
       redirect_to lesson_url(@lesson),
-                  notice: "Exercise successfully created. #{GUIDE_DELAY}"
+                  notice: 'Exercise successfully created.'
     else
       set_courses
       render 'lessons/new',
@@ -22,7 +22,7 @@ class ExercisesController < LessonsController
   def update
     if @lesson.update!(exercise_params)
       redirect_to lesson_url(@lesson),
-                  notice: "Exercise was successfully updated. #{GUIDE_DELAY}"
+                  notice: 'Exercise was successfully updated.'
     else
       set_courses
       render 'lessons/edit',
