@@ -1,7 +1,7 @@
 require 'factory_bot_rails'
 fb = FactoryBot
 
-# Create organisations
+puts 'Creating organisations...'
 
 kids_up = Organisation.create!(fb.attributes_for(:organisation, name: 'KidsUP'))
 test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org'))
@@ -11,7 +11,7 @@ Organisation.all.each do |org|
   org.schools << fb.create_list(:school, 2)
 end
 
-# Create users
+puts 'Creating users...'
 
 Admin.create!(fb.attributes_for(
   :user,
@@ -39,22 +39,21 @@ SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
 end
 
-# Create lessons
-
-daily_activity = DailyActivity.create!(fb.attributes_for(:daily_activity))
-exercise = Exercise.create!(fb.attributes_for(:exercise))
-english_class = EnglishClass.create!(fb.attributes_for(:english_class))
-
-Lesson.all.each do |lesson|
-  AttachGuideJob.perform_later(lesson)
+Lesson::TYPES.map do |type|
+  puts "Creating #{type}..."
+  l = Lesson.create!(fb.attributes_for(
+    type.underscore.to_sym
+  ))
+  l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf'))) if l.instance_of?(StandShowSpeak)
 end
 
-# Create courses
+Lesson.all.each do |lesson|
+  lesson.attach_guide
+end
 
-course_lessons = [
-    fb.build(:course_lesson, lesson: daily_activity),
-    fb.build(:course_lesson, lesson: exercise)
-]
+puts 'Creating courses...'
 
-Course.create!(fb.attributes_for(:course, course_lessons: course_lessons))
-Course.create!(fb.attributes_for(:course))
+course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson) }
+
+Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
+Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
