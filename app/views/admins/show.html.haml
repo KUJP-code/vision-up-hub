@@ -15,3 +15,7 @@
     = link_to 'Jobs',
               mission_control_jobs_path,
               class: 'btn btn-info'
+
+= render 'users/user_lessons',
+         assigned: @assigned_lessons,
+         created: @created_lessons

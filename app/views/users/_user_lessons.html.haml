@@ -1,0 +1,14 @@
+-# locals: (assigned:, created:)
+
+.flex.justify-around.gap-3.p-3.text-center
+  .flex.flex-col.gap-2
+    %h3 Created Lessons
+    - created.each do |cl|
+      = link_to cl.title,
+                lesson_path(cl)
+
+  .flex.flex-col.gap-2
+    %h3 Assigned Lessons
+    - assigned.each do |al|
+      = link_to al.title,
+                lesson_path(al)

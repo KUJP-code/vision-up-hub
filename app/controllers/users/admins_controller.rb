@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class AdminsController < UsersController
-  def show; end
+  def show
+    @assigned_lessons = @user.assigned_lessons
+    @created_lessons = @user.created_lessons
+  end
 
   def update
     if @user.update(admin_params)

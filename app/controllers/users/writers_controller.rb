@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class WritersController < UsersController
-  def show; end
+  def show
+    @assigned_lessons = @user.assigned_lessons
+    @created_lessons = @user.created_lessons
+  end
 
   def new
     @user = authorize Writer.new(organisation_id: params[:organisation_id])
