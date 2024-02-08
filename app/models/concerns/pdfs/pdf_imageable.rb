@@ -10,7 +10,7 @@ module PdfImageable
 
     def pdf_image_filetypes
       self.class::PDF_IMAGEABLE_ATTRIBUTES.each do |attr|
-        next if valid_filetype?(attr)
+        next if send(attr).blank? || valid_filetype?(attr)
       end
     end
 

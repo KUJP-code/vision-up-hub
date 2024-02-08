@@ -7,6 +7,7 @@ class ExercisesController < LessonsController
 
   def create
     @lesson = authorize Lesson.new(exercise_params)
+    super
 
     if @lesson.save
       redirect_to lesson_url(@lesson),

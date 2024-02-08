@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     initialize_with { type.constantize.new }
     organisation
-    name { 'Test User' }
+    sequence(:name) { |n| "Test User #{n}" }
     sequence(:email) { |n| "test_user#{n}@example.com" }
     password { 'passwordpassword' }
     type { 'OrgAdmin' }

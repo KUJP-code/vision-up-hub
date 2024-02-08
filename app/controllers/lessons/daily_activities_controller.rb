@@ -7,6 +7,7 @@ class DailyActivitiesController < LessonsController
 
   def create
     @lesson = authorize Lesson.new(daily_activity_params)
+    super
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),

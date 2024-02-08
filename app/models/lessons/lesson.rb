@@ -23,6 +23,13 @@ class Lesson < ApplicationRecord
     specialist: 9
   }
 
+  belongs_to :creator,
+             class_name: 'User',
+             optional: true
+  belongs_to :assigned_editor,
+             class_name: 'User',
+             optional: true
+
   has_many :course_lessons, dependent: :destroy
   accepts_nested_attributes_for :course_lessons,
                                 reject_if: :all_blank,

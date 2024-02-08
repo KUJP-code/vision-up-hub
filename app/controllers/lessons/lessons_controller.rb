@@ -23,7 +23,8 @@ class LessonsController < ApplicationController
   def edit; end
 
   def create
-    dummy_route
+    @lesson.creator_id = current_user.id
+    @lesson.assigned_editor_id = current_user.id
   end
 
   def update
@@ -43,7 +44,7 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    [:goal, :level, :title, :type,
+    [:admin_approval, :curriculum_approval, :goal, :level, :title, :type,
      { course_lessons_attributes:
        %i[id _destroy course_id day lesson_id week] }]
   end

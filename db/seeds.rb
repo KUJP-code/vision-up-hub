@@ -42,7 +42,9 @@ end
 Lesson::TYPES.map do |type|
   puts "Creating #{type}..."
   l = Lesson.create!(fb.attributes_for(
-    type.underscore.to_sym
+    type.underscore.to_sym,
+    assigned_editor_id: 1,
+    creator_id: 1
   ))
   if l.instance_of?(StandShowSpeak)
     l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))

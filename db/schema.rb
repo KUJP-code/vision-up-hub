@@ -63,10 +63,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   end
 
   create_table "lessons", force: :cascade do |t|
+    t.jsonb "admin_approval", default: []
+    t.jsonb "curriculum_approval", default: []
     t.string "goal", null: false
+    t.string "internal_notes", default: ""
     t.integer "level", null: false
+    t.boolean "released", default: false
     t.string "title", null: false
     t.string "type", null: false
+    t.integer "creator_id"
+    t.integer "assigned_editor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "add_difficulty", default: []
@@ -83,6 +89,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
     t.string "topic"
     t.jsonb "vocab", default: []
     t.jsonb "intro", default: []
+    t.index ["assigned_editor_id"], name: "index_lessons_on_assigned_editor_id"
+    t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end
 
   create_table "managements", force: :cascade do |t|
@@ -243,6 +251,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
+  add_foreign_key "lessons", "users", column: "assigned_editor_id"
+  add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "schools", "organisations"

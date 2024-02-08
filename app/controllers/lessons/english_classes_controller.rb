@@ -9,6 +9,7 @@ class EnglishClassesController < LessonsController
 
   def create
     @lesson = authorize Lesson.new(english_class_params)
+    super
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),

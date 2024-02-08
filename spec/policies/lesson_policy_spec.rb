@@ -11,12 +11,7 @@ RSpec.shared_examples 'writer for LessonPolicy' do
 end
 
 RSpec.shared_examples 'unauthorized user for LessonPolicy' do
-  it { is_expected.not_to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:update) }
+  it_behaves_like 'unauthorized user'
 
   it 'scopes to nothing' do
     expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.none)
