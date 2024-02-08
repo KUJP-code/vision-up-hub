@@ -370,7 +370,7 @@ GEM
     tilt (2.3.0)
     timeout (0.4.1)
     ttfunk (1.7.0)
-    turbo-rails (1.5.0)
+    turbo-rails (2.0.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
@@ -431,7 +431,7 @@ DEPENDENCIES
   ruby-vips
   solid_queue
   stimulus-rails
-  turbo-rails
+  turbo-rails (~> 2)
   tzinfo-data
   web-console
 
