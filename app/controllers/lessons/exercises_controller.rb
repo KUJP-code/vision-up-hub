@@ -20,7 +20,7 @@ class ExercisesController < LessonsController
   end
 
   def update
-    if @lesson.update!(exercise_params)
+    if @lesson.update(exercise_params)
       redirect_to lesson_url(@lesson),
                   notice: 'Exercise was successfully updated.'
     else

@@ -13,7 +13,7 @@ module ExercisePdf
       pdf_header(pdf)
       if guide_image.attached?
         guide_image.blob.open do |file|
-          pdf.guide_image(
+          pdf.image(
             file.path,
             position: :right,
             vposition: :top,

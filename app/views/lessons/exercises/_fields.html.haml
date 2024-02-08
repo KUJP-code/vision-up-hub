@@ -2,7 +2,7 @@
 
 = f.hidden_field :type, value: lesson.type
 
-= render 'lessons/shared/pdf_image_field', f:, lesson:
+= render 'lessons/shared/pdf_image_field', f:
 
 - Exercise::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', attr:, f:, lesson:)
