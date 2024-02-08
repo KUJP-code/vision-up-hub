@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EnglishClassesController < LessonsController
-  skip_after_action :queue_guide_generation
+  skip_after_action :generate_guide
 
   def index
     @lessons = policy_scope(EnglishClass.all)
@@ -12,7 +12,7 @@ class EnglishClassesController < LessonsController
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),
-                  notice: "English class successfully created! #{GUIDE_DELAY}"
+                  notice: 'English class successfully created!'
     else
       set_courses
       render 'lessons/new',
@@ -24,7 +24,7 @@ class EnglishClassesController < LessonsController
   def update
     if @lesson.update(english_class_params)
       redirect_to lesson_url(@lesson),
-                  notice: "English class successfully updated. #{GUIDE_DELAY}"
+                  notice: 'English class successfully updated.'
     else
       set_courses
       render 'lessons/edit',

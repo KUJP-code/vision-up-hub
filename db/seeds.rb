@@ -44,7 +44,11 @@ Lesson::TYPES.map do |type|
   l = Lesson.create!(fb.attributes_for(
     type.underscore.to_sym
   ))
-  l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf'))) if l.instance_of?(StandShowSpeak)
+  if l.instance_of?(StandShowSpeak)
+    l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+  elsif l.instance_of?(EnglishClass)
+    l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+  end
 end
 
 Lesson.all.each do |lesson|

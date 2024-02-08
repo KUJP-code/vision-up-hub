@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StandShowSpeaksController < LessonsController
-  skip_after_action :queue_guide_generation
+  skip_after_action :generate_guide
 
   def index
     @lessons = policy_scope(StandShowSpeak.all)
@@ -12,7 +12,7 @@ class StandShowSpeaksController < LessonsController
 
     if @lesson.save!
       redirect_to lesson_url(@lesson),
-                  notice: "Stand Show Speak successfully created! #{GUIDE_DELAY}"
+                  notice: 'Stand Show Speak successfully created!'
     else
       set_courses
       render 'lessons/new',
@@ -24,7 +24,7 @@ class StandShowSpeaksController < LessonsController
   def update
     if @lesson.update(stand_show_speak_params)
       redirect_to lesson_url(@lesson),
-                  notice: "Stand Show Speak successfully updated. #{GUIDE_DELAY}"
+                  notice: 'Stand Show Speak successfully updated.'
     else
       set_courses
       render 'lessons/edit',

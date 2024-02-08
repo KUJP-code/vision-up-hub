@@ -5,7 +5,7 @@ class LessonsController < ApplicationController
   before_action :set_courses, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
-  after_action :queue_guide_generation, only: %i[create update]
+  after_action :generate_guide, only: %i[create update]
 
   def index
     @lessons = policy_scope(Lesson.all)
@@ -63,9 +63,9 @@ class LessonsController < ApplicationController
     @lesson = authorize Lesson.find(params[:id])
   end
 
-  def queue_guide_generation
+  def generate_guide
     return if @lesson.new_record?
 
-    AttachGuideJob.perform_later(@lesson)
+    @lesson.attach_guide
   end
 end
