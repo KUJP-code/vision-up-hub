@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Exercise < Lesson
-  include ExercisePdf, Linkable, Listable
+  include ExercisePdf, Linkable, Listable, PdfImageable
 
   LISTABLE_ATTRIBUTES = %i[
     add_difficulty
@@ -15,20 +15,11 @@ class Exercise < Lesson
     steps
   ].freeze
 
+  PDF_IMAGEABLE_ATTRIBUTES = %i[guide_image].freeze
+
   before_validation :listify_attributes
 
   validates :intro, :instructions, presence: true
-  validate :image_filetype
 
   has_one_attached :guide_image
-
-  private
-
-  def image_filetype
-    extension = guide_image.content_type.split('/').last
-    return if %w[png jpg jpeg].include?(extension)
-
-    guide_image.purge
-    errors.add(:guide_image, 'must be a PNG, JPG, or JPEG')
-  end
 end
