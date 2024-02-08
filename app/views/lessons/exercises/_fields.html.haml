@@ -2,12 +2,9 @@
 
 = f.hidden_field :type, value: lesson.type
 
-.form-group
-  = f.label :image, 'PDF Image'
-  = f.file_field :image,
-                 accept: %w[image/jpeg image/png]
+= render 'lessons/shared/pdf_image_field', f:, lesson:
 
 - Exercise::LISTABLE_ATTRIBUTES.each do |attr|
-  = render('lessons/shared/list_fields', f:, lesson:, attr:)
+  = render('lessons/shared/list_fields', attr:, f:, lesson:)
 
 = render('lessons/shared/link_fields', f:, lesson:)

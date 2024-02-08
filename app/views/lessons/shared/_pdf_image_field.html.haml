@@ -1,0 +1,6 @@
+-# locals: (attr: :guide_image, f:, lesson:)
+
+.form-group
+  = f.label attr
+  = f.file_field attr,
+                 accept: %w[image/jpeg image/png]

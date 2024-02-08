@@ -19,5 +19,5 @@ class Exercise < Lesson
 
   validates :intro, :instructions, presence: true
 
-  has_one_attached :image
+  has_one_attached :guide_image
 end
