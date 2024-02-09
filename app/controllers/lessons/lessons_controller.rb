@@ -13,6 +13,7 @@ class LessonsController < ApplicationController
 
   def show
     @courses = @lesson.courses
+    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
   def new
@@ -28,7 +29,8 @@ class LessonsController < ApplicationController
   end
 
   def update
-    dummy_route
+    redirect_to root_url,
+                alert: 'This route should be overwritten when inherited'
   end
 
   def destroy
@@ -44,14 +46,9 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    [:admin_approval, :curriculum_approval, :goal, :level, :title, :type,
+    [:assigned_editor_id, :admin_approval, :curriculum_approval, :goal, :level, :title, :type,
      { course_lessons_attributes:
        %i[id _destroy course_id day lesson_id week] }]
-  end
-
-  def dummy_route
-    redirect_to root_url,
-                alert: 'This route should be overwritten when inherited'
   end
 
   def set_courses

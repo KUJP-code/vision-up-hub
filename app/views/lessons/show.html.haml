@@ -6,8 +6,6 @@
         %h1= @lesson.title
       %h3
         #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
-      %h3 Created by: #{@lesson.creator.name}
-      %h3 Assigned editor: #{@lesson.assigned_editor.name}
 
       %p= @lesson.goal
 

@@ -28,6 +28,7 @@ User::TYPES.each do |type|
   User.create!(fb.attributes_for(
     :user,
     type.underscore.to_sym,
+    name: "Test #{type}",
     email: "#{underscored}@example.com",
     password: "#{underscored}password",
     organisation_id: org.id,

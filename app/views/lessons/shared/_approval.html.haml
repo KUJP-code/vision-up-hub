@@ -1,5 +1,13 @@
 -# locals: (lesson:)
 
--# if current_user.is?('Writer')
+%h3 Created by: #{@lesson.creator.name}
 
--# if current_user.is?('Admin')
+- if current_user.is?('Writer')
+  %h3 Assigned editor: #{@lesson.assigned_editor.name}
+
+
+- if current_user.is?('Admin')
+  = form_with model: lesson do |f|
+    = f.label :assigned_editor_id, 'Assigned editor'
+    = f.select :assigned_editor_id, @writers
+    = f.submit 'Update', class: 'btn btn-primary'
