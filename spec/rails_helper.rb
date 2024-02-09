@@ -57,6 +57,7 @@ RSpec.configure do |config|
   # Use route and Devies helpers in request specs
   config.include Rails.application.routes.url_helpers, type: :request
   config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :request
 
   # Use Rack::Test by default for system specs
   config.before(:each, type: :system) do

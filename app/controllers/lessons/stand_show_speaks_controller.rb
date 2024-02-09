@@ -11,7 +11,7 @@ class StandShowSpeaksController < LessonsController
     @lesson = authorize Lesson.new(stand_show_speak_params)
     super
 
-    if @lesson.save!
+    if @lesson.save
       redirect_to lesson_url(@lesson),
                   notice: 'Stand Show Speak successfully created!'
     else

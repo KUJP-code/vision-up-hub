@@ -46,9 +46,11 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    [:assigned_editor_id, :admin_approval, :curriculum_approval, :goal, :level, :title, :type,
-     { course_lessons_attributes:
-       %i[id _destroy course_id day lesson_id week] }]
+    return [{ curriculum_approval: %i[id name time] }] unless current_user.is?('Admin')
+
+    [:assigned_editor_id, :goal, :level, :title, :type,
+     { course_lessons_attributes: %i[id _destroy course_id day lesson_id week],
+       admin_approval: %i[id name time], curriculum_approval: %i[id name time] }]
   end
 
   def set_courses
