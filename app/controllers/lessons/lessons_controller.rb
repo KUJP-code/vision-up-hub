@@ -46,12 +46,17 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
+    return lesson_params_for_create if action_name == 'create'
+
     unless current_user.is?('Admin')
       return [:ca_id, :ca_name, :internal_notes, { curriculum_approval: %i[id name time] }]
     end
 
-    [:assigned_editor_id, :aa_id, :aa_name, :ca_id, :ca_name, :goal,
-     :internal_notes, :level, :title, :type,
+    lesson_params_for_create + %i[assigned_editor_id aa_id aa_name ca_id ca_name internal_notes]
+  end
+
+  def lesson_params_for_create
+    [:goal, :level, :title, :type,
      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
   end
 
