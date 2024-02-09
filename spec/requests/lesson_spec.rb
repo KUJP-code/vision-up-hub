@@ -4,12 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Lesson do
   let(:lesson) { create(:stand_show_speak) }
-  let(:approval_details) { [{ id: user.id, name: user.name, time: Time.zone.now }] }
-  let(:stored_approval) do
-    [{ 'id' => user.id.to_s,
-       'name' => user.name,
-       'time' => approval_details.first[:time].to_s }]
-  end
 
   before do
     sign_in user
@@ -29,19 +23,22 @@ RSpec.describe Lesson do
 
     it 'can alter admin approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { admin_approval: approval_details } }
-      expect(lesson.reload.admin_approval).to eq(stored_approval)
+            params: { stand_show_speak: { aa_id: user.id, aa_name: user.name } }
+      stored_approval = lesson.reload.admin_approval.first
+      expect(stored_approval['id']).to eq user.id.to_s
     end
 
     it 'can alter curriculum approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { curriculum_approval: approval_details } }
-      expect(lesson.reload.curriculum_approval).to eq(stored_approval)
+            params: { stand_show_speak: { ca_id: user.id, ca_name: user.name } }
+      stored_approval = lesson.reload.curriculum_approval.first
+      expect(stored_approval['id']).to eq user.id.to_s
     end
   end
 
   context 'when writer' do
     let(:user) { create(:user, :writer) }
+    let(:approval_details) { { ca_id: user.id, ca_name: user.name } }
 
     it 'cannot directly edit lesson attributes' do
       patch stand_show_speak_path(lesson), params: { stand_show_speak: { title: 'New Title' } }
@@ -50,14 +47,15 @@ RSpec.describe Lesson do
 
     it 'cannot alter admin approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { admin_approval: approval_details } }
+            params: { stand_show_speak: { aa_id: user.id, aa_name: user.name } }
       expect(lesson.reload.admin_approval).to eq([])
     end
 
     it 'can alter curriculum approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { curriculum_approval: approval_details } }
-      expect(lesson.reload.curriculum_approval).to eq(stored_approval)
+            params: { stand_show_speak: { ca_id: user.id, ca_name: user.name } }
+      stored_approval = lesson.reload.curriculum_approval.first
+      expect(stored_approval['id']).to eq user.id.to_s
     end
 
     it 'can alter internal notes' do

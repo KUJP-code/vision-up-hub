@@ -1,5 +1,8 @@
 -# locals: (lesson:)
 
+- admins_approved = lesson.admin_approval.pluck('name')
+- writers_approved = lesson.curriculum_approval.pluck('name')
+
 %h3
   Created by:
   = link_to @lesson.creator.name,
@@ -23,3 +26,18 @@
     = f.text_area :internal_notes, class: 'h-[10vh]'
 
   = f.submit 'Update Notes', class: 'btn btn-primary'
+
+- if current_user.is?('Writer') && writers_approved.none?(current_user.name)
+  = form_with model: lesson do |f|
+    = f.hidden_field :ca_id, value: current_user.id
+    = f.hidden_field :ca_name, value: current_user.name
+    = f.submit 'Give curriculum team approval', class: 'btn btn-primary'
+
+- if current_user.is?('Admin') && admins_approved.none?(current_user.name)
+  = form_with model: lesson do |f|
+    = f.hidden_field :aa_id, value: current_user.id
+    = f.hidden_field :aa_name, value: current_user.name
+    = f.submit 'Give admin approval', class: 'btn btn-primary'
+
+- if admins_approved.any? || writers_approved.any?
+  %p Lesson approved by #{(admins_approved + writers_approved).to_sentence}

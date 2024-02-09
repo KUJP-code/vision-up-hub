@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  include Pdfable
+  include Approvable, Pdfable
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass StandShowSpeak].freeze
 

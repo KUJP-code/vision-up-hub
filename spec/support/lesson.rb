@@ -3,6 +3,59 @@
 require 'rails_helper'
 
 RSpec.shared_examples_for 'lesson' do
+  context 'when managing approval' do
+    let(:lesson) { build(described_class.name.underscore.to_sym) }
+    let(:admin) { create(:user, :admin) }
+    let(:writer) { create(:user, :writer, organisation: admin.organisation) }
+    let(:admin_approval) { [{ id: admin.id, name: admin.name, time: Time.zone.now }] }
+    let(:curriculum_approval) { [{ id: writer.id, name: writer.name, time: Time.zone.now }] }
+
+    it 'is approved with both curriculum & admin approval' do
+      lesson.admin_approval = admin_approval
+      lesson.curriculum_approval = curriculum_approval
+      expect(lesson.approved?).to be true
+    end
+
+    it 'is approved with only admin approval' do
+      lesson.admin_approval = admin_approval
+      expect(lesson.approved?).to be true
+    end
+
+    it 'is not approved with only curriculum approval' do
+      lesson.curriculum_approval = curriculum_approval
+      expect(lesson.approved?).to be false
+    end
+
+    it 'is not approved with no approval' do
+      expect(lesson.approved?).to be false
+    end
+
+    it 'does not allow the same user to approve multiple times' do
+      lesson.admin_approval = admin_approval
+      lesson.save
+      lesson.update(aa_id: admin.id, aa_name: admin.name)
+      expect(lesson.admin_approval.length).to be 1
+    end
+
+    it 'appends new approvals to existing ones if not duplicated' do
+      lesson.curriculum_approval = admin_approval
+      lesson.save
+      lesson.update(ca_id: writer.id, ca_name: writer.name)
+      expect(lesson.curriculum_approval.length).to be 2
+    end
+
+    it 'is not released unless approved' do
+      lesson.released = true
+      expect(lesson.released?).to be false
+    end
+
+    it 'cannot be set as released unless approved' do
+      lesson.released = true
+      lesson.valid?
+      expect(lesson.errors[:released]).to be_present
+    end
+  end
+
   context 'when mass-reassigning editor' do
     let(:prev_writer) { create(:user, :writer) }
     let(:lessons) { create_list(described_class.name.underscore.to_sym, 3) }

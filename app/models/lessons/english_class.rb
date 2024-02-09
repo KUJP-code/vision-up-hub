@@ -16,24 +16,6 @@ class EnglishClass < Lesson
     validates :unit, inclusion: { in: (1..20).map(&:to_s) }
   end
 
-  def form_topic
-    return '' if topic.nil?
-
-    topic.scan(/(?<=- ).+/).first
-  end
-
-  def form_term
-    return '' if topic.nil?
-
-    topic.scan(/\d+/).first
-  end
-
-  def form_unit
-    return '' if topic.nil?
-
-    topic.scan(/\d+/).last
-  end
-
   private
 
   def set_topic
