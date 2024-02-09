@@ -13,6 +13,8 @@ RSpec.describe Exercise do
     )
   end
 
+  it_behaves_like 'lesson'
+
   it 'has a valid factory' do
     expect(build(:exercise)).to be_valid
   end

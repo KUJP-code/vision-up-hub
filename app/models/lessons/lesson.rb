@@ -41,6 +41,15 @@ class Lesson < ApplicationRecord
   end
   has_many_attached :resources
 
+  def self.reassign_editor(old_editor_id, new_editor_id)
+    Lesson.where(assigned_editor_id: old_editor_id)
+          .update(assigned_editor_id: new_editor_id)
+  end
+
+  def self.policy_class
+    LessonPolicy
+  end
+
   def day(course)
     course_lessons.find_by(course_id: course.id).day.capitalize
   end
@@ -48,10 +57,6 @@ class Lesson < ApplicationRecord
   def week(course)
     number = course_lessons.find_by(course_id: course.id).week
     "Week #{number}"
-  end
-
-  def self.policy_class
-    LessonPolicy
   end
 
   private

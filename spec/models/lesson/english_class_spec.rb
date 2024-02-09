@@ -7,6 +7,8 @@ RSpec.describe EnglishClass do
     expect(build(:english_class)).to be_valid
   end
 
+  it_behaves_like 'lesson'
+
   it 'sets topic from lesson_topic, term and unit' do
     english_class = build(:english_class, lesson_topic: 'Topic', term: 1, unit: 1)
     english_class.save

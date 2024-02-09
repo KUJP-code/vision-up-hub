@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :files, only: %i[create index show]
       resources :phonics_classes, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
+      post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
 
       get 'users', to: 'users#index', as: :users
 

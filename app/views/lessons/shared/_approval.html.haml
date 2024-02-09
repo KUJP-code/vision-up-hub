@@ -1,13 +1,20 @@
 -# locals: (lesson:)
 
-%h3 Created by: #{@lesson.creator.name}
-
-- if current_user.is?('Writer')
-  %h3 Assigned editor: #{@lesson.assigned_editor.name}
-
+%h3
+  Created by:
+  = link_to @lesson.creator.name,
+            organisation_user_path(@lesson.creator.organisation,
+                                   @lesson.creator)
+%h3
+  Assigned editor:
+  = link_to @lesson.assigned_editor.name,
+            organisation_user_path(@lesson.assigned_editor.organisation,
+                                   @lesson.assigned_editor)
 
 - if current_user.is?('Admin')
-  = form_with model: lesson do |f|
-    = f.label :assigned_editor_id, 'Assigned editor'
-    = f.select :assigned_editor_id, @writers
+  = form_with model: lesson, class: 'form' do |f|
+    .form-group
+      = f.label :assigned_editor_id, 'Change assigned editor'
+      = f.select :assigned_editor_id, @writers
+
     = f.submit 'Update', class: 'btn btn-primary'

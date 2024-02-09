@@ -14,6 +14,8 @@ RSpec.describe DailyActivity do
     )
   end
 
+  it_behaves_like 'lesson'
+
   it 'has a valid factory' do
     expect(build(:daily_activity)).to be_valid
   end

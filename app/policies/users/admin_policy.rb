@@ -2,7 +2,7 @@
 
 class AdminPolicy < ApplicationPolicy
   def show?
-    self?
+    user.is?('Admin')
   end
 
   def edit?
@@ -11,6 +11,10 @@ class AdminPolicy < ApplicationPolicy
 
   def update?
     self?
+  end
+
+  def reassign_editor?
+    user.is?('Admin')
   end
 
   private
