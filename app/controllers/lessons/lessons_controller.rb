@@ -46,9 +46,9 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    return [{ curriculum_approval: %i[id name time] }] unless current_user.is?('Admin')
+    return [:internal_notes, { curriculum_approval: %i[id name time] }] unless current_user.is?('Admin')
 
-    [:assigned_editor_id, :goal, :level, :title, :type,
+    [:assigned_editor_id, :goal, :internal_notes, :level, :title, :type,
      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week],
        admin_approval: %i[id name time], curriculum_approval: %i[id name time] }]
   end

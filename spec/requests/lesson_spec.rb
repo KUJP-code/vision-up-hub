@@ -59,5 +59,11 @@ RSpec.describe Lesson do
             params: { stand_show_speak: { curriculum_approval: approval_details } }
       expect(lesson.reload.curriculum_approval).to eq(stored_approval)
     end
+
+    it 'can alter internal notes' do
+      patch stand_show_speak_path(lesson),
+            params: { stand_show_speak: { internal_notes: "I'm a note!" } }
+      expect(lesson.reload.internal_notes).to eq "I'm a note!"
+    end
   end
 end

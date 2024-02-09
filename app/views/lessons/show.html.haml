@@ -7,6 +7,7 @@
       %h3
         #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
 
+      %h3 Goal:
       %p= @lesson.goal
 
       - if @courses.any?

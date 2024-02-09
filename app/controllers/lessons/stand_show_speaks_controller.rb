@@ -13,24 +13,24 @@ class StandShowSpeaksController < LessonsController
 
     if @lesson.save
       redirect_to lesson_url(@lesson),
-                  notice: 'Stand Show Speak successfully created!'
+                  notice: "#{@lesson.title} successfully created!"
     else
       set_courses
       render 'lessons/new',
              status: :unprocessable_entity,
-             alert: 'Stand Show Speak could not be created'
+             alert: "#{@lesson.title} could not be created"
     end
   end
 
   def update
     if @lesson.update(stand_show_speak_params)
       redirect_to lesson_url(@lesson),
-                  notice: 'Stand Show Speak successfully updated.'
+                  notice: "#{@lesson.title} successfully updated."
     else
       set_courses
       render 'lessons/edit',
              status: :unprocessable_entity,
-             alert: 'Stand Show Speak could not be updated'
+             alert: "#{@lesson.title} could not be updated"
     end
   end
 
