@@ -1,7 +1,6 @@
 -# locals: (lesson:)
 
-- admins_approved = lesson.admin_approval.pluck('name')
-- writers_approved = lesson.curriculum_approval.pluck('name')
+- approved_by = (lesson.admin_approval + lesson.curriculum_approval).pluck('name')
 
 %h3
   Created by:
@@ -27,17 +26,8 @@
 
   = f.submit 'Update Notes', class: 'btn btn-primary'
 
-- if current_user.is?('Writer') && writers_approved.none?(current_user.name)
-  = form_with model: lesson do |f|
-    = f.hidden_field :ca_id, value: current_user.id
-    = f.hidden_field :ca_name, value: current_user.name
-    = f.submit 'Give curriculum team approval', class: 'btn btn-primary'
+.flex.gap-3
+  = render 'shared/visibility_toggles', resource: lesson
 
-- if current_user.is?('Admin') && admins_approved.none?(current_user.name)
-  = form_with model: lesson do |f|
-    = f.hidden_field :aa_id, value: current_user.id
-    = f.hidden_field :aa_name, value: current_user.name
-    = f.submit 'Give admin approval', class: 'btn btn-primary'
-
-- if admins_approved.any? || writers_approved.any?
-  %p Lesson approved by #{(admins_approved + writers_approved).to_sentence}
+- if approved_by.any?
+  %p Approved by #{approved_by.to_sentence}

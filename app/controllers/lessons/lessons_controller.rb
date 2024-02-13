@@ -52,7 +52,7 @@ class LessonsController < ApplicationController
       return [:ca_id, :ca_name, :internal_notes, { curriculum_approval: %i[id name time] }]
     end
 
-    lesson_params_for_create + %i[assigned_editor_id aa_id aa_name ca_id ca_name internal_notes]
+    lesson_params_for_create + %i[assigned_editor_id aa_id aa_name ca_id ca_name internal_notes released]
   end
 
   def lesson_params_for_create

@@ -1,12 +1,28 @@
-%nav.flex.justify-around
+%nav.flex.justify-around.items-center.p-2
   %h3.fw-semibold Lesson Type:
-  = link_to 'All', lessons_path
+  = link_to 'All', lessons_path, class: 'btn btn-info'
   - Lesson::TYPES.each do |type|
     = link_to split_on_capitals(type),
-              send("#{type.pluralize.underscore}_path")
+              send("#{type.pluralize.underscore}_path"),
+              class: 'btn btn-info'
 %main
-  %ul.list-disc.list-inside
-    - @lessons.each do |lesson|
-      %li
-        = link_to lesson.title,
-                  lesson_path(lesson)
+  %table.w-full.text-center
+    %thead
+      %tr
+        %th Title
+        %th Status
+        %th Approved by
+        %th Actions
+    %tbody
+      - @lessons.each do |lesson|
+        %tr
+          %td
+            = link_to lesson.title,
+                      lesson_path(lesson)
+          %td.flex.items-center.gap-3
+            = render 'shared/visibility_badges',
+                     approved: lesson.approved?,
+                     released: lesson.released?
+          %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence
+          %td.flex.gap-3
+            = render 'shared/visibility_toggles', resource: lesson

@@ -1,0 +1,22 @@
+-# locals: (resource:)
+
+- unless resource.instance_of?(Course)
+  - admins_approved = resource.admin_approval.pluck('name')
+  - writers_approved = resource.curriculum_approval.pluck('name')
+
+  - if current_user.is?('Writer') && writers_approved.none?(current_user.name)
+    = form_with model: resource do |f|
+      = f.hidden_field :ca_id, value: current_user.id
+      = f.hidden_field :ca_name, value: current_user.name
+      = f.submit 'Give curriculum team approval', class: 'btn btn-primary'
+
+  - if current_user.is?('Admin') && admins_approved.none?(current_user.name)
+    = form_with model: resource do |f|
+      = f.hidden_field :aa_id, value: current_user.id
+      = f.hidden_field :aa_name, value: current_user.name
+      = f.submit 'Give admin approval', class: 'btn btn-primary'
+
+- if current_user.is?('Admin') && !resource.released?
+  = form_with model: resource do |f|
+    = f.hidden_field :released, value: true
+    = f.submit 'Release', class: 'btn btn-primary text-base'

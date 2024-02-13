@@ -13,7 +13,6 @@ class ExercisesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Exercise successfully created.'
     else
-      p @lesson.errors
       set_courses
       render 'lessons/new',
              status: :unprocessable_entity,

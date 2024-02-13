@@ -1,0 +1,10 @@
+-# locals: (approved: nil, released:)
+
+- shared_classes = 'rounded text-white font-semibold px-3 py-1 text-base '
+
+- unless approved.nil?
+  %p{ class: shared_classes + (approved ? 'bg-green-600' : 'bg-red-500') }
+    = approved ? 'Approved' : 'Awaiting Approval'
+
+%p{ class: shared_classes + (released ? 'bg-green-600' : 'bg-red-500') }
+  = released ? 'Released' : 'Unreleased'

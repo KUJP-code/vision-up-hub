@@ -47,8 +47,8 @@ module Approvable
     curriculum_approval << new_approval
   end
 
-  def already_approved?(approval_type, id)
-    send(approval_type).any? { |a| a['id'] == id.to_i }
+  def already_approved?(approval_type, new_user_id)
+    send(approval_type).any? { |a| a['id'] == new_user_id }
   end
 
   def missing_approval_attrs?(*attrs)
