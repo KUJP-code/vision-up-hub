@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,6 +112,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
     t.index ["email"], name: "index_organisations_on_email", unique: true
     t.index ["name"], name: "index_organisations_on_name", unique: true
     t.index ["phone"], name: "index_organisations_on_phone", unique: true
+  end
+
+  create_table "proposed_changes", force: :cascade do |t|
+    t.bigint "lesson_id", null: false
+    t.jsonb "proposals"
+    t.integer "proponent_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"
+    t.index ["proponent_id"], name: "index_proposed_changes_on_proponent_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -255,6 +265,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_102348) do
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
+  add_foreign_key "proposed_changes", "lessons"
+  add_foreign_key "proposed_changes", "users", column: "proponent_id"
   add_foreign_key "schools", "organisations"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
