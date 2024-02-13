@@ -21,7 +21,7 @@ class DailyActivitiesController < LessonsController
   end
 
   def update
-    return propose_changes(daily_activity_params) if current_user.is?('Writer')
+    return propose_changes(daily_activity_params) if proposing_changes?
 
     if @lesson.update(daily_activity_params)
       redirect_to lesson_url(@lesson),

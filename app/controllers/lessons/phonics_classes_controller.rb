@@ -21,7 +21,7 @@ class PhonicsClassesController < LessonsController
   end
 
   def update
-    return propose_changes(phonics_class_params) if current_user.is?('Writer')
+    return propose_changes(phonics_class_params) if proposing_changes?
 
     if @lesson.update(phonics_class_params)
       redirect_to lesson_url(@lesson),

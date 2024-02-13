@@ -21,7 +21,7 @@ class ExercisesController < LessonsController
   end
 
   def update
-    return propose_changes(exercise_params) if current_user.is?('Writer')
+    return propose_changes(exercise_params) if proposing_changes?
 
     if @lesson.update(exercise_params)
       redirect_to lesson_url(@lesson),

@@ -53,14 +53,16 @@ RSpec.describe Lesson do
 
     it 'can alter curriculum approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { ca_id: user.id, ca_name: user.name } }
+            params: { stand_show_speak: { ca_id: user.id, ca_name: user.name },
+                      commit: 'Approve' }
       stored_approval = lesson.reload.curriculum_approval.first
       expect(stored_approval['id']).to eq user.id.to_s
     end
 
     it 'can alter internal notes' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { internal_notes: "I'm a note!" } }
+            params: { stand_show_speak: { internal_notes: "I'm a note!" },
+                      commit: 'Update Notes' }
       expect(lesson.reload.internal_notes).to eq "I'm a note!"
     end
   end

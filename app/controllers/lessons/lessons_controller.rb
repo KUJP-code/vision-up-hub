@@ -83,4 +83,10 @@ class LessonsController < ApplicationController
 
     @lesson.attach_guide
   end
+
+  def proposing_changes?
+    current_user.is?('Writer') &&
+      params[:commit] != 'Update Notes' &&
+      params[:commit] != 'Approve'
+  end
 end
