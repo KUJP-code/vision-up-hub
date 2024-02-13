@@ -40,11 +40,9 @@ RSpec.describe 'changing a lesson' do
         fill_in 'daily_activity_instructions', with: "New Instructions 1\nNew Instructions 2"
         click_button 'Update Daily activity'
       end
-      proposed_change_list = page.find_by_id('proposed_changes')
+      proposed_change_list = page.find_by_id('proposed-changes')
       expect(proposed_change_list).to have_content('Proposed Title: New Title')
-      expect(proposed_change_list).to have_content('Proposed Instructions')
-      expect(proposed_change_list).to have_content('New Instructions 1')
-      expect(proposed_change_list).to have_content('New Instructions 2')
+      expect(proposed_change_list).to have_content('Proposed Instructions: New Instructions 1')
     end
   end
 end

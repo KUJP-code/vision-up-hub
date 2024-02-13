@@ -23,6 +23,10 @@
 
       = render 'lessons/shared/approval', lesson: @lesson
 
+      = render 'lessons/shared/proposed_changes',
+               changes: @proposed_changes,
+               lesson: @lesson
+
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
   = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",

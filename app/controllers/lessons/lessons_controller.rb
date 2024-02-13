@@ -13,6 +13,7 @@ class LessonsController < ApplicationController
 
   def show
     @courses = @lesson.courses
+    @proposed_changes = @lesson.proposed_changes.includes(:proponent)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
@@ -46,18 +47,27 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    return lesson_params_for_create if action_name == 'create'
+    default_params = [:goal, :level, :title, :type, :ca_id, :ca_name, :internal_notes,
+                      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
+    return default_params unless current_user.is?('Admin')
 
-    unless current_user.is?('Admin')
-      return [:ca_id, :ca_name, :internal_notes, { curriculum_approval: %i[id name time] }]
-    end
-
-    lesson_params_for_create + %i[assigned_editor_id aa_id aa_name ca_id ca_name internal_notes released]
+    default_params + %i[assigned_editor_id aa_id aa_name released]
   end
 
-  def lesson_params_for_create
-    [:goal, :level, :title, :type,
-     { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
+  def propose_changes(strong_params)
+    changelist = strong_params.except(:course_lessons_attributes).to_h
+    changes = @lesson.proposed_changes.new(
+      proposals: changelist,
+      proponent_id: current_user.id
+    )
+
+    if changes.save
+      redirect_to lesson_path(@lesson),
+                  notice: 'Changes successfully proposed.'
+    else
+      render :edit, status: :unprocessable_entity,
+                    alert: 'Changes could not be proposed.'
+    end
   end
 
   def set_courses

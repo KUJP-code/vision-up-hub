@@ -1,0 +1,9 @@
+-# locals: (changes:, lesson:)
+
+- @proposed_changes.each do |pc|
+  %h3 Proposed by #{pc.proponent.name}
+  %ul#proposed-changes
+    - pc.proposals.each do |k, v|
+      - changed = @lesson.send(k.to_sym) == v
+      %li{ class: changed ? 'text-green-500' : 'text-red-500' }
+        Proposed #{k.humanize}: #{v}

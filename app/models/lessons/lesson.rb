@@ -35,6 +35,8 @@ class Lesson < ApplicationRecord
                                 reject_if: :all_blank,
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
+  has_many :proposed_changes,
+           dependent: :destroy
 
   has_one_attached :guide do |g|
     g.variant :thumb, resize_to_limit: [300, 300], convert: :avif, preprocessed: true

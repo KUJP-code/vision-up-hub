@@ -23,6 +23,8 @@ class StandShowSpeaksController < LessonsController
   end
 
   def update
+    return propose_changes(stand_show_speak_params) if current_user.is?('Writer')
+
     if @lesson.update(stand_show_speak_params)
       redirect_to lesson_url(@lesson),
                   notice: "#{@lesson.title} successfully updated."
