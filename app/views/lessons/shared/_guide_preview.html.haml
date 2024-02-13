@@ -4,7 +4,7 @@
   = link_to file_path(lesson.guide.blob),
             target: '_blank',
             rel: 'noopener',
-            class: 'guide_link border' do
+            class: 'guide_link border h-fit' do
     = image_tag lesson.guide.preview(:thumb),
                 class: 'guide_image w-full'
     %h3 Download Guide
@@ -13,7 +13,7 @@
   = link_to file_path(lesson.script.blob),
             target: '_blank',
             rel: 'noopener',
-            class: 'border' do
+            class: 'border h-fit' do
     = image_tag lesson.script.preview(:thumb),
                 class: 'guide_image w-full'
     %h3 Download Script
