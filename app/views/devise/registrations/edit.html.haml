@@ -2,7 +2,7 @@
            as: resource_name,
            url: registration_path(resource_name),
            html: { class: 'form', method: :put } do |f|
-  = render "devise/shared/error_messages", resource:
+  = render 'devise/shared/error_messages', resource:
 
   .form-group
     = f.label :email
@@ -27,4 +27,4 @@
     %small We need your current password to confirm your changes
 
   .actions
-    = f.submit t('.update)
+    = f.submit t('.update')
