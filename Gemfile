@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.2.2'
+ruby '3.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: "main"
 gem 'rails', '7.1.3'
@@ -11,7 +11,7 @@ gem 'rails', '7.1.3'
 gem 'propshaft', '0.8.0'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '1.5.4'
+gem 'pg', '1.5.5'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '6.4.2'
@@ -111,3 +111,5 @@ group :test do
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
 end
+
+gem "dockerfile-rails", ">= 1.6", :group => :development

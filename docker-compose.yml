@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  web:
+    platform: linux/amd64
+    image: thatbballguy/materials:prod
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./app:/rails/app
+    env_file:
+      - .env/development/database
+      - .env/development/web
+
+  database:
+    platform: linux/amd64
+    image: postgres
+    env_file:
+      - .env/development/database
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

@@ -9,7 +9,7 @@ class PhonicsClassesController < LessonsController
     @lesson = authorize Lesson.new(phonics_class_params)
     super
 
-    if @lesson.save!
+    if @lesson.save
       redirect_to lesson_url(@lesson),
                   notice: 'Phonics Class successfully created!'
     else

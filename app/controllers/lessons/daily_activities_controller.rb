@@ -9,7 +9,7 @@ class DailyActivitiesController < LessonsController
     @lesson = authorize Lesson.new(daily_activity_params)
     super
 
-    if @lesson.save!
+    if @lesson.save
       redirect_to lesson_url(@lesson),
                   notice: 'Daily Activity successfully created!'
     else

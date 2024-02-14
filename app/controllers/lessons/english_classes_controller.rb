@@ -11,7 +11,7 @@ class EnglishClassesController < LessonsController
     @lesson = authorize Lesson.new(english_class_params)
     super
 
-    if @lesson.save!
+    if @lesson.save
       redirect_to lesson_url(@lesson),
                   notice: 'English class successfully created!'
     else
