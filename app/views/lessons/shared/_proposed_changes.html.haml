@@ -5,22 +5,24 @@
     %tr
       %th Proponent
       %th Changes
-      %th Approve
-      %th Reject
+      - if current_user.is?('Admin')
+        %th Approve
+        %th Reject
   %tbody
-    - changes.each do |pc|
+    - changes.each do |change|
       %tr
-        %td Proposed by #{pc.proponent.name}
+        %td= change.proponent.name
         %td
           %ul
-            - pc.proposals.each do |k, v|
+            - change.proposals.each do |k, v|
               - changed = lesson.send(k.to_sym) == v
               %li{ class: changed ? 'text-green-500' : 'text-red-500' }
                 Proposed #{k.humanize}: #{v}
-        %td
-          = link_to 'Approve'
-        %td
-          = link_to 'Reject',
-                    proposed_change_path(pc),
-                    data: { turbo_confirm: 'Are you sure?', turbo_method: :delete },
-                    class: 'btn btn-danger'
+        - if current_user.is?('Admin')
+          %td
+            = link_to 'Approve'
+          %td
+            = link_to 'Reject',
+                      proposed_change_path(change),
+                      data: { turbo_confirm: 'Are you sure?', turbo_method: :delete },
+                      class: 'btn btn-danger'
