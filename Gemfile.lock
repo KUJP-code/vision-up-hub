@@ -84,8 +84,10 @@ GEM
     bcrypt (3.1.20)
     bigdecimal (3.1.6)
     bindex (0.8.1)
-    bootsnap (1.17.1)
+    bootsnap (1.18.3)
       msgpack (~> 1.2)
+    brakeman (6.1.2)
+      racc
     builder (3.2.4)
     bullet (7.1.6)
       activesupport (>= 3.0.0)
@@ -112,7 +114,7 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
-    cssbundling-rails (1.3.3)
+    cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
     database_cleaner-active_record (2.1.0)
       activerecord (>= 5.a)
@@ -174,7 +176,7 @@ GEM
     irb (1.11.1)
       rdoc
       reline (>= 0.4.2)
-    jsbundling-rails (1.2.2)
+    jsbundling-rails (1.3.0)
       railties (>= 6.0.0)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
@@ -230,7 +232,7 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.4)
-    pghero (3.4.0)
+    pghero (3.4.1)
       activerecord (>= 6)
     pkg-config (1.5.6)
     poppler (4.2.0)
@@ -360,7 +362,7 @@ GEM
     ruby-vips (2.2.0)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    solid_queue (0.2.0)
+    solid_queue (0.2.1)
       rails (~> 7.1)
     stimulus-rails (1.3.3)
       railties (>= 6.0.0)
@@ -370,7 +372,7 @@ GEM
     tilt (2.3.0)
     timeout (0.4.1)
     ttfunk (1.7.0)
-    turbo-rails (2.0.0)
+    turbo-rails (2.0.2)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
@@ -398,41 +400,42 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bootsnap
+  bootsnap (= 1.18.3)
+  brakeman
   bullet
   capybara
   capybara-screenshot
-  cssbundling-rails
+  cssbundling-rails (= 1.4.0)
   database_cleaner-active_record
   debug
-  devise
-  devise-i18n (~> 1.12)
+  devise (= 4.9.3)
+  devise-i18n (= 1.12.0)
   factory_bot_rails
-  haml-rails (~> 2.1)
-  image_processing (~> 1.2)
-  jsbundling-rails
-  mission_control-jobs (~> 0.1)
+  haml-rails (= 2.1.0)
+  image_processing (= 1.12.2)
+  jsbundling-rails (= 1.3.0)
+  mission_control-jobs (= 0.1.1)
   pdf-inspector
-  pg (~> 1.1)
-  pghero
-  poppler
-  prawn (~> 2.4)
-  propshaft
-  puma (~> 6.4)
-  pundit
+  pg (= 1.5.4)
+  pghero (= 3.4.1)
+  poppler (= 4.2.0)
+  prawn (= 2.4.0)
+  propshaft (= 0.8.0)
+  puma (= 6.4.2)
+  pundit (= 2.3.1)
   pundit-matchers
   rack-mini-profiler
-  rails (~> 7.1.3)
+  rails (= 7.1.3)
   rspec-rails
   rubocop
   rubocop-performance
   rubocop-rails
   rubocop-rspec
-  ruby-vips
-  solid_queue
-  stimulus-rails
-  turbo-rails (~> 2)
-  tzinfo-data
+  ruby-vips (= 2.2.0)
+  solid_queue (= 0.2.1)
+  stimulus-rails (= 1.3.3)
+  turbo-rails (= 2.0.2)
+  tzinfo-data (= 1.2024.1)
   web-console
 
 RUBY VERSION
