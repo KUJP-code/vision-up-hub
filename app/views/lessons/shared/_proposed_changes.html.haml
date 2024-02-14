@@ -1,28 +1,30 @@
 -# locals: (changes:, lesson:)
 
-%table.text-center#proposed-changes
-  %thead
-    %tr
-      %th Proponent
-      %th Changes
-      - if current_user.is?('Admin')
-        %th Approve
-        %th Reject
-  %tbody
-    - changes.each do |change|
+- if changes.any?
+  %table.text-center#proposed-changes
+    %thead
       %tr
-        %td= change.proponent.name
-        %td
-          %ul
-            - change.proposals.each do |k, v|
-              - changed = lesson.send(k.to_sym) == v
-              %li{ class: changed ? 'text-green-500' : 'text-red-500' }
-                Proposed #{k.humanize}: #{v}
+        %th Proponent
+        %th Changes
         - if current_user.is?('Admin')
+          %th Approve
+          %th Reject
+    %tbody
+      - changes.each do |change|
+        %tr
+          %td= change.proponent.name
           %td
-            = link_to 'Approve'
-          %td
-            = link_to 'Reject',
-                      proposed_change_path(change),
-                      data: { turbo_confirm: 'Are you sure?', turbo_method: :delete },
-                      class: 'btn btn-danger'
+            %ul
+              - change.proposals.each do |k, v|
+                - changed = lesson.send(k.to_sym) == v
+                %li{ class: changed ? 'text-green-500' : 'text-red-500' }
+                  Proposed #{k.humanize}: #{v}
+          - if current_user.is?('Admin')
+            %td
+              = form_with model: change do |f|
+                = f.submit 'Approve', class: 'btn btn-primary'
+            %td
+              = link_to 'Reject',
+                        proposed_change_path(change),
+                        data: { turbo_confirm: 'Are you sure?', turbo_method: :delete },
+                        class: 'btn btn-danger'
