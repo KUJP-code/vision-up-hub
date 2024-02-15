@@ -6,25 +6,23 @@
       %tr
         %th Proponent
         %th Changes
+        %th Comments
         - if current_user.is?('Admin')
-          %th Approve
-          %th Reject
+          %th Status
+        %th
     %tbody
       - changes.each do |change|
-        %tr
-          %td= change.proponent.name
-          %td
-            %ul
-              - change.proposals.each do |k, v|
-                - changed = lesson.send(k.to_sym) == v
-                %li{ class: changed ? 'text-green-500' : 'text-red-500' }
-                  Proposed #{k.humanize}: #{v}
-          - if current_user.is?('Admin')
+        = form_with model: change do |f|
+          %tr
+            %td= change.proponent.name
             %td
-              = form_with model: change do |f|
-                = f.submit 'Approve', class: 'btn btn-primary'
-            %td
-              = link_to 'Reject',
-                        proposed_change_path(change),
-                        data: { turbo_confirm: 'Are you sure?', turbo_method: :delete },
-                        class: 'btn btn-danger'
+              %ul
+                - change.proposals.each do |k, v|
+                  - changed = lesson.send(k.to_sym) == v
+                  %li{ class: changed ? 'text-green-500' : 'text-red-500' }
+                    Proposed #{k.humanize}: #{v}
+            - if current_user.is?('Admin')
+              %td= f.text_area :comments
+              %td= f.select :status,
+                            ProposedChange.statuses.keys.map { |k| [k.humanize, k] }
+              %td= f.submit 'Update', class: 'btn btn-primary'

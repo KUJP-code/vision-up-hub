@@ -40,11 +40,13 @@ SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
 end
 
+writer = Writer.first
+
 Lesson::TYPES.map do |type|
   puts "Creating #{type}..."
   l = Lesson.create!(fb.attributes_for(
     type.underscore.to_sym,
-    assigned_editor_id: 1,
+    assigned_editor_id: writer.id,
     creator_id: 1
   ))
   if l.instance_of?(StandShowSpeak)
