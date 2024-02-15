@@ -37,7 +37,7 @@ class DailyActivitiesController < LessonsController
   private
 
   def daily_activity_params
-    da_params = %i[extra_fun intro instructions large_groups materials notes links steps subtype]
+    da_params = %i[extra_fun intro instructions large_groups materials notes links subtype]
     params.require(:daily_activity).permit(lesson_params + da_params)
   end
 end

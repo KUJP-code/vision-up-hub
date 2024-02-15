@@ -32,8 +32,6 @@ module DailyActivityPdf
   end
 
   def add_ordered_lists(pdf)
-    pdf_list(array: steps, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Steps:', type: :number)
     pdf_list(array: instructions, dimensions: { height: 3.cm, width: pdf.bounds.width },
              pdf:, title: 'Instructions:', type: :number)
     pdf_list(array: large_groups, dimensions: { height: 3.cm, width: pdf.bounds.width },

@@ -9,7 +9,6 @@ FactoryBot.define do
     links { "Example link:http://example.com\nSeasonal:http://example.com/seasonal" }
     materials { "Material 1\nMaterial 2" }
     notes { "Note 1\nNote 2" }
-    steps { "Step 1\nStep 2" }
     subtype { :discovery }
     title { 'Test Daily Activity' }
     type { 'DailyActivity' }

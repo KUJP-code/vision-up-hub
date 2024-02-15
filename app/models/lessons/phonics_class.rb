@@ -11,7 +11,5 @@ class PhonicsClass < Lesson
     notes
   ].freeze
 
-  before_validation :listify_attributes
-
   validates :instructions, presence: true
 end

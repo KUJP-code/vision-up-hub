@@ -10,10 +10,7 @@ class DailyActivity < Lesson
     large_groups
     materials
     notes
-    steps
   ].freeze
-
-  before_validation :listify_attributes
 
   validates :intro, :instructions, :subtype, presence: true
 

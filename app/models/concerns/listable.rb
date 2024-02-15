@@ -4,6 +4,8 @@ module Listable
   extend ActiveSupport::Concern
 
   included do
+    before_validation :listify_attributes
+
     private
 
     def listify_attributes

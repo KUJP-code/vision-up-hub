@@ -18,9 +18,9 @@
             %td
               %ul
                 - change.proposals.each do |k, v|
-                  - changed = lesson.send(k.to_sym) == v
-                  %li{ class: changed ? 'text-green-500' : 'text-red-500' }
-                    Proposed #{k.humanize}: #{v}
+                  - changed = v != lesson.send(k.to_sym)
+                  %li{ class: changed ? 'text-red-500' : 'text-green-500' }
+                    #{k.humanize}: #{v}
             - if current_user.is?('Admin')
               %td= f.text_area :comments
               %td= f.select :status,

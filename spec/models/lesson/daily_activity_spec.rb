@@ -9,7 +9,6 @@ RSpec.describe DailyActivity do
       title: 'Test Daily Activity',
       level: :kindy,
       subtype: :discovery,
-      steps: "Step 1\nStep 2",
       links: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
     )
   end
@@ -21,13 +20,13 @@ RSpec.describe DailyActivity do
   end
 
   context 'when generating PDF guide' do
-    it 'contains title, subcategory, links and steps' do
+    it 'contains title, subcategory, links and instructions' do
       pdf = daily_activity.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to include(
-          'Test Daily Activity', 'Discovery', 'Steps:', '1. Step 1', '2. Step 2',
-          'Links:', 'Example link', 'Seasonal'
+          'Test Daily Activity', 'Discovery', 'Instructions:', '1. Instruction 1',
+          '2. Instruction 2', 'Links:', 'Example link', 'Seasonal'
         )
     end
   end

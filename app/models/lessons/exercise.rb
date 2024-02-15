@@ -12,12 +12,9 @@ class Exercise < Lesson
     materials
     notes
     outro
-    steps
   ].freeze
 
   PDF_IMAGEABLE_ATTRIBUTES = %i[guide_image].freeze
-
-  before_validation :listify_attributes
 
   validates :intro, :instructions, presence: true
 

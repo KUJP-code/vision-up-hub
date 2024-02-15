@@ -7,7 +7,7 @@ class EnglishClass < Lesson
 
   attr_accessor :lesson_topic, :term, :unit
 
-  before_validation :listify_attributes, :set_topic
+  before_validation :set_topic
 
   validates :example_sentences, :vocab, presence: true
   with_options if: proc { |ec| ec.topic.nil? } do

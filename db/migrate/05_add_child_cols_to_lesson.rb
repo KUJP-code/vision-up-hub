@@ -10,7 +10,6 @@ class AddChildColsToLesson < ActiveRecord::Migration[7.1]
       t.jsonb :materials, default: []
       t.jsonb :notes, default: []
       t.jsonb :outro, default: []
-      t.jsonb :steps, default: []
       t.integer :subtype
       t.string :topic
       t.jsonb :vocab, default: []

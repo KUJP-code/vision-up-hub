@@ -55,11 +55,10 @@ class LessonsController < ApplicationController
   end
 
   def propose_changes(strong_params)
-    changelist = strong_params.except(:course_lessons_attributes).to_h
-    changes = @lesson.proposed_changes.new(
-      proposals: changelist,
-      proponent_id: current_user.id
-    )
+    changelist = strong_params.except(
+      :course_lessons_attributes, :level, :subtype, :type
+    ).to_h.merge(proponent_id: current_user.id)
+    changes = @lesson.proposed_changes.new(changelist)
 
     if changes.save
       redirect_to lesson_path(@lesson),
