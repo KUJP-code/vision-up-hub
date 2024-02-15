@@ -2,11 +2,12 @@
 
 = f.hidden_field :type, value: lesson.type
 
-.form-group
-  = f.label :subtype
-  = f.select :subtype,
-             DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
-             {}
+- unless controller_name == 'proposed_changes'
+  .form-group
+    = f.label :subtype
+    = f.select :subtype,
+               DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
+               {}
 
 - DailyActivity::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)

@@ -4,7 +4,11 @@ class ProposedChangesController < ApplicationController
   before_action :set_change, only: %i[destroy edit update]
   after_action :verify_authorized
 
-  def edit; end
+  def edit
+    @lesson = @change.lesson
+    @lesson.assign_attributes(@change.proposals)
+    render 'lessons/edit'
+  end
 
   def update
     if @change.update(proposed_change_params)
@@ -39,6 +43,7 @@ class ProposedChangesController < ApplicationController
     @lesson = @change.lesson
 
     if @lesson.update(@change.proposals)
+      @change.destroy
       redirect_to lesson_path(@lesson),
                   notice: 'Applied proposed change.'
     else
