@@ -115,9 +115,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
   end
 
   create_table "proposed_changes", force: :cascade do |t|
+    t.string "comments", default: ""
     t.bigint "lesson_id", null: false
-    t.jsonb "proposals"
+    t.jsonb "proposals", default: {}
     t.integer "proponent_id", null: false
+    t.boolean "rejected", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"

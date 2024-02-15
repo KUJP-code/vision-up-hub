@@ -1,9 +1,11 @@
 class CreateProposedChanges < ActiveRecord::Migration[7.1]
   def change
     create_table :proposed_changes do |t|
+      t.string :comments, default: ''
       t.references :lesson, null: false, foreign_key: true
       t.jsonb :proposals, default: {}
       t.integer :proponent_id, null: false
+      t.boolean :rejected, default: false
 
       t.timestamps
     end
