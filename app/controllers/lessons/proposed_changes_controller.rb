@@ -8,7 +8,7 @@ class ProposedChangesController < ApplicationController
     @lesson = @change.lesson
 
     if @lesson.update(@change.proposals)
-      @change.destroy
+      @change.update(status: :accepted)
       redirect_to lesson_path(@lesson),
                   notice: 'Accepted proposed change.'
     else
@@ -18,7 +18,7 @@ class ProposedChangesController < ApplicationController
   end
 
   def destroy
-    if @change.destroy
+    if @change.update(status: :rejected)
       redirect_to lesson_path(@change.lesson),
                   notice: 'Rejected proposed change.'
     else

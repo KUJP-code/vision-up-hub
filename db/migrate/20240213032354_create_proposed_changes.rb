@@ -5,7 +5,7 @@ class CreateProposedChanges < ActiveRecord::Migration[7.1]
       t.references :lesson, null: false, foreign_key: true
       t.jsonb :proposals, default: {}
       t.integer :proponent_id, null: false
-      t.boolean :rejected, default: false
+      t.integer :status, default: 0
 
       t.timestamps
     end
