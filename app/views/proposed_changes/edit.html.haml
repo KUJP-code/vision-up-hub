@@ -1,0 +1,5 @@
+= form_with model: @change do |f|
+  - @change.proposals.each do |k, v|
+    .form-group
+      = f.label k
+      = f.text_field k, value: v

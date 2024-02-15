@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class ProposedChangesController < ApplicationController
-  before_action :set_change, only: %i[destroy update]
+  before_action :set_change, only: %i[destroy edit update]
   after_action :verify_authorized
+
+  def edit; end
 
   def update
     if @change.update(proposed_change_params)

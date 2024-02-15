@@ -14,7 +14,7 @@ class ProposedChangePolicy < ApplicationPolicy
   end
 
   def edit?
-    false
+    user.is?('Admin') || record.proponent_id == user.id
   end
 
   def create?
@@ -22,7 +22,7 @@ class ProposedChangePolicy < ApplicationPolicy
   end
 
   def update?
-    user.is?('Admin')
+    user.is?('Admin', 'Writer')
   end
 
   def destroy?

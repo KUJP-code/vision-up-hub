@@ -11,7 +11,9 @@ require "action_mailer/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
+# FIXME: Temporarily needed til turbo-rails > 2.0.2
+# fixes https://github.com/hotwired/turbo-rails/issues/512
+require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)

@@ -6,7 +6,7 @@ RSpec.shared_examples 'Admin for ProposedChangePolicy' do
   it { is_expected.not_to authorize_action(:index) }
   it { is_expected.not_to authorize_action(:show) }
   it { is_expected.not_to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
+  it { is_expected.to authorize_action(:edit) }
   it { is_expected.not_to authorize_action(:create) }
   it { is_expected.to authorize_action(:update) }
   it { is_expected.to authorize_action(:destroy) }
@@ -26,7 +26,29 @@ RSpec.describe ProposedChangePolicy do
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    it_behaves_like 'unauthorized user'
+    context 'when proponent' do
+      before do
+        record.proponent_id = user.id
+      end
+
+      it { is_expected.not_to authorize_action(:index) }
+      it { is_expected.not_to authorize_action(:show) }
+      it { is_expected.not_to authorize_action(:new) }
+      it { is_expected.to authorize_action(:edit) }
+      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.to authorize_action(:update) }
+      it { is_expected.not_to authorize_action(:destroy) }
+    end
+
+    context 'when not proponent' do
+      it { is_expected.not_to authorize_action(:index) }
+      it { is_expected.not_to authorize_action(:show) }
+      it { is_expected.not_to authorize_action(:new) }
+      it { is_expected.not_to authorize_action(:edit) }
+      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.to authorize_action(:update) }
+      it { is_expected.not_to authorize_action(:destroy) }
+    end
   end
 
   context 'when sales' do

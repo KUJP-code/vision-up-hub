@@ -12,7 +12,8 @@
     %tbody
       - changes.each do |change|
         %tr
-          %td= link_to change.lesson.title, lesson_path(change.lesson)
-          %td= change.status
-          %td= change.created_at.strftime('%d/%m/%Y')
-          %td= change.comments
+          %td.p-3= link_to change.lesson.title, lesson_path(change.lesson)
+          %td.p-3= change.status
+          %td.p-3= change.created_at.strftime('%d/%m/%Y')
+          %td.p-3= change.comments
+          %td.p-3= link_to 'Edit', edit_proposed_change_path(change), class: 'btn btn-info'
