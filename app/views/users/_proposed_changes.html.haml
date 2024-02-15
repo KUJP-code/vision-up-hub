@@ -1,0 +1,16 @@
+-# locals: (changes:)
+
+- if changes.any?
+  %h3.text-center Proposed Changes
+  %table.w-full.text-center
+    %thead
+      %tr
+        %th Lesson
+        %th Status
+        %th Submitted
+    %tbody
+      - changes.each do |change|
+        %tr
+          %td= link_to change.lesson.title, lesson_path(change.lesson)
+          %td= change.status
+          %td= change.created_at.strftime('%d/%m/%Y')

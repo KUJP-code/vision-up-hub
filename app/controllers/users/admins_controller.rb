@@ -4,6 +4,7 @@ class AdminsController < UsersController
   def show
     @assigned_lessons = @user.assigned_lessons
     @created_lessons = @user.created_lessons
+    @changes = @user.proposed_changes
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
