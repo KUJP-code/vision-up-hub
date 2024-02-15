@@ -21,14 +21,14 @@ RSpec.describe 'creating a DailyActivity lesson' do
       select 'Kindy', from: 'daily_activity_level'
       select 'Games', from: 'daily_activity_subtype'
       fill_in 'daily_activity_intro', with: 'Test Intro'
-      fill_in 'daily_activity_instructions', with: "Test Instructions 1\nTest Instructions 2"
+      fill_in 'daily_activity_instructions', with: "Test Instruction 1\nTest Instruction 2"
       fill_in 'daily_activity_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       click_button 'Create Daily activity'
     end
     expect(page).to have_content('Test Daily Activity')
     expect(page).to have_content('Test Goal')
     expect(page).to have_content('Games')
-    expect(page).to have_content('Step 1')
+    expect(page).to have_content('Test Instruction 1')
     expect(page).to have_css('a.lesson_link', count: 2)
   end
 end

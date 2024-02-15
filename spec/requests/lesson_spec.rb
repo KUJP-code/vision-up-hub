@@ -17,7 +17,7 @@ RSpec.describe Lesson do
     let(:user) { create(:user, :admin) }
 
     it 'can directly edit lesson attributes' do
-      patch stand_show_speak_path(lesson), params: { stand_show_speak: { title: 'New Title' } }
+      patch stand_show_speak_path(lesson), params: { stand_show_speak: { title: 'New Title', goal: 'New Goal' } }
       expect(lesson.reload.title).to eq 'New Title'
     end
 
@@ -41,13 +41,14 @@ RSpec.describe Lesson do
     let(:approval_details) { { ca_id: user.id, ca_name: user.name } }
 
     it 'cannot directly edit lesson attributes' do
-      patch stand_show_speak_path(lesson), params: { stand_show_speak: { title: 'New Title' } }
+      patch stand_show_speak_path(lesson), params: { stand_show_speak: { title: 'New Title', goal: 'New Goal' } }
       expect(lesson.reload.title).not_to eq 'New Title'
     end
 
     it 'cannot alter admin approval' do
       patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { aa_id: user.id, aa_name: user.name } }
+            params: { stand_show_speak: { aa_id: user.id, aa_name: user.name },
+                      commit: 'Approve' }
       expect(lesson.reload.admin_approval).to eq([])
     end
 
