@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "class_teachers", force: :cascade do |t|
+    t.bigint "class_id", null: false
+    t.bigint "teacher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_id"], name: "index_class_teachers_on_class_id"
+    t.index ["teacher_id"], name: "index_class_teachers_on_teacher_id"
+  end
+
+  create_table "classes", force: :cascade do |t|
+    t.string "name"
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_classes_on_school_id"
   end
 
   create_table "course_lessons", force: :cascade do |t|
@@ -131,13 +148,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
     t.jsonb "vocab", default: []
     t.string "comments", default: ""
     t.bigint "lesson_id", null: false
+    t.bigint "proponent_id", null: false
     t.jsonb "proposals", default: {}
-    t.integer "proponent_id", null: false
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"
     t.index ["proponent_id"], name: "index_proposed_changes_on_proponent_id"
+  end
+
+  create_table "school_teachers", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "teacher_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_school_teachers_on_school_id"
+    t.index ["teacher_id"], name: "index_school_teachers_on_teacher_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -242,6 +268,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "student_classes", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "class_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_id"], name: "index_student_classes_on_class_id"
+    t.index ["student_id"], name: "index_student_classes_on_student_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "comments"
+    t.integer "level"
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_students_on_school_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "type", default: "Teacher"
@@ -275,6 +320,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "class_teachers", "classes"
+  add_foreign_key "class_teachers", "users", column: "teacher_id"
+  add_foreign_key "classes", "schools"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
   add_foreign_key "lessons", "users", column: "assigned_editor_id"
@@ -283,12 +331,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_13_032354) do
   add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "proposed_changes", "lessons"
   add_foreign_key "proposed_changes", "users", column: "proponent_id"
+  add_foreign_key "school_teachers", "schools"
+  add_foreign_key "school_teachers", "users", column: "teacher_id"
   add_foreign_key "schools", "organisations"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "student_classes", "classes"
+  add_foreign_key "student_classes", "students"
+  add_foreign_key "students", "schools"
   add_foreign_key "users", "organisations"
   add_foreign_key "users", "schools"
 end
