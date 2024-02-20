@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  include Approvable, Pdfable
+  include Approvable, Levelable, Pdfable
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass StandShowSpeak].freeze
 
@@ -9,19 +9,6 @@ class Lesson < ApplicationRecord
 
   validates :goal, :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
-
-  enum level: {
-    all_levels: 0,
-    kindy: 1,
-    land_one: 2,
-    land_two: 3,
-    sky_one: 4,
-    sky_two: 5,
-    galaxy_one: 6,
-    galaxy_two: 7,
-    keep_up: 8,
-    specialist: 9
-  }
 
   belongs_to :creator,
              class_name: 'User',

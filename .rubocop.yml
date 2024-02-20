@@ -20,6 +20,8 @@ Lint/AmbiguousBlockAssociation:
   Enabled: false
 Metrics/AbcSize:
   CountRepeatedAttributes: false
+Metrics/BlockLength:
+  Enabled: false
 Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
