@@ -1,0 +1,13 @@
+branch-defaults:
+  main:
+    environment: Materials-production
+global:
+  application_name: materials
+  default_ec2_keyname: brett-aws-eb
+  default_platform: Docker running on 64bit Amazon Linux 2023
+  default_region: ap-northeast-1
+  include_git_submodules: true
+  platform_name: Docker AL2023
+  platform_version: 4.2.1
+  sc: git
+  workspace_type: Application
