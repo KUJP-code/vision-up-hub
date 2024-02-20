@@ -52,14 +52,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
     t.index ["teacher_id"], name: "index_class_teachers_on_teacher_id"
   end
 
-  create_table "classes", force: :cascade do |t|
-    t.string "name"
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_classes_on_school_id"
-  end
-
   create_table "course_lessons", force: :cascade do |t|
     t.bigint "course_id", null: false
     t.bigint "lesson_id", null: false
@@ -155,6 +147,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"
     t.index ["proponent_id"], name: "index_proposed_changes_on_proponent_id"
+  end
+
+  create_table "school_classes", force: :cascade do |t|
+    t.string "name"
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_school_classes_on_school_id"
   end
 
   create_table "school_teachers", force: :cascade do |t|
@@ -318,9 +318,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "class_teachers", "classes"
+  add_foreign_key "class_teachers", "school_classes", column: "class_id"
   add_foreign_key "class_teachers", "users", column: "teacher_id"
-  add_foreign_key "classes", "schools"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
   add_foreign_key "lessons", "users", column: "assigned_editor_id"
@@ -329,6 +328,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
   add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "proposed_changes", "lessons"
   add_foreign_key "proposed_changes", "users", column: "proponent_id"
+  add_foreign_key "school_classes", "schools"
   add_foreign_key "school_teachers", "schools"
   add_foreign_key "school_teachers", "users", column: "teacher_id"
   add_foreign_key "schools", "organisations"
@@ -337,7 +337,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
-  add_foreign_key "student_classes", "classes"
+  add_foreign_key "student_classes", "school_classes", column: "class_id"
   add_foreign_key "student_classes", "students"
   add_foreign_key "students", "schools"
   add_foreign_key "users", "organisations"

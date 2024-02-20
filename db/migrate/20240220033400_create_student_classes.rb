@@ -7,7 +7,7 @@ class CreateStudentClasses < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_foreign_key :student_classes, :classes, column: :class_id, null: false
+    add_foreign_key :student_classes, :school_classes, column: :class_id, null: false
     add_index :student_classes, :class_id
   end
 end

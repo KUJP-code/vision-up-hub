@@ -3,7 +3,7 @@ branch-defaults:
     environment: Materials-production
 global:
   application_name: materials
-  default_ec2_keyname: brett-aws-eb
+  default_ec2_keyname: brett
   default_platform: Docker running on 64bit Amazon Linux 2023
   default_region: ap-northeast-1
   include_git_submodules: true

@@ -7,7 +7,7 @@ class CreateClassTeachers < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_foreign_key :class_teachers, :classes, column: :class_id
+    add_foreign_key :class_teachers, :school_classes, column: :class_id
     add_index :class_teachers, :class_id
   end
 end
