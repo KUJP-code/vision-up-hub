@@ -28,7 +28,6 @@ FactoryBot.define do
     end
 
     trait :teacher do
-      school
       type { 'Teacher' }
     end
 

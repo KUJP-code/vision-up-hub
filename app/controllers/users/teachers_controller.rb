@@ -43,7 +43,8 @@ class TeachersController < UsersController
   end
 
   def teachers_params
-    t_params = %i[school_id]
+    t_params = [:school_id,
+                { school_teachers_attributes: %i[id school_id teacher_id _destroy] }]
     params.require(:teacher).permit(user_params + t_params)
   end
 

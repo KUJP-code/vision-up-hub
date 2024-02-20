@@ -8,8 +8,5 @@ class SchoolManager < User
                                 allow_destroy: true,
                                 reject_if: :all_blank
   has_many :schools, through: :managements
-
-  def teachers
-    Teacher.where(school_id: schools.ids)
-  end
+  has_many :teachers, through: :schools
 end

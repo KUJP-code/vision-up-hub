@@ -4,5 +4,7 @@ class Teacher < User
   VISIBLE_TYPES = %w[].freeze
 
   belongs_to :organisation
-  belongs_to :school
+  has_many :school_teachers, dependent: :destroy
+  accepts_nested_attributes_for :school_teachers
+  has_many :schools, through: :school_teachers
 end

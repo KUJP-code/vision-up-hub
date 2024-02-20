@@ -34,7 +34,7 @@ RSpec.describe UserPolicy do
   before do
     create(:user, :org_admin, organisation:)
     create(:user, :school_manager, organisation:)
-    create(:user, :teacher, organisation:, school:)
+    create(:user, :teacher, organisation:)
   end
 
   context 'when admin' do

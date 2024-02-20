@@ -15,7 +15,7 @@ class UserPolicy < ApplicationPolicy
       when 'OrgAdmin'
         scope.where(organisation_id: user.organisation_id)
       when 'SchoolManager'
-        Teacher.where(school_id: user.schools.ids)
+        user.teachers
       else
         scope.none
       end

@@ -16,7 +16,7 @@ RSpec.describe 'creating Teacher' do
     within '#teacher_form' do
       fill_in 'teacher_name', with: 'John'
       fill_in 'teacher_email', with: 'xjpjv@example.com'
-      select school.name, from: 'teacher_school_id'
+      select school.name, from: 'teacher_school_teachers_attributes_0_school_id'
       click_on 'submit_teacher'
     end
     expect(page).to have_content 'John'

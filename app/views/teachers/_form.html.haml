@@ -2,15 +2,30 @@
 
 = form_with model: [user.organisation, user],
             html: { class: 'form',
+                    data: { controller: 'fields' },
                     id: 'teacher_form' } do |f|
   = render 'shared/form_errors', resource: @user
 
   = render 'users/fields', f:
 
   - unless current_user.is?('Teacher')
-    .form-group
-      = f.label :school_id
-      = f.select :school_id, schools
+    - if user.schools.empty?
+      = f.fields_for :school_teachers, user.school_teachers.new do |st_f|
+        = render 'school_teachers/fields', f: st_f, schools:, user:
+    - else
+      = f.fields_for :school_teachers do |st_f|
+        = render 'school_teachers/fields', f: st_f, schools:, user:
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :school_teachers,
+                   user.school_teachers.new,
+                   child_index: 'CHILD' do |st_f|
+      = render 'school_teachers/fields', f: st_f, schools:, user:
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+    Add School
 
   = f.submit class: 'btn btn-primary',
              id: 'submit_teacher'

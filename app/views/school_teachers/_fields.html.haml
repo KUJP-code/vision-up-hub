@@ -1,0 +1,17 @@
+-# locals: (f:, schools:, user:)
+
+.fields-wrapper.flex.flex-col.gap-2{ 'data-new-record' => f.object.new_record?.to_s }
+  = f.hidden_field :user_id, value: user.id
+
+  .form-group
+    = f.label :school_id
+    = f.select :school_id, schools
+
+  - if f.object.new_record?
+    %button.w-full.btn.btn-danger{ 'data-action' => 'fields#remove' }
+      Remove
+  - else
+    .w-full.form-check.text-center
+      = f.check_box :_destroy
+      = f.label :_destroy,
+                'Remove'

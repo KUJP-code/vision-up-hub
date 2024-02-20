@@ -42,6 +42,6 @@ class TeacherPolicy < ApplicationPolicy
 
   def managed_school_or_nil?
     user.is?('SchoolManager') &&
-      (record.school_id.nil? || user.schools.ids.include?(record.school_id))
+      (record.schools.empty? || user.schools.ids.intersect?(record.schools.ids))
   end
 end

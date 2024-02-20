@@ -55,6 +55,7 @@ RSpec.describe TeacherPolicy do
       let(:user) { build(:user, :school_manager) }
 
       before do
+        record.schools << create(:school)
         record.save
       end
 

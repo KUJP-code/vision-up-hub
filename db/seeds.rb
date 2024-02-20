@@ -31,8 +31,7 @@ User::TYPES.each do |type|
     name: "Test #{type}",
     email: "#{underscored}@example.com",
     password: "#{underscored}password",
-    organisation_id: org.id,
-    school_id: type == 'Teacher' ? org.schools.ids.first : nil
+    organisation_id: org.id
   ))
 end
 

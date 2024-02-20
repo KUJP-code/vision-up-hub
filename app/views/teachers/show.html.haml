@@ -1,7 +1,7 @@
 %main.flex.flex-col.gap-3.p-3
   %h1= t('.greet', name: @user.name)
   %h3= @user.email
-  %h3 You're a teacher at #{@user.school.name}
+  %h3 You're a teacher at #{@user.schools.pluck(:name).to_sentence}
 
   = link_to t('.edit'),
             edit_organisation_teacher_path(@user),

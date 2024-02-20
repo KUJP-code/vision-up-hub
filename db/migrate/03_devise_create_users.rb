@@ -6,7 +6,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
       t.string :name, null: false
       t.string :type, default: 'Teacher'
       t.references :organisation, null: false, foreign_key: true
-      t.references :school, foreign_key: true
 
       ## Database authenticatable
       t.string :email,              null: false, default: ''

@@ -1,7 +1,6 @@
 %h1= @org ? t('.org_users', org: @org.name) : t('.users')
 
-- if @orgs
-  = render 'users/between_org_nav', orgs: @orgs
+= render 'users/between_org_nav', orgs: @orgs if @orgs
 
 = render 'users/within_org_nav', org: @org || current_user.organisation
 
