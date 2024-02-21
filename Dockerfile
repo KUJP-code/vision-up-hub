@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.3.0
-FROM quay.io/evl.ms/fullstaq-ruby:3.3.0-jemalloc-bookworm-slim as base
+FROM quay.io/evl.ms/fullstaq-ruby:${RUBY_VERSION}-jemalloc-bookworm-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -32,7 +32,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 ARG BUN_VERSION=1.0.26
 ENV BUN_INSTALL=/usr/local/bun
 ENV PATH=/usr/local/bun/bin:$PATH
-RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v1.0.26"
+RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v${BUN_VERSION}"
 
 # Install application gems
 COPY --link Gemfile Gemfile.lock ./
@@ -96,26 +96,26 @@ server {
   }
 
   location @backend {
-    proxy_pass http://localhost:80;
+    proxy_pass http://localhost:3001;
     proxy_set_header Host $http_host;
   }
 }
 EOF
 
 # Copy built artifacts: gems, application
-COPY --from=build "/usr/local/bundle" "/usr/local/bundle"
+COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /rails /rails
 
 # Deployment options
-ENV PORT="80" \
+ENV PORT="3001" \
 	RUBY_YJIT_ENABLE="1"
 
 # Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"
-rails: bundle exec rails server -p 80
+rails: bundle exec rails server -p 3001
 EOF
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 80
+EXPOSE 3001
 CMD ["foreman", "start", "--procfile=Procfile.prod"]

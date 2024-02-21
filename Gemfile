@@ -61,9 +61,6 @@ gem 'mission_control-jobs', '0.1.1'
 # PgHero for DB stats
 gem 'pghero', '3.4.1'
 
-# S3 for file storage
-gem 'aws-sdk-s3', '1.143.0'
-
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
