@@ -40,3 +40,12 @@
 
 # Ignore specs
 /spec/*
+
+# Ignore dev files
+/.ruby-lsp/*
+/.gitattributes
+/.gitignore
+/.haml-lint.yml
+/.rspec
+/.rubocop.yml
+/docker-compose.yml
