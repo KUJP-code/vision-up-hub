@@ -3,7 +3,7 @@ version: "3"
 services:
   web:
     platform: linux/amd64
-    image: thatbballguy/materials:prod
+    build: .
     ports:
       - "3001:3001"
     volumes:
