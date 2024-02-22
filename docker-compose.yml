@@ -5,12 +5,16 @@ services:
     platform: linux/amd64
     build: .
     ports:
-      - "3001:3001"
+      - "80:80"
     volumes:
       - ./app:/rails/app
     env_file:
       - .env/development/database
       - .env/development/web
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
   database:
     platform: linux/amd64

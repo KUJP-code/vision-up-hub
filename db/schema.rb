@@ -140,8 +140,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
     t.jsonb "vocab", default: []
     t.string "comments", default: ""
     t.bigint "lesson_id", null: false
+    t.bigint "proponent_id", null: false
     t.jsonb "proposals", default: {}
-    t.integer "proponent_id", null: false
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -292,7 +292,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
     t.string "name", null: false
     t.string "type", default: "Teacher"
     t.bigint "organisation_id", null: false
-    t.bigint "school_id"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -315,7 +314,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["school_id"], name: "index_users_on_school_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -344,5 +342,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_033400) do
   add_foreign_key "student_classes", "students"
   add_foreign_key "students", "schools"
   add_foreign_key "users", "organisations"
-  add_foreign_key "users", "schools"
 end

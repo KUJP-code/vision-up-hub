@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.3.0
-FROM quay.io/evl.ms/fullstaq-ruby:${RUBY_VERSION}-jemalloc-bookworm-slim as base
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.0-jemalloc-bookworm-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -77,8 +77,8 @@ RUN gem install foreman && \
 
 COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
-  listen 3000 default_server;
-  listen [::]:3000 default_server;
+  listen 80 default_server;
+  listen [::]:80 default_server;
   access_log stdout;
 
   root /rails/public;
@@ -108,7 +108,8 @@ COPY --from=build /rails /rails
 
 # Deployment options
 ENV PORT="3001" \
-	RUBY_YJIT_ENABLE="1"
+	RUBY_YJIT_ENABLE="1" \
+	MALLOC_ARENA_MAX="2"
 
 # Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod
@@ -117,5 +118,5 @@ rails: bundle exec rails server -p 3001
 EOF
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3001
+EXPOSE 80
 CMD ["foreman", "start", "--procfile=Procfile.prod"]
