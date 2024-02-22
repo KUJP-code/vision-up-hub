@@ -6,7 +6,7 @@ class ProposedChangesController < ApplicationController
 
   def edit
     @lesson = @change.lesson
-    @lesson.assign_attributes(@change.proposals)
+    @lesson.assign_attributes(@change.proposals.except('comments', 'status'))
     render 'lessons/edit'
   end
 
@@ -42,8 +42,7 @@ class ProposedChangesController < ApplicationController
   def accepted_change
     @lesson = @change.lesson
 
-    if @lesson.update(@change.proposals)
-      @change.destroy
+    if @lesson.update(@change.proposals.except('comments', 'status'))
       redirect_to lesson_path(@lesson),
                   notice: 'Applied proposed change.'
     else

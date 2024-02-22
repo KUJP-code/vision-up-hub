@@ -17,7 +17,7 @@
             %td= change.proponent.name
             %td
               %ul
-                - change.proposals.each do |k, v|
+                - change.proposals.except('comments').each do |k, v|
                   - changed = v != lesson.send(k.to_sym)
                   %li{ class: changed ? 'text-red-500' : 'text-green-500' }
                     #{k.humanize}: #{v}
