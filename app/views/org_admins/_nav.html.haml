@@ -2,5 +2,7 @@
           courses_path
 = link_to t('.lessons'),
           lessons_path
+= link_to t('.schools'),
+          organisation_schools_path(current_user.organisation_id)
 = link_to t('.users'),
           organisation_users_path(current_user.organisation_id)

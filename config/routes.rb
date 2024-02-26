@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :students
-  resources :classes
-  resources :schools
   scope '(/:locale)',
         locale: /ja|en/,
         defaults: { locale: :ja } do
@@ -21,11 +18,15 @@ Rails.application.routes.draw do
       resources :stand_show_speaks, only: %i[create index update]
       post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
 
+      # Indexes for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
 
       resources :organisations, except: %i[destroy show] do
-        resources :users, except: %i[destroy]
+        resources :classes
+        resources :schools
+        resources :students
 
+        resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]
         resources :org_admins
         resources :sales

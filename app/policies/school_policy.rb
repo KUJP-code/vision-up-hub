@@ -6,7 +6,7 @@ class SchoolPolicy < ApplicationPolicy
   end
 
   def new?
-    authorized_ku_staff? || admin_of_org?
+    user.is?('Admin', 'Sales', 'OrgAdmin')
   end
 
   def edit?

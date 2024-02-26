@@ -1,10 +1,12 @@
 = link_to 'Courses',
           courses_path
-= link_to 'Lessons',
-          lessons_path
 = link_to 'Files',
           files_path
+= link_to 'Lessons',
+          lessons_path
 = link_to 'Organisations',
           organisations_path
+= link_to 'Schools',
+          organisation_schools_path(current_user.organisation_id)
 = link_to 'Users',
           users_path

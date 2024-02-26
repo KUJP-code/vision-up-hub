@@ -55,7 +55,12 @@ RSpec.describe SchoolPolicy do
     context 'when admin of different org' do
       let(:user) { create(:user, :org_admin) }
 
-      it_behaves_like 'unauthorized user'
+      it { is_expected.not_to authorize_action(:show) }
+      it { is_expected.to authorize_action(:new) }
+      it { is_expected.not_to authorize_action(:edit) }
+      it { is_expected.not_to authorize_action(:update) }
+      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.not_to authorize_action(:destroy) }
 
       it 'scopes to all org schools' do
         org_schools = School.where(organisation_id: user.organisation_id)

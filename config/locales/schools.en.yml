@@ -1,0 +1,6 @@
+---
+en:
+  schools:
+    show:
+      managed_by: "Managed by: %{managers}"
+      student_count: "Students: %{count}"

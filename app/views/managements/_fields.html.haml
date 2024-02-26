@@ -24,7 +24,7 @@
                  prompt: t('.select_manager'),
                  required: true
 
-  - if resource.new_record?
+  - if f.object.new_record?
     %button.btn.btn-danger{ 'data-action' => 'fields#remove',
                             type: 'button' }
       = t('.remove')

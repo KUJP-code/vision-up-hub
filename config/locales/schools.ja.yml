@@ -1,0 +1,8 @@
+---
+ja:
+  schools:
+    index:
+      create_school: "新しい学校を作成する"
+    show:
+      managed_by: "管理者: %{managers}"
+      student_count: "%{count}人の学生"
