@@ -5,6 +5,7 @@ class Organisation < ApplicationRecord
   validates :email, :name, :phone, uniqueness: true
 
   has_many :schools, dependent: :destroy
+  has_many :students, through: :schools
   has_many :classes, through: :schools
   has_many :users, dependent: :destroy
 

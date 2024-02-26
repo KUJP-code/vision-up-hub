@@ -7,6 +7,8 @@ class Student < ApplicationRecord
   encrypts :name
 
   belongs_to :school
+  delegate :organisation_id, to: :school
   has_many :student_classes, dependent: :destroy
-  has_many :classes, through: :student_classes
+  has_many :classes, through: :student_classes,
+                     source: :school_class
 end
