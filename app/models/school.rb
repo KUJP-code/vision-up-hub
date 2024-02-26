@@ -4,7 +4,8 @@ class School < ApplicationRecord
   validates :name, presence: true
 
   belongs_to :organisation
-  has_many :classes, dependent: :destroy
+  has_many :classes, dependent: :destroy,
+                     class_name: 'SchoolClass'
   has_many :managements, dependent: :destroy
   accepts_nested_attributes_for :managements,
                                 allow_destroy: true,

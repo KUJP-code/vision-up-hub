@@ -8,5 +8,7 @@ class SchoolManager < User
                                 allow_destroy: true,
                                 reject_if: :all_blank
   has_many :schools, through: :managements
+  has_many :classes, through: :schools,
+                     class_name: 'SchoolClass'
   has_many :teachers, through: :schools
 end
