@@ -72,7 +72,7 @@ RSpec.describe UserPolicy do
   end
 
   context 'when sales' do
-    let(:user) { build(:user, :sales) }
+    let(:user) { create(:user, :sales) }
 
     it 'can access full scope minus other KU staff categories' do
       create(:user, :writer, organisation: user.organisation)

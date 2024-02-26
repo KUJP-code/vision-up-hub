@@ -15,11 +15,10 @@
 %h2= t('.create_new')
 %nav.flex.flex-wrap.gap-2.p-3
   - current_user.class::VISIBLE_TYPES.each do |type|
-    - next if !org.ku? && User::KU_TYPES.include?(type)
+    - next if !current_user.ku? && User::KU_TYPES.include?(type)
 
     - type_path = send("new_organisation_#{type.singularize.underscore}_path", org.id)
     = link_to split_on_capitals(type),
               type_path,
               class: 'btn btn-primary',
               id: "create_#{type.singularize.underscore}"
-

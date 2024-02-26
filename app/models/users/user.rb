@@ -15,4 +15,10 @@ class User < ApplicationRecord
   def is?(*types)
     types.include?(type)
   end
+
+  def ku?
+    return false if organisation_id.nil?
+
+    organisation_id == 1 || organisation.name == 'KidsUP'
+  end
 end
