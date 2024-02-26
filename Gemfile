@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '3.3.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: "main"
-gem 'rails', '7.1.3'
+gem 'rails', '7.1.3.2'
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem 'propshaft', '0.8.0'
@@ -20,7 +20,7 @@ gem 'puma', '6.4.2'
 gem 'jsbundling-rails', '1.3.0'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem 'turbo-rails', '2.0.2'
+gem 'turbo-rails', '2.0.4'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails', '1.3.3'
@@ -60,6 +60,9 @@ gem 'mission_control-jobs', '0.1.1'
 
 # PgHero for DB stats
 gem 'pghero', '3.4.1'
+
+# Integration with AWS S3
+gem 'aws-sdk-s3', '1.143.0', require: false
 
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
