@@ -7,24 +7,20 @@ Rails.application.routes.draw do
     devise_for :users
 
     authenticate :user do
-      resources :lessons
+      resources :classes
       resources :courses, except: %i[destroy]
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]
       resources :files, only: %i[create index show]
+      resources :lessons
       resources :phonics_classes, only: %i[create index update]
       resources :proposed_changes, only: %i[destroy edit update]
       resources :stand_show_speaks, only: %i[create index update]
-      post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
-
-      # Indexes for KU staff who can see everything
-      get 'users', to: 'users#index', as: :users
+      resources :students
 
       resources :organisations, except: %i[destroy show] do
-        resources :classes
         resources :schools
-        resources :students
 
         resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]
@@ -34,6 +30,10 @@ Rails.application.routes.draw do
         resources :teachers
         resources :writers
       end
+      post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
+
+      # Index for KU staff who can see everything
+      get 'users', to: 'users#index', as: :users
     end
 
     authenticate :user, -> (user) { user.is?('Admin') } do

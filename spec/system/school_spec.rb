@@ -9,7 +9,7 @@ RSpec.describe 'creating a school' do
     sign_in user
   end
 
-  it 'can create a school as org_admin' do
+  it 'can create a school as org admin' do
     visit organisation_schools_path(user.organisation)
     click_link I18n.t('schools.index.create_school')
     within '#school_form' do
