@@ -2,6 +2,8 @@
 
 # Ignore git directory.
 /.git/
+/.gittattributes
+/.gitignore
 
 # Ignore bundler config.
 /.bundle
@@ -9,6 +11,11 @@
 # Ignore all environment files (except templates).
 /.env*
 !/.env*.erb
+
+# Ignore unnecessary dotfiles
+/.ebignore
+/.haml-lint.yml
+/.rubocop.yml
 
 # Ignore all default key files.
 /config/master.key
@@ -37,4 +44,8 @@
 /public/assets
 
 # Ignore specs
+/.rspec
 /spec/*
+
+# Ignore AWS-specific file
+/dockerrun.aws.json
