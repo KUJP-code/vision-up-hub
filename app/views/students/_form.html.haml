@@ -1,0 +1,54 @@
+-# locals: (schools:, student:)
+
+= form_with model: student,
+            html: { class: 'form',
+                    data: { controller: 'fields' },
+                    id: 'student-form' } do |f|
+  = render 'shared/form_errors', resource: student
+
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.label :student_id
+    = f.text_field :student_id
+
+  .form-group
+    = f.label :level
+    = f.select :level,
+               Student.levels.keys |
+                      .reject { |l| l == 'all_levels' } |
+                      .map { |l| [l.humanize, l] } |
+
+  .form-group
+    = f.label :school_id
+    = f.select :school_id, schools
+
+  .form-group
+    = f.label :comments
+    = f.text_area :comments
+
+  %h3= t('.classes')
+
+  = f.fields_for :student_classes, student.student_classes do |sc_f|
+    = render('student_classes/fields',
+             collection: student.student_classes,
+             f: sc_f,
+             resource: student)
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :student_classes,
+                   student.student_classes.new,
+                   child_index: 'CHILD' do |sc_f|
+      = render('student_classes/fields',
+               collection: student.student_classes,
+               f: sc_f,
+               resource: student)
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+    = t('.add_class')
+
+  = f.submit class: 'btn btn-primary'

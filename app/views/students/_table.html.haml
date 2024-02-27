@@ -1,0 +1,25 @@
+-# locals: (students:)
+
+%table.text-center
+  %thead
+    %tr
+      - unless current_user.ku?
+        %th= t('.name')
+      %th= t('.student_id')
+      %th= t('.school')
+      %th= t('.level')
+      %th= t('.classes')
+      %th= t('.edit')
+  %tbody
+    - students.each do |student|
+      %tr
+        - unless current_user.ku?
+          %td= student.name
+        %td= student.student_id
+        %td= student.school.name
+        %td= student.level
+        %td= student.classes.map(&:name).to_sentence
+        %td
+          = link_to t('.edit'),
+                    edit_student_path(student),
+                    class: 'btn btn-info'
