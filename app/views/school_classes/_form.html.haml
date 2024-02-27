@@ -1,0 +1,17 @@
+-# locals: (school_class:, schools:)
+
+= form_with model: school_class,
+            html: { class: 'form',
+                    data: { controller: 'fields' },
+                    id: 'school_class_form' } do |f|
+  = render 'shared/form_errors', resource: school_class
+
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.label :school_id
+    = f.select :school_id, schools
+
+  = f.submit class: 'btn btn-primary'

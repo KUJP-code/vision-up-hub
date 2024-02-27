@@ -1,0 +1,26 @@
+%main.flex.flex-col.items-center.gap-3.p-3
+  %h1= t('.classes')
+  = link_to t('.create_class'),
+            new_school_class_path,
+            class: 'btn btn-primary'
+
+  %table.w-full.text-center
+    %thead
+      %tr
+        %th= t('.name')
+        %th= t('.edit')
+        %th= t('.delete')
+    %tbody
+      - @school_classes.each do |school_class|
+        %tr
+          %td
+            = link_to school_class.name,
+                      school_class_path(school_class)
+          %td
+            = link_to t('.edit'),
+                      edit_school_class_path(school_class)
+          %td
+            = link_to t('.delete'),
+                      school_class_path(school_class),
+                      data: { turbo_method: :delete, turbo_confirm: t('.confirm') },
+                      class: 'btn btn-danger'

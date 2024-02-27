@@ -1,8 +1,8 @@
 %nav{ class: 'w-full h-[6svh] md:h-[3svh] bg-slate-600 ' \
              'flex justify-around items-center text-white font-bold' }
-  = link_to 'Home',
+  = link_to t('.home'),
             root_path
   = render "#{current_user.type.pluralize.underscore}/nav"
-  = link_to 'Sign Out',
+  = link_to t('.sign_out'),
             destroy_user_session_path,
             data: { turbo_method: :delete }

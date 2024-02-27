@@ -1,0 +1,8 @@
+---
+en:
+  school_classes:
+    index:
+      create_class: "Create new class"
+    show:
+      add_existing_student: "Add an existing student"
+      create_student: "Create a new student"
