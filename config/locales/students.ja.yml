@@ -8,3 +8,10 @@ ja:
       class_list: "クラス: %{class_list}"
       school: "学校: %{school}"
       student_id: "学生ID: %{id}"
+    table:
+      classes: "クラス"
+      edit: "編集"
+      level: "レベル"
+      name: "名前"
+      school: "学校"
+      student_id: "学生ID"

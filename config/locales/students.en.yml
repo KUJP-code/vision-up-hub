@@ -8,3 +8,10 @@ en:
       class_list: "Classes: %{class_list}"
       school: "School: %{school}"
       student_id: "Student ID: %{id}"
+    table:
+      classes: "Classes"
+      edit: "Edit"
+      level: "Level"
+      name: "Name"
+      school: "School"
+      student_id: "Student ID"

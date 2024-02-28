@@ -3,7 +3,7 @@
 class Student < ApplicationRecord
   include Levelable
 
-  validates :name, presence: true
+  validates :level, :name, presence: true
   encrypts :name
 
   belongs_to :school

@@ -1,5 +1,5 @@
 %main.flex.flex-col.gap-3.p-3
-  %h1= @student.name
+  %h1= current_user.ku? ? 'Name Redacted' : @student.name
   %h3= t('.student_id', id: @student.student_id)
   %h3= t('.school', school: @student.school.name)
   %h3= t('.class_list', class_list: @classes.to_sentence)

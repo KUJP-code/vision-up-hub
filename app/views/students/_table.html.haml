@@ -3,8 +3,7 @@
 %table.text-center
   %thead
     %tr
-      - unless current_user.ku?
-        %th= t('.name')
+      %th= t('.name')
       %th= t('.student_id')
       %th= t('.school')
       %th= t('.level')
@@ -13,13 +12,16 @@
   %tbody
     - students.each do |student|
       %tr
-        - unless current_user.ku?
-          %td= student.name
-        %td= student.student_id
-        %td= student.school.name
-        %td= student.level
-        %td= student.classes.map(&:name).to_sentence
-        %td
+        %td.p-2
+          = link_to current_user.ku? ? 'Name Redacted' : student.name,
+                    student_path(student)
+        %td.p-2
+          = link_to student.student_id || 'なし',
+                    student_path(student)
+        %td.p-2= student.school.name
+        %td.p-2= student.level.titleize
+        %td.p-2= student.classes.map(&:name).to_sentence
+        %td.p-2
           = link_to t('.edit'),
                     edit_student_path(student),
                     class: 'btn btn-info'

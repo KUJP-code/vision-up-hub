@@ -13,13 +13,14 @@
     %tbody
       - @school_classes.each do |school_class|
         %tr
-          %td
+          %td.p-2
             = link_to school_class.name,
                       school_class_path(school_class)
-          %td
+          %td.p-2
             = link_to t('.edit'),
-                      edit_school_class_path(school_class)
-          %td
+                      edit_school_class_path(school_class),
+                      class: 'btn btn-info'
+          %td.p-2
             = link_to t('.delete'),
                       school_class_path(school_class),
                       data: { turbo_method: :delete, turbo_confirm: t('.confirm') },
