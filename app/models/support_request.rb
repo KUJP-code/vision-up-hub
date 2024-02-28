@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SupportRequest < ApplicationRecord
-  validates :body, :category, presence: true
+  validates :category, :description, :subject, presence: true
 
   enum category: {
     general: 0,

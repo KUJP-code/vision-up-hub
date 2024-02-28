@@ -2,8 +2,9 @@
 
 FactoryBot.define do
   factory :support_request do
-    body { 'I have a Request!' }
     category { :general }
+    description { 'My request is very important because I am!' }
+    subject { 'I have a Request!' }
     user { association :user, :org_admin }
   end
 end

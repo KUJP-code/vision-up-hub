@@ -289,12 +289,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
   end
 
   create_table "support_requests", force: :cascade do |t|
-    t.string "body"
     t.integer "category"
+    t.string "description"
     t.string "internal_notes"
     t.datetime "resolved_at"
     t.integer "resolved_by"
     t.jsonb "seen_by", default: []
+    t.string "subject"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
