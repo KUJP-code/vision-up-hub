@@ -3,6 +3,7 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
   before_action :set_schools, only: %i[edit new show]
+  before_action :set_classes, only: %i[edit new show]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -10,7 +11,10 @@ class StudentsController < ApplicationController
     @students = policy_scope(Student).includes(:school, :classes)
   end
 
-  def show; end
+  def show
+    @classes = @student.classes.pluck(:name)
+    @potential_classes = @student.school.classes.pluck(:name, :id)
+  end
 
   def new
     @student = authorize Student.new
@@ -22,7 +26,7 @@ class StudentsController < ApplicationController
   end
 
   def create
-    @student = Student.new(student_params)
+    @student = authorize Student.new(student_params)
 
     if @student.save
       redirect_to @student, notice: t('create_success')
@@ -68,6 +72,10 @@ class StudentsController < ApplicationController
 
   def set_schools
     @schools = policy_scope(School).pluck(:name, :id)
+  end
+
+  def set_classes
+    @classes = policy_scope(SchoolClass).pluck(:name, :id)
   end
 
   def build_classes

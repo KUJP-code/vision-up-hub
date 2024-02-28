@@ -1,0 +1,17 @@
+%main.flex.flex-col.gap-3.p-3
+  %h1= @student.name
+  %h3= t('.student_id', id: @student.student_id)
+  %h3= t('.school', school: @student.school.name)
+  %h3= t('.class_list', class_list: @classes.to_sentence)
+  %h3= @student.level.titleize
+  = link_to t('.edit'),
+            edit_student_path(@student),
+            class: 'btn btn-info'
+
+  = form_with model: @student, html: { class: 'form' } do |f|
+    = f.fields_for :student_classes, @student.student_classes.new do |sc_f|
+      .flex.items-center.gap-2
+        = sc_f.label :class_id
+        = sc_f.select :class_id, @potential_classes
+
+        = f.submit t('.add_to_class'), class: 'btn btn-primary'

@@ -1,0 +1,10 @@
+---
+en:
+  students:
+    index:
+      create_student: "Create new student"
+    show:
+      add_to_class: "Add to this class"
+      class_list: "Classes: %{class_list}"
+      school: "School: %{school}"
+      student_id: "Student ID: %{id}"
