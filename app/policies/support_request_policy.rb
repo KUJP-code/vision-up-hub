@@ -27,6 +27,18 @@ class SupportRequestPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
+      case user.type
+      when 'Admin', 'Sales'
+        scope.all
+      when 'OrgAdmin'
+        user.organisation.support_requests
+      when 'SchoolManager'
+        scope.where(user_id: user.teachers.ids)
+      when 'Teacher', 'Writer'
+        user.support_requests
+      else
+        scope.none
+      end
     end
   end
 

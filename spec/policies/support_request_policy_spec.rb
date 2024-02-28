@@ -8,21 +8,45 @@ RSpec.describe SupportRequestPolicy do
   let(:support_request) { build(:support_request) }
 
   context 'when admin' do
-    let(:user) { build(:user, :admin) }
+    let(:user) { build(:user, :admin, organisation_id: 1) }
 
     it_behaves_like 'fully authorized user'
+
+    it 'scopes to all support requests' do
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.all)
+    end
   end
 
   context 'when writer' do
-    let(:user) { build(:user, :writer) }
+    let(:user) { create(:user, :writer) }
 
-    it_behaves_like 'unauthorized user except new'
+    context 'when own support request' do
+      before do
+        user.support_requests << support_request
+      end
+
+      it_behaves_like 'fully authorized user'
+    end
+
+    context 'when other support request' do
+      it_behaves_like 'unauthorized user except new'
+    end
+
+    it 'scopes to empty relation' do
+      user.support_requests << support_request
+      create_list(:support_request, 2)
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq([support_request])
+    end
   end
 
   context 'when sales' do
-    let(:user) { build(:user, :sales) }
+    let(:user) { build(:user, :sales, organisation_id: 1) }
 
     it_behaves_like 'fully authorized user'
+
+    it 'scopes to all support requests' do
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.all)
+    end
   end
 
   context 'when org admin' do
@@ -61,6 +85,13 @@ RSpec.describe SupportRequestPolicy do
 
       it_behaves_like 'unauthorized user except new'
     end
+
+    it 'scopes to all support requests from their organisation' do
+      user = create(:user, :org_admin)
+      create(:user, :school_manager).support_requests << support_request
+      org_requests = create_list(:support_request, 2, user:)
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(org_requests)
+    end
   end
 
   context 'when school manager' do
@@ -97,6 +128,16 @@ RSpec.describe SupportRequestPolicy do
 
       it_behaves_like 'unauthorized user except new'
     end
+
+    it 'scopes to all support requests from their school' do
+      user = create(:user, :school_manager, schools: [create(:school)])
+      create(:user, :org_admin).support_requests << support_request
+      school_requests = create_list(
+        :support_request, 2,
+        user: create(:user, :teacher, schools: [user.schools.first])
+      )
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(school_requests)
+    end
   end
 
   context 'when teacher' do
@@ -112,6 +153,12 @@ RSpec.describe SupportRequestPolicy do
 
     context 'when viewing other user requests' do
       it_behaves_like 'unauthorized user except new'
+    end
+
+    it 'scopes to own requests' do
+      user.support_requests << support_request
+      create_list(:support_request, 2)
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq([support_request])
     end
   end
 end
