@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Teacher < User
+  include Supportable
+
   VISIBLE_TYPES = %w[].freeze
 
   has_many :class_teachers, dependent: :destroy

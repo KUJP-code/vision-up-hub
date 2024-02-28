@@ -295,7 +295,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
     t.datetime "resolved_at"
     t.integer "resolved_by"
     t.jsonb "seen_by", default: []
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_support_requests_on_user_id"

@@ -10,7 +10,7 @@ class SupportRequest < ApplicationRecord
     feature_request: 3
   }
 
-  belongs_to :user
+  belongs_to :user, optional: true
   has_many_attached :attachments
 
   def mark_seen_by(user_id)
