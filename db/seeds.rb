@@ -75,7 +75,7 @@ end
 puts 'Adding students to classes and schools...'
 
 School.all.each do |school|
-  students = fb.create_list(:student, 2)
+  students = fb.create_list(:student, 2, school_id: school.id)
   school.classes.each do |klass|
     klass.students << students
   end

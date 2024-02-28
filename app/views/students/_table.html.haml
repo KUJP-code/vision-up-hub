@@ -13,7 +13,7 @@
     - students.each do |student|
       %tr
         %td.p-2
-          = link_to current_user.ku? ? 'Name Redacted' : student.name,
+          = link_to current_user.ku? ? 'Redacted' : student.name,
                     student_path(student)
         %td.p-2
           = link_to student.student_id || 'なし',
