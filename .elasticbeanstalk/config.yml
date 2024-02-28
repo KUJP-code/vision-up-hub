@@ -11,3 +11,5 @@ global:
   platform_version: 4.2.1
   sc: git
   workspace_type: Application
+deploy:
+  artifact: dockerrun.aws.json
