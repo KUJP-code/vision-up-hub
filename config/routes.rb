@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
+      resources :support_requests
 
       resources :organisations, except: %i[destroy show] do
         resources :schools
