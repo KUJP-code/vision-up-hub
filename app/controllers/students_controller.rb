@@ -50,10 +50,10 @@ class StudentsController < ApplicationController
 
   def destroy
     if @student.destroy
-      redirect_to students_path,
+      redirect_to students_url,
                   notice: t('destroy_success')
     else
-      redirect_to students_path,
+      redirect_to students_url,
                   alert: t('destroy_failure')
     end
   end

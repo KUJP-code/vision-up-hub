@@ -20,7 +20,7 @@ class OrganisationsController < ApplicationController
     @organisation = authorize Organisation.new(organisation_params)
 
     if @organisation.save
-      redirect_to organisations_path,
+      redirect_to organisations_url,
                   notice: t('create_success', resource: '')
     else
       render :new, status: :unprocessable_entity
@@ -29,7 +29,7 @@ class OrganisationsController < ApplicationController
 
   def update
     if @organisation.update(organisation_params)
-      redirect_to organisations_path,
+      redirect_to organisations_url,
                   notice: t('update_success', resource: '')
     else
       render :edit, status: :unprocessable_entity
