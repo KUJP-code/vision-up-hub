@@ -17,11 +17,8 @@
         = link_to split_on_capitals(type),
                   new_lesson_path(type:),
                   id: "add_#{type.underscore}"
-  .w-full.flex.flex-wrap.justify-around.gap-3
+  %main.w-full.flex.flex-wrap.justify-around.gap-3
     - @lessons.group_by(&:type).each do |type, lessons|
-      .flex.flex-col.gap-1
-        %h2= split_on_capitals(type).pluralize
-        %ul.flex.flex-col.gap-1
-          - lessons.each do |l|
-            = link_to l.title,
-                      lesson_path(l)
+      = render 'lessons/lesson_table',
+               heading: split_on_capitals(type).pluralize,
+               lessons:

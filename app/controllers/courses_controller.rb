@@ -9,7 +9,9 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @lessons = @course.lessons.select(:id, :title, :type)
+    @lessons = @course.lessons
+                      .select(:id, :title, :type)
+                      .includes(:course_lessons)
   end
 
   def new

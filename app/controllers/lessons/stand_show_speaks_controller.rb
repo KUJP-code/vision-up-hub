@@ -26,7 +26,7 @@ class StandShowSpeaksController < LessonsController
     return propose_changes(stand_show_speak_params) if proposing_changes?
 
     if @lesson.update(stand_show_speak_params)
-      redirect_to lesson_url(@lesson),
+      redirect_to after_update_url,
                   notice: "#{@lesson.title} successfully updated."
     else
       set_courses
@@ -41,5 +41,14 @@ class StandShowSpeaksController < LessonsController
   def stand_show_speak_params
     sss_params = %i[script]
     params.require(:stand_show_speak).permit(lesson_params + sss_params)
+  end
+
+  def after_update_url
+    if params[:commit] == 'Change Date'
+      course = stand_show_speak_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course)
+    else
+      lesson_url(@lesson)
+    end
   end
 end

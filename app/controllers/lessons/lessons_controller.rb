@@ -80,7 +80,8 @@ class LessonsController < ApplicationController
   end
 
   def generate_guide
-    return if @lesson.new_record?
+    return if @lesson.new_record? || proposing_changes? ||
+              params[:commit] == 'Change Date'
 
     @lesson.attach_guide
   end

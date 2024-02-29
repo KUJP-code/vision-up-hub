@@ -24,7 +24,7 @@ class ExercisesController < LessonsController
     return propose_changes(exercise_params) if proposing_changes?
 
     if @lesson.update(exercise_params)
-      redirect_to lesson_url(@lesson),
+      redirect_to after_update_url,
                   notice: 'Exercise was successfully updated.'
     else
       set_courses
@@ -42,5 +42,14 @@ class ExercisesController < LessonsController
       links materials notes outro guide_image
     ]
     params.require(:exercise).permit(lesson_params + e_params)
+  end
+
+  def after_update_url
+    if params[:commit] == 'Change Date'
+      course = exercise_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course)
+    else
+      lesson_url(@lesson)
+    end
   end
 end

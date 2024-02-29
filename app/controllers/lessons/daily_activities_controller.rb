@@ -24,7 +24,7 @@ class DailyActivitiesController < LessonsController
     return propose_changes(daily_activity_params) if proposing_changes?
 
     if @lesson.update(daily_activity_params)
-      redirect_to lesson_url(@lesson),
+      redirect_to after_update_url,
                   notice: 'Daily activity successfully updated.'
     else
       set_courses
@@ -37,7 +37,18 @@ class DailyActivitiesController < LessonsController
   private
 
   def daily_activity_params
-    da_params = %i[extra_fun intro instructions large_groups materials notes links subtype]
+    da_params = %i[
+      extra_fun intro instructions large_groups materials notes links subtype
+    ]
     params.require(:daily_activity).permit(lesson_params + da_params)
+  end
+
+  def after_update_url
+    if params[:commit] == 'Change Date'
+      course = daily_activity_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course)
+    else
+      lesson_url(@lesson)
+    end
   end
 end

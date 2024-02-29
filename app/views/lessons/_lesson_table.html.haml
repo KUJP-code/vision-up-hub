@@ -1,0 +1,28 @@
+-# locals: (heading:, lessons:)
+
+.flex.flex-col.gap-1
+  %h2.font-bold= heading
+  %table
+    %thead
+      %tr
+        %th Title
+        %th Week
+        %th Day
+        %th Update
+    %tbody
+      - lessons.each do |l|
+        = form_with model: l,
+                    class: 'flex gap-1' do |f|
+          = f.fields_for :course_lessons,
+                         l.course_lessons.find { |cl| cl.course_id == @course.id } do |cl_f|
+            %tr
+              %td
+                = link_to l.title,
+                          lesson_path(l),
+                          class: 'font-semibold'
+              = render 'course_lessons/date_fields',
+                       f: cl_f,
+                       table: true
+              %td
+                = cl_f.hidden_field :course_id
+                = cl_f.submit 'Change Date', class: 'btn btn-primary text-sm'
