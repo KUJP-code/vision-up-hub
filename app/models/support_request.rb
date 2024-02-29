@@ -15,10 +15,12 @@ class SupportRequest < ApplicationRecord
 
   def mark_seen_by(user_id)
     seen_by << user_id unless seen_by?(user_id)
+    save
   end
 
   def mark_all_unseen
     self.seen_by = []
+    save
   end
 
   def resolved?

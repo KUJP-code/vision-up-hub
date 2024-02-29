@@ -10,6 +10,7 @@ class SupportRequestsController < ApplicationController
   end
 
   def show
+    @support_request.mark_seen_by(current_user.id)
     # @support_messages = policy_scope(@support_request.support_messages)
   end
 
@@ -35,6 +36,7 @@ class SupportRequestsController < ApplicationController
 
   def update
     if @support_request.update(support_request_params)
+      @support_request.mark_all_unseen
       redirect_to @support_request,
                   notice: t('update_success')
     else
