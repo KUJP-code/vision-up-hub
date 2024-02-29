@@ -18,6 +18,7 @@ class StudentsController < ApplicationController
 
   def new
     @student = authorize Student.new
+    @student.school_id = params[:school_id] if params[:school_id]
     build_classes
   end
 
