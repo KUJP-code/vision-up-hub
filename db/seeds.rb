@@ -66,10 +66,14 @@ course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: less
 Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
 Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 
-puts 'Adding classes to schools...'
+puts 'Adding classes to schools & teachers...'
 
 School.all.each do |school|
   school.classes << fb.build_list(:school_class, 2)
+end
+
+Teacher.all.each do |teacher|
+  teacher.classes << teacher.school.classes.first
 end
 
 puts 'Adding students to classes and schools...'

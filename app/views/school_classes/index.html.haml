@@ -1,8 +1,9 @@
 %main.flex.flex-col.items-center.gap-3.p-3
   %h1= t('.classes')
-  = link_to t('.create_class'),
-            new_school_class_path,
-            class: 'btn btn-primary'
+  - unless current_user.is?('Teacher', 'Writer')
+    = link_to t('.create_class'),
+              new_school_class_path,
+              class: 'btn btn-primary'
 
   %table.w-full.text-center
     %thead

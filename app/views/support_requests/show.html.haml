@@ -6,5 +6,9 @@
   %h3= @support_request.category
   %h3= @support_request.description
 
+  = link_to t('.edit'),
+            edit_support_request_path(@support_request),
+            class: 'btn btn-info'
+
   %h2= t('.messages')
   -# TODO: Add message list once they exist
