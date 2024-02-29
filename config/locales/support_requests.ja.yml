@@ -1,0 +1,10 @@
+ja:
+  support_requests:
+    categories:
+      bug_report: "バグ報告"
+      feature_request: "サポート依頼"
+      general: "一般"
+      typo_report: "タイプレポート"
+    status_badge:
+      open: "オープン"
+      resolved: "解決済"

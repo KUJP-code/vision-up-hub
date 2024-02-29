@@ -1,0 +1,10 @@
+%main
+  .flex.gap-2
+    %h1= @support_request.subject
+    = render 'support_requests/status_badge',
+             resolved: @support_request.resolved?
+  %h3= @support_request.category
+  %h3= @support_request.description
+
+  %h2= t('.messages')
+  -# TODO: Add message list once they exist

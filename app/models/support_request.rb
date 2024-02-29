@@ -21,7 +21,17 @@ class SupportRequest < ApplicationRecord
     self.seen_by = []
   end
 
+  def resolved?
+    resolved_at.present? && resolved_by.present?
+  end
+
   def seen_by?(user_id)
     seen_by.include?(user_id)
+  end
+
+  def self.select_categories
+    categories.keys.map do |key|
+      [I18n.t("support_requests.categories.#{key}"), key]
+    end
   end
 end

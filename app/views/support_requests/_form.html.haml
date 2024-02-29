@@ -1,0 +1,19 @@
+-# locals: (request:)
+
+= form_with model: request, html: { class: 'form',
+                                    id: 'support_request_form' } do |f|
+  = render 'shared/form_errors', resource: request
+
+  .form-group
+    = f.label :category
+    = f.select :category, SupportRequest.select_categories
+
+  .form-group
+    = f.label :subject
+    = f.text_field :subject
+
+  .form-group
+    = f.label :description
+    = f.text_area :description
+
+  = f.submit class: 'btn btn-primary'
