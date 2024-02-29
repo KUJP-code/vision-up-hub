@@ -64,6 +64,9 @@ gem 'pghero', '3.4.1'
 # Integration with AWS S3
 gem 'aws-sdk-s3', '1.143.0', require: false
 
+# Lock rack to avoid vulnerabilities
+gem 'rack', '3.0.9.1'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
