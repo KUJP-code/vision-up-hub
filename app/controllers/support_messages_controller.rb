@@ -1,0 +1,2 @@
+class SupportMessagesController < ApplicationController
+end
