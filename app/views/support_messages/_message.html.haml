@@ -1,0 +1,7 @@
+-# locals: (message:)
+
+.flex.flex-wrap
+  .flex.items-end.gap-2.w-full
+    %h3= message.user.name
+    %small= ja_datetime(message.created_at)
+  %p= message.message

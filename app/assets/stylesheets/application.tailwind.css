@@ -29,6 +29,10 @@
 			background-color: #f5f5f5;
 		}
 	}
+
+	small {
+		@apply text-sm text-slate-300;
+	}
 }
 
 @layer components {

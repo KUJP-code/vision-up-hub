@@ -11,4 +11,13 @@
             class: 'btn btn-info'
 
   %h2= t('.messages')
-  -# TODO: Add message list once they exist
+
+  .p-3
+    - @messages.each do |message|
+      = render 'support_messages/message', message:
+
+  = form_with model: [@support_request, @support_request.messages.new],
+              html: { class: 'form',
+                      id: 'new_support_message' } do |f|
+    = f.text_area :message, rows: 3
+    = f.submit t('.send'), class: 'btn btn-primary'

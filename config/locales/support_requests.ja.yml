@@ -5,6 +5,8 @@ ja:
       feature_request: "サポート依頼"
       general: "一般"
       typo_report: "タイプレポート"
+    show:
+      send: "送信"
     status_badge:
       open: "オープン"
       resolved: "解決済"

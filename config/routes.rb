@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :support_messages
   scope '(/:locale)',
         locale: /ja|en/,
         defaults: { locale: :ja } do
@@ -19,7 +18,9 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
-      resources :support_requests
+      resources :support_requests do
+        resources :support_messages
+      end
 
       resources :organisations, except: %i[destroy show] do
         resources :schools

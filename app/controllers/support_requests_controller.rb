@@ -11,8 +11,7 @@ class SupportRequestsController < ApplicationController
 
   def show
     @support_request.mark_seen_by(current_user.id)
-    # TODO: uncomment when support messages are implemented
-    # @support_messages = policy_scope(@support_request.support_messages)
+    @messages = @support_request.messages
   end
 
   def new
