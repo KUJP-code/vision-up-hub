@@ -12,7 +12,7 @@ export default {
 				'ku-gray-100': '#f9f9f9',
 				'ku-gray-500': '#b1a9bc',
 				'ku-gray-900': '#b1a9be',
-				'ku-orange': '#f48000',
+				'ku-orange': '#fab650',
 				'ku-purple': '#7e7195',
 			}
 		},

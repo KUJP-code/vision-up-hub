@@ -1,3 +1,8 @@
-= link_to t('.classes'), school_classes_path
-= link_to t('.students'), students_path
-= link_to t('.request_support'), support_requests_path
+= main_nav_link t('.classes'),
+                school_classes_path
+= main_nav_link t('.students'),
+          students_path
+= main_nav_link t('.request_support'),
+          support_requests_path
+.h-full.flex.items-center.bg-ku-purple.mx-3
+  = main_nav_link t('.tutorials'), 'fake_temp_path'

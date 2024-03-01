@@ -10,13 +10,13 @@
   %tbody
     - lessons.each do |lesson|
       %tr
-        %td
+        %td.p-1
           = link_to lesson.title,
                     lesson_path(lesson)
-        %td.flex.items-center.gap-3
+        %td.flex.flex-wrap.justify-center.items-center.gap-1.p-1
           = render 'shared/visibility_badges',
                    approved: lesson.approved?,
                    released: lesson.released?
         %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence
-        %td.flex.gap-3
+        %td.flex.flex-wrap.justify-center.items-center.gap-1.p-1.text-sm
           = render 'shared/visibility_toggles', resource: lesson

@@ -19,4 +19,4 @@
 - if current_user.is?('Admin') && !resource.released?
   = form_with model: resource do |f|
     = f.hidden_field :released, value: true
-    = f.submit 'Release', class: 'btn btn-primary text-base'
+    = f.submit 'Release', class: 'btn btn-primary'
