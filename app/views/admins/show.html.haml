@@ -1,5 +1,6 @@
+= render 'shared/subtitle', text: "Yo, #{@user.name}"
+
 %main.flex.flex-col.gap-3.p-3
-  %h1 Yo, #{@user.name}
   %h3 You're an #{@user.type}
   %h3= @user.email
 

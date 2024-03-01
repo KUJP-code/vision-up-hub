@@ -1,5 +1,6 @@
+= render 'shared/subtitle', text: "Welcome, #{@user.name}"
+
 %main.flex.flex-col.gap-3.p-3
-  %h1 Hi #{@user.name}
   %h3 You're part of the sales team
   %h3= @user.email
 
