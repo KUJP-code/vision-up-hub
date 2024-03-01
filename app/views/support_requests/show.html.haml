@@ -1,23 +1,27 @@
-%main
-  .flex.gap-2
-    %h1= @support_request.subject
-    = render 'support_requests/status_badge',
-             resolved: @support_request.resolved?
-  %h3= @support_request.category
-  %h3= @support_request.description
-
-  = link_to t('.edit'),
-            edit_support_request_path(@support_request),
-            class: 'btn btn-info'
+%main.flex.flex-col.gap-3.p-3
+  .flex.flex-col.items-center.justify-center.gap-2.p-3.rounded-md.border
+    .flex.gap-2
+      %h1= @support_request.subject
+      = render 'support_requests/status_badge',
+               resolved: @support_request.resolved?
+    %h3= @support_request.category.titleize
+    %h3= @support_request.description
+    .flex.gap-2
+      = link_to t('.edit'),
+                edit_support_request_path(@support_request),
+                class: 'btn btn-info'
+      = form_with model: @support_request do |f|
+        = f.hidden_field :resolved_by, value: current_user.id
+        = f.hidden_field :resolved_at, value: Time.zone.now
+        = f.submit t('.mark_resolved'), class: 'btn btn-primary'
 
   %h2= t('.messages')
 
-  .p-3
-    - @messages.each do |message|
-      = render 'support_messages/message', message:
+  - @messages.each do |message|
+    = render 'support_messages/message', message:
 
   = form_with model: [@support_request, @support_request.messages.new],
-              html: { class: 'form',
+              html: { class: 'form p-0',
                       id: 'new_support_message' } do |f|
     = f.text_area :message, rows: 3
     = f.submit t('.send'), class: 'btn btn-primary'

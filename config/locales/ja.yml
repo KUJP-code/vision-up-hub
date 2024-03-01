@@ -181,3 +181,9 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  users:
+    admin: "管理者"
+    org_admin: "組織管理者"
+    school_manager: "学校管理者"
+    teacher: "先生"
+    writer: "著者"

@@ -1,7 +1,13 @@
 -# locals: (message:)
+- user = message.user
 
-.flex.flex-wrap
+%hr.w-full.border
+.flex.flex-wrap.p-1
   .flex.items-end.gap-2.w-full
-    %h3= message.user.name
+    %h3
+      - if user
+        = "#{t("users.#{user.type.underscore}")}: #{user.name}"
+      - else
+        = t('.deleted_user')
     %small= ja_datetime(message.created_at)
   %p= message.message

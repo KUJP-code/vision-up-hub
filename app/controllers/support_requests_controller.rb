@@ -11,7 +11,7 @@ class SupportRequestsController < ApplicationController
 
   def show
     @support_request.mark_seen_by(current_user.id)
-    @messages = @support_request.messages
+    @messages = @support_request.messages.includes(:user)
   end
 
   def new
