@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'creating an Stand Show Speak lesson' do
-  let!(:course) { create(:course) }
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
@@ -12,9 +11,9 @@ RSpec.describe 'creating an Stand Show Speak lesson' do
   end
 
   it 'can create a stand show speak lesson' do
-    visit course_path(course)
-    find_by_id('add-lesson').click
-    click_link 'add_stand_show_speak'
+    visit lessons_path
+    find_by_id('create_lesson').click
+    click_link 'create_stand_show_speak'
     within '#stand_show_speak_form' do
       fill_in 'stand_show_speak_title', with: 'Test Stand Show Speak'
       fill_in 'stand_show_speak_goal', with: 'Test Goal'

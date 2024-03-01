@@ -28,6 +28,9 @@ RSpec.describe SupportRequest do
 
     it 'resets to empty array when new support message added' do
       pending('support messages do not exist yet')
+      request = create(:support_request, seen_by: [1, 2, 3])
+      request.support_messages << create(:support_message)
+      expect(request.seen_by).to eq([])
     end
   end
 

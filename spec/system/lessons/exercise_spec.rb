@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'creating an Exercise lesson' do
-  let!(:course) { create(:course) }
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
@@ -12,9 +11,9 @@ RSpec.describe 'creating an Exercise lesson' do
   end
 
   it 'can create an exercise lesson' do
-    visit course_path(course)
-    find_by_id('add-lesson').click
-    click_link 'add_exercise'
+    visit lessons_path
+    find_by_id('create_lesson').click
+    click_link 'create_exercise'
     within '#exercise_form' do
       fill_in 'exercise_title', with: 'Test Exercise'
       select 'Kindy', from: 'exercise_level'

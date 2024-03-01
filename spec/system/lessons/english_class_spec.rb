@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'creating an EnglishClass lesson' do
-  let!(:course) { create(:course) }
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
@@ -12,9 +11,9 @@ RSpec.describe 'creating an EnglishClass lesson' do
   end
 
   it 'can create an english class' do
-    visit course_path(course)
-    find_by_id('add-lesson').click
-    click_link 'add_english_class'
+    visit lessons_path
+    find_by_id('create_lesson').click
+    click_link 'create_english_class'
     within '#english_class_form' do
       fill_in 'english_class_title', with: 'Test English Class'
       fill_in 'english_class_goal', with: 'Test Goal'
