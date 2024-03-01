@@ -1,4 +1,17 @@
+%h1= t('.support_requests')
+
+- unless current_user.is?('Admin')
+  %details{
+    class: 'm-3 bg-ku-blue text-white font-semibold rounded-md overflow-hidden',
+    id: 'create_request'
+  }
+    %summary.cursor-pointer.bg-ku-blue.p-2= t('.new_request')
+    = render 'support_requests/form',
+             request: SupportRequest.new
+
 %main.flex.flex-col.gap-3
+  - if @support_requests.empty?
+    %h2.mt-12= t('.no_support_requests')
   - @support_requests.each do |request|
     = link_to support_request_path(request),
               class: 'flex flex-col border' do

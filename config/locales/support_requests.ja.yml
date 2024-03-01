@@ -5,6 +5,8 @@ ja:
       feature_request: "サポート依頼"
       general: "一般"
       typo_report: "タイプレポート"
+    index:
+      new_request: "新しいサポート依頼"
     show:
       send: "送信"
     status_badge:
