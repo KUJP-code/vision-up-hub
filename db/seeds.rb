@@ -73,7 +73,8 @@ School.all.each do |school|
 end
 
 Teacher.all.each do |teacher|
-  teacher.classes << teacher.school.classes.first
+  teacher.schools << teacher.organisation.schools.first
+  teacher.classes << teacher.schools.first.classes.first
 end
 
 puts 'Adding students to classes and schools...'
