@@ -15,14 +15,14 @@
     - active = day == date
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                         id: @user.id, date: day),
-              class: day_link_classes(active) do
+              class: day_link_classes(active, day) do
       %h3{ class: day_link_date_classes(active) }
         = day.strftime('%-m/%-d')
       .font-bold.text-white.text-2xl.py-5= day.strftime('%a').first
 
   .spacer
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
-                                      id: @user.id, date: date - 7.days),
+                                      id: @user.id, date: date + 7.days),
             class: 'week-arrow' do
     ⮞
   .spacer
