@@ -92,4 +92,7 @@
 	.turbo-progress-bar {
 		display: none !important;
 	}
+	 .week-arrow {
+		@apply rounded-full flex items-center font-extrabold text-3xl text-ku-orange border-4 border-ku-orange p-1;
+	 }
 }

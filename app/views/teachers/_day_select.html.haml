@@ -1,0 +1,28 @@
+-# locals: (date:)
+
+- week_start = date.beginning_of_week.to_date
+- weekdays = (0...5).map { |n| week_start + n.days }
+
+%nav.w-full.flex.justify-between.items-center
+  .spacer
+  = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                      id: @user.id, date: date - 7.days),
+            class: 'week-arrow' do
+    ⮜
+  .spacer
+
+  - weekdays.each do |day|
+    - active = day == date
+    = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                        id: @user.id, date: day),
+              class: day_link_classes(active) do
+      %h3{ class: day_link_date_classes(active) }
+        = day.strftime('%-m/%-d')
+      .font-bold.text-white.text-2xl.py-5= day.strftime('%a').first
+
+  .spacer
+  = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                      id: @user.id, date: date - 7.days),
+            class: 'week-arrow' do
+    ⮞
+  .spacer

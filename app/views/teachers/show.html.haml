@@ -1,9 +1,10 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
-  %h3= @user.email
-  %h3 You're a teacher at #{@user.schools.pluck(:name).to_sentence}
+  - if current_user.ku?
+    = link_to t('.edit'),
+              edit_organisation_teacher_path(@user),
+              class: 'btn btn-primary'
 
-  = link_to t('.edit'),
-            edit_organisation_teacher_path(@user),
-            class: 'btn btn-primary'
+  = render 'teachers/day_select',
+           date: @date

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class TeachersController < UsersController
-  def show; end
+  def show
+    @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
+  end
 
   def new
     @user = authorize Teacher.new(organisation_id: params[:organisation_id])

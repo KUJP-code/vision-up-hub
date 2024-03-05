@@ -6,7 +6,7 @@
   .flex.items-end.gap-2.w-full
     %h3
       - if user
-        = "#{t("users.#{user.type.underscore}")}: #{user.name}"
+        #{t("users.#{user.type.underscore}")}: #{user.name}
       - else
         = t('.deleted_user')
     %small= ja_datetime(message.created_at)
