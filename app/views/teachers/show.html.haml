@@ -1,4 +1,8 @@
-= render 'shared/subtitle', text: "Welcome, #{@user.name}"
+- in_future = Time.zone.today < @date
+
+= render 'shared/subtitle',
+         classes: in_future ? 'bg-ku-gray-500 text-ku-orange' : '',
+         text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
   - if current_user.ku?
