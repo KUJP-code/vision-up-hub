@@ -2,7 +2,7 @@
 
 class PhonicsClassesController < LessonsController
   def index
-    @lessons = policy_scope(PhonicsClass.all)
+    @lessons = policy_scope(PhonicsClass.order(title: :desc))
   end
 
   def create
@@ -37,8 +37,7 @@ class PhonicsClassesController < LessonsController
   private
 
   def phonics_class_params
-    pc_params = %i[add_difficulty extra_fun instructions links materials notes]
-    params.require(:phonics_class).permit(lesson_params + pc_params)
+    params.require(:phonics_class).permit(lesson_params + PhonicsClass::ATTRIBUTES)
   end
 
   def after_update_url

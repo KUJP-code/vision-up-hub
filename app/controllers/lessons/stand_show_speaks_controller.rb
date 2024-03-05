@@ -4,7 +4,7 @@ class StandShowSpeaksController < LessonsController
   skip_after_action :generate_guide
 
   def index
-    @lessons = policy_scope(StandShowSpeak.all)
+    @lessons = policy_scope(StandShowSpeak.order(title: :desc))
   end
 
   def create
@@ -39,8 +39,7 @@ class StandShowSpeaksController < LessonsController
   private
 
   def stand_show_speak_params
-    sss_params = %i[script]
-    params.require(:stand_show_speak).permit(lesson_params + sss_params)
+    params.require(:stand_show_speak).permit(lesson_params + StandShowSpeak::ATTRIBUTES)
   end
 
   def after_update_url

@@ -4,7 +4,7 @@ class EnglishClassesController < LessonsController
   skip_after_action :generate_guide
 
   def index
-    @lessons = policy_scope(EnglishClass.all)
+    @lessons = policy_scope(EnglishClass.order(title: :desc))
   end
 
   def create
@@ -39,8 +39,7 @@ class EnglishClassesController < LessonsController
   private
 
   def english_class_params
-    ec_params = %i[example_sentences guide lesson_topic notes term unit vocab]
-    params.require(:english_class).permit(lesson_params + ec_params)
+    params.require(:english_class).permit(lesson_params + EnglishClass::ATTRIBUTES)
   end
 
   def after_update_url

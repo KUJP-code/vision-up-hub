@@ -3,6 +3,19 @@
 class Exercise < Lesson
   include ExercisePdf, Linkable, Listable, PdfImageable
 
+  ATTRIBUTES = %i[
+    add_difficulty
+    extra_fun
+    intro
+    instructions
+    large_groups
+    links
+    materials
+    notes
+    outro
+    guide_image
+  ].freeze
+
   LISTABLE_ATTRIBUTES = %i[
     add_difficulty
     extra_fun

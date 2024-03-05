@@ -3,10 +3,21 @@
 class DailyActivity < Lesson
   include DailyActivityPdf, Linkable, Listable
 
+  ATTRIBUTES = %i[
+    extra_fun
+    instructions
+    intro
+    large_groups
+    links
+    materials
+    notes
+    subtype
+  ].freeze
+
   LISTABLE_ATTRIBUTES = %i[
     extra_fun
-    intro
     instructions
+    intro
     large_groups
     materials
     notes

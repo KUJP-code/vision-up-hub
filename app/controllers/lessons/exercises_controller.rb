@@ -2,7 +2,7 @@
 
 class ExercisesController < LessonsController
   def index
-    @lessons = Exercise.order(title: :desc)
+    @lessons = policy_scope(Exercise.order(title: :desc))
   end
 
   def create
@@ -37,11 +37,7 @@ class ExercisesController < LessonsController
   private
 
   def exercise_params
-    e_params = %i[
-      add_difficulty extra_fun instructions intro large_groups
-      links materials notes outro guide_image
-    ]
-    params.require(:exercise).permit(lesson_params + e_params)
+    params.require(:exercise).permit(lesson_params + Exercise::ATTRIBUTES)
   end
 
   def after_update_url
