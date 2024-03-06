@@ -6,7 +6,7 @@ class ProposedChangesController < ApplicationController
 
   def edit
     @lesson = @change.lesson
-    @lesson.assign_attributes(@change.proposals.except('comments', 'status'))
+    @lesson.assign_attributes(@change.proposals.except('comments', 'status', 'resources'))
     render 'lessons/edit'
   end
 

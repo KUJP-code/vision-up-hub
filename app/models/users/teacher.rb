@@ -21,7 +21,7 @@ class Teacher < User
   end
 
   def day_lessons(date)
-    return [] if plan.nil? || date > plan.finish_date
+    return Lesson.none if plan.nil? || date > plan.finish_date
 
     day = date.strftime('%A').downcase
     week = course_week(date)

@@ -21,6 +21,9 @@
                  lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
                  required: true,
                  prompt: 'Select a level'
+    .form-group
+      = f.label :resources
+      = f.file_field :resources, multiple: true
 
     - if current_user.is?('Admin')
       %h3.font-bold Courses

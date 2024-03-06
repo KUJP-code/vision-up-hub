@@ -49,7 +49,10 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    default_params = %i[goal level title type curriculum_approval_id curriculum_approval_name internal_notes]
+    default_params = [
+      :goal, :level, :title, :type, :curriculum_approval_id, :curriculum_approval_name,
+      :internal_notes, { resources: [] }
+    ]
     return default_params unless current_user.is?('Admin')
 
     default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released,
@@ -58,7 +61,7 @@ class LessonsController < ApplicationController
 
   def propose_changes(strong_params)
     changelist = strong_params.except(
-      :course_lessons_attributes, :level, :subtype, :type
+      :course_lessons_attributes, :level, :subtype, :type, :resources
     ).to_h.merge(proponent_id: current_user.id)
     changes = @lesson.proposed_changes.new(changelist)
 

@@ -10,10 +10,11 @@
             class: 'btn btn-primary'
 
 %main.flex.flex-col.gap-3.p-3
-  .flex.flex-wrap
+  .flex.flex-wrap.justify-center.items-center.gap-3
     = render partial: 'teachers/unlevelled_lesson',
              collection: @lessons,
-             as: :lesson
+             as: :lesson,
+             spacer_template: 'shared/vertical_spacer'
 
 = render 'teachers/day_select',
          date: @date
