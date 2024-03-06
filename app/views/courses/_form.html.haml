@@ -17,26 +17,27 @@
     = f.label :released
     = f.check_box :released
 
-  %h3.fw-bold Lessons
+  - if current_user.is?('Admin')
+    %h3.fw-bold Lessons
 
-  = f.fields_for :course_lessons, course.course_lessons do |cl_f|
-    = render('course_lessons/fields',
-             collection: lessons,
-             f: cl_f,
-             resource: course)
-
-  %template{ 'data-fields-target' => 'template' }
-    = f.fields_for :course_lessons,
-                   course.course_lessons.new,
-                   child_index: 'CHILD' do |cl_f|
+    = f.fields_for :course_lessons, course.course_lessons do |cl_f|
       = render('course_lessons/fields',
                collection: lessons,
                f: cl_f,
                resource: course)
 
-  %div{ 'data-fields-target' => 'target' }
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :course_lessons,
+                     course.course_lessons.new,
+                     child_index: 'CHILD' do |cl_f|
+        = render 'course_lessons/fields',
+                 collection: lessons,
+                 f: cl_f,
+                 resource: course
 
-  %button.btn.btn-info{ 'data-action' => 'fields#add' }
-    Add lesson
+    %div{ 'data-fields-target' => 'target' }
+
+    %button.btn.btn-info{ 'data-action' => 'fields#add' }
+      Add lesson
 
   = f.submit class: 'btn btn-primary'

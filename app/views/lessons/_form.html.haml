@@ -22,27 +22,28 @@
                  required: true,
                  prompt: 'Select a level'
 
-    %h3.font-bold Courses
+    - if current_user.is?('Admin')
+      %h3.font-bold Courses
 
-    = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
-      = render('course_lessons/fields',
-               collection: courses,
-               f: cl_f,
-               resource: lesson)
-
-    %template{ 'data-fields-target' => 'template' }
-      = f.fields_for :course_lessons,
-                     lesson.course_lessons.new,
-                     child_index: 'CHILD' do |cl_f|
-        = render('course_lessons/fields',
+      = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
+        = render 'course_lessons/fields',
                  collection: courses,
                  f: cl_f,
-                 resource: lesson)
+                 resource: lesson
 
-    %div{ 'data-fields-target' => 'target' }
+      %template{ 'data-fields-target' => 'template' }
+        = f.fields_for :course_lessons,
+                       lesson.course_lessons.new,
+                       child_index: 'CHILD' do |cl_f|
+          = render 'course_lessons/fields',
+                   collection: courses,
+                   f: cl_f,
+                   resource: lesson
 
-    %button.btn.btn-info{ 'data-action' => 'fields#add' }
-      Add Course
+      %div{ 'data-fields-target' => 'target' }
+
+      %button.btn.btn-info{ 'data-action' => 'fields#add' }
+        Add Course
 
   = render("lessons/#{lesson.type.pluralize.underscore}/fields", f:, lesson:)
 
