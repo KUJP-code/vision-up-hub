@@ -64,6 +64,9 @@ puts 'Creating courses...'
 course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson) }
 
 Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
+Organisation.all.each do |org|
+  org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id))
+end
 Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 
 puts 'Adding classes to schools & teachers...'
