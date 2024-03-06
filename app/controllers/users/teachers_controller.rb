@@ -3,6 +3,7 @@
 class TeachersController < UsersController
   def show
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
+    @lessons = @user.day_lessons(@date)
   end
 
   def new

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :plans
   scope '(/:locale)',
         locale: /ja|en/,
         defaults: { locale: :ja } do

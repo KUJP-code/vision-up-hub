@@ -4,11 +4,12 @@
          classes: in_future ? 'bg-ku-gray-500 text-ku-orange' : '',
          text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
-%main.flex.flex-col.gap-3.p-3
-  - if current_user.ku?
-    = link_to t('.edit'),
-              edit_organisation_teacher_path(@user),
-              class: 'btn btn-primary'
+- if current_user.ku?
+  = link_to t('.edit'),
+            edit_organisation_teacher_path(@user),
+            class: 'btn btn-primary'
 
-  = render 'teachers/day_select',
-           date: @date
+%main.flex.flex-col.gap-3.p-3
+
+= render 'teachers/day_select',
+         date: @date
