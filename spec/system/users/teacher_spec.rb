@@ -20,6 +20,6 @@ RSpec.describe 'creating Teacher' do
       click_on 'submit_teacher'
     end
     expect(page).to have_content 'John'
-    expect(page).to have_content school.name
+    expect(page).to have_content I18n.t('create_success')
   end
 end
