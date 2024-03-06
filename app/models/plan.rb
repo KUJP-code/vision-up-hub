@@ -5,5 +5,4 @@ class Plan < ApplicationRecord
 
   belongs_to :course
   belongs_to :organisation
-  has_many :teachers, through: :organisation
 end

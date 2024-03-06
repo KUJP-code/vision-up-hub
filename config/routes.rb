@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :plans
   scope '(/:locale)',
         locale: /ja|en/,
         defaults: { locale: :ja } do
@@ -15,6 +14,7 @@ Rails.application.routes.draw do
       resources :files, only: %i[create index show]
       resources :lessons
       resources :phonics_classes, only: %i[create index update]
+      resources :plans
       resources :proposed_changes, only: %i[destroy edit update]
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]

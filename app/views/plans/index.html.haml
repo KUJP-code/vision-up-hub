@@ -1,0 +1,7 @@
+= link_to t('.create_plan'),
+          new_plan_path,
+          class: 'btn btn-primary'
+
+= render partial: 'plans/plan',
+         collection: @plans,
+         as: :plan

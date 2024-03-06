@@ -1,0 +1,38 @@
+-# locals: (plan:)
+
+= form_with model: plan, html: { class: 'form',
+                                 id: 'plan_form' } do |f|
+  = render 'shared/form_errors', resource: plan
+
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.label :course_id
+    = f.select :course_id, @courses
+
+  .form-group
+    = f.label :organisation_id
+    = f.select :organisation_id, @organisations
+
+  .form-group
+    = f.label :start
+    = f.date_field :start
+
+  .form-group
+    = f.label :finish_date
+    = f.date_field :finish_date
+
+  .form-group
+    = f.label :student_limit
+    = f.number_field :student_limit,
+                     min: 0,
+                     step: 50
+
+  .form-group
+    = f.label :total_cost
+    = f.number_field :total_cost,
+                     min: 0
+
+  = f.submit class: 'btn btn-primary'

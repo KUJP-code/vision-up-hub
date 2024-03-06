@@ -6,6 +6,7 @@ RSpec.describe 'creating a plan' do
   let(:user) { create(:user, :sales) }
 
   before do
+    create(:course, title: 'Test Course')
     sign_in user
   end
 
@@ -24,7 +25,7 @@ RSpec.describe 'creating a plan' do
     click_button '登録する'
     expect(page).to have_content('Test Plan')
     expect(page).to have_content(I18n.t('plans.show.organisation', name: 'KidsUP'))
-    expect(page).to have_content(I18n.t('plans.show.student_limit', count: 100))
-    expect(page).to have_content(I18n.t('plans.show.total_cost', count: 1000))
+    expect(page).to have_content(I18n.t('plans.show.student_limit', limit: 100))
+    expect(page).to have_content(I18n.t('plans.show.total_cost', cost: 1000))
   end
 end
