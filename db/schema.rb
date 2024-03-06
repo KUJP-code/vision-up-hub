@@ -127,7 +127,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_06_041718) do
     t.string "description"
     t.integer "student_limit"
     t.date "start"
-    t.date "end"
+    t.date "finish_date"
     t.integer "total_cost"
     t.integer "months_paid"
     t.bigint "course_id", null: false

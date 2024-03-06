@@ -7,8 +7,11 @@ class Organisation < ApplicationRecord
   has_many :schools, dependent: :destroy
   has_many :students, through: :schools
   has_many :classes, through: :schools
+  has_one :plan, dependent: :destroy
+  has_one :course, through: :plan
   has_many :users, dependent: :destroy
   has_many :support_requests, through: :users
+  has_many :teachers, dependent: :destroy
 
   def students_count
     schools.sum(:students_count)

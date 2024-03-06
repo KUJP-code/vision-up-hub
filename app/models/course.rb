@@ -8,4 +8,6 @@ class Course < ApplicationRecord
                                 reject_if: :all_blank,
                                 allow_destroy: true
   has_many :lessons, through: :course_lessons
+  has_many :plans, dependent: :destroy
+  has_many :organisations, through: :plans
 end
