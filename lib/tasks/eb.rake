@@ -70,5 +70,5 @@ def commit_changes(version)
 end
 
 def deploy_to_eb
-  `eb deploy`
+  system('eb deploy')
 end
