@@ -14,7 +14,7 @@
 = render 'teachers/day_select',
          date: @date
 
-- if current_user.ku? || current_user.id == @user.id
+- if current_user.is?('Admin')
   .flex.justify-center.p-3
     = link_to t('.edit'),
               edit_organisation_teacher_path(@user),

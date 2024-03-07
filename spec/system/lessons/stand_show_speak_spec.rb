@@ -17,13 +17,13 @@ RSpec.describe 'creating an Stand Show Speak lesson' do
     within '#stand_show_speak_form' do
       fill_in 'stand_show_speak_title', with: 'Test Stand Show Speak'
       fill_in 'stand_show_speak_goal', with: 'Test Goal'
-      attach_file 'stand_show_speak_script', Rails.root.join('spec/Brett_Tanner_Resume.pdf')
+      attach_file 'stand_show_speak_guide', Rails.root.join('spec/Brett_Tanner_Resume.pdf')
       select 'Kindy', from: 'stand_show_speak_level'
 
       click_button 'Create Stand show speak'
     end
     expect(page).to have_content('Test Stand Show Speak')
     expect(page).to have_content('Test Goal')
-    expect(page).to have_css('a', count: 1, text: 'Download Script')
+    expect(page).to have_css('a', count: 1, text: 'Download Guide')
   end
 end
