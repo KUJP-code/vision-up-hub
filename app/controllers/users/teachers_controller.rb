@@ -3,8 +3,10 @@
 class TeachersController < UsersController
   def show
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    @lessons = @user.day_lessons(@date)
-                    .includes({ resources_attachments: :blob, guide_attachment: :blob })
+    lessons = @user.day_lessons(@date)
+                   .includes({ resources_attachments: :blob, guide_attachment: :blob })
+    @unlevelled_lessons = lessons.unlevelled
+    @levelled_lessons = lessons.levelled
   end
 
   def new

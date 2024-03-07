@@ -23,27 +23,27 @@ module Levelable
     }
 
     def primary?
-      %i[all_levels kindy].exclude?(level)
+      %w[all_levels kindy].exclude?(level)
     end
 
     def land?
-      %i[land_one land_two land_three].include?(level)
+      %w[land_one land_two land_three].include?(level)
     end
 
     def sky?
-      %i[sky_one sky_two sky_three].include?(level)
+      %w[sky_one sky_two sky_three].include?(level)
     end
 
     def galaxy?
-      %i[galaxy_one galaxy_two galaxy_three].include?(level)
+      %w[galaxy_one galaxy_two galaxy_three].include?(level)
     end
 
     def keep_up?
-      %i[keep_up_one keep_up_two].include?(level)
+      %w[keep_up_one keep_up_two].include?(level)
     end
 
     def specialist?
-      %i[specialist specialist_advanced].include?(level)
+      %w[specialist specialist_advanced].include?(level)
     end
   end
 end

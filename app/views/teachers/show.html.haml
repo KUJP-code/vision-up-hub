@@ -4,12 +4,21 @@
          classes: in_future ? 'bg-ku-gray-500 text-ku-orange' : '',
          text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
-%main.flex.flex-col.gap-3.p-3
-  .flex.flex-wrap.justify-center.items-center.gap-3
-    = render partial: 'teachers/unlevelled_lesson',
-             collection: @lessons,
-             as: :lesson,
-             spacer_template: 'shared/vertical_spacer'
+%main.flex.gap-3.p-3
+  - if @unlevelled_lessons.any?
+    %section{ class: 'basis-2/5 flex justify-center items-center gap-3' }
+      = render partial: 'teachers/unlevelled_lesson',
+               collection: @unlevelled_lessons,
+               as: :lesson,
+               spacer_template: 'shared/vertical_spacer'
+
+  - if @levelled_lessons.any?
+    %section{ class: 'basis-2/5 grid grid-rows-4 auto-cols-fr' }
+      .col-start-1
+      .flex.items-center.justify-center.col-start-1 Land Logo
+      .flex.items-center.justify-center.col-start-1 Sky Logo
+      .flex.items-center.justify-center.col-start-1 Galaxy Logo
+      = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
 = render 'teachers/day_select',
          date: @date
