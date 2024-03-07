@@ -23,7 +23,7 @@ Admin.create!(fb.attributes_for(
 ))
 
 User::TYPES.each do |type|
-  org = %w[Admin Sales Writer].include?(type) ? kids_up : test_org
+  org = %w[Admin Sales Writer Teacher].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
   User.create!(fb.attributes_for(
     :user,
@@ -34,6 +34,8 @@ User::TYPES.each do |type|
     organisation_id: org.id
   ))
 end
+
+Teacher.create!(fb.attributes_for(:user, :teacher, organisation_id: 2))
 
 SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
@@ -49,7 +51,7 @@ Lesson::TYPES.map do |type|
     creator_id: 1
   ))
   if l.instance_of?(StandShowSpeak)
-    l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+    l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
   elsif l.instance_of?(EnglishClass)
     l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
   end

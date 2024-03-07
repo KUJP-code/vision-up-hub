@@ -8,7 +8,7 @@
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                       id: @user.id, date: date - 7.days),
             class: 'week-arrow' do
-    ⮜
+    = '<'
   .spacer
 
   - unless weekdays.include?(Time.zone.today)
@@ -34,5 +34,5 @@
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                       id: @user.id, date: date + 7.days),
             class: 'week-arrow' do
-    ⮞
+    = '>'
   .spacer

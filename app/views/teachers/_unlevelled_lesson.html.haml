@@ -1,7 +1,7 @@
 -# locals: (lesson:)
 
-.flex.flex-col.gap-5.p-5
-  %h3.text-ku-purple.font-bold= lesson.title
+%div{ class: 'flex flex-col gap-5 p-5 basis-1/5' }
+  %h3.text-ku-purple.font-bold.text-center= lesson.title
   = image_tag 'daily_activity.svg', class: 'w-full'
   .flex.flex-col.gap-3
     = link_to file_path(lesson.guide.blob),

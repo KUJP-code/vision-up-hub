@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class StandShowSpeak < Lesson
-  ATTRIBUTES = %i[script].freeze
+  ATTRIBUTES = %i[guide].freeze
 
-  has_one_attached :script do |s|
+  has_one_attached :guide do |s|
     s.variant :thumb,
               resize_to_limit: [300, 300],
               convert: :avif,
               preprocessed: true
   end
 
-  # All we need is the script for this lesson type
+  # We directly upload the guide for this one, just a script
   def attach_guide; end
 end
