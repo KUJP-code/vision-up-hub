@@ -6,6 +6,7 @@ class Exercise < Lesson
   ATTRIBUTES = %i[
     add_difficulty
     extra_fun
+    guide_image
     intro
     instructions
     large_groups
@@ -13,7 +14,7 @@ class Exercise < Lesson
     materials
     notes
     outro
-    guide_image
+    subtype
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
@@ -28,6 +29,13 @@ class Exercise < Lesson
   ].freeze
 
   PDF_IMAGEABLE_ATTRIBUTES = %i[guide_image].freeze
+
+  enum subtype: {
+    aerobics: 0,
+    control: 1,
+    jumping: 2,
+    throwing: 3
+  }
 
   validates :intro, :instructions, presence: true
 
