@@ -4,7 +4,7 @@
          classes: in_future ? 'bg-ku-gray-500 text-ku-orange' : '',
          text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
-%main.flex.flex-col.md:flex-row.gap-3.p-3
+%main.flex.flex-col.md:flex-row.justify-around.gap-3.p-3
   - if @unlevelled_lessons.any?
     %section{ class: 'basis-2/5 flex flex-wrap md:flex-nowrap justify-center items-center gap-3' }
       = render partial: 'teachers/unlevelled_lesson',

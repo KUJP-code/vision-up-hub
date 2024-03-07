@@ -50,24 +50,31 @@ Lesson::TYPES.map do |type|
     assigned_editor_id: writer.id,
     creator_id: 1
   ))
-  if l.instance_of?(StandShowSpeak)
-    l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
-  elsif l.instance_of?(EnglishClass)
-    l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
-  end
+end
+
+puts "Creating today's lessons..."
+
+%i[land_two sky_three galaxy_one].each do |level|
+  fb.create(:english_class, level: level)
+  fb.create(:phonics_class, level: level)
+  fb.create(:stand_show_speak, level: level)
 end
 
 Lesson.all.each do |lesson|
   lesson.attach_guide
 end
 
+Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
+  lesson.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+end
+
 puts 'Creating courses...'
 
-course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson) }
+course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson, week: 1, day: Time.zone.today.strftime('%A').downcase) }
 
 Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
 Organisation.all.each do |org|
-  org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id))
+  org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id, start: Date.today.beginning_of_week))
 end
 Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 
