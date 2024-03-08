@@ -331,8 +331,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_021046) do
   create_table "tests", force: :cascade do |t|
     t.string "name"
     t.integer "level"
-    t.jsonb "questions"
-    t.jsonb "thresholds"
+    t.jsonb "questions", default: {}
+    t.jsonb "thresholds", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

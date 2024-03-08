@@ -26,35 +26,18 @@ module Questionable
       lines.map { |s| s.split(':', 2) }.reject { |p| p[0].empty? || p[1].empty? }
     end
 
-    def invalid_lines?(array)
-      array.any? do |string|
-        if string.include?(':')
-          false
-        else
-          errors.add(:questions, ": Missing ':' near #{string}")
-          true
-        end
-      end
-    end
-
     def invalid_skill?(string)
-      if self.class::SKILLS.include?(string)
-        false
-      else
-        errors.add(:questions, ": #{string} is not a valid skill")
-        true
-      end
+      return false if self.class::SKILLS.include?(string)
+
+      errors.add(:questions, ": #{string} is not a valid skill")
+      true
     end
 
     def invalid_scores?(array)
-      array.any? do |n|
-        if n.negative? || n > 15
-          errors.add(:questions, ": #{n} is not a valid max score")
-          true
-        else
-          false
-        end
-      end
+      return false if array.all? { |n| n.positive? && n <= 15 }
+
+      errors.add(:questions, ": #{array.find { |n| n.negative? || n > 15 }} is not a valid max score")
+      true
     end
   end
 end

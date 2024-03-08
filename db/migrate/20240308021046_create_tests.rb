@@ -3,8 +3,8 @@ class CreateTests < ActiveRecord::Migration[7.1]
     create_table :tests do |t|
       t.string :name
       t.integer :level
-      t.jsonb :questions
-      t.jsonb :thresholds
+      t.jsonb :questions, default: {}
+      t.jsonb :thresholds, default: {}
 
       t.timestamps
     end

@@ -1,19 +1,22 @@
 # frozen_string_literal: true
 
 class Test < ApplicationRecord
-  include Levelable, Questionable
+  include Levelable, Thresholdable, Questionable
 
   SKILLS = %w[Listening Reading Speaking Writing].freeze
-
-  before_validation :set_thresholds
 
   validates :name, :level, :questions, :thresholds, presence: true
 
   private
 
-  def set_thresholds; end
-
-  def invalid_level?(string)
-    levels.keys.map(&:titleize).include?(string.titleize)
+  def invalid_lines?(array)
+    array.any? do |string|
+      if string.include?(':')
+        false
+      else
+        errors.add(:base, "Missing ':' near #{string}")
+        true
+      end
+    end
   end
 end

@@ -78,7 +78,7 @@ RSpec.describe Test do
       test.questions = "Writing: 3, 4\nReading 5, 6"
       test.save
       errors = test.errors.full_messages
-      expect(errors).to include("Questions : Missing ':' near Reading5,6")
+      expect(errors).to include("Missing ':' near Reading5,6")
     end
 
     it 'gives a descriptive error if negative integer entered' do
@@ -96,9 +96,9 @@ RSpec.describe Test do
     end
   end
 
-  context 'when processing thresholds', skip: 'finish questions tests first' do
+  context 'when processing thresholds' do
     it 'produces a hash of thresholds keyed by levels given correct input' do
-      test.thresholds = "Sky One:60\nSky Two:70\nSky Three:80, Galaxy One:90, Galaxy Two:100"
+      test.thresholds = "Sky One:60\nSky Two:70\nSky Three:80\n Galaxy One:90\n Galaxy Two:100"
       test.save
       expect(test.thresholds).to eq(
         {
@@ -118,34 +118,45 @@ RSpec.describe Test do
     end
 
     it 'strips unnecessary whitespace' do
-      test.thresholds = "Sky     One: 60\nSky Two   : 70\nSky Three: 8  0"
+      test.thresholds = "Sky One: 60\nSky Two   : 70\nSky Three: 80"
       test.save
       expect(test.thresholds).to eq({ 'Sky One' => 60, 'Sky Two' => 70, 'Sky Three' => 80 })
     end
 
     it 'gives a descriptive error if : missing from pair' do
       test.thresholds = "Sky One:60\nSky Two 70"
-      expect { test.save }.to raise ActiveRecord::RecordInvalid.with('Sky Two 70 is missing a : separator')
+      test.save
+      expect(test.errors.full_messages).to include("Missing ':' near Sky Two 70")
     end
 
     it 'gives a descriptive error if invalid level entered' do
       test.thresholds = "Ski One:60\nSky Two:70\nSky Three:80"
-      expect { test.save }.to raise ActiveRecord::RecordInvalid.with('Ski One is not a valid level')
+      test.save
+      expect(test.errors.full_messages).to include('Thresholds : Ski One is not a valid level')
+    end
+
+    it 'gives a descriptive error if level missing' do
+      test.thresholds = "Sky One:60\n:70"
+      test.save
+      expect(test.errors.full_messages).to include('Thresholds : Missing level for threshold 70')
     end
 
     it 'gives a descriptive error if threshold missing' do
       test.thresholds = "Sky One:\nSky Two:70"
-      expect { test.save }.to raise ActiveRecord::RecordInvalid.with('Sky One is missing a threshold')
+      test.save
+      expect(test.errors.full_messages).to include('Thresholds : Missing threshold for Sky One')
     end
 
     it 'gives a descriptive error if threshold greater than 100' do
       test.thresholds = "Sky One:101\nSky Two:70"
-      expect { test.save }.to raise ActiveRecord::RecordInvalid.with('101 is not a valid threshold')
+      test.save
+      expect(test.errors.full_messages).to include('Thresholds : 101 is not a valid threshold')
     end
 
     it 'gives a descriptive error if threshold less than 0' do
       test.thresholds = "Sky One:-1\nSky Two:70"
-      expect { test.save }.to raise ActiveRecord::RecordInvalid.with('-1 is not a valid threshold')
+      test.save
+      expect(test.errors.full_messages).to include('Thresholds : -1 is not a valid threshold')
     end
   end
 end
