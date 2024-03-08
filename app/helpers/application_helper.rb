@@ -17,7 +17,7 @@ module ApplicationHelper
             class: "p-3 #{active_classes if active}"
   end
 
-  def short_level
+  def short_level(level)
     case level
     when 'land_one', 'land_two', 'land_three'
       'Land'

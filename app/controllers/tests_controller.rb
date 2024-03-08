@@ -1,58 +1,63 @@
+# frozen_string_literal: true
+
 class TestsController < ApplicationController
-  before_action :set_test, only: %i[ show edit update destroy ]
+  before_action :set_test, only: %i[show edit update destroy]
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
-  # GET /tests
   def index
-    @tests = Test.all
+    @tests = policy_scope(Test).order(created_at: :desc)
   end
 
-  # GET /tests/1
-  def show
-  end
+  def show; end
 
-  # GET /tests/new
   def new
-    @test = Test.new
+    @test = authorize Test.new
   end
 
-  # GET /tests/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /tests
   def create
-    @test = Test.new(test_params)
+    @test = authorize Test.new(test_params)
 
     if @test.save
-      redirect_to @test, notice: "Test was successfully created."
+      redirect_to test_path(@test),
+                  notice: t('create_success')
     else
-      render :new, status: :unprocessable_entity
+      render :new,
+             status: :unprocessable_entity,
+             alert: t('create_failure')
     end
   end
 
-  # PATCH/PUT /tests/1
   def update
     if @test.update(test_params)
-      redirect_to @test, notice: "Test was successfully updated.", status: :see_other
+      redirect_to @test,
+                  notice: t('update_success')
     else
-      render :edit, status: :unprocessable_entity
+      render :edit,
+             status: :unprocessable_entity,
+             alert: t('update_failure')
     end
   end
 
-  # DELETE /tests/1
   def destroy
-    @test.destroy!
-    redirect_to tests_url, notice: "Test was successfully destroyed.", status: :see_other
+    if @test.destroy
+      redirect_to tests_url,
+                  notice: t('destroy_success')
+    else
+      redirect_to tests_url,
+                  alert: t('destroy_failure')
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_test
-      @test = Test.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def test_params
-      params.require(:test).permit(:name, :level, :questions, :thresholds)
-    end
+  def test_params
+    params.require(:test).permit(:name, :level, :questions, :thresholds)
+  end
+
+  def set_test
+    @test = authorize Test.find(params[:id])
+  end
 end

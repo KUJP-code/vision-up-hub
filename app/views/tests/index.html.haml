@@ -1,27 +1,27 @@
-%h1 Listing tests
+= render 'shared/subtitle', text: 'Tests'
 
-%table
+.w-full.flex.justify-center.p-3
+  = link_to 'New Test',
+            new_test_path,
+            class: 'btn btn-info'
+
+%table.w-full.text-center
   %thead
     %tr
-      %th Name
-      %th Level
-      %th Questions
-      %th Thresholds
-      %th
-      %th
+      %th.text-2xl.font-bold Name
+      %th.text-2xl.font-bold Level
+      %th.text-2xl.font-bold Questions
+      %th.text-2xl.font-bold Thresholds
       %th
 
   %tbody
     - @tests.each do |test|
       %tr
-        %td= test.name
-        %td= test.level
-        %td= test.questions
-        %td= test.thresholds
-        %td= link_to 'Show', test
-        %td= link_to 'Edit', edit_test_path(test)
-        %td= link_to 'Destroy', test, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Test', new_test_path
+        %td= link_to test.name, test_path(test)
+        %td= short_level(test.level)
+        %td= render 'tests/questions', questions: test.questions
+        %td= render 'tests/thresholds', thresholds: test.thresholds
+        %td
+          = link_to 'Edit',
+                    edit_test_path(test),
+                    class: 'btn btn-info'

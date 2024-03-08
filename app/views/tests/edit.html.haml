@@ -1,7 +1,3 @@
-%h1 Editing test
+= render 'shared/subtitle', text: 'Editing Test'
 
-= render 'form'
-
-= link_to 'Show', @test
-\|
-= link_to 'Back', tests_path
+= render 'tests/form', test: @test

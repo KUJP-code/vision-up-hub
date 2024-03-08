@@ -1,5 +1,3 @@
-%h1 New test
+= render 'shared/subtitle', text: 'Creating Test'
 
-= render 'form'
-
-= link_to 'Back', tests_path
+= render 'tests/form', test: @test

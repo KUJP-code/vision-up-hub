@@ -6,6 +6,10 @@ module Questionable
   included do
     before_validation :set_questions
 
+    def form_questions
+      questions.map { |skill, scores| "#{skill}: #{scores.join(', ')}" }.join("\n")
+    end
+
     private
 
     def set_questions

@@ -1,18 +1,16 @@
-%p#notice= notice
+= render 'shared/subtitle', text: @test.name
 
-%p
-  %b Name:
-  = @test.name
-%p
-  %b Level:
-  = @test.level
-%p
-  %b Questions:
-  = @test.questions
-%p
-  %b Thresholds:
-  = @test.thresholds
+%main.flex.flex-col.items-center.gap-3
+  %h3.font-bold= @test.level.titleize
 
-= link_to 'Edit', edit_test_path(@test)
-\|
-= link_to 'Back', tests_path
+  .flex.flex-col.items-center.gap-3
+    %h3.font-bold Questions:
+    = render 'tests/questions', questions: @test.questions
+
+  .flex.flex-col.items-center.gap-3
+    %h3.font-bold Thresholds:
+    = render 'tests/thresholds', thresholds: @test.thresholds
+
+  = link_to 'Edit',
+            edit_test_path(@test),
+            class: 'btn btn-info'

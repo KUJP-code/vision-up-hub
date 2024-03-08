@@ -6,6 +6,10 @@ module Thresholdable
   included do
     before_validation :set_thresholds
 
+    def form_thresholds
+      thresholds.map { |level, threshold| "#{level}: #{threshold}" }.join("\n")
+    end
+
     private
 
     def set_thresholds
