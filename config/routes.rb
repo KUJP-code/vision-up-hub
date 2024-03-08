@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :tests
   scope '(/:locale)',
         locale: /ja|en/,
         defaults: { locale: :ja } do
@@ -23,6 +22,7 @@ Rails.application.routes.draw do
       resources :support_requests do
         resources :support_messages, only: %i[create]
       end
+      resources :tests
 
       resources :organisations, except: %i[destroy show] do
         resources :schools
