@@ -98,4 +98,8 @@ School.all.each do |school|
   end
 end
 
+puts 'Creating a level check...'
+
+fb.create(:test)
+
 puts 'Done!'
