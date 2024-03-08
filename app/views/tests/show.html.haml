@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @test.name
+%p
+  %b Level:
+  = @test.level
+%p
+  %b Questions:
+  = @test.questions
+%p
+  %b Thresholds:
+  = @test.thresholds
+
+= link_to 'Edit', edit_test_path(@test)
+\|
+= link_to 'Back', tests_path
