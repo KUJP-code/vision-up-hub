@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'creating a DailyActivity lesson' do
-  let!(:course) { create(:course) }
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
@@ -12,9 +11,9 @@ RSpec.describe 'creating a DailyActivity lesson' do
   end
 
   it 'can create a daily activity lesson' do
-    visit course_path(course)
-    find_by_id('add-lesson').click
-    click_link 'add_daily_activity'
+    visit lessons_path
+    find_by_id('create_lesson').click
+    click_link 'create_daily_activity'
     within '#daily_activity_form' do
       fill_in 'daily_activity_title', with: 'Test Daily Activity'
       fill_in 'daily_activity_goal', with: 'Test Goal'

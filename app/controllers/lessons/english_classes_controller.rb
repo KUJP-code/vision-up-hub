@@ -26,7 +26,7 @@ class EnglishClassesController < LessonsController
     return propose_changes(english_class_params) if proposing_changes?
 
     if @lesson.update(english_class_params)
-      redirect_to lesson_url(@lesson),
+      redirect_to after_update_url,
                   notice: 'English class successfully updated.'
     else
       set_courses
@@ -41,5 +41,14 @@ class EnglishClassesController < LessonsController
   def english_class_params
     ec_params = %i[example_sentences guide lesson_topic notes term unit vocab]
     params.require(:english_class).permit(lesson_params + ec_params)
+  end
+
+  def after_update_url
+    if params[:commit] == 'Change Date'
+      course = english_class_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course)
+    else
+      lesson_url(@lesson)
+    end
   end
 end

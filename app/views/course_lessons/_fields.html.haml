@@ -16,13 +16,7 @@
       = f.select :course_id,
                  collection
 
-  .form-group
-    = f.label :week
-    = f.number_field :week, min: 1, max: 52
-
-  .form-group
-    = f.label :day
-    = f.select :day, CourseLesson.days.to_h { |k, _v| [k.capitalize, k] }
+  = render 'course_lessons/date_fields', f:
 
   - if f.object.new_record?
     %button.w-full.btn.btn-danger{ 'data-action' => 'fields#remove' }

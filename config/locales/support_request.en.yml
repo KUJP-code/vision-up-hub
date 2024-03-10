@@ -1,0 +1,10 @@
+en:
+  support_requests:
+    categories:
+      bug_report: "Bug Report"
+      feature_request: "Feature Request"
+      general: "General"
+      typo_report: "Typo Report"
+    status_badge:
+      open: "Open"
+      resolved: "Resolved"

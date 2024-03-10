@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "thatbballguy/materials:proposal-comments"
+    "Name": "thatbballguy/materials:6eb20910831ce7686a5e3987e73f826efb5a80b3"
   },
   "Ports": [
     {

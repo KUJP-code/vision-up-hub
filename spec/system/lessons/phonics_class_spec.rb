@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'creating a Phonics lesson' do
-  let!(:course) { create(:course) }
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
@@ -12,9 +11,9 @@ RSpec.describe 'creating a Phonics lesson' do
   end
 
   it 'can create a phonics lesson' do
-    visit course_path(course)
-    find_by_id('add-lesson').click
-    click_link 'add_phonics_class'
+    visit lessons_path
+    find_by_id('create_lesson').click
+    click_link 'create_phonics_class'
     within '#phonics_class_form' do
       fill_in 'phonics_class_title', with: 'Test Phonics Lesson'
       fill_in 'phonics_class_goal', with: 'Test Goal'

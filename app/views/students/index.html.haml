@@ -1,0 +1,8 @@
+%main.flex.flex-col.gap-3.p-3
+  %h1= t('.students')
+
+  = link_to t('.create_student'),
+            new_student_path,
+            class: 'btn btn-primary'
+
+  = render 'students/table', students: @students

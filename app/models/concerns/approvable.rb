@@ -4,7 +4,8 @@ module Approvable
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :aa_id, :aa_name, :ca_id, :ca_name
+    attr_accessor :admin_approval_id, :admin_approval_name,
+                  :curriculum_approval_id, :curriculum_approval_name
 
     before_validation :set_admin_approval, :set_curriculum_approval
 
@@ -24,24 +25,24 @@ module Approvable
   end
 
   def set_admin_approval
-    return if already_approved?(:admin_approval, aa_id) ||
-              missing_approval_attrs?(:aa_id, :aa_name)
+    return if already_approved?(:admin_approval, admin_approval_id) ||
+              missing_approval_attrs?(:admin_approval_id, :admin_approval_name)
 
     new_approval = {
-      id: aa_id,
-      name: aa_name,
+      id: admin_approval_id,
+      name: admin_approval_name,
       time: Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     }
     admin_approval << new_approval
   end
 
   def set_curriculum_approval
-    return if already_approved?(:curriculum_approval, ca_id) ||
-              missing_approval_attrs?(:ca_id, :ca_name)
+    return if already_approved?(:curriculum_approval, curriculum_approval_id) ||
+              missing_approval_attrs?(:curriculum_approval_id, :curriculum_approval_name)
 
     new_approval = {
-      id: ca_id,
-      name: ca_name,
+      id: curriculum_approval_id,
+      name: curriculum_approval_name,
       time: Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     }
     curriculum_approval << new_approval

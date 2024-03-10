@@ -4,6 +4,7 @@
 /.git/
 /.gittattributes
 /.gitignore
+.envrc
 
 # Ignore bundler config.
 /.bundle

@@ -49,11 +49,11 @@ class LessonsController < ApplicationController
   private
 
   def lesson_params
-    default_params = [:goal, :level, :title, :type, :ca_id, :ca_name, :internal_notes,
-                      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
+    default_params = %i[goal level title type curriculum_approval_id curriculum_approval_name internal_notes]
     return default_params unless current_user.is?('Admin')
 
-    default_params + %i[assigned_editor_id aa_id aa_name released]
+    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released,
+                      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
   end
 
   def propose_changes(strong_params)
@@ -80,7 +80,8 @@ class LessonsController < ApplicationController
   end
 
   def generate_guide
-    return if @lesson.new_record?
+    return if @lesson.new_record? || proposing_changes? ||
+              params[:commit] == 'Change Date'
 
     @lesson.attach_guide
   end

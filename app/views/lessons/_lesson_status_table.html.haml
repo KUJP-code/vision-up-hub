@@ -1,0 +1,22 @@
+-# locals: (lessons:)
+
+%table.w-full.text-center
+  %thead
+    %tr
+      %th Title
+      %th Status
+      %th Approved by
+      %th Actions
+  %tbody
+    - lessons.each do |lesson|
+      %tr
+        %td
+          = link_to lesson.title,
+                    lesson_path(lesson)
+        %td.flex.items-center.gap-3
+          = render 'shared/visibility_badges',
+                   approved: lesson.approved?,
+                   released: lesson.released?
+        %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence
+        %td.flex.gap-3
+          = render 'shared/visibility_toggles', resource: lesson

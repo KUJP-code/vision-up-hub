@@ -1,0 +1,11 @@
+%main.flex.flex-col.gap-3
+  - @support_requests.each do |request|
+    = link_to support_request_path(request),
+              class: 'flex flex-col border' do
+      .flex.gap-2.items-center
+        - unless request.seen_by?(current_user.id)
+          .rounded-full.p-2.bg-blue-800
+        = render 'support_requests/status_badge', resolved: request.resolved?
+        %h1= request.subject
+        %h3= request.category
+      %p= request.description

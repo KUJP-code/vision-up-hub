@@ -6,3 +6,6 @@
   = link_to 'Edit',
             edit_organisation_school_path(@school.organisation_id, @school),
             class: 'btn btn-info'
+  = link_to t('.add_student'),
+            new_student_path(school_id: @school.id),
+            class: 'btn btn-info'

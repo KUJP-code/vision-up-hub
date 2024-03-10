@@ -3,23 +3,28 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: %i[show edit update]
   before_action :set_lessons, only: %i[new edit]
+  after_action :verify_authorized, except: :index
+  after_action :verify_policy_scoped, only: :index
 
   def index
-    @courses = Course.all
+    @courses = policy_scope(Course)
   end
 
   def show
-    @lessons = @course.lessons.select(:id, :title, :type)
+    @lessons = @course.lessons
+                      .select(:id, :title, :type)
+                      .includes(:course_lessons)
   end
 
   def new
-    @course = Course.new
+    @course = authorize Course.new
   end
 
   def edit; end
 
   def create
-    @course = Course.new(course_params)
+    @course = authorize Course.new(course_params)
+
     if @course.save
       redirect_to @course
     else
@@ -47,7 +52,7 @@ class CoursesController < ApplicationController
   end
 
   def set_course
-    @course = Course.find(params[:id])
+    @course = authorize Course.find(params[:id])
   end
 
   def set_lessons

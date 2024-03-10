@@ -33,14 +33,14 @@ RSpec.shared_examples_for 'lesson' do
     it 'does not allow the same user to approve multiple times' do
       lesson.admin_approval = admin_approval
       lesson.save
-      lesson.update(aa_id: admin.id, aa_name: admin.name)
+      lesson.update(admin_approval_id: admin.id, admin_approval_name: admin.name)
       expect(lesson.admin_approval.length).to be 1
     end
 
     it 'appends new approvals to existing ones if not duplicated' do
       lesson.curriculum_approval = admin_approval
       lesson.save
-      lesson.update(ca_id: writer.id, ca_name: writer.name)
+      lesson.update(curriculum_approval_id: writer.id, curriculum_approval_name: writer.name)
       expect(lesson.curriculum_approval.length).to be 2
     end
 

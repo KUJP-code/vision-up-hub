@@ -11,7 +11,7 @@ class SchoolClassesController < ApplicationController
   end
 
   def show
-    @students = @school_class.students
+    @students = @school_class.students.includes(:classes, :school)
     @possible_students = policy_scope(Student).where
                                               .not(id: @students.ids)
                                               .pluck(:name, :id)
@@ -27,7 +27,7 @@ class SchoolClassesController < ApplicationController
     @school_class = authorize SchoolClass.new(school_class_params)
 
     if @school_class.save
-      redirect_to school_class_path(@school_class),
+      redirect_to school_class_url(@school_class),
                   notice: t('create_success')
     else
       set_schools
@@ -38,7 +38,7 @@ class SchoolClassesController < ApplicationController
 
   def update
     if @school_class.update(school_class_params)
-      redirect_to school_class_path(@school_class),
+      redirect_to school_class_url(@school_class),
                   notice: t('update_success')
     else
       set_schools
@@ -49,10 +49,10 @@ class SchoolClassesController < ApplicationController
 
   def destroy
     if @school_class.destroy
-      redirect_to school_classes_path,
+      redirect_to school_classes_url,
                   notice: t('destroy_success')
     else
-      redirect_to school_classes_path,
+      redirect_to school_classes_url,
                   alert: t('destroy_failure')
     end
   end

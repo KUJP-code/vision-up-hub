@@ -26,7 +26,7 @@ class SchoolsController < ApplicationController
     )
 
     if @school.save
-      redirect_to organisation_school_path(@school.organisation, @school),
+      redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('create_success')
     else
       set_managers
@@ -38,7 +38,7 @@ class SchoolsController < ApplicationController
 
   def update
     if @school.update(school_params)
-      redirect_to organisation_school_path(@school.organisation, @school),
+      redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('update_success')
     else
       set_managers
@@ -50,10 +50,10 @@ class SchoolsController < ApplicationController
 
   def destroy
     if @school.destroy
-      redirect_to organisation_schools_path(@school.organisation),
+      redirect_to organisation_schools_url(@school.organisation),
                   notice: t('destroy_success')
     else
-      redirect_to organisation_school_path(@school.organisation, @school),
+      redirect_to organisation_school_url(@school.organisation, @school),
                   alert: t('destroy_failure')
     end
   end

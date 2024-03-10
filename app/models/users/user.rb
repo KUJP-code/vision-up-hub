@@ -8,6 +8,12 @@ class User < ApplicationRecord
   validates :type, inclusion: { in: TYPES }
 
   belongs_to :organisation
+  has_many :support_requests,
+           inverse_of: :user,
+           dependent: :nullify
+  has_many :support_messages,
+           inverse_of: :user,
+           dependent: :nullify
 
   devise :confirmable, :database_authenticatable, :lockable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable

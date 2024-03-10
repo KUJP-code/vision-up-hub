@@ -1,0 +1,27 @@
+-# locals: (students:)
+
+%table.w-full.text-center
+  %thead
+    %tr
+      %th= t('.name')
+      %th= t('.student_id')
+      %th= t('.school')
+      %th= t('.level')
+      %th= t('.classes')
+      %th= t('.edit')
+  %tbody
+    - students.each do |student|
+      %tr
+        %td.p-2
+          = link_to current_user.ku? ? 'Redacted' : student.name,
+                    student_path(student)
+        %td.p-2
+          = link_to student.student_id || 'なし',
+                    student_path(student)
+        %td.p-2= student.school.name
+        %td.p-2= student.level.titleize
+        %td.p-2= student.classes.map(&:name).to_sentence
+        %td.p-2
+          = link_to t('.edit'),
+                    edit_student_path(student),
+                    class: 'btn btn-info'
