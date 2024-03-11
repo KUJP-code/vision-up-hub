@@ -1,4 +1,3 @@
-language_helper.rb
 module LanguageHelper
   #generates a link to toggle between English and Japanese
   def toggle_locale_link
