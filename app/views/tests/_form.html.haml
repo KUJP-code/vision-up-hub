@@ -15,7 +15,7 @@
 
   .form-group
     = f.label :level
-    = f.select :level, Test.levels.map { |k, _v| [k.titleize, k] }
+    = f.select :level, Test.levels.keys.map { |k| [short_level(k), k] }.uniq { |k, _v| k }
 
   .form-group
     = f.label :questions

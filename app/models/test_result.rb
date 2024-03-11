@@ -14,5 +14,6 @@ class TestResult < ApplicationRecord
   validates :listen_percent, :read_percent,
             :speak_percent, :total_percent,
             :write_percent, numericality:
-            { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+            { allow_nil: true, only_integer: true,
+              greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 end

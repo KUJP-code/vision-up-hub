@@ -7,6 +7,9 @@ class Test < ApplicationRecord
 
   validates :name, :level, :questions, :thresholds, presence: true
 
+  has_many :test_results, dependent: :restrict_with_error
+  has_many :students, through: :test_results
+
   private
 
   def invalid_lines?(array)
