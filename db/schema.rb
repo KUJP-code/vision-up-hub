@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_08_021046) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -328,6 +328,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_021046) do
     t.index ["user_id"], name: "index_support_requests_on_user_id"
   end
 
+  create_table "test_results", force: :cascade do |t|
+    t.integer "total_percent", null: false
+    t.integer "write_percent"
+    t.integer "read_percent"
+    t.integer "listen_percent"
+    t.integer "speak_percent"
+    t.integer "prev_level", null: false
+    t.integer "new_level", null: false
+    t.bigint "test_id", null: false
+    t.bigint "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_test_results_on_student_id"
+    t.index ["test_id"], name: "index_test_results_on_test_id"
+  end
+
   create_table "tests", force: :cascade do |t|
     t.string "name"
     t.integer "level"
@@ -395,5 +411,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_08_021046) do
   add_foreign_key "support_messages", "support_requests"
   add_foreign_key "support_messages", "users"
   add_foreign_key "support_requests", "users"
+  add_foreign_key "test_results", "students"
+  add_foreign_key "test_results", "tests"
   add_foreign_key "users", "organisations"
 end

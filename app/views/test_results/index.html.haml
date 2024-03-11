@@ -1,0 +1,37 @@
+%h1 Listing test_results
+
+%table
+  %thead
+    %tr
+      %th Total percent
+      %th Write percent
+      %th Read percent
+      %th Listen percent
+      %th Speak percent
+      %th Prev level
+      %th New level
+      %th Test
+      %th Student
+      %th
+      %th
+      %th
+
+  %tbody
+    - @test_results.each do |test_result|
+      %tr
+        %td= test_result.total_percent
+        %td= test_result.write_percent
+        %td= test_result.read_percent
+        %td= test_result.listen_percent
+        %td= test_result.speak_percent
+        %td= test_result.prev_level
+        %td= test_result.new_level
+        %td= test_result.test
+        %td= test_result.student
+        %td= link_to 'Show', test_result
+        %td= link_to 'Edit', edit_test_result_path(test_result)
+        %td= link_to 'Destroy', test_result, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Test result', new_test_result_path

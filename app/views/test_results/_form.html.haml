@@ -1,0 +1,37 @@
+= form_for @test_result do |f|
+  - if @test_result.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@test_result.errors.count, "error")} prohibited this test_result from being saved:"
+      %ul
+        - @test_result.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :total_percent
+    = f.number_field :total_percent
+  .field
+    = f.label :write_percent
+    = f.number_field :write_percent
+  .field
+    = f.label :read_percent
+    = f.number_field :read_percent
+  .field
+    = f.label :listen_percent
+    = f.number_field :listen_percent
+  .field
+    = f.label :speak_percent
+    = f.number_field :speak_percent
+  .field
+    = f.label :prev_level
+    = f.number_field :prev_level
+  .field
+    = f.label :new_level
+    = f.number_field :new_level
+  .field
+    = f.label :test
+    = f.text_field :test
+  .field
+    = f.label :student
+    = f.text_field :student
+  .actions
+    = f.submit 'Save'
