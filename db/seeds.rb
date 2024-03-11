@@ -98,8 +98,9 @@ School.all.each do |school|
   end
 end
 
-puts 'Creating a level check...'
+puts 'Creating a level check and test result...'
 
-fb.create(:test)
+level_check = fb.create(:test)
+level_check.test_results << fb.create(:test_result, test: level_check, student: Student.first)
 
 puts 'Done!'

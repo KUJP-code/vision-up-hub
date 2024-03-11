@@ -15,7 +15,7 @@ RSpec.describe 'creating a test' do
     click_link 'New Test'
     within '#test_form' do
       fill_in 'test_name', with: 'Test test'
-      select 'Sky One', from: 'test_level'
+      select 'Sky', from: 'test_level'
       fill_in 'test_questions',
               with: "Writing: 1, 6, 3, 4\nReading: 1, 2, 3, 4 \nListening: 1, 6, 3, 4 \nSpeaking: 1, 2, 3, 4"
       fill_in 'test_thresholds',

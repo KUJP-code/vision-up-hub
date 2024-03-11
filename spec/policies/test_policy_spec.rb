@@ -42,8 +42,8 @@ RSpec.describe TestPolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Test)).to eq(Test.none)
+    it 'scopes to all courses' do
+      expect(Pundit.policy_scope!(user, Test)).to eq(Test.all)
     end
   end
 
@@ -52,8 +52,8 @@ RSpec.describe TestPolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Test)).to eq(Test.none)
+    it 'scopes to all courses' do
+      expect(Pundit.policy_scope!(user, Test)).to eq(Test.all)
     end
   end
 
@@ -62,8 +62,8 @@ RSpec.describe TestPolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Test)).to eq(Test.none)
+    it 'scopes to all courses' do
+      expect(Pundit.policy_scope!(user, Test)).to eq(Test.all)
     end
   end
 end

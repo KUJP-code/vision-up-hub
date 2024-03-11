@@ -17,7 +17,7 @@
   %tbody
     - @tests.each do |test|
       %tr
-        %td= link_to test.name, test_path(test)
+        %td= link_to test.name, test_path(test), id: "test_#{test.id}"
         %td= short_level(test.level)
         %td= render 'tests/questions', questions: test.questions
         %td= render 'tests/thresholds', thresholds: test.thresholds

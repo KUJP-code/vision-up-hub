@@ -31,7 +31,7 @@ class TestPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      user.is?('Admin') ? scope.all : scope.none
+      user.is?('Admin', 'OrgAdmin', 'SchoolManager', 'Teacher') ? scope.all : scope.none
     end
   end
 end

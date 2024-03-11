@@ -23,7 +23,7 @@ Rails.application.routes.draw do
         resources :support_messages, only: %i[create]
       end
       resources :tests do
-        resources :test_results
+        resources :test_results, only: %i[create update]
       end
 
       resources :organisations, except: %i[destroy show] do
