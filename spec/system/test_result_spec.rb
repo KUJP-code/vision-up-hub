@@ -21,7 +21,6 @@ RSpec.describe 'creating a test result', :js do
   it 'can create a test result as teacher' do
     visit tests_path
     click_link "test_#{test.id}"
-    click_link I18n.t('tests.show.edit_results')
     within "#student#{student.id}_result" do
       fill_in "student#{student.id}_listening[0]", with: '2'
       fill_in "student#{student.id}_listening[1]", with: '4'

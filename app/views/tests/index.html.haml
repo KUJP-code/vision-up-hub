@@ -1,27 +1,27 @@
+- admin = current_user.is?('Admin')
+
 = render 'shared/subtitle', text: 'Tests'
 
-.w-full.flex.justify-center.p-3
-  = link_to 'New Test',
-            new_test_path,
-            class: 'btn btn-info'
+- if admin
+  .w-full.flex.justify-center.p-3
+    = link_to 'New Test',
+              new_test_path,
+              class: 'btn btn-info'
 
 %table.w-full.text-center
-  %thead
-    %tr
-      %th.text-2xl.font-bold Name
-      %th.text-2xl.font-bold Level
-      %th.text-2xl.font-bold Questions
-      %th.text-2xl.font-bold Thresholds
-      %th
-
   %tbody
     - @tests.each do |test|
       %tr
-        %td= link_to test.name, test_path(test), id: "test_#{test.id}"
-        %td= short_level(test.level)
+        %td.p-3{ colspan: '3' }
+          = link_to "#{test.name}, Level: #{short_level(test.level)}",
+                    admin ? test_path(test) : test_test_results_path(test),
+                    class: 'font-bold text-2xl',
+                    id: "test_#{test.id}"
+      %tr
         %td= render 'tests/questions', questions: test.questions
         %td= render 'tests/thresholds', thresholds: test.thresholds
-        %td
-          = link_to 'Edit',
-                    edit_test_path(test),
-                    class: 'btn btn-info'
+        - if admin
+          %td
+            = link_to 'Edit',
+                      edit_test_path(test),
+                      class: 'btn btn-info'

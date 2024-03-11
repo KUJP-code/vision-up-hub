@@ -1,7 +1,7 @@
 = render 'shared/subtitle', text: @test.name
 
 %main.flex.flex-col.items-center.gap-3
-  %h3.font-bold= @test.level.titleize
+  %h3.font-bold= short_level(@test.level)
 
   .flex.flex-col.items-center.gap-3
     %h3.font-bold Questions:
@@ -11,6 +11,10 @@
     %h3.font-bold Thresholds:
     = render 'tests/thresholds', thresholds: @test.thresholds
 
-  = link_to 'Edit',
-            edit_test_path(@test),
-            class: 'btn btn-info'
+  .flex.items-center.gap-5
+    = link_to t('edit'),
+              edit_test_path(@test),
+              class: 'btn btn-info'
+    = link_to t('.edit_results'),
+              test_test_results_path(@test),
+              class: 'btn btn-info'

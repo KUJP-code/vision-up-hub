@@ -8,6 +8,7 @@ class Teacher < User
   has_many :classes, through: :class_teachers,
                      source: :school_class
   has_many :students, through: :classes
+  has_many :test_results, through: :students
   belongs_to :organisation
   delegate :plan, to: :organisation
   delegate :course, to: :plan

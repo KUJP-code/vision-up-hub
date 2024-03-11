@@ -8,6 +8,7 @@ class TestResult < ApplicationRecord
 
   belongs_to :test
   belongs_to :student
+  delegate :organisation_id, to: :student
 
   validates :new_level, :prev_level, :total_percent, presence: true
 

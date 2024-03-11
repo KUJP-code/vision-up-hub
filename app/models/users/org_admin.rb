@@ -4,5 +4,6 @@ class OrgAdmin < User
   VISIBLE_TYPES = %w[OrgAdmin SchoolManager Teacher].freeze
 
   belongs_to :organisation
-  delegate :schools, to: :organisation
+  has_many :schools, through: :organisation
+  has_many :test_results, through: :schools
 end

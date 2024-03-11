@@ -6,4 +6,4 @@
       %h3.font-bold= skill
       %ul
         - scores.each_with_index do |score, i|
-          %li Question #{i + 1}: #{score} points
+          %li Question #{i + 1}: #{score} #{'point'.pluralize(score)}
