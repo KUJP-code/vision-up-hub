@@ -1,37 +1,40 @@
-= form_for @test_result do |f|
-  - if @test_result.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@test_result.errors.count, "error")} prohibited this test_result from being saved:"
-      %ul
-        - @test_result.errors.full_messages.each do |message|
-          %li= message
+-# locals: (result:, student:, test:)
 
-  .field
-    = f.label :total_percent
-    = f.number_field :total_percent
-  .field
-    = f.label :write_percent
-    = f.number_field :write_percent
-  .field
-    = f.label :read_percent
-    = f.number_field :read_percent
-  .field
-    = f.label :listen_percent
-    = f.number_field :listen_percent
-  .field
-    = f.label :speak_percent
-    = f.number_field :speak_percent
-  .field
-    = f.label :prev_level
-    = f.number_field :prev_level
-  .field
-    = f.label :new_level
-    = f.number_field :new_level
-  .field
-    = f.label :test
-    = f.text_field :test
-  .field
-    = f.label :student
-    = f.text_field :student
-  .actions
-    = f.submit 'Save'
+= form_for [test, result] do |f|
+  %tr
+    %td.p-1.text-center
+      = link_to student.student_id || 'なし',
+                student_path(student)
+    %td.p-1.text-center
+      = link_to redact(student.name),
+                student_path(student)
+    %td.p-1= student.level.titleize
+    - Test::SKILLS.each do |skill|
+      = render 'test_results/skill_fields',
+               f:,
+               skill:,
+               test:
+    %td.p-1
+      .flex.justify-center.items-center.gap-1
+        = f.text_field :total_percent,
+                       readonly: true,
+                       min: 0,
+                       max: 100,
+                       class: 'w-10 text-center'
+        %p %
+
+    %td.p-1
+      - prev_level = result.prev_level || student.level
+      = prev_level.titleize
+      = f.hidden_field :prev_level,
+                       value: prev_level
+    %td.p-1
+      = f.select :new_level,
+                 TestResult.new_levels.keys.map { |k| [k.titleize, k] },
+                 include_blank: true,
+                 selected: result.new_level
+
+    %td.p-1
+      = f.hidden_field :student_id
+      = f.hidden_field :test_id
+      = f.submit class: 'btn btn-primary'

@@ -19,7 +19,7 @@ module Questionable
         break if invalid_skill?(skill)
         break if invalid_scores?(scores)
 
-        [skill, scores]
+        [skill.downcase, scores]
       end
     end
 
@@ -31,7 +31,7 @@ module Questionable
     end
 
     def invalid_skill?(string)
-      return false if self.class::SKILLS.include?(string)
+      return false if self.class::SKILLS.include?(string.downcase)
 
       errors.add(:questions, ": #{string} is not a valid skill")
       true

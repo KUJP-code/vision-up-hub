@@ -5,7 +5,8 @@ class TestResultsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @test_results = policy_scope(TestResult)
+    @test = Test.find(params[:test_id])
+    @students = policy_scope(Student).includes(:test_results)
   end
 
   def create
@@ -38,6 +39,8 @@ class TestResultsController < ApplicationController
 
   def test_result_params
     params.require(:test_result).permit(:total_percent, :write_percent, :read_percent, :listen_percent,
-                                        :speak_percent, :prev_level, :new_level, :test_id, :student_id)
+                                        :speak_percent, :prev_level, :new_level, :test_id, :student_id,
+                                        { answers:
+                                          { listening: [], reading: [], speaking: [], writing: [] } })
   end
 end

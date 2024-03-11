@@ -11,85 +11,85 @@ RSpec.describe Test do
 
   context 'when processing questions' do
     it 'produces a hash of max scores keyed by skills given correct input' do
-      test.questions = "Writing: 2, 3, 4\nReading: 5, 4 \nListening: 2, 3, 6 \nSpeaking: 10"
+      test.questions = "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10"
       test.save
       expect(test.questions).to eq(
         {
-          'Writing' => [2, 3, 4],
-          'Reading' => [5, 4],
-          'Listening' => [2, 3, 6],
-          'Speaking' => [10]
+          'writing' => [2, 3, 4],
+          'reading' => [5, 4],
+          'listening' => [2, 3, 6],
+          'speaking' => [10]
         }
       )
     end
 
     it 'splits skills on newlines' do
-      test.questions = "Listening: 4\nReading: 4 \nSpeaking: 4 \nWriting: 4"
+      test.questions = "listening: 4\nreading: 4 \nspeaking: 4 \nwriting: 4"
       test.save
       expect(test.questions.keys).to eq(described_class::SKILLS)
     end
 
     it 'ignores skills with no max scores entered' do
-      test.questions = "Writing: 4\nReading: \nListening: 4 \nSpeaking: 4"
+      test.questions = "writing: 4\nreading: \nlistening: 4 \nspeaking: 4"
       test.save
-      expect(test.questions.keys).to eq(%w[Writing Listening Speaking])
+      expect(test.questions.keys).to eq(%w[writing listening speaking])
     end
 
     it 'ignores scores with no skill entered' do
-      test.questions = "Writing: \nReading: 4 \nListening: 4 \nSpeaking: 4"
+      test.questions = "writing: \nreading: 4 \nlistening: 4 \nspeaking: 4"
       test.save
-      expect(test.questions).to eq({ 'Reading' => [4], 'Listening' => [4], 'Speaking' => [4] })
+      expect(test.questions).to eq({ 'reading' => [4], 'listening' => [4], 'speaking' => [4] })
     end
 
     it 'automatically capitalizes skills' do
-      test.questions = "lIsTeNiNg: 4 \nreaDing: 4 \nSpeaking: 4\nwriting: 4"
+      test.questions = "lIsTeNiNg: 4 \nreaDing: 4 \nspeaking: 4\nwriting: 4"
       test.save
       expect(test.questions.keys).to eq(described_class::SKILLS)
     end
 
     it 'strips all whitespace before processing skills' do
-      test.questions = "   Writing: 4\nReading   : 4 \nListening:    4 \nSpea   king: 4"
+      test.questions = "   writing: 4\nreading   : 4 \nlistening:    4 \nspea   king: 4"
       test.save
       expect(test.questions).to eq(
-        { 'Writing' => [4], 'Reading' => [4], 'Listening' => [4], 'Speaking' => [4] }
+        { 'writing' => [4], 'reading' => [4], 'listening' => [4], 'speaking' => [4] }
       )
     end
 
     it 'gives a descriptive error if invalid skill entered' do
-      test.questions = "Writing: 3, 4\nPizza: 5, 6"
+      test.questions = "writing: 3, 4\nPizza: 5, 6"
       test.save
       errors = test.errors.full_messages
       expect(errors).to include('Questions : Pizza is not a valid skill')
     end
 
     it 'transforms comma separated integers after skills to array of max scores' do
-      test.questions = "Writing: 3, 4\nReading: 5, 6"
+      test.questions = "writing: 3, 4\nreading: 5, 6"
       test.save
       expect(test.questions.values).to eq([[3, 4], [5, 6]])
     end
 
     it 'strips unnecessary whitespace from max scores' do
-      test.questions = "Writing: 3   , 4\nReading: 5,    6"
+      test.questions = "writing: 3   , 4\nreading: 5,    6"
       test.save
       expect(test.questions.values).to eq([[3, 4], [5, 6]])
     end
 
     it 'gives a descriptive error if : missing from pair' do
-      test.questions = "Writing: 3, 4\nReading 5, 6"
+      test.questions = "writing: 3, 4\nreading 5, 6"
       test.save
       errors = test.errors.full_messages
-      expect(errors).to include("Missing ':' near Reading5,6")
+      expect(errors).to include("Missing ':' near reading5,6")
     end
 
     it 'gives a descriptive error if negative integer entered' do
-      test.questions = "Writing: 3, -4\nReading: 5, 6"
+      test.questions = "writing: 3, -4\nreading: 5, 6"
       test.save
       errors = test.errors.full_messages
       expect(errors).to include('Questions : -4 is not a valid max score')
     end
 
     it 'gives a descriptive error if integer larger than 15 entered' do
-      test.questions = "Writing: 3, 16\nReading: 5, 6"
+      test.questions = "writing: 3, 16\nreading: 5, 6"
       test.save
       errors = test.errors.full_messages
       expect(errors).to include('Questions : 16 is not a valid max score')

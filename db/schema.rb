@@ -336,6 +336,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.integer "speak_percent"
     t.integer "prev_level", null: false
     t.integer "new_level", null: false
+    t.jsonb "answers", default: {}
     t.bigint "test_id", null: false
     t.bigint "student_id", null: false
     t.datetime "created_at", null: false

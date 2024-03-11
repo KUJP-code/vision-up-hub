@@ -8,6 +8,7 @@ class CreateTestResults < ActiveRecord::Migration[7.1]
       t.integer :speak_percent
       t.integer :prev_level, null: false
       t.integer :new_level, null: false
+      t.jsonb :answers, default: {}
       t.references :test, null: false, foreign_key: true
       t.references :student, null: false, foreign_key: true
 

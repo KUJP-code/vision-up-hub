@@ -1,5 +1,5 @@
 %main.flex.flex-col.gap-3.p-3
-  %h1= current_user.ku? ? 'Redacted' : @student.name
+  %h1= redact(@student.name)
   %h3.text-center= @student.level.titleize
   - if @student.student_id.present?
     %h3= t('.student_id', id: @student.student_id)

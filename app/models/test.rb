@@ -3,7 +3,12 @@
 class Test < ApplicationRecord
   include Levelable, Thresholdable, Questionable
 
-  SKILLS = %w[Listening Reading Speaking Writing].freeze
+  store_accessor :questions, :listening
+  store_accessor :questions, :reading
+  store_accessor :questions, :speaking
+  store_accessor :questions, :writing
+
+  SKILLS = %w[listening reading speaking writing].freeze
 
   validates :name, :level, :questions, :thresholds, presence: true
 
