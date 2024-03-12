@@ -51,10 +51,26 @@ export default class extends Controller {
 	}
 
 	calculate() {
-		const listeningScore = this.calcListenPercent();
-		const readingScore = this.calcReadPercent();
-		const speakingScore = this.calcSpeakPercent();
-		const writingScore = this.calcWritePercent();
+		const listeningScore = this.calcSkillPercent(
+			this.listeningTargets,
+			this.listeningMax,
+			this.listenPercentTargets,
+		);
+		const readingScore = this.calcSkillPercent(
+			this.readingTargets,
+			this.readingMax,
+			this.readPercentTargets,
+		);
+		const speakingScore = this.calcSkillPercent(
+			this.speakingTargets,
+			this.speakingMax,
+			this.speakPercentTargets,
+		);
+		const writingScore = this.calcSkillPercent(
+			this.writingTargets,
+			this.writingMax,
+			this.writePercentTargets,
+		);
 		const totalScore =
 			listeningScore + readingScore + speakingScore + writingScore;
 		const totalPercent = Math.ceil((totalScore / this.maxScore) * 100);
@@ -63,9 +79,25 @@ export default class extends Controller {
 		this.setNewLevel(totalPercent);
 	}
 
+	calcSkillPercent(targets, maxScore, outputs) {
+		const total = targets.reduce(
+			(total, target) => total + (Number.parseInt(target.value) || 0),
+			0,
+		);
+		const percentage = Math.ceil((total / maxScore) * 100);
+		for (const target of outputs) {
+			if (target.nodeName === "INPUT") {
+				target.value = percentage;
+			} else {
+				target.textContent = `${percentage}%`;
+			}
+		}
+		return total;
+	}
+
 	calcListenPercent() {
 		const listeningTotal = this.listeningTargets.reduce(
-			(total, target) => total + Number.parseInt(target.value),
+			(total, target) => total + (Number.parseInt(target.value) || 0),
 			0,
 		);
 		const listeningPercent = Math.ceil(
@@ -150,6 +182,6 @@ export default class extends Controller {
 			},
 			prevLevel,
 		);
-		this.newLevelTarget.value = newLevel.toLowerCase().replace(' ', '_');
+		this.newLevelTarget.value = newLevel.toLowerCase().replace(" ", "_");
 	}
 }
