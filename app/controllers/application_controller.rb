@@ -17,8 +17,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    locale = params[:locale] || I18n.default_locale
+    locale = params[:locale] || locale_from_accept_language || I18n.default_locale
     I18n.locale = locale
+  end
+
+  def locale_from_accept_language
+    http_accept_language.compatible_language_from(I18n.available_locales)
   end
 
   def user_not_authorized

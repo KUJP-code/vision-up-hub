@@ -67,6 +67,9 @@ gem 'aws-sdk-s3', '1.143.0', require: false
 # Lock rack to avoid vulnerabilities
 gem 'rack', '3.0.9.1'
 
+# Automatically set lang from user's preferred language
+gem 'http_accept_language', '2.1.1'
+
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
