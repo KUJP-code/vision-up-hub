@@ -27,7 +27,7 @@ RSpec.describe 'creating an Exercise lesson' do
       fill_in 'exercise_materials', with: "Material 1\nMaterial 2"
       fill_in 'exercise_notes', with: "Note 1\nNote 2"
       fill_in 'exercise_outro', with: "Outro 1\nOutro 2"
-      click_button 'Create Exercise'
+      click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Exercise')
     expect(page).to have_content('Exercise')

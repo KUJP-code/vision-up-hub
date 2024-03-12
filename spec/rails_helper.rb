@@ -63,4 +63,12 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :rack_test
   end
+
+  config.before(:each, type: :request) do
+    default_url_options[:locale] = I18n.default_locale
+  end
+
+  config.before(:each, type: :system) do
+    default_url_options[:locale] = I18n.default_locale
+  end
 end

@@ -2,8 +2,7 @@
 
 Rails.application.routes.draw do
   scope '(/:locale)',
-        locale: /ja|en/,
-        defaults: { locale: :ja } do
+        locale: /ja|en/ do
     devise_for :users
 
     authenticate :user do
