@@ -10,7 +10,7 @@
     = javascript_include_tag 'application',
                              'data-turbo-track': 'reload',
                              type: 'module'
-  %body
+  %body.h-screen
     %turbo_frame#flash
       = render 'shared/flash'
     = yield

@@ -1,8 +1,13 @@
-%nav{ class: 'w-full h-[6svh] md:h-[3svh] bg-slate-600 ' \
-             'flex justify-around items-center text-white font-bold' }
-  = link_to t('.home'),
-            root_path
+%nav{ class: 'w-full bg-ku-orange h-16 text-white font-bold ' \
+             'flex justify-around items-center',
+      id: 'main_nav' }
+  = link_to 'LOGO',
+            root_path,
+            class: 'p-3'
+  %h3.text-base= ja_date(Time.zone.now)
+  .flex-grow
   = render "#{current_user.type.pluralize.underscore}/nav"
   = link_to t('.sign_out'),
             destroy_user_session_path,
-            data: { turbo_method: :delete }
+            data: { turbo_method: :delete },
+            class: 'p-3'

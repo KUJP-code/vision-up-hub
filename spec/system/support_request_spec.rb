@@ -10,8 +10,8 @@ RSpec.describe 'creating a support request' do
   end
 
   it 'can create a support request' do
-    visit organisation_teacher_path(user.organisation, user)
-    click_link I18n.t('teachers.nav.request_support')
+    visit support_requests_path
+    find_by_id('create_request').click
     within '#support_request_form' do
       select I18n.t('support_requests.categories.bug_report'),
              from: 'support_request_category'

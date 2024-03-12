@@ -2,7 +2,7 @@
 
 class DailyActivitiesController < LessonsController
   def index
-    @lessons = policy_scope(DailyActivity.all)
+    @lessons = policy_scope(DailyActivity.order(title: :desc))
   end
 
   def create
@@ -37,10 +37,7 @@ class DailyActivitiesController < LessonsController
   private
 
   def daily_activity_params
-    da_params = %i[
-      extra_fun intro instructions large_groups materials notes links subtype
-    ]
-    params.require(:daily_activity).permit(lesson_params + da_params)
+    params.require(:daily_activity).permit(lesson_params + DailyActivity::ATTRIBUTES)
   end
 
   def after_update_url

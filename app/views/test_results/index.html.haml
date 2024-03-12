@@ -1,0 +1,34 @@
+= render 'shared/subtitle',
+         text: t('.results_for', name: @test.name.titleize)
+
+.w-full.overflow-x-auto.p-1
+  %table
+    %thead
+      %tr
+        %th.p-1{ rowspan: 2 }= t('.student_id')
+        %th.p-1{ rowspan: 2 }= t('.name')
+        %th.p-1{ rowspan: 2 }= t('.level')
+        - Test::SKILLS.each do |skill|
+          - next if @test.send(skill.to_sym).empty?
+
+          %th.p-1{ colspan: @test.send(skill.to_sym).count + 1 }= skill.titleize
+        %th.p-1{ rowspan: 2 }= t('.total')
+        %th.p-1{ rowspan: 2 } Prev level
+        %th.p-1{ rowspan: 2 } New level
+      %tr
+        - Test::SKILLS.each do |skill|
+          - next if @test.send(skill.to_sym).empty?
+
+          - @test.send(skill.to_sym).each do |max_score|
+            %th.p-1= max_score
+          %th.p-1= t(".#{fieldname_from_skill(skill)}")
+
+    %tbody
+      - @students.each do |student|
+        :ruby
+          result = student.test_results.find { |r| r.test_id == @test.id } ||
+                   @test.test_results.new(student_id: student.id)
+        = render 'test_results/form',
+                 result:,
+                 student:,
+                 test: @test

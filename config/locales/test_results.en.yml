@@ -1,0 +1,5 @@
+en:
+  test_results:
+    index:
+      results_for: "%{name} Results"
+      student_id: "ID"

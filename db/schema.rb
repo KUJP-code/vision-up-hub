@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -120,6 +120,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
     t.index ["email"], name: "index_organisations_on_email", unique: true
     t.index ["name"], name: "index_organisations_on_name", unique: true
     t.index ["phone"], name: "index_organisations_on_phone", unique: true
+  end
+
+  create_table "plans", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "student_limit"
+    t.date "start"
+    t.date "finish_date"
+    t.integer "total_cost"
+    t.integer "months_paid"
+    t.bigint "course_id", null: false
+    t.bigint "organisation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_plans_on_course_id"
+    t.index ["organisation_id"], name: "index_plans_on_organisation_id"
   end
 
   create_table "proposed_changes", force: :cascade do |t|
@@ -288,6 +304,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
     t.index ["school_id"], name: "index_students_on_school_id"
   end
 
+  create_table "support_messages", force: :cascade do |t|
+    t.string "message"
+    t.bigint "user_id"
+    t.bigint "support_request_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["support_request_id"], name: "index_support_messages_on_support_request_id"
+    t.index ["user_id"], name: "index_support_messages_on_user_id"
+  end
+
   create_table "support_requests", force: :cascade do |t|
     t.integer "category"
     t.string "description"
@@ -300,6 +326,32 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_support_requests_on_user_id"
+  end
+
+  create_table "test_results", force: :cascade do |t|
+    t.integer "total_percent", null: false
+    t.integer "write_percent"
+    t.integer "read_percent"
+    t.integer "listen_percent"
+    t.integer "speak_percent"
+    t.integer "prev_level", null: false
+    t.integer "new_level", null: false
+    t.jsonb "answers", default: {}
+    t.bigint "test_id", null: false
+    t.bigint "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_test_results_on_student_id"
+    t.index ["test_id"], name: "index_test_results_on_test_id"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string "name"
+    t.integer "level"
+    t.jsonb "questions", default: {}
+    t.jsonb "thresholds", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -341,6 +393,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
+  add_foreign_key "plans", "courses"
+  add_foreign_key "plans", "organisations"
   add_foreign_key "proposed_changes", "lessons"
   add_foreign_key "proposed_changes", "users", column: "proponent_id"
   add_foreign_key "school_classes", "schools"
@@ -355,6 +409,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_28_053905) do
   add_foreign_key "student_classes", "school_classes", column: "class_id"
   add_foreign_key "student_classes", "students"
   add_foreign_key "students", "schools"
+  add_foreign_key "support_messages", "support_requests"
+  add_foreign_key "support_messages", "users"
   add_foreign_key "support_requests", "users"
+  add_foreign_key "test_results", "students"
+  add_foreign_key "test_results", "tests"
   add_foreign_key "users", "organisations"
 end

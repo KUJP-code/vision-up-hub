@@ -14,11 +14,17 @@ Rails.application.routes.draw do
       resources :files, only: %i[create index show]
       resources :lessons
       resources :phonics_classes, only: %i[create index update]
+      resources :plans
       resources :proposed_changes, only: %i[destroy edit update]
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
-      resources :support_requests
+      resources :support_requests do
+        resources :support_messages, only: %i[create]
+      end
+      resources :tests do
+        resources :test_results, only: %i[create index update]
+      end
 
       resources :organisations, except: %i[destroy show] do
         resources :schools

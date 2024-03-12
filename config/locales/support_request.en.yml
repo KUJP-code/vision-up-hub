@@ -5,6 +5,14 @@ en:
       feature_request: "Feature Request"
       general: "General"
       typo_report: "Typo Report"
+    index:
+      new_request: "New Support Request"
+      support_requests: "Support Requests"
+    show:
+      edit: "Edit"
+      mark_resolved: "Mark Resolved"
+      messages: "Messages"
+      send: "Send"
     status_badge:
       open: "Open"
       resolved: "Resolved"

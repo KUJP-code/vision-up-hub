@@ -12,8 +12,12 @@ class StudentsController < ApplicationController
   end
 
   def show
-    @classes = @student.classes.pluck(:name)
-    @potential_classes = @student.school.classes.pluck(:name, :id)
+    @classes = @student.classes
+    @potential_classes =
+      @student.school
+              .classes
+              .where.not(id: @classes.ids)
+              .pluck(:name, :id)
   end
 
   def new

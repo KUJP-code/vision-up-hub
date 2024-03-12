@@ -23,7 +23,7 @@ Admin.create!(fb.attributes_for(
 ))
 
 User::TYPES.each do |type|
-  org = %w[Admin Sales Writer].include?(type) ? kids_up : test_org
+  org = %w[Admin Sales Writer Teacher].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
   User.create!(fb.attributes_for(
     :user,
@@ -34,6 +34,8 @@ User::TYPES.each do |type|
     organisation_id: org.id
   ))
 end
+
+Teacher.create!(fb.attributes_for(:user, :teacher, organisation_id: 2))
 
 SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
@@ -48,22 +50,32 @@ Lesson::TYPES.map do |type|
     assigned_editor_id: writer.id,
     creator_id: 1
   ))
-  if l.instance_of?(StandShowSpeak)
-    l.script.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
-  elsif l.instance_of?(EnglishClass)
-    l.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
-  end
+end
+
+puts "Creating today's lessons..."
+
+%i[land_two sky_three galaxy_one].each do |level|
+  fb.create(:english_class, level: level)
+  fb.create(:phonics_class, level: level)
+  fb.create(:stand_show_speak, level: level)
 end
 
 Lesson.all.each do |lesson|
   lesson.attach_guide
 end
 
+Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
+  lesson.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+end
+
 puts 'Creating courses...'
 
-course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson) }
+course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson, week: 1, day: Time.zone.today.strftime('%A').downcase) }
 
 Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
+Organisation.all.each do |org|
+  org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id, start: Date.today.beginning_of_week))
+end
 Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 
 puts 'Adding classes to schools & teachers...'
@@ -80,10 +92,18 @@ end
 puts 'Adding students to classes and schools...'
 
 School.all.each do |school|
-  students = fb.create_list(:student, 2, school_id: school.id)
+  students = fb.create_list(:student, 10, school_id: school.id)
   school.classes.each do |klass|
     klass.students << students
   end
 end
+
+puts 'Creating a level check and test result...'
+
+level_check = fb.create(
+  :test,
+  questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10"
+)
+level_check.test_results << fb.create(:test_result, test: level_check, student: Student.first)
 
 puts 'Done!'

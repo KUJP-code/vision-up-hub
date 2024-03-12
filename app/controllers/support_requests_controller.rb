@@ -11,7 +11,7 @@ class SupportRequestsController < ApplicationController
 
   def show
     @support_request.mark_seen_by(current_user.id)
-    # @support_messages = policy_scope(@support_request.support_messages)
+    @messages = @support_request.messages.includes(:user)
   end
 
   def new
@@ -21,9 +21,8 @@ class SupportRequestsController < ApplicationController
   def edit; end
 
   def create
-    @support_request = authorize SupportRequest.new(
-      support_request_params.merge(user_id: current_user.id)
-    )
+    @support_request =
+      authorize current_user.support_requests.new(support_request_params)
 
     if @support_request.save
       redirect_to @support_request,

@@ -3,6 +3,8 @@
 class EnglishClass < Lesson
   include Listable
 
+  ATTRIBUTES = %i[example_sentences guide lesson_topic notes term unit vocab].freeze
+
   LISTABLE_ATTRIBUTES = %i[example_sentences notes vocab].freeze
 
   attr_accessor :lesson_topic, :term, :unit

@@ -7,6 +7,7 @@ RSpec.describe 'creating a class' do
   let(:school) { create(:school, organisation: user.organisation) }
 
   before do
+    school.students << create(:student)
     user.schools << school
     sign_in user
   end

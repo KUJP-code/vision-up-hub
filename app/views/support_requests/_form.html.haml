@@ -4,16 +4,22 @@
                                     id: 'support_request_form' } do |f|
   = render 'shared/form_errors', resource: request
 
-  .form-group
-    = f.label :category
-    = f.select :category, SupportRequest.select_categories
-
-  .form-group
-    = f.label :subject
-    = f.text_field :subject
+  .flex.gap-2
+    .form-group
+      = f.label :subject
+      = f.text_field :subject,
+                     class: 'w-80 p-1 text-ku-gray-900'
+    .form-group
+      = f.label :category
+      = f.select :category,
+                 SupportRequest.select_categories,
+                 {},
+                 { class: 'w-80 bg-white text-ku-orange p-1' }
 
   .form-group
     = f.label :description
-    = f.text_area :description
+    = f.text_area :description,
+                  class: 'w-full text-ku-gray-900',
+                  rows: 5
 
-  = f.submit class: 'btn btn-primary'
+  = f.submit class: 'btn btn-primary cursor-pointer'

@@ -11,6 +11,11 @@ class SupportRequest < ApplicationRecord
   }
 
   belongs_to :user, optional: true
+  delegate :organisation_id, to: :user
+  has_many :messages,
+           dependent: :destroy,
+           class_name: 'SupportMessage',
+           inverse_of: :support_request
   has_many_attached :attachments
 
   def mark_seen_by(user_id)

@@ -1,6 +1,7 @@
-= link_to 'Lessons', lessons_path
-= link_to 'Organisations', organisations_path
-= link_to 'Schools',
+= main_nav_link 'Lessons', lessons_path
+= main_nav_link 'Organisations', organisations_path
+= main_nav_link 'Plans', plans_path
+= main_nav_link 'Schools',
           organisation_schools_path(current_user.organisation_id)
-= link_to 'Support', support_requests_path
-= link_to 'Users', users_path
+= main_nav_link 'Support', support_requests_path
+= main_nav_link 'Users', users_path

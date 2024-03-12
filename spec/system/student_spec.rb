@@ -7,11 +7,12 @@ RSpec.describe 'creating a student' do
   let(:school) { create(:school, organisation: user.organisation) }
 
   before do
+    school.classes << create(:school_class)
     user.schools << school
     sign_in user
   end
 
-  it 'can create a class as school manager' do
+  it 'can create a student as school manager' do
     visit students_path
     click_link I18n.t('students.index.create_student')
     within '#student_form' do

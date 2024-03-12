@@ -1,0 +1,40 @@
+-# locals: (result:, student:, test:)
+
+= form_for [test, result] do |f|
+  %tr
+    %td.p-1.text-center
+      = link_to student.student_id || 'なし',
+                student_path(student)
+    %td.p-1.text-center
+      = link_to redact(student.name),
+                student_path(student)
+    %td.p-1= student.level.titleize
+    - Test::SKILLS.each do |skill|
+      = render 'test_results/skill_fields',
+               f:,
+               skill:,
+               test:
+    %td.p-1
+      .flex.justify-center.items-center.gap-1
+        = f.text_field :total_percent,
+                       readonly: true,
+                       min: 0,
+                       max: 100,
+                       class: 'w-10 text-center'
+        %p %
+
+    %td.p-1
+      - prev_level = result.prev_level || student.level
+      = prev_level.titleize
+      = f.hidden_field :prev_level,
+                       value: prev_level
+    %td.p-1
+      = f.select :new_level,
+                 TestResult.new_levels.keys.map { |k| [k.titleize, k] },
+                 include_blank: true,
+                 selected: result.new_level
+
+    %td.p-1
+      = f.hidden_field :student_id
+      = f.hidden_field :test_id
+      = f.submit class: 'btn btn-primary'

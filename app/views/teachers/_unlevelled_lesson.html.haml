@@ -1,0 +1,7 @@
+-# locals: (lesson:)
+
+%div{ class: 'flex flex-col gap-5 p-5 basis-1/5' }
+  %h2.text-ku-purple.font-bold.text-center= lesson.subtype.titleize
+  %h3.text-ku-purple.font-bold.text-center= lesson.title
+  = image_tag cycle('dance.png', 'arts.png'), class: 'w-full'
+  = render 'teachers/lesson_resources', lesson:

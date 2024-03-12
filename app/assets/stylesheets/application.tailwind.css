@@ -4,7 +4,11 @@
 
 :root {
 	--ku-blue: #5bb6d5;
-	--ku-orange: #f48000;
+	--ku-gray-100: #f9f9f9;
+	--ku-gray-500: #b1a9bc;
+	--ku-gray-900: #b3abc0;
+	--ku-orange: #fab650;
+	--ku-purple: #7e7195;
 }
 
 @layer base {
@@ -21,13 +25,20 @@
 	}
 
 	input:not([type="submit"]),
+	select,
 	textarea {
 		border: 1px solid #000000;
+		border-radius: 0.25rem;
+		padding: 0.25rem;
 
 		&:disabled {
 			cursor: not-allowed;
 			background-color: #f5f5f5;
 		}
+	}
+
+	small {
+		@apply text-sm text-slate-300;
 	}
 }
 
@@ -59,7 +70,7 @@
 	}
 
 	.btn-info {
-		background-color: var(--ku-blue);
+		background-color: var(--ku-purple);
 		color: #ffffff;
 	}
 
@@ -81,4 +92,7 @@
 	.turbo-progress-bar {
 		display: none !important;
 	}
+	 .week-arrow {
+		@apply rounded-full flex items-center font-extrabold text-3xl text-ku-orange border-4 border-ku-orange p-1;
+	 }
 }

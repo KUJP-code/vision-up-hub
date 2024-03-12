@@ -1,0 +1,35 @@
+-# locals: (test:)
+
+:ruby
+  questions = test.new_record? ? '' : test.form_questions
+  thresholds = test.new_record? ? '' : test.form_thresholds
+
+= form_with model: @test,
+            html: { class: 'form',
+                    id: 'test_form' } do |f|
+  = render 'shared/form_errors', resource: @test
+
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.label :level
+    = f.select :level, Test.levels.keys.map { |k| [short_level(k), k] }.uniq { |k, _v| k }
+
+  .form-group
+    = f.label :questions
+    = f.text_area :questions, value: questions
+    %small Each line is a section (named after a skill)
+    %small Skills should be followed by a ':', then comma-separated list of maximum scores e.g.
+    %small 'Writing: 2, 4, 5, 6'
+    %small 'Reading: 5, 2, 2'
+
+  .form-group
+    = f.label :thresholds
+    = f.text_area :thresholds, value: thresholds
+    %small Each line is a level (all in words), followed by a ':', then the threshold e.g.
+    %small 'Sky Two: 70'
+    %small 'Sky Three: 85'
+
+  = f.submit class: 'btn btn-primary'

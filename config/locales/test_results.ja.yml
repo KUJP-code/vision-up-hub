@@ -1,0 +1,5 @@
+ja:
+  test_results:
+    index:
+      results_for: "%{name}のテスト結果"
+      student_id: "ID"

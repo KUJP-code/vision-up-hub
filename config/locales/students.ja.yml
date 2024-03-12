@@ -5,7 +5,7 @@ ja:
       create_student: "新しい学生を作成する"
     show:
       add_to_class: "このクラスに追加する"
-      class_list: "クラス: %{class_list}"
+      class_list: "クラス:"
       school: "学校: %{school}"
       student_id: "学生ID: %{id}"
     table:

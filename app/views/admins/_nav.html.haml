@@ -1,10 +1,12 @@
-= link_to 'Classes', school_classes_path
-= link_to 'Courses', courses_path
-= link_to 'Files', files_path
-= link_to 'Lessons', lessons_path
-= link_to 'Organisations', organisations_path
-= link_to 'Schools',
-          organisation_schools_path(current_user.organisation_id)
-= link_to 'Students', students_path
-= link_to 'Support', support_requests_path
-= link_to 'Users', users_path
+= main_nav_link 'Classes', school_classes_path
+= main_nav_link 'Courses', courses_path
+= main_nav_link 'Files', files_path
+= main_nav_link 'Lessons', lessons_path
+= main_nav_link 'Organisations', organisations_path
+= main_nav_link 'Plans', plans_path
+= main_nav_link 'Schools',
+                organisation_schools_path(current_user.organisation_id)
+= main_nav_link 'Students', students_path
+= main_nav_link 'Support', support_requests_path
+= main_nav_link 'Tests', tests_path
+= main_nav_link 'Users', users_path
