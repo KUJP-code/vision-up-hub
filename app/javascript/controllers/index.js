@@ -12,3 +12,6 @@ application.register("flash", FlashController)
 
 import NewFolderController from "./new_folder_controller"
 application.register("new-folder", NewFolderController)
+
+import TestResultController from "./test_result_controller"
+application.register("test-result", TestResultController)

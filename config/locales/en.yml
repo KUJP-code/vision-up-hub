@@ -1,3 +1,7 @@
 en:
+  activerecord:
+    models:
+      school_class: "Class"
+      test_result: "Result"
   nav:
     request_support: "Request Support"

@@ -107,6 +107,7 @@ group :test do
   # Capybara for system testing
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'selenium-webdriver'
 
   # FactoryBot for test data
   gem 'factory_bot_rails'
@@ -120,5 +121,3 @@ group :test do
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
 end
-
-gem "dockerfile-rails", ">= 1.6", :group => :development

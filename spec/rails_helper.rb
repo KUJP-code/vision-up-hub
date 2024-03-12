@@ -68,7 +68,8 @@ RSpec.configure do |config|
     default_url_options[:locale] = I18n.default_locale
   end
 
-  config.before(:each, type: :system) do
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium_chrome_headless
     default_url_options[:locale] = I18n.default_locale
   end
 end

@@ -3,6 +3,11 @@
 class TestResult < ApplicationRecord
   include Levels
 
+  store_accessor :answers, :listening
+  store_accessor :answers, :reading
+  store_accessor :answers, :speaking
+  store_accessor :answers, :writing
+
   enum :new_level, LEVELS, prefix: true
   enum :prev_level, LEVELS, prefix: true
 

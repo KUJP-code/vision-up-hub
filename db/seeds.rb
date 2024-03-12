@@ -92,7 +92,7 @@ end
 puts 'Adding students to classes and schools...'
 
 School.all.each do |school|
-  students = fb.create_list(:student, 10, school_id: school.id)
+  students = fb.create_list(:student, 10, school_id: school.id, level: :sky_one)
   school.classes.each do |klass|
     klass.students << students
   end
@@ -104,6 +104,18 @@ level_check = fb.create(
   :test,
   questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10"
 )
-level_check.test_results << fb.create(:test_result, test: level_check, student: Student.first)
+
+level_check.test_results << fb.create(
+  :test_result,
+  test: level_check,
+  prev_level: :sky_one,
+  student: Student.first,
+  answers: {
+    'writing' => [2, 3, 4],
+    'reading' => [5, 4],
+    'listening' => [2, 3, 6],
+    'speaking' => [10]
+  }
+)
 
 puts 'Done!'

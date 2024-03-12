@@ -32,7 +32,7 @@ class SchoolPolicy < ApplicationPolicy
         scope.all
       when 'OrgAdmin'
         user.organisation.schools
-      when 'SchoolManager'
+      when 'SchoolManager', 'Teacher'
         user.schools
       else
         scope.none
