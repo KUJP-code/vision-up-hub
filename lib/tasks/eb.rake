@@ -3,6 +3,7 @@
 namespace :eb do
   desc 'Deploys current version of the app to elastic beanstalk'
   task deploy: :environment do
+    run_tests
     current_version = find_current_version
     version = request_new_version(current_version)
     build_docker_image(version)
@@ -10,6 +11,27 @@ namespace :eb do
     update_dockerrun(version)
     commit_changes(version)
     deploy_to_eb
+  end
+end
+
+def run_tests
+  puts 'Running tests...'
+  errors = `bundle exec rspec | grep '#'`.split("\n")
+  confirm_failing_tests(errors) if errors.any?
+end
+
+def confirm_failing_tests(errors)
+  puts "Found #{errors.count / 2} failing #{'test'.pluralize(errors.count / 2)}"
+  errors.each do |error|
+    puts error
+  end
+  puts 'Are you sure you want to deploy with these tests failing? (y/n)'
+  ok = $stdin.gets.chomp
+  if ok == 'y'
+    puts 'Continuing...'
+  else
+    puts 'Aborting'
+    exit
   end
 end
 
