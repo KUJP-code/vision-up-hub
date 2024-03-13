@@ -41,7 +41,7 @@ module ApplicationHelper
   def locale_toggle
     current_locale = I18n.locale
     new_locale = current_locale == :en ? :ja : :en
-    svg_filename = new_locale == :en ? 'en.svg' : 'jp.svg'
+    svg_filename = "#{current_locale}.svg"
     svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
     link_to(
       svg_tag,
