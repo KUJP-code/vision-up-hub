@@ -11,6 +11,8 @@ class TestResult < ApplicationRecord
   enum :new_level, LEVELS, prefix: true
   enum :prev_level, LEVELS, prefix: true
 
+  after_save :update_student_level
+
   belongs_to :test
   belongs_to :student
   delegate :organisation_id, to: :student
@@ -22,4 +24,10 @@ class TestResult < ApplicationRecord
             :write_percent, numericality:
             { allow_nil: true, only_integer: true,
               greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
+
+  private
+
+  def update_student_level
+    student.update!(level: new_level)
+  end
 end
