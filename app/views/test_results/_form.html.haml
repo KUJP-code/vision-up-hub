@@ -36,7 +36,8 @@
       = f.select :new_level,
                  TestResult.new_levels.keys.map { |k| [k.titleize, k] },
                  { include_blank: true, selected: result.new_level },
-                 { data: { 'test-result-target': 'newLevel' } }
+                 { class: (f.object.persisted? ? 'border-ku-gray-500' : ''),
+                   data: { 'test-result-target': 'newLevel' } }
 
     %td.p-1
       = f.hidden_field :student_id

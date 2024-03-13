@@ -1,20 +1,24 @@
 -# locals: (f:, skill:, test:)
 
-- skill_symbol = skill.to_sym
+:ruby
+  skill_symbol = skill.to_sym
+  return if test.send(skill_symbol).empty?
 
-- return if test.send(skill_symbol).empty?
+  saved = f.object.persisted?
+  input_classes = "outline-none border w-10 text-center #{'border-ku-gray-500' if saved}"
 
 - test.send(skill_symbol).each_with_index do |max_score, i|
-  %td.p-1
+  %td.p-1{ data: { controller: 'validity' } }
     .flex.justify-center.items-center.gap-1
       = number_field_tag "test_result[answers][#{skill}][]",
                          f.object.answers[skill],
                          min: 0,
                          max: max_score,
                          value: f.object.send(skill_symbol)[i] || 0,
-                         class: 'w-12 text-center',
-                         data: { action: 'test-result#calculate',
-                                 'test-result-target': skill }
+                         class: input_classes,
+                         data: { action: 'test-result#calculate validity#validate',
+                                 'test-result-target': skill,
+                                 'validity-target': 'input' }
 
 %td{ class: 'p-1 bg-ku-purple/50' }
   .flex.justify-center.items-center.gap-1

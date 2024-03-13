@@ -12,3 +12,6 @@ application.register("flash", FlashController)
 
 import TestResultController from "./test_result_controller"
 application.register("test-result", TestResultController)
+
+import ValidityController from "./validity_controller"
+application.register("validity", ValidityController)
