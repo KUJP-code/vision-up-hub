@@ -5,13 +5,13 @@
                'test-result-thresholds-value': test.thresholds.to_json,
                'test-result-questions-value': test.questions.to_json },
        id: "student#{student.id}_result" }
-    %td.p-1.text-center
+    %td{ class: 'p-1 bg-ku-orange/50' }
       = link_to student.student_id || 'なし',
                 student_path(student)
-    %td.p-1.text-center
+    %td{ class: 'p-1 bg-ku-orange/50' }
       = link_to redact(student.name),
                 student_path(student)
-    %td.p-1= student.level.titleize
+    %td{ class: 'p-1 bg-ku-orange/50' }= student.level.titleize
 
     - Test::SKILLS.each do |skill|
       = render 'test_results/skill_fields',
