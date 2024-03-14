@@ -68,12 +68,20 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'thatbballguy/materials:#{version}'"
-  `docker build . -t thatbballguy/materials:#{version}`
+  build_error = `docker build . -t thatbballguy/materials:#{version} | grep 'ERROR'`
+  return if build_error.blank?
+
+  puts 'Docker build failed. Aborting'
+  exit
 end
 
 def push_docker_image(version)
   puts "Pushing 'thatbballguy/materials:#{version}' to docker hub..."
-  system("docker push thatbballguy/materials:#{version}")
+  push_error = `docker push thatbballguy/materials:#{version} | grep 'ERROR'`
+  return if push_error.blank?
+
+  puts 'Docker push failed. Aborting'
+  exit
 end
 
 def update_dockerrun(version)
@@ -92,5 +100,6 @@ def commit_changes(version)
 end
 
 def deploy_to_eb(version)
+  puts "Deploying version #{verion} to AWS"
   system("eb deploy -l #{version}")
 end
