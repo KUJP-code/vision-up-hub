@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "thatbballguy/materials:0.5-rake-task"
+    "Name": "thatbballguy/materials:0.6-test-results"
   },
   "Ports": [
     {
