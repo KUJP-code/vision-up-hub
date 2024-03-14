@@ -100,6 +100,6 @@ def commit_changes(version)
 end
 
 def deploy_to_eb(version)
-  puts "Deploying version #{verion} to AWS"
+  puts "Deploying version #{version} to AWS"
   system("eb deploy -l #{version}")
 end
