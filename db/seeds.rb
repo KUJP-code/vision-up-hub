@@ -14,25 +14,25 @@ end
 puts 'Creating users...'
 
 Admin.create!(fb.attributes_for(
-  :user,
-  :admin,
-  name: 'Brett',
-  email: 'admin@gmail.com',
-  password: 'adminadminadmin',
-  organisation_id: kids_up.id
-))
+                :user,
+                :admin,
+                name: 'Brett',
+                email: 'admin@gmail.com',
+                password: 'adminadminadmin',
+                organisation_id: kids_up.id
+              ))
 
 User::TYPES.each do |type|
   org = %w[Admin Sales Writer Teacher].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
   User.create!(fb.attributes_for(
-    :user,
-    type.underscore.to_sym,
-    name: "Test #{type}",
-    email: "#{underscored}@example.com",
-    password: "#{underscored}password",
-    organisation_id: org.id
-  ))
+                 :user,
+                 type.underscore.to_sym,
+                 name: "Test #{type}",
+                 email: "#{underscored}@example.com",
+                 password: "#{underscored}password",
+                 organisation_id: org.id
+               ))
 end
 
 Teacher.create!(fb.attributes_for(:user, :teacher, organisation_id: 2))
@@ -46,18 +46,18 @@ writer = Writer.first
 Lesson::TYPES.map do |type|
   puts "Creating #{type}..."
   l = Lesson.create!(fb.attributes_for(
-    type.underscore.to_sym,
-    assigned_editor_id: writer.id,
-    creator_id: 1
-  ))
+                       type.underscore.to_sym,
+                       assigned_editor_id: writer.id,
+                       creator_id: 1
+                     ))
 end
 
 puts "Creating today's lessons..."
 
 %i[land_two sky_three galaxy_one].each do |level|
-  fb.create(:english_class, level: level)
-  fb.create(:phonics_class, level: level)
-  fb.create(:stand_show_speak, level: level)
+  fb.create(:english_class, level:)
+  fb.create(:phonics_class, level:)
+  fb.create(:stand_show_speak, level:)
 end
 
 Lesson.all.each do |lesson|
@@ -65,14 +65,16 @@ Lesson.all.each do |lesson|
 end
 
 Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
-  lesson.guide.attach(File.open(Rails.root.join('spec', 'Brett_Tanner_Resume.pdf')))
+  lesson.guide.attach(File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')))
 end
 
 puts 'Creating courses...'
 
-course_lessons = Lesson.all.map { |lesson| fb.build(:course_lesson, lesson: lesson, week: 1, day: Time.zone.today.strftime('%A').downcase) }
+course_lessons = Lesson.all.map do |lesson|
+  fb.build(:course_lesson, lesson:, week: 1, day: Time.zone.today.strftime('%A').downcase)
+end
 
-Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons: course_lessons))
+Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
 Organisation.all.each do |org|
   org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id, start: Date.today.beginning_of_week))
 end
@@ -105,8 +107,11 @@ level_check = fb.create(
   questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10"
 )
 
-level_check.test_results << fb.create(
+fb.create_list(:test, 5)
+
+level_check.test_results = fb.create_list(
   :test_result,
+  10,
   test: level_check,
   prev_level: :sky_one,
   student: Student.first,

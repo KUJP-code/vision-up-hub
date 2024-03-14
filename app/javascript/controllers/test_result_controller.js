@@ -29,24 +29,36 @@ export default class extends Controller {
 	}
 
 	setSkillMaxes() {
-		this.listeningMax = this.questions.listening.reduce(
-			(total, maxScore) => total + maxScore,
-			0,
-		);
-		this.readingMax = this.questions.reading.reduce(
-			(total, maxScore) => total + maxScore,
-			0,
-		);
-		this.speakingMax = this.questions.speaking.reduce(
-			(total, maxScore) => total + maxScore,
-			0,
-		);
-		this.writingMax = this.questions.writing.reduce(
-			(total, maxScore) => total + maxScore,
-			0,
-		);
-		this.maxScore =
-			this.listeningMax + this.readingMax + this.speakingMax + this.writingMax;
+		const skillMaxes = [];
+		if (this.hasListeningTarget) {
+			this.listeningMax = this.questions.listening.reduce(
+				(total, maxScore) => total + maxScore,
+				0,
+			);
+			skillMaxes.push(this.listeningMax);
+		}
+		if (this.hasReadingTarget) {
+			this.readingMax = this.questions.reading.reduce(
+				(total, maxScore) => total + maxScore,
+				0,
+			);
+			skillMaxes.push(this.readingMax);
+		}
+		if (this.hasSpeakingTarget) {
+			this.speakingMax = this.questions.speaking.reduce(
+				(total, maxScore) => total + maxScore,
+				0,
+			);
+			skillMaxes.push(this.speakingMax);
+		}
+		if (this.hasWritingTarget) {
+			this.writingMax = this.questions.writing.reduce(
+				(total, maxScore) => total + maxScore,
+				0,
+			);
+			skillMaxes.push(this.writingMax);
+		}
+		this.maxScore = skillMaxes.reduce((total, max) => total + max, 0);
 	}
 
 	calculate() {

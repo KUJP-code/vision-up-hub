@@ -9,7 +9,7 @@
         %th{ class: 'p-1 bg-ku-orange', rowspan: 2 }= t('.name')
         %th{ class: 'p-1 bg-ku-orange', rowspan: 2 }= t('.level')
         - Test::SKILLS.each do |skill|
-          - next if @test.send(skill.to_sym).empty?
+          - next if @test.send(skill.to_sym).blank?
 
           %th{ class: 'p-1 bg-ku-orange',
                colspan: @test.send(skill.to_sym).count + 1 }
@@ -20,7 +20,7 @@
         %th{ class: 'p-1 bg-ku-orange', rowspan: 2 }
       %tr
         - Test::SKILLS.each do |skill|
-          - next if @test.send(skill.to_sym).empty?
+          - next if @test.send(skill.to_sym).blank?
 
           - @test.send(skill.to_sym).each do |max_score|
             %th{ class: 'p-1 bg-ku-purple' } /#{max_score}

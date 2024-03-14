@@ -2,7 +2,7 @@
 
 :ruby
   skill_symbol = skill.to_sym
-  return if test.send(skill_symbol).empty?
+  return if test.send(skill_symbol).blank?
 
   saved = f.object.persisted?
   input_classes = "outline-none border w-10 text-center #{'border-ku-gray-500' if saved}"
