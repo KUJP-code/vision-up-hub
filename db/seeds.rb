@@ -55,9 +55,9 @@ end
 puts "Creating today's lessons..."
 
 %i[land_two sky_three galaxy_one].each do |level|
-  fb.create(:english_class, level:)
-  fb.create(:phonics_class, level:)
-  fb.create(:stand_show_speak, level:)
+  fb.create(:english_class, level:, creator_id: 1, assigned_editor_id: writer.id)
+  fb.create(:phonics_class, level:, creator_id: 1, assigned_editor_id: writer.id)
+  fb.create(:stand_show_speak, level:, creator_id: 1, assigned_editor_id: writer.id)
 end
 
 Lesson.all.each do |lesson|
