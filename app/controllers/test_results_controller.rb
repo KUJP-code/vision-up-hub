@@ -41,7 +41,10 @@ class TestResultsController < ApplicationController
     params.require(:test_result)
           .permit(:total_percent, :write_percent, :read_percent, :listen_percent,
                   :speak_percent, :prev_level, :new_level, :test_id, :student_id,
-                  { answers: { listening: [], reading: [], speaking: [], writing: [] } })
+                  :reason, {
+                    answers: { listening: [], reading: [],
+                               speaking: [], writing: [] }
+                  })
   end
 
   def set_index_vars

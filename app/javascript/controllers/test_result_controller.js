@@ -9,6 +9,7 @@ export default class extends Controller {
 		"prevLevel",
 		"readPercent",
 		"reading",
+		"reason",
 		"speakPercent",
 		"speaking",
 		"totalPercent",
@@ -25,8 +26,6 @@ export default class extends Controller {
 		this.thresholds = this.thresholdsValue;
 		this.questions = this.questionsValue;
 		this.setSkillMaxes();
-
-		this.calculate();
 	}
 
 	setSkillMaxes() {
@@ -116,6 +115,20 @@ export default class extends Controller {
 			},
 			prevLevel,
 		);
+		this.newLevel = newLevel;
 		this.newLevelTarget.value = newLevel.toLowerCase().replace(" ", "_");
+	}
+
+	checkRecommendedLevel() {
+		if (this.newLevelTarget.value !== this.newLevel) {
+			this.reasonTarget.classList.remove("hidden");
+			this.newLevelTarget.classList.add("border-yellow-300", "text-yellow-600");
+		} else {
+			this.reasonTarget.classList.add("hidden");
+			this.newLevelTarget.classList.remove(
+				"border-yellow-300",
+				"text-yellow-600",
+			);
+		}
 	}
 }

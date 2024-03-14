@@ -1,5 +1,7 @@
 -# locals: (result:, student:, test:)
 
+- possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
+
 = form_for [test, result] do |f|
   %tr{ data: { controller: 'test-result',
                'test-result-thresholds-value': test.thresholds.to_json,
@@ -33,11 +35,17 @@
                        data: { 'test-result-target': 'prevLevel' }
 
     %td.p-1
-      = f.select :new_level,
-                 TestResult.new_levels.keys.map { |k| [k.titleize, k] },
-                 { include_blank: true, selected: result.new_level },
-                 { class: (f.object.persisted? ? 'border-ku-gray-500' : ''),
-                   data: { 'test-result-target': 'newLevel' } }
+      .flex.flex-col.gap-3
+        = f.select :new_level,
+                   possible_levels.map { |k| [k.titleize, k] },
+                   { selected: result.new_level || test.level },
+                   { class: (f.object.persisted? ? 'border-ku-gray-500' : ''),
+                     data: { action: 'test-result#checkRecommendedLevel',
+                             'test-result-target': 'newLevel' } }
+        = f.text_area :reason,
+                      class: 'hidden',
+                      data: { 'test-result-target': 'reason' },
+                      placeholder: '理由を記入して下さい'
 
     %td.p-1
       = f.hidden_field :student_id

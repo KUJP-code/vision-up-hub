@@ -5,7 +5,6 @@ export default class extends Controller {
 	static targets = ["input"];
 
 	validate() {
-		console.log(this.inputTarget.reportValidity(), this.withinRange());
 		if (this.inputTarget.reportValidity() && this.withinRange()) {
 			this.inputTarget.classList.remove(
 				"border-ku-gray-500",
