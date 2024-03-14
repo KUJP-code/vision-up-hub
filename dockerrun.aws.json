@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "thatbballguy/materials:0.6.1-results-docker"
+    "Name": "thatbballguy/materials:0.6.2-encryption-keys"
   },
   "Ports": [
     {

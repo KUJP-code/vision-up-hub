@@ -10,7 +10,7 @@ namespace :eb do
     push_docker_image(version)
     update_dockerrun(version)
     commit_changes(version)
-    deploy_to_eb
+    deploy_to_eb(version)
   end
 end
 
@@ -91,6 +91,6 @@ def commit_changes(version)
   `git commit -m "Deploy #{version}"`
 end
 
-def deploy_to_eb
-  system('eb deploy')
+def deploy_to_eb(version)
+  system("eb deploy -l #{version}")
 end

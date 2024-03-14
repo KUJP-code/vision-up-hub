@@ -8,7 +8,7 @@ RSpec.describe SupportRequest do
   end
 
   context 'when modifying seen_by' do
-    it 'adds the provided user_id when #mark_seen_by is called' do
+    it 'adds the provided user_id when mark_seen_by is called' do
       request = create(:support_request, seen_by: [1, 2, 3])
       request.mark_seen_by(4)
       expect(request.seen_by).to eq([1, 2, 3, 4])
@@ -20,7 +20,7 @@ RSpec.describe SupportRequest do
       expect(request.seen_by).to eq([1, 2, 3])
     end
 
-    it 'can be reset to empty array by #mark_all_unseen' do
+    it 'can be reset to empty array by mark_all_unseen' do
       request = create(:support_request, seen_by: [1, 2, 3])
       request.mark_all_unseen
       expect(request.seen_by).to eq([])
@@ -33,7 +33,7 @@ RSpec.describe SupportRequest do
     end
   end
 
-  context 'when querying #seen_by?' do
+  context 'when querying seen_by?' do
     it 'returns true when user is in seen_by' do
       request = create(:support_request, seen_by: [1, 2, 3])
       expect(request.seen_by?(1)).to be true
