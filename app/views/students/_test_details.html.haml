@@ -1,0 +1,28 @@
+-# locals: ()
+
+%canvas{ data: { controller: 'chart',
+                 'chart-data-value': @data,
+                 'chart-options-value': { elements: { line: { borderWidth: 3 } }, responsive: true }.to_json,
+                 'chart-type-value': 'radar' },
+         id: 'radar-chart' }
+
+%table
+  %thead
+    %tr.text-white.font-bold
+      %th
+        %p.p-2.bg-ku-orange.rounded-s-lg.border-r.border-r-white
+          = t('.max_grade')
+      %th
+        %p.p-2.bg-ku-orange.border-r.border-r-white
+          = t('.student_grade')
+      %th
+        %p.p-2.bg-ku-orange.border-r.border-r-white %
+      %th
+        %p.p-2.bg-ku-orange.rounded-e-lg
+          = t('.recommended_level')
+  %tbody
+    %tr.text-center
+      %td grade
+      %td student_grade
+      %td total_percent
+      %td recommended_level

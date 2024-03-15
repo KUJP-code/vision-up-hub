@@ -83,6 +83,7 @@ ja:
       day: 日
       month: 月
       year: 年
+  edit: "編集"
   errors:
     format: "%{attribute} %{message}"
     messages:

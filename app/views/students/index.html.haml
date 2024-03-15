@@ -1,6 +1,6 @@
-%main.flex.flex-col.gap-3.p-3
-  %h1= t('.students')
+= render 'shared/subtitle', text: t('.students')
 
+%main.flex.flex-col.gap-3.p-3
   - unless current_user.is?('Teacher', 'Writer')
     = link_to t('.create_student'),
               new_student_path,

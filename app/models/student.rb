@@ -8,6 +8,7 @@ class Student < ApplicationRecord
 
   belongs_to :school, counter_cache: true
   delegate :organisation_id, to: :school
+  has_many :teachers, through: :school
 
   has_many :student_classes, dependent: :destroy
   accepts_nested_attributes_for :student_classes

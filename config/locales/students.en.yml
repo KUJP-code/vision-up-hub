@@ -1,13 +1,16 @@
 ---
 en:
   students:
+    details:
+      add_to_class: "Add to this class"
+      classes: "Classes: "
+      level: "Level: "
+      name: "Name: "
+      school: "School: "
+      student_id: "Student ID: "
+      teachers: "Teachers: "
     index:
       create_student: "Create new student"
-    show:
-      add_to_class: "Add to this class"
-      class_list: "Classes:"
-      school: "School: %{school}"
-      student_id: "Student ID: %{id}"
     table:
       classes: "Classes"
       edit: "Edit"
@@ -15,3 +18,7 @@ en:
       name: "Name"
       school: "School"
       student_id: "Student ID"
+    test_details:
+      max_grade: "Max Grade"
+      recommended_level: "Recommended Level"
+      student_grade: "Student Grade"

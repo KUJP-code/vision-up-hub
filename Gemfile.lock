@@ -127,6 +127,7 @@ GEM
     capybara-screenshot (1.0.26)
       capybara (>= 1.0, < 4)
       launchy
+    chartkick (5.0.6)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -443,6 +444,7 @@ DEPENDENCIES
   bullet
   capybara
   capybara-screenshot
+  chartkick (= 5.0.6)
   cssbundling-rails (= 1.4.0)
   database_cleaner-active_record
   debug
