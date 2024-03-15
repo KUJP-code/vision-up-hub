@@ -11,6 +11,8 @@ ja:
       teachers: "先生: "
     index:
       create_student: "新しい学生を作成する"
+    show:
+      add_comment: "コメントを追加する"
     table:
       classes: "クラス"
       edit: "編集"

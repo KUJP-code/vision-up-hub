@@ -1,0 +1,23 @@
+-# locals: (tests:)
+
+%table
+  %thead
+    %tr.text-white.font-bold.whitespace-nowrap
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 rounded-s-lg border-r border-r-white' }
+          = t('.level_check')
+      %th
+        %p{ class: 'h-full p-2 bg-ku-purple/50 border-r.border-r-white' }
+          = t('.score')
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 border-r.border-r-white' } %
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 rounded-e-lg' }
+          = t('.new_level')
+  %tbody
+    - tests.each do |test|
+      %tr{ class: 'text-center border-b-2 border-ku-gray-900/50' }
+        %td.p-2 month year
+        %td.p-2 score/max
+        %td.p-2 total_percent
+        %td.p-2 new_level

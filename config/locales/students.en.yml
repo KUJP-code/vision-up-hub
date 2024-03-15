@@ -11,6 +11,8 @@ en:
       teachers: "Teachers: "
     index:
       create_student: "Create new student"
+    show:
+      add_comment: "Add comment"
     table:
       classes: "Classes"
       edit: "Edit"
