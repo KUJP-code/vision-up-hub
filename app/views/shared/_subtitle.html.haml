@@ -1,4 +1,11 @@
 -# locals: (classes: '', text:)
 
-%div{ class: "w-full bg-ku-gray-100 text-ku-gray-900 font-semibold py-2 px-3 #{classes}" }
+
+%div{ class: 'w-full bg-ku-gray-100 text-ku-gray-900 font-semibold py-2 px-3 ' \
+             "relative #{classes}" }
+  - unless viewing_self?
+    = link_to :back,
+              class: 'absolute top-3 left-3 flex items-center gap-2' do
+      .w-0.h-0.border-r-8.border-r-ku-gray-900.border-y-8.border-y-transparent.mt-1
+      %span= t('.back')
   %h1= text
