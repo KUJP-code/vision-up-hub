@@ -10,17 +10,31 @@ module ApplicationHelper
   end
 
   def main_nav_link(title, path)
-    active = request.path.include?(path)
+    # request path segments
+    segments = request.path.split('/').reject(&:empty?)
+    # path segments
+    path_segments = path.split('/').reject(&:empty?)
+
+    active = false
+
+    path_segments.each_with_index do |segment, index|
+      # check if current segment matches a segment in url path
+      if segments[index] == segment
+        active = true
+      else
+        break
+      end
+    end
     active_classes = 'bg-white rounded-lg text-ku-orange'
 
     link_to title, path,
-            class: "p-3 #{active_classes if active}"
+            class: "p-3 #{active ? active_classes : ''}"
   end
-  
+
   def split_on_capitals(string)
     string.gsub(/.(?=[[:upper:]])/) { |c| "#{c} " }
   end
-  
+
   def short_level(level)
     case level
     when 'land_one', 'land_two', 'land_three'
@@ -37,7 +51,7 @@ module ApplicationHelper
       level.titleize
     end
   end
-  
+
   def toggle_locale_link
     current_locale = I18n.locale
     new_locale = (current_locale == :en) ? :ja : :en
