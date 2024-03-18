@@ -1,9 +1,9 @@
 %nav{ class: 'w-full bg-ku-orange h-16 text-white font-bold ' \
              'flex justify-around items-center',
       id: 'main_nav' }
-  = link_to 'LOGO',
-            root_path,
-            class: 'p-3'
+  = link_to root_path,
+            class: 'p-3' do
+    %image.w-12.h-12{ src: '/favicon.svg' }
   %h3.text-base= ja_date(Time.zone.now)
   .flex-grow
   = render "#{current_user.type.pluralize.underscore}/nav"
