@@ -2,7 +2,7 @@
 ja:
   students:
     details:
-      add_to_class: "このクラスに追加する"
+      add_to_class: "追加する"
       classes: "クラス: "
       level: "レベル: "
       name: "名前: "
@@ -13,6 +13,8 @@ ja:
       create_student: "新しい学生を作成する"
     show:
       add_comment: "コメントを追加する"
+      add_comments: "学生にコメントを追加する"
+      student_id: "学生ID: %{id}"
     table:
       classes: "クラス"
       edit: "編集"

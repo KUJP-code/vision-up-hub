@@ -2,7 +2,7 @@
 en:
   students:
     details:
-      add_to_class: "Add to this class"
+      add_to_class: "Add class"
       classes: "Classes: "
       level: "Level: "
       name: "Name: "
@@ -13,6 +13,7 @@ en:
       create_student: "Create new student"
     show:
       add_comment: "Add comment"
+      add_comments: "Add your comments on this student here"
     table:
       classes: "Classes"
       edit: "Edit"

@@ -1,7 +1,7 @@
 = render 'shared/subtitle', text: redact(@student.name)
 
 %main.flex.flex-col.md:flex-row.p-3
-  %section{ class: 'basis-2/6 flex flex-col justify-around gap-12 p-8' }
+  %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-8' }
     = render 'students/details',
              student: @student,
              classes: @classes,
@@ -17,5 +17,5 @@
                     rows: 7
       = f.submit t('.add_comment'), class: 'btn btn-primary w-full'
 
-  %section{ class: 'basis-4/6 flex flex-col gap-6 p-8' }
+  %section{ class: 'basis-3/5 flex flex-col gap-6 p-8' }
     = render 'students/test_details'
