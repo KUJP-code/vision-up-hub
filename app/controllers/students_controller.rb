@@ -87,7 +87,6 @@ class StudentsController < ApplicationController
           data: radar_data[:data],
           label: radar_data[:label],
           backgroundColor: "rgba(#{color}, 0.2)",
-          borderColor: "rgb(#{color})",
           pointBackgroundColor: "rgb(#{color})",
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
