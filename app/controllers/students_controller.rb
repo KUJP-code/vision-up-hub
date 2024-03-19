@@ -19,7 +19,7 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
-    @tests = @student.tests
+    @results = @student.test_results.includes(:test)
     @data = {
       labels: %w[
         Eating

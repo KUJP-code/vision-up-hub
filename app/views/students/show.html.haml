@@ -8,7 +8,7 @@
              potential_classes: @potential_classes,
              teachers: @teachers
 
-    = render 'students/tests_table', tests: @tests
+    = render 'students/tests_table', results: @results
 
     = form_for @student do |f|
       = f.text_area :comments,

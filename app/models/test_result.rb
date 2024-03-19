@@ -31,6 +31,10 @@ class TestResult < ApplicationRecord
     end
   end
 
+  def total_score
+    answers.values.flatten.sum
+  end
+
   private
 
   def reason_given?

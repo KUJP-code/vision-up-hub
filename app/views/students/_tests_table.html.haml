@@ -1,4 +1,4 @@
--# locals: (tests:)
+-# locals: (results:)
 
 %table
   %thead
@@ -15,9 +15,9 @@
         %p{ class: 'p-2 bg-ku-purple/50 rounded-e-lg' }
           = t('.new_level')
   %tbody
-    - tests.each do |test|
+    - results.each do |result|
       %tr{ class: 'text-center border-b-2 border-ku-gray-900/50' }
-        %td.p-2 month year
-        %td.p-2 score/max
-        %td.p-2 total_percent
-        %td.p-2 new_level
+        %td.p-2= result.created_at.strftime('%B %Y')
+        %td.p-2 #{result.total_score}/#{result.test.max_score}
+        %td.p-2= result.total_percent
+        %td.p-2= result.new_level.titleize

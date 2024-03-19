@@ -104,23 +104,26 @@ puts 'Creating a level check and test result...'
 
 level_check = fb.create(
   :test,
-  questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10"
+  questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10",
+  thresholds: "Sky One:60\nSky Two:70\nSky Three:80"
 )
 
 fb.create_list(:test, 5)
 
-level_check.test_results = fb.create_list(
-  :test_result,
-  10,
-  test: level_check,
-  prev_level: :sky_one,
-  student: Student.first,
-  answers: {
-    'writing' => [2, 3, 4],
-    'reading' => [5, 4],
-    'listening' => [2, 3, 6],
-    'speaking' => [10]
-  }
-)
+Student.all.each do |student|
+  student.test_results << fb.create_list(
+    :test_result,
+    2,
+    test: level_check,
+    prev_level: :sky_one,
+    new_level: :sky_three,
+    answers: {
+      'writing' => [2, 3, 4],
+      'reading' => [5, 4],
+      'listening' => [2, 3, 6],
+      'speaking' => [10]
+    }
+  )
+end
 
 puts 'Done!'
