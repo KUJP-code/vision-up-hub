@@ -25,6 +25,13 @@ class TestResult < ApplicationRecord
             { allow_nil: true, only_integer: true,
               greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
+  def radar_data
+    {
+      label: test.name,
+      data: [read_percent || 0, write_percent || 0, speak_percent || 0, listen_percent || 0]
+    }
+  end
+
   def recommended_level
     test.thresholds.reduce(prev_level) do |_lvl, threshold|
       threshold.first.tr(' ', '_').downcase if total_percent >= threshold.last

@@ -1,8 +1,10 @@
--# locals: ()
+-# locals: (data:)
 
 %canvas{ data: { controller: 'chart',
                  'chart-data-value': @data,
-                 'chart-options-value': { elements: { line: { borderWidth: 3 } }, responsive: true }.to_json,
+                 'chart-options-value': { elements: { line: { borderWidth: 3, tension: 0.3 } },
+                                          responsive: true,
+                                          scales: { r: { min: 0, max: 100 } } }.to_json,
                  'chart-type-value': 'radar' },
          id: 'radar-chart' }
 

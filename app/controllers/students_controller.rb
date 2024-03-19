@@ -20,38 +20,7 @@ class StudentsController < ApplicationController
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
     @results = @student.test_results.includes(:test)
-    @data = {
-      labels: %w[
-        Eating
-        Drinking
-        Sleeping
-        Designing
-        Coding
-        Cycling
-        Running
-      ],
-      datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 90, 81, 56, 55, 40],
-        fill: true,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgb(255, 99, 132)',
-        pointBackgroundColor: 'rgb(255, 99, 132)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgb(255, 99, 132)'
-      }, {
-        label: 'My Second Dataset',
-        data: [28, 48, 40, 19, 96, 27, 100],
-        fill: true,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgb(54, 162, 235)',
-        pointBackgroundColor: 'rgb(54, 162, 235)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgb(54, 162, 235)'
-      }]
-    }.to_json
+    @data = radar_data
   end
 
   def new
@@ -103,6 +72,28 @@ class StudentsController < ApplicationController
       :comments, :level, :name, :school_id, :student_id,
       student_classes_attributes: %i[id class_id _destroy]
     )
+  end
+
+  def radar_data
+    radar_colors = ['250, 182, 80', '126, 113, 149', '156, 193, 216'].cycle
+
+    {
+      labels: %w[Reading Writing Listening Speaking],
+      datasets: @results.map.with_index do |result, _i|
+        radar_data = result.radar_data
+        color = radar_colors.next
+        {
+          data: radar_data[:data],
+          label: radar_data[:label],
+          backgroundColor: "rgba(#{color}, 0.2)",
+          borderColor: "rgb(#{color})",
+          pointBackgroundColor: "rgb(#{color})",
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: "rgb(#{color})"
+        }
+      end
+    }.to_json
   end
 
   def set_student

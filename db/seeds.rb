@@ -110,13 +110,33 @@ level_check = fb.create(
 
 fb.create_list(:test, 5)
 
-Student.all.each do |student|
-  student.test_results << fb.create_list(
+results = [
+  fb.attributes_for(
     :test_result,
-    2,
-    test: level_check,
+    test_id: level_check.id,
+    prev_level: :sky_one,
+    new_level: :sky_two,
+    read_percent: rand(0..100),
+    write_percent: rand(0..100),
+    speak_percent: rand(0..100),
+    listen_percent: rand(0..100),
+    reason: 'I am a reason',
+    answers: {
+      'writing' => [2, 3, 1],
+      'reading' => [5, 0],
+      'listening' => [2, 1, 6],
+      'speaking' => [10]
+    }
+  ),
+  fb.attributes_for(
+    :test_result,
+    test_id: level_check.id,
     prev_level: :sky_one,
     new_level: :sky_three,
+    read_percent: rand(0..100),
+    write_percent: rand(0..100),
+    speak_percent: rand(0..100),
+    listen_percent: rand(0..100),
     answers: {
       'writing' => [2, 3, 4],
       'reading' => [5, 4],
@@ -124,6 +144,12 @@ Student.all.each do |student|
       'speaking' => [10]
     }
   )
+]
+
+Student.all.each do |student|
+  results.each do |result|
+    student.test_results.create!(result)
+  end
 end
 
 puts 'Done!'
