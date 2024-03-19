@@ -16,8 +16,11 @@
           = t('.new_level')
   %tbody
     - results.each do |result|
-      %tr{ class: 'text-center border-b-2 border-ku-gray-900/50' }
-        %td.p-2= result.created_at.strftime('%B %Y')
+      %tr{ class: 'text-center text-ku-purple border-b-2 border-ku-gray-900/50' }
+        %td.p-2
+          = link_to result.created_at.strftime('%B %Y'),
+                    student_path(@student.id, test_id: result.test_id),
+                    class: 'font-bold hover:underline'
         %td.p-2 #{result.total_score}/#{result.test.max_score}
         %td.p-2= result.total_percent
         %td.p-2= result.new_level.titleize

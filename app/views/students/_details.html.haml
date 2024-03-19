@@ -17,7 +17,7 @@
     %li
       %span{ class: 'text-ku-purple/50' }= t('.teachers')
       %span.text-ku-purple= @teachers.map(&:name).to_sentence
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.classes')
       %span.text-ku-purple= @classes.map(&:name).to_sentence
   %div{ class: 'w-2/5 flex flex-col justify-between' }

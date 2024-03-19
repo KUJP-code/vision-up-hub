@@ -19,7 +19,7 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
-    @results = @student.test_results.includes(:test)
+    @results = @student.test_results.order(created_at: :desc).includes(:test)
     @data = radar_data
   end
 
@@ -75,11 +75,12 @@ class StudentsController < ApplicationController
   end
 
   def radar_data
+    results = params[:test_id] ? [@results.find { |r| r.test_id == params[:test_id].to_i }] : @results
     radar_colors = ['250, 182, 80', '126, 113, 149', '156, 193, 216'].cycle
 
     {
       labels: %w[Reading Writing Listening Speaking],
-      datasets: @results.map.with_index do |result, _i|
+      datasets: results.map.with_index do |result, _i|
         radar_data = result.radar_data
         color = radar_colors.next
         {
@@ -93,7 +94,7 @@ class StudentsController < ApplicationController
           pointHoverBorderColor: "rgb(#{color})"
         }
       end
-    }.to_json
+    }
   end
 
   def set_student
