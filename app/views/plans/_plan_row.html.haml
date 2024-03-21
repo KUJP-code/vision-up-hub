@@ -1,0 +1,15 @@
+-# locals: (plan:)
+
+%tr
+  %td
+    = link_to plan.name,
+              plan_path(plan)
+  %td
+    = link_to plan.course.title,
+              course_path(plan.course_id)
+  %td
+    = link_to plan.organisation.name,
+              organisation_path(plan.organisation_id)
+  %td= plan.student_limit
+  %td #{ja_date(plan.start)} - #{ja_date(plan.finish_date)}
+  %td= number_to_currency(plan.total_cost)

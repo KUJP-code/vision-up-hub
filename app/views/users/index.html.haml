@@ -1,4 +1,4 @@
-%h1= @org ? t('.org_users', org: @org.name) : t('.users')
+= render 'shared/subtitle', text: @org ? t('.org_users', org: @org.name) : t('.users')
 
 = render 'users/between_org_nav', orgs: @orgs if @orgs
 
