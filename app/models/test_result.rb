@@ -28,7 +28,12 @@ class TestResult < ApplicationRecord
   def radar_data
     {
       label: test.name,
-      data: [read_percent || 0, write_percent || 0, speak_percent || 0, listen_percent || 0]
+      data: [
+        read_percent || 0,
+        write_percent || 0,
+        speak_percent || 0,
+        listen_percent || 0
+      ]
     }
   end
 

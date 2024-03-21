@@ -15,7 +15,9 @@ end
 RSpec.describe TestResultPolicy do
   subject(:policy) { described_class.new(user, test_result) }
 
-  let(:test_result) { build(:test_result) }
+  let(:test) { create(:test) }
+
+  let(:test_result) { build(:test_result, test:) }
 
   context 'when admin' do
     let(:user) { build(:user, :admin) }
