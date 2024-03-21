@@ -70,9 +70,6 @@ gem 'rack', '3.0.9.1'
 # Automatically set lang from user's preferred language
 gem 'http_accept_language', '2.1.1'
 
-# Make pretty charts
-gem 'chartkick', '5.0.6'
-
 group :production, :development do
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
