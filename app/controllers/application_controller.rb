@@ -4,13 +4,9 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  before_action :authorize_profiling, :set_locale
+  before_action :set_locale
 
   private
-
-  def authorize_profiling
-    Rack::MiniProfiler.authorize_request if !Rails.env.test? && current_user&.is?('Admin')
-  end
 
   def default_url_options
     { locale: I18n.locale }

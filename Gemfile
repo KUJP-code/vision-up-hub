@@ -70,11 +70,6 @@ gem 'rack', '3.0.9.1'
 # Automatically set lang from user's preferred language
 gem 'http_accept_language', '2.1.1'
 
-group :production, :development do
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  gem 'rack-mini-profiler'
-end
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
