@@ -21,6 +21,7 @@
       %span{ class: 'text-ku-purple/50' }= t('.classes')
       %span.text-ku-purple= @classes.map(&:name).to_sentence
   %div{ class: 'w-2/5 flex flex-col justify-between' }
+    = render 'shared/print_button', text: t('.print_report')
     = link_to t('edit'),
               edit_student_path(@student),
               class: 'btn btn-info'

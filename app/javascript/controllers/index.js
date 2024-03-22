@@ -2,19 +2,19 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application";
+import { application } from "./application"
 
-import FieldsController from "./fields_controller";
-application.register("fields", FieldsController);
+import FieldsController from "./fields_controller"
+application.register("fields", FieldsController)
 
-import FlashController from "./flash_controller";
-application.register("flash", FlashController);
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
 
-import TestResultController from "./test_result_controller";
-application.register("test-result", TestResultController);
+import PrintController from "./print_controller"
+application.register("print", PrintController)
 
-import ValidityController from "./validity_controller";
-application.register("validity", ValidityController);
+import TestResultController from "./test_result_controller"
+application.register("test-result", TestResultController)
 
-import Chart from "@stimulus-components/chartjs";
-application.register("chart", Chart);
+import ValidityController from "./validity_controller"
+application.register("validity", ValidityController)
