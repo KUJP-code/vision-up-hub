@@ -10,7 +10,7 @@ RSpec.describe 'creating Sales staff' do
   end
 
   it 'admin can create sales staff' do
-    visit organisation_sales_path(organisation)
+    visit organisation_sales_path(organisation_id: organisation.id)
     click_link 'create_sale'
     expect(page).to have_content 'form'
     within '#sales_form' do

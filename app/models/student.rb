@@ -6,6 +6,7 @@ class Student < ApplicationRecord
   validates :level, :name, presence: true
   encrypts :name
 
+  belongs_to :parent, optional: true
   belongs_to :school, counter_cache: true
   delegate :organisation_id, to: :school
   has_many :teachers, through: :school

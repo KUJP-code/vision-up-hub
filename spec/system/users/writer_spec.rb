@@ -10,7 +10,7 @@ RSpec.describe 'creating a Writer' do
   end
 
   it 'admin can create a writer' do
-    visit organisation_writers_path(organisation)
+    visit organisation_writers_path(organisation_id: organisation.id)
     click_link 'create_writer'
     expect(page).to have_content 'form'
     within '#writer_form' do

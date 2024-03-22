@@ -35,5 +35,9 @@ FactoryBot.define do
       organisation factory: :organisation, name: 'KidsUP'
       type { 'Writer' }
     end
+
+    trait :parent do
+      type { 'Parent' }
+    end
   end
 end
