@@ -109,6 +109,7 @@ level_check = fb.create(
 )
 
 fb.create_list(:test, 5)
+rand_test = Test.last
 
 results = [
   fb.attributes_for(
@@ -130,7 +131,7 @@ results = [
   ),
   fb.attributes_for(
     :test_result,
-    test_id: level_check.id,
+    test_id: rand_test.id,
     prev_level: :sky_one,
     new_level: :sky_three,
     read_percent: rand(0..100),

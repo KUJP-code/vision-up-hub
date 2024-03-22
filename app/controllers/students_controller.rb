@@ -19,8 +19,7 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
-    @results = @student.test_results.order(created_at: :desc).includes(:test)
-    @data = radar_data
+    set_results
   end
 
   def new
@@ -74,13 +73,18 @@ class StudentsController < ApplicationController
     )
   end
 
+  def set_results
+    @results = @student.test_results.order(created_at: :desc).includes(:test)
+    @results = @results.where(test_id: params[:test_id]) if params[:test_id]
+    @data = radar_data
+  end
+
   def radar_data
-    results = params[:test_id] ? [@results.find { |r| r.test_id == params[:test_id].to_i }] : @results
     radar_colors = ['250, 182, 80', '126, 113, 149', '156, 193, 216'].cycle
 
     {
       labels: %w[Reading Writing Listening Speaking],
-      datasets: results.map.with_index do |result, _i|
+      datasets: @results.map do |result|
         radar_data = result.radar_data
         color = radar_colors.next
         {

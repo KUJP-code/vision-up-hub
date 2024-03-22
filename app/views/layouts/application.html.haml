@@ -11,6 +11,7 @@
     = javascript_include_tag 'application',
                              'data-turbo-track': 'reload',
                              type: 'module'
+    = yield :head
   %body
     %turbo_frame#flash
       = render 'shared/flash'

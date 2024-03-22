@@ -1,20 +1,21 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between border-4 border-ku-purple/50 rounded-xl p-3' }
+%div{ class: 'flex justify-between border-4 border-ku-purple/50 rounded-xl p-3',
+      id: 'student_details' }
   %ul{ class: 'basis-3/5 flex-shrink-0 font-bold' }
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.student_id')
       %span.text-ku-purple= @student.student_id || 'なし'
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.name')
       %span.text-ku-purple= redact(@student.name)
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.level')
       %span.text-ku-purple= @student.level.titleize
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.school')
       %span.text-ku-purple= @student.school.name
-    %li
+    %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.teachers')
       %span.text-ku-purple= @teachers.map(&:name).to_sentence
     %li.flex.flex-col
