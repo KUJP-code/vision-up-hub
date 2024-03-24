@@ -11,12 +11,21 @@ module ApplicationHelper
 
   def main_nav_link(title, path, controller_name)
     user_types = User::TYPES.map(&:downcase)
-    current_controller = controller.controller_name
-    puts "All user types: #{user_types}"
-    active_class = (current_controller == controller_name) ? 'bg-white rounded-lg text-ku-orange' : ''
+    current_controller = controller.controller_name.downcase
+    # calls to see if it's the current users own profile, if so it will not loop through user types
+    if current_user_own_profile?
+      active_class = ''
+    else
+      # checks for matches between user types and current controller
+      if user_types.any? { |type| current_controller.include?(type) }
+        puts "Match found between #{current_controller} and user types: #{user_types}"
+        current_controller = 'users'
+      end
+      active_class = current_controller == controller_name ? 'bg-white rounded-lg text-ku-orange' : ''
+    end
     link_to title, path, class: "p-3 #{active_class}"
   end
-  
+
   def split_on_capitals(string)
     string.gsub(/.(?=[[:upper:]])/) { |c| "#{c} " }
   end
@@ -44,5 +53,14 @@ module ApplicationHelper
     svg_filename = (new_locale == :en) ? 'en.svg' : 'jp.svg'
     svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
     link_to(svg_tag, url_for(locale: new_locale), class: 'locale-toggle-link', title: "Switch to #{new_locale.to_s.upcase}")
+  end
+
+  private
+
+  # check the current user profile id vs id in params
+  def current_user_own_profile?
+    return false unless current_user.present? && params[:id].present?
+
+    current_user.id == params[:id].to_i
   end
 end
