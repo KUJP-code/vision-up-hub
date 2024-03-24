@@ -9,28 +9,14 @@ module ApplicationHelper
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
-  def main_nav_link(title, path)
-    # request path segments
-    segments = request.path.split('/').reject(&:empty?)
-    # path segments
-    path_segments = path.split('/').reject(&:empty?)
-
-    active = false
-
-    path_segments.each_with_index do |segment, index|
-      # check if current segment matches a segment in url path
-      if segments[index] == segment
-        active = true
-      else
-        break
-      end
-    end
-    active_classes = 'bg-white rounded-lg text-ku-orange'
-
-    link_to title, path,
-            class: "p-3 #{active ? active_classes : ''}"
+  def main_nav_link(title, path, controller_name)
+    user_types = User::TYPES.map(&:downcase)
+    current_controller = controller.controller_name
+    puts "All user types: #{user_types}"
+    active_class = (current_controller == controller_name) ? 'bg-white rounded-lg text-ku-orange' : ''
+    link_to title, path, class: "p-3 #{active_class}"
   end
-
+  
   def split_on_capitals(string)
     string.gsub(/.(?=[[:upper:]])/) { |c| "#{c} " }
   end
