@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
+      resources :student_searches, only: %i[create show]
       resources :support_requests do
         resources :support_messages, only: %i[create]
       end
