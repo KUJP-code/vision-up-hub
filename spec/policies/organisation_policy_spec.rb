@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'KU staff for OrganisationPolicy' do
-  it_behaves_like 'authorized user for all but destroy'
+  it_behaves_like 'authorized user except destroy'
 
   it 'scopes to all orgs' do
     expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.all)
@@ -76,6 +76,12 @@ RSpec.describe OrganisationPolicy do
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
+
+    it_behaves_like 'unauthorized user for OrganisationPolicy'
+  end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
 
     it_behaves_like 'unauthorized user for OrganisationPolicy'
   end

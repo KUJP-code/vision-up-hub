@@ -100,4 +100,14 @@ RSpec.describe SchoolPolicy do
       expect(Pundit.policy_scope!(user, School)).to eq(user.schools)
     end
   end
+
+  context 'when parent' do
+    let(:user) { create(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+
+    it 'scopes to no schools' do
+      expect(Pundit.policy_scope!(user, School)).to eq(School.none)
+    end
+  end
 end
