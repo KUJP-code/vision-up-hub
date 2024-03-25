@@ -18,6 +18,7 @@ RSpec.describe 'creating Parent' do
       click_on 'commit'
     end
     expect(page).to have_content 'John'
+    expect(page).to have_content I18n.t('parents.show.children')
     expect(page).to have_content I18n.t('create_success')
   end
 end

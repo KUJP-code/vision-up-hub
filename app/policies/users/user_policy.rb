@@ -21,6 +21,8 @@ class UserPolicy < ApplicationPolicy
       end
     end
 
+    private
+
     def sm_scope
       teacher_ids = user.teachers.ids
       parent_ids = user.parents.ids

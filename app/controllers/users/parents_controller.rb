@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class ParentsController < UsersController
-  def show; end
+  def show
+    @children = @user.children
+  end
 
   def new
     @user = authorize Parent.new(organisation_id: current_user.organisation_id)
   end
 
   def create
-    @user = authorize Parent.new(parents_params)
+    @user = authorize Parent.new(parents_params.merge(organisation_id: current_user.organisation_id))
 
     if @user.save
       redirect_to organisation_parent_path(@user.organisation, @user),

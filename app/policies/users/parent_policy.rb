@@ -18,7 +18,8 @@ class ParentPolicy < ApplicationPolicy
   end
 
   def create?
-    user.is?('Admin') || authorized_org_user?
+    user.is?('Admin') ||
+      (user.is?('OrgAdmin', 'SchoolManager') && user.organisation_id == record.organisation_id)
   end
 
   def destroy?
@@ -28,8 +29,15 @@ class ParentPolicy < ApplicationPolicy
   private
 
   def authorized_org_user?
-    (user.is?('OrgAdmin') && record.organisation_id == user.organisation_id) ||
-      (user.is?('SchoolManager') && user.parents.ids.include?(record.id))
+    valid_org_admin? || valid_school_manager?
+  end
+
+  def valid_org_admin?
+    user.is?('OrgAdmin') && user.organisation_id == record.organisation_id
+  end
+
+  def valid_school_manager?
+    user.is?('SchoolManager') && UserPolicy::Scope.new(user, User).resolve.ids.include?(record.id)
   end
 
   def viewing_self?

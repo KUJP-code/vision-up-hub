@@ -4,12 +4,6 @@
             html: { class: 'form', id: 'parent_form' } do |f|
   = render 'shared/form_errors', resource: parent
 
-  .form-group
-    = f.label :name
-    = f.text_field :name
-
-  .form-group
-    = f.label :email
-    = f.text_field :email
+  = render('users/fields', f:)
 
   = f.submit class: 'btn btn-primary'

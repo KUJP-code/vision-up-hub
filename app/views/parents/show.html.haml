@@ -1,0 +1,14 @@
+= render 'shared/subtitle', text: "Welcome, #{@user.name}"
+
+%main.flex.flex-col.gap-3.p-3
+  %h3= @user.email
+  %h3 You're a parent
+
+  %h3= t('.children')
+  - @children.each do |child|
+    = link_to child.name,
+              student_path(child)
+
+  = link_to 'Edit',
+            edit_organisation_parent_path(@user.organisation_id, @user),
+            class: 'btn btn-info'

@@ -46,6 +46,7 @@ RSpec.describe ParentPolicy do
 
       before do
         record.children << create(:student, school:)
+        record.update(organisation_id: user.organisation_id)
       end
 
       it_behaves_like 'fully authorized user'
