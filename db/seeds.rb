@@ -91,10 +91,11 @@ Teacher.all.each do |teacher|
   teacher.classes << teacher.schools.first.classes.first
 end
 
-puts 'Adding students to classes and schools...'
+puts 'Adding parents, and students to classes and schools...'
 
 School.all.each do |school|
-  students = fb.create_list(:student, 10, school_id: school.id, level: :sky_one)
+  parent = fb.create(:user, :parent, organisation_id: school.organisation_id)
+  students = fb.create_list(:student, 2, school_id: school.id, level: :sky_one, parent_id: parent.id)
   school.classes.each do |klass|
     klass.students << students
   end
