@@ -11,6 +11,7 @@ class SchoolManager < User
   has_many :classes, through: :schools,
                      class_name: 'SchoolClass'
   has_many :students, through: :schools
+  has_many :parents, through: :students
   has_many :test_results, through: :students
   has_many :teachers, through: :schools
 end
