@@ -11,14 +11,22 @@ class UserPolicy < ApplicationPolicy
       when 'Admin'
         scope.all
       when 'Sales'
-        scope.where(type: user.class::VISIBLE_TYPES)
+        scope.where(type: Sales::VISIBLE_TYPES)
       when 'OrgAdmin'
         scope.where(organisation_id: user.organisation_id)
       when 'SchoolManager'
-        user.teachers
+        sm_scope
       else
         scope.none
       end
+    end
+
+    def sm_scope
+      teacher_ids = user.teachers.ids
+      parent_ids = user.parents.ids
+      childless_ids = scope.where(type: 'Parent', organisation_id: user.organisation_id)
+                           .where.missing(:children).ids
+      scope.where(id: teacher_ids + parent_ids + childless_ids)
     end
   end
 

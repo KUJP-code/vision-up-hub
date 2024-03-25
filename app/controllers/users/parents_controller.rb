@@ -4,7 +4,7 @@ class ParentsController < UsersController
   def show; end
 
   def new
-    @user = Parent.new
+    @user = authorize Parent.new(organisation_id: current_user.organisation_id)
   end
 
   def create
@@ -39,6 +39,6 @@ class ParentsController < UsersController
 
   def parents_params
     p_params = %i[]
-    params.require(:user).permit(user_params + p_params)
+    params.require(:parent).permit(user_params + p_params)
   end
 end

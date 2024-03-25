@@ -15,7 +15,7 @@ RSpec.describe 'creating Parent' do
     within '#parent_form' do
       fill_in 'parent_name', with: 'John'
       fill_in 'parent_email', with: 'xjpjv@example.com'
-      click_on 'submit_parent'
+      click_on 'commit'
     end
     expect(page).to have_content 'John'
     expect(page).to have_content I18n.t('create_success')

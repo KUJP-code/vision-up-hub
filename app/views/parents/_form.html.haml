@@ -1,0 +1,15 @@
+-# locals: (parent:)
+
+= form_with model: [parent.organisation, parent],
+            html: { class: 'form', id: 'parent_form' } do |f|
+  = render 'shared/form_errors', resource: parent
+
+  .form-group
+    = f.label :name
+    = f.text_field :name
+
+  .form-group
+    = f.label :email
+    = f.text_field :email
+
+  = f.submit class: 'btn btn-primary'

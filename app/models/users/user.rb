@@ -8,6 +8,11 @@ class User < ApplicationRecord
   validates :type, inclusion: { in: TYPES }
 
   belongs_to :organisation
+  # Needs to be here because Pundit scopes rely on it existing
+  has_many :children, class_name: 'Student',
+                      foreign_key: :parent_id,
+                      inverse_of: :parent,
+                      dependent: :nullify
   has_many :support_requests,
            inverse_of: :user,
            dependent: :nullify
