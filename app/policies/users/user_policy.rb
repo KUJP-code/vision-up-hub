@@ -24,8 +24,8 @@ class UserPolicy < ApplicationPolicy
     def sm_scope
       teacher_ids = user.teachers.ids
       parent_ids = user.parents.ids
-      childless_ids = scope.where(type: 'Parent', organisation_id: user.organisation_id)
-                           .where.missing(:children).ids
+      childless_ids = Parent.where(organisation_id: user.organisation_id)
+                            .where.missing(:children).ids
       scope.where(id: teacher_ids + parent_ids + childless_ids)
     end
   end
