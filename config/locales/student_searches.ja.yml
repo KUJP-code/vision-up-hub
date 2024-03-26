@@ -3,6 +3,9 @@ ja:
     form:
       child_level: "子供レベル"
       child_name: "子供名"
+      find_child: "子供を探す"
       search: "検索"
       select_child_level: "子供レベルを選択してください"
       student_id: "学生ID"
+    results:
+      claim_child: "%{child}を割り当てます"

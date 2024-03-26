@@ -3,6 +3,9 @@ en:
     form:
       child_level: "Child Level"
       child_name: "Child Name"
+      find_child: "Find Child"
       search: "Search"
       select_child_level: "Select your child's level"
       student_id: "Student ID"
+    results:
+      claim_child: "Claim %{child}"

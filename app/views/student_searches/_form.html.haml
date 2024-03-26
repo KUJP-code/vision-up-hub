@@ -1,32 +1,37 @@
--# locals: (schools: [], staff: false)
+-# locals: (parent_id: nil, schools: [])
 
 - field_classes = 'flex justify-start items-center gap-3'
 
-= form_with url: student_searches_path,
-            scope: :search,
-            html: { class: 'flex flex-wrap justify-center items-center gap-3' } do |f|
-  - unless staff
-    %h3.w-full.text-center= t('.add_child')
-
-  %div{ class: field_classes }
-    = f.label :student_id, t('.student_id')
-    = f.text_field :student_id
-
-  %div{ class: field_classes }
-    = f.label :level, t('.child_level')
-    = f.select :level,
-               Student.levels.keys.map { |k| [k.titleize, k] },
-               { prompt: t('.select_child_level') }
-
-  - if staff
-    %div{ class: field_classes }
-      = f.label :name, t('.child_name')
-      = f.text_field :name
+= turbo_frame_tag 'student_search_frame' do
+  = form_with url: student_searches_path,
+              scope: :search,
+              html: { class: 'flex flex-wrap justify-center items-center gap-3',
+                      id: 'student_search' } do |f|
+    - if parent_id
+      %h3.w-full.text-center= t('.find_child')
+      = f.hidden_field :parent_id, value: parent_id
 
     %div{ class: field_classes }
-      = f.label :school_id, t('.school')
-      = f.select :school_id,
-                 schools.map { |s| [s.name, s.id] },
-                 include_blank: true
+      = f.label :student_id, t('.student_id')
+      = f.text_field :student_id,
+                     required: parent_id
 
-  = f.submit t('.search'), class: 'btn btn-primary'
+    %div{ class: field_classes }
+      = f.label :level, t('.child_level')
+      = f.select :level,
+                 Student.levels.keys.map { |k| [k.titleize, k] },
+                 { prompt: t('.select_child_level'),
+                   required: parent_id }
+
+    - unless parent_id
+      %div{ class: field_classes }
+        = f.label :name, t('.child_name')
+        = f.text_field :name
+
+      %div{ class: field_classes }
+        = f.label :school_id, t('.school')
+        = f.select :school_id,
+                   schools.map { |s| [s.name, s.id] },
+                   include_blank: true
+
+    = f.submit t('.search'), class: 'btn btn-primary'

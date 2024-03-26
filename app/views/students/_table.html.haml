@@ -2,13 +2,15 @@
 
 %table.w-full.text-center
   %thead
-    %tr
-      %th= t('.name')
-      %th= t('.student_id')
-      %th= t('.school')
-      %th= t('.level')
-      %th= t('.classes')
-      %th= t('.edit')
+    %tr.text-ku-purple
+      %th{ class: 'p-2 bg-ku-orange/50 rounded-s-lg border-r border-r-white' }
+        = t('.name')
+      %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+        = t('.student_id')
+      %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+        = t('.school')
+      %th{ class: 'p-2 bg-ku-orange/50 rounded-e-lg' }
+        = t('.level')
   %tbody
     - students.each do |student|
       %tr
@@ -20,8 +22,3 @@
                     student_path(student)
         %td.p-2= student.school.name
         %td.p-2= student.level.titleize
-        %td.p-2= student.classes.map(&:name).to_sentence
-        %td.p-2
-          = link_to t('.edit'),
-                    edit_student_path(student),
-                    class: 'btn btn-info'
