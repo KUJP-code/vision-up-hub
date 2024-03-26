@@ -1,4 +1,4 @@
--# locals: (parent_id: nil, results:)
+-# locals: (parent_id:, results:)
 
 - result = results.first if parent_id
 
@@ -10,7 +10,7 @@
 
     = render 'students/table', students: results
 
-    - if parent_id && result.parent_id.nil?
+    - if result.parent_id.nil?
       = form_with url: student_search_path(id: result.id),
                   method: :put,
                   scope: :student do |f|

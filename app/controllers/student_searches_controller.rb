@@ -2,7 +2,7 @@
 
 class StudentSearchesController < ApplicationController
   def index
-    render partial: 'student_searches/form',
+    render partial: 'student_searches/parent_form',
            locals: { parent_id: params[:parent_id] }
   end
 
@@ -32,7 +32,7 @@ class StudentSearchesController < ApplicationController
       params.require(:search).permit(parent_params)
     else
       params.require(:search)
-            .permit(parent_params + %i[id name school_id])
+            .permit(parent_params + %i[name school_id])
             .compact_blank
     end
   end
@@ -48,11 +48,16 @@ class StudentSearchesController < ApplicationController
     )
     @parent_id = search_params[:parent_id]
 
-    render partial: 'student_searches/results',
-           locals: {
-             parent_id: @parent_id,
-             results: @results
-           }
+    if @results.empty?
+      render partial: 'student_searches/parent_form',
+             locals: { failed: true, parent_id: @parent_id }
+    else
+      render partial: 'student_searches/results',
+             locals: {
+               parent_id: @parent_id,
+               results: @results
+             }
+    end
   end
 
   def staff_search

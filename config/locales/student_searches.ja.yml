@@ -7,6 +7,14 @@ ja:
       search: "検索"
       select_child_level: "子供レベルを選択してください"
       student_id: "学生ID"
+    parent_form:
+      child_level: "子供レベル"
+      child_name: "子供名"
+      find_child: "子供を探す"
+      search: "検索"
+      select_child_level: "子供レベルを選択してください"
+      student_id: "学生ID"
+      student_not_found: "学生を見つけられませんでした"
     results:
       child_claimed: "%{parent}が%{child}を割り当てました"
       claim_child: "%{child}を割り当てます"
