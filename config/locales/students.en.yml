@@ -11,12 +11,6 @@ en:
       teachers: "Teachers: "
     index:
       create_student: "Create new student"
-    search_form:
-      child_level: "Child Level"
-      child_name: "Child Name"
-      search: "Search"
-      select_child_level: "Select your child's level"
-      student_id: "Student ID"
     show:
       add_comment: "Add comment"
       add_comments: "Add your comments on this student here"

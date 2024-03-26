@@ -9,7 +9,7 @@
     = link_to child.name,
               student_path(child)
 
-  = render 'students/search_form'
+  = render 'student_searches/form'
 
   = link_to 'Edit',
             edit_organisation_parent_path(@user.organisation_id, @user),
