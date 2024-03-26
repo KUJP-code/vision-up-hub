@@ -8,7 +8,7 @@
       %span.text-ku-purple= @student.student_id || 'なし'
     %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.name')
-      %span.text-ku-purple= redact(@student.name)
+      %span.text-ku-purple= redact(@student)
     %li.flex.flex-col
       %span{ class: 'text-ku-purple/50' }= t('.level')
       %span.text-ku-purple= @student.level.titleize

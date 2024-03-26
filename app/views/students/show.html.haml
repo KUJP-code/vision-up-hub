@@ -1,7 +1,7 @@
 = content_for :head do
   = stylesheet_link_tag 'print_report_card', media: 'print'
 
-= render 'shared/subtitle', text: redact(@student.name)
+= render 'shared/subtitle', text: redact(@student)
 
 %main.flex.flex-col.md:flex-row.p-3#student
   %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-8' }
