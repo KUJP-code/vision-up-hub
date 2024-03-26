@@ -10,6 +10,8 @@
     %thead
       %tr
         %th= t('.name')
+        - if current_user.is?('Admin', 'OrgAdmin')
+          %th= t('.school')
         %th= t('.edit')
         %th= t('.delete')
     %tbody
@@ -18,6 +20,8 @@
           %td.p-2
             = link_to school_class.name,
                       school_class_path(school_class)
+          - if current_user.is?('Admin', 'OrgAdmin')
+            %td.p-2= school_class.school.name
           %td.p-2
             = link_to t('.edit'),
                       edit_school_class_path(school_class),

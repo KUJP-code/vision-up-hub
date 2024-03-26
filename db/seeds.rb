@@ -95,7 +95,7 @@ puts 'Adding parents, and students to classes and schools...'
 
 School.all.each do |school|
   parent = fb.create(:user, :parent, organisation_id: school.organisation_id)
-  students = fb.create_list(:student, 2, school_id: school.id, level: :sky_one, parent_id: parent.id)
+  students = fb.create_list(:student, 2, school_id: school.id, parent_id: parent.id)
   school.classes.each do |klass|
     klass.students << students
   end
@@ -152,6 +152,10 @@ Student.all.each do |student|
   results.each do |result|
     student.test_results.create!(result)
   end
+end
+
+Student.all.each do |student|
+  student.update(level: Student.levels.keys.sample)
 end
 
 puts 'Done!'

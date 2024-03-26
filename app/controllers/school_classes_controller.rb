@@ -8,6 +8,7 @@ class SchoolClassesController < ApplicationController
 
   def index
     @school_classes = policy_scope(SchoolClass)
+    @school_classes = @school_classes.includes(:school) if current_user.is?('Admin', 'OrgAdmin')
   end
 
   def show
