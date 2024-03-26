@@ -16,6 +16,8 @@ AllCops:
 
 Capybara/ClickLinkOrButtonStyle:
   Enabled: false
+Capybara/NegationMatcher:
+  EnforcedStyle: "not_to"
 Layout/SpaceInsideParens:
   Enabled: false
 Lint/AmbiguousBlockAssociation:

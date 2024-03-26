@@ -1,24 +1,25 @@
 -# locals: (students:)
 
-%table.w-full.text-center
-  %thead
-    %tr.text-ku-purple
-      %th{ class: 'p-2 bg-ku-orange/50 rounded-s-lg border-r border-r-white' }
-        = t('.name')
-      %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
-        = t('.student_id')
-      %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
-        = t('.school')
-      %th{ class: 'p-2 bg-ku-orange/50 rounded-e-lg' }
-        = t('.level')
-  %tbody
-    - students.each do |student|
-      %tr
-        %td.p-2
-          = link_to redact(student),
-                    student_path(student)
-        %td.p-2
-          = link_to student.student_id || 'なし',
-                    student_path(student)
-        %td.p-2= student.school.name
-        %td.p-2= student.level.titleize
+= turbo_frame_tag 'student_table' do
+  %table.w-full.text-center
+    %thead
+      %tr.text-ku-purple
+        %th{ class: 'p-2 bg-ku-orange/50 rounded-s-lg border-r border-r-white' }
+          = t('.name')
+        %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+          = t('.student_id')
+        %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+          = t('.school')
+        %th{ class: 'p-2 bg-ku-orange/50 rounded-e-lg' }
+          = t('.level')
+    %tbody
+      - students.each do |student|
+        %tr
+          %td.p-2
+            = link_to redact(student),
+                      student_path(student)
+          %td.p-2
+            = link_to student.student_id || 'なし',
+                      student_path(student)
+          %td.p-2= student.school.name
+          %td.p-2= student.level.titleize

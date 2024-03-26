@@ -5,7 +5,7 @@ en:
       child_name: "Child Name"
       find_child: "Find Child"
       search: "Search"
-      select_child_level: "Select your child's level"
+      select_child_level: "Select child level"
       student_id: "Student ID"
     results:
       child_claimed: "%{child} has been claimed by %{parent}"

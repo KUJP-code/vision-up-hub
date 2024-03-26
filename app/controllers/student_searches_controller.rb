@@ -26,10 +26,14 @@ class StudentSearchesController < ApplicationController
   private
 
   def search_params
+    parent_params = %i[level student_id parent_id]
+
     if current_user.is?('Parent')
-      params.require(:search).permit(:level, :student_id, :parent_id)
+      params.require(:search).permit(parent_params)
     else
-      params.require(:search).permit(:level, :name, :school_id, :student_id)
+      params.require(:search)
+            .permit(parent_params + %i[id name school_id])
+            .compact_blank
     end
   end
 
@@ -49,5 +53,11 @@ class StudentSearchesController < ApplicationController
              parent_id: @parent_id,
              results: @results
            }
+  end
+
+  def staff_search
+    @results = policy_scope(Student).where(search_params).includes(:school)
+    render partial: 'students/table',
+           locals: { students: @results }
   end
 end

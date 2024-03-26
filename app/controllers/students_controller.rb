@@ -9,6 +9,7 @@ class StudentsController < ApplicationController
 
   def index
     @students = policy_scope(Student).includes(:school)
+    @schools = policy_scope(School).pluck(:name, :id)
   end
 
   def show

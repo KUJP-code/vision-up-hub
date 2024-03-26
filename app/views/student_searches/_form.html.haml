@@ -1,8 +1,9 @@
 -# locals: (parent_id: nil, schools: [])
 
-- field_classes = 'flex justify-start items-center gap-3'
+- field_classes = 'basis-1/3 flex justify-center items-center gap-3'
 
-= turbo_frame_tag 'student_search_frame' do
+= turbo_frame_tag 'student_search_frame',
+                  target: (parent_id ? '' : 'student_table') do
   = form_with url: student_searches_path,
               scope: :search,
               html: { class: 'flex flex-wrap justify-center items-center gap-3',
@@ -25,13 +26,13 @@
 
     - unless parent_id
       %div{ class: field_classes }
-        = f.label :name, t('.child_name')
-        = f.text_field :name
+        = f.label :id
+        = f.text_field :id
 
       %div{ class: field_classes }
         = f.label :school_id, t('.school')
         = f.select :school_id,
-                   schools.map { |s| [s.name, s.id] },
-                   include_blank: true
+                   schools,
+                   { prompt: t('.select_school') }
 
-    = f.submit t('.search'), class: 'btn btn-primary'
+    = f.submit t('.search'), class: "btn btn-primary #{'w-full' unless parent_id}"
