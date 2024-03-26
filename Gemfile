@@ -70,6 +70,9 @@ gem 'rack', '3.0.9.1'
 # Automatically set lang from user's preferred language
 gem 'http_accept_language', '2.1.1'
 
+# Lock rdoc version for CVE-2024-27281
+gem 'rdoc', '6.6.3.1'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
