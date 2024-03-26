@@ -8,4 +8,5 @@ ja:
       select_child_level: "子供レベルを選択してください"
       student_id: "学生ID"
     results:
+      child_claimed: "%{parent}が%{child}を割り当てました"
       claim_child: "%{child}を割り当てます"

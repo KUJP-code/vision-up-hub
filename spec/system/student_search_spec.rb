@@ -39,8 +39,12 @@ RSpec.describe 'Student search', :js do
           select 'Sky One', from: 'search_level'
           click_button I18n.t('student_searches.form.search')
         end
-        expect(page).not_to have_content(I18n.t('student_searches.results.claim_child', child: student.name))
-        expect(page).to have_content(I18n.t('student_searches.results.student_claimed', parent: user.name))
+        expect(page).to have_no_content(I18n.t('student_searches.results.claim_child', child: student.name))
+        expect(page).to have_content(
+          I18n.t('student_searches.results.child_claimed',
+                 child: student.name,
+                 parent: user.email)
+        )
       end
     end
   end

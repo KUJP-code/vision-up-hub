@@ -1,5 +1,7 @@
 -# locals: (parent_id: nil, results:)
 
+- result = results.first if parent_id
+
 = turbo_frame_tag 'student_search_frame' do
   .flex.flex-col.gap-3
     = link_to t('.back'),
@@ -8,14 +10,16 @@
 
     = render 'students/table', students: results
 
-    - if parent_id
-      - results.each do |result|
-        = form_with url: student_search_path(id: result.id),
-                    method: :put,
-                    scope: :student do |f|
-          = f.hidden_field :student_id, value: result.student_id
-          = f.hidden_field :parent_id, value: parent_id
-          = f.hidden_field :level, value: result.level
-          = f.submit t('.claim_child', child: result.name),
-                    class: 'btn btn-primary',
-                    data: { 'turbo-frame' => '_top' }
+    - if parent_id && result.parent_id.nil?
+      = form_with url: student_search_path(id: result.id),
+                  method: :put,
+                  scope: :student do |f|
+        = f.hidden_field :student_id, value: result.student_id
+        = f.hidden_field :parent_id, value: parent_id
+        = f.hidden_field :level, value: result.level
+        = f.submit t('.claim_child', child: result.name),
+                   class: 'btn btn-primary',
+                   data: { 'turbo-frame' => '_top' }
+    - elsif result.parent_id
+      %p.w-full.bg-red-700.text-white.text-center.p-2.rounded-lg
+        = t('.child_claimed', child: result.name, parent: result.parent.email)
