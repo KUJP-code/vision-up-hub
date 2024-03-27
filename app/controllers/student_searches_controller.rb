@@ -26,15 +26,10 @@ class StudentSearchesController < ApplicationController
   private
 
   def search_params
-    parent_params = %i[level student_id parent_id]
+    strong_params = params.require(:search).permit(%i[level school_id student_id parent_id])
+    strong_params if current_user.is?('Parent')
 
-    if current_user.is?('Parent')
-      params.require(:search).permit(parent_params)
-    else
-      params.require(:search)
-            .permit(parent_params + %i[name school_id])
-            .compact_blank
-    end
+    strong_params.compact_blank
   end
 
   def update_params
@@ -43,8 +38,9 @@ class StudentSearchesController < ApplicationController
 
   def parent_search
     @results = Student.where(
-      student_id: search_params[:student_id],
-      level: search_params[:level]
+      level: search_params[:level],
+      school_id: search_params[:school_id],
+      student_id: search_params[:student_id]
     )
     @parent_id = search_params[:parent_id]
 

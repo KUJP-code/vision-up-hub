@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Student search', :js do
+  let(:school) { create(:school, organisation_id: user.organisation_id) }
   let!(:student) do
-    create(:student, student_id: 's12345678', level: :sky_one, name: 'Test Student')
+    create(:student, student_id: 's12345678', level: :sky_one, name: 'Test Student', school_id: school.id)
   end
 
   before do
@@ -20,6 +21,7 @@ RSpec.describe 'Student search', :js do
         within '#student_search' do
           fill_in 'search_student_id', with: 's12345678'
           select 'Sky One', from: 'search_level'
+          select student.school.name, from: 'search_school_id'
           click_button I18n.t('student_searches.form.search')
         end
         click_button I18n.t('student_searches.results.claim_child', child: student.name)
@@ -37,6 +39,7 @@ RSpec.describe 'Student search', :js do
         within '#student_search' do
           fill_in 'search_student_id', with: 's12345678'
           select 'Sky One', from: 'search_level'
+          select student.school.name, from: 'search_school_id'
           click_button I18n.t('student_searches.form.search')
         end
         expect(page).not_to have_content(I18n.t('student_searches.results.claim_child', child: student.name))

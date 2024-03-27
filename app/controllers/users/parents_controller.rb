@@ -3,6 +3,7 @@
 class ParentsController < UsersController
   def show
     @children = @user.children
+    @schools = @user.organisation.schools.pluck(:name, :id)
   end
 
   def new

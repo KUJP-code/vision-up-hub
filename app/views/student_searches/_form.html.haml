@@ -13,15 +13,15 @@
       = f.text_field :student_id
 
     %div{ class: field_classes }
-      = f.label :level, t('.child_level')
-      = f.select :level,
-                 Student.levels.keys.map { |k| [k.titleize, k] },
-                 { prompt: t('.select_child_level') }
-
-    %div{ class: field_classes }
       = f.label :school_id, t('.school')
       = f.select :school_id,
                  schools,
                  { prompt: t('.select_school') }
+
+    %div{ class: field_classes }
+      = f.label :level, t('.child_level')
+      = f.select :level,
+                 Student.levels.keys.map { |k| [k.titleize, k] },
+                 { prompt: t('.select_child_level') }
 
     = f.submit t('.search'), class: 'btn btn-primary flex-grow'
