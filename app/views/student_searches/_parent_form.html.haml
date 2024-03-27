@@ -6,7 +6,7 @@
   = form_with url: student_searches_path,
               scope: :search,
               html: { class: 'w-full flex flex-wrap justify-between items-center gap-1',
-                      id: 'student_search' } do |f|
+                      id: 'student_search', method: :get } do |f|
     %h3.w-full.text-center= t('.find_child')
     = f.hidden_field :parent_id, value: parent_id
 

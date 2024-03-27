@@ -7,7 +7,7 @@
   = form_with url: student_searches_path,
               scope: :search,
               html: { class: 'flex flex-wrap justify-center items-center gap-3',
-                      id: 'student_search' } do |f|
+                      id: 'student_search', method: :get } do |f|
     %div{ class: field_classes }
       = f.label :student_id, t('.student_id')
       = f.text_field :student_id

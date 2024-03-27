@@ -2,14 +2,14 @@
 
 class StudentSearchesController < ApplicationController
   def index
-    render partial: 'student_searches/parent_form',
-           locals: { parent_id: params[:parent_id] }
-  end
+    return render_parent_form unless params[:commit]
 
-  def create
     search_params[:parent_id] ? parent_search : staff_search
   end
 
+  # We need this to dodge the pundit auth on the StudentsController version
+  # Since it's often a parent searching for their unclaimed child
+  # by definition they won't have authorisation as the parent_id will be nil
   def update
     @student = Student.find_by(
       id: params[:id],
@@ -45,8 +45,7 @@ class StudentSearchesController < ApplicationController
     @parent_id = search_params[:parent_id]
 
     if @results.empty?
-      render partial: 'student_searches/parent_form',
-             locals: { failed: true, parent_id: @parent_id }
+      render_parent_form(failed: true)
     else
       render partial: 'student_searches/results',
              locals: {
@@ -54,6 +53,14 @@ class StudentSearchesController < ApplicationController
                results: @results
              }
     end
+  end
+
+  def render_parent_form(failed: false)
+    parent_id = params[:parent_id] || search_params[:parent_id]
+    schools = Parent.find(parent_id).organisation.schools.pluck(:name, :id)
+
+    render partial: 'student_searches/parent_form',
+           locals: { failed:, parent_id:, schools: }
   end
 
   def staff_search
