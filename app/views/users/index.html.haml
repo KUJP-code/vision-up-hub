@@ -1,4 +1,6 @@
 = render 'shared/subtitle', text: @org ? t('.org_users', org: @org.name) : t('.users')
 
 %main.p-3
+  = render 'users/new_user_links',
+           org: @org || current_user.organisation_id
   = render 'users/table', users: @users
