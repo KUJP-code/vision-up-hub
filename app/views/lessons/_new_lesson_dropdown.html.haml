@@ -5,7 +5,7 @@
   id: 'create_lesson'
 }
   %summary.bg-ku-purple.p-2 Create a lesson
-  .flex.flex-col
+  %nav.flex.flex-col
     - Lesson::TYPES.each do |type|
       = link_to split_on_capitals(type),
                 new_lesson_path(type:),

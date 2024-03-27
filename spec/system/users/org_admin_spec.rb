@@ -11,6 +11,7 @@ RSpec.describe 'creating OrgAdmin' do
 
   it 'sales staff can create Organisation Admin' do
     visit organisation_org_admins_path(organisation_id: organisation.id)
+    find_by_id('create_user').click
     click_link 'create_org_admin'
     within '#org_admin_form' do
       fill_in 'org_admin_name', with: 'John'
