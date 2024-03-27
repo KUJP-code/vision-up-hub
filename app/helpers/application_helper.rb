@@ -16,11 +16,13 @@ module ApplicationHelper
     if current_user_own_profile?
       active_class = ''
     else
-      # checks for matches between user types and current controller
+      # checks for matches between user types and current controller, user_types.any? is boolean check from enumerable module
       if user_types.any? { |type| current_controller.include?(type) }
         puts "Match found between #{current_controller} and user types: #{user_types}"
         current_controller = 'users'
       end
+      # apply active if current matches provided controller
+      # TODO: Find another way rather than sending a concrete controller name through nav items? Thought Matt says it's fine.
       active_class = current_controller == controller_name ? 'bg-white rounded-lg text-ku-orange' : ''
     end
     link_to title, path, class: "p-3 #{active_class}"
