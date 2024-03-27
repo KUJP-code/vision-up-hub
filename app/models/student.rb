@@ -3,6 +3,8 @@
 class Student < ApplicationRecord
   include Levelable
 
+  after_create :generate_student_id
+
   validates :level, :name, presence: true
   # We want them to be able to add their own student ids if they have them
   # So can't make it globally unique
@@ -22,4 +24,13 @@ class Student < ApplicationRecord
 
   has_many :test_results, dependent: :destroy
   has_many :tests, through: :test_results
+
+  private
+
+  def generate_student_id
+    return unless student_id.nil?
+
+    self.student_id = "#{id}-#{school_id}-#{SecureRandom.alphanumeric}"
+    save
+  end
 end
