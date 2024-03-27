@@ -1,11 +1,8 @@
 ---
 en:
   users:
-    between_org_nav:
-      orgs: "Filter by Organisation"
+    new_user_dropdown:
+      create_new: "Create new user"
     index:
       org_users: "%{org} Users"
       users: "Users"
-    within_org_nav:
-      create_new: "Create new:"
-      roles: "Filter by Role"
