@@ -3,7 +3,13 @@
 
 = render 'shared/subtitle', text: redact(@student)
 
-%main.flex.flex-col.md:flex-row.p-3#student
+%main.flex.flex-col.md:flex-row.md:flex-wrap.p-3#student
+  - if @student.parent_id.nil?
+    %section.w-full.flex.flex-col.gap-3.p-3.m-3.border-4.rounded-xl.border-ku-purple.print:hidden
+      %h3.w-full.text-center.font-bold.text-ku-purple= t('.add_parent')
+      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+      = turbo_frame_tag 'user_table'
+
   %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-8' }
     = render 'students/details',
              student: @student,

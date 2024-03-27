@@ -4,5 +4,9 @@ en:
     new_user_dropdown:
       create_new: "Create new user"
     index:
-      org_users: "%{org} Users"
       users: "Users"
+    table:
+      add_as_parent: "Add as parent"
+      email: "Email"
+      name: "Name"
+      role: "Role"

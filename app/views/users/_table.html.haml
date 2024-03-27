@@ -1,4 +1,4 @@
--# locals: (users:)
+-# locals: (child: nil, users:)
 
 = turbo_frame_tag 'user_table' do
   %table.w-full.text-center
@@ -22,7 +22,10 @@
             = t('.signin_count')
 
         %th{ class: 'p-2 bg-ku-orange/50 rounded-e-lg' }
-          = t('.created')
+          - if child
+            = t('.add_as_parent')
+          - else
+            = t('.created')
     %tbody
       - users.each do |user|
         %tr
@@ -38,4 +41,12 @@
             %td= user.last_sign_in_ip
             %td= user.sign_in_count
 
-          %td= ja_date(user.created_at)
+          %td
+            - if child
+              = form_with model: child do |f|
+                = f.hidden_field :parent_id, value: user.id
+                = f.submit t('.add_as_parent'),
+                           class: 'btn btn-primary',
+                           data: { 'turbo-frame': '_top' }
+            - else
+              = ja_date(user.created_at)

@@ -7,8 +7,9 @@ class UserSearchesController < ApplicationController
     @results = policy_scope(User).where(query(search_params))
                                  .order(type: :asc, name: :asc)
     @results = @results.includes(:organisation) if current_user.is?('Admin')
+    @child = authorize Student.find(params[:search][:student_id])
     render partial: 'users/table',
-           locals: { users: @results }
+           locals: { child: @child, users: @results }
   end
 
   private

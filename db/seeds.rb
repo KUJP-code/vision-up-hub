@@ -99,6 +99,7 @@ School.all.each do |school|
   school.classes.each do |klass|
     klass.students << students
   end
+  fb.create(:student, school_id: school.id, name: 'Orphan')
 end
 
 puts 'Creating a level check and test result...'

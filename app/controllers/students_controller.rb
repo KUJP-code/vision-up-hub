@@ -20,6 +20,7 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
+    @orgs = policy_scope(Organisation)
     set_results
   end
 
@@ -69,7 +70,7 @@ class StudentsController < ApplicationController
 
   def student_params
     params.require(:student).permit(
-      :comments, :level, :name, :school_id, :student_id,
+      :comments, :level, :name, :school_id, :student_id, :parent_id,
       student_classes_attributes: %i[id class_id _destroy]
     )
   end

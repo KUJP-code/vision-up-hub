@@ -1,4 +1,4 @@
--# locals: (orgs:)
+-# locals: (orgs:, student_id: nil)
 
 - field_classes = 'basis-2/5 flex-grow flex justify-center items-center gap-1'
 
@@ -8,6 +8,8 @@
               scope: :search,
               html: { class: 'flex flex-wrap justify-center items-center gap-3',
                       id: 'user_search', method: :get } do |f|
+    = f.hidden_field :student_id, value: student_id if student_id
+
     %div{ class: field_classes }
       = f.label :name, t('.name')
       = f.text_field :name

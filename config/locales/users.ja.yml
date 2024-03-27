@@ -13,5 +13,9 @@ ja:
       greet: "こんにちは、%{name}"
   users:
     index:
-      org_users: "%{org} ユーザー"
       users: "ユーザー"
+    table:
+      add_as_parent: "親に追加する"
+      email: "メールアドレス"
+      name: "名前"
+      role: "ロール"
