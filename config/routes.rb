@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
       # Index for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
+      resources :user_searches, only: %i[index show]
     end
 
     authenticate :user, ->(user) { user.is?('Admin') } do

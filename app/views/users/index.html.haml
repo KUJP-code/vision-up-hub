@@ -3,4 +3,6 @@
 %main.flex.flex-col.gap-3.p-3
   = render 'users/new_user_dropdown',
            org: @org || current_user.organisation_id
+  = render 'user_searches/form',
+           orgs: @orgs
   = render 'users/table', users: @users

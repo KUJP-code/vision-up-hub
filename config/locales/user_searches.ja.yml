@@ -1,0 +1,7 @@
+ja:
+  user_searches:
+    form:
+      email: "メールアドレス"
+      name: "名前"
+      role: "ロール"
+      search: "検索"
