@@ -6,9 +6,10 @@
                     id: 'student_form' } do |f|
   = render 'shared/form_errors', resource: student
 
-  .form-group
-    = f.label :name
-    = f.text_field :name
+  - if current_user.organisation_id == student.organisation_id
+    .form-group
+      = f.label :name
+      = f.text_field :name
 
   .form-group
     = f.label :student_id

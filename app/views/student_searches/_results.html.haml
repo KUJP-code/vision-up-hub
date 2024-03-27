@@ -17,9 +17,9 @@
         = f.hidden_field :student_id, value: result.student_id
         = f.hidden_field :parent_id, value: parent_id
         = f.hidden_field :level, value: result.level
-        = f.submit t('.claim_child', child: result.name),
+        = f.submit t('.claim_child', child: redact(result)),
                    class: 'btn btn-primary',
                    data: { 'turbo-frame' => '_top' }
     - elsif result.parent_id
       %p.w-full.bg-red-700.text-white.text-center.p-2.rounded-lg
-        = t('.child_claimed', child: result.name, parent: result.parent.email)
+        = t('.child_claimed', child: redact(result), parent: result.parent.email)
