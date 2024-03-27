@@ -12,7 +12,7 @@ class SchoolClassesController < ApplicationController
   end
 
   def show
-    @students = @school_class.students.includes(:classes, :school)
+    @students = @school_class.students.includes(:school)
     @possible_students = policy_scope(Student).where
                                               .not(id: @students.ids)
                                               .pluck(:name, :id)

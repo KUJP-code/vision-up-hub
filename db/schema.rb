@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_27_015241) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_27_023458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -170,6 +170,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_015241) do
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "students_count"
     t.index ["school_id"], name: "index_school_classes_on_school_id"
   end
 
