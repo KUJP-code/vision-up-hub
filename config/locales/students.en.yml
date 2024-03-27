@@ -9,6 +9,14 @@ en:
       school: "School: "
       student_id: "Student ID: "
       teachers: "Teachers: "
+    form:
+      add_class: "Add class"
+      classes: "Classes"
+      comments: "Comments"
+      level: "Level"
+      name: "Name"
+      school: "School"
+      student_id: "Student ID"
     index:
       create_student: "Create new student"
     show:

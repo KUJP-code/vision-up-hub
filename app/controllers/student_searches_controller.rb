@@ -57,7 +57,8 @@ class StudentSearchesController < ApplicationController
   end
 
   def staff_search
-    @results = policy_scope(Student).where(search_params).includes(:school)
+    @results = policy_scope(Student).where(search_params)
+                                    .includes(:school)
     render partial: 'students/table',
            locals: { students: @results }
   end

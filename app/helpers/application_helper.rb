@@ -2,10 +2,14 @@
 
 module ApplicationHelper
   def ja_date(date)
+    return '' if date.nil?
+
     date.strftime('%Y年%m月%d日')
   end
 
   def ja_datetime(datetime)
+    return '' if datetime.nil?
+
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 

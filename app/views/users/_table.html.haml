@@ -1,36 +1,41 @@
--# locals: (users:, org: nil)
+-# locals: (users:)
 
-%table.w-full.text-center
-  %thead
-    %tr
-      %th= t('.name')
-      %th= t('.role')
-      %th= t('.email')
-
-      - if org.nil?
-        %th= t('.org')
-
-      - if current_user.is?('Admin')
-        %th= t('.last_signin')
-        %th= t('.last_ip')
-        %th= t('.signin_count')
-
-      %th= t('.created')
-  %tbody
-    - users.each do |user|
-      %tr
-        %td
-          = link_to user.name,
-                    organisation_user_path(user.organisation_id, user)
-        %td= split_on_capitals(user.type)
-        %td= mail_to user.email
-
-        - if org.nil?
-          %td= user.organisation.name
+= turbo_frame_tag 'user_table' do
+  %table.w-full.text-center
+    %thead
+      %tr.text-ku-purple
+        %th{ class: 'p-2 bg-ku-orange/50 rounded-s-lg border-r border-r-white' }
+          = t('.name')
+        %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+          = t('.role')
+        %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+          = t('.email')
 
         - if current_user.is?('Admin')
-          %td= user.last_sign_in_at
-          %td= user.last_sign_in_ip
-          %td= user.sign_in_count
+          %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+            = t('.org')
+          %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+            = t('.last_signin')
+          %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+            = t('.last_ip')
+          %th{ class: 'p-2 bg-ku-orange/50 border-r border-r-white' }
+            = t('.signin_count')
 
-        %td= user.created_at
+        %th{ class: 'p-2 bg-ku-orange/50 rounded-e-lg' }
+          = t('.created')
+    %tbody
+      - users.each do |user|
+        %tr
+          %td
+            = link_to user.name,
+                      organisation_user_path(user.organisation_id, user)
+          %td= split_on_capitals(user.type)
+          %td= mail_to user.email
+
+          - if current_user.is?('Admin')
+            %td= user.organisation.name
+            %td= ja_date(user.last_sign_in_at)
+            %td= user.last_sign_in_ip
+            %td= user.sign_in_count
+
+          %td= ja_date(user.created_at)

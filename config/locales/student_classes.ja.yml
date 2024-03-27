@@ -1,0 +1,5 @@
+ja:
+  student_classes:
+    fields:
+      class: "クラス"
+      destroy: "削除"

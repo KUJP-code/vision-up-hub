@@ -8,35 +8,38 @@
 
   - if student.school_id.nil? || current_user.organisation_id == student.organisation_id
     .form-group
-      = f.label :name
+      = f.label :name, t('.name')
       = f.text_field :name
 
   .form-group
-    = f.label :student_id
+    = f.label :student_id, t('.student_id')
     = f.text_field :student_id
 
   .form-group
-    = f.label :level
+    = f.label :level, t('.level')
     = f.select :level,
                Student.levels.keys |
                       .reject { |l| l == 'all_levels' } |
                       .map { |l| [l.titleize, l] } |
 
   .form-group
-    = f.label :school_id
+    = f.label :school_id, t('.school')
     = f.select :school_id, schools
 
   .form-group
-    = f.label :comments
+    = f.label :comments, t('.comments')
     = f.text_area :comments
 
   %h3= t('.classes')
 
-  = f.fields_for :student_classes, student.student_classes do |sc_f|
-    = render('student_classes/fields',
-             collection: classes,
-             f: sc_f,
-             resource: student)
+  .flex.flex-wrap.justify-between.gap-3
+    = f.fields_for :student_classes, student.student_classes do |sc_f|
+      = render('student_classes/fields',
+               collection: classes,
+               f: sc_f,
+               resource: student)
+
+    %div{ 'data-fields-target' => 'target' }
 
   %template{ 'data-fields-target' => 'template' }
     = f.fields_for :student_classes,
@@ -46,8 +49,6 @@
                collection: classes,
                f: sc_f,
                resource: student)
-
-  %div{ 'data-fields-target' => 'target' }
 
   %button.btn.btn-info{ 'data-action' => 'fields#add' }
     = t('.add_class')

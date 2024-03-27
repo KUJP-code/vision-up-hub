@@ -8,7 +8,7 @@ class StudentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @students = policy_scope(Student).includes(:school)
+    @students = policy_scope(Student).includes(:school).limit(50)
     @schools = policy_scope(School).pluck(:name, :id)
   end
 

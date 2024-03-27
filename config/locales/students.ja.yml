@@ -9,6 +9,14 @@ ja:
       school: "学校: "
       student_id: "学生ID: "
       teachers: "先生: "
+    form:
+      add_class: "追加する"
+      classes: "クラス"
+      comments: "コメント"
+      level: "レベル"
+      name: "名前"
+      school: "学校"
+      student_id: "学生ID"
     index:
       create_student: "新しい学生を作成する"
     show:

@@ -1,7 +1,4 @@
 = render 'shared/subtitle', text: @org ? t('.org_users', org: @org.name) : t('.users')
 
-= render 'users/between_org_nav', orgs: @orgs if @orgs
-
-= render 'users/within_org_nav', org: @org || current_user.organisation
-
-= render 'users/table', org: @org, users: @users
+%main.p-3
+  = render 'users/table', users: @users

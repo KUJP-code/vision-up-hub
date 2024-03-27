@@ -1,0 +1,5 @@
+en:
+  student_classes:
+    fields:
+      class: "Class"
+      destroy: "Delete"
