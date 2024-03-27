@@ -31,7 +31,8 @@
         %tr
           %td
             = link_to user.name,
-                      organisation_user_path(user.organisation_id, user)
+                      organisation_user_path(user.organisation_id, user),
+                      data: { 'turbo-frame' => '_top' }
           %td= split_on_capitals(user.type)
           %td= mail_to user.email
 
@@ -47,6 +48,6 @@
                 = f.hidden_field :parent_id, value: user.id
                 = f.submit t('.add_as_parent'),
                            class: 'btn btn-primary',
-                           data: { 'turbo-frame': '_top' }
+                           data: { 'turbo-frame' => '_top' }
             - else
               = ja_date(user.created_at)
