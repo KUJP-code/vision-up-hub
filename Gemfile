@@ -20,7 +20,7 @@ gem 'puma', '6.4.2'
 gem 'jsbundling-rails', '1.3.0'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem 'turbo-rails', '2.0.4'
+gem 'turbo-rails', '2.0.5'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails', '1.3.3'
@@ -76,6 +76,9 @@ gem 'rdoc', '6.6.3.1'
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
+
+  # RSpec for testing
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -99,9 +102,6 @@ group :development do
 end
 
 group :test do
-  # RSpec for testing
-  gem 'rspec-rails'
-
   # Capybara for system testing
   gem 'capybara'
   gem 'capybara-screenshot'
