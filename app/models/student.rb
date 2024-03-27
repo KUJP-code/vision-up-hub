@@ -4,6 +4,10 @@ class Student < ApplicationRecord
   include Levelable
 
   validates :level, :name, presence: true
+  # We want them to be able to add their own student ids if they have them
+  # So can't make it globally unique
+  # Unique per school is a good compromise, by org would require extra queries
+  validates :student_id, uniqueness: { allow_nil: true, scope: :school_id }
   encrypts :name
 
   belongs_to :parent, optional: true
