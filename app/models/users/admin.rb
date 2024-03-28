@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Admin < User
-  VISIBLE_TYPES = %w[OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
+  VISIBLE_TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
 
   validate :only_at_ku
 
