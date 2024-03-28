@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "thatbballguy/materials:0.7.0.1-action-cable"
+    "Name": "thatbballguy/materials:0.7.0.2-ignore-children"
   },
   "Ports": [
     {
