@@ -3,5 +3,6 @@
 .form-group
   = f.label attr
   = f.text_area attr,
-                value: lesson.send(attr).join("\n")
+                value: lesson.send(attr).join("\n"),
+                rows: attr == :instructions ? 10 : 4
   %small.-mt-1 Separate items with new lines
