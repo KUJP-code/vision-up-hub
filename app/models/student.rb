@@ -28,7 +28,7 @@ class Student < ApplicationRecord
   private
 
   def generate_student_id
-    return unless student_id.nil?
+    return unless student_id.nil? || student_id.blank?
 
     self.student_id = "#{id}-#{school_id}-#{SecureRandom.alphanumeric}"
     save
