@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_27_023458) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_28_062803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +97,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_27_023458) do
     t.string "topic"
     t.jsonb "vocab", default: []
     t.jsonb "intro", default: []
+    t.jsonb "lang_goals", default: {"sky"=>[], "land"=>[], "galaxy"=>[]}
+    t.string "interesting_fact"
     t.index ["assigned_editor_id"], name: "index_lessons_on_assigned_editor_id"
     t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end
