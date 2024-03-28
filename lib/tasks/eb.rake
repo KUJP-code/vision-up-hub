@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 namespace :eb do
   desc 'Deploys current version of the app to elastic beanstalk'
   task deploy: :environment do
@@ -68,8 +70,8 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'thatbballguy/materials:#{version}'"
-  success = system("docker build . -t thatbballguy/materials:#{version} | grep 'ERROR'")
-  return if success
+  system("docker build . -t thatbballguy/materials:#{version}")
+  return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker build failed. Aborting'
   exit
@@ -77,8 +79,8 @@ end
 
 def push_docker_image(version)
   puts "Pushing 'thatbballguy/materials:#{version}' to docker hub..."
-  success = system("docker push thatbballguy/materials:#{version} | grep 'ERROR'")
-  return if success
+  system("docker push thatbballguy/materials:#{version}")
+  return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker push failed. Aborting'
   exit
