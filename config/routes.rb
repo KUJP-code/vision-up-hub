@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  scope '(/:locale)',
-        locale: /ja|en/,
-        defaults: { locale: :ja } do
+  scope '(/:locale)', locale: /ja|en/ do
     devise_for :users
 
     authenticate :user do
@@ -11,7 +9,7 @@ Rails.application.routes.draw do
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]
-      resources :files, only: %i[create index show]
+      resources :files, only: %i[show]
       resources :lessons
       resources :phonics_classes, only: %i[create index update]
       resources :plans
@@ -19,6 +17,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
+      resources :student_searches, only: %i[index update]
       resources :support_requests do
         resources :support_messages, only: %i[create]
       end
@@ -32,6 +31,7 @@ Rails.application.routes.draw do
         resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]
         resources :org_admins
+        resources :parents
         resources :sales
         resources :school_managers
         resources :teachers
@@ -41,9 +41,10 @@ Rails.application.routes.draw do
 
       # Index for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
+      resources :user_searches, only: %i[index]
     end
 
-    authenticate :user, -> (user) { user.is?('Admin') } do
+    authenticate :user, ->(user) { user.is?('Admin') } do
       mount PgHero::Engine, at: '/pghero'
       mount MissionControl::Jobs::Engine, at: '/jobs'
     end

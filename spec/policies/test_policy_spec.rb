@@ -66,4 +66,14 @@ RSpec.describe TestPolicy do
       expect(Pundit.policy_scope!(user, Test)).to eq(Test.all)
     end
   end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, Test)).to eq(Test.none)
+    end
+  end
 end

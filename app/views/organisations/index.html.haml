@@ -1,11 +1,9 @@
-.flex.flex-col.gap-3.p-3
-  %h1= t('.org_list')
+= render 'shared/subtitle', text: t('.organisations')
+
+%main.flex.flex-wrap.justify-between.gap-3.p-3
   = link_to t('.add_organisation'),
             new_organisation_path,
-            class: 'btn btn-primary'
-
-%main.flex.flex-wrap.justify-between.gap-1.p-3
+            class: 'btn btn-primary w-full'
   = render partial: 'organisations/card',
            collection: @organisations,
            as: :organisation
-  .flex-grow

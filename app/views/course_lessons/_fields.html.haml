@@ -1,17 +1,18 @@
 -# locals: (collection:, f:, resource:)
 
-.fields-wrapper.flex.items-center.gap-2{ 'data-new-record' => f.object.new_record?.to_s }
+%div{ class: 'fields-wrapper flex flex-wrap items-center justify-center gap-5',
+      'data-new-record' => f.object.new_record?.to_s }
   - if resource.instance_of?(Course)
     = f.hidden_field :course_id, value: resource.id
 
-    .form-group
+    %div{ class: 'form-group basis-1/4' }
       = f.label :lesson_id
       = f.select :lesson_id,
                  collection
   - else
     = f.hidden_field :lesson_id, value: resource.id
 
-    .form-group
+    %div{ class: 'form-group basis-1/4' }
       = f.label :course_id
       = f.select :course_id,
                  collection

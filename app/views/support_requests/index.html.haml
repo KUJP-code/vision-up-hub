@@ -1,11 +1,11 @@
-%h1= t('.support_requests')
+= render 'shared/subtitle', text: t('.support_requests')
 
 - unless current_user.is?('Admin')
   %details{
-    class: 'm-3 bg-ku-blue text-white font-semibold rounded-md overflow-hidden',
+    class: 'm-3 bg-ku-purple text-white font-semibold rounded-md overflow-hidden',
     id: 'create_request'
   }
-    %summary.bg-ku-blue.p-2= t('.new_request')
+    %summary.bg-ku-purple.p-2= t('.new_request')
     = render 'support_requests/form',
              request: SupportRequest.new
 
@@ -22,5 +22,5 @@
           .rounded-full.p-2.bg-blue-800
         = render 'support_requests/status_badge', resolved: request.resolved?
         %h1= request.subject
-        %h3= request.category
+        %h3= request.category.titleize
       %p= request.description

@@ -6,23 +6,23 @@ class StudentPolicy < ApplicationPolicy
   end
 
   def show?
-    user.is?('Admin') || authorized_student_org_user?
+    user.is?('Admin') || authorized_student_org_user? || parent?
   end
 
   def new?
-    user.is?('Admin', 'OrgAdmin', 'SchoolManager', 'Teacher')
+    user.is?('Admin', 'OrgAdmin', 'Parent', 'SchoolManager', 'Teacher')
   end
 
   def edit?
-    user.is?('Admin') || authorized_student_org_user?
+    user.is?('Admin') || authorized_student_org_user? || parent?
   end
 
   def update?
-    user.is?('Admin') || authorized_student_org_user?
+    user.is?('Admin') || authorized_student_org_user? || parent?
   end
 
   def create?
-    user.is?('Admin') || authorized_student_org_user?
+    user.is?('Admin') || authorized_student_org_user? || parent?
   end
 
   def destroy?
@@ -60,6 +60,12 @@ class StudentPolicy < ApplicationPolicy
 
   def different_org?
     user.organisation_id != record.organisation_id
+  end
+
+  def parent?
+    return false if record.parent_id.nil?
+
+    user.is?('Parent') && record.parent_id == user.id
   end
 
   def student_school_manager?

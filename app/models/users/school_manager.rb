@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SchoolManager < User
-  VISIBLE_TYPES = %w[SchoolManager Teacher].freeze
+  VISIBLE_TYPES = %w[Parent Teacher].freeze
 
   has_many :managements, dependent: :destroy
   accepts_nested_attributes_for :managements,
@@ -11,6 +11,7 @@ class SchoolManager < User
   has_many :classes, through: :schools,
                      class_name: 'SchoolClass'
   has_many :students, through: :schools
+  has_many :parents, through: :students
   has_many :test_results, through: :students
   has_many :teachers, through: :schools
 end

@@ -3,13 +3,35 @@
 namespace :eb do
   desc 'Deploys current version of the app to elastic beanstalk'
   task deploy: :environment do
+    run_tests
     current_version = find_current_version
     version = request_new_version(current_version)
     build_docker_image(version)
     push_docker_image(version)
     update_dockerrun(version)
     commit_changes(version)
-    deploy_to_eb
+    deploy_to_eb(version)
+  end
+end
+
+def run_tests
+  puts 'Running tests...'
+  errors = `bundle exec rspec | grep '#'`.split("\n")
+  confirm_failing_tests(errors) if errors.any?
+end
+
+def confirm_failing_tests(errors)
+  puts "Found #{errors.count / 2} failing #{'test'.pluralize(errors.count / 2)}"
+  errors.each do |error|
+    puts error
+  end
+  puts 'Are you sure you want to deploy with these tests failing? (y/n)'
+  ok = $stdin.gets.chomp
+  if ok == 'y'
+    puts 'Continuing...'
+  else
+    puts 'Aborting'
+    exit
   end
 end
 
@@ -46,12 +68,20 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'thatbballguy/materials:#{version}'"
-  `docker build . -t thatbballguy/materials:#{version}`
+  success = system("docker build . -t thatbballguy/materials:#{version} | grep 'ERROR'")
+  return if success
+
+  puts 'Docker build failed. Aborting'
+  exit
 end
 
 def push_docker_image(version)
   puts "Pushing 'thatbballguy/materials:#{version}' to docker hub..."
-  system("docker push thatbballguy/materials:#{version}")
+  success = system("docker push thatbballguy/materials:#{version} | grep 'ERROR'")
+  return if success
+
+  puts 'Docker push failed. Aborting'
+  exit
 end
 
 def update_dockerrun(version)
@@ -69,6 +99,7 @@ def commit_changes(version)
   `git commit -m "Deploy #{version}"`
 end
 
-def deploy_to_eb
-  system('eb deploy')
+def deploy_to_eb(version)
+  puts "Deploying version #{version} to AWS"
+  system("eb deploy -l #{version}")
 end

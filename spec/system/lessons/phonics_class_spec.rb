@@ -24,7 +24,7 @@ RSpec.describe 'creating a Phonics lesson' do
       fill_in 'phonics_class_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
       fill_in 'phonics_class_materials', with: "Material 1\nMaterial 2"
       fill_in 'phonics_class_notes', with: "Note 1\nNote 2"
-      click_button 'Create Phonics class'
+      click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Phonics Lesson')
     expect(page).to have_content('Test Goal')

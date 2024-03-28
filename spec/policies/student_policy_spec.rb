@@ -132,4 +132,22 @@ RSpec.describe StudentPolicy do
       end
     end
   end
+
+  context 'when parent' do
+    context 'when parent of student' do
+      let(:user) { create(:user, :parent) }
+
+      before do
+        user.children << record
+      end
+
+      it_behaves_like 'authorized user except destroy'
+    end
+
+    context 'when parent of different student' do
+      let(:user) { build(:user, :parent) }
+
+      it_behaves_like 'unauthorized user except new'
+    end
+  end
 end

@@ -1,7 +1,20 @@
-= link_to t('.create_plan'),
-          new_plan_path,
-          class: 'btn btn-primary'
+= render 'shared/subtitle', text: t('.plans')
 
-= render partial: 'plans/plan',
-         collection: @plans,
-         as: :plan
+%main.flex.flex-wrap.gap-3.p-3
+  = link_to t('.create_plan'),
+            new_plan_path,
+            class: 'btn btn-primary w-full'
+
+  %table.w-full.text-center
+    %thead
+      %tr
+        %th= t('.name')
+        %th= t('.course')
+        %th= t('.organisation')
+        %th= t('.student_limit')
+        %th= t('.start_end')
+        %th= t('.total_cost')
+    %tbody
+      = render partial: 'plans/plan_row',
+               collection: @plans,
+               as: :plan

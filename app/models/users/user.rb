@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   KU_TYPES = %w[Admin Sales Writer].freeze
-  TYPES = %w[Admin OrgAdmin Sales SchoolManager Teacher Writer].freeze
+  TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
 
   validates :name, presence: true
   validates :type, inclusion: { in: TYPES }

@@ -6,9 +6,9 @@ class UsersController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @org = params[:organisation_id] && Organisation.find(params[:organisation_id])
-    @users = scoped_users
-    @orgs = Organisation.all if current_user.is?('Admin', 'Sales')
+    @users = policy_scope(User).order(type: :asc, name: :asc)
+    @users = @users.includes(:organisation) if current_user.is?('Admin')
+    @orgs = policy_scope(Organisation).pluck(:name, :id)
     render 'users/index'
   end
 
@@ -23,15 +23,6 @@ class UsersController < ApplicationController
   def update; end
 
   private
-
-  def scoped_users
-    scope = policy_scope(User).order(type: :asc, name: :asc)
-    if @org
-      scope.where(organisation_id: @org.id)
-    else
-      scope.includes(:organisation)
-    end
-  end
 
   def set_user
     @user = params[:id] ? User.find(params[:id]) : current_user

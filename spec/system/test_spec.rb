@@ -10,7 +10,7 @@ RSpec.describe 'creating a test' do
     sign_in user
   end
 
-  it 'can create a test linking organisation & course as sales' do
+  it 'can create a test as admin' do
     visit tests_path
     click_link 'New Test'
     within '#test_form' do
@@ -21,7 +21,7 @@ RSpec.describe 'creating a test' do
       fill_in 'test_thresholds',
               with: "Sky One:60\nSky Two:70\nSky Three:80"
     end
-    click_button 'Create Test'
+    click_button I18n.t('helpers.submit.create')
     expect(page).to have_content('Test test')
     expect(page).to have_content('Question 1: 1 point', count: 4)
     expect(page).to have_content('Question 2: 2 points', count: 2)

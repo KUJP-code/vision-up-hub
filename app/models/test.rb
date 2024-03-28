@@ -15,6 +15,10 @@ class Test < ApplicationRecord
   has_many :test_results, dependent: :restrict_with_error
   has_many :students, through: :test_results
 
+  def max_score
+    questions.values.flatten.sum
+  end
+
   private
 
   def invalid_lines?(array)

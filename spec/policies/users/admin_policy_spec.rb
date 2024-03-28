@@ -67,4 +67,11 @@ RSpec.describe AdminPolicy do
     it_behaves_like 'unauthorized user'
     it { is_expected.not_to authorize_action(:reassign_editor) }
   end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+    it { is_expected.not_to authorize_action(:reassign_editor) }
+  end
 end

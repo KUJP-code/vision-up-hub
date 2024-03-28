@@ -11,7 +11,8 @@ RSpec.describe 'creating School Manager' do
   end
 
   it 'sales staff can create School Manager' do
-    visit organisation_school_managers_path(organisation)
+    visit organisation_school_managers_path(organisation_id: organisation.id)
+    find_by_id('create_user').click
     click_link 'create_school_manager'
     within '#school_manager_form' do
       fill_in 'school_manager_name', with: 'John'

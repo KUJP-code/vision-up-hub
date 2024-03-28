@@ -1,0 +1,26 @@
+-# locals: (results:)
+
+%table
+  %thead
+    %tr.text-white.font-bold.whitespace-nowrap
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 rounded-s-lg border-r border-r-white' }
+          = t('.level_check')
+      %th
+        %p{ class: 'h-full p-2 bg-ku-purple/50 border-r.border-r-white' }
+          = t('.score')
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 border-r.border-r-white' } %
+      %th
+        %p{ class: 'p-2 bg-ku-purple/50 rounded-e-lg' }
+          = t('.new_level')
+  %tbody
+    - results.each do |result|
+      %tr{ class: 'text-center text-ku-purple border-b-2 border-ku-gray-900/50' }
+        %td.p-2
+          = link_to result.created_at.strftime('%B %Y'),
+                    student_path(@student.id, test_id: result.test_id),
+                    class: 'font-bold hover:underline'
+        %td.p-2 #{result.total_score}/#{result.test.max_score}
+        %td.p-2= result.total_percent
+        %td.p-2= result.new_level.titleize

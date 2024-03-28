@@ -6,3 +6,4 @@ ja:
     show:
       add_existing_student: "既存の学生を追加する"
       create_student: "新しい学生を作成する"
+      students: "学生: %{count}"

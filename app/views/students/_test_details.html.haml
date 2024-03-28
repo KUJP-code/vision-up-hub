@@ -1,0 +1,36 @@
+-# locals: (data:, results:)
+
+%canvas{ data: { controller: 'chart',
+                 'chart-data-value': @data.to_json,
+                 'chart-options-value': { elements: { line: { borderWidth: 0, tension: 0.3 } },
+                                          responsive: true,
+                                          scales: { r: { min: 0, max: 100 } } }.to_json,
+                 'chart-type-value': 'radar' } }
+
+- if params[:test_id]
+  - active_result = results.find { |r| r.test_id == params[:test_id].to_i }
+
+  %table
+    %thead
+      %tr.text-white.font-bold
+        %th
+          %p.p-2.bg-ku-orange.rounded-s-lg.border-r.border-r-white
+            = t('.max_grade')
+        %th
+          %p.p-2.bg-ku-orange.border-r.border-r-white
+            = t('.student_grade')
+        %th
+          %p.p-2.bg-ku-orange.border-r.border-r-white %
+        %th
+          %p.p-2.bg-ku-orange.rounded-e-lg
+            = t('.recommended_level')
+    %tbody
+      %tr.text-center.font-bold.text-ku-purple
+        %td= active_result.test.max_score
+        %td= active_result.total_score
+        %td= active_result.total_percent
+        %td= active_result.new_level.titleize
+
+  = link_to t('.view_all_results'),
+            student_path(@student.id),
+            class: 'btn btn-info'

@@ -6,10 +6,12 @@
     %meta{ name: 'viewport', content: 'width=device-width,initial-scale=1' }
     = csrf_meta_tags
     = csp_meta_tag
+    = favicon_link_tag '/favicon.svg'
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag 'application',
                              'data-turbo-track': 'reload',
                              type: 'module'
+    = yield :head
   %body
     %turbo_frame#flash
       = render 'shared/flash'

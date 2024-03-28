@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_27_023458) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -170,6 +170,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "students_count"
     t.index ["school_id"], name: "index_school_classes_on_school_id"
   end
 
@@ -301,7 +302,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_id"
+    t.index ["parent_id"], name: "index_students_on_parent_id"
     t.index ["school_id"], name: "index_students_on_school_id"
+    t.index ["student_id", "school_id"], name: "index_students_on_student_id_and_school_id", unique: true
   end
 
   create_table "support_messages", force: :cascade do |t|
@@ -336,11 +340,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.integer "speak_percent"
     t.integer "prev_level", null: false
     t.integer "new_level", null: false
-    t.jsonb "answers", default: {}
+    t.jsonb "answers", default: {"reading"=>[], "writing"=>[], "speaking"=>[], "listening"=>[]}
     t.bigint "test_id", null: false
     t.bigint "student_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reason"
     t.index ["student_id"], name: "index_test_results_on_student_id"
     t.index ["test_id"], name: "index_test_results_on_test_id"
   end
@@ -409,6 +414,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
   add_foreign_key "student_classes", "school_classes", column: "class_id"
   add_foreign_key "student_classes", "students"
   add_foreign_key "students", "schools"
+  add_foreign_key "students", "users", column: "parent_id"
   add_foreign_key "support_messages", "support_requests"
   add_foreign_key "support_messages", "users"
   add_foreign_key "support_requests", "users"
