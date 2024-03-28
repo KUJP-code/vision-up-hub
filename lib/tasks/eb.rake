@@ -68,8 +68,8 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'thatbballguy/materials:#{version}'"
-  build_error = `docker build . -t thatbballguy/materials:#{version} | grep 'ERROR'`
-  return if build_error.blank?
+  success = system("docker build . -t thatbballguy/materials:#{version} | grep 'ERROR'")
+  return if success
 
   puts 'Docker build failed. Aborting'
   exit
@@ -77,8 +77,8 @@ end
 
 def push_docker_image(version)
   puts "Pushing 'thatbballguy/materials:#{version}' to docker hub..."
-  push_error = `docker push thatbballguy/materials:#{version} | grep 'ERROR'`
-  return if push_error.blank?
+  success = system("docker push thatbballguy/materials:#{version} | grep 'ERROR'")
+  return if success
 
   puts 'Docker push failed. Aborting'
   exit
