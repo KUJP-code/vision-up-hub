@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "thatbballguy/materials:0.6.3.1-fix-verion"
+    "Name": "thatbballguy/materials:0.7-add-search-and-parents"
   },
   "Ports": [
     {
