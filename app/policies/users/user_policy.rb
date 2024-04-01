@@ -10,8 +10,8 @@ class UserPolicy < ApplicationPolicy
       case user.type
       when 'Admin'
         scope.all
-      when 'Sales'
-        scope.where(type: Sales::VISIBLE_TYPES)
+      when 'Sales', 'Writer'
+        scope.where(type: user.class::VISIBLE_TYPES)
       when 'OrgAdmin'
         scope.where(organisation_id: user.organisation_id)
       when 'SchoolManager'

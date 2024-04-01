@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Writer < User
-  VISIBLE_TYPES = %w[].freeze
+  VISIBLE_TYPES = %w[Writer].freeze
 
   validate :only_at_ku
 

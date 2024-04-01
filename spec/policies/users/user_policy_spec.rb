@@ -42,9 +42,11 @@ RSpec.describe UserPolicy do
   end
 
   context 'when writer' do
-    let(:user) { build(:user, :writer) }
+    let(:user) { create(:user, :writer) }
 
-    it_behaves_like 'unauthorized user for UserPolicy scope'
+    it 'scopes to writers within same org' do
+      expect(Pundit.policy_scope!(user, User)).to eq(user.organisation.users.where(type: 'Writer'))
+    end
   end
 
   context 'when org admin' do
