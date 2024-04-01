@@ -15,11 +15,11 @@ RSpec.describe 'User search', :js do
 
   context 'when searching index' do
     let!(:extra) { create(:user, :school_manager, organisation_id: user.organisation_id) }
-    let!(:diff_org) { create(:user, :school_manager) }
+    let!(:diff_org_user) { create(:user, :school_manager) }
 
     it 'can search parents with partial matching' do
       visit organisation_users_path(organisation_id: user.organisation_id)
-      expect(page).not_to have_content(diff_org.name)
+      expect(page).not_to have_content(diff_org_user.name)
       within '#user_search' do
         fill_in 'search_email', with: 'xjpjv@exam'
         fill_in 'search_name', with: 'Test Pa'

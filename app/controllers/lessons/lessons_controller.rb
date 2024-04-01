@@ -8,7 +8,8 @@ class LessonsController < ApplicationController
   after_action :generate_guide, only: %i[create update]
 
   def index
-    @lessons = policy_scope(Lesson.all)
+    @lessons = policy_scope(Lesson)
+    @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
   end
 
   def show

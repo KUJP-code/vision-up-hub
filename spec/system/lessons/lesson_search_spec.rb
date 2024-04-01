@@ -6,7 +6,7 @@ RSpec.describe 'Lesson search', :js do
   let(:user) { create(:user, :writer) }
   let!(:result) do
     create(:daily_activity,
-           title: 'Test Dicovery',
+           title: 'Test Discovery',
            level: :kindy,
            goal: 'Test Goal',
            subtype: :discovery,
