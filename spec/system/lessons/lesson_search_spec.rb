@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Lesson search', :js do
-  let(:user) { create(:user, :writer) }
+  let(:user) { create(:user, :admin) }
   let!(:result) do
     create(:daily_activity,
            title: 'Test Discovery',
@@ -12,7 +12,9 @@ RSpec.describe 'Lesson search', :js do
            subtype: :discovery,
            interesting_fact: 'Interesting!',
            creator_id: user.id,
-           assigned_editor_id: user.id)
+           assigned_editor_id: user.id,
+           admin_approval: [user.id.to_s],
+           released: true)
   end
   let!(:extra) { create(:exercise) }
 

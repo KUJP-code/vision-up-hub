@@ -8,7 +8,7 @@ class EnglishClassesController < LessonsController
   end
 
   def create
-    @lesson = authorize Lesson.new(english_class_params)
+    @lesson = authorize Lesson.new(type_params)
     super
 
     if @lesson.save
@@ -23,9 +23,9 @@ class EnglishClassesController < LessonsController
   end
 
   def update
-    return propose_changes(english_class_params) if proposing_changes?
+    return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(english_class_params)
+    if @lesson.update(type_params)
       redirect_to after_update_url,
                   notice: 'English class successfully updated.'
     else
@@ -38,16 +38,7 @@ class EnglishClassesController < LessonsController
 
   private
 
-  def english_class_params
+  def type_params
     params.require(:english_class).permit(lesson_params + EnglishClass::ATTRIBUTES)
-  end
-
-  def after_update_url
-    if params[:commit] == 'Change Date'
-      course = english_class_params[:course_lessons_attributes]['0'][:course_id]
-      course_url(course)
-    else
-      lesson_url(@lesson)
-    end
   end
 end

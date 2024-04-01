@@ -60,6 +60,15 @@ class LessonsController < ApplicationController
                       { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
   end
 
+  def after_update_url
+    if params[:commit] == 'Change Date'
+      course_id = type_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course_id)
+    else
+      lesson_url(@lesson)
+    end
+  end
+
   def propose_changes(strong_params)
     changelist = strong_params.except(
       :course_lessons_attributes, :level, :subtype, :type, :resources
