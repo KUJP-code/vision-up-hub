@@ -38,24 +38,13 @@ class LessonSearchesController < ApplicationController
 
   def sanitized_query_value(key, value)
     if ENUM_VALUES.include?(key)
-      enum_value(key, value)
+      value.to_i
     elsif PARTIAL_MATCHES.include?(key)
-      like_value(value)
+      "%#{User.sanitize_sql_like(value.strip)}%"
     elsif BOOL_VALUES.include?(key)
       ActiveRecord::Type::Boolean.new.cast(value)
     else
       value
     end
-  end
-
-  def enum_value(key, value)
-    return DailyActivity.subtypes[value] || Exercise.subtypes[value] if key == 'subtype'
-    return DailyActivity.levels[value] if search_params['type'] == 'DailyActivity'
-
-    Lesson.send(key.pluralize)[value]
-  end
-
-  def like_value(value)
-    "%#{User.sanitize_sql_like(value.strip)}%"
   end
 end

@@ -24,7 +24,6 @@ RSpec.describe 'Lesson search', :js do
   it 'can search lessons with partial matching' do
     visit lessons_path
     within '#lesson_search' do
-      select 'Daily Activity', from: 'search_type'
       fill_in 'search_title', with: 'Disco'
       fill_in 'search_goal', with: 'st Go'
       select 'Discovery', from: 'search_subtype'
