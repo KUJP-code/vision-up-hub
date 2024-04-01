@@ -7,14 +7,13 @@ RSpec.describe 'Lesson search', :js do
   let!(:result) do
     create(:daily_activity,
            title: 'Test Discovery',
-           level: :kindy,
            goal: 'Test Goal',
            subtype: :discovery,
-           interesting_fact: 'Interesting!',
+           level: :elementary,
            creator_id: user.id,
            assigned_editor_id: user.id,
-           admin_approval: [user.id.to_s],
-           released: true)
+           released: true,
+           admin_approval: [user.id.to_s])
   end
   let!(:extra) { create(:exercise) }
 
@@ -29,7 +28,7 @@ RSpec.describe 'Lesson search', :js do
       fill_in 'search_title', with: 'Disco'
       fill_in 'search_goal', with: 'st Go'
       select 'Discovery', from: 'search_subtype'
-      select 'Kindy', from: 'search_level'
+      select 'Elementary', from: 'search_level'
       check 'search_released'
       select user.name, from: 'search_creator_id'
       select user.name, from: 'search_assigned_editor_id'

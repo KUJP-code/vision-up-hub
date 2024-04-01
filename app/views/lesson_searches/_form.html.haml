@@ -2,6 +2,7 @@
 
 :ruby
   field_classes = 'basis-1/5 flex-grow flex justify-center items-center gap-1'
+  levels = Lesson.levels.keys.map { |k| [k.titleize, k] } + [%w[Elementary elementary]]
   subtypes = (DailyActivity.subtypes.keys + Exercise.subtypes.keys).map { |k| [k.titleize, k] }
 
 = turbo_frame_tag 'lesson_search_frame',
@@ -33,7 +34,7 @@
     %div{ class: field_classes }
       = f.label :level, t('.level')
       = f.select :level,
-                 Lesson.levels.keys.map { |k| [k.titleize, k] },
+                 levels,
                  { prompt: t('.select_level') }
 
     %div{ class: field_classes }

@@ -50,6 +50,7 @@ class LessonSearchesController < ApplicationController
 
   def enum_value(key, value)
     return DailyActivity.subtypes[value] || Exercise.subtypes[value] if key == 'subtype'
+    return DailyActivity.levels[value] if search_params['type'] == 'DailyActivity'
 
     Lesson.send(key.pluralize)[value]
   end
