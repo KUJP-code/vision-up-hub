@@ -1,6 +1,6 @@
 -# locals: (failed: false, parent_id:, schools:)
 
-- field_classes = 'basis-3/12 flex-grow flex justify-center items-center gap-1'
+- field_classes = 'basis-2/5 flex-grow flex justify-center items-center gap-1'
 
 = turbo_frame_tag 'student_search_frame' do
   = form_with url: student_searches_path,
@@ -29,7 +29,11 @@
                  { prompt: t('.select_school'),
                    required: true }
 
-    = f.submit t('.search'), class: 'btn btn-primary'
+    %div{ class: field_classes }
+      = f.label :birthday, t('.birthday')
+      = f.date_field :birthday, required: true
+
+    = f.submit t('.search'), class: 'btn btn-primary w-full'
 
     - if failed
       %p.w-full.bg-red-700.text-white.text-center.p-2.rounded-lg

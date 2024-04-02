@@ -27,6 +27,18 @@
     = f.select :school_id, schools
 
   .form-group
+    = f.label :birthday, t('.birthday')
+    = f.date_field :birthday
+
+  .form-group
+    = f.label :start_date, t('.start_date')
+    = f.date_field :start_date
+
+  .form-group
+    = f.label :quit_date, t('.quit_date')
+    = f.date_field :quit_date
+
+  .form-group
     = f.label :comments, t('.comments')
     = f.text_area :comments
 

@@ -24,4 +24,8 @@
                  Student.levels.keys.map { |k| [k.titleize, k] },
                  { prompt: t('.select_child_level') }
 
+    %div{ class: field_classes }
+      = f.label :birthday, t('.birthday')
+      = f.date_field :birthday
+
     = f.submit t('.search'), class: 'btn btn-primary flex-grow'
