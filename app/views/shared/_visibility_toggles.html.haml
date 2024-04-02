@@ -1,28 +1,44 @@
 -# locals: (resource:)
 
-- unless resource.instance_of?(Course)
-  - admins_approved = resource.admin_approval.pluck('name')
-  - writers_approved = resource.curriculum_approval.pluck('name')
+:ruby
+  shared_classes = 'rounded text-white font-semibold px-3 py-1 text-base'
+  unless resource.instance_of?(Course)
+    admin_approved = current_user.is?('Admin') &&
+                     resource.admin_approval.pluck('id').any?(current_user.id.to_s)
+    writer_approved = current_user.is?('Writer') &&
+                      resource.curriculum_approval.pluck('id').any?(current_user.id.to_s)
+  end
 
-  - if current_user.is?('Writer') && writers_approved.none?(current_user.name)
-    = form_with model: resource do |f|
-      = f.hidden_field :curriculum_approval_id, value: current_user.id
-      = f.hidden_field :curriculum_approval_name, value: current_user.name
-      = f.submit 'Approve',
-                 class: 'btn btn-primary',
-                 data: { 'turbo-frame' => '_top' }
+- if admin_approved || writer_approved
+  %p{ class: "#{shared_classes} bg-green-600" }
+    Approved
 
-  - if current_user.is?('Admin') && admins_approved.none?(current_user.name)
-    = form_with model: resource do |f|
-      = f.hidden_field :admin_approval_id, value: current_user.id
-      = f.hidden_field :admin_approval_name, value: current_user.name
-      = f.submit 'Approve',
-                 class: 'btn btn-primary',
-                 data: { 'turbo-frame' => '_top' }
+- elsif current_user.is?('Writer') && !resource.instance_of?(Course)
+  = form_with model: resource do |f|
+    = f.hidden_field :curriculum_approval_id, value: current_user.id
+    = f.hidden_field :curriculum_approval_name, value: current_user.name
+    = f.submit 'Awaiting Approval',
+               class: "#{shared_classes} bg-red-500 cursor-pointer",
+               data: { 'turbo-frame' => '_top' }
 
-- if current_user.is?('Admin') && !resource.released?
+- elsif current_user.is?('Admin') && !resource.instance_of?(Course)
+  = form_with model: resource do |f|
+    = f.hidden_field :admin_approval_id, value: current_user.id
+    = f.hidden_field :admin_approval_name, value: current_user.name
+    = f.submit 'Awaiting Approval',
+               class: "#{shared_classes} bg-red-500 cursor-pointer",
+               data: { 'turbo-frame' => '_top' }
+
+- if current_user.is?('Admin') && resource.released?
+  = form_with model: resource do |f|
+    = f.hidden_field :released, value: false
+    = f.submit 'Released',
+               class: "#{shared_classes} bg-green-600 cursor-pointer",
+               data: { 'turbo-frame' => '_top' }
+
+- elsif current_user.is?('Admin')
   = form_with model: resource do |f|
     = f.hidden_field :released, value: true
-    = f.submit 'Release',
-               class: 'btn btn-primary',
+    = f.submit 'Unreleased',
+               class: "#{shared_classes} bg-red-500 cursor-pointer",
                data: { 'turbo-frame' => '_top' }

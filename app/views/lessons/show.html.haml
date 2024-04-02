@@ -4,9 +4,7 @@
       .flex.gap-2.items-center
         = image_tag icon_path(@lesson), class: 'h-7'
         %h1= @lesson.title
-        = render 'shared/visibility_badges',
-                 approved: @lesson.approved?,
-                 released: @lesson.released?
+        = render 'shared/visibility_toggles', resource: @lesson
       %h3
         #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
 

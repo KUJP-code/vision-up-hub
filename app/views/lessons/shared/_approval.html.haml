@@ -12,6 +12,7 @@
   = link_to @lesson.assigned_editor.name,
             organisation_user_path(@lesson.assigned_editor.organisation,
                                    @lesson.assigned_editor)
+
   - if current_user.is?('Admin')
     = form_with model: lesson, class: 'flex items-center gap-3 text-base' do |f|
       = f.label :assigned_editor_id, 'Change to:'
@@ -19,15 +20,12 @@
 
       = f.submit 'Reassign', class: 'btn btn-primary'
 
+- if approved_by.any?
+  %h3 Approved by: #{approved_by.to_sentence}
+
 = form_with model: lesson, class: 'form' do |f|
   .form-group
     = f.label :internal_notes
     = f.text_area :internal_notes, class: 'h-[10vh]'
 
   = f.submit 'Update Notes', class: 'btn btn-primary'
-
-.flex.gap-3
-  = render 'shared/visibility_toggles', resource: lesson
-
-- if approved_by.any?
-  %p Approved by #{approved_by.to_sentence}

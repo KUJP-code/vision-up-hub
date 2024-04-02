@@ -3,11 +3,13 @@
 = turbo_frame_tag 'lesson_table' do
   %table.w-full.text-center
     %thead
-      %tr
-        %th Title
-        %th Status
-        %th Approved by
-        %th Actions
+      %tr.text-white.font-bold
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 rounded-s-lg border-r border-r-white' } Title
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 border-r border-r-white' } Status
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 rounded-e-lg' } Approved by
     %tbody
       - lessons.each do |lesson|
         %tr
@@ -15,10 +17,6 @@
             = link_to lesson.title,
                       lesson_path(lesson),
                       data: { 'turbo-frame' => '_top' }
-          %td.flex.flex-wrap.justify-center.items-center.gap-1.p-1
-            = render 'shared/visibility_badges',
-                     approved: lesson.approved?,
-                     released: lesson.released?
-          %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence
           %td.flex.flex-wrap.justify-center.items-center.gap-1.p-1.text-sm
             = render 'shared/visibility_toggles', resource: lesson
+          %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence

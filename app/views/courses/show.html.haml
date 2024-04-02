@@ -1,10 +1,9 @@
 .flex.flex-col.justify-center.items-center.gap-3.p-3.text-center
   %h1.flex.justify-center.items-center.gap-3
     = @course.title
-    = render 'shared/visibility_badges', released: @course.released
+    = render 'shared/visibility_toggles', resource: @course
   %h3= @course.description
   .flex.gap-3
-    = render 'shared/visibility_toggles', resource: @course
     = link_to 'Edit',
               edit_course_path(@course),
               class: 'btn btn-info'
