@@ -1,4 +1,4 @@
--# locals: (resource:)
+-# locals: (index: false, resource:)
 
 :ruby
   shared_classes = 'rounded text-white font-semibold px-3 py-1 text-base'
@@ -17,28 +17,24 @@
   = form_with model: resource do |f|
     = f.hidden_field :curriculum_approval_id, value: current_user.id
     = f.hidden_field :curriculum_approval_name, value: current_user.name
-    = f.submit 'Awaiting Approval',
-               class: "#{shared_classes} bg-red-500 cursor-pointer",
-               data: { 'turbo-frame' => '_top' }
+    = f.submit index ? 'Awaiting Approval' : 'Not Approved',
+               class: "#{shared_classes} bg-red-500 cursor-pointer"
 
 - elsif current_user.is?('Admin') && !resource.instance_of?(Course)
   = form_with model: resource do |f|
     = f.hidden_field :admin_approval_id, value: current_user.id
     = f.hidden_field :admin_approval_name, value: current_user.name
-    = f.submit 'Awaiting Approval',
-               class: "#{shared_classes} bg-red-500 cursor-pointer",
-               data: { 'turbo-frame' => '_top' }
+    = f.submit index ? 'Awaiting Approval' : 'Not Approved',
+               class: "#{shared_classes} bg-red-500 cursor-pointer"
 
 - if current_user.is?('Admin') && resource.released?
   = form_with model: resource do |f|
     = f.hidden_field :released, value: false
-    = f.submit 'Released',
-               class: "#{shared_classes} bg-green-600 cursor-pointer",
-               data: { 'turbo-frame' => '_top' }
+    = f.submit index ? 'Released' : 'Released: ✓',
+               class: "#{shared_classes} bg-green-600 cursor-pointer"
 
 - elsif current_user.is?('Admin')
   = form_with model: resource do |f|
     = f.hidden_field :released, value: true
-    = f.submit 'Unreleased',
-               class: "#{shared_classes} bg-red-500 cursor-pointer",
-               data: { 'turbo-frame' => '_top' }
+    = f.submit index ? 'Unreleased' : 'Not Released',
+               class: "#{shared_classes} bg-red-500 cursor-pointer"

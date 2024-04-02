@@ -61,9 +61,12 @@ class LessonsController < ApplicationController
   end
 
   def after_update_url
-    if params[:commit] == 'Change Date'
+    case params[:commit]
+    when 'Change Date'
       course_id = type_params[:course_lessons_attributes]['0'][:course_id]
       course_url(course_id)
+    when 'Awaiting Approval', 'Unreleased', 'Released'
+      lessons_url
     else
       lesson_url(@lesson)
     end
