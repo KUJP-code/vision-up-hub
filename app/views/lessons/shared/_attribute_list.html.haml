@@ -1,11 +1,17 @@
 -# locals: (lesson:)
 
 - lesson.class::LISTABLE_ATTRIBUTES.each do |attr|
-  = render 'lessons/shared/list_attribute',
-            lesson:,
-            attr:
+  :ruby
+    value = lesson.send(attr)
+    next if value.nil? || value.empty? || value.blank?
+
+  .flex.flex-col.flex-grow.p-2
+    %h3= attr.to_s.titleize
+    %ol.list-decimal.list-inside
+      - lesson.send(attr).each do |item|
+        %li= item
 - unless lesson.links.empty?
-  .flex.flex-col.flex-grow.items-center
+  .flex.flex-col.flex-grow.p-2
     %h3 Links
     %ul.list-disc.list-inside
       - lesson.links.each do |text, link|

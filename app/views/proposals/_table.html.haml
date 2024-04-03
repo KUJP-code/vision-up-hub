@@ -1,15 +1,22 @@
 -# locals: (proposals:)
 
+%h2 Proposals
 - if proposals.any?
   %table.text-center#proposals
     %thead
       %tr
-        %th Lesson
-        %th Proponent
-        %th Comments
-        %th Status
-        - if current_user.is?('Admin')
-          %th
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 rounded-s-lg border-r border-r-white' }
+            Lesson
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 border-r border-r-white' }
+            Proponent
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 border-r border-r-white' }
+            Comments
+        %th
+          %p{ class: 'p-2 bg-ku-orange/80 rounded-e-lg' }
+            Status
     %tbody
       - proposals.each do |proposal|
         %tr
@@ -21,9 +28,10 @@
               %td= proposal.creator.name
               - if current_user.is?('Admin')
                 %td= f.text_area :internal_notes
-                %td= f.select :status,
+                %td
+                  = f.select :status,
                               Lesson.statuses.keys.map { |k| [k.humanize, k] }
-                %td= f.submit 'Update', class: 'btn btn-primary'
+                  = f.submit 'Update', class: 'btn btn-primary'
           - else
             %td
               = link_to proposal.title,

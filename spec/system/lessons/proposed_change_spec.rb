@@ -49,10 +49,10 @@ RSpec.describe 'changing a lesson' do
       visit proposal_path(id: proposal.id)
       expect(page).to have_content(lesson.title)
       expect(page).to have_content('New Title')
-      expect(page).to have_css('a.guide_link', count: 2)
-      within '#proposal_form' do
+      expect(page).to have_css('.guide_link', count: 2)
+      within '#proposal_status_form' do
         select 'Accept', from: 'proposal_status'
-        click_button I18n.t('helpers.submit.update')
+        click_button 'proposal_status_form_submit'
       end
       expect(page).to have_content('New Title')
       expect(lesson.reload.title).to eq('New Title')

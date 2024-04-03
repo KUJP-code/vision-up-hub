@@ -7,7 +7,8 @@
             class: 'guide_link h-fit' do
     = image_tag lesson.guide.preview(:thumb),
                 class: 'guide_image w-full'
-    %h3 Download Guide
+    %h3.rounded-lg.text-white.bg-ku-orange.text-center.p-2.font-semibold
+      Download Guide
 
 - else
-  %h3 Guide is being generated, refresh the page in ~10 seconds
+  %h3.guide_link Guide is being generated, refresh the page in ~10 seconds
