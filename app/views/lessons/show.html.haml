@@ -22,13 +22,11 @@
       = render 'lessons/shared/approval', lesson: @lesson
 
       = render 'proposals/table',
-               proposals: @proposals,
-               lesson: @lesson
+               proposals: @proposals
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
-           lesson: @lesson
+  = render "lessons/shared/attribute_list", lesson: @lesson
 
   .flex.justify-center.gap-3
     = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',

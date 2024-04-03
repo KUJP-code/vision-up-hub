@@ -1,8 +1,0 @@
--# locals: (lesson:)
-
-.flex.flex-wrap.p-3
-  %h3.w-full.mb-3= lesson.topic
-  - EnglishClass::LISTABLE_ATTRIBUTES.each do |attr|
-    = render 'lessons/shared/list_attribute',
-             lesson:,
-             attr:

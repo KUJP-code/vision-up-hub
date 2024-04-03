@@ -2,6 +2,7 @@
 
 class StandShowSpeak < Lesson
   ATTRIBUTES = %i[guide].freeze
+  LISTABLE_ATTRIBUTES = %i[].freeze
 
   has_one_attached :guide do |s|
     s.variant :thumb,

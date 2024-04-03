@@ -1,11 +1,10 @@
--# locals: (lesson: nil, proposals:)
+-# locals: (proposals:)
 
 - if proposals.any?
   %table.text-center#proposals
     %thead
       %tr
-        - unless lesson
-          %th Lesson
+        %th Lesson
         %th Proponent
         %th Comments
         %th Status
@@ -14,11 +13,10 @@
     %tbody
       - proposals.each do |proposal|
         %tr
-          - unless lesson
-            %td.p-3
-              = link_to proposal.title,
-                        edit_lesson_path(proposal)
           - if current_user.is?('Admin')
+            %td
+              = link_to proposal.title,
+                        proposal_path(proposal)
             = form_with model: proposal do |f|
               %td= proposal.creator.name
               - if current_user.is?('Admin')
@@ -27,6 +25,9 @@
                               Lesson.statuses.keys.map { |k| [k.humanize, k] }
                 %td= f.submit 'Update', class: 'btn btn-primary'
           - else
+            %td
+              = link_to proposal.title,
+                        edit_lesson_path(proposal)
             %td Proposed by: #{proposal.creator.name}
             %td= proposal.internal_notes
             %td= proposal.status.titleize

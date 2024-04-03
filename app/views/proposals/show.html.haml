@@ -1,0 +1,11 @@
+- section_classes = 'basis-1/2 p-3'
+
+%main.flex
+  %section{ class: section_classes }
+    %h2 Current Lesson - #{@lesson.title}
+    = render 'lessons/shared/guide_preview', lesson: @lesson
+    = render 'lessons/shared/attribute_list', lesson: @lesson
+  %section{ class: section_classes }
+    %h2 Proposal - #{@proposal.title}
+    = render 'lessons/shared/guide_preview', lesson: @proposal
+    = render 'lessons/shared/attribute_list', lesson: @proposal
