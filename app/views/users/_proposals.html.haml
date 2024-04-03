@@ -13,9 +13,6 @@
     %tbody
       - proposals.each do |proposal|
         %tr
-          %td.p-3
-            = link_to proposal.changed_lesson.title,
-                      lesson_path(changed_lesson)
           %td.p-3= proposal.status.titleize
           %td.p-3= proposal.created_at.strftime('%d/%m/%Y')
           %td.p-3= proposal.internal_notes

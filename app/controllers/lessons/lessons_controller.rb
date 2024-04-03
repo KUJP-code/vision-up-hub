@@ -34,8 +34,11 @@ class LessonsController < ApplicationController
   end
 
   def update
-    redirect_to root_url,
-                alert: 'This route should be overwritten when inherited'
+    if current_user.is?('Writer') && !@lesson.accepted?
+      type_params.merge(status: :proposed)
+    else
+      type_params
+    end
   end
 
   def destroy
@@ -107,7 +110,7 @@ class LessonsController < ApplicationController
   end
 
   def proposing_changes?
-    return false unless current_user.is?('Writer')
+    return false unless current_user.is?('Writer') && @lesson.accepted?
 
     status_attrs = [
       I18n.t('approve'), I18n.t('awaiting_approval'), I18n.t('not_approved'), I18n.t('update_notes')

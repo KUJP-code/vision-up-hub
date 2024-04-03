@@ -23,7 +23,8 @@ class ExercisesController < LessonsController
   def update
     return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(type_params)
+    attrs = super
+    if @lesson.update(attrs)
       redirect_to after_update_url,
                   notice: 'Exercise was successfully updated.'
     else
