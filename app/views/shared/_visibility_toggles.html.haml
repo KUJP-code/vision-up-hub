@@ -2,6 +2,7 @@
 
 :ruby
   shared_classes = 'rounded text-white font-semibold px-3 py-1 text-base'
+  admin_approved = writer_approved = false
   unless resource.instance_of?(Course)
     admin_approved = current_user.is?('Admin') &&
                      resource.admin_approval.pluck('id').any?(current_user.id.to_s)
@@ -17,24 +18,25 @@
   = form_with model: resource do |f|
     = f.hidden_field :curriculum_approval_id, value: current_user.id
     = f.hidden_field :curriculum_approval_name, value: current_user.name
-    = f.submit index ? 'Awaiting Approval' : 'Not Approved',
+    = f.submit index ? t('awaiting_approval') : t('not_approved'),
                class: "#{shared_classes} bg-red-500 cursor-pointer"
 
 - elsif current_user.is?('Admin') && !resource.instance_of?(Course)
   = form_with model: resource do |f|
     = f.hidden_field :admin_approval_id, value: current_user.id
     = f.hidden_field :admin_approval_name, value: current_user.name
-    = f.submit index ? 'Awaiting Approval' : 'Not Approved',
+    = f.submit index ? t('awaiting_approval') : t('not_approved'),
                class: "#{shared_classes} bg-red-500 cursor-pointer"
 
-- if current_user.is?('Admin') && resource.released?
-  = form_with model: resource do |f|
-    = f.hidden_field :released, value: false
-    = f.submit index ? 'Released' : 'Released: ✓',
-               class: "#{shared_classes} bg-green-600 cursor-pointer"
+- if current_user.is?('Admin') && (resource.instance_of?(Course) || resource.approved?)
+  - if resource.released?
+    = form_with model: resource do |f|
+      = f.hidden_field :released, value: false
+      = f.submit index ? 'Released' : 'Released: ✓',
+                 class: "#{shared_classes} bg-green-600 cursor-pointer"
 
-- elsif current_user.is?('Admin')
-  = form_with model: resource do |f|
-    = f.hidden_field :released, value: true
-    = f.submit index ? 'Unreleased' : 'Not Released',
-               class: "#{shared_classes} bg-red-500 cursor-pointer"
+  - else
+    = form_with model: resource do |f|
+      = f.hidden_field :released, value: true
+      = f.submit index ? 'Unreleased' : 'Not Released',
+                 class: "#{shared_classes} bg-red-500 cursor-pointer"
