@@ -58,7 +58,7 @@ RSpec.shared_examples_for 'lesson' do
 
   context 'when mass-reassigning editor' do
     let(:prev_writer) { create(:user, :writer) }
-    let(:lessons) { create_list(described_class.name.underscore.to_sym, 3) }
+    let(:lessons) { create_list(described_class.name.underscore.to_sym, 3, status: :accepted) }
     let(:new_writer) { create(:user, :writer, organisation: prev_writer.organisation) }
 
     before do
@@ -74,6 +74,12 @@ RSpec.shared_examples_for 'lesson' do
     it 'removes previous editor from lessons' do
       Lesson.reassign_editor(prev_writer.id, new_writer.id)
       expect(prev_writer.assigned_lessons.reload).to be_empty
+    end
+  end
+
+  context 'when proposing changes' do
+    it 'has a valid factory for proposed changes' do
+      expect(build(described_class.new.type.underscore.to_sym, :proposal)).to be_valid
     end
   end
 end

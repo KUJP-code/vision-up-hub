@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_02_040830) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_03_021633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,6 +99,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_040830) do
     t.jsonb "intro", default: []
     t.jsonb "lang_goals", default: {"sky"=>[], "land"=>[], "galaxy"=>[]}
     t.string "interesting_fact"
+    t.integer "status"
+    t.integer "changed_lesson_id"
     t.index ["assigned_editor_id"], name: "index_lessons_on_assigned_editor_id"
     t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end
@@ -138,33 +140,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_040830) do
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_plans_on_course_id"
     t.index ["organisation_id"], name: "index_plans_on_organisation_id"
-  end
-
-  create_table "proposed_changes", force: :cascade do |t|
-    t.string "goal", null: false
-    t.string "title", null: false
-    t.jsonb "add_difficulty", default: []
-    t.jsonb "example_sentences", default: []
-    t.jsonb "extra_fun", default: []
-    t.jsonb "instructions", default: []
-    t.jsonb "intro", default: []
-    t.jsonb "large_groups", default: []
-    t.jsonb "links", default: {}
-    t.jsonb "materials", default: []
-    t.jsonb "notes", default: []
-    t.jsonb "outro", default: []
-    t.integer "subtype"
-    t.string "topic"
-    t.jsonb "vocab", default: []
-    t.string "comments", default: ""
-    t.bigint "lesson_id", null: false
-    t.bigint "proponent_id", null: false
-    t.jsonb "proposals", default: {}
-    t.integer "status", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"
-    t.index ["proponent_id"], name: "index_proposed_changes_on_proponent_id"
   end
 
   create_table "school_classes", force: :cascade do |t|
@@ -399,14 +374,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_02_040830) do
   add_foreign_key "class_teachers", "users", column: "teacher_id"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
+  add_foreign_key "lessons", "lessons", column: "changed_lesson_id"
   add_foreign_key "lessons", "users", column: "assigned_editor_id"
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "plans", "courses"
   add_foreign_key "plans", "organisations"
-  add_foreign_key "proposed_changes", "lessons"
-  add_foreign_key "proposed_changes", "users", column: "proponent_id"
   add_foreign_key "school_classes", "schools"
   add_foreign_key "school_teachers", "schools"
   add_foreign_key "school_teachers", "users", column: "teacher_id"

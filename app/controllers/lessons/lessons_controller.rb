@@ -14,9 +14,9 @@ class LessonsController < ApplicationController
 
   def show
     @courses = @lesson.courses
-    @proposed_changes = @lesson.proposed_changes
-                               .pending.order(created_at: :desc)
-                               .includes(:proponent)
+    @proposals = @lesson.proposals
+                        .order(created_at: :desc)
+                        .includes(:creator)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 

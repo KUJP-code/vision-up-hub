@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  include Approvable, Levelable, Pdfable
+  include Approvable, Levelable, Pdfable, Proposable
 
   TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass StandShowSpeak].freeze
 
@@ -10,10 +10,10 @@ class Lesson < ApplicationRecord
   validates :goal, :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
 
-  belongs_to :creator,
+  belongs_to :assigned_editor,
              class_name: 'User',
              optional: true
-  belongs_to :assigned_editor,
+  belongs_to :creator,
              class_name: 'User',
              optional: true
 
@@ -22,8 +22,6 @@ class Lesson < ApplicationRecord
                                 reject_if: :all_blank,
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
-  has_many :proposed_changes,
-           dependent: :destroy
 
   has_one_attached :guide do |g|
     g.variant :thumb, resize_to_limit: [300, 300], convert: :avif, preprocessed: true

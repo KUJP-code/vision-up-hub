@@ -41,7 +41,7 @@ RSpec.describe 'changing a lesson' do
         click_button I18n.t('helpers.submit.update')
       end
       proposed_change_list = page.find_by_id('proposed-changes')
-      expect(proposed_change_list).to have_content('Title: New Title')
+      expect(proposed_change_list).to have_content("Proposed by: #{user.name}")
     end
   end
 end

@@ -1,0 +1,21 @@
+-# locals: (proposals:, lesson:)
+
+- if proposals.any?
+  %table.text-center#proposals
+    %thead
+      %tr
+        %th Proponent
+        - if current_user.is?('Admin')
+          %th Comments
+          %th Status
+          %th
+    %tbody
+      - proposals.each do |proposal|
+        = form_with model: proposal do |f|
+          %tr
+            %td= proposal.creator.name
+            - if current_user.is?('Admin')
+              %td= f.text_area :comments
+              %td= f.select :status,
+                            Lesson.statuses.keys.map { |k| [k.humanize, k] }
+              %td= f.submit 'Update', class: 'btn btn-primary'
