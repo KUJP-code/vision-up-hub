@@ -14,7 +14,6 @@ Rails.application.routes.draw do
       resources :lesson_searches, only: %i[index]
       resources :phonics_classes, only: %i[create index update]
       resources :plans
-      resources :proposed_changes, only: %i[destroy edit update]
       resources :school_classes
       resources :stand_show_speaks, only: %i[create index update]
       resources :students

@@ -57,7 +57,7 @@ RSpec.describe Lesson do
       patch stand_show_speak_path(lesson),
             params: { stand_show_speak:
                       { admin_approval_id: user.id, admin_approved_name: user.name },
-                      commit: 'Approve' }
+                      commit: I18n.t('approve') }
       expect(lesson.reload.admin_approval).to eq([])
     end
 
@@ -66,7 +66,7 @@ RSpec.describe Lesson do
             params: { stand_show_speak:
                       { curriculum_approval_id: user.id,
                         curriculum_approval_name: user.name },
-                      commit: 'Approve' }
+                      commit: I18n.t('approve') }
       stored_approval = lesson.reload.curriculum_approval.first
       expect(stored_approval['id']).to eq user.id.to_s
     end
@@ -74,7 +74,7 @@ RSpec.describe Lesson do
     it 'can alter internal notes' do
       patch stand_show_speak_path(lesson),
             params: { stand_show_speak: { internal_notes: "I'm a note!" },
-                      commit: 'Update Notes' }
+                      commit: I18n.t('update_notes') }
       expect(lesson.reload.internal_notes).to eq "I'm a note!"
     end
   end

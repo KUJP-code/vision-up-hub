@@ -7,6 +7,8 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+  approve: "承認"
+  awaiting_approval: "承認待ち"
   create_success: "リソースの作成に成功"
   date:
     abbr_day_names:
@@ -122,6 +124,7 @@ ja:
       create: 登録する
       submit: 保存する
       update: 更新する
+  not_approved: "未承認"
   number:
     currency:
       format:
@@ -183,6 +186,7 @@ ja:
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
     pm: 午後
+  update_notes: "更新履歴"
   users:
     admin: "管理者"
     org_admin: "組織管理者"

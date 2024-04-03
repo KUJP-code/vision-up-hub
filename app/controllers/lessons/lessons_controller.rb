@@ -30,6 +30,7 @@ class LessonsController < ApplicationController
   def create
     @lesson.creator_id = current_user.id
     @lesson.assigned_editor_id = current_user.id
+    @lesson.status = current_user.is?('Admin') ? :accepted : :proposed
   end
 
   def update
@@ -56,7 +57,7 @@ class LessonsController < ApplicationController
     ]
     return default_params unless current_user.is?('Admin')
 
-    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released,
+    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released, :status,
                       { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
   end
 
@@ -73,12 +74,15 @@ class LessonsController < ApplicationController
   end
 
   def propose_changes(strong_params)
-    changelist = strong_params.except(
-      :course_lessons_attributes, :level, :subtype, :type, :resources
-    ).to_h.merge(proponent_id: current_user.id)
-    changes = @lesson.proposed_changes.new(changelist)
+    proposal = @lesson.proposals.new(
+      strong_params.merge(
+        status: :proposed,
+        creator_id: current_user.id,
+        assigned_editor_id: current_user.id
+      )
+    )
 
-    if changes.save
+    if proposal.save
       redirect_to lesson_path(@lesson),
                   notice: 'Changes successfully proposed.'
     else
@@ -103,8 +107,11 @@ class LessonsController < ApplicationController
   end
 
   def proposing_changes?
-    current_user.is?('Writer') &&
-      params[:commit] != 'Update Notes' &&
-      params[:commit] != 'Approve'
+    return false unless current_user.is?('Writer')
+
+    status_attrs = [
+      I18n.t('approve'), I18n.t('awaiting_approval'), I18n.t('not_approved'), I18n.t('update_notes')
+    ]
+    status_attrs.none?(params[:commit])
   end
 end
