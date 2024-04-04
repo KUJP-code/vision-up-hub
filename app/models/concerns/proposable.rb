@@ -11,7 +11,7 @@ module Proposable
     has_many :proposals, class_name: 'Lesson',
                          foreign_key: :changed_lesson_id,
                          inverse_of: :changed_lesson,
-                         dependent: :restrict_with_error
+                         dependent: :nullify
     enum status: {
       proposed: 0,
       changes_needed: 1,

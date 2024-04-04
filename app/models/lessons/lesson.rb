@@ -45,22 +45,22 @@ class Lesson < ApplicationRecord
     course_lessons.find_by(course_id: course.id).day.capitalize
   end
 
-  def replace_with(proposal)
-    course_lessons.each do |cl|
-      proposal.course_lessons << cl
+  def replace(lesson)
+    lesson.course_lessons.each do |cl|
+      course_lessons << cl
     end
-    proposals.each do |p|
-      next if p.id == proposal.id
+    lesson.proposals.each do |p|
+      next if p.id == id
 
-      proposal.proposals << p
+      proposals << p
     end
-    proposal.update(
-      status: :accepted, creator_id:, admin_approval:, curriculum_approval:
-    )
+    update(status: :accepted, creator_id: lesson.creator_id,
+           admin_approval: lesson.admin_approval,
+           curriculum_approval: lesson.curriculum_approval)
   rescue StandardError
     false
   else
-    destroy
+    lesson.destroy
     true
   end
 

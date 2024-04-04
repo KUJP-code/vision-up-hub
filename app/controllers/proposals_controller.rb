@@ -28,7 +28,7 @@ class ProposalsController < ApplicationController
 
   def replace_lesson
     @lesson = Lesson.find(proposal_params[:changed_lesson_id])
-    if @lesson.replace_with(@proposal)
+    if @proposal.replace(@lesson)
       redirect_to lesson_url(id: @proposal.id),
                   notice: t('update_success')
     else

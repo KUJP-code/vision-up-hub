@@ -82,4 +82,30 @@ RSpec.shared_examples_for 'lesson' do
       expect(build(described_class.new.type.underscore.to_sym, :proposal)).to be_valid
     end
   end
+
+  context 'when using replace()' do
+    let(:lesson) { create(described_class.name.underscore.to_sym) }
+    let(:proposal) { create(described_class.name.underscore.to_sym, :proposal) }
+
+    it 'transfers its course lessons to the proposal' do
+      course_lesson = create(:course_lesson, lesson:)
+      proposal.replace(lesson)
+      expect(proposal.course_lessons).to contain_exactly(course_lesson)
+    end
+
+    it 'transfers its proposals to the proposal' do
+      extra_proposal = create(
+        described_class.name.underscore.to_sym,
+        :proposal,
+        changed_lesson: lesson
+      )
+      proposal.replace(lesson)
+      expect(proposal.proposals).to contain_exactly(extra_proposal)
+    end
+
+    it 'self-destructs' do
+      proposal.replace(lesson)
+      expect(lesson.destroyed?).to be true
+    end
+  end
 end
