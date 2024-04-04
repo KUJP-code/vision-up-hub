@@ -8,7 +8,7 @@ module Pdfable
 
     def attach_guide
       # We're just uploading them for now
-      return if instance_of?(EnglishClass)
+      return if instance_of?(EnglishClass) || instance_of?(StandShowSpeak)
 
       timestamp = Time.zone.now.strftime('%Y%M%d%H%m%s')
       filename = "#{timestamp}_#{title.parameterize(separator: '_')}_guide.pdf"

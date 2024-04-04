@@ -77,7 +77,7 @@ class LessonsController < ApplicationController
   end
 
   def propose_changes(strong_params)
-    proposal = @lesson.proposals.new(
+    @proposal = @lesson.proposals.new(
       strong_params.merge(
         status: :proposed,
         creator_id: current_user.id,
@@ -85,7 +85,7 @@ class LessonsController < ApplicationController
       )
     )
 
-    if proposal.save
+    if @proposal.save
       redirect_to lesson_path(@lesson),
                   notice: 'Changes successfully proposed.'
     else
@@ -103,10 +103,9 @@ class LessonsController < ApplicationController
   end
 
   def generate_guide
-    return if @lesson.new_record? || proposing_changes? ||
-              params[:commit] == 'Change Date'
+    return unless @lesson.persisted?
 
-    @lesson.attach_guide
+    @proposal ? @proposal.attach_guide : @lesson.attach_guide
   end
 
   def proposing_changes?
