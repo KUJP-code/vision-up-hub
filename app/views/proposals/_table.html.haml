@@ -1,7 +1,7 @@
 -# locals: (proposals:)
 
-%h2 Proposals
 - if proposals.any?
+  %h2 Proposals
   %table.text-center#proposals
     %thead
       %tr
@@ -30,7 +30,7 @@
                 %td= f.text_area :internal_notes
                 %td
                   = f.select :status,
-                              Lesson.statuses.keys.map { |k| [k.humanize, k] }
+                             Lesson.statuses.keys.map { |k| [k.humanize, k] }
                   = f.submit 'Update', class: 'btn btn-primary'
           - else
             %td

@@ -4,9 +4,15 @@
       .flex.gap-2.items-center
         = image_tag icon_path(@lesson), class: 'h-7'
         %h1= @lesson.title
+        - unless @lesson.changed_lesson_id.nil?
+          %h1
+            = " - Proposal for "
+            = link_to @lesson.changed_lesson.title,
+                      lesson_path(@lesson.changed_lesson)
         = render 'shared/visibility_toggles', resource: @lesson
-      %h3
-        #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
+      - if @lesson.subtype
+        %h3
+          #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}"}
 
       - if @lesson.topic.present?
         %h3 Topic:

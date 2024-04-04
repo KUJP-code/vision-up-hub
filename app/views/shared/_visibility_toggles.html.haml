@@ -28,6 +28,10 @@
     = f.submit index ? t('awaiting_approval') : t('not_approved'),
                class: "#{shared_classes} bg-red-500 cursor-pointer"
 
+- unless resource.instance_of?(Course)
+  %p{ class: "#{shared_classes} #{status_color(resource)}" }
+    = t(".#{resource.status}")
+
 - if current_user.is?('Admin') && (resource.instance_of?(Course) || resource.approved?)
   - if resource.released?
     = form_with model: resource do |f|
