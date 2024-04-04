@@ -11,7 +11,7 @@ class ProposalsController < ApplicationController
     return replace_lesson if proposal_params[:status] == 'accepted'
 
     if @proposal.update(proposal_params)
-      redirect_to lesson_url(id: @proposal.changed_lesson),
+      redirect_to lesson_url(id: @proposal.changed_lesson_id),
                   notice: t('update_success')
     else
       render :show,
@@ -24,6 +24,18 @@ class ProposalsController < ApplicationController
 
   def proposal_params
     params.require(:proposal).permit(:changed_lesson_id, :internal_notes, :status)
+  end
+
+  def replace_lesson
+    @lesson = Lesson.find(proposal_params[:changed_lesson_id])
+    if @lesson.replace_with(@proposal)
+      redirect_to lesson_url(id: @proposal.id),
+                  notice: t('update_success')
+    else
+      render :show,
+             status: :unprocessable_entity,
+             alert: t('update_failure')
+    end
   end
 
   def set_proposal

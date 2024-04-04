@@ -43,25 +43,22 @@ end
 
 writer = Writer.first
 
-Lesson::TYPES.map do |type|
-  puts "Creating #{type}..."
-  l = Lesson.create!(fb.attributes_for(
-                       type.underscore.to_sym,
-                       assigned_editor_id: writer.id,
-                       creator_id: 1
-                     ))
-end
-
 puts "Creating today's lessons..."
 
+Lesson::TYPES.map do |type|
+  puts "Creating #{type}..."
+  Lesson.create!(fb.attributes_for( type.underscore.to_sym))
+end
+
 %i[land_two sky_three galaxy_one].each do |level|
-  fb.create(:english_class, level:, creator_id: 1, assigned_editor_id: writer.id)
-  fb.create(:phonics_class, level:, creator_id: 1, assigned_editor_id: writer.id)
-  fb.create(:stand_show_speak, level:, creator_id: 1, assigned_editor_id: writer.id)
+  fb.create(:english_class, level:)
+  fb.create(:phonics_class, level:)
+  fb.create(:stand_show_speak, level:)
 end
 
 Lesson.all.each do |lesson|
   lesson.attach_guide
+  lesson.proposals << fb.create( lesson.type.underscore.to_sym, :proposal)
 end
 
 Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
@@ -71,6 +68,7 @@ end
 puts 'Creating courses...'
 
 course_lessons = Lesson.all.map do |lesson|
+  lesson.update(creator_id: 1, assigned_editor_id: writer.id)
   fb.build(:course_lesson, lesson:, week: 1, day: Time.zone.today.strftime('%A').downcase)
 end
 

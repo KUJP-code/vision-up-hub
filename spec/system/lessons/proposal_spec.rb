@@ -43,7 +43,15 @@ RSpec.describe 'changing a lesson' do
 
   context 'when comparing lessons and accepting a proposal' do
     let(:user) { kids_up.users.create(attributes_for(:user, :admin)) }
-    let(:proposal) { create(:daily_activity, :proposal, changed_lesson: lesson, title: 'New Title') }
+    let(:course_lesson) { create(:course_lesson, course: create(:course), lesson:) }
+    let(:proposal) do
+      create(
+        :daily_activity,
+        :proposal,
+        changed_lesson: lesson,
+        title: 'New Title', creator: user, assigned_editor: user
+      )
+    end
 
     it 'can compare changes then accept them' do
       visit proposal_path(id: proposal.id)
@@ -55,7 +63,9 @@ RSpec.describe 'changing a lesson' do
         click_button 'proposal_status_form_submit'
       end
       expect(page).to have_content('New Title')
-      expect(lesson.reload.title).to eq('New Title')
+      expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
+      expect(proposal.reload.course_lessons).to contain_exactly(course_lesson)
+      expect(lesson.exists?).to be false
     end
   end
 end

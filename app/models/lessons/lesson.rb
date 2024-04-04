@@ -24,7 +24,8 @@ class Lesson < ApplicationRecord
   has_many :courses, through: :course_lessons
 
   has_one_attached :guide do |g|
-    g.variant :thumb, resize_to_limit: [300, 300], convert: :avif, preprocessed: true
+    g.variant :thumb, resize_to_limit: [300, 300],
+                      convert: :avif, preprocessed: true
   end
   has_many_attached :resources
 
@@ -44,6 +45,25 @@ class Lesson < ApplicationRecord
     course_lessons.find_by(course_id: course.id).day.capitalize
   end
 
+  def replace_with(proposal)
+    course_lessons.each do |cl|
+      proposal.course_lessons << cl
+    end
+    proposals.each do |p|
+      next if p.id == proposal.id
+
+      proposal.proposals << p
+    end
+    proposal.update(
+      status: :accepted, creator_id:, admin_approval:, curriculum_approval:
+    )
+  rescue StandardError
+    false
+  else
+    destroy
+    true
+  end
+
   def week(course)
     number = course_lessons.find_by(course_id: course.id).week
     "Week #{number}"
@@ -52,6 +72,10 @@ class Lesson < ApplicationRecord
   private
 
   def check_not_used
-    throw(:abort) if course_lessons.any?
+    return true if course_lessons.reload.empty?
+
+    errors.add(:course_lessons,
+               :invalid,
+               message: 'Cannot delete lesson if it is used in a course')
   end
 end
