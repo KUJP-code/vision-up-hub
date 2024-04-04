@@ -24,7 +24,7 @@ RSpec.describe 'Student search', :js do
           fill_in 'search_student_id', with: 's12345678'
           select 'Sky One', from: 'search_level'
           select student.school.name, from: 'search_school_id'
-          fill_in 'search_birthday', with: '01/01/2000'
+          fill_in 'search_birthday', with: Date.new(2000, 1, 1)
           click_button I18n.t('student_searches.form.search')
         end
         click_button I18n.t('student_searches.results.claim_child', child: student.name)
@@ -43,7 +43,7 @@ RSpec.describe 'Student search', :js do
           fill_in 'search_student_id', with: 's12345678'
           select 'Sky One', from: 'search_level'
           select student.school.name, from: 'search_school_id'
-          fill_in 'search_birthday', with: '01/01/2000'
+          fill_in 'search_birthday', with: Date.new(2000, 1, 1)
           click_button I18n.t('student_searches.form.search')
         end
         expect(page).not_to have_content(I18n.t('student_searches.results.claim_child', child: student.name))

@@ -8,6 +8,10 @@
       %h3
         #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
 
+      - unless @lesson.topic.blank?
+        %h3 Topic:
+        %p= @lesson.topic
+
       %h3 Goal:
       %p= @lesson.goal
 
@@ -25,7 +29,7 @@
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  = render "lessons/shared/attribute_list", lesson: @lesson
+  = render 'lessons/shared/attribute_list', lesson: @lesson
 
   .flex.justify-center.gap-3
     = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
