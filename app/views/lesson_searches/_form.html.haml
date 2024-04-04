@@ -39,11 +39,21 @@
 
     %div{ class: field_classes }
       = f.label :creator_id, t('.creator')
-      = f.select :creator_id, writers, { prompt: t('.select_creator') }
+      = f.select :creator_id,
+                 writers,
+                 { prompt: t('.select_creator') }
 
     %div{ class: field_classes }
       = f.label :assigned_editor_id, t('.assigned_editor')
-      = f.select :assigned_editor_id, writers, { prompt: t('.select_assigned_editor') }
+      = f.select :assigned_editor_id,
+                 writers,
+                 { prompt: t('.select_assigned_editor') }
+
+    %div{ class: field_classes }
+      = f.label :status, t('.status')
+      = f.select :status,
+                 Lesson.statuses.map { |k, v| [k.titleize, v] },
+                 { prompt: t('.select_status') }
 
     %div{ class: field_classes }
       = f.label :released, t('.released')

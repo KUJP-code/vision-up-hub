@@ -2,7 +2,7 @@
 
 class LessonSearchesController < ApplicationController
   BOOL_VALUES = %w[released].freeze
-  ENUM_VALUES = %w[level subtype].freeze
+  ENUM_VALUES = %w[level status subtype].freeze
   PARTIAL_MATCHES = %w[goal title].freeze
 
   def index
@@ -21,8 +21,8 @@ class LessonSearchesController < ApplicationController
 
   def search_params
     params.require(:search)
-          .permit(:assigned_editor_id, :creator_id, :goal,
-                  :level, :released, :subtype, :title, :type)
+          .permit(:assigned_editor_id, :creator_id, :goal, :level,
+                  :released, :status, :subtype, :title, :type)
           .compact_blank
   end
 

@@ -8,7 +8,7 @@
       %h3
         #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
 
-      - unless @lesson.topic.blank?
+      - if @lesson.topic.present?
         %h3 Topic:
         %p= @lesson.topic
 

@@ -13,7 +13,8 @@ RSpec.describe 'Lesson search', :js do
            creator_id: user.id,
            assigned_editor_id: user.id,
            released: true,
-           admin_approval: [user.id.to_s])
+           admin_approval: [user.id.to_s],
+           status: :accepted)
   end
   let!(:extra) { create(:exercise) }
 
@@ -31,6 +32,7 @@ RSpec.describe 'Lesson search', :js do
       check 'search_released'
       select user.name, from: 'search_creator_id'
       select user.name, from: 'search_assigned_editor_id'
+      select 'Accepted', from: 'search_status'
       click_button I18n.t('lesson_searches.form.search')
     end
     expect(page).to have_content(result.title)
