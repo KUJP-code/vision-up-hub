@@ -23,11 +23,11 @@ class ProposalsController < ApplicationController
   private
 
   def proposal_params
-    params.require(:proposal).permit(:changed_lesson_id, :internal_notes, :status)
+    params.require(:proposal).permit(:internal_notes, :status)
   end
 
   def replace_lesson
-    @lesson = Lesson.find(proposal_params[:changed_lesson_id])
+    @lesson = @proposal.changed_lesson
     if @proposal.replace(@lesson)
       redirect_to lesson_url(id: @proposal.id),
                   notice: t('update_success')
