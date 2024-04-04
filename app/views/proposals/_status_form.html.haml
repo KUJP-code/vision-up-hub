@@ -1,9 +1,11 @@
 -# locals: (lesson:, proposal:)
 
-= form_with model: proposal,
+= form_with url: proposal_path(proposal),
             scope: :proposal,
+            method: :patch,
             html: { class: 'w-full flex flex-wrap gap-3 p-3 justify-center',
                     id: 'proposal_status_form' } do |f|
+  = render 'shared/form_errors', resource: proposal
   = f.hidden_field :changed_lesson_id, value: lesson.id
   = f.text_area :internal_notes,
                 placeholder: 'Comment on this proposal here',
