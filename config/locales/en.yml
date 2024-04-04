@@ -57,4 +57,10 @@ en:
     precision:
       format:
         delimiter: ""
+  shared:
+    visibility_toggles:
+      accepted: "Accepted"
+      changes_needed: "Changes Needed"
+      proposed: "Proposed"
+      rejected: "Rejected"
   update_notes: "Update Notes"

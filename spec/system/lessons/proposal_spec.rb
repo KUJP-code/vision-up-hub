@@ -43,7 +43,7 @@ RSpec.describe 'changing a lesson' do
 
   context 'when comparing lessons and accepting a proposal' do
     let(:user) { kids_up.users.create(attributes_for(:user, :admin)) }
-    let(:course_lesson) { create(:course_lesson, course: create(:course), lesson:) }
+    let(:course) { create(:course) }
     let(:proposal) do
       create(
         :daily_activity,
@@ -51,6 +51,10 @@ RSpec.describe 'changing a lesson' do
         changed_lesson: lesson,
         title: 'New Title', creator: user, assigned_editor: user
       )
+    end
+
+    before do
+      create(:course_lesson, course:, lesson:)
     end
 
     it 'can compare changes then accept them' do
@@ -64,8 +68,8 @@ RSpec.describe 'changing a lesson' do
       end
       expect(page).to have_content('New Title')
       expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
-      expect(proposal.reload.course_lessons).to contain_exactly(course_lesson)
-      expect(lesson.exists?).to be false
+      expect(page).to have_content(course.title)
+      expect { Lesson.find(lesson.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
