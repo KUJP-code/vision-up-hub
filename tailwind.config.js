@@ -23,20 +23,20 @@ export default {
 					},
 				},
 				{
-					name: "dark",
-					selectors: [".dark", "[data-theme=dark]"],
+					name: "org_2",
+					selectors: [".org_2"],
 					theme: {
 						colors: {
 							"color-neutral-light": "#000000",
 							"color-neutral-dark": "#ffffff",
 							"color-main": "#32cd32",
-							"color-secondary": "#7e7195",
+							"color-secondary": "#f372b6",
 						},
 					},
 				},
 				{
-					name: "blue",
-					selectors: [".blue"],
+					name: "org_3",
+					selectors: [".org_3"],
 					theme: {
 						colors: {
 							"color-neutral-light": "#f9f9f9",

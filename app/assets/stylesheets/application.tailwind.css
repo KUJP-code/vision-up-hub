@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--color-neutral-light: #f9f9f9;
-	--color-neutral-dark: #b1a9bc;
-	--color-main: #fab650;
-	--color-secondary: #7e7195;
-}
-
 @layer base {
 	h1 {
 		@apply text-3xl text-center;

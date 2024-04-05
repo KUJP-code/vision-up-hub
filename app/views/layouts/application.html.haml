@@ -1,5 +1,6 @@
 !!! 5
-%html{ data: { controller: 'theme', 'theme-target': 'html' } }
+%html{ class: org_theme(current_user),
+       data: { controller: 'theme', 'theme-target': 'html' } }
   %head
     %title Materials
     %meta{ charset: 'utf-8' }
