@@ -11,6 +11,7 @@
     "@stimulus-components/chartjs": "^6.0.0",
     "autoprefixer": "latest",
     "postcss": "latest",
-    "tailwindcss": "latest"
+    "tailwindcss": "latest",
+    "tailwindcss-theme-swapper": "^0.11.0"
   }
 }

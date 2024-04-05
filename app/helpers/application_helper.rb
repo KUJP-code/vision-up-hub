@@ -18,7 +18,7 @@ module ApplicationHelper
     active_classes = 'bg-white rounded-lg text-color-main'
 
     link_to title, path,
-            class: "p-3 #{active_classes if active}"
+            class: "p-3 transition hover:scale-105 #{active_classes if active}"
   end
 
   def split_on_capitals(string)
@@ -50,7 +50,7 @@ module ApplicationHelper
     link_to(
       svg_tag,
       url_for(locale: new_locale),
-      class: 'shrink-0 p-3',
+      class: 'shrink-0 p-3 transition hover:scale-105',
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )
