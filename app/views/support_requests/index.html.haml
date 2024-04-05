@@ -2,10 +2,10 @@
 
 - unless current_user.is?('Admin')
   %details{
-    class: 'm-3 bg-ku-purple text-white font-semibold rounded-md overflow-hidden',
+    class: 'm-3 bg-color-secondary text-white font-semibold rounded-md overflow-hidden',
     id: 'create_request'
   }
-    %summary.bg-ku-purple.p-2= t('.new_request')
+    %summary.bg-color-secondary.p-2= t('.new_request')
     = render 'support_requests/form',
              request: SupportRequest.new
 

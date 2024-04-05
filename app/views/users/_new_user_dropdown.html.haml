@@ -1,8 +1,8 @@
 -# locals: (org: current_user.organisation_id)
 
-%details{ class: 'cursor-pointer bg-ku-orange text-white font-semibold rounded-md overflow-hidden',
+%details{ class: 'cursor-pointer bg-color-main text-white font-semibold rounded-md overflow-hidden',
           id: 'create_user' }
-  %summary.bg-ku-purple.p-2= t('.create_new')
+  %summary.bg-color-secondary.p-2= t('.create_new')
   %nav.flex.flex-col
     - current_user.class::VISIBLE_TYPES.each do |type|
       - next if !current_user.ku? && User::KU_TYPES.include?(type)

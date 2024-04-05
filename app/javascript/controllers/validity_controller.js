@@ -2,31 +2,31 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="validity"
 export default class extends Controller {
-	static targets = ["input"];
+  static targets = ["input"];
 
-	validate() {
-		if (this.inputTarget.reportValidity() && this.withinRange()) {
-			this.inputTarget.classList.remove(
-				"border-ku-gray-500",
-				"border-red-500",
-				"border-2",
-			);
-			this.inputTarget.classList.add("border-green-500");
-		} else {
-			this.inputTarget.classList.add("border-red-500", "border-2");
-			this.inputTarget.classList.remove(
-				"border-ku-gray-500",
-				"border-green-500",
-			);
-		}
-	}
+  validate() {
+    if (this.inputTarget.reportValidity() && this.withinRange()) {
+      this.inputTarget.classList.remove(
+        "border-color-neutral-dark",
+        "border-red-500",
+        "border-2"
+      );
+      this.inputTarget.classList.add("border-green-500");
+    } else {
+      this.inputTarget.classList.add("border-red-500", "border-2");
+      this.inputTarget.classList.remove(
+        "border-color-neutral-dark",
+        "border-green-500"
+      );
+    }
+  }
 
-	withinRange() {
-		if (this.inputTarget.type !== "number") {
-			return true;
-		}
+  withinRange() {
+    if (this.inputTarget.type !== "number") {
+      return true;
+    }
 
-		const value = Number.parseInt(this.inputTarget.value);
-		return value >= this.inputTarget.min && value <= this.inputTarget.max;
-	}
+    const value = Number.parseInt(this.inputTarget.value);
+    return value >= this.inputTarget.min && value <= this.inputTarget.max;
+  }
 }

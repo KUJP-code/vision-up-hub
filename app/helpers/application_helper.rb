@@ -15,7 +15,7 @@ module ApplicationHelper
 
   def main_nav_link(title, path)
     active = request.path.include?(path)
-    active_classes = 'bg-white rounded-lg text-ku-orange'
+    active_classes = 'bg-white rounded-lg text-color-main'
 
     link_to title, path,
             class: "p-3 #{active_classes if active}"

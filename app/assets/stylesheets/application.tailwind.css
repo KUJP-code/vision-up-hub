@@ -3,12 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --ku-blue: #5bb6d5;
-  --ku-gray-100: #f9f9f9;
-  --ku-gray-500: #b1a9bc;
-  --ku-gray-900: #b3abc0;
-  --ku-orange: #fab650;
-  --ku-purple: #7e7195;
+  --color-neutral-light: #f9f9f9;
+  --color-neutral-dark: #b1a9bc;
+  --color-main: #fab650;
+  --color-secondary: #7e7195;
 }
 
 @layer base {
@@ -27,7 +25,7 @@
   input,
   select,
   textarea {
-    border: 2px solid var(--ku-orange);
+    border: 2px solid var(--color-main);
     border-radius: 0.25rem;
     padding: 0.25rem;
 
@@ -80,7 +78,7 @@
   }
 
   .btn-primary {
-    background-color: var(--ku-orange);
+    background-color: var(--color-main);
     color: #ffffff;
   }
 
@@ -90,7 +88,7 @@
   }
 
   .btn-info {
-    background-color: var(--ku-purple);
+    background-color: var(--color-secondary);
     color: #ffffff;
   }
 
@@ -118,6 +116,6 @@
   }
 
   .week-arrow {
-    @apply rounded-full flex items-center font-extrabold text-3xl text-ku-orange border-4 border-ku-orange p-1;
+    @apply rounded-full flex items-center font-extrabold text-3xl text-color-main border-4 border-color-main p-1;
   }
 }

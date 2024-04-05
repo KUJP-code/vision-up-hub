@@ -1,28 +1,28 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between border-4 border-ku-purple/50 rounded-xl p-3',
+%div{ class: 'flex justify-between border-4 border-color-secondary/50 rounded-xl p-3',
       id: 'student_details' }
   %ul{ class: 'basis-3/5 flex-shrink-0 font-bold' }
     %li.flex.flex-col
-      %span{ class: 'text-ku-purple/50' }= t('.student_id')
-      %span.text-ku-purple= @student.student_id || 'なし'
+      %span{ class: 'text-color-secondary/50' }= t('.student_id')
+      %span.text-color-secondary= @student.student_id || 'なし'
     %li.flex.flex-col
-      %span{ class: 'text-ku-purple/50' }= t('.name')
-      %span.text-ku-purple= redact(@student)
+      %span{ class: 'text-color-secondary/50' }= t('.name')
+      %span.text-color-secondary= redact(@student)
     %li.flex.flex-col
-      %span{ class: 'text-ku-purple/50' }= t('.level')
-      %span.text-ku-purple= @student.level.titleize
+      %span{ class: 'text-color-secondary/50' }= t('.level')
+      %span.text-color-secondary= @student.level.titleize
     %li.flex.flex-col
-      %span{ class: 'text-ku-purple/50' }= t('.school')
-      %span.text-ku-purple= @student.school.name
+      %span{ class: 'text-color-secondary/50' }= t('.school')
+      %span.text-color-secondary= @student.school.name
     - if @teachers.any?
       %li.flex.flex-col.teachers
-        %span{ class: 'text-ku-purple/50' }= t('.teachers')
-        %span.text-ku-purple= @teachers.map(&:name).to_sentence
+        %span{ class: 'text-color-secondary/50' }= t('.teachers')
+        %span.text-color-secondary= @teachers.map(&:name).to_sentence
     - if @classes.any?
       %li.flex.flex-col.classes
-        %span{ class: 'text-ku-purple/50' }= t('.classes')
-        %span.text-ku-purple= @classes.map(&:name).to_sentence
+        %span{ class: 'text-color-secondary/50' }= t('.classes')
+        %span.text-color-secondary= @classes.map(&:name).to_sentence
   %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
     = render 'shared/print_button', text: t('.print_report')
     = link_to t('edit'),
