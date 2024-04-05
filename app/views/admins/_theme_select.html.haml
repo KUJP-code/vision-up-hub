@@ -1,0 +1,33 @@
+:ruby
+  button_styles = 'transition hover:scale-105'
+  container_actions = 'click@window->dropdown#hide touchstart@window->dropdown#hide' \
+                      'keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem' \
+                      'keydown.esc->dropdown#hide'
+  menu_styles = 'hidden absolute top-4 z-10 mt-5 flex flex-col bg-color-main ' \
+                'gap-2 p-3 rounded-b-lg'
+
+.inline-block.relative{ data: { action: container_actions, controller: 'dropdown' } }
+  %button{ class: 'transition hover:scale-105',
+           data: { action: 'dropdown#toggle:stop' },
+           type: 'button' }
+    Themes
+  %ul{ class: menu_styles,
+       data: { 'dropdown-target': 'menu' } }
+    %li
+      %button{ class: button_styles,
+               data: { action: 'theme#switch',
+                       'dropdown-target': 'menuItem',
+                       theme: 'base' } }
+        Default
+    %li
+      %button{ class: button_styles,
+               data: { action: 'theme#switch',
+                       'dropdown-target': 'menuItem',
+                       theme: 'blue' } }
+        Blue
+    %li
+      %button{ class: button_styles,
+               data: { action: 'theme#switch',
+                       'dropdown-target': 'menuItem',
+                       theme: 'dark' } }
+        Dark

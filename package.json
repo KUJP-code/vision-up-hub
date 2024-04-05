@@ -12,6 +12,7 @@
     "autoprefixer": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
+    "tailwindcss-stimulus-components": "^5.1.1",
     "tailwindcss-theme-swapper": "^0.11.0"
   }
 }

@@ -2,10 +2,11 @@ import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="theme"
 export default class extends Controller {
-	static targets = ["html", "themeSwitcher"];
+	static targets = ["html"];
 
-	connect() {
-		this.htmlTarget.classList.add("blue");
-		this.htmlTarget.dataset.theme = "blue";
+	switch(e) {
+		e.preventDefault();
+		this.htmlTarget.classList.remove(...this.htmlTarget.classList);
+		this.htmlTarget.classList.add(e.target.dataset.theme);
 	}
 }
