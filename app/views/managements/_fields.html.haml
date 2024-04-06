@@ -1,6 +1,6 @@
 -# locals: (f:, collection:, resource:)
 
-.fields-wrapper.flex.flex-col.gap-3
+.fields-wrapper.flex.flex-col.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
   - if resource.instance_of?(SchoolManager)
     = f.hidden_field :school_manager_id,
                      value: resource.id

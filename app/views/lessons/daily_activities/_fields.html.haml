@@ -2,7 +2,7 @@
 
 = f.hidden_field :type, value: lesson.type
 
-- unless controller_name == 'proposed_changes'
+= content_for :priority_fields do
   .form-group
     = f.label :subtype
     = f.select :subtype,

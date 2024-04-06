@@ -8,16 +8,20 @@ class StudentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @students = policy_scope(Student).includes(:school, :classes)
+    @students = policy_scope(Student).includes(:school).limit(50)
+    @schools = policy_scope(School).pluck(:name, :id)
   end
 
   def show
     @classes = @student.classes
+    @teachers = @student.teachers
     @potential_classes =
       @student.school
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
+    @orgs = policy_scope(Organisation)
+    set_results
   end
 
   def new
@@ -66,9 +70,36 @@ class StudentsController < ApplicationController
 
   def student_params
     params.require(:student).permit(
-      :comments, :level, :name, :school_id, :student_id,
+      :comments, :level, :name, :school_id, :student_id, :parent_id,
       student_classes_attributes: %i[id class_id _destroy]
     )
+  end
+
+  def set_results
+    @results = @student.test_results.order(created_at: :desc).includes(:test)
+    @results = @results.where(test_id: params[:test_id]) if params[:test_id]
+    @data = radar_data
+  end
+
+  def radar_data
+    radar_colors = ['250, 182, 80', '126, 113, 149', '156, 193, 216'].cycle
+
+    {
+      labels: %w[Reading Writing Listening Speaking],
+      datasets: @results.map do |result|
+        radar_data = result.radar_data
+        color = radar_colors.next
+        {
+          data: radar_data[:data],
+          label: radar_data[:label],
+          backgroundColor: "rgba(#{color}, 0.2)",
+          pointBackgroundColor: "rgb(#{color})",
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: "rgb(#{color})"
+        }
+      end
+    }
   end
 
   def set_student

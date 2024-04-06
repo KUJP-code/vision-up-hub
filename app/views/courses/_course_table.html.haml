@@ -1,10 +1,15 @@
 -# locals: (courses:)
 
-%table
+%table.text-center
   %thead
     %tr
-      %th Name
+      %th{ class: 'w-1/5' } Name
+      %th Description
   %tbody
     - courses.each do |course|
       %tr
-        %td= link_to course.title, course_path(course)
+        %td
+          .flex.justify-between.gap-2
+            = link_to course.title, course_path(course)
+            = render 'shared/visibility_toggles', resource: course
+        %td= (course.description.presence || 'なし')

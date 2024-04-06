@@ -1,0 +1,7 @@
+en:
+  user_searches:
+    form:
+      email: "Email"
+      name: "Name"
+      roles: "Role"
+      search: "Search"

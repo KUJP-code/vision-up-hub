@@ -1,0 +1,34 @@
+-# locals: (lesson:, proposal:, table: nil)
+
+= form_with url: proposal_path(proposal),
+            scope: :proposal,
+            method: :patch,
+            html: { class: 'w-full flex flex-wrap gap-3 p-3 justify-center',
+                    id: 'proposal_status_form' } do |f|
+  - if table
+    %td
+      = link_to proposal.title,
+                proposal_path(proposal)
+      %td= proposal.creator.name
+      - if current_user.is?('Admin')
+        %td
+          = f.text_area :internal_notes,
+                        class: 'w-full'
+        %td
+          = f.select :status,
+                     Lesson.statuses.keys.map { |k| [k.humanize, k] }
+          = f.submit 'Update', class: 'btn btn-primary'
+
+  - else
+    = render 'shared/form_errors', resource: lesson
+    = render 'shared/form_errors', resource: proposal
+    = f.text_area :internal_notes,
+                  placeholder: 'Comment on this proposal here',
+                  rows: '4',
+                  class: 'w-full'
+    = f.select :status,
+               Lesson.statuses.keys.map { |k| [k.titleize, k] },
+               class: 'basis-2/5'
+
+    = f.submit class: 'btn btn-primary basis-2/5',
+               id: 'proposal_status_form_submit'

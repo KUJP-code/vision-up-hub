@@ -6,5 +6,11 @@ FactoryBot.define do
     goal { 'Test Goal' }
     level { :kindy }
     title { 'Test Lesson' }
+    status { :accepted }
+  end
+
+  trait :proposal do
+    status { :proposed }
+    changed_lesson { create(type.underscore.to_sym) }
   end
 end

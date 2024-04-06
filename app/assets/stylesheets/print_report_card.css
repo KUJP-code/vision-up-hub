@@ -1,0 +1,70 @@
+@media print {
+  @page {
+    size: a4 portrait;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  main#student {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  section {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .btn,
+  textarea {
+    display: none;
+  }
+
+  #student_details {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-items: space-between;
+    margin: 0;
+
+    ul {
+      flex-basis: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: -0.25cm;
+    }
+
+    li {
+      flex-grow: 1;
+    }
+
+    select,
+    .classes,
+    .teachers {
+      display: none;
+    }
+  }
+
+  table {
+    margin-top: -1cm;
+  }
+
+  #test_details {
+    position: absolute;
+    top: 8cm;
+    width: 150mm;
+    height: 150mm;
+    margin: 0;
+    padding: 0;
+  }
+}

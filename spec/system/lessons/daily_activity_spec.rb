@@ -22,7 +22,7 @@ RSpec.describe 'creating a DailyActivity lesson' do
       fill_in 'daily_activity_intro', with: 'Test Intro'
       fill_in 'daily_activity_instructions', with: "Test Instruction 1\nTest Instruction 2"
       fill_in 'daily_activity_links', with: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
-      click_button 'Create Daily activity'
+      click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Daily Activity')
     expect(page).to have_content('Test Goal')

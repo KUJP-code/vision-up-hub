@@ -58,7 +58,7 @@ RSpec.shared_examples_for 'lesson' do
 
   context 'when mass-reassigning editor' do
     let(:prev_writer) { create(:user, :writer) }
-    let(:lessons) { create_list(described_class.name.underscore.to_sym, 3) }
+    let(:lessons) { create_list(described_class.name.underscore.to_sym, 3, status: :accepted) }
     let(:new_writer) { create(:user, :writer, organisation: prev_writer.organisation) }
 
     before do
@@ -74,6 +74,38 @@ RSpec.shared_examples_for 'lesson' do
     it 'removes previous editor from lessons' do
       Lesson.reassign_editor(prev_writer.id, new_writer.id)
       expect(prev_writer.assigned_lessons.reload).to be_empty
+    end
+  end
+
+  context 'when proposing changes' do
+    it 'has a valid factory for proposed changes' do
+      expect(build(described_class.new.type.underscore.to_sym, :proposal)).to be_valid
+    end
+  end
+
+  context 'when using replace()' do
+    let(:lesson) { create(described_class.name.underscore.to_sym) }
+    let(:proposal) { create(described_class.name.underscore.to_sym, :proposal) }
+
+    it 'transfers its course lessons to the proposal' do
+      course_lesson = create(:course_lesson, lesson:)
+      proposal.replace(lesson)
+      expect(proposal.course_lessons).to contain_exactly(course_lesson)
+    end
+
+    it 'transfers its proposals to the proposal' do
+      extra_proposal = create(
+        described_class.name.underscore.to_sym,
+        :proposal,
+        changed_lesson: lesson
+      )
+      proposal.replace(lesson)
+      expect(proposal.proposals).to contain_exactly(extra_proposal)
+    end
+
+    it 'self-destructs' do
+      proposal.replace(lesson)
+      expect(lesson.destroyed?).to be true
     end
   end
 end

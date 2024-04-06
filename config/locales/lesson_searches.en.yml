@@ -1,0 +1,17 @@
+en:
+  lesson_searches:
+    form:
+      assigned_editor: "Assigned Editor"
+      creator: "Creator"
+      level: "Level"
+      goal: "Goal"
+      released: "Released"
+      select_assigned_editor: "Select assigned editor"
+      select_creator: "Select creator"
+      select_level: "Select level"
+      select_subtype: "Select subtype"
+      select_type: "Select type"
+      search: "Search"
+      subtype: "Subtype"
+      title: "Title"
+      type: "Type"

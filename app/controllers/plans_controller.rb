@@ -6,7 +6,8 @@ class PlansController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @plans = policy_scope(Plan)
+    @plans = policy_scope(Plan).includes(:course, :organisation)
+                               .order(created_at: :desc)
   end
 
   def show; end

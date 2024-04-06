@@ -20,7 +20,7 @@ RSpec.describe 'creating an Stand Show Speak lesson' do
       attach_file 'stand_show_speak_guide', Rails.root.join('spec/Brett_Tanner_Resume.pdf')
       select 'Kindy', from: 'stand_show_speak_level'
 
-      click_button 'Create Stand show speak'
+      click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Stand Show Speak')
     expect(page).to have_content('Test Goal')

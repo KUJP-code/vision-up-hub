@@ -25,7 +25,7 @@ RSpec.describe 'creating an EnglishClass lesson' do
       fill_in 'english_class_lesson_topic', with: 'Topic'
       fill_in 'english_class_vocab', with: "Vocab 1\nVocab 2"
 
-      click_button 'Create English class'
+      click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test English Class')
     expect(page).to have_content('Term 1 Unit 2 - Topic')

@@ -6,6 +6,35 @@
                     data: { controller: 'fields' } } do |f|
   = render 'shared/form_errors', resource: lesson
 
+  -# need to evaluate it here so priority_fields are available for yield
+  - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
+                         f:, lesson:)
+
+  - if current_user.is?('Admin')
+    %h3.font-bold.text-center Courses
+
+    = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
+      = render 'course_lessons/fields',
+               collection: courses,
+               f: cl_f,
+               resource: lesson
+
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :course_lessons,
+                     lesson.course_lessons.new,
+                     child_index: 'CHILD' do |cl_f|
+        = render 'course_lessons/fields',
+                 collection: courses,
+                 f: cl_f,
+                 resource: lesson
+
+    %div{ 'data-fields-target' => 'target' }
+
+    %button.btn.btn-info.self-center{ 'data-action' => 'fields#add' }
+      Add Course
+
+  = yield :priority_fields
+
   .form-group
     = f.label :title
     = f.text_field :title, required: true
@@ -14,40 +43,17 @@
     = f.label :goal
     = f.text_area :goal
 
-  - unless controller_name == 'proposed_changes'
-    .form-group
-      = f.label :level
-      = f.select :level,
-                 lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
-                 required: true,
-                 prompt: 'Select a level'
-    .form-group
-      = f.label :resources
-      = f.file_field :resources, multiple: true
+  .form-group
+    = f.label :level
+    = f.select :level,
+               lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
+               required: true,
+               prompt: 'Select a level'
 
-    - if current_user.is?('Admin')
-      %h3.font-bold Courses
+  = type_fields
 
-      = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
-        = render 'course_lessons/fields',
-                 collection: courses,
-                 f: cl_f,
-                 resource: lesson
-
-      %template{ 'data-fields-target' => 'template' }
-        = f.fields_for :course_lessons,
-                       lesson.course_lessons.new,
-                       child_index: 'CHILD' do |cl_f|
-          = render 'course_lessons/fields',
-                   collection: courses,
-                   f: cl_f,
-                   resource: lesson
-
-      %div{ 'data-fields-target' => 'target' }
-
-      %button.btn.btn-info{ 'data-action' => 'fields#add' }
-        Add Course
-
-  = render("lessons/#{lesson.type.pluralize.underscore}/fields", f:, lesson:)
+  .form-group
+    = f.label :resources
+    = f.file_field :resources, multiple: true
 
   = f.submit class: 'btn btn-primary'

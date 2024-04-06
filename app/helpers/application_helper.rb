@@ -2,10 +2,14 @@
 
 module ApplicationHelper
   def ja_date(date)
+    return '' if date.nil?
+
     date.strftime('%Y年%m月%d日')
   end
 
   def ja_datetime(datetime)
+    return '' if datetime.nil?
+
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
@@ -26,6 +30,11 @@ module ApplicationHelper
       active_class = current_controller == controller_name ? 'bg-white rounded-lg text-ku-orange' : ''
     end
     link_to title, path, class: "p-3 #{active_class}"
+
+  def org_theme(user)
+    org_themes = [2, 3]
+
+    org_themes.include?(user.organisation_id) ? "org_#{user.organisation_id}" : 'base'
   end
 
   def split_on_capitals(string)
@@ -49,12 +58,18 @@ module ApplicationHelper
     end
   end
 
-  def toggle_locale_link
+  def locale_toggle
     current_locale = I18n.locale
-    new_locale = (current_locale == :en) ? :ja : :en
-    svg_filename = (new_locale == :en) ? 'en.svg' : 'jp.svg'
+    new_locale = current_locale == :en ? :ja : :en
+    svg_filename = "#{current_locale}.svg"
     svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
-    link_to(svg_tag, url_for(locale: new_locale), class: 'locale-toggle-link', title: "Switch to #{new_locale.to_s.upcase}")
+    link_to(
+      svg_tag,
+      url_for(locale: new_locale),
+      class: 'shrink-0 p-3 transition hover:scale-105',
+      id: 'locale_toggle',
+      title: "Switch to #{new_locale.to_s.upcase}"
+    )
   end
 
   private

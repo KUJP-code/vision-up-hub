@@ -10,7 +10,7 @@ module Listable
 
     def listify_attributes
       self.class::LISTABLE_ATTRIBUTES.each do |attribute|
-        self[attribute] = listify(self[attribute], attribute)
+        send(:"#{attribute}=", listify(send(attribute), attribute))
       end
     end
 

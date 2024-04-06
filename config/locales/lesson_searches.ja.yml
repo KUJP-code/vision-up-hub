@@ -1,0 +1,17 @@
+ja:
+  lesson_searches:
+    form:
+      assigned_editor: "担当者"
+      creator: "作成者"
+      level: "レベル"
+      goal: "目標"
+      released: "公開"
+      search: "検索"
+      select_assigned_editor: "担当者を選択してください"
+      select_creator: "作成者を選択してください"
+      select_level: "レベルを選択してください"
+      select_subtype: "サブタイプを選択してください"
+      select_type: "タイプを選択してください"
+      subtype: "サブタイプ"
+      title: "タイトル"
+      type: "タイプ"

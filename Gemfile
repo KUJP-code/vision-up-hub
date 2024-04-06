@@ -20,7 +20,7 @@ gem 'puma', '6.4.2'
 gem 'jsbundling-rails', '1.3.0'
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem 'turbo-rails', '2.0.4'
+gem 'turbo-rails', '2.0.5'
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem 'stimulus-rails', '1.3.3'
@@ -67,14 +67,18 @@ gem 'aws-sdk-s3', '1.143.0', require: false
 # Lock rack to avoid vulnerabilities
 gem 'rack', '3.0.9.1'
 
-group :production, :development do
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  gem 'rack-mini-profiler'
-end
+# Automatically set lang from user's preferred language
+gem 'http_accept_language', '2.1.1'
+
+# Lock rdoc version for CVE-2024-27281
+gem 'rdoc', '6.6.3.1'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
+
+  # RSpec for testing
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -98,12 +102,10 @@ group :development do
 end
 
 group :test do
-  # RSpec for testing
-  gem 'rspec-rails'
-
   # Capybara for system testing
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'selenium-webdriver'
 
   # FactoryBot for test data
   gem 'factory_bot_rails'
@@ -117,5 +119,3 @@ group :test do
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
 end
-
-gem "dockerfile-rails", ">= 1.6", :group => :development

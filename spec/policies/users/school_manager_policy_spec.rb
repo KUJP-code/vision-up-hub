@@ -58,4 +58,10 @@ RSpec.describe SchoolManagerPolicy do
 
     it_behaves_like 'unauthorized user'
   end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+  end
 end

@@ -1,7 +1,8 @@
+= render 'shared/subtitle', text: t('.courses')
+
 %main.flex.flex-col.gap-3.p-3
   = link_to 'Create course',
             new_course_path,
             class: 'btn btn-primary'
 
-  %h2 Courses
   = render 'courses/course_table', courses: @courses

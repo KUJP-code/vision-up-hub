@@ -1,0 +1,34 @@
+-# locals: (proposals:)
+
+- if proposals.any?
+  %h2 Proposals
+  %table.w-full.text-center#proposals
+    %thead
+      %tr
+        %th
+          %p{ class: 'p-2 bg-color-main/80 rounded-s-lg border-r border-r-white' }
+            Lesson
+        %th
+          %p{ class: 'p-2 bg-color-main/80 border-r border-r-white' }
+            Proponent
+        %th
+          %p{ class: 'p-2 bg-color-main/80 border-r border-r-white' }
+            Comments
+        %th
+          %p{ class: 'p-2 bg-color-main/80 rounded-e-lg' }
+            Status
+    %tbody
+      - proposals.each do |proposal|
+        %tr
+          - if current_user.is?('Admin')
+            = render 'proposals/status_form',
+                     lesson: proposal.changed_lesson,
+                     proposal:,
+                     table: true
+          - else
+            %td
+              = link_to proposal.title,
+                        edit_lesson_path(proposal)
+            %td Proposed by: #{proposal.creator.name}
+            %td= proposal.internal_notes
+            %td= proposal.status.titleize
