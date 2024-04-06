@@ -2,20 +2,31 @@
 
 module ApplicationHelper
   def ja_date(date)
-    return '' if date.nil?
+return '' if date.nil?
 
     date.strftime('%Y年%m月%d日')
   end
 
   def ja_datetime(datetime)
-    return '' if datetime.nil?
+return '' if datetime.nil?
 
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
   def main_nav_link(title, path, controller_name)
+    # call controller name matching first - flip it
+    # send controller name through title
+    # manually make array to match lessons
+    # TODO: Compare to title and test.
+    # TODO: load in current version and lessons should sort properly.
+    # TODO: Look into casing? can break after each?
+    # TODO: Flip the way its looping so it checks for match and if hteres no match THEN goes through user types so that it
+    # isnt looping a million times.
+
     user_types = User::TYPES.map(&:downcase)
     current_controller = controller.controller_name.downcase
+
+
     # calls to see if it's the current users own profile, if so it will not loop through user types
     if current_user_own_profile?
       active_class = ''
@@ -26,7 +37,6 @@ module ApplicationHelper
         current_controller = 'users'
       end
       # apply active if current matches provided controller
-      # TODO: Find another way rather than sending a concrete controller name through nav items? Thought Matt says it's fine.
       active_class = current_controller == controller_name ? 'bg-white rounded-lg text-ku-orange' : ''
     end
     link_to title, path, class: "p-3 #{active_class}"
@@ -70,6 +80,15 @@ module ApplicationHelper
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )
+  end
+
+  private
+
+  # check the current user profile id vs id in params
+  def current_user_own_profile?
+    return false unless current_user.present? && params[:id].present?
+
+    current_user.id == params[:id].to_i
   end
 
   private
