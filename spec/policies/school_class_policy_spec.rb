@@ -2,16 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'manager of different school for SchoolClassPolicy' do
-  it { is_expected.to authorize_action(:index) }
-  it { is_expected.not_to authorize_action(:show) }
-  it { is_expected.to authorize_action(:new) }
-  it { is_expected.not_to authorize_action(:edit) }
-  it { is_expected.not_to authorize_action(:create) }
-  it { is_expected.not_to authorize_action(:update) }
-  it { is_expected.not_to authorize_action(:destroy) }
-end
-
 RSpec.describe SchoolClassPolicy do
   subject(:policy) { described_class.new(user, record) }
 
@@ -62,13 +52,7 @@ RSpec.describe SchoolClassPolicy do
     context 'when admin of different org' do
       let(:user) { build(:user, :org_admin) }
 
-      it { is_expected.to authorize_action(:index) }
-      it { is_expected.not_to authorize_action(:show) }
-      it { is_expected.to authorize_action(:new) }
-      it { is_expected.not_to authorize_action(:edit) }
-      it { is_expected.not_to authorize_action(:update) }
-      it { is_expected.not_to authorize_action(:create) }
-      it { is_expected.not_to authorize_action(:destroy) }
+      it_behaves_like 'unauthorized user except new'
 
       it 'scopes to own org classes' do
         org_classes = user.organisation.classes
@@ -96,7 +80,7 @@ RSpec.describe SchoolClassPolicy do
     context 'when manager of different school in same org' do
       let(:user) { build(:user, :school_manager, organisation_id: record.organisation_id) }
 
-      it_behaves_like 'manager of different school for SchoolClassPolicy'
+      it_behaves_like 'unauthorized user except new'
 
       it 'scopes to own school classes' do
         expect(Pundit.policy_scope!(user, SchoolClass)).to eq([])
@@ -106,7 +90,7 @@ RSpec.describe SchoolClassPolicy do
     context 'when school manager at different org' do
       let(:user) { build(:user, :school_manager) }
 
-      it_behaves_like 'manager of different school for SchoolClassPolicy'
+      it_behaves_like 'unauthorized user except new'
 
       it 'scopes to own school classes' do
         expect(Pundit.policy_scope!(user, SchoolClass)).to eq([])
@@ -138,17 +122,21 @@ RSpec.describe SchoolClassPolicy do
     context 'when teacher of different class' do
       let(:user) { build(:user, :teacher, organisation_id: record.organisation_id) }
 
-      it { is_expected.to authorize_action(:index) }
-      it { is_expected.not_to authorize_action(:show) }
-      it { is_expected.not_to authorize_action(:new) }
-      it { is_expected.not_to authorize_action(:edit) }
-      it { is_expected.not_to authorize_action(:update) }
-      it { is_expected.not_to authorize_action(:create) }
-      it { is_expected.not_to authorize_action(:destroy) }
+      it_behaves_like 'unauthorized user'
 
       it 'scopes to their own classes' do
         expect(Pundit.policy_scope!(user, SchoolClass)).to eq([])
       end
+    end
+  end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, SchoolClass)).to eq(SchoolClass.none)
     end
   end
 end

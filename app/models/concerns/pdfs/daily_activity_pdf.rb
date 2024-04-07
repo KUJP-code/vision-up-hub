@@ -27,8 +27,6 @@ module DailyActivityPdf
              pdf:, title: 'Notes:', type: :dot)
     pdf_list(array: intro, dimensions: { height: 3.cm, width: pdf.bounds.width },
              pdf:, title: 'Intro:', type: :dot)
-    pdf_list(array: extra_fun, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Extra Fun:', type: :dot)
   end
 
   def add_ordered_lists(pdf)

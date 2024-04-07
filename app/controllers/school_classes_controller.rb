@@ -8,10 +8,11 @@ class SchoolClassesController < ApplicationController
 
   def index
     @school_classes = policy_scope(SchoolClass)
+    @school_classes = @school_classes.includes(:school) if current_user.is?('Admin', 'OrgAdmin')
   end
 
   def show
-    @students = @school_class.students.includes(:classes, :school)
+    @students = @school_class.students.includes(:school)
     @possible_students = policy_scope(Student).where
                                               .not(id: @students.ids)
                                               .pluck(:name, :id)

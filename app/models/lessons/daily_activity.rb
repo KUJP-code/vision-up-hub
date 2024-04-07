@@ -3,23 +3,32 @@
 class DailyActivity < Lesson
   include DailyActivityPdf, Linkable, Listable
 
+  store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
+
   ATTRIBUTES = %i[
-    extra_fun
-    instructions
-    intro
-    large_groups
-    links
-    materials
-    notes
     subtype
+    land_lang_goals
+    sky_lang_goals
+    galaxy_lang_goals
+    materials
+    intro
+    interesting_fact
+    instructions
+    large_groups
+    outro
+    notes
+    links
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
-    extra_fun
-    instructions
-    intro
-    large_groups
+    land_lang_goals
+    sky_lang_goals
+    galaxy_lang_goals
     materials
+    intro
+    instructions
+    large_groups
+    outro
     notes
   ].freeze
 

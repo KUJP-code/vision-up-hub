@@ -1,12 +1,12 @@
 -# locals: (collection:, f:, resource:)
 
-.fields-wrapper.flex.flex-col.gap-3
+.fields-wrapper.flex.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
   - if resource.instance_of?(Student)
     = f.hidden_field :student_id,
                      value: resource.id
 
-    .form-group
-      = f.label :class_id
+    .flex.items-center.gap-1
+      = f.label :class_id, t('.class')
       = f.select :class_id,
                  collection,
                  prompt: t('.select_class'),
@@ -16,8 +16,8 @@
     = f.hidden_field :class_id,
                      value: resource.id
 
-    .form-group
-      = f.label :student_id
+    .flex.items-center.gap-1
+      = f.label :student_id, t('.student')
       = f.select :student_id,
                  collection,
                  prompt: t('.select_manager'),
@@ -28,6 +28,6 @@
                             type: 'button' }
       = t('.remove')
   - else
-    .form-check
+    .flex.items-center.gap-1
       = f.check_box :_destroy
       = f.label :_destroy, t('.destroy')

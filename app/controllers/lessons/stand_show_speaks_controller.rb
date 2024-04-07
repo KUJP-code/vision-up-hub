@@ -8,7 +8,7 @@ class StandShowSpeaksController < LessonsController
   end
 
   def create
-    @lesson = authorize Lesson.new(stand_show_speak_params)
+    @lesson = authorize Lesson.new(type_params)
     super
 
     if @lesson.save
@@ -23,9 +23,10 @@ class StandShowSpeaksController < LessonsController
   end
 
   def update
-    return propose_changes(stand_show_speak_params) if proposing_changes?
+    return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(stand_show_speak_params)
+    attrs = super
+    if @lesson.update(attrs)
       redirect_to after_update_url,
                   notice: "#{@lesson.title} successfully updated."
     else
@@ -38,16 +39,7 @@ class StandShowSpeaksController < LessonsController
 
   private
 
-  def stand_show_speak_params
+  def type_params
     params.require(:stand_show_speak).permit(lesson_params + StandShowSpeak::ATTRIBUTES)
-  end
-
-  def after_update_url
-    if params[:commit] == 'Change Date'
-      course = stand_show_speak_params[:course_lessons_attributes]['0'][:course_id]
-      course_url(course)
-    else
-      lesson_url(@lesson)
-    end
   end
 end

@@ -4,7 +4,8 @@ class WritersController < UsersController
   def show
     @assigned_lessons = @user.assigned_lessons
     @created_lessons = @user.created_lessons
-    @changes = @user.proposed_changes.includes(:lesson)
+    @proposals = @user.proposals.order(updated_at: :desc)
+    @proposals = @proposals.includes(:changed_lesson) if current_user.is?('Admin')
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 

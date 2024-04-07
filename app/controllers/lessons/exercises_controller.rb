@@ -6,7 +6,7 @@ class ExercisesController < LessonsController
   end
 
   def create
-    @lesson = authorize Lesson.new(exercise_params)
+    @lesson = authorize Lesson.new(type_params)
     super
 
     if @lesson.save
@@ -21,9 +21,10 @@ class ExercisesController < LessonsController
   end
 
   def update
-    return propose_changes(exercise_params) if proposing_changes?
+    return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(exercise_params)
+    attrs = super
+    if @lesson.update(attrs)
       redirect_to after_update_url,
                   notice: 'Exercise was successfully updated.'
     else
@@ -36,16 +37,7 @@ class ExercisesController < LessonsController
 
   private
 
-  def exercise_params
+  def type_params
     params.require(:exercise).permit(lesson_params + Exercise::ATTRIBUTES)
-  end
-
-  def after_update_url
-    if params[:commit] == 'Change Date'
-      course = exercise_params[:course_lessons_attributes]['0'][:course_id]
-      course_url(course)
-    else
-      lesson_url(@lesson)
-    end
   end
 end

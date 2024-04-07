@@ -21,10 +21,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 RSpec.configure do |config|
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
 
   # Manage test data with DatabaseCleaner
@@ -34,10 +31,6 @@ RSpec.configure do |config|
 
   config.before do
     DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, :js) do
-    DatabaseCleaner.strategy = :truncation
   end
 
   config.before do
@@ -62,5 +55,14 @@ RSpec.configure do |config|
   # Use Rack::Test by default for system specs
   config.before(:each, type: :system) do
     driven_by :rack_test
+  end
+
+  config.before(:each, type: :request) do
+    default_url_options[:locale] = I18n.default_locale
+  end
+
+  config.before(:each, :js, type: :system) do
+    driven_by :selenium_chrome_headless
+    default_url_options[:locale] = I18n.default_locale
   end
 end

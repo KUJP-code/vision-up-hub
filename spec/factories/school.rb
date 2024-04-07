@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :school do
     organisation
-    name { 'Test School' }
+    sequence(:name) { |n| "School #{n}" }
   end
 end

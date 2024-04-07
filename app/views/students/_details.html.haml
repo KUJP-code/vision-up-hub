@@ -1,0 +1,39 @@
+-# locals: (classes:, potential_classes:, student:, teachers:)
+
+%div{ class: 'flex justify-between border-4 border-color-secondary/50 rounded-xl p-3',
+      id: 'student_details' }
+  %ul{ class: 'basis-3/5 flex-shrink-0 font-bold' }
+    %li.flex.flex-col
+      %span{ class: 'text-color-secondary/50' }= t('.student_id')
+      %span.text-color-secondary= @student.student_id || 'なし'
+    %li.flex.flex-col
+      %span{ class: 'text-color-secondary/50' }= t('.name')
+      %span.text-color-secondary= redact(@student)
+    %li.flex.flex-col
+      %span{ class: 'text-color-secondary/50' }= t('.level')
+      %span.text-color-secondary= @student.level.titleize
+    %li.flex.flex-col
+      %span{ class: 'text-color-secondary/50' }= t('.school')
+      %span.text-color-secondary= @student.school.name
+    - if @teachers.any?
+      %li.flex.flex-col.teachers
+        %span{ class: 'text-color-secondary/50' }= t('.teachers')
+        %span.text-color-secondary= @teachers.map(&:name).to_sentence
+    - if @classes.any?
+      %li.flex.flex-col.classes
+        %span{ class: 'text-color-secondary/50' }= t('.classes')
+        %span.text-color-secondary= @classes.map(&:name).to_sentence
+  %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
+    = render 'shared/print_button', text: t('.print_report')
+    = link_to t('edit'),
+              edit_student_path(@student),
+              class: 'btn btn-info'
+    - unless @potential_classes.empty?
+      = form_with model: @student, html: { class: 'flex flex-col' } do |f|
+        = f.fields_for :student_classes, @student.student_classes.new do |sc_f|
+          .w-full.flex.flex-col.items-center.gap-2
+            = sc_f.select :class_id,
+                          @potential_classes,
+                          {},
+                          class: 'w-full'
+            = f.submit t('.add_to_class'), class: 'btn btn-primary w-full'

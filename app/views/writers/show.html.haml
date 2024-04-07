@@ -8,9 +8,9 @@
             edit_organisation_writer_path(@user.organisation_id, @user),
             class: 'btn btn-info'
 
-= render 'users/proposed_changes',
-         changes: @changes
+  = render 'proposals/table',
+           proposals: @proposals
 
-= render 'users/user_lessons',
-         assigned: @assigned_lessons,
-         created: @created_lessons
+  = render 'users/user_lessons',
+           assigned: @assigned_lessons,
+           created: @created_lessons

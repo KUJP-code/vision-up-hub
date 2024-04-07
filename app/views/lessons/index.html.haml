@@ -1,12 +1,9 @@
+= render 'shared/subtitle', text: t('.lessons')
+
 .p-3
   = render 'lessons/new_lesson_dropdown'
 
-%nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
-  %h3.fw-semibold.text-center.w-full.md:w-auto Filter by:
-  = link_to 'All', lessons_path, class: 'btn btn-info'
-  - Lesson::TYPES.each do |type|
-    = link_to split_on_capitals(type),
-              send("#{type.pluralize.underscore}_path"),
-              class: 'btn btn-info'
+= render 'lesson_searches/form', writers: @writers
+
 %main.p-3
-  = render 'lessons/lesson_status_table', lessons: @lessons
+  = render 'lessons/status_table', lessons: @lessons

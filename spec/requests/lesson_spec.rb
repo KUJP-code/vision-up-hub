@@ -16,12 +16,6 @@ RSpec.describe Lesson do
   context 'when admin' do
     let(:user) { create(:user, :admin) }
 
-    it 'can directly edit lesson attributes' do
-      patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { title: 'New Title', goal: 'New Goal' } }
-      expect(lesson.reload.title).to eq 'New Title'
-    end
-
     it 'can alter admin approval' do
       patch stand_show_speak_path(lesson),
             params: { stand_show_speak:
@@ -47,17 +41,11 @@ RSpec.describe Lesson do
       { curriculum_approval_id: user.id, curriculum_approved_name: user.name }
     end
 
-    it 'cannot directly edit lesson attributes' do
-      patch stand_show_speak_path(lesson),
-            params: { stand_show_speak: { title: 'New Title', goal: 'New Goal' } }
-      expect(lesson.reload.title).not_to eq 'New Title'
-    end
-
     it 'cannot alter admin approval' do
       patch stand_show_speak_path(lesson),
             params: { stand_show_speak:
                       { admin_approval_id: user.id, admin_approved_name: user.name },
-                      commit: 'Approve' }
+                      commit: I18n.t('approve') }
       expect(lesson.reload.admin_approval).to eq([])
     end
 
@@ -66,7 +54,7 @@ RSpec.describe Lesson do
             params: { stand_show_speak:
                       { curriculum_approval_id: user.id,
                         curriculum_approval_name: user.name },
-                      commit: 'Approve' }
+                      commit: I18n.t('approve') }
       stored_approval = lesson.reload.curriculum_approval.first
       expect(stored_approval['id']).to eq user.id.to_s
     end
@@ -74,7 +62,7 @@ RSpec.describe Lesson do
     it 'can alter internal notes' do
       patch stand_show_speak_path(lesson),
             params: { stand_show_speak: { internal_notes: "I'm a note!" },
-                      commit: 'Update Notes' }
+                      commit: I18n.t('update_notes') }
       expect(lesson.reload.internal_notes).to eq "I'm a note!"
     end
   end

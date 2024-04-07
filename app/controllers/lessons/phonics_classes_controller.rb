@@ -6,7 +6,7 @@ class PhonicsClassesController < LessonsController
   end
 
   def create
-    @lesson = authorize Lesson.new(phonics_class_params)
+    @lesson = authorize Lesson.new(type_params)
     super
 
     if @lesson.save
@@ -21,9 +21,10 @@ class PhonicsClassesController < LessonsController
   end
 
   def update
-    return propose_changes(phonics_class_params) if proposing_changes?
+    return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(phonics_class_params)
+    attrs = super
+    if @lesson.update(attrs)
       redirect_to after_update_url,
                   notice: 'Phonics Class successfully updated.'
     else
@@ -36,16 +37,7 @@ class PhonicsClassesController < LessonsController
 
   private
 
-  def phonics_class_params
+  def type_params
     params.require(:phonics_class).permit(lesson_params + PhonicsClass::ATTRIBUTES)
-  end
-
-  def after_update_url
-    if params[:commit] == 'Change Date'
-      course = phonics_class_params[:course_lessons_attributes]['0'][:course_id]
-      course_url(course)
-    else
-      lesson_url(@lesson)
-    end
   end
 end

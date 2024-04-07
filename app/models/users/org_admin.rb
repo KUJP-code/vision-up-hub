@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrgAdmin < User
-  VISIBLE_TYPES = %w[OrgAdmin SchoolManager Teacher].freeze
+  VISIBLE_TYPES = %w[OrgAdmin Parent SchoolManager Teacher].freeze
 
   belongs_to :organisation
   has_many :schools, through: :organisation

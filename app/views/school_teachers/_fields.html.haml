@@ -5,7 +5,9 @@
 
   .form-group
     = f.label :school_id
-    = f.select :school_id, schools
+    = f.select :school_id,
+               schools,
+               { prompt: t('.select_school') }
 
   - if f.object.new_record?
     %button.w-full.btn.btn-danger{ 'data-action' => 'fields#remove' }

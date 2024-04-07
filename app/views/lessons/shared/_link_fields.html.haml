@@ -2,7 +2,9 @@
 
 .form-group
   = f.label :links
-  = f.text_area :links, value: stringify_links(lesson.links)
+  = f.text_area :links,
+                value: stringify_links(lesson.links),
+                rows: 4
   %small.-mt-1
     %p Separate links with new lines and format like:
     %p Link One Text: https://example.com

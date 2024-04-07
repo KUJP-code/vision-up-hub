@@ -70,5 +70,13 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Use separate queues per environment
-  config.active_job.queue_name_prefix = "materials_production"
+  config.active_job.queue_name_prefix = 'materials_production'
+
+  # ActiveRecord encryption keys
+  config.active_record.encryption.primary_key = Rails.application.credentials.dig(:active_record_encryption,
+                                                                                  :primary_key)
+  config.active_record.encryption.deterministic_key = Rails.application.credentials.dig(:active_record_encryption,
+                                                                                        :deterministic_key)
+  config.active_record.encryption.key_derivation_salt = Rails.application.credentials.dig(:active_record_encryption,
+                                                                                          :key_derivation_salt)
 end

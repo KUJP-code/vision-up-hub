@@ -1,12 +1,27 @@
 ---
 ja:
   students:
+    details:
+      add_to_class: "追加する"
+      classes: "クラス: "
+      level: "レベル: "
+      name: "名前: "
+      school: "学校: "
+      student_id: "学生ID: "
+      teachers: "先生: "
+    form:
+      add_class: "追加する"
+      classes: "クラス"
+      comments: "コメント"
+      level: "レベル"
+      name: "名前"
+      school: "学校"
+      student_id: "学生ID"
     index:
       create_student: "新しい学生を作成する"
     show:
-      add_to_class: "このクラスに追加する"
-      class_list: "クラス:"
-      school: "学校: %{school}"
+      add_comment: "コメントを追加する"
+      add_comments: "学生にコメントを追加する"
       student_id: "学生ID: %{id}"
     table:
       classes: "クラス"
@@ -15,3 +30,7 @@ ja:
       name: "名前"
       school: "学校"
       student_id: "学生ID"
+    test_details:
+      max_grade: "最大評価"
+      recommended_level: "お勧めレベル"
+      student_grade: "学生の評価"

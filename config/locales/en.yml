@@ -1,3 +1,66 @@
 en:
+  activerecord:
+    models:
+      school_class: "Class"
+      test_result: "Result"
+  approve: "Approve"
+  awaiting_approval: "Awaiting Approval"
   nav:
     request_support: "Request Support"
+  not_approved: "Not Approved"
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%n%u"
+        precision: 0
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: 円
+    format:
+      delimiter: ","
+      precision: 3
+      round_mode: default
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: 十億
+          million: 百万
+          quadrillion: 千兆
+          thousand: 千
+          trillion: 兆
+          unit: ""
+      format:
+        delimiter: ""
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n%u"
+        units:
+          byte: バイト
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ""
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ""
+  shared:
+    visibility_toggles:
+      accepted: "Accepted"
+      changes_needed: "Changes Needed"
+      proposed: "Proposed"
+      rejected: "Rejected"
+  update_notes: "Update Notes"

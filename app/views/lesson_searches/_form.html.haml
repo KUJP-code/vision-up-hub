@@ -1,0 +1,62 @@
+-# locals: (writers:)
+
+:ruby
+  field_classes = 'basis-1/5 flex-grow flex justify-center items-center gap-1'
+  levels = [%w[DAKindy 0], %w[DAElementary 1]] + Lesson.levels.map { |k, v| [k.titleize, v] }
+  subtypes = DailyActivity.subtypes.merge(Exercise.subtypes).map { |k, v| [k.titleize, v] }
+
+= turbo_frame_tag 'lesson_search_frame',
+                  target: 'lesson_table' do
+  = form_with url: lesson_searches_path,
+              scope: :search,
+              html: { class: 'flex flex-wrap justify-center items-center gap-2 p-3',
+                      id: 'lesson_search', method: :get } do |f|
+    %div{ class: field_classes }
+      = f.label :type, t('.type')
+      = f.select :type,
+                 Lesson::TYPES.map { |k| [k.titleize, k] },
+                 { prompt: t('.select_type') }
+
+    %div{ class: field_classes }
+      = f.label :title, t('.title')
+      = f.text_field :title
+
+    %div{ class: field_classes }
+      = f.label :goal, t('.goal')
+      = f.text_field :goal
+
+    %div{ class: field_classes }
+      = f.label :subtype, t('.subtype')
+      = f.select :subtype,
+                 subtypes,
+                 { prompt: t('.select_subtype') }
+
+    %div{ class: field_classes }
+      = f.label :level, t('.level')
+      = f.select :level,
+                 levels,
+                 { prompt: t('.select_level') }
+
+    %div{ class: field_classes }
+      = f.label :creator_id, t('.creator')
+      = f.select :creator_id,
+                 writers,
+                 { prompt: t('.select_creator') }
+
+    %div{ class: field_classes }
+      = f.label :assigned_editor_id, t('.assigned_editor')
+      = f.select :assigned_editor_id,
+                 writers,
+                 { prompt: t('.select_assigned_editor') }
+
+    %div{ class: field_classes }
+      = f.label :status, t('.status')
+      = f.select :status,
+                 Lesson.statuses.map { |k, v| [k.titleize, v] },
+                 { prompt: t('.select_status') }
+
+    %div{ class: field_classes }
+      = f.label :released, t('.released')
+      = f.check_box :released
+
+    = f.submit t('.search'), class: 'btn btn-primary w-full'

@@ -1,0 +1,9 @@
+-# locals: (parent:)
+
+= form_with model: [parent.organisation, parent],
+            html: { class: 'form', id: 'parent_form' } do |f|
+  = render 'shared/form_errors', resource: parent
+
+  = render('users/fields', f:)
+
+  = f.submit class: 'btn btn-primary'

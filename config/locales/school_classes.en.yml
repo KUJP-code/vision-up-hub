@@ -6,3 +6,4 @@ en:
     show:
       add_existing_student: "Add an existing student"
       create_student: "Create a new student"
+      students: "Students: %{count}"

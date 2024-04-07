@@ -4,11 +4,19 @@
       .flex.gap-2.items-center
         = image_tag icon_path(@lesson), class: 'h-7'
         %h1= @lesson.title
-        = render 'shared/visibility_badges',
-                 approved: @lesson.approved?,
-                 released: @lesson.released?
-      %h3
-        #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}" if @lesson.subtype}
+        - unless @lesson.changed_lesson_id.nil?
+          %h1
+            = " - Proposal for "
+            = link_to @lesson.changed_lesson.title,
+                      lesson_path(@lesson.changed_lesson)
+        = render 'shared/visibility_toggles', resource: @lesson
+      - if @lesson.subtype
+        %h3
+          #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}"}
+
+      - if @lesson.topic.present?
+        %h3 Topic:
+        %p= @lesson.topic
 
       %h3 Goal:
       %p= @lesson.goal
@@ -23,17 +31,14 @@
 
       = render 'lessons/shared/approval', lesson: @lesson
 
-      = render 'lessons/shared/proposed_changes',
-               changes: @proposed_changes,
-               lesson: @lesson
+      = render 'proposals/table', proposals: @proposals
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  = render "lessons/#{@lesson.type.pluralize.underscore}/#{@lesson.type.underscore}",
-           lesson: @lesson
+  = render 'lessons/shared/attribute_list', lesson: @lesson
 
   .flex.justify-center.gap-3
-    = link_to 'Edit',
+    = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
               edit_lesson_path(@lesson),
               class: 'btn btn-info'
 

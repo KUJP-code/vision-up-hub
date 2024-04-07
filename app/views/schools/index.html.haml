@@ -1,3 +1,5 @@
+= render 'shared/subtitle', text: t('.schools')
+
 %main.flex.flex-col.p-3.gap-3
   = link_to t('.create_school'),
             new_organisation_school_path(current_user.organisation_id),

@@ -1,21 +1,29 @@
 -# locals: (f:, skill:, test:)
 
-- return if test.send(skill.to_sym).empty?
+:ruby
+  skill_symbol = skill.to_sym
+  return if test.send(skill_symbol).blank?
 
-- test.send(skill.to_sym).each do |max_score|
-  %td.p-1
+  saved = f.object.persisted?
+  input_classes = "outline-none border w-10 text-center #{'border-color-neutral-dark' if saved}"
+
+- test.send(skill_symbol).each_with_index do |max_score, i|
+  %td.p-1{ data: { controller: 'validity' } }
     .flex.justify-center.items-center.gap-1
       = number_field_tag "test_result[answers][#{skill}][]",
                          f.object.answers[skill],
                          min: 0,
                          max: max_score,
-                         class: 'w-16 text-center'
+                         value: f.object.send(skill_symbol)[i] || 0,
+                         class: input_classes,
+                         data: { action: 'test-result#calculate validity#validate',
+                                 'test-result-target': skill,
+                                 'validity-target': 'input' }
 
-%td.p-1
+%td{ class: 'p-1 bg-color-secondary/50' }
   .flex.justify-center.items-center.gap-1
-    = f.text_field fieldname_from_skill(skill),
-                   readonly: true,
-                   min: 0,
-                   max: 100,
-                   class: 'w-10 text-center'
-    %p %
+    - value = f.object.send(fieldname_from_skill(skill).to_sym) || 0
+    = f.hidden_field fieldname_from_skill(skill),
+                     value:,
+                     data: { 'test-result-target': target_from_skill(skill) }
+    %p{ data: { 'test-result-target': target_from_skill(skill) } } #{value}%

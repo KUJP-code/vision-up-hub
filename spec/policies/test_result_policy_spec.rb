@@ -15,7 +15,9 @@ end
 RSpec.describe TestResultPolicy do
   subject(:policy) { described_class.new(user, test_result) }
 
-  let(:test_result) { build(:test_result) }
+  let(:test) { create(:test) }
+
+  let(:test_result) { build(:test_result, test:) }
 
   context 'when admin' do
     let(:user) { build(:user, :admin) }
@@ -128,6 +130,16 @@ RSpec.describe TestResultPolicy do
       it 'scopes to nothing' do
         expect(Pundit.policy_scope!(user, TestResult)).to eq(TestResult.none)
       end
+    end
+  end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
+
+    it_behaves_like 'unauthorized user'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, TestResult)).to eq(TestResult.none)
     end
   end
 end

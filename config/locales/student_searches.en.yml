@@ -1,0 +1,20 @@
+en:
+  student_searches:
+    form:
+      child_level: "Child Level"
+      child_name: "Child Name"
+      find_child: "Find Child"
+      search: "Search"
+      select_child_level: "Select child level"
+      student_id: "Student ID"
+    parent_form:
+      child_level: "Child Level"
+      child_name: "Child Name"
+      find_child: "Find Child"
+      search: "Search"
+      select_child_level: "Select child level"
+      student_id: "Student ID"
+      student_not_found: "Unable to find student with those details"
+    results:
+      child_claimed: "%{child} has been claimed by %{parent}"
+      claim_child: "Claim %{child}"

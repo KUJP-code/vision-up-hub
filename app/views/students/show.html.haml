@@ -1,24 +1,32 @@
-%main.flex.flex-col.gap-3.p-3
-  %h1= redact(@student.name)
-  %h3.text-center= @student.level.titleize
-  - if @student.student_id.present?
-    %h3= t('.student_id', id: @student.student_id)
-  %h3= t('.school', school: @student.school.name)
-  %h3= t('.class_list')
-  %ul
-    - @classes.each do |c|
-      %li
-        = link_to c.name,
-                  school_class_path(c)
-  = link_to t('.edit'),
-            edit_student_path(@student),
-            class: 'btn btn-info'
+= content_for :head do
+  = stylesheet_link_tag 'print_report_card', media: 'print'
 
-  - unless @potential_classes.empty?
-    = form_with model: @student, html: { class: 'form' } do |f|
-      = f.fields_for :student_classes, @student.student_classes.new do |sc_f|
-        .flex.items-center.gap-2
-          = sc_f.label :class_id
-          = sc_f.select :class_id, @potential_classes
+= render 'shared/subtitle', text: redact(@student)
 
-          = f.submit t('.add_to_class'), class: 'btn btn-primary'
+%main.flex.flex-col.md:flex-row.md:flex-wrap.p-3#student
+  - if @student.parent_id.nil?
+    %section.w-full.flex.flex-col.gap-3.p-3.m-3.border-4.rounded-xl.border-color-secondary.print:hidden
+      %h3.w-full.text-center.font-bold.text-color-secondary= t('.add_parent')
+      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+      = turbo_frame_tag 'user_table'
+
+  %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-8' }
+    = render 'students/details',
+             student: @student,
+             classes: @classes,
+             potential_classes: @potential_classes,
+             teachers: @teachers
+
+    = render 'students/tests_table', results: @results
+
+    = form_for @student do |f|
+      = f.text_area :comments,
+                    placeholder: t('.add_comments'),
+                    class: 'w-full border-4 border-color-secondary/50 rounded-xl focus:outline-none',
+                    rows: 7
+      = f.submit t('.add_comment'), class: 'btn btn-primary w-full'
+
+  %section{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8', id: 'test_details' }
+    = render 'students/test_details',
+             data: @data,
+             results: @results

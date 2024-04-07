@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_03_021633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +97,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.string "topic"
     t.jsonb "vocab", default: []
     t.jsonb "intro", default: []
+    t.jsonb "lang_goals", default: {"sky"=>[], "land"=>[], "galaxy"=>[]}
+    t.string "interesting_fact"
+    t.integer "status"
+    t.integer "changed_lesson_id"
     t.index ["assigned_editor_id"], name: "index_lessons_on_assigned_editor_id"
     t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end
@@ -138,38 +142,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.index ["organisation_id"], name: "index_plans_on_organisation_id"
   end
 
-  create_table "proposed_changes", force: :cascade do |t|
-    t.string "goal", null: false
-    t.string "title", null: false
-    t.jsonb "add_difficulty", default: []
-    t.jsonb "example_sentences", default: []
-    t.jsonb "extra_fun", default: []
-    t.jsonb "instructions", default: []
-    t.jsonb "intro", default: []
-    t.jsonb "large_groups", default: []
-    t.jsonb "links", default: {}
-    t.jsonb "materials", default: []
-    t.jsonb "notes", default: []
-    t.jsonb "outro", default: []
-    t.integer "subtype"
-    t.string "topic"
-    t.jsonb "vocab", default: []
-    t.string "comments", default: ""
-    t.bigint "lesson_id", null: false
-    t.bigint "proponent_id", null: false
-    t.jsonb "proposals", default: {}
-    t.integer "status", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["lesson_id"], name: "index_proposed_changes_on_lesson_id"
-    t.index ["proponent_id"], name: "index_proposed_changes_on_proponent_id"
-  end
-
   create_table "school_classes", force: :cascade do |t|
     t.string "name"
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "students_count"
     t.index ["school_id"], name: "index_school_classes_on_school_id"
   end
 
@@ -301,7 +279,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.bigint "school_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_id"
+    t.date "start_date"
+    t.date "quit_date"
+    t.date "birthday"
+    t.index ["parent_id"], name: "index_students_on_parent_id"
     t.index ["school_id"], name: "index_students_on_school_id"
+    t.index ["student_id", "school_id"], name: "index_students_on_student_id_and_school_id", unique: true
   end
 
   create_table "support_messages", force: :cascade do |t|
@@ -336,11 +320,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
     t.integer "speak_percent"
     t.integer "prev_level", null: false
     t.integer "new_level", null: false
-    t.jsonb "answers", default: {}
+    t.jsonb "answers", default: {"reading"=>[], "writing"=>[], "speaking"=>[], "listening"=>[]}
     t.bigint "test_id", null: false
     t.bigint "student_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reason"
     t.index ["student_id"], name: "index_test_results_on_student_id"
     t.index ["test_id"], name: "index_test_results_on_test_id"
   end
@@ -356,7 +341,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "type", default: "Teacher"
+    t.string "type", default: "Parent"
     t.bigint "organisation_id", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -389,14 +374,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
   add_foreign_key "class_teachers", "users", column: "teacher_id"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
+  add_foreign_key "lessons", "lessons", column: "changed_lesson_id"
   add_foreign_key "lessons", "users", column: "assigned_editor_id"
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
   add_foreign_key "plans", "courses"
   add_foreign_key "plans", "organisations"
-  add_foreign_key "proposed_changes", "lessons"
-  add_foreign_key "proposed_changes", "users", column: "proponent_id"
   add_foreign_key "school_classes", "schools"
   add_foreign_key "school_teachers", "schools"
   add_foreign_key "school_teachers", "users", column: "teacher_id"
@@ -409,6 +393,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_032445) do
   add_foreign_key "student_classes", "school_classes", column: "class_id"
   add_foreign_key "student_classes", "students"
   add_foreign_key "students", "schools"
+  add_foreign_key "students", "users", column: "parent_id"
   add_foreign_key "support_messages", "support_requests"
   add_foreign_key "support_messages", "users"
   add_foreign_key "support_requests", "users"

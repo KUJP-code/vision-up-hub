@@ -1,0 +1,23 @@
+-# locals: (lessons:)
+
+= turbo_frame_tag 'lesson_table' do
+  %table.w-full.text-center
+    %thead
+      %tr.text-white.font-bold
+        %th
+          %p{ class: 'p-2 bg-color-main/80 rounded-s-lg border-r border-r-white' } Title
+        %th
+          %p{ class: 'p-2 bg-color-main/80 border-r border-r-white' } Status
+        %th
+          %p{ class: 'p-2 bg-color-main/80 rounded-e-lg' } Approved by
+    %tbody
+      - lessons.each do |lesson|
+        %tr
+          %td.p-1
+            = link_to lesson.title,
+                      lesson_path(lesson),
+                      data: { 'turbo-frame' => '_top' }
+          %td.flex.flex-wrap.justify-center.items-center.gap-1.p-1.text-sm
+            = render 'shared/visibility_toggles',
+                     index: true, resource: lesson
+          %td= (lesson.curriculum_approval + lesson.admin_approval).pluck('name').to_sentence

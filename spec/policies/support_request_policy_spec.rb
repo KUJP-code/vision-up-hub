@@ -161,4 +161,14 @@ RSpec.describe SupportRequestPolicy do
       expect(Pundit.policy_scope!(user, SupportRequest)).to eq([support_request])
     end
   end
+
+  context 'when parent' do
+    let(:user) { create(:user, :parent) }
+
+    it_behaves_like 'unauthorized user except new'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.none)
+    end
+  end
 end

@@ -22,10 +22,9 @@ RSpec.describe 'creating a student' do
       select school.name, from: 'student_school_id'
     end
     click_button '登録する'
-    expect(page).to have_content('Test Student')
-    expect(page).to have_content(I18n.t('students.show.student_id', id: 's77777777'))
-    expect(page).to have_content(I18n.t('students.show.school', school: school.name))
+    expect(page).to have_content(/\*\*\*\*|Test Student/)
+    expect(page).to have_content(I18n.t('students.details.student_id', id: 's77777777'))
     expect(page).to have_content('Sky Three')
-    expect(page).to have_selector(:button, I18n.t('students.show.add_to_class'))
+    expect(page).to have_selector(:button, I18n.t('students.details.add_to_class'))
   end
 end

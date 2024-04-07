@@ -8,19 +8,6 @@ RSpec.shared_examples 'authorized KU staff for UserPolicy scope' do
   end
 end
 
-RSpec.shared_examples 'OrgAdmin for UserPolicy scope' do
-  it 'scopes to all organisation users' do
-    org_users = user.organisation.users
-    expect(Pundit.policy_scope!(user, User)).to eq(org_users)
-  end
-end
-
-RSpec.shared_examples 'SM for UserPolicy scope' do
-  it 'scopes to school teachers' do
-    expect(Pundit.policy_scope!(user, User)).to eq(user.teachers)
-  end
-end
-
 RSpec.shared_examples 'unauthorized user for UserPolicy scope' do
   it 'scopes to nothing' do
     expect(Pundit.policy_scope!(user, User)).to eq(User.none)
@@ -35,6 +22,9 @@ RSpec.describe UserPolicy do
     create(:user, :org_admin, organisation:)
     create(:user, :school_manager, organisation:)
     create(:user, :teacher, organisation:)
+    student = create(:student)
+    create(:user, :parent, organisation:, children: [student])
+    create(:user, :parent, organisation:)
   end
 
   context 'when admin' do
@@ -52,22 +42,28 @@ RSpec.describe UserPolicy do
   end
 
   context 'when writer' do
-    let(:user) { build(:user, :writer) }
+    let(:user) { create(:user, :writer) }
 
-    it_behaves_like 'unauthorized user for UserPolicy scope'
+    it 'scopes to writers within same org' do
+      expect(Pundit.policy_scope!(user, User)).to eq(user.organisation.users.where(type: 'Writer'))
+    end
   end
 
   context 'when org admin' do
     context 'when admin of org being accessed' do
       let(:user) { organisation.users.create(attributes_for(:user, :org_admin)) }
 
-      it_behaves_like 'OrgAdmin for UserPolicy scope'
+      it 'scopes to all org users' do
+        expect(Pundit.policy_scope!(user, User)).to eq(organisation.users)
+      end
     end
 
     context 'when admin of other org' do
       let(:user) { build(:user, :org_admin) }
 
-      it_behaves_like 'OrgAdmin for UserPolicy scope'
+      it 'scopes to all users in their org' do
+        expect(Pundit.policy_scope!(user, User)).to eq(user.organisation.users)
+      end
     end
   end
 
@@ -83,18 +79,39 @@ RSpec.describe UserPolicy do
   end
 
   context 'when school manager' do
-    let(:user) { create(:user, :school_manager) }
+    let(:user) { create(:user, :school_manager, organisation:) }
 
     before do
       user.schools << school
+      Teacher.find_each { |t| t.schools << school }
+      Student.find_each { |s| s.update(school_id: user.schools.first.id) }
       user.save
     end
 
-    it_behaves_like 'SM for UserPolicy scope'
+    context 'when part of childless parent org' do
+      it 'scopes to school teachers, parents and childless parents' do
+        expect(Pundit.policy_scope!(user, User)).to eq(
+          user.teachers + user.parents + Parent.where.missing(:children)
+        )
+      end
+    end
+
+    context 'when part of different org to childless parent' do
+      it 'scopes to just school teachers and parents' do
+        user.update(organisation: create(:organisation))
+        expect(Pundit.policy_scope!(user, User)).to eq(Teacher.all + user.parents)
+      end
+    end
   end
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
+
+    it_behaves_like 'unauthorized user for UserPolicy scope'
+  end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
 
     it_behaves_like 'unauthorized user for UserPolicy scope'
   end

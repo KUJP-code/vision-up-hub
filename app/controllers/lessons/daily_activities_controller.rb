@@ -6,7 +6,7 @@ class DailyActivitiesController < LessonsController
   end
 
   def create
-    @lesson = authorize Lesson.new(daily_activity_params)
+    @lesson = authorize Lesson.new(type_params)
     super
 
     if @lesson.save
@@ -21,9 +21,10 @@ class DailyActivitiesController < LessonsController
   end
 
   def update
-    return propose_changes(daily_activity_params) if proposing_changes?
+    return propose_changes(type_params) if proposing_changes?
 
-    if @lesson.update(daily_activity_params)
+    attrs = super
+    if @lesson.update(attrs)
       redirect_to after_update_url,
                   notice: 'Daily activity successfully updated.'
     else
@@ -36,16 +37,7 @@ class DailyActivitiesController < LessonsController
 
   private
 
-  def daily_activity_params
+  def type_params
     params.require(:daily_activity).permit(lesson_params + DailyActivity::ATTRIBUTES)
-  end
-
-  def after_update_url
-    if params[:commit] == 'Change Date'
-      course = daily_activity_params[:course_lessons_attributes]['0'][:course_id]
-      course_url(course)
-    else
-      lesson_url(@lesson)
-    end
   end
 end

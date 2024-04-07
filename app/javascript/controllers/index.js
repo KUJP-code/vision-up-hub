@@ -10,5 +10,14 @@ application.register("fields", FieldsController)
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
 
-import NewFolderController from "./new_folder_controller"
-application.register("new-folder", NewFolderController)
+import PrintController from "./print_controller"
+application.register("print", PrintController)
+
+import TestResultController from "./test_result_controller"
+application.register("test-result", TestResultController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)
+
+import ValidityController from "./validity_controller"
+application.register("validity", ValidityController)

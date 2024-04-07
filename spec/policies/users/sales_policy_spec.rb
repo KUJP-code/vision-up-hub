@@ -23,7 +23,7 @@ RSpec.describe SalesPolicy do
     context 'when accessing self' do
       let(:user) { record }
 
-      it_behaves_like 'authorized user for all but destroy'
+      it_behaves_like 'authorized user except destroy'
     end
 
     context 'when interacting with other sales staff' do
@@ -51,6 +51,12 @@ RSpec.describe SalesPolicy do
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
+
+    it_behaves_like 'unauthorized user'
+  end
+
+  context 'when parent' do
+    let(:user) { build(:user, :parent) }
 
     it_behaves_like 'unauthorized user'
   end

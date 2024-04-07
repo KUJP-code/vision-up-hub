@@ -8,14 +8,15 @@ class LessonsController < ApplicationController
   after_action :generate_guide, only: %i[create update]
 
   def index
-    @lessons = policy_scope(Lesson.all)
+    @lessons = policy_scope(Lesson).accepted.order(title: :asc)
+    @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
   end
 
   def show
     @courses = @lesson.courses
-    @proposed_changes = @lesson.proposed_changes
-                               .pending.order(created_at: :desc)
-                               .includes(:proponent)
+    @proposals = @lesson.proposals
+                        .order(created_at: :desc)
+                        .includes(:creator)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
@@ -29,11 +30,15 @@ class LessonsController < ApplicationController
   def create
     @lesson.creator_id = current_user.id
     @lesson.assigned_editor_id = current_user.id
+    @lesson.status = current_user.is?('Admin') ? :accepted : :proposed
   end
 
   def update
-    redirect_to root_url,
-                alert: 'This route should be overwritten when inherited'
+    if current_user.is?('Writer') && !@lesson.accepted?
+      type_params.merge(status: :proposed)
+    else
+      type_params
+    end
   end
 
   def destroy
@@ -55,17 +60,32 @@ class LessonsController < ApplicationController
     ]
     return default_params unless current_user.is?('Admin')
 
-    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released,
+    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released, :status,
                       { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
   end
 
-  def propose_changes(strong_params)
-    changelist = strong_params.except(
-      :course_lessons_attributes, :level, :subtype, :type, :resources
-    ).to_h.merge(proponent_id: current_user.id)
-    changes = @lesson.proposed_changes.new(changelist)
+  def after_update_url
+    case params[:commit]
+    when 'Change Date'
+      course_id = type_params[:course_lessons_attributes]['0'][:course_id]
+      course_url(course_id)
+    when 'Awaiting Approval', 'Unreleased', 'Released'
+      lessons_url
+    else
+      lesson_url(@lesson)
+    end
+  end
 
-    if changes.save
+  def propose_changes(strong_params)
+    @proposal = @lesson.proposals.new(
+      strong_params.merge(
+        status: :proposed,
+        creator_id: current_user.id,
+        assigned_editor_id: current_user.id
+      )
+    )
+
+    if @proposal.save
       redirect_to lesson_path(@lesson),
                   notice: 'Changes successfully proposed.'
     else
@@ -83,15 +103,17 @@ class LessonsController < ApplicationController
   end
 
   def generate_guide
-    return if @lesson.new_record? || proposing_changes? ||
-              params[:commit] == 'Change Date'
+    return unless @lesson.persisted?
 
-    @lesson.attach_guide
+    @proposal ? @proposal.attach_guide : @lesson.attach_guide
   end
 
   def proposing_changes?
-    current_user.is?('Writer') &&
-      params[:commit] != 'Update Notes' &&
-      params[:commit] != 'Approve'
+    return false unless current_user.is?('Writer') && @lesson.accepted?
+
+    status_attrs = [
+      I18n.t('approve'), I18n.t('awaiting_approval'), I18n.t('not_approved'), I18n.t('update_notes')
+    ]
+    status_attrs.none?(params[:commit])
   end
 end
