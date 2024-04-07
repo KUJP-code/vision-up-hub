@@ -1,13 +1,12 @@
-= main_nav_link 'Classes', school_classes_path, 'school_classes'
-= main_nav_link 'Courses', courses_path, 'courses'
-= main_nav_link 'Files', files_path, 'files'
-= main_nav_link 'Lessons', lessons_path, 'lessons'
-= main_nav_link 'Organisations', organisations_path, 'organisations'
-= main_nav_link 'Plans', plans_path, 'plans'
+= main_nav_link 'Classes', school_classes_path
+= main_nav_link 'Courses', courses_path
+= main_nav_link 'Lessons', lessons_path
+= main_nav_link 'Organisations', organisations_path
+= main_nav_link 'Plans', plans_path
 = main_nav_link 'Schools',
-                organisation_schools_path(current_user.organisation_id), 'schools'
-= main_nav_link 'Students', students_path,  'students'
-= main_nav_link 'Support', support_requests_path, 'support_requests'
-= main_nav_link 'Tests', tests_path, 'tests'
-= main_nav_link 'Users', users_path, 'users'
+                organisation_schools_path(current_user.organisation_id)
+= main_nav_link 'Students', students_path
+= main_nav_link 'Support', support_requests_path
+= main_nav_link 'Tests', tests_path
+= main_nav_link 'Users', users_path
 = controller.controller_name

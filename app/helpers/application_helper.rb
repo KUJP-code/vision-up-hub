@@ -13,33 +13,24 @@ return '' if datetime.nil?
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
-  def main_nav_link(title, path, controller_name)
-    # call controller name matching first - flip it
-    # send controller name through title
-    # manually make array to match lessons
-    # TODO: Compare to title and test.
-    # TODO: load in current version and lessons should sort properly.
-    # TODO: Look into casing? can break after each?
-    # TODO: Flip the way its looping so it checks for match and if hteres no match THEN goes through user types so that it
-    # isnt looping a million times.
-
-    user_types = User::TYPES.map(&:downcase)
+  def main_nav_link(title, path)
     current_controller = controller.controller_name.downcase
 
+    # exit early if the current controller matches the provided controller_name
+    return link_to(title, path, class: "p-3 bg-white rounded-lg text-color-main") if current_controller.include?(title.downcase)
 
-    # calls to see if it's the current users own profile, if so it will not loop through user types
+    user_types = User::TYPES.map(&:downcase)
+    # check current profile
     if current_user_own_profile?
       active_class = ''
     else
-      # checks for matches between user types and current controller, user_types.any? is boolean check from enumerable module
-      if user_types.any? { |type| current_controller.include?(type) }
-        puts "Match found between #{current_controller} and user types: #{user_types}"
+      if user_types.any? { |type| current_controller.delete('_').include?(type) }
         current_controller = 'users'
       end
-      # apply active if current matches provided controller
-      active_class = current_controller == controller_name ? 'bg-white rounded-lg text-ku-orange' : ''
+      active_class = current_controller == title.downcase ? 'bg-white rounded-lg text-color-main' : ''
     end
     link_to title, path, class: "p-3 #{active_class}"
+  end
 
   def org_theme(user)
     org_themes = [2, 3]
@@ -80,15 +71,6 @@ return '' if datetime.nil?
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )
-  end
-
-  private
-
-  # check the current user profile id vs id in params
-  def current_user_own_profile?
-    return false unless current_user.present? && params[:id].present?
-
-    current_user.id == params[:id].to_i
   end
 
   private
