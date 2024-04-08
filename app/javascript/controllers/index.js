@@ -10,6 +10,9 @@ application.register("fields", FieldsController)
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
 
+import NavRevealController from "./nav_reveal_controller"
+application.register("nav-reveal", NavRevealController)
+
 import PrintController from "./print_controller"
 application.register("print", PrintController)
 

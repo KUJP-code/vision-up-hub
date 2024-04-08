@@ -102,6 +102,11 @@
 		}
 	}
 
+	#main_nav_links.revealed {
+		transform: translateX(0) !important;
+		opacity: 1 !important;
+	}
+
 	.turbo-progress-bar {
 		display: none !important;
 	}

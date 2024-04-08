@@ -52,11 +52,13 @@ module ApplicationHelper
     current_locale = I18n.locale
     new_locale = current_locale == :en ? :ja : :en
     svg_filename = "#{current_locale}.svg"
-    svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
+    svg_tag = image_tag(svg_filename,
+                        alt: "Switch to #{new_locale.to_s.upcase}",
+                        width: 40, height: 40)
     link_to(
       svg_tag,
       url_for(locale: new_locale),
-      class: 'shrink-0 p-3 transition hover:scale-105',
+      class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )
