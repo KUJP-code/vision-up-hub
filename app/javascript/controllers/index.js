@@ -13,6 +13,9 @@ application.register("flash", FlashController)
 import PrintController from "./print_controller"
 application.register("print", PrintController)
 
+import ScrollToController from "./scroll_to_controller"
+application.register("scroll-to", ScrollToController)
+
 import TestResultController from "./test_result_controller"
 application.register("test-result", TestResultController)
 

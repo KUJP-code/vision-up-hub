@@ -1,37 +1,44 @@
 = render 'shared/subtitle',
          text: t('.results_for', name: @test.name.titleize)
 
-%div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
-  %table
-    %thead.sticky.top-0
-      %tr
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.student_id')
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.name')
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.level')
-        - Test::SKILLS.each do |skill|
-          - next if @test.send(skill.to_sym).blank?
+%main
+  = render 'test_results/skill_nav'
 
+  %div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
+    %table
+      %thead.sticky.top-0
+        %tr
+          %th{ class: 'p-1 bg-color-main', id: 'student-details', rowspan: 2 }= t('.student_id')
+          %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.name')
+          %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.level')
+          - Test::SKILLS.each do |skill|
+            - next if @test.send(skill.to_sym).blank?
+
+            %th{ class: 'p-1 bg-color-main',
+                 colspan: @test.send(skill.to_sym).count + 1,
+                 id: skill }
+              = skill.titleize
           %th{ class: 'p-1 bg-color-main',
-               colspan: @test.send(skill.to_sym).count + 1 }
-            = skill.titleize
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 }= t('.total')
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 } Prev level
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 } New level
-        %th{ class: 'p-1 bg-color-main', rowspan: 2 }
-      %tr
-        - Test::SKILLS.each do |skill|
-          - next if @test.send(skill.to_sym).blank?
+               id: 'results',
+               rowspan: 2 }
+            = t('.total')
+          %th{ class: 'p-1 bg-color-main', rowspan: 2 } Prev level
+          %th{ class: 'p-1 bg-color-main', rowspan: 2 } New level
+          %th{ class: 'p-1 bg-color-main', rowspan: 2 }
+        %tr
+          - Test::SKILLS.each do |skill|
+            - next if @test.send(skill.to_sym).blank?
 
-          - @test.send(skill.to_sym).each do |max_score|
-            %th{ class: 'p-1 bg-color-secondary' } /#{max_score}
-          %th{ class: 'w-12 p-1 bg-color-secondary' }= t(".#{fieldname_from_skill(skill)}")
+            - @test.send(skill.to_sym).each do |max_score|
+              %th{ class: 'p-1 bg-color-secondary' } /#{max_score}
+            %th{ class: 'w-12 p-1 bg-color-secondary' }= t(".#{fieldname_from_skill(skill)}")
 
-    %tbody
-      - @students.each do |student|
-        :ruby
-          result = student.test_results.find { |r| r.test_id == @test.id } ||
-                   @test.test_results.new(student_id: student.id)
-        = render 'test_results/form',
-                 result:,
-                 student:,
-                 test: @test
+      %tbody
+        - @students.each do |student|
+          :ruby
+            result = student.test_results.find { |r| r.test_id == @test.id } ||
+                     @test.test_results.new(student_id: student.id)
+          = render 'test_results/form',
+                   result:,
+                   student:,
+                   test: @test
