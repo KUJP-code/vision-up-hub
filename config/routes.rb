@@ -26,7 +26,7 @@ Rails.application.routes.draw do
         resources :test_results, only: %i[create index update]
       end
 
-      resources :organisations, except: %i[destroy show] do
+      resources :organisations, except: %i[destroy] do
         resources :schools
 
         resources :users, except: %i[destroy]
