@@ -2,7 +2,15 @@
 
 %main.flex.flex-col.items-center.p-3.gap-3
   %h3= t('.student_count', count: @school.students_count)
-  %h3= t('.managed_by', managers: @managers)
+  %h3
+    = @managers.blank? ? t('.unmanaged') : t('.managed_by', managers: @managers)
+
+  %h3= t('.classes')
+  - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+    = link_to t('.create_class'),
+              new_school_class_path,
+              class: 'btn btn-primary'
+  = render 'school_classes/table', classes: @classes
 
   = link_to t('.edit'),
             edit_organisation_school_path(@school.organisation_id, @school),
