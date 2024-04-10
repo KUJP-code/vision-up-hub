@@ -14,10 +14,12 @@ return '' if datetime.nil?
   end
 
   def main_nav_link(title, path)
-    current_controller = controller.controller_name.downcase
+    current_controller = controller.controller_name
 
+    # Get the translated title for display
+    translated_title = t(".#{title}")
     # exit early if the current controller matches the provided controller_name
-    return link_to(title, path, class: "p-3 bg-white rounded-lg text-color-main") if current_controller.include?(title.downcase)
+    return link_to(translated_title, path, class: "p-3 bg-white rounded-lg text-color-main") if current_controller.include?(title.downcase)
 
     user_types = User::TYPES.map(&:downcase)
     # check current profile
@@ -29,7 +31,7 @@ return '' if datetime.nil?
       end
       active_class = current_controller == title.downcase ? 'bg-white rounded-lg text-color-main' : ''
     end
-    link_to title, path, class: "p-3 #{active_class}"
+    link_to translated_title, path, class: "p-3 #{active_class}"
   end
 
   def org_theme(user)
