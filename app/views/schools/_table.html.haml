@@ -1,0 +1,14 @@
+-# (schools:)
+
+%table.w-full.text-center
+  %thead
+    %tr
+      %th= t('.name')
+      %th= t('.managers')
+      %th= t('.student_count')
+  %tbody
+    - schools.each do |s|
+      %tr
+        %td= link_to s.name, organisation_school_path(s.organisation, s)
+        %td= s.school_managers.pluck(:name).to_sentence
+        %td= s.students_count

@@ -1,0 +1,14 @@
+= render 'shared/subtitle', text: @organisation.name
+
+%main.p-3
+  %h2.text-start
+    = link_to "Plan: #{@plan.name || 'No Plan'}",
+              plan_path(@plan)
+  - if @schools.any?
+    %h2.text-start Total Students: #{@schools.sum(&:students_count)}
+  - if @admins.any?
+    %h2.text-start Admins: #{@admins.to_sentence}
+
+  - if @schools.any?
+    %h2 Schools
+    = render 'schools/table', schools: @schools
