@@ -1,6 +1,6 @@
 = render 'shared/subtitle', text: @organisation.name
 
-%main.p-3
+%main.flex.flex-col.gap-3.p-3
   %h2.text-start
     = link_to "Plan: #{@plan.name || 'No Plan'}",
               plan_path(@plan)

@@ -1,9 +1,10 @@
+= render 'shared/subtitle', text: @school.name
+
 %main.flex.flex-col.items-center.p-3.gap-3
-  %h1= @school.name
   %h3= t('.student_count', count: @school.students_count)
   %h3= t('.managed_by', managers: @managers)
 
-  = link_to 'Edit',
+  = link_to t('.edit'),
             edit_organisation_school_path(@school.organisation_id, @school),
             class: 'btn btn-info'
   = link_to t('.add_student'),
