@@ -21,10 +21,11 @@ module ApplicationHelper
             class: "p-3 transition hover:scale-105 #{active_classes if active}"
   end
 
-  def org_theme(user)
+  def org_theme(user = nil)
     org_themes = [2, 3]
+    org_id = user ? user.organisation_id : params[:organisation_id].to_i
 
-    org_themes.include?(user.organisation_id) ? "org_#{user.organisation_id}" : 'base'
+    org_themes.include?(org_id) ? "org_#{org_id}" : 'base'
   end
 
   def split_on_capitals(string)
