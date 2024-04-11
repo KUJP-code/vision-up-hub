@@ -66,13 +66,14 @@ module ApplicationHelper
   private
 
   def main_nav_class(title, controller)
+    default_classes = 'p-3 hover:scale-105 transition'
     if controller == title ||
        controller.include?(title) ||
        user_subcontroller?(controller, title)
-      return 'p-3 bg-white rounded-lg text-color-main'
+      return "#{default_classes} text-color-main bg-white rounded-lg"
     end
 
-    'p-3'
+    "#{default_classes} text-white"
   end
 
   def user_subcontroller?(controller, title)
