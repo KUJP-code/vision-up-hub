@@ -1,13 +1,19 @@
 # frozen_string_literal: true
 
 class OrganisationsController < ApplicationController
-  before_action :set_organisation, only: %i[edit update]
+  before_action :set_organisation, only: %i[edit show update]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
     authorize Organisation
     @organisations = policy_scope(Organisation).order(updated_at: :desc)
+  end
+
+  def show
+    @admins = @organisation.users.where(type: 'OrgAdmin').pluck(:name)
+    @plan = @organisation.plan
+    @schools = @organisation.schools.includes(:school_managers)
   end
 
   def new

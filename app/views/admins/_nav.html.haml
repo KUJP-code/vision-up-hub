@@ -1,11 +1,8 @@
-= main_nav_link 'classes', school_classes_path
 = main_nav_link 'courses', courses_path
 = main_nav_link 'lessons', lessons_path
 = main_nav_link 'organisations', organisations_path
-= main_nav_link 'plans', plans_path
-= main_nav_link 'schools',
-                organisation_schools_path(current_user.organisation_id)
 = main_nav_link 'students', students_path
 = main_nav_link 'support', support_requests_path
 = main_nav_link 'test', tests_path
 = main_nav_link 'users', users_path
+= render 'admins/theme_select'

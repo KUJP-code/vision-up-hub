@@ -1,10 +1,7 @@
-= main_nav_link 'classes',
-                school_classes_path
-= main_nav_link 'students',
-                students_path
-= main_nav_link 'test',
-                tests_path
-= main_nav_link 'support',
-                support_requests_path
-.h-full.flex.items-center.bg-color-secondary
-  = main_nav_link 'tutorials', 'fake_temp_path'
+= main_nav_link 'classes', school_classes_path
+= main_nav_link 'students', students_path
+= main_nav_link 'support', support_requests_path
+= main_nav_link 'tests', tests_path
+.w-full.md:w-min.md:h-full.flex.justify-center.items-center.bg-color-secondary.-my-3
+  = main_nav_link 'tutorials',
+                  'fake_temp_path'

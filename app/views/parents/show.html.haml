@@ -4,10 +4,11 @@
   %h3= @user.email
   %h3 You're a parent
 
-  %h3= t('.children')
-  - @children.each do |child|
-    = link_to child.name,
-              student_path(child)
+  - if @children.any?
+    %h3= t('.children')
+    - @children.each do |child|
+      = link_to child.name,
+                student_path(child)
 
   = render 'student_searches/parent_form',
            parent_id: @user.id,
