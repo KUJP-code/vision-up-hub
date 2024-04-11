@@ -3,15 +3,19 @@
   container_actions = 'click@window->dropdown#hide touchstart@window->dropdown#hide ' \
                       'keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem ' \
                       'keydown.esc->dropdown#hide'
-  menu_styles = 'hidden absolute top-4 left-0 z-10 mt-5 flex flex-col bg-color-main ' \
+  menu_styles = 'hidden absolute top-12 -left-2 z-10 flex flex-col bg-color-main ' \
                 'gap-2 p-3 rounded-b-lg'
 
 %div{ class: 'inline-block relative flex items-center p-3',
       data: { action: container_actions, controller: 'dropdown' } }
-  %button{ class: 'transition hover:scale-105',
+  %button{ class: 'flex items-center transition hover:scale-105',
            data: { action: 'dropdown#toggle:stop' },
            type: 'button' }
-    Themes
+    = image_tag 'themes.svg',
+                class: 'invert',
+                height: 50,
+                width: 50,
+                title: 'Select theme'
   %ul{ class: menu_styles,
        data: { 'dropdown-target': 'menu' } }
     %li
