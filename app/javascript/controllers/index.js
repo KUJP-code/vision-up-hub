@@ -10,11 +10,20 @@ application.register("fields", FieldsController)
 import FlashController from "./flash_controller"
 application.register("flash", FlashController)
 
+import NavRevealController from "./nav_reveal_controller"
+application.register("nav-reveal", NavRevealController)
+
 import PrintController from "./print_controller"
 application.register("print", PrintController)
 
+import ScrollToController from "./scroll_to_controller"
+application.register("scroll-to", ScrollToController)
+
 import TestResultController from "./test_result_controller"
 application.register("test-result", TestResultController)
+
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)
 
 import ValidityController from "./validity_controller"
 application.register("validity", ValidityController)

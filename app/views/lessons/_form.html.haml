@@ -4,11 +4,11 @@
             html: { id: "#{lesson.type.underscore}_form",
                     class: 'form',
                     data: { controller: 'fields' } } do |f|
-  = render 'shared/form_errors', resource: lesson
-
   -# need to evaluate it here so priority_fields are available for yield
   - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
                          f:, lesson:)
+
+  = render 'shared/form_errors', resource: lesson
 
   - if current_user.is?('Admin')
     %h3.font-bold.text-center Courses

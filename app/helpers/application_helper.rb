@@ -15,10 +15,17 @@ module ApplicationHelper
 
   def main_nav_link(title, path)
     active = request.path.include?(path)
-    active_classes = 'bg-white rounded-lg text-ku-orange'
+    active_classes = 'bg-white rounded-lg text-color-main'
 
     link_to title, path,
-            class: "p-3 #{active_classes if active}"
+            class: "p-3 transition hover:scale-105 #{active_classes if active}"
+  end
+
+  def org_theme(user = nil)
+    org_themes = [2, 3]
+    org_id = user ? user.organisation_id : params[:organisation_id].to_i
+
+    org_themes.include?(org_id) ? "org_#{org_id}" : 'base'
   end
 
   def split_on_capitals(string)
@@ -46,11 +53,13 @@ module ApplicationHelper
     current_locale = I18n.locale
     new_locale = current_locale == :en ? :ja : :en
     svg_filename = "#{current_locale}.svg"
-    svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
+    svg_tag = image_tag(svg_filename,
+                        alt: "Switch to #{new_locale.to_s.upcase}",
+                        width: 40, height: 40)
     link_to(
       svg_tag,
       url_for(locale: new_locale),
-      class: 'shrink-0 p-3',
+      class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )

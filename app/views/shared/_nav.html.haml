@@ -1,14 +1,40 @@
-%nav{ class: 'w-full bg-ku-orange h-16 text-white font-bold ' \
-             'flex justify-around items-center print:hidden',
+:ruby
+  common = 'flex justify-center items-center bg-color-main p-2 transition'
+  desktop = 'md:flex-grow md:relative md:translate-x-0 md:h-full md:flex-row md:opacity-100'
+  mobile = 'fixed inset-0 translate-x-full z-40 w-screen h-screen flex-col opacity-0'
+
+%nav{ class: 'w-full bg-color-main h-16 text-white font-bold ' \
+             'flex print:hidden md:justify-around md:items-center',
+      data: { controller: 'nav-reveal' },
       id: 'main_nav' }
   = link_to root_path,
-            class: 'p-3' do
+            class: 'flex-shrink-0 flex items-center p-2 justify-center' do
     %image.w-12.h-12{ src: '/favicon.svg' }
-  %h3.text-base= ja_date(Time.zone.now)
-  .flex-grow
-  = render "#{current_user.type.pluralize.underscore}/nav"
+  %p.flex-shrink-0.flex.items-center.p-1.md:p-2
+    = ja_date(Time.zone.now)
+  %div{ class: "#{common} #{desktop} #{mobile}",
+        data: { 'nav-reveal-target': 'links' },
+        id: 'main_nav_links' }
+    .md:hidden.flex-grow.w-full.flex.justify-end.items-start
+      %button{ class: 'border border-white rounded-xl px-3 py-1',
+               data: { action: 'nav-reveal#toggle' },
+               type: 'button' }
+        X
+    = render "#{current_user.type.pluralize.underscore}/nav"
+    = link_to t('.sign_out'),
+              destroy_user_session_path,
+              data: { turbo_method: :delete },
+              class: 'p-2 transition hover:scale-105 md:hidden'
+    .md:hidden.flex-grow
+  .md:hidden.flex-grow
   = locale_toggle
   = link_to t('.sign_out'),
             destroy_user_session_path,
             data: { turbo_method: :delete },
-            class: 'p-3'
+            class: 'p-2 transition hover:scale-105 hidden md:block text-nowrap'
+  %button{ class: 'md:hidden border border-white rounded-xl p-2 self-center mr-2 ' \
+                  'w-8 h-8 flex flex-col items-center justify-center gap-1',
+           data: { action: 'nav-reveal#toggle' }, type: 'button' }
+    %hr{ class: 'border border-white w-full' }
+    %hr{ class: 'border border-white w-full' }
+    %hr{ class: 'border border-white w-full' }
