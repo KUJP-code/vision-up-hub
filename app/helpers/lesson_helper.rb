@@ -12,10 +12,6 @@ module LessonHelper
     end
   end
 
-  def icon_path(lesson)
-    "#{lesson.type.underscore}.svg"
-  end
-
   def stringify_links(links)
     if links.instance_of?(Hash)
       links.map { |k, v| "#{k}:#{v}" }.join("\n")

@@ -40,4 +40,8 @@ class Exercise < Lesson
   validates :intro, :instructions, presence: true
 
   has_one_attached :guide_image
+
+  def icon_filename
+    "#{subtype}.svg"
+  end
 end

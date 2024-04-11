@@ -1,7 +1,10 @@
--# locals: (heading:, lessons:)
+-# locals: (lessons:, type:)
 
 .flex.flex-col.gap-1
-  %h2.font-bold= heading
+  %h2.flex.items-center.justify-center.gap-2.font-bold
+    = image_tag "#{type.underscore}.svg",
+                height: 50, width: 50
+    = split_on_capitals(type).pluralize
   %table
     %thead
       %tr

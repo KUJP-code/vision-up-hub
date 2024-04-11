@@ -1,16 +1,13 @@
 -# locals: (lesson:)
 
-- if lesson.nil?
-  .flex.flex-col.gap-3
-- else
+- if lesson
   .w-full.flex.flex-col.gap-3
-    = link_to file_path(lesson.guide.blob),
-              target: '_blank',
-              rel: 'noopener',
-              class: 'flex items-center bg-color-main rounded-xl font-bold text-white py-1 px-3' do
-      Guide
-      .flex-grow
-      %span.font-extrabold.text-xl= '>'
+    - if lesson.guide.blob
+      = link_to 'Guide',
+                file_path(id: lesson.guide.blob.id),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'flex items-center bg-color-main rounded-xl font-bold text-white py-1 px-3'
 
     %details.rounded-xl.border.border-color-secondary.overflow-hidden
       %summary.flex.items-center.bg-color-secondary.font-bold.text-white.py-1.px-3

@@ -18,6 +18,10 @@ class EnglishClass < Lesson
     validates :unit, inclusion: { in: (1..20).map(&:to_s) }
   end
 
+  def icon_filename
+    'english_class.svg'
+  end
+
   private
 
   def set_topic

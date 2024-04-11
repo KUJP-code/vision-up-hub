@@ -2,11 +2,13 @@
   .flex.p-3
     %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
       .flex.gap-2.items-center
-        = image_tag icon_path(@lesson), class: 'h-7'
+        = image_tag @lesson.icon_filename,
+                    height: 50,
+                    width: 50
         %h1= @lesson.title
         - unless @lesson.changed_lesson_id.nil?
           %h1
-            = " - Proposal for "
+            = ' - Proposal for '
             = link_to @lesson.changed_lesson.title,
                       lesson_path(@lesson.changed_lesson)
         = render 'shared/visibility_toggles', resource: @lesson

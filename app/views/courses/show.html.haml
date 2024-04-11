@@ -12,6 +12,4 @@
   = render 'lessons/new_lesson_dropdown'
   %main.w-full.flex.flex-wrap.justify-around.gap-3
     - @lessons.group_by(&:type).each do |type, lessons|
-      = render 'lessons/dates_table',
-               heading: split_on_capitals(type).pluralize,
-               lessons:
+      = render 'lessons/dates_table', lessons:, type:

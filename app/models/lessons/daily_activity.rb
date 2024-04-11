@@ -54,4 +54,8 @@ class DailyActivity < Lesson
   }
 
   has_many_attached :instructions_images
+
+  def icon_filename
+    "#{subtype}.svg"
+  end
 end
