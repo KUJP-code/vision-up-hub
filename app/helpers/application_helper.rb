@@ -2,36 +2,21 @@
 
 module ApplicationHelper
   def ja_date(date)
-return '' if date.nil?
+    return '' if date.nil?
 
     date.strftime('%Y年%m月%d日')
   end
 
   def ja_datetime(datetime)
-return '' if datetime.nil?
+    return '' if datetime.nil?
 
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
   def main_nav_link(title, path)
-    current_controller = controller.controller_name
-
-    # Get the translated title for display
-    translated_title = t(".#{title}")
-    # exit early if the current controller matches the provided controller_name
-    return link_to(translated_title, path, class: "p-3 bg-white rounded-lg text-color-main") if current_controller.include?(title.downcase)
-
-    user_types = User::TYPES.map(&:downcase)
-    # check current profile
-    if current_user_own_profile?
-      active_class = ''
-    else
-      if user_types.any? { |type| current_controller.delete('_').include?(type) }
-        current_controller = 'users'
-      end
-      active_class = current_controller == title.downcase ? 'bg-white rounded-lg text-color-main' : ''
-    end
-    link_to translated_title, path, class: "p-3 #{active_class}"
+    link_to t(".#{title}"),
+            path,
+            class: main_nav_class(title, controller_name)
   end
 
   def org_theme(user)
@@ -76,6 +61,24 @@ return '' if datetime.nil?
   end
 
   private
+
+  def main_nav_class(title, controller)
+    if controller == title ||
+       controller.include?(title) ||
+       user_subcontroller?(controller, title)
+      return 'p-3 bg-white rounded-lg text-color-main'
+    end
+
+    'p-3'
+  end
+
+  def user_subcontroller?(controller, title)
+    return false if title != 'users' || current_user_own_profile?
+    return true if controller == 'sales'
+
+    controller_as_type = controller.titleize.tr(' ', '').singularize
+    User::TYPES.include?(controller_as_type)
+  end
 
   # check the current user profile id vs id in params
   def current_user_own_profile?
