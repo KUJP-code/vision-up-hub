@@ -34,10 +34,11 @@ return '' if datetime.nil?
     link_to translated_title, path, class: "p-3 #{active_class}"
   end
 
-  def org_theme(user)
+  def org_theme(user = nil)
     org_themes = [2, 3]
+    org_id = user ? user.organisation_id : params[:organisation_id].to_i
 
-    org_themes.include?(user.organisation_id) ? "org_#{user.organisation_id}" : 'base'
+    org_themes.include?(org_id) ? "org_#{org_id}" : 'base'
   end
 
   def split_on_capitals(string)
@@ -65,11 +66,13 @@ return '' if datetime.nil?
     current_locale = I18n.locale
     new_locale = current_locale == :en ? :ja : :en
     svg_filename = "#{current_locale}.svg"
-    svg_tag = image_tag(svg_filename, alt: "Switch to #{new_locale.to_s.upcase}", width: 40, height: 40)
+    svg_tag = image_tag(svg_filename,
+                        alt: "Switch to #{new_locale.to_s.upcase}",
+                        width: 40, height: 40)
     link_to(
       svg_tag,
       url_for(locale: new_locale),
-      class: 'shrink-0 p-3 transition hover:scale-105',
+      class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )

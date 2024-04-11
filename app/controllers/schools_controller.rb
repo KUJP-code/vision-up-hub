@@ -12,6 +12,7 @@ class SchoolsController < ApplicationController
 
   def show
     @managers = @school.school_managers.pluck(:name).to_sentence
+    @classes = @school.classes.includes(:teachers)
   end
 
   def new
