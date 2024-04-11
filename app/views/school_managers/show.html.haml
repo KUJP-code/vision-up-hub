@@ -3,6 +3,7 @@
 %main.flex.flex-col.gap-3.p-3
   %h3= @user.email
   %h3 You're a school manager
+  = render 'organisations/new_parent_link', org_id: @user.organisation_id
 
   %h3= t('.managed_schools')
   - @user.schools.each do |school|

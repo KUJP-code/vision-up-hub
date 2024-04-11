@@ -1,8 +1,9 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
 
-%main.flex.flex-col.gap-3.p-3
-  %h3 Organisation Admin
+%main.flex.flex-col.items-start.gap-3.p-3
+  %h3 Organisation Admin for #{@organisation.name}
   %h3= @user.email
+  = render 'organisations/new_parent_link', org_id: @organisation.id
 
   = link_to 'Edit',
             edit_organisation_org_admin_path(@user.organisation_id, @user),

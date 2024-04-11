@@ -5,6 +5,7 @@ en:
       test_result: "Result"
   approve: "Approve"
   awaiting_approval: "Awaiting Approval"
+  copied: "Copied!"
   nav:
     request_support: "Request Support"
   not_approved: "Not Approved"

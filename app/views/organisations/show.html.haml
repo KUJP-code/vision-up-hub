@@ -8,6 +8,7 @@
     %h2.text-start Total Students: #{@schools.sum(&:students_count)}
   - if @admins.any?
     %h2.text-start Admins: #{@admins.to_sentence}
+  = render 'organisations/new_parent_link', org_id: @organisation.id
 
   - if @schools.any?
     %h2 Schools

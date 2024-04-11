@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class OrgAdminsController < UsersController
-  def show; end
+  def show
+    @organisation = @user.organisation
+  end
 
   def new
     @user = authorize OrgAdmin.new(organisation_id: params[:organisation_id])
