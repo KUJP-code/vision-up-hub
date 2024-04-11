@@ -14,11 +14,9 @@ module ApplicationHelper
   end
 
   def main_nav_link(title, path)
-    active = request.path.include?(path)
-    active_classes = 'bg-white rounded-lg text-color-main'
-
-    link_to title, path,
-            class: "p-3 transition hover:scale-105 #{active_classes if active}"
+    link_to t(".#{title}"),
+            path,
+            class: main_nav_class(title, controller_name)
   end
 
   def org_theme(user = nil)
@@ -63,5 +61,32 @@ module ApplicationHelper
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )
+  end
+
+  private
+
+  def main_nav_class(title, controller)
+    if controller == title ||
+       controller.include?(title) ||
+       user_subcontroller?(controller, title)
+      return 'p-3 bg-white rounded-lg text-color-main'
+    end
+
+    'p-3'
+  end
+
+  def user_subcontroller?(controller, title)
+    return false if title != 'users' || current_user_own_profile?
+    return true if controller == 'sales'
+
+    controller_as_type = controller.titleize.tr(' ', '').singularize
+    User::TYPES.include?(controller_as_type)
+  end
+
+  # check the current user profile id vs id in params
+  def current_user_own_profile?
+    return false unless current_user.present? && params[:id].present?
+
+    current_user.id == params[:id].to_i
   end
 end

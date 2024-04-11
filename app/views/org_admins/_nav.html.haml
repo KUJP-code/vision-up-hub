@@ -1,7 +1,7 @@
-= main_nav_link t('.request_support'), support_requests_path
-= main_nav_link t('.schools'),
+= main_nav_link 'support', support_requests_path
+= main_nav_link 'schools',
                 organisation_schools_path(current_user.organisation_id)
-= main_nav_link t('.students'), students_path
-= main_nav_link t('.tests'), tests_path
-= main_nav_link t('.users'),
+= main_nav_link 'students', students_path
+= main_nav_link 'tests', tests_path
+= main_nav_link 'users,
                 organisation_users_path(current_user.organisation_id)
