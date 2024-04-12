@@ -2,3 +2,4 @@ ja:
   parents:
     show:
       children: "子供"
+      extra_emails: "追加メール: %{emails}"

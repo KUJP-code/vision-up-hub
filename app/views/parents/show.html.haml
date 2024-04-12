@@ -2,7 +2,7 @@
 
 %main.flex.flex-col.gap-3.p-3
   %h3= @user.email
-  %h3 You're a parent
+  %h3= t('.extra_emails', emails: @user.extra_emails.to_sentence)
 
   - if @children.any?
     %h3= t('.children')

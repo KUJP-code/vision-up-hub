@@ -6,4 +6,10 @@
 
   = render('users/fields', f:)
 
+  .form-group
+    = f.label :extra_emails
+    = f.text_field :extra_emails,
+                   value: parent.extra_emails.join(', ')
+    %small= t('.comma_separated')
+
   = f.submit class: 'btn btn-primary'

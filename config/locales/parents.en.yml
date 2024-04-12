@@ -2,3 +2,4 @@ en:
   parents:
     show:
       children: "Children"
+      extra_emails: "Extra emails: %{emails}"
