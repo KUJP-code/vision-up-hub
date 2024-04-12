@@ -8,18 +8,17 @@
     .form-group
       = f.label :subject
       = f.text_field :subject,
-                     class: 'w-80 p-1 text-color-neutral-dark'
+                     class: 'w-4/5 p-1 text-color-neutral-dark self-center'
     .form-group
       = f.label :category
       = f.select :category,
                  SupportRequest.select_categories,
                  {},
-                 { class: 'w-80 bg-white text-color-main p-1' }
+                 { class: 'w-4/5 bg-white text-color-main p-1 self-center' }
 
   .form-group
     = f.label :description
     = f.text_area :description,
-                  class: 'w-full text-color-neutral-dark',
-                  rows: 5
+                  class: 'w-full text-color-neutral-dark min-h-20'
 
   = f.submit class: 'btn btn-primary cursor-pointer'

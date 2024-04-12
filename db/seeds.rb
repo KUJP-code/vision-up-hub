@@ -43,6 +43,13 @@ end
 
 writer = Writer.first
 
+puts 'Creating user complaints...'
+
+User.all.each do |user|
+  request = fb.create(:support_request, user:)
+  request.messages.create!(fb.attributes_for(:support_message, user:))
+end
+
 puts "Creating today's lessons..."
 
 Lesson::TYPES.map do |type|
