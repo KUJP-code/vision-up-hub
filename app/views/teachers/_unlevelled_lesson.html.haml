@@ -1,7 +1,8 @@
 -# locals: (lesson:)
 
-%div{ class: 'flex flex-col gap-5 p-5 basis-1/5' }
+%div{ class: 'basis-1/5 flex flex-col gap-5 p-5' }
   %h2.text-color-secondary.font-bold.text-center= lesson.subtype.titleize
   %h3.text-color-secondary.font-bold.text-center= lesson.title
+  .flex-grow
   = image_tag lesson.icon_filename, class: 'w-full'
   = render 'teachers/lesson_resources', lesson:
