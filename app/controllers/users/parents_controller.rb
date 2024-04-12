@@ -41,7 +41,7 @@ class ParentsController < UsersController
   end
 
   def parents_params
-    p_params = %i[]
+    p_params = %i[extra_emails]
     params.require(:parent).permit(user_params + p_params)
   end
 end
