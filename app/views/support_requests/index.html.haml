@@ -1,26 +1,22 @@
-= render 'shared/subtitle', text: t('.support_requests')
+= render 'shared/subtitle',
+         text: current_user.is?('Parent') ? t('.messages') : t('.support_requests')
 
 - unless current_user.is?('Admin')
   %details{
     class: 'm-3 bg-color-secondary text-white font-semibold rounded-md overflow-hidden',
     id: 'create_request'
   }
-    %summary.bg-color-secondary.p-2= t('.new_request')
+    %summary.cursor-pointer.bg-color-secondary.p-2
+      = current_user.is?('Parent') ? t('.new_message') : t('.new_request')
     = render 'support_requests/form',
              request: SupportRequest.new
 
 %main.flex.flex-col.gap-3.p-3
   - if @support_requests.empty?
-    %h2.mt-12= t('.no_support_requests')
+    %h2.mt-12
+      = current_user.is?('Parent') ? t('.no_messages') : t('.no_support_requests')
 
-  - @support_requests.each do |request|
-    %hr.w-full.border
-    = link_to support_request_path(request),
-              class: 'flex flex-col' do
-      .flex.gap-2.items-center
-        - unless request.seen_by?(current_user.id)
-          .rounded-full.p-2.bg-blue-800
-        = render 'support_requests/status_badge', resolved: request.resolved?
-        %h1= request.subject
-        %h3= request.category.titleize
-      %p= request.description
+  = render collection: @support_requests,
+           partial: 'support_requests/request',
+           as: :request,
+           spacer_template: 'shared/spacer'

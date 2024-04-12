@@ -18,7 +18,7 @@ RSpec.describe 'creating a support request' do
       fill_in 'support_request_subject', with: 'Test Subject'
       fill_in 'support_request_description', with: 'Test Description'
     end
-    click_button '登録する'
+    click_button I18n.t('support_requests.form.submit_request')
     expect(page).to have_content('Test Subject')
     expect(page).to have_content('Test Description')
     expect(page).to have_content(I18n.t('support_requests.status_badge.open'))

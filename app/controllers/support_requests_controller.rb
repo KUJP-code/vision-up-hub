@@ -7,6 +7,7 @@ class SupportRequestsController < ApplicationController
 
   def index
     @support_requests = policy_scope(SupportRequest)
+    @support_requests = @support_requests.includes(:user) unless current_user.is?('Parent')
   end
 
   def show

@@ -34,10 +34,8 @@ class SupportRequestPolicy < ApplicationPolicy
         user.organisation.support_requests
       when 'SchoolManager'
         scope.where(user_id: user.teachers.ids)
-      when 'Teacher', 'Writer'
-        user.support_requests
       else
-        scope.none
+        user.support_requests
       end
     end
   end

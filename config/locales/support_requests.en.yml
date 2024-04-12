@@ -5,8 +5,14 @@ en:
       feature_request: "Feature Request"
       general: "General"
       typo_report: "Typo Report"
+    form:
+      send_message: "Send Message"
+      submit_request: "Submit Request"
     index:
+      new_message: "New Message"
       new_request: "New Support Request"
+      no_messages: "No messages"
+      no_requests: "No requests"
       support_requests: "Support Requests"
     show:
       edit: "Edit"

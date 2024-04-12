@@ -4,8 +4,11 @@
       %h1= @support_request.subject
       = render 'support_requests/status_badge',
                resolved: @support_request.resolved?
-    %h3= @support_request.category.titleize
-    %h3= @support_request.description
+    %h3 #{t('.category')}: #{@support_request.category.titleize}
+    %h3 #{t('.user')}: #{@support_request.user.name}
+    %h3 #{t('.email')}: #{@support_request.user.email}
+    %h3 #{t('.description')}
+    %p #{@support_request.description}
     .flex.gap-2
       = link_to t('.edit'),
                 edit_support_request_path(@support_request),
@@ -17,8 +20,10 @@
 
   %h2= t('.messages')
 
-  - @messages.each do |message|
-    = render 'support_messages/message', message:
+  = render partial: 'support_messages/message',
+           collection: @messages,
+           as: :message,
+           spacer_template: 'shared/spacer'
 
   = form_with model: [@support_request, @support_request.messages.new],
               html: { class: 'form p-0',

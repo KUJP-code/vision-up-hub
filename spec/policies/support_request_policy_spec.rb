@@ -167,8 +167,10 @@ RSpec.describe SupportRequestPolicy do
 
     it_behaves_like 'unauthorized user except new'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.none)
+    it 'scopes to own requests' do
+      user.support_requests << support_request
+      create_list(:support_request, 2)
+      expect(Pundit.policy_scope!(user, SupportRequest)).to eq([support_request])
     end
   end
 end

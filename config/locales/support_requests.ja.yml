@@ -5,8 +5,15 @@ ja:
       feature_request: "サポート依頼"
       general: "一般"
       typo_report: "タイプレポート"
+    form:
+      send_message: "メッセージを送信する"
+      submit_request: "依頼を送信する"
     index:
+      messages: "メッセージ"
+      new_message: "新しいメッセージ"
       new_request: "新しいサポート依頼"
+      no_messages: "メッセージはありません"
+      no_requests: "依頼はありません"
       support_requests: "サポート依頼"
     show:
       edit: "編集"
