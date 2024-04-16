@@ -1,0 +1,5 @@
+en:
+  student_uploads:
+    new:
+      create_students: "Create Students at %{org}"
+      update_students: "Update Students at %{org}"

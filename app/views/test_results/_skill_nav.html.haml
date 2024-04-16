@@ -1,9 +1,7 @@
-- link_classes = 'bg-color-secondary text-white rounded-xl p-2'
-
 %nav.flex.justify-end.gap-3.p-3
   = link_to t('.student_details'),
             '#student-details',
-            class: link_classes,
+            class: 'sub_nav_link',
             data: { controller: 'scroll-to' }
   - Test::SKILLS.each do |skill|
     - next if @test.send(skill.to_sym).blank?
@@ -11,8 +9,8 @@
     = link_to skill.titleize,
               "##{skill}",
               data: { controller: 'scroll-to' },
-              class: link_classes
+              class: 'sub_nav_link'
   = link_to t('.results'),
             '#results',
-            class: link_classes,
+            class: 'sub_nav_link',
             data: { controller: 'scroll-to' }

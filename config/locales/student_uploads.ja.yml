@@ -1,0 +1,5 @@
+ja:
+  student_uploads:
+    new:
+      create_students: "%{org} の学生を作成"
+      update_students: "%{org} の学生を更新"

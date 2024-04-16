@@ -1,0 +1,23 @@
+- if current_user.is?('Admin')
+  %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
+    - @orgs.each do |org|
+      = link_to org.name,
+                new_organisation_student_upload_path(organisation_id: org.id),
+                class: 'sub_nav_link'
+
+%main.flex.justify-around.items-center.py-72
+  %section.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.create_students', org: @organisation.name)
+    = form_with scope: :student_upload,
+                html: { class: 'form' } do |f|
+      = f.file_field :file
+      = f.submit t('.create_students', org: @organisation.name),
+                 class: 'btn btn-primary'
+
+  %section.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.update_students', org: @organisation.name)
+    = form_with scope: :student_upload,
+                html: { class: 'form' } do |f|
+      = f.file_field :file
+      = f.submit t('.update_students', org: @organisation.name),
+                 class: 'btn btn-primary'

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
       resources :organisations, except: %i[destroy] do
         resources :schools
+        resources :student_uploads, only: %i[create new update]
 
         resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]

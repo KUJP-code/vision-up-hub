@@ -107,6 +107,10 @@
 		opacity: 1 !important;
 	}
 
+	.sub_nav_link {
+		@apply bg-color-secondary text-white rounded-xl p-2;
+	}
+
 	.turbo-progress-bar {
 		display: none !important;
 	}
