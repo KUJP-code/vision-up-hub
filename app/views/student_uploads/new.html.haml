@@ -5,13 +5,60 @@
                 new_organisation_student_upload_path(organisation_id: org.id),
                 class: "sub_nav_link #{'bg-color-main' if org.id == @organisation.id}"
 
-%main.flex.justify-around.items-center.py-72
+%main.flex.flex-wrap.justify-around.items-center.gap-12.py-72
+  %section.w-full.text-center.flex.flex-col.gap-3
+    %h3 CSVs should be formatted as follows:
+    %table.w-full
+      %thead
+        %tr
+          %th name
+          %th student_id
+          %th level
+          %th school_id
+          %th parent_id
+          %th start_date
+          %th quit_date
+          %th birthday
+      %tbody
+        %tr
+          %td 陽葵
+          %td 236u2345nsghsferf4
+          %td sky_2
+          %td 2
+          %td 784
+          %td 2019-09-01
+          %td 2022-09-01
+          %td 2013-01-01
+        %tr
+          %td ...
+          %td ...
+          %td ...
+          %td ...
+          %td ...
+          %td ...
+          %td ...
+          %td ...
+        %tr
+          %td Name in Japanese or English
+          %td
+            %p A string of letters and numbers
+            %p Or can be left blank to auto-generate
+          %td One of the KidsUP levels in snake_case
+          %td The numeric ID of the school
+          %td The numeric ID of the parent, can be blank
+          %td YYYY-MM-DD
+          %td YYYY-MM-DD
+          %td YYYY-MM-DD
+
   %section.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
     %h2= t('.create_students', org: @organisation.name)
     = form_with scope: :student_upload,
                 html: { class: 'form',
+                        data: { controller: 'student-uploader',
+                                action: 'student-uploader#upload' },
                         id: 'student_create_form' } do |f|
-      = f.file_field :file
+      = f.file_field :file,
+                     data: { 'student-uploader-target': 'fileInput' }
       = f.submit t('.create_students', org: @organisation.name),
                  class: 'btn btn-primary'
 
@@ -19,7 +66,10 @@
     %h2= t('.update_students', org: @organisation.name)
     = form_with scope: :student_upload,
                 html: { class: 'form',
+                        data: { action: 'student-uploader#upload',
+                                controller: 'student-uploader' },
                         id: 'student_update_form' } do |f|
-      = f.file_field :file
+      = f.file_field :file,
+                     data: { 'student-uploader-target': 'fileInput' }
       = f.submit t('.update_students', org: @organisation.name),
                  class: 'btn btn-primary'
