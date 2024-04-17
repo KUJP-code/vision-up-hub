@@ -4,7 +4,8 @@ class StudentUploadsController < ApplicationController
   after_action :verify_authorized, only: %i[create new update]
 
   def new
-    @organisation = authorize Organisation.find(params[:organisation_id])
+    authorize nil, policy_class: StudentUploadPolicy
+    @organisation = authorize(Organisation.find(params[:organisation_id]), :update?)
     @orgs = policy_scope(Organisation) if current_user.is?('Admin')
   end
 
