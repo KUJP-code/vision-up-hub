@@ -19,13 +19,16 @@ RSpec.describe 'creating records from a CSV', :js do
 
   it 'can create children from a CSV' do
     visit new_organisation_student_upload_path(organisation_id: user.organisation_id)
-    # check an error is shown if students in the CSV are invalid
-    attach_file 'student_upload_file', File.open(Rails.root.join('tmp/invalid.csv'), 'r')
-    click_button I18n.t('student_uploads.new.upload')
-    expect(page).to have_content(I18n.t('student_uploads.new.invalid'))
-    # check success if students in the CSV are valid
-    attach_file 'student_upload_file', File.open(Rails.root.join('tmp/valid.csv'), 'r')
-    click_button I18n.t('student_uploads.new.upload')
+    within '#student_create_form' do
+      # check an error is shown if students in the CSV are invalid
+      attach_file 'student_upload_file', Rails.root.join('tmp/invalid.csv')
+      click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
+      expect(page).to have_content(I18n.t('student_uploads.new.invalid'))
+
+      # check success if students in the CSV are valid
+      attach_file 'student_upload_file', Rails.root.join('tmp/valid.csv')
+      click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
+    end
     expect(page).to have_content(I18n.t('student_uploads.new.success'))
     expect(page).to have_content(I18n.t('student_uploads.new.success_count', count: 2))
     expect(page).to have_content(I18n.t('student_uploads.new.failure_count', count: 0))
