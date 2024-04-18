@@ -31,8 +31,8 @@ export default class extends Controller<HTMLFormElement> {
 			alert("Could not find main element");
 			return;
 		}
-		for (const s of students) {
-			addStudentRow(s);
+		for (const [i, s] of students.entries()) {
+			addStudentRow({ csvStudent: s, index: i });
 		}
 	}
 

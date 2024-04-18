@@ -13,6 +13,7 @@ export function newStudentUploadTable() {
 						<th>Start Date</th>
 						<th>Quit Date</th>
 						<th>Birthday</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody id="student-table">
@@ -21,9 +22,14 @@ export function newStudentUploadTable() {
 			`;
 }
 
-export function addStudentRow(csvStudent: student) {
+export function addStudentRow({
+	csvStudent,
+	index,
+	status = "pending",
+}: { csvStudent: student; index: number; status?: string }) {
 	const table = document.querySelector("#student-table");
 	const row = document.createElement("tr");
+	row.id = `student-row-${index}`;
 	row.innerHTML = `
 			<td>${csvStudent.name}</td>
 			<td>${csvStudent.student_id}</td>
@@ -33,6 +39,7 @@ export function addStudentRow(csvStudent: student) {
 			<td>${csvStudent.start_date}</td>
 			<td>${csvStudent.quit_date}</td>
 			<td>${csvStudent.birthday}</td>
+			<td>${status}</td>
 			`;
 	if (table) {
 		table.appendChild(row);
