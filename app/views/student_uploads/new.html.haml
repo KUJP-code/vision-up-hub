@@ -55,9 +55,10 @@
     = form_with scope: :student_upload,
                 html: { class: 'form',
                         data: { controller: 'student-uploader',
-                                action: 'student-uploader#upload' },
+                                action: 'student-uploader#displayStudents' },
                         id: 'student_create_form' } do |f|
       = f.file_field :file,
+                     required: true,
                      data: { 'student-uploader-target': 'fileInput' }
       = f.submit t('.create_students', org: @organisation.name),
                  class: 'btn btn-primary'
@@ -66,10 +67,11 @@
     %h2= t('.update_students', org: @organisation.name)
     = form_with scope: :student_upload,
                 html: { class: 'form',
-                        data: { action: 'student-uploader#upload',
+                        data: { action: 'student-uploader#displayStudents',
                                 controller: 'student-uploader' },
                         id: 'student_update_form' } do |f|
       = f.file_field :file,
+                     required: true,
                      data: { 'student-uploader-target': 'fileInput' }
       = f.submit t('.update_students', org: @organisation.name),
                  class: 'btn btn-primary'
