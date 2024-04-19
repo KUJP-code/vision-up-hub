@@ -42,17 +42,9 @@ export default class extends Controller<HTMLFormElement> {
 			const index = students.length - 1;
 			const student = students.pop();
 			if (student === undefined) break;
-			const response =
-				this.actionValue === "create"
-					? await createStudent(student, this.orgValue)
-					: await updateStudent(student, this.orgValue);
-			if (response.statusCode === 200) {
-				document.querySelector(`#student-row-${index}`)?.remove();
-				addStudentRow({ csvStudent: student, index, status: "Uploaded" });
-			} else {
-				document.querySelector(`#student-row-${index}`)?.remove();
-				addStudentRow({ csvStudent: student, index, status: "Error" });
-			}
+			this.actionValue === "create"
+				? await createStudent(student, this.orgValue, index)
+				: await updateStudent(student, this.orgValue, index);
 		}
 	}
 

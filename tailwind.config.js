@@ -2,7 +2,7 @@ const themeSwapper = require("tailwindcss-theme-swapper");
 
 export default {
 	content: [
-		"./app/views/**/*.html.haml",
+		"./app/views/**/*.{html.haml,turbo_stream.haml}",
 		"./app/helpers/**/*.rb",
 		"./app/assets/stylesheets/**/*.css",
 		"./app/javascript/**/*.{ts,js}",

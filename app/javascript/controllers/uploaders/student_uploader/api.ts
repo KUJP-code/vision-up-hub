@@ -2,9 +2,14 @@ import type { student } from "./declarations.d.ts";
 
 import { patch, post } from "@rails/request.js";
 
-export async function createStudent(student: student, orgId: number) {
+export async function createStudent(
+	student: student,
+	orgId: number,
+	index: number,
+) {
 	return await post(`/organisations/${orgId}/student_uploads`, {
 		body: {
+			index: index,
 			student_upload: {
 				name: student.name,
 				student_id: student.student_id,
@@ -20,9 +25,14 @@ export async function createStudent(student: student, orgId: number) {
 	});
 }
 
-export async function updateStudent(student: student, orgId: number) {
+export async function updateStudent(
+	student: student,
+	orgId: number,
+	index: number,
+) {
 	return await patch(`/organisations/${orgId}/student_uploads`, {
 		body: {
+			index: index,
 			student_upload: {
 				name: student.name,
 				student_id: student.student_id,
