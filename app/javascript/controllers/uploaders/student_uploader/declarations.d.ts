@@ -1,4 +1,4 @@
-export type status = "error" | "invalid" | "pending" | "uploaded";
+export type status = "Error" | "Invalid" | "Pending" | "Uploaded";
 
 export interface student {
 	name: string;

@@ -14,24 +14,28 @@ const missingClasses = [
 	"text-yellow-500",
 	"font-semibold",
 ];
-const pendingClasses = ["border-slate-500"];
-const rowClasses = ["border"];
-const validClasses = ["border-green-500"];
+const pendingClasses = [
+	"border",
+	"border-slate-800",
+	"bg-slate-100",
+	"border-slate-500",
+	"text-color-secondary",
+];
 
 export function newStudentUploadTable() {
 	return `
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Student ID</th>
-						<th>Level</th>
-						<th>School ID</th>
-						<th>Parent ID</th>
-						<th>Start Date</th>
-						<th>Quit Date</th>
-						<th>Birthday</th>
-						<th>Status</th>
+						<th class="p-2 bg-color-main/50 rounded-s-lg border-r border-r-white">Name</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Student ID</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Level</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">School ID</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Parent ID</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Start Date</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Quit Date</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Birthday</th>
+						<th class="p-2 bg-color-main/50 rounded-e-lg">Status</th>
 					</tr>
 				</thead>
 				<tbody id="student-table">
@@ -43,7 +47,7 @@ export function newStudentUploadTable() {
 export function addStudentRow({
 	csvStudent,
 	index,
-	status = "pending",
+	status = "Pending",
 }: { csvStudent: student; index: number; status?: status }) {
 	const table = document.querySelector("#student-table");
 	const row = document.createElement("tr");
@@ -52,7 +56,7 @@ export function addStudentRow({
 		row.classList.add(...pendingClasses);
 	} else {
 		row.classList.add(...invalidClasses);
-		status = "invalid";
+		status = "Invalid";
 	}
 
 	let rowContents = "";
@@ -71,7 +75,7 @@ export function addStudentRow({
 }
 
 function validateStudent(student: student) {
-	return student.name && student.level && student.school_id;
+	return requiredFields.every((field) => student[field]);
 }
 
 function attributeCellHTML(student: student, attribute: string) {
@@ -91,24 +95,28 @@ function attributeCellHTML(student: student, attribute: string) {
 
 function statusIndicatorHTML(status: status) {
 	let iconText = "";
+	let animation = "";
 	switch (status) {
-		case "uploaded":
+		case "Uploaded":
 			iconText = "download_done";
 			break;
-		case "invalid":
+		case "Invalid":
 			iconText = "warning";
+			animation = "animate-pulse";
 			break;
-		case "pending":
+		case "Pending":
 			iconText = "hourglass_empty";
+			animation = "animate-spin";
 			break;
-		case "error":
+		case "Error":
 			iconText = "error";
+			animation = "animate-pulse";
 			break;
 	}
 	return `
-		<td>
-			${status}
-			<span class="material-symbols-outlined">${iconText}</span>
+		<td class="flex items-center justify-center gap-2 p-2">
+			<p>${status}</p>
+			<span class="material-symbols-outlined ${animation}">${iconText}</span>
 		</td>
 	`;
 }
