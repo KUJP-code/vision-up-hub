@@ -1,3 +1,5 @@
+export type status = "error" | "invalid" | "pending" | "uploaded";
+
 export interface student {
 	name: string;
 	student_id: string;

@@ -1,3 +1,7 @@
+= content_for :head do
+  %link{ rel: 'stylesheet',
+         href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
 - if current_user.is?('Admin')
   %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
     - @orgs.each do |org|
