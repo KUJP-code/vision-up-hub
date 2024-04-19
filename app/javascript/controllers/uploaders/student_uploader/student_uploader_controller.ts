@@ -2,15 +2,19 @@ import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
 import type { student } from "./declarations.d.ts";
 import { addStudentRow, newStudentUploadTable } from "./table.ts";
+import { createStudent, updateStudent } from "./api.ts";
 
 // Connects to data-controller="student-uploader"
 export default class extends Controller<HTMLFormElement> {
 	static targets = ["fileInput"];
 	static values = {
-		requiredFields: Array,
+		org: Number,
+		action: String,
 	};
 
 	declare readonly fileInputTarget: HTMLInputElement;
+	declare readonly orgValue: number;
+	declare readonly actionValue: "create" | "update";
 
 	async displayStudents(e: SubmitEvent) {
 		e.preventDefault();
@@ -33,6 +37,22 @@ export default class extends Controller<HTMLFormElement> {
 		}
 		for (const [i, s] of students.entries()) {
 			addStudentRow({ csvStudent: s, index: i });
+		}
+		while (students.length > 0) {
+			const index = students.length - 1;
+			const student = students.pop();
+			if (student === undefined) break;
+			const response =
+				this.actionValue === "create"
+					? await createStudent(student, this.orgValue)
+					: await updateStudent(student, this.orgValue);
+			if (response.statusCode === 200) {
+				document.querySelector(`#student-row-${index}`)?.remove();
+				addStudentRow({ csvStudent: student, index, status: "Uploaded" });
+			} else {
+				document.querySelector(`#student-row-${index}`)?.remove();
+				addStudentRow({ csvStudent: student, index, status: "Error" });
+			}
 		}
 	}
 

@@ -27,7 +27,7 @@
         %tr
           %td 陽葵
           %td 236u2345nsghsferf4
-          %td sky_2
+          %td sky_two
           %td 2
           %td 784
           %td 2019-09-01
@@ -59,7 +59,9 @@
     = form_with scope: :student_upload,
                 html: { class: 'form',
                         data: { controller: 'student-uploader',
-                                action: 'student-uploader#displayStudents' },
+                                action: 'student-uploader#displayStudents',
+                                'student-uploader-org-value': @organisation.id,
+                                'student-uploader-action-value': 'create' },
                         id: 'student_create_form' } do |f|
       = f.file_field :file,
                      required: true,
@@ -72,7 +74,9 @@
     = form_with scope: :student_upload,
                 html: { class: 'form',
                         data: { action: 'student-uploader#displayStudents',
-                                controller: 'student-uploader' },
+                                controller: 'student-uploader',
+                                'student-uploader-org-value': @organisation.id,
+                                'student-uploader-action-value': 'update' },
                         id: 'student_update_form' } do |f|
       = f.file_field :file,
                      required: true,

@@ -58,6 +58,9 @@ export function addStudentRow({
 		row.classList.add(...invalidClasses);
 		status = "Invalid";
 	}
+	if (status === "Error") {
+		row.classList.add(...invalidClasses);
+	}
 
 	let rowContents = "";
 	for (const attribute of Object.keys(csvStudent)) {

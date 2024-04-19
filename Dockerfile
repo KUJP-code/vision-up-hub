@@ -29,7 +29,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 				libvips libyaml-dev unzip
 
 # Install Bun
-ARG BUN_VERSION=1.0.35
+ARG BUN_VERSION=1.1.4
 ENV BUN_INSTALL=/usr/local/bun
 ENV PATH=/usr/local/bun/bin:$PATH
 RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v${BUN_VERSION}"

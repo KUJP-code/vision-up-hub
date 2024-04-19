@@ -37,6 +37,8 @@ class StudentUploadsController < ApplicationController
   private
 
   def student_upload_params
-    params.require(:student_upload).permit(:level, :name, :school_id, :student_id, :parent_id)
+    params.require(:student_upload).permit(
+      :birthday, :level, :name, :parent_id, :quit_date, :school_id, :start_date, :student_id
+    )
   end
 end
