@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import type { student } from "./declarations.d.ts";
 import { addStudentRow, newStudentUploadTable } from "./table.ts";
 import { createStudent, updateStudent } from "./api.ts";
+import { newUploadSummary } from "./summary.ts";
 
 // Connects to data-controller="student-uploader"
 export default class extends Controller<HTMLFormElement> {
@@ -31,6 +32,7 @@ export default class extends Controller<HTMLFormElement> {
 		const main = document.querySelector("main");
 		if (main) {
 			main.innerHTML = newStudentUploadTable();
+			main.prepend(newUploadSummary(students.length));
 		} else {
 			alert("Could not find main element");
 			return;
@@ -38,14 +40,8 @@ export default class extends Controller<HTMLFormElement> {
 		for (const [i, s] of students.entries()) {
 			addStudentRow({ csvStudent: s, index: i });
 		}
-		while (students.length > 0) {
-			const index = students.length - 1;
-			const student = students.pop();
-			if (student === undefined) break;
-			this.actionValue === "create"
-				? await createStudent(student, this.orgValue, index)
-				: await updateStudent(student, this.orgValue, index);
-		}
+
+		this.uploadStudents(students);
 	}
 
 	parseCSV(csv: string): Promise<student[]> {
@@ -62,5 +58,16 @@ export default class extends Controller<HTMLFormElement> {
 				},
 			});
 		});
+	}
+
+	async uploadStudents(students: student[]) {
+		while (students.length > 0) {
+			const index = students.length - 1;
+			const student = students.pop();
+			if (student === undefined) continue;
+			this.actionValue === "create"
+				? await createStudent(student, this.orgValue, index)
+				: await updateStudent(student, this.orgValue, index);
+		}
 	}
 }
