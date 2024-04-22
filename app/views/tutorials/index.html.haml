@@ -1,0 +1,28 @@
+<h1>Tutorials<h1>
+
+<ul>
+  <% @tutorial_categories.each do |category| %>
+    <li>
+      <%= link_to category.name, tutorials_category_path(category) %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Dropdown Menus for Subcategories -->
+<% if @selected_category %>
+  <select id="subcategory-dropdown">
+    <% @selected_category.subcategories.each do |subcategory| %>
+      <option value="<%= subcategory.id %>"><%= subcategory.name %></option>
+    <% end %>
+  </select>
+<% end %>
+
+<!-- Displaying Tutorial Resources -->
+<div id="tutorial-resources">
+  <% if @selected_subcategory %>
+    <h2><%= @selected_subcategory.name %></h2>
+    <% @selected_subcategory.resources.each do |resource| %>
+      <!-- Render resource information here -->
+    <% end %>
+  <% end %>
+</div>
