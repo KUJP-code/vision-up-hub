@@ -11,7 +11,7 @@ module DailyActivityPdf
 
     def generate_guide
       Prawn::Document.new(margin: 0, page_size: 'A4', page_layout: :portrait) do |pdf|
-        pdf.image BACKGROUND_PATH, fit: [210.mm, 297.mm]
+        pdf.image BACKGROUND_PATH, height: 297.mm, width: 210.mm
       end
     end
   end
