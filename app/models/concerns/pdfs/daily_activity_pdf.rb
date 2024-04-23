@@ -4,35 +4,15 @@ module DailyActivityPdf
   extend ActiveSupport::Concern
   include PdfDefaults, PdfHeader, PdfLinks, PdfList
 
+  BACKGROUND_PATH = Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
+
   included do
     private
 
     def generate_guide
-      pdf = Prawn::Document.new
-
-      pdf_header(pdf, subtitle: subtype.capitalize)
-      add_unordered_lists(pdf)
-      add_ordered_lists(pdf)
-      pdf_links(links:, dimensions: { height: 3.cm, width: pdf.bounds.width },
-                pdf:, title: 'Links:')
-
-      pdf
+      Prawn::Document.new(margin: 0, page_size: 'A4', page_layout: :portrait) do |pdf|
+        pdf.image BACKGROUND_PATH, fit: [210.mm, 297.mm]
+      end
     end
-  end
-
-  def add_unordered_lists(pdf)
-    pdf_list(array: materials, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Materials:', type: :dot)
-    pdf_list(array: notes, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Notes:', type: :dot)
-    pdf_list(array: intro, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Intro:', type: :dot)
-  end
-
-  def add_ordered_lists(pdf)
-    pdf_list(array: instructions, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Instructions:', type: :number)
-    pdf_list(array: large_groups, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Large Groups:', type: :number)
   end
 end
