@@ -1,28 +1,9 @@
-<h1>Tutorials<h1>
+- admin = current_user.is?('Admin')
 
-<ul>
-  <% @tutorial_categories.each do |category| %>
-    <li>
-      <%= link_to category.name, tutorials_category_path(category) %>
-    </li>
-  <% end %>
-</ul>
+-# TODO subtitle stuff
 
-<!-- Dropdown Menus for Subcategories -->
-<% if @selected_category %>
-  <select id="subcategory-dropdown">
-    <% @selected_category.subcategories.each do |subcategory| %>
-      <option value="<%= subcategory.id %>"><%= subcategory.name %></option>
-    <% end %>
-  </select>
-<% end %>
-
-<!-- Displaying Tutorial Resources -->
-<div id="tutorial-resources">
-  <% if @selected_subcategory %>
-    <h2><%= @selected_subcategory.name %></h2>
-    <% @selected_subcategory.resources.each do |resource| %>
-      <!-- Render resource information here -->
-    <% end %>
-  <% end %>
-</div>
+- if admin 
+    .w-full.flex.justify-center.p-3 
+    = link_to 'New Tutorial',
+              new_tutorial_path,
+              class: 'btn btn-info'
