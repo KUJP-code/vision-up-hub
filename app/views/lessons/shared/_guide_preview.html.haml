@@ -4,7 +4,7 @@
   = link_to file_path(lesson.guide.blob),
             target: '_blank',
             rel: 'noopener',
-            class: 'guide_link h-fit' do
+            class: 'guide_link h-fit flex flex-col gap-1' do
     = image_tag lesson.guide.preview(:thumb),
                 class: 'guide_image w-full'
     %h3.rounded-lg.text-white.bg-color-main.text-center.p-2.font-semibold

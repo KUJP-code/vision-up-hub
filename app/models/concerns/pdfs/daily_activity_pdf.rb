@@ -16,6 +16,11 @@ module DailyActivityPdf
         draw_title(pdf)
         draw_goal(pdf)
         draw_lang_goals(pdf)
+        draw_materials(pdf)
+        draw_intro(pdf)
+        draw_instructions(pdf)
+        draw_large_groups(pdf)
+        draw_outro(pdf)
       end
     end
   end
@@ -48,6 +53,46 @@ module DailyActivityPdf
                  overflow: :shrink_to_fit
       end
       x_position += 58.mm
+    end
+  end
+
+  def draw_materials(pdf)
+    pdf.bounding_box([52.mm, 190.mm], width: 140.mm, height: 30.mm) do
+      pdf.text array_to_list(materials, :number),
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
+    end
+  end
+
+  def draw_intro(pdf)
+    pdf.bounding_box([52.mm, 147.mm], width: 140.mm, height: 20.mm) do
+      pdf.text array_to_list(intro, :dot),
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
+    end
+  end
+
+  def draw_instructions(pdf)
+    pdf.bounding_box([52.mm, 110.mm], width: 140.mm, height: 40.mm) do
+      pdf.text array_to_list(instructions, :number),
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
+    end
+  end
+
+  def draw_large_groups(pdf)
+    pdf.bounding_box([52.mm, 70.mm], width: 140.mm, height: 10.mm) do
+      pdf.text array_to_list(large_groups, :dot),
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
+    end
+  end
+
+  def draw_outro(pdf)
+    pdf.bounding_box([52.mm, 50.mm], width: 140.mm, height: 30.mm) do
+      pdf.text array_to_list(outro, :dot),
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
     end
   end
 end
