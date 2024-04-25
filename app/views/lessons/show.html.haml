@@ -14,7 +14,7 @@
         = render 'shared/visibility_toggles', resource: @lesson
       - if @lesson.subtype
         %h3
-          #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.capitalize}"}
+          #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.titleize}"}
 
       - if @lesson.topic.present?
         %h3 Topic:

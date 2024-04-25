@@ -15,6 +15,7 @@ module DailyActivityPdf
         draw_subtype(pdf)
         draw_title(pdf)
         draw_goal(pdf)
+        draw_lang_goals(pdf)
       end
     end
   end
@@ -34,6 +35,19 @@ module DailyActivityPdf
   def draw_goal(pdf)
     pdf.bounding_box([26.mm, 261.mm], width: 90.mm, height: 10.mm) do
       pdf.text goal, size: SUBHEADING_SIZE
+    end
+  end
+
+  def draw_lang_goals(pdf)
+    x_position = 26.mm
+
+    [land_lang_goals, sky_lang_goals, galaxy_lang_goals].each do |goals|
+      pdf.bounding_box([x_position, 220.mm], width: 51.mm, height: 11.mm) do
+        pdf.text array_to_list(goals),
+                 size: FONT_SIZE,
+                 overflow: :shrink_to_fit
+      end
+      x_position += 58.mm
     end
   end
 end
