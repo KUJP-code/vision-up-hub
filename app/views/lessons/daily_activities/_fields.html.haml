@@ -3,9 +3,14 @@
 = f.hidden_field :type, value: lesson.type
 
 = content_for :priority_fields do
-  .form-group
-    = f.label :pdf_image
-    = f.file_field :pdf_image
+  .flex.gap-3
+    - if lesson.pdf_image.present?
+      = image_tag lesson.pdf_image,
+                  alt: lesson.pdf_image.filename
+
+    .form-group
+      = f.label :pdf_image
+      = f.file_field :pdf_image
 
   .form-group
     = f.label :subtype
