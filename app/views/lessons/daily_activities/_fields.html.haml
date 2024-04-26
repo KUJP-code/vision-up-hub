@@ -4,6 +4,10 @@
 
 = content_for :priority_fields do
   .form-group
+    = f.label :pdf_image
+    = f.file_field :pdf_image
+
+  .form-group
     = f.label :subtype
     = f.select :subtype,
                DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },

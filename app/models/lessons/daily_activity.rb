@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
-  include DailyActivityPdf, Linkable, Listable
+  include DailyActivityPdf, Linkable, Listable, PdfImageable
 
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
@@ -11,6 +11,7 @@ class DailyActivity < Lesson
     sky_lang_goals
     galaxy_lang_goals
     materials
+    pdf_image
     intro
     interesting_fact
     instructions

@@ -15,6 +15,7 @@ module DailyActivityPdf
         draw_subtype(pdf)
         draw_title(pdf)
         draw_goal(pdf)
+        add_image(pdf)
         draw_lang_goals(pdf)
         draw_materials(pdf)
         draw_intro(pdf)
@@ -40,6 +41,20 @@ module DailyActivityPdf
   def draw_goal(pdf)
     pdf.bounding_box([26.mm, 261.mm], width: 90.mm, height: 10.mm) do
       pdf.text goal, size: SUBHEADING_SIZE
+    end
+  end
+
+  def add_image(pdf)
+    return unless pdf_image.attached?
+
+    pdf_image.blob.open do |file|
+      pdf.image(
+        file.path,
+        position: 124.mm,
+        vposition: 15.mm,
+        width: 200,
+        height: 131
+      )
     end
   end
 
