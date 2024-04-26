@@ -7,11 +7,12 @@ class DailyActivity < Lesson
 
   ATTRIBUTES = %i[
     subtype
+    pdf_image
+    warning
     land_lang_goals
     sky_lang_goals
     galaxy_lang_goals
     materials
-    pdf_image
     intro
     interesting_fact
     instructions

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_12_042428) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_26_053157) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_12_042428) do
     t.string "interesting_fact"
     t.integer "status"
     t.integer "changed_lesson_id"
+    t.string "warning", default: ""
     t.index ["assigned_editor_id"], name: "index_lessons_on_assigned_editor_id"
     t.index ["creator_id"], name: "index_lessons_on_creator_id"
   end

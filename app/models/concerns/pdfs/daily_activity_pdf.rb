@@ -29,7 +29,7 @@ module DailyActivityPdf
   end
 
   def draw_subtype(pdf)
-    pdf.bounding_box([27.mm, 281.mm], width: 41.mm, height: 5.mm) do
+    pdf.bounding_box([28.mm, 281.mm], width: 41.mm, height: 5.mm) do
       pdf.text subtype.titleize, overflow: :shrink_to_fit
     end
   end
@@ -43,6 +43,18 @@ module DailyActivityPdf
   def draw_goal(pdf)
     pdf.bounding_box([26.mm, 261.mm], width: 90.mm, height: 10.mm) do
       pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
+    end
+    return if warning.blank?
+
+    draw_warning(pdf)
+  end
+
+  def draw_warning(pdf)
+    pdf.bounding_box([26.mm, 235.mm], width: 90.mm, height: 6.mm) do
+      pdf.move_down 2.mm
+      pdf.text warning, size: FONT_SIZE, color: 'FF0000', overflow: :shrink_to_fit, indent_paragraphs: PADDING
+      pdf.stroke_color 'FF0000'
+      pdf.stroke_bounds
     end
   end
 
@@ -120,7 +132,7 @@ module DailyActivityPdf
   end
 
   def draw_footer_level(pdf)
-    pdf.bounding_box([140.mm, 6.mm], width: 66.mm, height: 10.mm) do
+    pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
       pdf.text kindy? ? 'Kindergarten' : 'Elementary', color: 'FFFFFF', align: :right
     end
   end

@@ -22,6 +22,10 @@
   = f.label :interesting_fact
   = f.text_area :interesting_fact
 
+.form-group
+  = f.label :warning
+  = f.text_field :warning
+
 - DailyActivity::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)
 
