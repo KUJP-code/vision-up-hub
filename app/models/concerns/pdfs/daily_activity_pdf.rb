@@ -22,6 +22,7 @@ module DailyActivityPdf
         draw_instructions(pdf)
         draw_large_groups(pdf)
         draw_outro(pdf)
+        draw_footer_level(pdf)
       end
     end
   end
@@ -85,6 +86,12 @@ module DailyActivityPdf
                size: FONT_SIZE,
                overflow: :shrink_to_fit
     end
+
+    pdf.bounding_box([54.mm, 127.mm], width: 138.mm, height: 10.mm) do
+      pdf.text "Did you know? #{interesting_fact}",
+               size: FONT_SIZE,
+               overflow: :shrink_to_fit
+    end
   end
 
   def draw_instructions(pdf)
@@ -108,6 +115,12 @@ module DailyActivityPdf
       pdf.text array_to_list(outro, :dot),
                size: FONT_SIZE,
                overflow: :shrink_to_fit
+    end
+  end
+
+  def draw_footer_level(pdf)
+    pdf.bounding_box([140.mm, 6.mm], width: 66.mm, height: 10.mm) do
+      pdf.text kindy? ? 'Kindergarten' : 'Elementary', color: 'FFFFFF', align: :right
     end
   end
 end

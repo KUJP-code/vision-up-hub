@@ -18,6 +18,10 @@
                DailyActivity.subtypes.keys.map { |k| [k.titleize, k] },
                {}
 
+.form-group
+  = f.label :interesting_fact
+  = f.text_area :interesting_fact
+
 - DailyActivity::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)
 
