@@ -11,6 +11,7 @@ module DailyActivityPdf
 
     def generate_guide
       Prawn::Document.new(margin: 0, page_size: 'A4', page_layout: :portrait) do |pdf|
+        apply_defaults(pdf)
         pdf.image BACKGROUND_PATH, height: 297.mm, width: 210.mm
         draw_subtype(pdf)
         draw_title(pdf)
@@ -29,19 +30,19 @@ module DailyActivityPdf
 
   def draw_subtype(pdf)
     pdf.bounding_box([27.mm, 281.mm], width: 41.mm, height: 5.mm) do
-      pdf.text subtype.titleize
+      pdf.text subtype.titleize, overflow: :shrink_to_fit
     end
   end
 
   def draw_title(pdf)
     pdf.bounding_box([26.mm, 272.mm], width: 90.mm, height: 10.mm) do
-      pdf.text title, size: HEADING_SIZE
+      pdf.text title, size: HEADING_SIZE, overflow: :shrink_to_fit
     end
   end
 
   def draw_goal(pdf)
     pdf.bounding_box([26.mm, 261.mm], width: 90.mm, height: 10.mm) do
-      pdf.text goal, size: SUBHEADING_SIZE
+      pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
     end
   end
 
