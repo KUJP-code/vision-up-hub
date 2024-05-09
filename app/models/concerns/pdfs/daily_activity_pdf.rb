@@ -125,7 +125,7 @@ module DailyActivityPdf
   end
 
   def draw_outro(pdf)
-    pdf.bounding_box([52.mm, 50.mm], width: 140.mm, height: 30.mm) do
+    pdf.bounding_box([52.mm, 52.mm], width: 140.mm, height: 30.mm) do
       pdf.text array_to_list(outro, :dot),
                size: FONT_SIZE,
                overflow: :shrink_to_fit

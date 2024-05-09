@@ -11,7 +11,7 @@ module PdfDefaults
   def apply_defaults(pdf)
     pdf.font_families.update(
       'Shingo' => {
-        normal: Rails.root.join('app/assets/fonts/shingo/ATTFShinGoProDeBold.ttf')
+        normal: Rails.root.join('app/assets/fonts/shingo/ShinMGoPro-DeBold.ttf')
       }
     )
     pdf.font 'Shingo'
