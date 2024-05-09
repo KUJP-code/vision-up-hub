@@ -50,10 +50,12 @@ module DailyActivityPdf
   end
 
   def draw_warning(pdf)
-    pdf.bounding_box([26.mm, 235.mm], width: 90.mm, height: 6.mm) do
+    pdf.bounding_box([28.mm, 239.mm], width: 88.mm, height: 8.mm) do
       pdf.text warning, color: 'FF0000', overflow: :shrink_to_fit
-      pdf.stroke_color 'FF0000'
-      pdf.stroke_bounds
+    end
+    pdf.stroke_color 'FF0000'
+    pdf.stroke do
+      pdf.rounded_rectangle [26.mm, 240.mm], 90.mm, 10.mm, BORDER_RADIUS
     end
   end
 
