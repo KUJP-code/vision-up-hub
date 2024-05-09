@@ -1,11 +1,19 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "thatbballguy/materials:0.10.3-new-bg"
-  },
-  "Ports": [
-    {
-      "ContainerPort": 80
-    }
-  ]
+	"AWSEBDockerrunVersion": "1",
+	"containerDefinitions": [
+		{
+			"linuxParameters": {
+				"maxSwap": 48000,
+				"swappiness": 0
+			}
+		}
+	],
+	"Image": {
+		"Name": "thatbballguy/materials:0.10.3-new-bg"
+	},
+	"Ports": [
+		{
+			"ContainerPort": 80
+		}
+	]
 }
