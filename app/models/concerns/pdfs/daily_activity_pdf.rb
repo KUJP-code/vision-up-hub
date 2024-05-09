@@ -51,8 +51,7 @@ module DailyActivityPdf
 
   def draw_warning(pdf)
     pdf.bounding_box([26.mm, 235.mm], width: 90.mm, height: 6.mm) do
-      pdf.move_down 2.mm
-      pdf.text warning, size: FONT_SIZE, color: 'FF0000', overflow: :shrink_to_fit, indent_paragraphs: PADDING
+      pdf.text warning, color: 'FF0000', overflow: :shrink_to_fit
       pdf.stroke_color 'FF0000'
       pdf.stroke_bounds
     end
