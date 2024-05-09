@@ -5,6 +5,12 @@ module Pdfable
 
   included do
     require 'prawn/measurement_extensions'
+    include PdfDefaults
+
+    has_one_attached :guide do |g|
+      g.variant :thumb, resize_to_limit: [300, 300],
+                        convert: :avif, preprocessed: true
+    end
 
     def attach_guide
       # We're just uploading them for now

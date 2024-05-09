@@ -23,10 +23,6 @@ class Lesson < ApplicationRecord
                                 allow_destroy: true
   has_many :courses, through: :course_lessons
 
-  has_one_attached :guide do |g|
-    g.variant :thumb, resize_to_limit: [300, 300],
-                      convert: :avif, preprocessed: true
-  end
   has_many_attached :resources
 
   scope :unlevelled, -> { where(type: %w[DailyActivity Exercise]) }

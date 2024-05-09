@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfDefaults, PdfHeader, PdfLinks, PdfList
+  include PdfList
 
   BACKGROUND_PATH = Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
 
