@@ -55,8 +55,6 @@ class DailyActivity < Lesson
     coloring: 10
   }
 
-  has_many_attached :instructions_images
-
   def icon_filename
     "#{subtype}.svg"
   end
