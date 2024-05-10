@@ -1,13 +1,16 @@
 = turbo_stream.replace "student-row-#{@index}" do
   - if @errors
-    %tr.border.border-red-500
+    %tr.error{ data: { controller: 'upload-summary',
+                       'upload-summary-status-value': 'Error' } }
       = form_with model: @student do |f|
         %td.bg-red-200= f.text_field :name
         %td.bg-red-200= f.text_field :student_id
         %td.bg-red-200
           = f.select :level,
-                     Student.levels.keys.map { |l| [l.titleize, l] }
-        %td.bg-red-200= f.select :school_id, @schools
+                     Student.levels.keys.map { |l| [l.titleize, l] },
+                     {},
+                     class: 'bg-white'
+        %td.bg-red-200= f.select :school_id, @schools, {}, class: 'bg-white'
         %td.bg-red-200= f.number_field :parent_id
         %td.bg-red-200= f.date_field :start_date
         %td.bg-red-200= f.date_field :quit_date
@@ -19,7 +22,8 @@
     %tr
       %td.bg-red-200{ colspan: 9 }= @errors
   - else
-    %tr.border.border-green-500
+    %tr.uploaded{ data: { controller: 'upload-summary',
+                          'upload-summary-status-value': 'Uploaded' } }
       %td.bg-green-200= @student.name
       %td.bg-green-200= @student.student_id
       %td.bg-green-200= @student.level
