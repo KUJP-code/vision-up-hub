@@ -3,3 +3,5 @@
     = render 'student_uploads/error', student: @student
   - else
     = render 'student_uploads/success', student: @student
+
+= turbo_stream.remove "student-errors-#{@index}" unless @errors
