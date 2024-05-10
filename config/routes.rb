@@ -30,6 +30,8 @@ Rails.application.routes.draw do
         resources :schools
         resources :student_uploads, only: %i[create new]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
+        resources :user_uploads, only: %i[create new]
+        patch 'user_uploads', to: 'user_uploads#update', as: :user_uploads_update
 
         resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]
