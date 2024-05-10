@@ -19,7 +19,7 @@ class StudentUploadsController < ApplicationController
   end
 
   def update
-    @student = Student.find_by(
+    @student = authorize Student.find_by(
       student_id: student_upload_params[:student_id],
       school_id: student_upload_params[:school_id]
     )

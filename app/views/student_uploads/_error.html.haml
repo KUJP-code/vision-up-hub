@@ -1,0 +1,21 @@
+%tr.error{ data: { controller: 'upload-summary',
+                   'upload-summary-status-value': 'Error' } }
+  = form_with model: @student do |f|
+    %td.bg-red-200= f.text_field :name
+    %td.bg-red-200= f.text_field :student_id
+    %td.bg-red-200
+      = f.select :level,
+                 Student.levels.keys.map { |l| [l.titleize, l] },
+                 {},
+                 class: 'bg-white'
+    %td.bg-red-200= f.select :school_id, @schools, {}, class: 'bg-white'
+    %td.bg-red-200= f.number_field :parent_id
+    %td.bg-red-200= f.date_field :start_date
+    %td.bg-red-200= f.date_field :quit_date
+    %td.bg-red-200= f.date_field :birthday
+    %td.bg-red-200.flex.items-center.justify-center.gap-2.p-2
+      %p Error
+      %span.material-symbols-outlined.animate-pulse error
+      = f.submit class: 'btn btn-primary'
+%tr
+  %td.bg-red-200{ colspan: 9 }= @errors
