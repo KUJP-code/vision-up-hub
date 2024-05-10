@@ -17,10 +17,14 @@
   %ul{ class: menu_styles,
        data: { 'dropdown-target': 'menu' } }
     %li.transition.hover:scale-105
+      = link_to t('.parents'),
+                new_organisation_parent_upload_path(organisation_id: org_id),
+                data: { 'dropdown-target': 'menuItem' }
+    %li.transition.hover:scale-105
       = link_to t('.students'),
                 new_organisation_student_upload_path(organisation_id: org_id),
                 data: { 'dropdown-target': 'menuItem' }
     %li.transition.hover:scale-105
-      = link_to t('.users'),
-                new_organisation_user_upload_path(organisation_id: org_id),
+      = link_to t('.teachers'),
+                new_organisation_teacher_upload_path(organisation_id: org_id),
                 data: { 'dropdown-target': 'menuItem' }

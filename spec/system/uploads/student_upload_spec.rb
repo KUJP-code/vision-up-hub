@@ -6,7 +6,7 @@ require 'csv'
 # TODO: The feature works, but I can't get the test to make a request.
 # Request.js never makes a PATCH request to the backend in test
 # regardless of how long I wait. So this just test parsing for now.
-RSpec.describe 'creating records from a CSV', :js do
+RSpec.describe 'creating student records from a CSV', :js do
   let(:user) { create(:user, :org_admin) }
 
   before do
@@ -21,7 +21,6 @@ RSpec.describe 'creating records from a CSV', :js do
   it 'can parse children from a CSV' do
     visit new_organisation_student_upload_path(organisation_id: user.organisation_id)
     within '#student_create_form' do
-      # check an error is shown if students in the CSV are invalid
       attach_file 'student_upload_file', Rails.root.join('tmp/students.csv')
       click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
     end
