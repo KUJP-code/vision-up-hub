@@ -24,7 +24,7 @@ export default class extends Controller {
 
 	decrementPending() {
 		const count = document.getElementById("pending_count");
-		if (count) {
+		if (count && Number.parseInt(count.innerHTML) > 0) {
 			count.innerHTML = String(Number.parseInt(count.innerHTML) - 1);
 		}
 	}
