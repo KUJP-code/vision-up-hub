@@ -17,7 +17,7 @@
     = form_with scope: :teacher_upload,
                 html: { class: 'form',
                         data: { controller: 'teacher-uploader',
-                                action: 'teacher-uploader#displayStudents',
+                                action: 'teacher-uploader#displayTeachers',
                                 'teacher-uploader-org-value': @organisation.id,
                                 'teacher-uploader-action-value': 'create' },
                         id: 'teacher_create_form' } do |f|
@@ -31,7 +31,7 @@
     %h2= t('.update_teachers', org: @organisation.name)
     = form_with scope: :teacher_upload,
                 html: { class: 'form',
-                        data: { action: 'teacher-uploader#displayStudents',
+                        data: { action: 'teacher-uploader#displayTeachers',
                                 controller: 'teacher-uploader',
                                 'teacher-uploader-org-value': @organisation.id,
                                 'teacher-uploader-action-value': 'update' },

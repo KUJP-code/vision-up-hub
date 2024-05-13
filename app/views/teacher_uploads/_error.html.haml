@@ -1,11 +1,11 @@
 :ruby
-  id = form = "teacher-#{@teacher.teacher_id}"
+  id = form = "teacher-#{@index}"
   if @teacher.new_record?
     url = organisation_teacher_uploads_update_path(params[:organisation_id])
-    method = :teacher_patch
+    method = :post
   else
     url = organisation_teacher_uploads_path(params[:organisation_id])
-    method = :teacher_post
+    method = :patch
   end
 
 %tr.error{ data: { controller: 'upload-summary',
@@ -16,11 +16,13 @@
   %td.bg-red-200= password_field_tag 'teacher_upload[password]', '', form:
   %td.bg-red-200= password_field_tag 'teacher_upload[password_confirmation]', '', form:
   %td.bg-red-200
-    = form_with model: @teacher, url:, method:, scope: :teacher_upload,
+    = form_with model: @teacher, url:, method:,
                 html: { class: 'flex items-center justify-center gap-2 p-2',
                         id: } do |f|
       %p Error
       %span.material-symbols-outlined.animate-pulse error
+
+      = hidden_field_tag(:index, @index, form:)
       = f.submit class: 'btn btn-primary'
 %tr{ id: "teacher-errors-#{@index}" }
   %td.bg-red-200{ colspan: 9 }= @errors

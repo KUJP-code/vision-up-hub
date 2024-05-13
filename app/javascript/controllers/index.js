@@ -31,5 +31,8 @@ application.register("upload-summary", UploadSummaryController);
 import StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller";
 application.register("student-uploader", StudentUploaderController);
 
+import TeacherUploaderController from "./uploaders/teacher_uploader/teacher_uploader_controller";
+application.register("teacher-uploader", TeacherUploaderController);
+
 import ValidityController from "./validity_controller";
 application.register("validity", ValidityController);

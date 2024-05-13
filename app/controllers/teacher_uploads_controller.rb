@@ -10,7 +10,7 @@ class TeacherUploadsController < ApplicationController
   end
 
   def create
-    @teacher = authorize Teacher.new(teacher_upload_params)
+    @teacher = authorize Teacher.new(teacher_upload_params.merge(organisation_id: params[:organisation_id]))
     @index = params[:index].to_i
     @status = 'Uploaded'
     return if @teacher.save

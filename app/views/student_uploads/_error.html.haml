@@ -1,5 +1,5 @@
 :ruby
-  id = form = "student-#{@student.student_id}"
+  id = form = "student-#{@index}"
   if @student.new_record?
     url = organisation_student_uploads_update_path(params[:organisation_id])
     method = :student_patch
@@ -34,6 +34,8 @@
                         id: } do |f|
       %p Error
       %span.material-symbols-outlined.animate-pulse error
+
+      = hidden_field(:index, @index, form:)
       = f.submit class: 'btn btn-primary'
 %tr{ id: "student-errors-#{@index}" }
   %td.bg-red-200{ colspan: 9 }= @errors
