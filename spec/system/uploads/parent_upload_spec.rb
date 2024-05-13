@@ -3,9 +3,6 @@
 require 'rails_helper'
 require 'csv'
 
-# TODO: The feature works, but I can't get the test to make a request.
-# Request.js never makes a PATCH request to the backend in test
-# regardless of how long I wait. So this just tests parsing for now.
 RSpec.describe 'creating parent records from a CSV', :js do
   let(:user) { create(:user, :org_admin) }
 
@@ -25,15 +22,15 @@ RSpec.describe 'creating parent records from a CSV', :js do
       click_button I18n.t('parent_uploads.new.create_parents', org: user.organisation.name)
     end
     expect(find_by_id('pending_count')).to have_content('3')
-    expect(page).to have_css('.border-red-500', count: 1)
-    expect(page).to have_css('.border-slate-500', count: 2)
+    expect(page).to have_css('.error', count: 1)
+    expect(page).to have_css('.uploaded', count: 2)
   end
 end
 
 def create_parents_csv
   parents = create_parents
   CSV.open('tmp/parents.csv', 'w') do |csv|
-    csv << Parent.new.attributes.keys
+    csv << %w[name email password password_confirmation]
     parents.each do |parent|
       csv << parent.attributes.values
     end
@@ -41,7 +38,10 @@ def create_parents_csv
 end
 
 def create_parents
-  parents = build_list(:user, 2, :parent)
+  parents = build_list(:user, 2, :parent,
+                       password: 'testpassword',
+                       password_confirmation: 'testpassword')
   invalid_parent = build(:user, :parent, email: '')
   parents << invalid_parent
+  parents.map { |p| [p.name, p.email, p.password, p.password] }
 end
