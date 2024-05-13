@@ -25,12 +25,19 @@ RSpec.describe 'creating student records from a CSV', :js do
       click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
     end
     expect(find_by_id('pending_count')).to have_content('3')
+    expect(page).to have_css('.border-red-500', count: 1)
+    expect(page).to have_css('.border-slate-500', count: 2)
   end
 end
 
 def create_students_csv
   students = create_students
-  create_csv(students)
+  CSV.open('tmp/students.csv', 'w') do |csv|
+    csv << Student.new.attributes.keys
+    students.each do |student|
+      csv << student.attributes.values
+    end
+  end
 end
 
 def create_students
@@ -38,13 +45,4 @@ def create_students
   students = build_list(:student, 2, school_id: school.id)
   invalid_student = build(:student, name: '', level: '', school_id: school.id)
   students << invalid_student
-end
-
-def create_csv(students)
-  CSV.open('tmp/students.csv', 'w') do |csv|
-    csv << Student.new.attributes.keys
-    students.each do |student|
-      csv << student.attributes.values
-    end
-  end
 end

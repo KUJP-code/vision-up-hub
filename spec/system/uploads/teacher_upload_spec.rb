@@ -25,25 +25,23 @@ RSpec.describe 'creating teacher records from a CSV', :js do
       click_button I18n.t('teacher_uploads.new.create_teachers', org: user.organisation.name)
     end
     expect(find_by_id('pending_count')).to have_content('3')
+    expect(page).to have_css('.border-red-500', count: 1)
+    expect(page).to have_css('.border-slate-500', count: 2)
   end
 end
 
 def create_teachers_csv
   teachers = create_teachers
-  create_csv(teachers)
-end
-
-def create_teachers
-  teachers = build_list(:user, 2, :teacher)
-  invalid_teacher = build(:user, :teacher, email: '')
-  teachers << invalid_teacher
-end
-
-def create_csv(teachers)
   CSV.open('tmp/teachers.csv', 'w') do |csv|
     csv << Teacher.new.attributes.keys
     teachers.each do |teacher|
       csv << teacher.attributes.values
     end
   end
+end
+
+def create_teachers
+  teachers = build_list(:user, 2, :teacher)
+  invalid_teacher = build(:user, :teacher, email: '')
+  teachers << invalid_teacher
 end

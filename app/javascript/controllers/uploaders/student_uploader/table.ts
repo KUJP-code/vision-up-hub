@@ -52,7 +52,13 @@ export function addStudentRow({
 	const table = document.querySelector("#student-table");
 	const row = document.createElement("tr");
 	row.id = `student-row-${index}`;
-	row.classList.add(...pendingClasses);
+	if (validateStudent(csvStudent)) {
+		row.classList.add(...pendingClasses);
+	} else {
+		row.classList.add(...invalidClasses);
+		status = "Invalid";
+	}
+
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
@@ -72,6 +78,10 @@ export function addStudentRow({
 	}
 }
 
+function validateStudent(student: student) {
+	return requiredFields.every((field) => student[field]);
+}
+
 function attributeCellHTML(student: student, attribute: string) {
 	if (requiredFields.includes(attribute)) {
 		return `
@@ -81,7 +91,8 @@ function attributeCellHTML(student: student, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${student[attribute] || "なし"
+		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${
+			student[attribute] || "なし"
 		}</td>
 	`;
 }
@@ -92,6 +103,10 @@ function statusIndicatorHTML(status: status) {
 	switch (status) {
 		case "Uploaded":
 			iconText = "download_done";
+			break;
+		case "Invalid":
+			iconText = "warning";
+			animation = "animate-pulse";
 			break;
 		case "Pending":
 			iconText = "hourglass_empty";
