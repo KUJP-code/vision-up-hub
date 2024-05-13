@@ -1,0 +1,43 @@
+= content_for :head do
+  %link{ rel: 'stylesheet',
+         href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
+- if current_user.is?('Admin')
+  %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
+    - @orgs.each do |org|
+      = link_to org.name,
+                new_organisation_teacher_upload_path(organisation_id: org.id),
+                class: "sub_nav_link #{'bg-color-main' if org.id == @organisation.id}"
+
+%main.flex.flex-col.justify-start.gap-12.overflow-y-auto.p-3
+  = render 'teacher_uploads/format_explainer'
+
+  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.create_teachers', org: @organisation.name)
+    = form_with scope: :teacher_upload,
+                html: { class: 'form',
+                        data: { controller: 'teacher-uploader',
+                                action: 'teacher-uploader#displayStudents',
+                                'teacher-uploader-org-value': @organisation.id,
+                                'teacher-uploader-action-value': 'create' },
+                        id: 'teacher_create_form' } do |f|
+      = f.file_field :file,
+                     required: true,
+                     data: { 'teacher-uploader-target': 'fileInput' }
+      = f.submit t('.create_teachers', org: @organisation.name),
+                 class: 'btn btn-primary'
+
+  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.update_teachers', org: @organisation.name)
+    = form_with scope: :teacher_upload,
+                html: { class: 'form',
+                        data: { action: 'teacher-uploader#displayStudents',
+                                controller: 'teacher-uploader',
+                                'teacher-uploader-org-value': @organisation.id,
+                                'teacher-uploader-action-value': 'update' },
+                        id: 'teacher_update_form' } do |f|
+      = f.file_field :file,
+                     required: true,
+                     data: { 'teacher-uploader-target': 'fileInput' }
+      = f.submit t('.update_teachers', org: @organisation.name),
+                 class: 'btn btn-primary'

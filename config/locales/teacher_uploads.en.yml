@@ -1,0 +1,5 @@
+en:
+  teacher_uploads:
+    new:
+      create_teachers: "Create Teachers at %{org}"
+      update_teachers: "Update Teachers at %{org}"
