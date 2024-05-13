@@ -1,0 +1,5 @@
+ja:
+  teacher_uploads:
+    new:
+      create_teachers: "%{org} の先生を作成"
+      update_teachers: "%{org} の先生を更新"

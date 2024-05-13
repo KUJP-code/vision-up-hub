@@ -19,6 +19,17 @@ module ApplicationHelper
             class: main_nav_class(title, controller_name)
   end
 
+  def main_nav_class(title, controller)
+    default_classes = 'p-3 hover:scale-105 transition'
+    if controller == title ||
+       controller.include?(title) ||
+       user_subcontroller?(controller, title)
+      return "#{default_classes} text-color-main bg-white rounded-lg"
+    end
+
+    "#{default_classes} text-white"
+  end
+
   def org_theme(user = nil)
     org_themes = [2, 3]
     org_id = user ? user.organisation_id : params[:organisation_id].to_i
@@ -64,17 +75,6 @@ module ApplicationHelper
   end
 
   private
-
-  def main_nav_class(title, controller)
-    default_classes = 'p-3 hover:scale-105 transition'
-    if controller == title ||
-       controller.include?(title) ||
-       user_subcontroller?(controller, title)
-      return "#{default_classes} text-color-main bg-white rounded-lg"
-    end
-
-    "#{default_classes} text-white"
-  end
 
   def user_subcontroller?(controller, title)
     return false if title != 'users' || current_user_own_profile?

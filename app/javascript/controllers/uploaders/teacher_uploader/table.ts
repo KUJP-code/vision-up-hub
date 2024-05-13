@@ -1,7 +1,7 @@
 import type { status } from "../declarations.d.ts";
-import type { student } from "./student_uploader_controller.ts";
+import type { teacher } from "./teacher_uploader_controller.ts";
 
-const requiredFields = ["name", "level", "school_id"];
+const requiredFields = ["name", "email", "password", "password_confirmation"];
 
 // Css constants
 const invalidClasses = [
@@ -23,37 +23,33 @@ const pendingClasses = [
 	"text-color-secondary",
 ];
 
-export function newStudentUploadTable() {
+export function newTeacherUploadTable() {
 	return `
 			<table class="w-full text-center">
 				<thead>
 					<tr>
 						<th class="p-2 bg-color-main/50 rounded-s-lg border-r border-r-white">Name</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Student ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Level</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">School ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Parent ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Start Date</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Quit Date</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Birthday</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Email</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Password</th>
+						<th class="p-2 bg-color-main/50 border-r border-r-white">Password Confirmation</th>
 						<th class="p-2 bg-color-main/50 rounded-e-lg">Status</th>
 					</tr>
 				</thead>
-				<tbody id="student-table">
+				<tbody id="teacher-table">
 				</tbody>
 			</table>
 			`;
 }
 
-export function addStudentRow({
-	csvStudent,
+export function addTeacherRow({
+	csvTeacher,
 	index,
 	status = "Pending",
-}: { csvStudent: student; index: number; status?: status }) {
-	const table = document.querySelector("#student-table");
+}: { csvTeacher: teacher; index: number; status?: status }) {
+	const table = document.querySelector("#teacher-table");
 	const row = document.createElement("tr");
-	row.id = `student-row-${index}`;
-	if (validateStudent(csvStudent)) {
+	row.id = `teacher-row-${index}`;
+	if (validateTeacher(csvTeacher)) {
 		row.classList.add(...pendingClasses);
 	} else {
 		row.classList.add(...invalidClasses);
@@ -65,8 +61,8 @@ export function addStudentRow({
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvStudent)) {
-		rowContents += attributeCellHTML(csvStudent, attribute);
+	for (const attribute of Object.keys(csvTeacher)) {
+		rowContents += attributeCellHTML(csvTeacher, attribute);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -79,21 +75,21 @@ export function addStudentRow({
 	}
 }
 
-function validateStudent(student: student) {
-	return requiredFields.every((field) => student[field]);
+function validateTeacher(teacher: teacher) {
+	return requiredFields.every((field) => teacher[field]);
 }
 
-function attributeCellHTML(student: student, attribute: string) {
+function attributeCellHTML(teacher: teacher, attribute: string) {
 	if (requiredFields.includes(attribute)) {
 		return `
-			<td>${student[attribute] || "なし"}</td>
+			<td>${teacher[attribute] || "なし"}</td>
 
 	`;
 	}
 
 	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${
-			student[attribute] || "なし"
+		<td class="p-2 ${teacher[attribute] ? "" : missingClasses.join(" ")}">${
+			teacher[attribute] || "なし"
 		}</td>
 	`;
 }

@@ -1,21 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
-import { addStudentRow, newStudentUploadTable } from "./table.ts";
-import { createStudent, updateStudent } from "./api.ts";
+import { addTeacherRow, newTeacherUploadTable } from "./table.ts";
+import { createTeacher, updateTeacher } from "./api.ts";
 import { newUploadSummary } from "../summary.ts";
 
-export interface student {
+export interface teacher {
 	name: string;
-	student_id: string;
-	level: string;
-	school_id: string;
-	parent_id: string;
-	start_date: string;
-	quit_date: string;
-	birthday: string;
+	email: string;
+	password: string;
+	password_confirmation: string;
 }
 
-// Connects to data-controller="student-uploader"
+// Connects to data-controller="teacher-uploader"
 export default class extends Controller<HTMLFormElement> {
 	static targets = ["fileInput"];
 	static values = {
@@ -27,7 +23,7 @@ export default class extends Controller<HTMLFormElement> {
 	declare readonly orgValue: number;
 	declare readonly actionValue: "create" | "update";
 
-	async displayStudents(e: SubmitEvent) {
+	async displayTeachers(e: SubmitEvent) {
 		e.preventDefault();
 		let csv: string | undefined;
 		if (this.fileInputTarget?.files) {
@@ -37,26 +33,26 @@ export default class extends Controller<HTMLFormElement> {
 			alert("Please select a CSV file");
 			return;
 		}
-		const students: student[] = await this.parseCSV(csv);
+		const teachers: teacher[] = await this.parseCSV(csv);
 
 		const main = document.querySelector("main");
 		if (main) {
-			main.innerHTML = newStudentUploadTable();
-			main.prepend(newUploadSummary(students.length));
+			main.innerHTML = newTeacherUploadTable();
+			main.prepend(newUploadSummary(teachers.length));
 		} else {
 			alert("Could not find main element");
 			return;
 		}
-		for (const [i, s] of students.entries()) {
-			addStudentRow({ csvStudent: s, index: i });
+		for (const [i, s] of teachers.entries()) {
+			addTeacherRow({ csvTeacher: s, index: i });
 		}
 
-		this.uploadStudents(students);
+		this.uploadTeachers(teachers);
 	}
 
-	parseCSV(csv: string): Promise<student[]> {
+	parseCSV(csv: string): Promise<teacher[]> {
 		return new Promise((resolve, reject) => {
-			Papa.parse<student>(csv, {
+			Papa.parse<teacher>(csv, {
 				header: true,
 				skipEmptyLines: true,
 				fastMode: true,
@@ -70,14 +66,14 @@ export default class extends Controller<HTMLFormElement> {
 		});
 	}
 
-	async uploadStudents(students: student[]) {
-		while (students.length > 0) {
-			const index = students.length - 1;
-			const student = students.pop();
-			if (student === undefined) continue;
+	async uploadTeachers(teachers: teacher[]) {
+		while (teachers.length > 0) {
+			const index = teachers.length - 1;
+			const teacher = teachers.pop();
+			if (teacher === undefined) continue;
 			this.actionValue === "create"
-				? await createStudent(student, this.orgValue, index)
-				: await updateStudent(student, this.orgValue, index);
+				? await createTeacher(teacher, this.orgValue, index)
+				: await updateTeacher(teacher, this.orgValue, index);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StudentUploadPolicy < ApplicationPolicy
+class ParentUploadPolicy < ApplicationPolicy
   def index?
     false
   end
@@ -18,11 +18,11 @@ class StudentUploadPolicy < ApplicationPolicy
   end
 
   def update?
-    user.is?('Admin', 'OrgAdmin')
+    false
   end
 
   def create?
-    user.is?('Admin', 'OrgAdmin')
+    false
   end
 
   def destroy?

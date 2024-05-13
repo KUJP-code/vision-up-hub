@@ -12,30 +12,22 @@ class StudentUploadsController < ApplicationController
   def create
     @student = authorize Student.new(student_upload_params)
     @index = params[:index].to_i
+    @status = 'Uploaded'
+    return if @student.save
 
-    if @student.save
-      # render a turbo stream success partial
-    else
-      @errors = @student.errors.full_messages.to_sentence
-      @schools = policy_scope(School).pluck(:name, :id)
-      # render a turbo stream error partial
-    end
+    set_errors
   end
 
   def update
-    @student = Student.find_by(
+    @student = authorize Student.find_by(
       student_id: student_upload_params[:student_id],
       school_id: student_upload_params[:school_id]
     )
     @index = params[:index].to_i
+    @status = 'Uploaded'
+    return if @student.update(student_upload_params)
 
-    if @student.update(student_upload_params)
-      # render a turbo stream success partial
-    else
-      @errors = @student.errors.full_messages.to_sentence
-      @schools = policy_scope(School).pluck(:name, :id)
-      # render a turbo stream error partial
-    end
+    set_errors
   end
 
   private
@@ -44,5 +36,11 @@ class StudentUploadsController < ApplicationController
     params.require(:student_upload).permit(
       :birthday, :level, :name, :parent_id, :quit_date, :school_id, :start_date, :student_id
     )
+  end
+
+  def set_errors
+    @errors = @student.errors.full_messages.to_sentence
+    @schools = policy_scope(School).pluck(:name, :id)
+    @status = 'Error'
   end
 end
