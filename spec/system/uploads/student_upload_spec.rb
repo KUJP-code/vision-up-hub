@@ -3,9 +3,6 @@
 require 'rails_helper'
 require 'csv'
 
-# TODO: The feature works, but I can't get the test to make a request.
-# Request.js never makes a PATCH request to the backend in test
-# regardless of how long I wait. So this just test parsing for now.
 RSpec.describe 'creating student records from a CSV', :js do
   let(:user) { create(:user, :org_admin) }
 
@@ -33,16 +30,20 @@ end
 def create_students_csv
   students = create_students
   CSV.open('tmp/students.csv', 'w') do |csv|
-    csv << Student.new.attributes.keys
+    csv << %w[name student_id level school_id parent_id start_date quit_date birthday]
     students.each do |student|
-      csv << student.attributes.values
+      csv << student
     end
   end
 end
 
 def create_students
   school = create(:school)
-  students = build_list(:student, 2, school_id: school.id)
-  invalid_student = build(:student, name: '', level: '', school_id: school.id)
+  students = build_list(:student, 2)
+  invalid_student = build(:student, name: '', level: '')
   students << invalid_student
+  students.map do |s|
+    [s.name, s.student_id, s.level, school.id, s.parent_id,
+     s.start_date, s.quit_date, s.birthday]
+  end
 end
