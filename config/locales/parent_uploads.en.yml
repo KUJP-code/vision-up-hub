@@ -1,0 +1,5 @@
+en:
+  parent_uploads:
+    new:
+      create_parents: "Create Parents at %{org}"
+      update_parents: "Update Parents at %{org}"

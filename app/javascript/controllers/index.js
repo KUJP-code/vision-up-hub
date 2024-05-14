@@ -19,14 +19,23 @@ application.register("print", PrintController);
 import ScrollToController from "./scroll_to_controller";
 application.register("scroll-to", ScrollToController);
 
-import StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller";
-application.register("student-uploader", StudentUploaderController);
-
 import TestResultController from "./test_result_controller";
 application.register("test-result", TestResultController);
 
 import ThemeController from "./theme_controller";
 application.register("theme", ThemeController);
+
+import UploadSummaryController from "./uploaders/upload_summary_controller";
+application.register("upload-summary", UploadSummaryController);
+
+import ParentUploaderController from "./uploaders/parent_uploader/parent_uploader_controller";
+application.register("parent-uploader", ParentUploaderController);
+
+import StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller";
+application.register("student-uploader", StudentUploaderController);
+
+import TeacherUploaderController from "./uploaders/teacher_uploader/teacher_uploader_controller";
+application.register("teacher-uploader", TeacherUploaderController);
 
 import ValidityController from "./validity_controller";
 application.register("validity", ValidityController);

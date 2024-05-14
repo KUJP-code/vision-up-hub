@@ -59,6 +59,10 @@ en:
       format:
         delimiter: ""
   shared:
+    upload_selector:
+      students: "Students"
+      uploads: "Uploads"
+      users: "Users"
     visibility_toggles:
       accepted: "Accepted"
       changes_needed: "Changes Needed"

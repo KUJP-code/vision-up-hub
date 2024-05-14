@@ -1,0 +1,5 @@
+= turbo_stream.replace "teacher-row-#{@index}" do
+  - if @errors
+    = render 'teacher_uploads/error', teacher: @teacher
+  - else
+    = render 'teacher_uploads/success', teacher: @teacher

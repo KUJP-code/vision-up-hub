@@ -1,0 +1,7 @@
+= turbo_stream.replace "parent-row-#{@index}" do
+  - if @errors
+    = render 'parent_uploads/error', parent: @parent
+  - else
+    = render 'parent_uploads/success', parent: @parent
+
+= turbo_stream.remove "parent-errors-#{@index}" unless @errors

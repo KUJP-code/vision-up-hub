@@ -4,19 +4,16 @@ module PdfImageable
   extend ActiveSupport::Concern
 
   included do
-    validate :pdf_image_filetypes
+    validate :valid_pdf_image_filetype?
+
+    has_one_attached :pdf_image
 
     private
 
-    def pdf_image_filetypes
-      self.class::PDF_IMAGEABLE_ATTRIBUTES.each do |attr|
-        next if send(attr).blank? || valid_filetype?(attr)
-      end
-    end
+    def valid_pdf_image_filetype?
+      return true if pdf_image.blank?
 
-    def valid_filetype?(attr)
-      image = send(attr)
-      extension = image.content_type.split('/').last
+      extension = pdf_image.content_type.split('/').last
       return true if %w[png jpg jpeg].include?(extension)
 
       image.purge

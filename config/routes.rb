@@ -29,7 +29,12 @@ Rails.application.routes.draw do
 
       resources :organisations, except: %i[destroy] do
         resources :schools
-        resources :student_uploads, only: %i[create new update]
+        resources :student_uploads, only: %i[create new]
+        patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
+        resources :teacher_uploads, only: %i[create new]
+        patch 'teacher_uploads', to: 'teacher_uploads#update', as: :teacher_uploads_update
+        resources :parent_uploads, only: %i[create new]
+        patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
 
         resources :users, except: %i[destroy]
         resources :admins, except: %i[destroy]

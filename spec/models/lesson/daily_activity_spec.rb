@@ -20,13 +20,12 @@ RSpec.describe DailyActivity do
   end
 
   context 'when generating PDF guide' do
-    it 'contains title, subcategory, links and instructions' do
+    it 'contains title, subcategory and instructions' do
       pdf = daily_activity.attach_guide
       text_analysis = PDF::Inspector::Text.analyze(pdf)
       expect(text_analysis.strings)
         .to include(
-          'Test Daily Activity', 'Discovery', 'Instructions:', '1. Instruction 1',
-          '2. Instruction 2', 'Links:', 'Example link', 'Seasonal'
+          'Test Daily Activity', 'Discovery', '1. Instruction 1', '2. Instruction 2'
         )
     end
   end

@@ -22,8 +22,6 @@ module PdfList
     pdf.move_down GAP
   end
 
-  private
-
   def add_title(pdf, title)
     pdf.move_down PADDING
     pdf.text title, size: HEADING_SIZE, indent_paragraphs: PADDING
@@ -41,12 +39,15 @@ module PdfList
     )
   end
 
-  def array_to_list(array, type)
-    if type == :number
+  def array_to_list(array, style = nil)
+    case style
+    when :number
       array.map.with_index { |step, i| "#{i + 1}. #{step}" }
            .join("\n")
-    else
+    when :dot
       array.map { |step| "• #{step}" }.join("\n")
+    else
+      array.join("\n")
     end
   end
 end

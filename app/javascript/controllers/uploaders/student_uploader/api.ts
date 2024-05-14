@@ -1,6 +1,5 @@
-import type { student } from "./declarations.d.ts";
-
 import { patch, post } from "@rails/request.js";
+import type { student } from "./student_uploader_controller";
 
 export async function createStudent(
 	student: student,

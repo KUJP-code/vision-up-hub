@@ -2,7 +2,7 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfDefaults, PdfHeader, PdfLinks, PdfList
+  include PdfHeader, PdfLinks, PdfList
 
   included do
     private

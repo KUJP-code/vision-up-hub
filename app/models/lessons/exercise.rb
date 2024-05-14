@@ -28,8 +28,6 @@ class Exercise < Lesson
     outro
   ].freeze
 
-  PDF_IMAGEABLE_ATTRIBUTES = %i[guide_image].freeze
-
   enum subtype: {
     aerobics: 0,
     control: 1,
@@ -38,8 +36,6 @@ class Exercise < Lesson
   }
 
   validates :intro, :instructions, presence: true
-
-  has_one_attached :guide_image
 
   def icon_filename
     "#{subtype}.svg"

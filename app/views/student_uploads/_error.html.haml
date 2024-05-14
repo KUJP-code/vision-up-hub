@@ -1,0 +1,41 @@
+:ruby
+  id = form = "student-#{@index}"
+  if @student.new_record?
+    url = organisation_student_uploads_update_path(params[:organisation_id])
+    method = :student_patch
+  else
+    url = organisation_student_uploads_path(params[:organisation_id])
+    method = :student_post
+  end
+
+%tr.error{ data: { controller: 'upload-summary',
+                   'upload-summary-status-value': 'Error' },
+           id: "student-row-#{@index}" }
+  %td.bg-red-200= text_field_tag 'student_upload[name]', @student.name, form:
+  %td.bg-red-200= text_field_tag 'student_upload[student_id]', @student.student_id, form:
+  %td.bg-red-200
+    = select_tag 'student_upload[level]',
+                 options_for_select(Student.levels.keys.map { |l| [l.titleize, l] },
+                                    @student.level),
+                 class: 'bg-white',
+                 form:
+  %td.bg-red-200
+    = select_tag 'student_upload[school_id]',
+                 options_for_select(@schools, @student.school_id),
+                 class: 'bg-white',
+                 form:
+  %td.bg-red-200= number_field_tag 'student_upload[parent_id]', @student.parent_id, form:
+  %td.bg-red-200= date_field_tag 'student_upload[start_date]', @student.start_date, form:
+  %td.bg-red-200= date_field_tag 'student_upload[quit_date]', @student.quit_date, form:
+  %td.bg-red-200= date_field_tag 'student_upload[birthday]', @student.birthday, form:
+  %td.bg-red-200
+    = form_with model: @student, url:, method:, scope: :student_upload,
+                html: { class: 'flex items-center justify-center gap-2 p-2',
+                        id: } do |f|
+      %p Error
+      %span.material-symbols-outlined.animate-pulse error
+
+      = hidden_field_tag(:index, @index, form:)
+      = f.submit class: 'btn btn-primary'
+%tr{ id: "student-errors-#{@index}" }
+  %td.bg-red-200{ colspan: 9 }= @errors

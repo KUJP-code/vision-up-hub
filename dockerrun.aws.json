@@ -1,7 +1,15 @@
 {
   "AWSEBDockerrunVersion": "1",
+  "containerDefinitions": [
+    {
+      "linuxParameters": {
+        "maxSwap": 48000,
+        "swappiness": 0
+      }
+    }
+  ],
   "Image": {
-    "Name": "thatbballguy/materials:0.9.1-icons"
+    "Name": "thatbballguy/materials:0.10.4-enable-swap"
   },
   "Ports": [
     {

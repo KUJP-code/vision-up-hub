@@ -1,4 +1,5 @@
-import type { status, student } from "./declarations.d.ts";
+import type { status } from "../declarations.d.ts";
+import type { student } from "./student_uploader_controller.ts";
 
 const requiredFields = ["name", "level", "school_id"];
 
@@ -58,6 +59,7 @@ export function addStudentRow({
 		row.classList.add(...invalidClasses);
 		status = "Invalid";
 	}
+
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}

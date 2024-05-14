@@ -1,0 +1,15 @@
+-# locals: (student:)
+
+%tr.uploaded{ data: { controller: 'upload-summary',
+                      'upload-summary-status-value': 'Uploaded' } }
+  %td.bg-green-200= student.name
+  %td.bg-green-200= student.student_id
+  %td.bg-green-200= student.level
+  %td.bg-green-200= student.school.name
+  %td.bg-green-200= student.parent_id
+  %td.bg-green-200= student.start_date
+  %td.bg-green-200= student.quit_date
+  %td.bg-green-200= student.birthday
+  %td.bg-green-200.flex.items-center.justify-center.gap-2.p-2
+    %p Uploaded
+    %span.material-symbols-outlined download_done

@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.3.0'
+ruby '3.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: "main"
 gem 'rails', '7.1.3.2'
@@ -73,6 +73,9 @@ gem 'http_accept_language', '2.1.1'
 # Lock rdoc version for CVE-2024-27281
 gem 'rdoc', '6.6.3.1'
 
+# Lock nokogiri for CVE-2024-34459
+gem 'nokogiri', '1.16.5'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
@@ -118,4 +121,7 @@ group :test do
 
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
+
+  # CSV for creating test CSVs to upload
+  gem 'csv', '~> 3.3'
 end

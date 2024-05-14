@@ -11,6 +11,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+*Zone.Identifier
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*

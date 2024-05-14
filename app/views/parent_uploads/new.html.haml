@@ -1,0 +1,43 @@
+= content_for :head do
+  %link{ rel: 'stylesheet',
+         href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
+- if current_user.is?('Admin')
+  %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
+    - @orgs.each do |org|
+      = link_to org.name,
+                new_organisation_parent_upload_path(organisation_id: org.id),
+                class: "sub_nav_link #{'bg-color-main' if org.id == @organisation.id}"
+
+%main.flex.flex-col.justify-start.gap-12.overflow-y-auto.p-3
+  = render 'parent_uploads/format_explainer'
+
+  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.create_parents', org: @organisation.name)
+    = form_with scope: :parent_upload,
+                html: { class: 'form',
+                        data: { controller: 'parent-uploader',
+                                action: 'parent-uploader#displayParents',
+                                'parent-uploader-org-value': @organisation.id,
+                                'parent-uploader-action-value': 'create' },
+                        id: 'parent_create_form' } do |f|
+      = f.file_field :file,
+                     required: true,
+                     data: { 'parent-uploader-target': 'fileInput' }
+      = f.submit t('.create_parents', org: @organisation.name),
+                 class: 'btn btn-primary'
+
+  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+    %h2= t('.update_parents', org: @organisation.name)
+    = form_with scope: :parent_upload,
+                html: { class: 'form',
+                        data: { action: 'parent-uploader#displayParents',
+                                controller: 'parent-uploader',
+                                'parent-uploader-org-value': @organisation.id,
+                                'parent-uploader-action-value': 'update' },
+                        id: 'parent_update_form' } do |f|
+      = f.file_field :file,
+                     required: true,
+                     data: { 'parent-uploader-target': 'fileInput' }
+      = f.submit t('.update_parents', org: @organisation.name),
+                 class: 'btn btn-primary'

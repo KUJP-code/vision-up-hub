@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
-  include DailyActivityPdf, Linkable, Listable
+  include DailyActivityPdf, Linkable, Listable, PdfImageable
 
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
   ATTRIBUTES = %i[
     subtype
+    pdf_image
+    warning
     land_lang_goals
     sky_lang_goals
     galaxy_lang_goals
@@ -52,8 +54,6 @@ class DailyActivity < Lesson
     motor_skills: 9,
     coloring: 10
   }
-
-  has_many_attached :instructions_images
 
   def icon_filename
     "#{subtype}.svg"

@@ -1,33 +1,7 @@
 = turbo_stream.replace "student-row-#{@index}" do
   - if @errors
-    %tr.border.border-red-500
-      = form_with model: @student do |f|
-        %td.bg-red-200= f.text_field :name
-        %td.bg-red-200= f.text_field :student_id
-        %td.bg-red-200
-          = f.select :level,
-                     Student.levels.keys.map { |l| [l.titleize, l] }
-        %td.bg-red-200= f.select :school_id, @schools
-        %td.bg-red-200= f.number_field :parent_id
-        %td.bg-red-200= f.date_field :start_date
-        %td.bg-red-200= f.date_field :quit_date
-        %td.bg-red-200= f.date_field :birthday
-        %td.bg-red-200.flex.items-center.justify-center.gap-2.p-2
-          %p Error
-          %span.material-symbols-outlined.animate-pulse error
-          = f.submit class: 'btn btn-primary'
-    %tr
-      %td.bg-red-200{ colspan: 9 }= @errors
+    = render 'student_uploads/error', student: @student
   - else
-    %tr.border.border-green-500
-      %td.bg-green-200= @student.name
-      %td.bg-green-200= @student.student_id
-      %td.bg-green-200= @student.level
-      %td.bg-green-200= @student.school.name
-      %td.bg-green-200= @student.parent_id
-      %td.bg-green-200= @student.start_date
-      %td.bg-green-200= @student.quit_date
-      %td.bg-green-200= @student.birthday
-      %td.bg-green-200.flex.items-center.justify-center.gap-2.p-2
-        %p Uploaded
-        %span.material-symbols-outlined download_done
+    = render 'student_uploads/success', student: @student
+
+= turbo_stream.remove "student-errors-#{@index}" unless @errors

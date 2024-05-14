@@ -1,8 +1,8 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.0
-FROM quay.io/evl.ms/fullstaq-ruby:3.3.0-jemalloc-bookworm-slim as base
+ARG RUBY_VERSION=3.3.1
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-bookworm-slim as base
 
 # Rails app lives here
 WORKDIR /rails
@@ -29,7 +29,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 				libvips libyaml-dev unzip
 
 # Install Bun
-ARG BUN_VERSION=1.1.4
+ARG BUN_VERSION=1.1.8
 ENV BUN_INSTALL=/usr/local/bun
 ENV PATH=/usr/local/bun/bin:$PATH
 RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v${BUN_VERSION}"
