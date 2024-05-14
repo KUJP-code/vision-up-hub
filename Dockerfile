@@ -1,8 +1,8 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.0
-FROM quay.io/evl.ms/fullstaq-ruby:3.3.0-jemalloc-bookworm-slim as base
+ARG RUBY_VERSION=3.3.1
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-bookworm-slim as base
 
 # Rails app lives here
 WORKDIR /rails
