@@ -73,6 +73,9 @@ gem 'http_accept_language', '2.1.1'
 # Lock rdoc version for CVE-2024-27281
 gem 'rdoc', '6.6.3.1'
 
+# Lock nokogiri for CVE-2024-34459
+gem 'nokogiri', '1.16.5'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
