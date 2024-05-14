@@ -3,6 +3,8 @@
 require 'rails_helper'
 require 'csv'
 
+# For some reason this test never makes the request to create the students
+# So just test the CSV parsing for now
 RSpec.describe 'creating student records from a CSV', :js do
   let(:user) { create(:user, :org_admin) }
 

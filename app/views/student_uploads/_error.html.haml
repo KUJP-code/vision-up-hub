@@ -35,7 +35,7 @@
       %p Error
       %span.material-symbols-outlined.animate-pulse error
 
-      = hidden_field(:index, @index, form:)
+      = hidden_field_tag(:index, @index, form:)
       = f.submit class: 'btn btn-primary'
 %tr{ id: "student-errors-#{@index}" }
   %td.bg-red-200{ colspan: 9 }= @errors
