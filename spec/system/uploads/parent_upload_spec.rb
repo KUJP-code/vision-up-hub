@@ -24,6 +24,7 @@ RSpec.describe 'creating parent records from a CSV', :js do
     expect(find_by_id('pending_count')).to have_content('3')
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
+    expect(Parent.count).to eq(2)
   end
 end
 
@@ -32,7 +33,7 @@ def create_parents_csv
   CSV.open('tmp/parents.csv', 'w') do |csv|
     csv << %w[name email password password_confirmation]
     parents.each do |parent|
-      csv << parent.attributes.values
+      csv << parent
     end
   end
 end

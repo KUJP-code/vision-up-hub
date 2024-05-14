@@ -24,6 +24,7 @@ RSpec.describe 'creating teacher records from a CSV', :js do
     expect(find_by_id('pending_count')).to have_content('3')
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
+    expect(Teacher.count).to eq(2)
   end
 end
 

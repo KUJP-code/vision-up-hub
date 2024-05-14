@@ -28,6 +28,9 @@ application.register("theme", ThemeController);
 import UploadSummaryController from "./uploaders/upload_summary_controller";
 application.register("upload-summary", UploadSummaryController);
 
+import ParentUploaderController from "./uploaders/parent_uploader/parent_uploader_controller";
+application.register("parent-uploader", ParentUploaderController);
+
 import StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller";
 application.register("student-uploader", StudentUploaderController);
 
