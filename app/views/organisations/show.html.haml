@@ -4,6 +4,9 @@
   %h2.text-start
     = link_to "Plan: #{@plan.name || 'No Plan'}",
               plan_path(@plan)
+  = link_to t('.add_school'),
+            new_organisation_school_path(@organisation),
+            class: 'btn btn-info'
   - if @schools.any?
     %h2.text-start Total Students: #{@schools.sum(&:students_count)}
   - if @admins.any?
@@ -11,5 +14,5 @@
   = render 'organisations/new_parent_link', org_id: @organisation.id
 
   - if @schools.any?
-    %h2 Schools
+    %h2= link_to t('.schools'), organisation_schools_path(@organisation)
     = render 'schools/table', schools: @schools

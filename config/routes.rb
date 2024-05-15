@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
       resources :organisations, except: %i[destroy] do
         resources :schools
+
         resources :student_uploads, only: %i[create new]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
         resources :teacher_uploads, only: %i[create new]

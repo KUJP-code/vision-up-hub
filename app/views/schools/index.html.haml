@@ -2,7 +2,7 @@
 
 %main.flex.flex-col.p-3.gap-3
   = link_to t('.create_school'),
-            new_organisation_school_path(current_user.organisation_id),
-            class: 'btn btn-primary'
+            new_organisation_school_path(params[:organisation_id]),
+            class: 'btn btn-info'
 
   = render 'schools/table', schools: @schools

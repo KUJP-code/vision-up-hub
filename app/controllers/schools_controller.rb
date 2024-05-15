@@ -23,7 +23,7 @@ class SchoolsController < ApplicationController
 
   def create
     @school = authorize School.new(
-      school_params.merge(organisation_id: current_user.organisation_id)
+      school_params.merge(organisation_id: params[:organisation_id])
     )
 
     if @school.save
