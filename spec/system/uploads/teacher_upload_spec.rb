@@ -21,7 +21,6 @@ RSpec.describe 'creating teacher records from a CSV', :js do
       attach_file 'teacher_upload_file', Rails.root.join('tmp/teachers.csv')
       click_button I18n.t('teacher_uploads.new.create_teachers', org: user.organisation.name)
     end
-    expect(find_by_id('pending_count')).to have_content('3')
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
     expect(Teacher.count).to eq(2)

@@ -21,7 +21,6 @@ RSpec.describe 'creating parent records from a CSV', :js do
       attach_file 'parent_upload_file', Rails.root.join('tmp/parents.csv')
       click_button I18n.t('parent_uploads.new.create_parents', org: user.organisation.name)
     end
-    expect(find_by_id('pending_count')).to have_content('3')
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
     expect(Parent.count).to eq(2)

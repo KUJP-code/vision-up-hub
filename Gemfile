@@ -49,7 +49,7 @@ gem 'prawn', '2.4.0'
 
 # Generate PDF previews
 gem 'image_processing', '1.12.2'
-gem 'poppler', '4.2.0'
+gem 'poppler', '4.2.2'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
