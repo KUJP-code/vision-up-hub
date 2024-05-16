@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.5-retry-s3"
+    "Name": "thatbballguy/materials:0.10.6-org-schools"
   },
   "Ports": [
     {
