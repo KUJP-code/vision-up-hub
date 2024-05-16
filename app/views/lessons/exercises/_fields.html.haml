@@ -2,7 +2,10 @@
 
 = f.hidden_field :type, value: lesson.type
 
-= render 'lessons/shared/pdf_image_field', f:
+= render 'lessons/shared/pdf_image_field',
+         f:,
+         lesson:,
+         attr: :pdf_image
 
 .form-group
   = f.label :subtype
