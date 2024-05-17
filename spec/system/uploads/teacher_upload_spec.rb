@@ -24,6 +24,15 @@ RSpec.describe 'creating teacher records from a CSV', :js do
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
     expect(Teacher.count).to eq(2)
+    within '#teacher-row-2' do
+      fill_in 'teacher_upload[name]', with: 'Jane Doe'
+      fill_in 'teacher_upload[email]', with: 'jane@doe.com'
+      fill_in 'teacher_upload[password]', with: 'testpassword'
+      fill_in 'teacher_upload[password_confirmation]', with: 'testpassword'
+      click_button 'Create User'
+    end
+    expect(page).to have_css('.uploaded', count: 3)
+    expect(Teacher.count).to eq(3)
   end
 end
 
