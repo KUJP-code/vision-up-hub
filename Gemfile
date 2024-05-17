@@ -76,6 +76,9 @@ gem 'rdoc', '6.6.3.1'
 # Lock nokogiri for CVE-2024-34459
 gem 'nokogiri', '1.16.5'
 
+# Lock rexml for CVE-2024-35176
+gem 'rexml', '3.2.8'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
