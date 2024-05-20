@@ -24,6 +24,15 @@ RSpec.describe 'creating parent records from a CSV', :js do
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
     expect(Parent.count).to eq(2)
+    within '#parent-row-2' do
+      fill_in 'parent_upload[name]', with: 'Jane Doe'
+      fill_in 'parent_upload[email]', with: 'jane@doe.com'
+      fill_in 'parent_upload[password]', with: 'testpassword'
+      fill_in 'parent_upload[password_confirmation]', with: 'testpassword'
+      click_button 'Create User'
+    end
+    expect(page).to have_css('.uploaded', count: 3)
+    expect(Parent.count).to eq(3)
   end
 end
 

@@ -1,18 +1,20 @@
 = render 'shared/subtitle', text: @organisation.name
 
 %main.flex.flex-col.gap-3.p-3
-  %h2.text-start
-    = link_to "Plan: #{@plan.name || 'No Plan'}",
-              plan_path(@plan)
+  - if @plan
+    %h2.text-start
+      = link_to "Plan: #{@plan.name}",
+                plan_path(@plan)
+  - else
+    %h2.text-start= t('.no_plan')
   = link_to t('.add_school'),
             new_organisation_school_path(@organisation),
             class: 'btn btn-info'
-  - if @schools.any?
-    %h2.text-start Total Students: #{@schools.sum(&:students_count)}
   - if @admins.any?
     %h2.text-start Admins: #{@admins.to_sentence}
   = render 'organisations/new_parent_link', org_id: @organisation.id
 
   - if @schools.any?
+    %h2.text-start Total Students: #{@schools.sum(&:students_count)}
     %h2= link_to t('.schools'), organisation_schools_path(@organisation)
     = render 'schools/table', schools: @schools
