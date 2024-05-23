@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.8-platform-swap"
+    "Name": "thatbballguy/materials:0.10.9-postdeploy-swap"
   },
   "Ports": [
     {
