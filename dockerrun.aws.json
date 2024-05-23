@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.6-org-schools"
+    "Name": "thatbballguy/materials:0.10.7-bump-sqmc"
   },
   "Ports": [
     {
