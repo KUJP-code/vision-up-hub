@@ -30,6 +30,14 @@ module ApplicationHelper
     "#{default_classes} text-white"
   end
 
+  def org_favicon(user = nil)
+    org_favicons = [1]
+    org_id = user ? user.organisation_id : params[:organisation_id].to_i
+
+    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'favicon.svg'
+    image_path(favicon_file)
+  end
+
   def org_theme(user = nil)
     org_themes = [2, 3]
     org_id = user ? user.organisation_id : params[:organisation_id].to_i

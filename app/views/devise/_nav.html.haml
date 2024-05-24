@@ -1,8 +1,8 @@
 -# locals: ()
 
-%nav.flex.items-center.gap-3.bg-color-main.h-16.text-white.font-bold.p-3
+%nav.flex.items-center.gap-3.bg-color-main.h-16.text-white.font-bold.px-3
   = link_to root_path do
-    %h1 Logo
+    %image{ height: '64px', width: '120px', src: org_favicon }
   = ja_date(Time.zone.today)
   .flex-grow
   = locale_toggle
