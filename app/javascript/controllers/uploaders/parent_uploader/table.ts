@@ -6,8 +6,8 @@ const requiredFields = ["name", "email", "password", "password_confirmation"];
 // Css constants
 const invalidClasses = [
 	"border",
-	"border-red-500",
-	"text-red-500",
+	"border-danger",
+	"text-danger",
 	"font-bold",
 ];
 const missingClasses = [
@@ -20,7 +20,7 @@ const pendingClasses = [
 	"border-slate-800",
 	"bg-slate-100",
 	"border-slate-500",
-	"text-color-secondary",
+	"text-secondary",
 ];
 
 export function newParentUploadTable() {
@@ -28,11 +28,11 @@ export function newParentUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-color-main-50 rounded-s border-r border-r-white">Name</th>
-						<th class="p-2 bg-color-main-50 border-r border-r-white">Email</th>
-						<th class="p-2 bg-color-main-50 border-r border-r-white">Password</th>
-						<th class="p-2 bg-color-main-50 border-r border-r-white">Password Confirmation</th>
-						<th class="p-2 bg-color-main-50 rounded-e">Status</th>
+						<th class="p-2 bg-main-50 rounded-s border-r border-r-white">Name</th>
+						<th class="p-2 bg-main-50 border-r border-r-white">Email</th>
+						<th class="p-2 bg-main-50 border-r border-r-white">Password</th>
+						<th class="p-2 bg-main-50 border-r border-r-white">Password Confirmation</th>
+						<th class="p-2 bg-main-50 rounded-e">Status</th>
 					</tr>
 				</thead>
 				<tbody id="parent-table">

@@ -4,11 +4,11 @@ module LessonHelper
   def status_color(lesson)
     case lesson.status
     when 'proposed', 'changes_needed'
-      'bg-color-main'
+      'bg-main'
     when 'accepted'
-      'bg-green-600'
+      'bg-success'
     when 'rejected'
-      'bg-red-500'
+      'bg-danger'
     end
   end
 

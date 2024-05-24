@@ -1,7 +1,7 @@
 - in_future = Time.zone.today < @date
 
 = render 'shared/subtitle',
-         classes: in_future ? 'bg-color-neutral-dark text-color-main' : '',
+         classes: in_future ? 'bg-neutral-dark text-main' : '',
          text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3

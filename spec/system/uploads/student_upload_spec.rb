@@ -24,7 +24,7 @@ RSpec.describe 'creating student records from a CSV', :js do
       click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
     end
     expect(find_by_id('pending_count')).to have_content('3')
-    expect(page).to have_css('.border-red-500', count: 1)
+    expect(page).to have_css('.border-danger', count: 1)
     expect(page).to have_css('.border-slate-500', count: 2)
   end
 end

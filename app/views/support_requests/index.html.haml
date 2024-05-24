@@ -3,10 +3,10 @@
 
 - unless current_user.is?('Admin')
   %details{
-    class: 'm-3 bg-color-secondary text-white font-semibold rounded overflow-hidden',
+    class: 'm-3 bg-secondary text-white font-semibold rounded overflow-hidden',
     id: 'create_request'
   }
-    %summary.cursor-pointer.bg-color-secondary.p-2
+    %summary.cursor-pointer.bg-secondary.p-2
       = current_user.is?('Parent') ? t('.new_message') : t('.new_request')
     = render 'support_requests/form',
              request: SupportRequest.new

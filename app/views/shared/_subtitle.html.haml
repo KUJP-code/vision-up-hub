@@ -1,10 +1,10 @@
 -# locals: (classes: '', text:)
 
-%div{ class: 'w-full bg-color-neutral-light text-color-neutral-dark font-semibold py-2 px-3 ' \
+%div{ class: 'w-full bg-neutral-light text-neutral-dark font-semibold py-2 px-3 ' \
              "relative #{classes}" }
   - unless viewing_self?
     = link_to :back,
               class: 'absolute inset-y-1/2 flex items-center gap-2 print:hidden' do
-      .w-0.h-0.border-r-8.border-r-color-neutral-dark.border-y-8.border-y-transparent.mt-1
+      .w-0.h-0.border-r-8.border-r-neutral-dark.border-y-8.border-y-transparent.mt-1
       %span.hidden.md:block= t('.back')
   %h1= text

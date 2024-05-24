@@ -14,8 +14,8 @@
   - unless weekdays.include?(Time.zone.today)
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                         id: @user.id, date: Time.zone.today),
-              class: 'self-stretch flex flex-col justify-center items-center gap-2 rounded-3xl bg-color-main p-2' do
-      %h3.rounded-full.bg-white.text-color-main.text-xl.font-bold.p-2
+              class: 'self-stretch flex flex-col justify-center items-center gap-2 rounded-3xl bg-main p-2' do
+      %h3.rounded-full.bg-white.text-main.text-xl.font-bold.p-2
         Click here
       %div
         %h3.font-bold.text-white Today's

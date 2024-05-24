@@ -18,7 +18,7 @@
 	input,
 	select,
 	textarea {
-		@apply border-2 border-color-main rounded;
+		@apply border-2 border-main rounded;
 		padding: 0.25rem;
 
 		&:disabled {
@@ -70,7 +70,7 @@
 	}
 
 	.btn-primary {
-		@apply bg-color-main;
+		@apply bg-main;
 	}
 
 	.btn-danger {
@@ -79,7 +79,7 @@
 	}
 
 	.btn-info {
-		@apply bg-color-secondary;
+		@apply bg-secondary;
 	}
 
 	.form {
@@ -107,7 +107,7 @@
 	}
 
 	.sub_nav_link {
-		@apply bg-color-secondary text-white rounded p-2;
+		@apply bg-secondary text-white rounded p-2;
 	}
 
 	.turbo-progress-bar {
@@ -115,6 +115,6 @@
 	}
 
 	.week-arrow {
-		@apply rounded-full flex items-center font-extrabold text-3xl text-color-main border-4 border-color-main p-1;
+		@apply rounded-full flex items-center font-extrabold text-3xl text-main border-4 border-main p-1;
 	}
 }

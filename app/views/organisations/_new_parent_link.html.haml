@@ -1,10 +1,10 @@
 -# locals: (org_id:)
 
-%div{ class: 'border-2 border-color-main rounded overflow-hidden w-fit',
+%div{ class: 'border-2 border-main rounded overflow-hidden w-fit',
       data: { controller: 'clipboard', 'clipboard-success-content-value': t('copied') } }
   %code.p-2{ data: { 'clipboard-target': 'source' } }
     = new_user_registration_url(organisation_id: org_id)
-  %button{ class: 'border-l-2 border-color-main bg-color-main-50 p-2 hover:bg-color-main-50',
+  %button{ class: 'border-l-2 border-main bg-main-50 p-2 hover:bg-main-50',
            data: { action: 'clipboard#copy',
                    'clipboard-target': 'button' },
            type: 'button' }

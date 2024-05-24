@@ -4,25 +4,25 @@
       id: 'student_details' }
   %ul{ class: 'basis-3/5 flex-shrink-0 font-bold' }
     %li.flex.flex-col
-      %span.text-color-secondary-50= t('.student_id')
-      %span.text-color-secondary= @student.student_id || 'なし'
+      %span.text-secondary-50= t('.student_id')
+      %span.text-secondary= @student.student_id || 'なし'
     %li.flex.flex-col
-      %span.text-color-secondary-50= t('.name')
-      %span.text-color-secondary= redact(@student)
+      %span.text-secondary-50= t('.name')
+      %span.text-secondary= redact(@student)
     %li.flex.flex-col
-      %span.text-color-secondary-50= t('.level')
-      %span.text-color-secondary= @student.level.titleize
+      %span.text-secondary-50= t('.level')
+      %span.text-secondary= @student.level.titleize
     %li.flex.flex-col
-      %span.text-color-secondary-50= t('.school')
-      %span.text-color-secondary= @student.school.name
+      %span.text-secondary-50= t('.school')
+      %span.text-secondary= @student.school.name
     - if @teachers.any?
       %li.flex.flex-col.teachers
-        %span.text-color-secondary-50= t('.teachers')
-        %span.text-color-secondary= @teachers.map(&:name).to_sentence
+        %span.text-secondary-50= t('.teachers')
+        %span.text-secondary= @teachers.map(&:name).to_sentence
     - if @classes.any?
       %li.flex.flex-col.classes
-        %span.text-color-secondary-50= t('.classes')
-        %span.text-color-secondary= @classes.map(&:name).to_sentence
+        %span.text-secondary-50= t('.classes')
+        %span.text-secondary= @classes.map(&:name).to_sentence
   %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
     = render 'shared/print_button', text: t('.print_report')
     = link_to t('edit'),

@@ -24,7 +24,7 @@ module ApplicationHelper
     if controller == title ||
        controller.include?(title) ||
        user_subcontroller?(controller, title)
-      return "#{default_classes} text-color-main bg-white rounded"
+      return "#{default_classes} text-main bg-white rounded"
     end
 
     "#{default_classes} text-white"

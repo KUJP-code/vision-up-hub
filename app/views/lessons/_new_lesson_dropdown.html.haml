@@ -1,10 +1,10 @@
 -# locals: ()
 
 %details{
-  class: 'cursor-pointer bg-color-main text-white font-semibold rounded overflow-hidden',
+  class: 'cursor-pointer bg-main text-white font-semibold rounded overflow-hidden',
   id: 'create_lesson'
 }
-  %summary.bg-color-secondary.p-2 Create a lesson
+  %summary.bg-secondary.p-2 Create a lesson
   %nav.flex.flex-col
     - Lesson::TYPES.each do |type|
       = link_to split_on_capitals(type),

@@ -4,19 +4,19 @@
   %thead
     %tr.text-white.font-bold.whitespace-nowrap
       %th
-        %p{ class: 'p-2 bg-color-secondary-50 rounded-s border-r border-r-white' }
+        %p{ class: 'p-2 bg-secondary-50 rounded-s border-r border-r-white' }
           = t('.level_check')
       %th
-        %p{ class: 'h-full p-2 bg-color-secondary-50 border-r.border-r-white' }
+        %p{ class: 'h-full p-2 bg-secondary-50 border-r.border-r-white' }
           = t('.score')
       %th
-        %p{ class: 'p-2 bg-color-secondary-50 border-r.border-r-white' } %
+        %p{ class: 'p-2 bg-secondary-50 border-r.border-r-white' } %
       %th
-        %p{ class: 'p-2 bg-color-secondary-50 rounded-e' }
+        %p{ class: 'p-2 bg-secondary-50 rounded-e' }
           = t('.new_level')
   %tbody
     - results.each do |result|
-      %tr{ class: 'text-center text-color-secondary border-b-2 border-color-neutral-dark/50' }
+      %tr{ class: 'text-center text-secondary border-b-2 border-neutral-dark/50' }
         %td.p-2
           = link_to result.created_at.strftime('%B %Y'),
                     student_path(@student.id, test_id: result.test_id),

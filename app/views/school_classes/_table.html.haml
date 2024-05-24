@@ -3,14 +3,14 @@
 %table.w-full.text-center
   %thead
     %tr
-      %th{ class: 'p-2 bg-color-main-50 rounded-s border-r border-r-white' }
+      %th{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' }
         = t('.name')
       - if current_user.is?('Admin', 'OrgAdmin')
-        %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
+        %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
           = t('.school')
-      %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
+      %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
         = t('.teachers')
-      %th{ class: 'p-2 bg-color-main-50 rounded-e' }
+      %th{ class: 'p-2 bg-main-50 rounded-e' }
         = t('.students')
   %tbody
     - classes.each do |school_class|
