@@ -28,7 +28,7 @@ export function newStudentUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-color-main/50 rounded-s-lg border-r border-r-white">Name</th>
+						<th class="p-2 bg-color-main/50 rounded-s border-r border-r-white">Name</th>
 						<th class="p-2 bg-color-main/50 border-r border-r-white">Student ID</th>
 						<th class="p-2 bg-color-main/50 border-r border-r-white">Level</th>
 						<th class="p-2 bg-color-main/50 border-r border-r-white">School ID</th>
@@ -36,7 +36,7 @@ export function newStudentUploadTable() {
 						<th class="p-2 bg-color-main/50 border-r border-r-white">Start Date</th>
 						<th class="p-2 bg-color-main/50 border-r border-r-white">Quit Date</th>
 						<th class="p-2 bg-color-main/50 border-r border-r-white">Birthday</th>
-						<th class="p-2 bg-color-main/50 rounded-e-lg">Status</th>
+						<th class="p-2 bg-color-main/50 rounded-e">Status</th>
 					</tr>
 				</thead>
 				<tbody id="student-table">

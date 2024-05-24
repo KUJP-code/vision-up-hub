@@ -17,7 +17,7 @@
         data: { 'nav-reveal-target': 'links' },
         id: 'main_nav_links' }
     .md:hidden.flex-grow.w-full.flex.justify-end.items-start
-      %button{ class: 'border border-white rounded-xl px-3 py-1',
+      %button{ class: 'border border-white rounded px-3 py-1',
                data: { action: 'nav-reveal#toggle' },
                type: 'button' }
         X
@@ -34,7 +34,7 @@
             destroy_user_session_path,
             data: { turbo_method: :delete },
             class: 'p-2 transition hover:scale-105 hidden md:block text-nowrap'
-  %button{ class: 'md:hidden border border-white rounded-xl p-2 self-center mr-2 ' \
+  %button{ class: 'md:hidden border border-white rounded p-2 self-center mr-2 ' \
                   'w-8 h-8 flex flex-col items-center justify-center gap-1',
            data: { action: 'nav-reveal#toggle' }, type: 'button' }
     %hr{ class: 'border border-white w-full' }

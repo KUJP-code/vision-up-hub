@@ -20,6 +20,9 @@ export default {
 							"color-main": "#fab650",
 							"color-secondary": "#7e7195",
 						},
+						borderRadius: {
+							DEFAULT: "0.5rem",
+						},
 					},
 				},
 				{
@@ -27,10 +30,13 @@ export default {
 					selectors: [".org_2"],
 					theme: {
 						colors: {
-							"color-neutral-light": "#000000",
-							"color-neutral-dark": "#ffffff",
-							"color-main": "#32cd32",
-							"color-secondary": "#f372b6",
+							"color-neutral-light": "#f9f9f9",
+							"color-neutral-dark": "#b1a9bc",
+							"color-main": "#fab650",
+							"color-secondary": "#7e7195",
+						},
+						borderRadius: {
+							DEFAULT: "0.5rem",
 						},
 					},
 				},
@@ -39,10 +45,13 @@ export default {
 					selectors: [".org_3"],
 					theme: {
 						colors: {
-							"color-neutral-light": "#f9f9f9",
-							"color-neutral-dark": "#4e4a4a",
-							"color-main": "#0054ac",
-							"color-secondary": "#5bb6d5",
+							"color-neutral-light": "#000000",
+							"color-neutral-dark": "#ffffff",
+							"color-main": "#32cd32",
+							"color-secondary": "#f372b6",
+						},
+						borderRadius: {
+							DEFAULT: "8rem",
 						},
 					},
 				},

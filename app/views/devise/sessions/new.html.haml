@@ -4,7 +4,7 @@
   = form_for resource,
              as: resource_name,
              url: session_path(resource_name),
-             html: { class: 'form bg-color-neutral-light rounded-lg p-6' } do |f|
+             html: { class: 'form bg-color-neutral-light rounded p-6' } do |f|
     .flex.items-center.justify-between.gap-6
       = f.label :email
       = f.email_field :email, autofocus: true, autocomplete: 'email'

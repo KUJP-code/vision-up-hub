@@ -4,7 +4,7 @@ const countClasses =
 export function newUploadSummary(studentCount: number) {
 	const summary = document.createElement("div");
 	summary.innerHTML = `
-		<div id="upload_summary" class="border-2 border-color-main rounded-xl p-3 flex flex-wrap justify-center">
+		<div id="upload_summary" class="border-2 border-color-main rounded p-3 flex flex-wrap justify-center">
 			<h1 class="text-3xl font-bold w-full text-color-secondary">Upload Status</h1>
 			<div class="${countClasses}">
 				<h3 class="text-color-secondary">Success</h3>

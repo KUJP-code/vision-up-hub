@@ -1,6 +1,6 @@
 -# locals: (org_id:)
 
-%div{ class: 'border-2 border-color-main rounded-xl overflow-hidden w-fit',
+%div{ class: 'border-2 border-color-main rounded overflow-hidden w-fit',
       data: { controller: 'clipboard', 'clipboard-success-content-value': t('copied') } }
   %code.p-2{ data: { 'clipboard-target': 'source' } }
     = new_user_registration_url(organisation_id: org_id)
