@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :files, only: %i[show]
       resources :lessons
       resources :lesson_searches, only: %i[index]
+      resources :lesson_uses, only: %i[index]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]
       resources :plans
