@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
 
   def show
     @lessons = @course.lessons
-                      .select(:id, :title, :type)
+                      .select(:id, :subtype, :title, :type)
                       .includes(:course_lessons)
   end
 

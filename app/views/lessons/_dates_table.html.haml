@@ -20,7 +20,7 @@
                          l.course_lessons.find { |cl| cl.course_id == @course.id } do |cl_f|
             %tr
               %td
-                = link_to l.title,
+                = link_to with_subtype(l),
                           lesson_path(l),
                           class: 'font-semibold'
               = render 'course_lessons/date_fields',

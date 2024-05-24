@@ -19,4 +19,10 @@ module LessonHelper
       links
     end
   end
+
+  def with_subtype(lesson)
+    return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype)
+
+    "#{lesson.title} (#{lesson.subtype.capitalize})"
+  end
 end
