@@ -38,6 +38,7 @@
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
   = render 'lessons/shared/attribute_list', lesson: @lesson
+  = render 'lessons/shared/resource_list', resources: @resources
 
   .flex.justify-center.gap-3
     = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',

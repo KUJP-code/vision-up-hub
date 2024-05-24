@@ -17,6 +17,7 @@ class LessonsController < ApplicationController
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
                         .includes(:creator)
+    @resources = @lesson.resources.includes(:blob)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 

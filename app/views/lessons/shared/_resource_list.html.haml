@@ -1,0 +1,9 @@
+-# locals: (resources:)
+
+.flex.gap-3
+  - @resources.each do |resource|
+    = link_to resource.filename,
+              file_path(resource.blob),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'btn btn-primary'
