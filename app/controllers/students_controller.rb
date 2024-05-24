@@ -82,7 +82,7 @@ class StudentsController < ApplicationController
   end
 
   def radar_data
-    radar_colors = ['250, 182, 80', '126, 113, 149', '156, 193, 216'].cycle
+    radar_colors = ['105, 192, 221', '100, 88, 128', '170, 218, 235', '178, 170, 191'].cycle
 
     {
       labels: %w[Reading Writing Listening Speaking],

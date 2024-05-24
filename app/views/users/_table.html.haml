@@ -4,24 +4,24 @@
   %table.w-full.text-center
     %thead
       %tr.text-color-secondary
-        %th{ class: 'p-2 bg-color-main/50 rounded-s border-r border-r-white' }
+        %th{ class: 'p-2 bg-color-main-50 rounded-s border-r border-r-white' }
           = t('.name')
-        %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+        %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
           = t('.role')
-        %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+        %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
           = t('.email')
 
         - if current_user.is?('Admin')
-          %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+          %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
             = t('.org')
-          %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+          %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
             = t('.last_signin')
-          %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+          %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
             = t('.last_ip')
-          %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+          %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }
             = t('.signin_count')
 
-        %th{ class: 'p-2 bg-color-main/50 rounded-e' }
+        %th{ class: 'p-2 bg-color-main-50 rounded-e' }
           - if child
             = t('.add_as_parent')
           - else

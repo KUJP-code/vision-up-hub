@@ -20,7 +20,7 @@
                                  'test-result-target': skill,
                                  'validity-target': 'input' }
 
-%td{ class: 'p-1 bg-color-secondary/50' }
+%td{ class: 'p-1 bg-color-secondary-50' }
   .flex.justify-center.items-center.gap-1
     - value = f.object.send(fieldname_from_skill(skill).to_sym) || 0
     = f.hidden_field fieldname_from_skill(skill),

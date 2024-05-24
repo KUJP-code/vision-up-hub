@@ -15,10 +15,12 @@ export default {
 					selectors: [":root"],
 					theme: {
 						colors: {
-							"color-neutral-light": "#f9f9f9",
-							"color-neutral-dark": "#b1a9bc",
-							"color-main": "#fab650",
-							"color-secondary": "#7e7195",
+							"color-neutral-light": "#f1f1f1",
+							"color-neutral-dark": "#b2aabf",
+							"color-main": "#69c0dd",
+							"color-main-50": "#aadaeb",
+							"color-secondary": "#645880",
+							"color-secondary-50": "#b2aabf",
 						},
 						borderRadius: {
 							DEFAULT: "0.5rem",

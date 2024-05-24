@@ -13,7 +13,7 @@
                              'data-turbo-track': 'reload',
                              type: 'module'
     = yield :head
-  %body
+  %body.text-color-secondary
     %turbo_frame#flash
       = render 'shared/flash'
     = render 'shared/nav'

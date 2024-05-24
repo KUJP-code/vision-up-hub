@@ -2,16 +2,16 @@
   %table
     %thead
       %tr
-        %th{ class: 'p-2 bg-color-main/50 rounded-s border-r border-r-white' } Lesson Title
-        %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' } Usage Count
+        %th{ class: 'p-2 bg-color-main-50 rounded-s border-r border-r-white' } Lesson Title
+        %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' } Usage Count
         - @courses.each do |course|
           - if course.id == @courses.last.id
-            %th{ class: 'p-2 bg-color-main/50 rounded-e' }= course.title
+            %th{ class: 'p-2 bg-color-main-50 rounded-e' }= course.title
           - else
-            %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }= course.title
+            %th{ class: 'p-2 bg-color-main-50 border-r border-r-white' }= course.title
     %tbody
       - @lessons.each do |lesson|
-        %tr{ class: cycle('bg-color-main/10', 'bg-color-secondary/10') }
+        %tr{ class: cycle('bg-color-main-50', 'bg-color-secondary-50') }
           %th{ scope: 'row' }= lesson.title
           %th{ scope: 'row' }= lesson.course_lessons.size
           - @courses.each do |course|

@@ -5,12 +5,12 @@
 
 %main.flex.flex-col.md:flex-row.md:flex-wrap.p-3#student
   - if @student.parent_id.nil?
-    %section.w-full.flex.flex-col.gap-3.p-3.m-3.border-4.rounded.border-color-secondary.print:hidden
+    %section.w-full.flex.flex-col.gap-3.p-3.m-3.print:hidden
       %h3.w-full.text-center.font-bold.text-color-secondary= t('.add_parent')
       = render 'user_searches/form', orgs: @orgs, student_id: @student.id
       = turbo_frame_tag 'user_table'
 
-  %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-8' }
+  %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-3' }
     = render 'students/details',
              student: @student,
              classes: @classes,
@@ -22,7 +22,7 @@
     = form_for @student do |f|
       = f.text_area :comments,
                     placeholder: t('.add_comments'),
-                    class: 'w-full border-4 border-color-secondary/50 rounded focus:outline-none',
+                    class: 'w-full border-2 border-color-main-50 rounded focus:outline-none',
                     rows: 7
       = f.submit t('.add_comment'), class: 'btn btn-primary w-full'
 

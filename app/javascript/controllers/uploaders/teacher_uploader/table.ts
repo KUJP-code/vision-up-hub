@@ -28,11 +28,11 @@ export function newTeacherUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-color-main/50 rounded-s border-r border-r-white">Name</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Email</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Password</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Password Confirmation</th>
-						<th class="p-2 bg-color-main/50 rounded-e">Status</th>
+						<th class="p-2 bg-color-main-50 rounded-s border-r border-r-white">Name</th>
+						<th class="p-2 bg-color-main-50 border-r border-r-white">Email</th>
+						<th class="p-2 bg-color-main-50 border-r border-r-white">Password</th>
+						<th class="p-2 bg-color-main-50 border-r border-r-white">Password Confirmation</th>
+						<th class="p-2 bg-color-main-50 rounded-e">Status</th>
 					</tr>
 				</thead>
 				<tbody id="teacher-table">
