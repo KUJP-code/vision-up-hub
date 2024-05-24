@@ -92,6 +92,7 @@ group :development do
   gem 'web-console'
 
   # Linting
+  gem 'haml_lint', '~> 0.58', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
