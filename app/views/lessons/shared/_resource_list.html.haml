@@ -1,6 +1,6 @@
 -# locals: (resources:)
 
-.flex.gap-3
+.flex.flex-wrap.justify-start.items-center.gap-3
   - @resources.each do |resource|
     = link_to resource.filename,
               file_path(resource.blob),

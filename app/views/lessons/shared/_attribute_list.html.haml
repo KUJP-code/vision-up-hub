@@ -1,18 +1,19 @@
 -# locals: (lesson:)
 
-- lesson.class::LISTABLE_ATTRIBUTES.each do |attr|
-  - value = lesson.send(attr)
-  - next if value.blank?
+.flex.flex-wrap.justify-start.items-center.gap-3
+  - lesson.class::LISTABLE_ATTRIBUTES.each do |attr|
+    - value = lesson.send(attr)
+    - next if value.blank?
 
-  .flex.flex-col.flex-grow.p-2
-    %h3= attr.to_s.titleize
-    %ol.list-decimal.list-inside
-      - lesson.send(attr).each do |item|
-        %li= item
-- unless lesson.links.empty?
-  .flex.flex-col.flex-grow.p-2
-    %h3 Links
-    %ul.list-disc.list-inside
-      - lesson.links.each do |text, link|
-        %li
-          = link_to text, link, class: 'lesson_link'
+    .flex.flex-col.flex-grow.p-2
+      %h3= attr.to_s.titleize
+      %ol.list-decimal.list-inside
+        - lesson.send(attr).each do |item|
+          %li= item
+  - unless lesson.links.empty?
+    .flex.flex-col.flex-grow.p-2
+      %h3 Links
+      %ul.list-disc.list-inside
+        - lesson.links.each do |text, link|
+          %li
+            = link_to text, link, class: 'lesson_link'
