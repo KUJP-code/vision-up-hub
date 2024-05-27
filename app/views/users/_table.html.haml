@@ -4,24 +4,24 @@
   %table.w-full.text-center
     %thead
       %tr.text-secondary
-        %th{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' }
+        %th.thead.thead-s.bg-secondary-50
           = t('.name')
-        %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+        %th.thead.bg-secondary-50
           = t('.role')
-        %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+        %th.thead.bg-secondary-50
           = t('.email')
 
         - if current_user.is?('Admin')
-          %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+          %th.thead.bg-secondary-50
             = t('.org')
-          %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+          %th.thead.bg-secondary-50
             = t('.last_signin')
-          %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+          %th.thead.bg-secondary-50
             = t('.last_ip')
-          %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
+          %th.thead.bg-secondary-50
             = t('.signin_count')
 
-        %th{ class: 'p-2 bg-main-50 rounded-e' }
+        %th.thead.thead-e.bg-secondary-50
           - if child
             = t('.add_as_parent')
           - else

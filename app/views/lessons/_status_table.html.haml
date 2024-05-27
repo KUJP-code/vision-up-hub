@@ -4,12 +4,9 @@
   %table.w-full.text-center
     %thead
       %tr.text-white.font-bold
-        %th
-          %p{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' } Title
-        %th
-          %p{ class: 'p-2 bg-main-50 border-r border-r-white' } Status
-        %th
-          %p{ class: 'p-2 bg-main-50 rounded-e' } Approved by
+        %th.thead.thead-s.bg-secondary-50 Title
+        %th.thead.bg-secondary-50 Status
+        %th.thead.thead-e.bg-secondary-50 Approved by
     %tbody
       - lessons.each do |lesson|
         %tr

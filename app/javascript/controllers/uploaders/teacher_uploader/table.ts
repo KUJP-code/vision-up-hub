@@ -4,12 +4,7 @@ import type { teacher } from "./teacher_uploader_controller.ts";
 const requiredFields = ["name", "email", "password", "password_confirmation"];
 
 // Css constants
-const invalidClasses = [
-	"border",
-	"border-danger",
-	"text-danger",
-	"font-bold",
-];
+const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
 	"border-yellow-500",
 	"text-yellow-500",
@@ -28,11 +23,11 @@ export function newTeacherUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-main-50 rounded-s border-r border-r-white">Name</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Email</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Password</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Password Confirmation</th>
-						<th class="p-2 bg-main-50 rounded-e">Status</th>
+						<th class="thead thead-s bg-secondary-50">Name</th>
+						<th class="thead bg-secondary-50">Email</th>
+						<th class="thead bg-secondary-50">Password</th>
+						<th class="thead bg-secondary-50">Password Confirmation</th>
+						<th class="thead thead-e bg-secondary-50">Status</th>
 					</tr>
 				</thead>
 				<tbody id="teacher-table">
@@ -88,8 +83,7 @@ function attributeCellHTML(teacher: teacher, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${teacher[attribute] ? "" : missingClasses.join(" ")}">${
-			teacher[attribute] || "なし"
+		<td class="p-2 ${teacher[attribute] ? "" : missingClasses.join(" ")}">${teacher[attribute] || "なし"
 		}</td>
 	`;
 }

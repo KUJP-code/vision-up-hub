@@ -4,12 +4,7 @@ import type { student } from "./student_uploader_controller.ts";
 const requiredFields = ["name", "level", "school_id"];
 
 // Css constants
-const invalidClasses = [
-	"border",
-	"border-danger",
-	"text-danger",
-	"font-bold",
-];
+const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
 	"border-yellow-500",
 	"text-yellow-500",
@@ -28,15 +23,15 @@ export function newStudentUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-main-50 rounded-s border-r border-r-white">Name</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Student ID</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Level</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">School ID</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Parent ID</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Start Date</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Quit Date</th>
-						<th class="p-2 bg-main-50 border-r border-r-white">Birthday</th>
-						<th class="p-2 bg-main-50 rounded-e">Status</th>
+						<th class="thead thead-s bg-secondary-50">Name</th>
+						<th class="thead bg-secondary-50">Student ID</th>
+						<th class="thead bg-secondary-50">Level</th>
+						<th class="thead bg-secondary-50">School ID</th>
+						<th class="thead bg-secondary-50">Parent ID</th>
+						<th class="thead bg-secondary-50">Start Date</th>
+						<th class="thead bg-secondary-50">Quit Date</th>
+						<th class="thead bg-secondary-50">Birthday</th>
+						<th class="thead thead-e bg-secondary-50">Status</th>
 					</tr>
 				</thead>
 				<tbody id="student-table">
@@ -92,8 +87,7 @@ function attributeCellHTML(student: student, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${
-			student[attribute] || "なし"
+		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${student[attribute] || "なし"
 		}</td>
 	`;
 }

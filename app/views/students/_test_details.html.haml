@@ -13,17 +13,10 @@
   %table
     %thead
       %tr.text-white.font-bold
-        %th
-          %p{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' }
-            = t('.max_grade')
-        %th
-          %p{ class: 'p-2 bg-main-50 border-r border-r-white' }
-            = t('.student_grade')
-        %th
-          %p{ class: 'p-2 bg-main-50 border-r border-r-white' } %
-        %th
-          %p{ class: 'p-2 bg-main-50 rounded-e' }
-            = t('.recommended_level')
+        %th.thead.thead-s.bg-secondary-50= t('.max_grade')
+        %th.thead.bg-secondary-50= t('.student_grade')
+        %th.thead.bg-secondary-50 %
+        %th.thead.thead-e.bg-secondary-50= t('.recommended_level')
     %tbody
       %tr.text-center.font-bold.text-secondary
         %td= active_result.test.max_score

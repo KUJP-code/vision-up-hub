@@ -2,13 +2,13 @@
   %table
     %thead
       %tr
-        %th{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' } Lesson Title
-        %th{ class: 'p-2 bg-main-50 border-r border-r-white' } Usage Count
+        %th.thead.thead-s.bg-secondary-50 Lesson Title
+        %th.thead.bg-secondary-50 Usage Count
         - @courses.each do |course|
           - if course.id == @courses.last.id
-            %th{ class: 'p-2 bg-main-50 rounded-e' }= course.title
+            %th.thead.thead-e.bg-secondary-50= course.title
           - else
-            %th{ class: 'p-2 bg-main-50 border-r border-r-white' }= course.title
+            %th.thead.bg-secondary-50= course.title
     %tbody
       - @lessons.each do |lesson|
         %tr{ class: cycle('bg-main-50', 'bg-secondary-50') }

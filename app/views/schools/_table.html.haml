@@ -3,12 +3,9 @@
 %table.w-full.text-center
   %thead
     %tr
-      %th{ class: 'p-2 bg-main-50 rounded-s border-r border-r-white' }
-        = t('.name')
-      %th{ class: 'p-2 bg-main-50 border-r border-r-white' }
-        = t('.managers')
-      %th{ class: 'p-2 bg-main-50 rounded-e' }
-        = t('.student_count')
+      %th.thead.thead-s.bg-secondary-50= t('.name')
+      %th.thead.bg-secondary-50= t('.managers')
+      %th.thead.thead-e.bg-secondary-50= t('.student_count')
   %tbody
     - schools.each do |s|
       %tr
