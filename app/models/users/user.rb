@@ -26,4 +26,10 @@ class User < ApplicationRecord
 
     organisation_id == 1 || organisation.name == 'KidsUP'
   end
+
+  protected
+
+  def send_devise_notification(notification, *)
+    devise_mailer.send(notification, self, *).deliver_later
+  end
 end
