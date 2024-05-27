@@ -16,7 +16,7 @@ RSpec.describe TeacherPolicy do
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when sales' do

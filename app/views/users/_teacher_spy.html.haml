@@ -1,0 +1,10 @@
+-# locals: (org_teachers:)
+
+%details.cursor-pointer.bg-secondary.text-white.font-semibold.rounded.overflow-hidden
+  %summary.font-semibold.p-2 See teacher profile for:
+  %nav.flex.flex-col.p-2
+    - org_teachers.each do |org|
+      = link_to org[:org].name,
+                organisation_teacher_path(id: org[:teacher].id,
+                                          organisation_id: org[:org].id),
+                class: 'p-1 font-semibold border-t-2 border-white'
