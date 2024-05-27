@@ -41,7 +41,7 @@ end
 
 def create_students
   school = create(:school)
-  students = build_list(:student, 2)
+  students = build_list(:student, 2, school:)
   invalid_student = build(:student, name: '', level: '')
   students << invalid_student
   students.map do |s|
