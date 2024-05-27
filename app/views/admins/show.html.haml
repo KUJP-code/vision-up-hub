@@ -6,16 +6,16 @@
 
   = link_to 'Edit',
             edit_organisation_admin_path(@user.organisation_id, @user),
-            class: 'btn btn-info'
+            class: 'btn btn-secondary'
 
 - if @user.id == 1 && current_user.id == 1
   .w-full.flex.justify-center.gap-3
     = link_to 'DB',
               pg_hero_path,
-              class: 'btn btn-info'
+              class: 'btn btn-secondary'
     = link_to 'Jobs',
               mission_control_jobs_path,
-              class: 'btn btn-info'
+              class: 'btn btn-secondary'
 
 = render 'users/user_lessons',
          assigned: @assigned_lessons,

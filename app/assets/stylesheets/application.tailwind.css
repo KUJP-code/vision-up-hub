@@ -81,7 +81,7 @@
 		}
 	}
 
-	.btn-info {
+	.btn-secondary {
 		@apply bg-secondary;
 	}
 

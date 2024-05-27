@@ -27,7 +27,7 @@
     = render 'shared/print_button', text: t('.print_report')
     = link_to t('edit'),
               edit_student_path(@student),
-              class: 'btn btn-info'
+              class: 'btn btn-secondary'
     - unless @potential_classes.empty?
       = form_with model: @student, html: { class: 'flex flex-col' } do |f|
         = f.fields_for :student_classes, @student.student_classes.new do |sc_f|

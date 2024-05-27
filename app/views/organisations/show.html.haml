@@ -9,7 +9,7 @@
     %h2.text-start= t('.no_plan')
   = link_to t('.add_school'),
             new_organisation_school_path(@organisation),
-            class: 'btn btn-info'
+            class: 'btn btn-secondary'
   - if @admins.any?
     %h2.text-start Admins: #{@admins.to_sentence}
   = render 'organisations/new_parent_link', org_id: @organisation.id
