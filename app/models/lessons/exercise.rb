@@ -6,7 +6,7 @@ class Exercise < Lesson
   ATTRIBUTES = %i[
     add_difficulty
     extra_fun
-    guide_image
+    pdf_image
     intro
     instructions
     large_groups
