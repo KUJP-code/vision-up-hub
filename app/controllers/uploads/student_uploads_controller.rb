@@ -7,7 +7,7 @@ class StudentUploadsController < ApplicationController
 
   def show
     authorize nil, policy_class: StudentUploadPolicy
-    send_data sample_csv(%w[name student_id level school_id parent_id birthday start_date quit_date]),
+    send_data sample_csv(Student::CSV_HEADERS),
               filename: 'sample_students_upload.csv'
   end
 
@@ -41,9 +41,7 @@ class StudentUploadsController < ApplicationController
   private
 
   def student_upload_params
-    params.require(:student_upload).permit(
-      :birthday, :level, :name, :parent_id, :quit_date, :school_id, :start_date, :student_id
-    )
+    params.require(:student_upload).permit(Student::CSV_HEADERS.map(&:to_sym))
   end
 
   def set_errors

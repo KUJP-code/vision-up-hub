@@ -3,14 +3,13 @@
   %table.w-full
     %thead
       %tr
-        %th.thead.thead-s.bg-secondary-50 name
-        %th.thead.bg-secondary-50 student_id
-        %th.thead.bg-secondary-50 level
-        %th.thead.bg-secondary-50 school_id
-        %th.thead.bg-secondary-50 parent_id
-        %th.thead.bg-secondary-50 start_date
-        %th.thead.bg-secondary-50 quit_date
-        %th.thead.thead-e.bg-secondary-50 birthday
+        - Student::CSV_HEADERS.each do |header|
+          :ruby
+            classes = 'thead bg-secondary-50'
+            classes = "#{classes} thead-s" if header == Student::CSV_HEADERS.first
+            classes = "#{classes} thead-e" if header == Student::CSV_HEADERS.last
+
+          %th{ class: classes }= header
     %tbody
       %tr
         %td 陽葵

@@ -87,7 +87,8 @@ function attributeCellHTML(student: student, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${student[attribute] || "なし"
+		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${
+			student[attribute] || "なし"
 		}</td>
 	`;
 }

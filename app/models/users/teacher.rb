@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Teacher < User
+  CSV_HEADERS = %w[name email password].freeze
   VISIBLE_TYPES = %w[].freeze
 
   has_many :class_teachers, dependent: :destroy

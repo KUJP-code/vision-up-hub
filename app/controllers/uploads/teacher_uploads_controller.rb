@@ -7,7 +7,7 @@ class TeacherUploadsController < ApplicationController
 
   def show
     authorize nil, policy_class: TeacherUploadPolicy
-    send_data sample_csv(%w[name email password]),
+    send_data sample_csv(Teacher::CSV_HEADERS),
               filename: 'sample_teachers_upload.csv'
   end
 
@@ -38,7 +38,7 @@ class TeacherUploadsController < ApplicationController
   private
 
   def teacher_upload_params
-    params.require(:teacher_upload).permit(:name, :email, :password, :password_confirmation)
+    params.require(:teacher_upload).permit(Teacher::CSV_HEADERS.map(&:to_sym))
   end
 
   def set_errors

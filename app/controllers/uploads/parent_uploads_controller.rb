@@ -7,7 +7,7 @@ class ParentUploadsController < ApplicationController
 
   def show
     authorize nil, policy_class: ParentUploadPolicy
-    send_data sample_csv(%w[name email password]),
+    send_data sample_csv(Parent::CSV_HEADERS),
               filename: 'sample_parents_upload.csv'
   end
 
@@ -38,7 +38,7 @@ class ParentUploadsController < ApplicationController
   private
 
   def parent_upload_params
-    params.require(:parent_upload).permit(:name, :email, :password, :password_confirmation)
+    params.require(:parent_upload).permit(Parent::CSV_HEADERS.map(&:to_sym))
   end
 
   def set_errors
