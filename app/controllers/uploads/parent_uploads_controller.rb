@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class ParentUploadsController < ApplicationController
+  include SampleCsvable
+
   after_action :verify_authorized, only: %i[create new update]
+
+  def show
+    authorize nil, policy_class: ParentUploadPolicy
+    send_data sample_csv(%w[name email password]),
+              filename: 'sample_parents_upload.csv'
+  end
 
   def new
     authorize nil, policy_class: ParentUploadPolicy

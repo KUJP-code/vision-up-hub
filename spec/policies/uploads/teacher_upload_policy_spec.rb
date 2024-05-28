@@ -8,7 +8,12 @@ RSpec.describe TeacherUploadPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'unauthorized user except new'
+    it { is_expected.to authorize_action(:show) }
+    it { is_expected.to authorize_action(:new) }
+    it { is_expected.not_to authorize_action(:create) }
+    it { is_expected.not_to authorize_action(:edit) }
+    it { is_expected.not_to authorize_action(:update) }
+    it { is_expected.not_to authorize_action(:destroy) }
   end
 
   context 'when writer' do
@@ -26,7 +31,12 @@ RSpec.describe TeacherUploadPolicy do
   context 'when OrgAdmin' do
     let(:user) { build(:user, :org_admin) }
 
-    it_behaves_like 'unauthorized user except new'
+    it { is_expected.to authorize_action(:show) }
+    it { is_expected.to authorize_action(:new) }
+    it { is_expected.not_to authorize_action(:create) }
+    it { is_expected.not_to authorize_action(:edit) }
+    it { is_expected.not_to authorize_action(:update) }
+    it { is_expected.not_to authorize_action(:destroy) }
   end
 
   context 'when school manager' do

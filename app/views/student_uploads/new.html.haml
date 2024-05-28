@@ -11,6 +11,9 @@
 
 %main.flex.flex-wrap.justify-center.gap-12.overflow-y-auto.p-3
   = render 'student_uploads/format_explainer'
+  = link_to t('.download_sample'),
+            organisation_student_upload_path(current_user.organisation, 1),
+            class: 'btn btn-primary w-full'
 
   %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
     %h2= t('.create_students', org: @organisation.name)
