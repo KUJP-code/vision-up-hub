@@ -1,8 +1,6 @@
 import type { status } from "../declarations.d.ts";
 import type { teacher } from "./teacher_uploader_controller.ts";
 
-const requiredFields = ["name", "email", "password", "password_confirmation"];
-
 // Css constants
 const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
@@ -39,25 +37,21 @@ export function newTeacherUploadTable() {
 export function addTeacherRow({
 	csvTeacher,
 	index,
+	headers,
 	status = "Pending",
-}: { csvTeacher: teacher; index: number; status?: status }) {
+}: { csvTeacher: teacher; index: number; headers: string[]; status?: status }) {
 	const table = document.querySelector("#teacher-table");
 	const row = document.createElement("tr");
 	row.id = `teacher-row-${index}`;
-	if (validateTeacher(csvTeacher)) {
-		row.classList.add(...pendingClasses);
-	} else {
-		row.classList.add(...invalidClasses);
-		status = "Invalid";
-	}
+	row.classList.add(...pendingClasses);
 
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvTeacher)) {
-		rowContents += attributeCellHTML(csvTeacher, attribute);
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvTeacher, attribute, headers);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -70,12 +64,12 @@ export function addTeacherRow({
 	}
 }
 
-function validateTeacher(teacher: teacher) {
-	return requiredFields.every((field) => teacher[field]);
-}
-
-function attributeCellHTML(teacher: teacher, attribute: string) {
-	if (requiredFields.includes(attribute)) {
+function attributeCellHTML(
+	teacher: teacher,
+	attribute: string,
+	headers: string[],
+) {
+	if (headers.includes(attribute)) {
 		return `
 			<td>${teacher[attribute] || "なし"}</td>
 
@@ -83,7 +77,8 @@ function attributeCellHTML(teacher: teacher, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${teacher[attribute] ? "" : missingClasses.join(" ")}">${teacher[attribute] || "なし"
+		<td class="p-2 ${teacher[attribute] ? "" : missingClasses.join(" ")}">${
+			teacher[attribute] || "なし"
 		}</td>
 	`;
 }

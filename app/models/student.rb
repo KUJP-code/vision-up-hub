@@ -16,7 +16,7 @@ class Student < ApplicationRecord
 
   belongs_to :parent, optional: true
   belongs_to :school, counter_cache: true
-  delegate :organisation_id, to: :school
+  delegate :organisation_id, to: :school, allow_nil: true
   has_many :teachers, through: :school
 
   has_many :student_classes, dependent: :destroy

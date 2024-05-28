@@ -21,11 +21,13 @@ export default class extends Controller<HTMLFormElement> {
 	static values = {
 		org: Number,
 		action: String,
+		headers: Array,
 	};
 
 	declare readonly fileInputTarget: HTMLInputElement;
 	declare readonly orgValue: number;
 	declare readonly actionValue: "create" | "update";
+	declare readonly headersValue: string[];
 
 	async displayStudents(e: SubmitEvent) {
 		e.preventDefault();
@@ -48,7 +50,7 @@ export default class extends Controller<HTMLFormElement> {
 			return;
 		}
 		for (const [i, s] of students.entries()) {
-			addStudentRow({ csvStudent: s, index: i });
+			addStudentRow({ csvStudent: s, headers: this.headersValue, index: i });
 		}
 
 		this.uploadStudents(students);

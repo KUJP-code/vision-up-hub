@@ -1,8 +1,6 @@
 import type { status } from "../declarations.d.ts";
 import type { parent } from "./parent_uploader_controller.ts";
 
-const requiredFields = ["name", "email", "password", "password_confirmation"];
-
 // Css constants
 const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
@@ -39,25 +37,21 @@ export function newParentUploadTable() {
 export function addParentRow({
 	csvParent,
 	index,
+	headers,
 	status = "Pending",
-}: { csvParent: parent; index: number; status?: status }) {
+}: { csvParent: parent; index: number; headers: string[]; status?: status }) {
 	const table = document.querySelector("#parent-table");
 	const row = document.createElement("tr");
 	row.id = `parent-row-${index}`;
-	if (validateParent(csvParent)) {
-		row.classList.add(...pendingClasses);
-	} else {
-		row.classList.add(...invalidClasses);
-		status = "Invalid";
-	}
+	row.classList.add(...pendingClasses);
 
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvParent)) {
-		rowContents += attributeCellHTML(csvParent, attribute);
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvParent, attribute, headers);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -70,12 +64,12 @@ export function addParentRow({
 	}
 }
 
-function validateParent(parent: parent) {
-	return requiredFields.every((field) => parent[field]);
-}
-
-function attributeCellHTML(parent: parent, attribute: string) {
-	if (requiredFields.includes(attribute)) {
+function attributeCellHTML(
+	parent: parent,
+	attribute: string,
+	headers: string[],
+) {
+	if (headers.includes(attribute)) {
 		return `
 			<td>${parent[attribute] || "なし"}</td>
 
@@ -83,7 +77,8 @@ function attributeCellHTML(parent: parent, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${parent[attribute] ? "" : missingClasses.join(" ")}">${parent[attribute] || "なし"
+		<td class="p-2 ${parent[attribute] ? "" : missingClasses.join(" ")}">${
+			parent[attribute] || "なし"
 		}</td>
 	`;
 }

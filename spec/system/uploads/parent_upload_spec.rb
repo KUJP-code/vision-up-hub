@@ -39,7 +39,7 @@ end
 def create_parents_csv
   parents = create_parents
   CSV.open('tmp/parents.csv', 'w') do |csv|
-    csv << %w[name email password password_confirmation]
+    csv << Parent::CSV_HEADERS
     parents.each do |parent|
       csv << parent
     end
@@ -52,5 +52,5 @@ def create_parents
                        password_confirmation: 'testpassword')
   invalid_parent = build(:user, :parent, email: '')
   parents << invalid_parent
-  parents.map { |p| [p.name, p.email, p.password, p.password] }
+  parents.map { |p| Parent::CSV_HEADERS.map { |h| p.send(h.to_sym) } }
 end

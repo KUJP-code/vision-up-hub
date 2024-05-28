@@ -22,7 +22,8 @@
                         data: { controller: 'parent-uploader',
                                 action: 'parent-uploader#displayParents',
                                 'parent-uploader-org-value': @organisation.id,
-                                'parent-uploader-action-value': 'create' },
+                                'parent-uploader-action-value': 'create',
+                                'parent-uploader-headers-value': Parent::CSV_HEADERS.to_json },
                         id: 'parent_create_form' } do |f|
       = f.file_field :file,
                      required: true,

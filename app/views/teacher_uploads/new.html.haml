@@ -22,7 +22,8 @@
                         data: { controller: 'teacher-uploader',
                                 action: 'teacher-uploader#displayTeachers',
                                 'teacher-uploader-org-value': @organisation.id,
-                                'teacher-uploader-action-value': 'create' },
+                                'teacher-uploader-action-value': 'create',
+                                'teacher-uploader-headers-value': Teacher::CSV_HEADERS.to_json },
                         id: 'teacher_create_form' } do |f|
       = f.file_field :file,
                      required: true,

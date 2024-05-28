@@ -1,8 +1,6 @@
 import type { status } from "../declarations.d.ts";
 import type { student } from "./student_uploader_controller.ts";
 
-const requiredFields = ["name", "level", "school_id"];
-
 // Css constants
 const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
@@ -43,25 +41,21 @@ export function newStudentUploadTable() {
 export function addStudentRow({
 	csvStudent,
 	index,
+	headers,
 	status = "Pending",
-}: { csvStudent: student; index: number; status?: status }) {
+}: { csvStudent: student; index: number; headers: string[]; status?: status }) {
 	const table = document.querySelector("#student-table");
 	const row = document.createElement("tr");
 	row.id = `student-row-${index}`;
-	if (validateStudent(csvStudent)) {
-		row.classList.add(...pendingClasses);
-	} else {
-		row.classList.add(...invalidClasses);
-		status = "Invalid";
-	}
+	row.classList.add(...pendingClasses);
 
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvStudent)) {
-		rowContents += attributeCellHTML(csvStudent, attribute);
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvStudent, attribute, headers);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -74,12 +68,12 @@ export function addStudentRow({
 	}
 }
 
-function validateStudent(student: student) {
-	return requiredFields.every((field) => student[field]);
-}
-
-function attributeCellHTML(student: student, attribute: string) {
-	if (requiredFields.includes(attribute)) {
+function attributeCellHTML(
+	student: student,
+	attribute: string,
+	headers: string[],
+) {
+	if (headers.includes(attribute)) {
 		return `
 			<td>${student[attribute] || "なし"}</td>
 
