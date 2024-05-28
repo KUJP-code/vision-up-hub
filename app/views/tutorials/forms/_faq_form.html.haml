@@ -1,0 +1,11 @@
+= form_with model: @tutorial, url: tutorials_path(type: 'FAQ'), local: true do |form|
+  = form.hidden_field :type, value: 'FAQ'
+  .field
+    = form.label :question
+    = form.text_field :question, class: 'form-control'
+
+  .field
+    = form.label :answer
+    = form.text_area :answer, class: 'form-control'
+
+  = form.submit 'Create FAQ Tutorial', class: 'btn btn-primary'

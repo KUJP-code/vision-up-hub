@@ -1,9 +1,34 @@
+= render 'shared/subtitle', text: t('.tutorials')
+
 - admin = current_user.is?('Admin')
 
--# TODO subtitle stuff
-
 - if admin 
-    .w-full.flex.justify-center.p-3 
-    = link_to 'New Tutorial',
-              new_tutorial_path,
-              class: 'btn btn-info'
+  .w-full.flex.justify-center.p-3 
+    %details{
+      class: 'cursor-pointer bg-color-main text-white font-semibold rounded-md overflow-hidden',
+      id: 'create_tutorial'
+    }
+      %summary.btn.btn-info Create a new tutorial
+      %nav.flex.flex-col
+        = link_to 'PDF Form', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90', id: 'create_pdf_form'
+        = link_to 'Video Form', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90', id: 'create_video_form'
+        = link_to 'FAQ Form', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90', id: 'create_faq_form'
+
+.sections-container
+  - @sections.each do |section_name, section_key|
+    .section-box
+      %details
+        %summary.subtitle= section_name
+
+        - if section_key == 'faq'
+          - @faq_tutorials.each do |tutorial|
+            %details
+              %summary{ style: "color: green;" }= tutorial.question
+              %p{ style: "color: red;" }= tutorial.answer
+        - else
+          - @pdf_tutorials.where(section: section_key).each do |tutorial|
+            %div
+              %h3= link_to tutorial.title, tutorial.full_file_path, target: '_blank'
+          - @video_tutorials.where(section: section_key).each do |tutorial|
+            %div
+              %h3= link_to tutorial.title, tutorial.full_video_path, target: '_blank'

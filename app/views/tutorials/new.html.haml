@@ -1,0 +1,17 @@
+- sections = PdfTutorial.sections.keys.map { |key| [key.titleize, key] }
+
+- case @type
+- when 'PDF'
+  = form_with model: @tutorial, url: tutorials_path(type: 'PDF'), local: true do |form|
+    = render 'tutorials/forms/pdf_form', form: form, sections: sections
+    = form.hidden_field :type, value: 'PDF'
+- when 'Video'
+  = form_with model: @tutorial, url: tutorials_path(type: 'Video'), local: true do |form|
+    = render 'tutorials/forms/video_form', form: form, sections: sections
+    = form.hidden_field :type, value: 'Video'
+- when 'FAQ'
+  = form_with model: @tutorial, url: tutorials_path(type: 'FAQ'), local: true do |form|
+    = render 'tutorials/forms/faq_form', form: form, sections: sections
+    = form.hidden_field :type, value: 'FAQ'
+- else
+  %p Invalid tutorial type.

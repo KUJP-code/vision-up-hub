@@ -12,10 +12,10 @@ RSpec.describe 'creating a tutorial', type: :system do
   it 'allows an admin user to create a new tutorial' do
     visit new_tutorial_path
     fill_in 'Title', with: 'Sample Tutorial'
-    fill_in 'Content', with: 'This is a sample tutorial content.'
+    fill_in 'Content', with: 'This is some sample tutorial content.'
     click_button 'Create Tutorial'
     expect(page).to have_current_path(tutorials_path)
     expect(page).to have_content('Sample Tutorial')
-    expect(page).to have_content('This is a sample tutorial content.')
+    expect(page).to have_content('This is some sample tutorial content.')
   end
 end

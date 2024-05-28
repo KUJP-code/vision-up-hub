@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
-class PDFTutorial < ApplicationRecord
+class PdfTutorial < ApplicationRecord
   include Tutorials
-
-  # Specific attributes for pdf resource
   attribute :title, :string
   attribute :file_path, :string
   attribute :section, :string
 
-  # Validations
   validates :title, presence: true
   validates :file_path, presence: true
   validates :section, presence: true
+
+  def full_file_path
+    file_path =~ /^https?:\/\// ? file_path : "http://#{file_path}"
+  end
 end

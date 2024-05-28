@@ -1,0 +1,15 @@
+= form_with model: @tutorial, url: tutorials_path(type: 'PDF'), local: true do |form|
+  = form.hidden_field :type, value: 'PDF'
+  .field
+    = form.label :title
+    = form.text_field :title, class: 'form-control'
+
+  .field
+    = form.label :file_path
+    = form.text_field :file_path, class: 'form-control'
+
+  .field
+    = form.label :section
+    = form.select :section, options_for_select(sections), {}, class: 'form-control'
+
+  = form.submit 'Create PDF Tutorial', class: 'btn btn-primary'

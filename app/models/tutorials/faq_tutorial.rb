@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FAQTutorial < ApplicationRecord
+class FaqTutorial < ApplicationRecord
   include Tutorials
   attribute :question, :string
   attribute :answer, :string
@@ -9,4 +9,5 @@ class FAQTutorial < ApplicationRecord
   validates :question, presence: true
   validates :answer, presence: true
   validates :section, presence: true
+
 end
