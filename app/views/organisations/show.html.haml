@@ -6,7 +6,9 @@
       = link_to "Plan: #{@plan.name}",
                 plan_path(@plan)
   - else
-    %h2.text-start= t('.no_plan')
+    = link_to t('.create_plan'),
+              new_plan_path,
+              class: 'btn btn-secondary'
   = link_to t('.add_school'),
             new_organisation_school_path(@organisation),
             class: 'btn btn-secondary'
