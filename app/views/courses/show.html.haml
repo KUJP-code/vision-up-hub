@@ -11,5 +11,5 @@
   %h2 Lessons
   = render 'lessons/new_lesson_dropdown'
   %main.w-full.flex.flex-wrap.justify-around.gap-3
-    - @lessons.group_by(&:type).each do |type, lessons|
+    - @lessons.group_by(&:type).sort.each do |type, lessons|
       = render 'lessons/dates_table', lessons:, type:
