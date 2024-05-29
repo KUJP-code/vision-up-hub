@@ -7,7 +7,7 @@
                 plan_path(@plan)
   - else
     = link_to t('.create_plan'),
-              new_plan_path,
+              new_plan_path(organisation_id: @organisation.id),
               class: 'btn btn-secondary'
   = link_to t('.add_school'),
             new_organisation_school_path(@organisation),

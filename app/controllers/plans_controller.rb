@@ -13,7 +13,7 @@ class PlansController < ApplicationController
   def show; end
 
   def new
-    @plan = authorize Plan.new
+    @plan = authorize Plan.new(organisation_id: params[:organisation_id])
     set_form_vars
   end
 
