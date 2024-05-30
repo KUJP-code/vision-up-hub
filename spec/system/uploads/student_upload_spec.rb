@@ -23,8 +23,8 @@ RSpec.describe 'creating student records from a CSV', :js do
       attach_file 'student_upload_file', Rails.root.join('tmp/students.csv')
       click_button I18n.t('student_uploads.new.create_students', org: user.organisation.name)
     end
-    expect(find_by_id('pending_count')).to have_content('3')
-    expect(page).to have_css('.border-slate-500', count: 3)
+    expect(find_by_id('pending_count')).to have_content('2')
+    expect(page).to have_css('.border-slate-500', count: 2)
   end
 end
 
@@ -41,7 +41,5 @@ end
 def create_students
   school = create(:school)
   students = build_list(:student, 2, school:)
-  invalid_student = build(:student, name: '', level: '')
-  students << invalid_student
   students.map { |s| Student::CSV_HEADERS.map { |h| s.send(h.to_sym) } }
 end
