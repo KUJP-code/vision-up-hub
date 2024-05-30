@@ -15,4 +15,17 @@ RSpec.describe ApplicationHelper do
       expect(org_theme(user)).to eq('base')
     end
   end
+
+  context 'when setting favicon/logo from organisation' do
+    let(:user) { build(:user, :org_admin, organisation_id: 1) }
+
+    it "returns a path including 'org_n.svg'" do
+      expect(org_favicon(user)).to eq('/images/org_1.svg')
+    end
+
+    it "returns path including 'favicon.svg' if not in list of themed orgs" do
+      user.organisation_id = 999
+      expect(org_favicon(user)).to eq('/images/favicon.svg')
+    end
+  end
 end

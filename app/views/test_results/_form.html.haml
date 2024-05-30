@@ -7,20 +7,20 @@
                'test-result-thresholds-value': test.thresholds.to_json,
                'test-result-questions-value': test.questions.to_json },
        id: "student#{student.id}_result" }
-    %td{ class: 'p-1 bg-color-main/50' }
+    %td{ class: 'p-1 bg-main-50' }
       = link_to student.student_id || 'なし',
                 student_path(student)
-    %td{ class: 'p-1 bg-color-main/50' }
+    %td{ class: 'p-1 bg-main-50' }
       = link_to redact(student),
                 student_path(student)
-    %td{ class: 'p-1 bg-color-main/50' }= student.level.titleize
+    %td{ class: 'p-1 bg-main-50' }= student.level.titleize
 
     - Test::SKILLS.each do |skill|
       = render 'test_results/skill_fields',
                f:,
                skill:,
                test:
-    %td{ class: 'p-1 bg-color-main/50' }
+    %td{ class: 'p-1 bg-main-50' }
       .flex.justify-center.items-center.gap-1
         = f.hidden_field :total_percent,
                          data: { 'test-result-target': 'totalPercent' }
@@ -39,7 +39,7 @@
         = f.select :new_level,
                    possible_levels.map { |k| [k.titleize, k] },
                    { selected: result.new_level || test.level },
-                   { class: (f.object.persisted? ? 'border-color-neutral-dark' : ''),
+                   { class: (f.object.persisted? ? 'border-neutral-dark' : ''),
                      data: { action: 'test-result#checkRecommendedLevel',
                              'test-result-target': 'newLevel' } }
         = f.text_area :reason,

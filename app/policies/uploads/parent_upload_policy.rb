@@ -6,7 +6,7 @@ class ParentUploadPolicy < ApplicationPolicy
   end
 
   def show?
-    false
+    user.is?('Admin', 'OrgAdmin')
   end
 
   def new?

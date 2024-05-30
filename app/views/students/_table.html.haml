@@ -3,14 +3,14 @@
 = turbo_frame_tag 'student_table' do
   %table.w-full.text-center
     %thead
-      %tr.text-color-secondary
-        %th{ class: 'p-2 bg-color-main/50 rounded-s-lg border-r border-r-white' }
+      %tr.text-secondary
+        %th.thead.thead-s.bg-secondary-50
           = t('.name')
-        %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+        %th.thead.bg-secondary-50
           = t('.student_id')
-        %th{ class: 'p-2 bg-color-main/50 border-r border-r-white' }
+        %th.thead.bg-secondary-50
           = t('.school')
-        %th{ class: 'p-2 bg-color-main/50 rounded-e-lg' }
+        %th.thead.thead-e.bg-secondary-50
           = t('.level')
     %tbody
       - students.each do |student|

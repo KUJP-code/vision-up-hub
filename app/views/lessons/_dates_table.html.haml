@@ -9,23 +9,23 @@
     %thead
       %tr
         %th Title
-        %th Week
-        %th Day
-        %th Update
+        %th.flex.gap-1.text-center
+          %p{ class: 'basis-1/5' } Week
+          %p{ class: 'basis-1/5' } Day
+          %p{ class: 'basis-3/5' }
     %tbody
       - lessons.each do |l|
-        = form_with model: l,
-                    class: 'flex gap-1' do |f|
-          = f.fields_for :course_lessons,
-                         l.course_lessons.find { |cl| cl.course_id == @course.id } do |cl_f|
-            %tr
-              %td
-                = link_to l.title,
-                          lesson_path(l),
-                          class: 'font-semibold'
-              = render 'course_lessons/date_fields',
-                       f: cl_f,
-                       table: true
-              %td
-                = cl_f.hidden_field :course_id
+        %tr
+          %td
+            = link_to with_subtype(l),
+                      lesson_path(l),
+                      class: 'font-semibold'
+          %td
+            = form_with model: l,
+                        class: 'flex items-center gap-1' do |f|
+              = f.fields_for :course_lessons,
+                             l.course_lessons.find { |cl| cl.course_id == @course.id } do |cl_f|
+                = render 'course_lessons/date_fields',
+                         f: cl_f,
+                         table: true
                 = cl_f.submit 'Change Date', class: 'btn btn-primary text-sm'

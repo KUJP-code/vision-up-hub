@@ -3,6 +3,7 @@
 class Parent < User
   before_validation :check_extra_emails
 
+  CSV_HEADERS = %w[name email password].freeze
   VISIBLE_TYPES = [].freeze
 
   has_many :children, class_name: 'Student',
@@ -17,7 +18,7 @@ class Parent < User
                   .reject { |e| existing_emails.include?(e) }
     extra_emails = existing_emails + new_emails
 
-    super(extra_emails)
+    super
   end
 
   def remove_extra_email(email)

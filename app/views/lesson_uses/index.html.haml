@@ -1,0 +1,21 @@
+%main.p-3
+  %table
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50 Lesson Title
+        %th.thead.bg-secondary-50 Usage Count
+        - @courses.each do |course|
+          - if course.id == @courses.last.id
+            %th.thead.thead-e.bg-secondary-50= course.title
+          - else
+            %th.thead.bg-secondary-50= course.title
+    %tbody
+      - @lessons.each do |lesson|
+        %tr{ class: cycle('bg-main-50', 'bg-secondary-50') }
+          %th{ scope: 'row' }= lesson.title
+          %th{ scope: 'row' }= lesson.course_lessons.size
+          - @courses.each do |course|
+            - if (course_lesson = lesson.course_lessons.find { |cl| cl.course_id == course.id })
+              %td.p-1.bg-lime-200 W#{course_lesson.week}, #{course_lesson.day.capitalize}
+            - else
+              %td

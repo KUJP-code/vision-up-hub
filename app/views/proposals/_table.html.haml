@@ -1,21 +1,21 @@
 -# locals: (proposals:)
 
 - if proposals.any?
-  %h2 Proposals
+  %h2.font-semibold Proposals
   %table.w-full.text-center#proposals
     %thead
       %tr
         %th
-          %p{ class: 'p-2 bg-color-main/80 rounded-s-lg border-r border-r-white' }
+          %p.thead.thead-s.bg-secondary-50
             Lesson
         %th
-          %p{ class: 'p-2 bg-color-main/80 border-r border-r-white' }
+          %p.thead.bg-secondary-50
             Proponent
         %th
-          %p{ class: 'p-2 bg-color-main/80 border-r border-r-white' }
+          %p.thead.bg-secondary-50
             Comments
         %th
-          %p{ class: 'p-2 bg-color-main/80 rounded-e-lg' }
+          %p.thead.thead-e.bg-secondary-50
             Status
     %tbody
       - proposals.each do |proposal|

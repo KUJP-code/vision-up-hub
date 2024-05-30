@@ -37,12 +37,14 @@
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  = render 'lessons/shared/attribute_list', lesson: @lesson
+  .flex.flex-col.p-3.gap-3
+    = render 'lessons/shared/attribute_list', lesson: @lesson
+    = render 'lessons/shared/resource_list', resources: @resources
 
   .flex.justify-center.gap-3
     = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
               edit_lesson_path(@lesson),
-              class: 'btn btn-info'
+              class: 'btn btn-secondary'
 
     = link_to 'Delete',
               lesson_path(@lesson),

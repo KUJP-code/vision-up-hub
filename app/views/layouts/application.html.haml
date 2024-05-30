@@ -1,5 +1,5 @@
 !!! 5
-%html{ class: org_theme,
+%html{ class: org_theme(current_user.presence),
        data: { controller: 'theme', 'theme-target': 'html' } }
   %head
     %title Materials
@@ -7,13 +7,13 @@
     %meta{ name: 'viewport', content: 'width=device-width,initial-scale=1' }
     = csrf_meta_tags
     = csp_meta_tag
-    = favicon_link_tag '/favicon.svg'
+    = favicon_link_tag org_favicon(current_user.presence)
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag 'application',
                              'data-turbo-track': 'reload',
                              type: 'module'
     = yield :head
-  %body
+  %body.text-secondary
     %turbo_frame#flash
       = render 'shared/flash'
     = render 'shared/nav'

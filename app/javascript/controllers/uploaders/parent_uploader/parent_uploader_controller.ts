@@ -8,7 +8,6 @@ export interface parent {
 	name: string;
 	email: string;
 	password: string;
-	password_confirmation: string;
 }
 
 // Connects to data-controller="parent-uploader"
@@ -17,11 +16,13 @@ export default class extends Controller<HTMLFormElement> {
 	static values = {
 		org: Number,
 		action: String,
+		headers: Array,
 	};
 
 	declare readonly fileInputTarget: HTMLInputElement;
 	declare readonly orgValue: number;
 	declare readonly actionValue: "create" | "update";
+	declare readonly headersValue: string[];
 
 	async displayParents(e: SubmitEvent) {
 		e.preventDefault();
@@ -44,7 +45,11 @@ export default class extends Controller<HTMLFormElement> {
 			return;
 		}
 		for (const [i, s] of parents.entries()) {
-			addParentRow({ csvParent: s, index: i });
+			addParentRow({
+				csvParent: s,
+				headers: this.headersValue.concat("Password Confirmation"),
+				index: i,
+			});
 		}
 
 		this.uploadParents(parents);

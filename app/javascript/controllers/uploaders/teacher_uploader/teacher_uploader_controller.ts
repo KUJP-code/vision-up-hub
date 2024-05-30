@@ -8,7 +8,6 @@ export interface teacher {
 	name: string;
 	email: string;
 	password: string;
-	password_confirmation: string;
 }
 
 // Connects to data-controller="teacher-uploader"
@@ -17,11 +16,13 @@ export default class extends Controller<HTMLFormElement> {
 	static values = {
 		org: Number,
 		action: String,
+		headers: Array,
 	};
 
 	declare readonly fileInputTarget: HTMLInputElement;
 	declare readonly orgValue: number;
 	declare readonly actionValue: "create" | "update";
+	declare readonly headersValue: string[];
 
 	async displayTeachers(e: SubmitEvent) {
 		e.preventDefault();
@@ -44,7 +45,11 @@ export default class extends Controller<HTMLFormElement> {
 			return;
 		}
 		for (const [i, s] of teachers.entries()) {
-			addTeacherRow({ csvTeacher: s, index: i });
+			addTeacherRow({
+				csvTeacher: s,
+				index: i,
+				headers: this.headersValue.concat("Password Confirmation"),
+			});
 		}
 
 		this.uploadTeachers(teachers);

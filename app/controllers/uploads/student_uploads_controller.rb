@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class StudentUploadsController < ApplicationController
-  after_action :verify_authorized, only: %i[create new update]
+  include SampleCsvable
+
+  after_action :verify_authorized, only: %i[create new show update]
+
+  def show
+    authorize nil, policy_class: StudentUploadPolicy
+    send_data sample_csv(Student::CSV_HEADERS),
+              filename: 'sample_students_upload.csv'
+  end
 
   def new
     authorize nil, policy_class: StudentUploadPolicy
@@ -33,9 +41,7 @@ class StudentUploadsController < ApplicationController
   private
 
   def student_upload_params
-    params.require(:student_upload).permit(
-      :birthday, :level, :name, :parent_id, :quit_date, :school_id, :start_date, :student_id
-    )
+    params.require(:student_upload).permit(Student::CSV_HEADERS.map(&:to_sym))
   end
 
   def set_errors

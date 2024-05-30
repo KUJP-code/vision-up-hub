@@ -5,7 +5,7 @@
   return if test.send(skill_symbol).blank?
 
   saved = f.object.persisted?
-  input_classes = "outline-none border w-10 text-center #{'border-color-neutral-dark' if saved}"
+  input_classes = "outline-none border w-10 text-center #{'border-neutral-dark' if saved}"
 
 - test.send(skill_symbol).each_with_index do |max_score, i|
   %td.p-1{ data: { controller: 'validity' } }
@@ -20,7 +20,7 @@
                                  'test-result-target': skill,
                                  'validity-target': 'input' }
 
-%td{ class: 'p-1 bg-color-secondary/50' }
+%td{ class: 'p-1 bg-secondary-50' }
   .flex.justify-center.items-center.gap-1
     - value = f.object.send(fieldname_from_skill(skill).to_sym) || 0
     = f.hidden_field fieldname_from_skill(skill),

@@ -39,7 +39,7 @@ end
 def create_teachers_csv
   teachers = create_teachers
   CSV.open('tmp/teachers.csv', 'w') do |csv|
-    csv << %w[name email password password_confirmation]
+    csv << Teacher::CSV_HEADERS
     teachers.each do |teacher|
       csv << teacher
     end
@@ -52,5 +52,5 @@ def create_teachers
                         password_confirmation: 'testpassword')
   invalid_teacher = build(:user, :teacher, email: '')
   teachers << invalid_teacher
-  teachers.map { |t| [t.name, t.email, t.password, t.password] }
+  teachers.map { |t| Teacher::CSV_HEADERS.map { |h| t.send(h.to_sym) } }
 end

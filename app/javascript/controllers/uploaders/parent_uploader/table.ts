@@ -1,15 +1,8 @@
 import type { status } from "../declarations.d.ts";
 import type { parent } from "./parent_uploader_controller.ts";
 
-const requiredFields = ["name", "email", "password", "password_confirmation"];
-
 // Css constants
-const invalidClasses = [
-	"border",
-	"border-red-500",
-	"text-red-500",
-	"font-bold",
-];
+const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
 	"border-yellow-500",
 	"text-yellow-500",
@@ -20,7 +13,7 @@ const pendingClasses = [
 	"border-slate-800",
 	"bg-slate-100",
 	"border-slate-500",
-	"text-color-secondary",
+	"text-secondary",
 ];
 
 export function newParentUploadTable() {
@@ -28,11 +21,11 @@ export function newParentUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-color-main/50 rounded-s-lg border-r border-r-white">Name</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Email</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Password</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Password Confirmation</th>
-						<th class="p-2 bg-color-main/50 rounded-e-lg">Status</th>
+						<th class="thead thead-s bg-secondary-50">Name</th>
+						<th class="thead bg-secondary-50">Email</th>
+						<th class="thead bg-secondary-50">Password</th>
+						<th class="thead bg-secondary-50">Password Confirmation</th>
+						<th class="thead thead-e bg-secondary-50">Status</th>
 					</tr>
 				</thead>
 				<tbody id="parent-table">
@@ -44,25 +37,21 @@ export function newParentUploadTable() {
 export function addParentRow({
 	csvParent,
 	index,
+	headers,
 	status = "Pending",
-}: { csvParent: parent; index: number; status?: status }) {
+}: { csvParent: parent; index: number; headers: string[]; status?: status }) {
 	const table = document.querySelector("#parent-table");
 	const row = document.createElement("tr");
 	row.id = `parent-row-${index}`;
-	if (validateParent(csvParent)) {
-		row.classList.add(...pendingClasses);
-	} else {
-		row.classList.add(...invalidClasses);
-		status = "Invalid";
-	}
+	row.classList.add(...pendingClasses);
 
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvParent)) {
-		rowContents += attributeCellHTML(csvParent, attribute);
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvParent, attribute, headers);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -75,12 +64,12 @@ export function addParentRow({
 	}
 }
 
-function validateParent(parent: parent) {
-	return requiredFields.every((field) => parent[field]);
-}
-
-function attributeCellHTML(parent: parent, attribute: string) {
-	if (requiredFields.includes(attribute)) {
+function attributeCellHTML(
+	parent: parent,
+	attribute: string,
+	headers: string[],
+) {
+	if (headers.includes(attribute)) {
 		return `
 			<td>${parent[attribute] || "なし"}</td>
 
@@ -88,7 +77,8 @@ function attributeCellHTML(parent: parent, attribute: string) {
 	}
 
 	return `
-		<td class="p-2 ${parent[attribute] ? "" : missingClasses.join(" ")}">${parent[attribute] || "なし"
+		<td class="p-2 ${parent[attribute] ? "" : missingClasses.join(" ")}">${
+			parent[attribute] || "なし"
 		}</td>
 	`;
 }

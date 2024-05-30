@@ -6,7 +6,7 @@
   .flex.flex-col.gap-3
     = link_to t('.back'),
               student_searches_path(parent_id:),
-              class: 'btn btn-info self-start'
+              class: 'btn btn-secondary self-start'
 
     = render 'students/table', students: results
 
@@ -21,5 +21,5 @@
                    class: 'btn btn-primary',
                    data: { 'turbo-frame' => '_top' }
     - elsif result.parent_id
-      %p.w-full.bg-red-700.text-white.text-center.p-2.rounded-lg
+      %p.w-full.bg-danger.text-white.text-center.p-2.rounded
         = t('.child_claimed', child: redact(result), parent: result.parent.email)

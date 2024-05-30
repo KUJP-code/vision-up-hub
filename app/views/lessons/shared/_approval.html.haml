@@ -23,9 +23,9 @@
 - if approved_by.any?
   %h3 Approved by: #{approved_by.to_sentence}
 
-= form_with model: lesson, class: 'form' do |f|
+= form_with model: lesson, class: 'flex flex-col gap-3' do |f|
   .form-group
     = f.label :internal_notes
-    = f.text_area :internal_notes, class: 'h-[10vh]'
+    = f.text_area :internal_notes
 
-  = f.submit t('update_notes'), class: 'btn btn-primary'
+  = f.submit t('update_notes'), class: 'btn btn-primary w-full'

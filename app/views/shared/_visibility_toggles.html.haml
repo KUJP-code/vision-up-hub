@@ -11,7 +11,7 @@
   end
 
 - if admin_approved || writer_approved
-  %p{ class: "#{shared_classes} bg-green-600" }
+  %p{ class: "#{shared_classes} bg-success" }
     Approved
 
 - elsif current_user.is?('Writer') && !resource.instance_of?(Course)
@@ -19,14 +19,14 @@
     = f.hidden_field :curriculum_approval_id, value: current_user.id
     = f.hidden_field :curriculum_approval_name, value: current_user.name
     = f.submit index ? t('awaiting_approval') : t('not_approved'),
-               class: "#{shared_classes} bg-red-500 cursor-pointer"
+               class: "#{shared_classes} bg-danger cursor-pointer"
 
 - elsif current_user.is?('Admin') && !resource.instance_of?(Course)
   = form_with model: resource do |f|
     = f.hidden_field :admin_approval_id, value: current_user.id
     = f.hidden_field :admin_approval_name, value: current_user.name
     = f.submit index ? t('awaiting_approval') : t('not_approved'),
-               class: "#{shared_classes} bg-red-500 cursor-pointer"
+               class: "#{shared_classes} bg-danger cursor-pointer"
 
 - unless resource.instance_of?(Course)
   %p{ class: "#{shared_classes} #{status_color(resource)}" }
@@ -37,10 +37,10 @@
     = form_with model: resource do |f|
       = f.hidden_field :released, value: false
       = f.submit index ? 'Released' : 'Released: ✓',
-                 class: "#{shared_classes} bg-green-600 cursor-pointer"
+                 class: "#{shared_classes} bg-success cursor-pointer"
 
   - else
     = form_with model: resource do |f|
       = f.hidden_field :released, value: true
       = f.submit index ? 'Unreleased' : 'Not Released',
-                 class: "#{shared_classes} bg-red-500 cursor-pointer"
+                 class: "#{shared_classes} bg-danger cursor-pointer"

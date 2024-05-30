@@ -5,8 +5,10 @@ class WritersController < UsersController
     @assigned_lessons = @user.assigned_lessons
     @created_lessons = @user.created_lessons
     @proposals = @user.proposals.order(updated_at: :desc)
-    @proposals = @proposals.includes(:changed_lesson) if current_user.is?('Admin')
-    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
+    @org_teachers = Organisation.all
+                                .map { |org| { org:, teacher: org.teachers.first } }
+                                .reject { |h| h[:teacher].nil? }
+    admin_filter if current_user.is?('Admin')
   end
 
   def new
@@ -38,6 +40,11 @@ class WritersController < UsersController
   end
 
   private
+
+  def admin_filter
+    @proposals = @proposals.includes(:changed_lesson)
+    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id)
+  end
 
   def scoped_users
     super.where(type: 'Writer')

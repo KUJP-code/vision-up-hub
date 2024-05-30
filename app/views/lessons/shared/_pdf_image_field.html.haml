@@ -6,6 +6,6 @@
                 alt: lesson.send(attr).filename
 
   .form-group
-    = f.label :attr, t('.image')
-    = f.file_field :attr,
+    = f.label attr, t('.image')
+    = f.file_field attr,
                    accept: %w[image/jpeg image/png]

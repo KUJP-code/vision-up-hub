@@ -3,8 +3,8 @@
   container_actions = 'click@window->dropdown#hide touchstart@window->dropdown#hide ' \
                       'keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem ' \
                       'keydown.esc->dropdown#hide'
-  menu_styles = 'hidden absolute top-12 -left-2 z-10 flex flex-col bg-color-main ' \
-                'gap-2 p-3 rounded-b-lg'
+  menu_styles = 'hidden absolute top-12 -left-2 z-10 flex flex-col bg-main ' \
+                'gap-2 p-3 rounded-b'
 
 %div{ class: 'inline-block relative flex items-center p-3',
       data: { action: container_actions, controller: 'dropdown' } }
@@ -23,16 +23,16 @@
                data: { action: 'theme#switch',
                        'dropdown-target': 'menuItem',
                        theme: 'base' } }
-        Default
-    %li
-      %button{ class: button_styles,
-               data: { action: 'theme#switch',
-                       'dropdown-target': 'menuItem',
-                       theme: 'org_3' } }
-        Blue
+        VisionUP
     %li
       %button{ class: button_styles,
                data: { action: 'theme#switch',
                        'dropdown-target': 'menuItem',
                        theme: 'org_2' } }
+        KidsUP
+    %li
+      %button{ class: button_styles,
+               data: { action: 'theme#switch',
+                       'dropdown-target': 'menuItem',
+                       theme: 'org_3' } }
         Dark

@@ -3,6 +3,8 @@
 class Student < ApplicationRecord
   include Levelable
 
+  CSV_HEADERS = %w[name student_id level school_id parent_id birthday start_date quit_date].freeze
+
   after_create :generate_student_id
 
   validates :level, :name, presence: true
@@ -14,7 +16,7 @@ class Student < ApplicationRecord
 
   belongs_to :parent, optional: true
   belongs_to :school, counter_cache: true
-  delegate :organisation_id, to: :school
+  delegate :organisation_id, to: :school, allow_nil: true
   has_many :teachers, through: :school
 
   has_many :student_classes, dependent: :destroy
