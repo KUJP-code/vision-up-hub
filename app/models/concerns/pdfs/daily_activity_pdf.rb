@@ -44,7 +44,7 @@ module DailyActivityPdf
   end
 
   def draw_goal(pdf)
-    pdf.bounding_box([HEADER_INDENT, 261.mm], width: 90.mm, height: 10.mm) do
+    pdf.bounding_box([HEADER_INDENT, 261.mm], width: 90.mm, height: 15.mm) do
       pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
     end
     return if warning.blank?
@@ -53,13 +53,9 @@ module DailyActivityPdf
   end
 
   def draw_warning(pdf)
-    pdf.bounding_box([HEADER_INDENT + PADDING, 239.mm],
+    pdf.bounding_box([HEADER_INDENT, 246.mm - PADDING],
                      width: 88.mm, height: 8.mm) do
       pdf.text warning, color: 'FF0000', overflow: :shrink_to_fit
-    end
-    pdf.stroke_color 'FF0000'
-    pdf.stroke do
-      pdf.rounded_rectangle [HEADER_INDENT, 240.mm], 90.mm, 10.mm, BORDER_RADIUS
     end
   end
 
