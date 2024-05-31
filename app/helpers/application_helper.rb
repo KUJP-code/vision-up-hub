@@ -85,6 +85,7 @@ module ApplicationHelper
   private
 
   def user_subcontroller?(controller, title)
+    return true if current_user_own_profile? && title == 'today'
     return false if title != 'users' || current_user_own_profile?
     return true if controller == 'sales'
 

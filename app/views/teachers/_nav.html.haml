@@ -1,8 +1,8 @@
+= main_nav_link 'today', root_path
 = main_nav_link 'classes', school_classes_path
 = main_nav_link 'students', students_path
 = main_nav_link 'support', support_requests_path
 = main_nav_link 'test', tests_path
-%div{ class: 'w-[calc(100%+1rem)] md:w-min md:h-[calc(100%+1rem)] ' \
+%div{ class: 'w-full md:w-min text-nowrap md:h-[calc(100%+1rem)] ' \
              'flex justify-center items-center bg-secondary' }
-  = main_nav_link 'tutorials',
-                  'fake_temp_path'
+  = main_nav_link 'tutorials', root_path
