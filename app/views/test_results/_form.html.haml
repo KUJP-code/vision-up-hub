@@ -11,7 +11,10 @@
       = link_to student.student_id || 'なし',
                 student_path(student)
     %td{ class: 'p-1 bg-main-50' }
-      = link_to redact(student),
+      = link_to redact(student, student.name),
+                student_path(student)
+    %td{ class: 'p-1 bg-main-50' }
+      = link_to redact(student, student.en_name),
                 student_path(student)
     %td{ class: 'p-1 bg-main-50' }= student.level.titleize
 

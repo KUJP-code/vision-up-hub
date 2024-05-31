@@ -1,7 +1,7 @@
 = content_for :head do
   = stylesheet_link_tag 'print_report_card', media: 'print'
 
-= render 'shared/subtitle', text: redact(@student)
+= render 'shared/subtitle', text: redact(@student, @student.name)
 
 %main.flex.flex-col.md:flex-row.md:flex-wrap.p-3#student
   - if @student.parent_id.nil?

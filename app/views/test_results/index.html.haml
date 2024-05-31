@@ -6,10 +6,11 @@
 
   %div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
     %table
-      %thead.sticky.top-0
+      %thead.sticky.top-0.text-white
         %tr
           %th{ class: 'p-1 bg-main', id: 'student-details', rowspan: 2 }= t('.student_id')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.name')
+          %th.p-1.bg-main{ rowspan: 2 }= t('.en_name')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?

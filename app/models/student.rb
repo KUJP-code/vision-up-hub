@@ -12,7 +12,7 @@ class Student < ApplicationRecord
   # So can't make it globally unique
   # Unique per school is a good compromise, by org would require extra queries
   validates :student_id, uniqueness: { allow_nil: true, scope: :school_id }
-  encrypts :name
+  encrypts :en_name, :name
 
   belongs_to :parent, optional: true
   belongs_to :school, counter_cache: true
