@@ -55,9 +55,10 @@
   .form-group
     = f.label :resources
     = f.file_field :resources, multiple: true
-    - resource_ids.each do |id|
-      = f.hidden_field :resources,
-                       multiple: true,
-                       value: id
+    - if resource_ids
+      - resource_ids.each do |id|
+        = f.hidden_field :resources,
+                         multiple: true,
+                         value: id
 
   = f.submit class: 'btn btn-primary'

@@ -97,7 +97,7 @@ class LessonsController < ApplicationController
 
   def set_form_info
     @courses = Course.pluck(:title, :id)
-    @resource_ids = @lesson.resources.includes(:blob).map(&:signed_id)
+    @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
   end
 
   def set_lesson
