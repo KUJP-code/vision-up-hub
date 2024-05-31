@@ -1,4 +1,4 @@
--# locals: (courses:, lesson:)
+-# locals: (courses:, lesson:, resource_ids:)
 
 = form_with model: lesson,
             html: { id: "#{lesson.type.underscore}_form",
@@ -55,5 +55,9 @@
   .form-group
     = f.label :resources
     = f.file_field :resources, multiple: true
+    - resource_ids.each do |id|
+      = f.hidden_field :resources,
+                       multiple: true,
+                       value: id
 
   = f.submit class: 'btn btn-primary'

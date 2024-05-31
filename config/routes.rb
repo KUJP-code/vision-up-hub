@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]
-      resources :files, only: %i[show]
+      resources :files, only: %i[destroy show]
       resources :lessons
       resources :lesson_searches, only: %i[index]
       resources :lesson_uses, only: %i[index]

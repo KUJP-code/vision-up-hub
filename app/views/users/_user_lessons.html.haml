@@ -1,16 +1,16 @@
 -# locals: (assigned:, created:)
 
-- if current_user.is?('Admin') && assigned.any?
-  = form_with url: reassign_editor_path, class: 'flex flex-col gap-3' do |f|
-    %h3 Reassign all assigned lessons to:
-    = f.hidden_field :old_editor_id, value: @user.id
+.flex.flex-wrap.justify-around.gap-3.p-3.text-center
+  - if current_user.is?('Admin') && assigned.any?
+    = form_with url: reassign_editor_path, class: 'flex flex-col gap-3 w-full' do |f|
+      %h3 Reassign all assigned lessons to:
+      = f.hidden_field :old_editor_id, value: @user.id
 
-    .form-group
-      = f.select :new_editor_id, @writers
+      .form-group
+        = f.select :new_editor_id, @writers
 
-    = f.submit 'Reassign', class: 'btn btn-primary'
+      = f.submit 'Reassign', class: 'btn btn-primary'
 
-.flex.justify-around.gap-3.p-3.text-center
   - if created.any?
     .flex.flex-col.gap-2
       %h3 Created Lessons
