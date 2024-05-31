@@ -23,6 +23,6 @@ module LessonHelper
   def with_subtype(lesson)
     return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype)
 
-    "#{lesson.title} (#{lesson.subtype.capitalize})"
+    "#{lesson.title} (#{lesson.subtype.humanize})"
   end
 end

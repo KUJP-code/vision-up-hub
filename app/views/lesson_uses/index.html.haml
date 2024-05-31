@@ -12,7 +12,8 @@
     %tbody
       - @lessons.each do |lesson|
         %tr{ class: cycle('bg-main-50', 'bg-secondary-50') }
-          %th{ scope: 'row' }= lesson.title
+          %th{ scope: 'row' }
+            = link_to lesson.title, lesson_path(lesson)
           %th{ scope: 'row' }= lesson.course_lessons.size
           - @courses.each do |course|
             - if (course_lesson = lesson.course_lessons.find { |cl| cl.course_id == course.id })
