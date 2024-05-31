@@ -40,6 +40,9 @@ class StudentsController < ApplicationController
     if @student.save
       redirect_to @student, notice: t('create_success')
     else
+      build_classes
+      set_schools
+      set_classes
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -50,6 +53,9 @@ class StudentsController < ApplicationController
     if @student.update(student_params)
       redirect_to @student, notice: t('update_success')
     else
+      build_classes
+      set_schools
+      set_classes
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -71,6 +77,7 @@ class StudentsController < ApplicationController
   def student_params
     params.require(:student).permit(
       :comments, :level, :name, :school_id, :student_id, :parent_id,
+      :en_name, :birthday, :start_date, :end_date,
       student_classes_attributes: %i[id class_id _destroy]
     )
   end

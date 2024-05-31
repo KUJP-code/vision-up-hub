@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :student do
     name { 'Test Student' }
+    birthday { '20/02/2020' }
     level { 'sky_three' }
     school
   end

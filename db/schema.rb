@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_31_081127) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_31_083504) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -283,7 +283,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_081127) do
     t.integer "parent_id"
     t.date "start_date"
     t.date "quit_date"
-    t.date "birthday"
+    t.date "birthday", null: false
     t.string "en_name", default: ""
     t.index ["parent_id"], name: "index_students_on_parent_id"
     t.index ["school_id"], name: "index_students_on_school_id"

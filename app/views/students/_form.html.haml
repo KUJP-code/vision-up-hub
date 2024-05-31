@@ -28,7 +28,7 @@
 
   .form-group
     = f.label :birthday, t('.birthday')
-    = f.date_field :birthday
+    = f.date_field :birthday, required: true
 
   .form-group
     = f.label :start_date, t('.start_date')

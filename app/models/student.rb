@@ -7,7 +7,7 @@ class Student < ApplicationRecord
 
   after_create :generate_student_id
 
-  validates :level, :name, presence: true
+  validates :birthday, :level, :name, presence: true
   # We want them to be able to add their own student ids if they have them
   # So can't make it globally unique
   # Unique per school is a good compromise, by org would require extra queries
