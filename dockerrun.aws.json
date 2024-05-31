@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.11-nginx-size"
+    "Name": "thatbballguy/materials:0.10.11-nginx-max"
   },
   "Ports": [
     {
