@@ -13,7 +13,7 @@ class ExercisesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Exercise successfully created.'
     else
-      set_courses
+      set_form_info
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Exercise could not be created'
@@ -28,7 +28,7 @@ class ExercisesController < LessonsController
       redirect_to after_update_url,
                   notice: 'Exercise was successfully updated.'
     else
-      set_courses
+      set_form_info
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Exercise could not be updated'
