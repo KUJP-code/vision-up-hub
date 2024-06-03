@@ -24,6 +24,17 @@ module LessonHelper
     end
   end
 
+  def type_icon_path(lesson)
+    type = case lesson.type
+           when 'DailyActivity', 'Exercise'
+             lesson.subtype
+           else
+             lesson.type.underscore
+           end
+
+    "lesson_types/#{type}.svg"
+  end
+
   def with_subtype(lesson)
     return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype)
 

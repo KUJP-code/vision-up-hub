@@ -2,14 +2,13 @@
   .flex.p-3
     %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
       .flex.gap-2.items-center
-        .flex
-          = image_tag level_icon_path(@lesson),
-                      height: 50,
-                      width: 50
-          = image_tag @lesson.icon_filename,
-                      height: 50,
-                      width: 50
+        = image_tag type_icon_path(@lesson),
+                    height: 50,
+                    width: 50
         %h1= @lesson.title
+        = image_tag level_icon_path(@lesson),
+                    height: 50,
+                    width: 50
         - unless @lesson.changed_lesson_id.nil?
           %h1
             = ' - Proposal for '

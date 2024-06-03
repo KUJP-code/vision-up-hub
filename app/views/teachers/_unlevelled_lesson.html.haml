@@ -4,5 +4,5 @@
   %h2.text-secondary.font-bold.text-center= lesson.subtype.titleize
   %h3.text-secondary.font-bold.text-center= lesson.title
   .flex-grow
-  = image_tag lesson.icon_filename, class: 'w-full'
+  = image_tag type_icon_path(lesson), class: 'w-full'
   = render 'teachers/lesson_resources', lesson:
