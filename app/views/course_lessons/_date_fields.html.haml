@@ -2,7 +2,7 @@
 
 - if table
   %div{ class: 'basis-1/5' }
-    = f.number_field :week, min: 1, max: 52, class: 'w-10'
+    = f.number_field :week, min: 1, max: 52, class: 'text-center w-10'
   %div{ class: 'basis-1/5' }
     = f.select :day, CourseLesson.days.map { |k, _v| [k[0..2].capitalize, k] }
   = f.hidden_field :course_id

@@ -2,7 +2,7 @@
 
 .flex.flex-col.gap-1
   %h2.flex.items-center.justify-center.gap-2.font-bold
-    = image_tag "#{type.underscore}.svg",
+    = image_tag "lesson_types/#{type.underscore}.svg",
                 height: 50, width: 50
     = split_on_capitals(type).pluralize
   %table

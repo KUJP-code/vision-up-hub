@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module LessonHelper
+  def level_icon_path(lesson)
+    "levels/#{lesson.short_level.downcase}.svg"
+  end
+
   def status_color(lesson)
     case lesson.status
     when 'proposed', 'changes_needed'
