@@ -56,6 +56,6 @@ class DailyActivity < Lesson
   }
 
   def icon_filename
-    "#{subtype}.svg"
+    "#{super}#{subtype}.svg"
   end
 end

@@ -19,7 +19,7 @@ class EnglishClass < Lesson
   end
 
   def icon_filename
-    'english_class.svg'
+    "#{super}english_class.svg"
   end
 
   private

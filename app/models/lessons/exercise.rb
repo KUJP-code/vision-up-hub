@@ -38,6 +38,6 @@ class Exercise < Lesson
   validates :intro, :instructions, presence: true
 
   def icon_filename
-    "#{subtype}.svg"
+    "#{super}#{subtype}.svg"
   end
 end

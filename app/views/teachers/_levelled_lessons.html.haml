@@ -1,40 +1,32 @@
 -# locals: (lessons:)
 
 :ruby
-  english_classes = lessons.select { |lesson| lesson.type == 'EnglishClass' }
-  phonics_classes = lessons.select { |lesson| lesson.type == 'PhonicsClass' }
-  stand_show_speak = lessons.select { |lesson| lesson.type == 'StandShowSpeak' }
+  levelled_types = %w[EnglishClass PhonicsClass StandShowSpeak].freeze
+  col_classes = { 'EnglishClass' => 'col-start-2',
+                  'PhonicsClass' => 'col-start-3',
+                  'StandShowSpeak' => 'col-start-4' }
 
-- if english_classes.any?
-  %h2.flex.items-center.justify-center.col-start-2.row-start-1 English Class
-  .flex.items-center.p-3.col-start-2.row-start-2
+- levelled_types.each do |type|
+  :ruby
+    type_lessons = lessons.select { |lesson| lesson.type == type }
+    next if type_lessons.empty?
+
+    col_class = col_classes[type]
+
+  %h2{ class: "flex items-center #{col_class} row-start-1 text-wrap" }
+    = split_on_capitals(type)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-2" }
     = render 'teachers/lesson_resources',
-             lesson: english_classes.find(&:land?)
-  .flex.items-center.p-3.col-start-2.row-start-3
+             lesson: type_lessons.find(&:land?)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-3" }
     = render 'teachers/lesson_resources',
-             lesson: english_classes.find(&:sky?)
-  .flex.items-center.p-3.col-start-2.row-start-4
+             lesson: type_lessons.find(&:sky?)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-4" }
     = render 'teachers/lesson_resources',
-             lesson: english_classes.find(&:galaxy?)
-- if phonics_classes.any?
-  %h2.flex.items-center.justify-center.col-start-3.row-start-1 Phonics
-  .flex.items-center.p-3.col-start-3.row-start-2
+             lesson: type_lessons.find(&:galaxy?)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-5" }
     = render 'teachers/lesson_resources',
-             lesson: phonics_classes.find(&:land?)
-  .flex.items-center.p-3.col-start-3.row-start-3
+             lesson: type_lessons.find(&:keep_up?)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-6" }
     = render 'teachers/lesson_resources',
-             lesson: phonics_classes.find(&:sky?)
-  .flex.items-center.p-3.col-start-3.row-start-4
-    = render 'teachers/lesson_resources',
-             lesson: phonics_classes.find(&:galaxy?)
-- if stand_show_speak.any?
-  %h2.flex.items-center.justify-center.col-start-4.row-start-1 Stand Show Speak
-  .flex.items-center.p-3.col-start-4.row-start-2
-    = render 'teachers/lesson_resources',
-             lesson: stand_show_speak.find(&:land?)
-  .flex.items-center.p-3.col-start-4.row-start-3
-    = render 'teachers/lesson_resources',
-             lesson: stand_show_speak.find(&:sky?)
-  .flex.items-center.p-3.col-start-4.row-start-4
-    = render 'teachers/lesson_resources',
-             lesson: stand_show_speak.find(&:galaxy?)
+             lesson: type_lessons.find(&:specialist?)

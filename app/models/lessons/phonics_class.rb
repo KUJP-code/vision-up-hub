@@ -23,6 +23,6 @@ class PhonicsClass < Lesson
   validates :instructions, presence: true
 
   def icon_filename
-    'phonics_class.svg'
+    "#{super}phonics_class.svg"
   end
 end

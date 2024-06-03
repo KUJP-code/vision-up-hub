@@ -74,4 +74,8 @@ class Lesson < ApplicationRecord
                :invalid,
                message: 'Cannot delete lesson if it is used in a course')
   end
+
+  def icon_filename
+    'lesson_types/'
+  end
 end

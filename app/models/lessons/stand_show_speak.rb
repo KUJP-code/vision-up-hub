@@ -5,6 +5,6 @@ class StandShowSpeak < Lesson
   LISTABLE_ATTRIBUTES = %i[].freeze
 
   def icon_filename
-    'stand_show_speak.svg'
+    "#{super}stand_show_speak.svg"
   end
 end
