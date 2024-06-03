@@ -17,16 +17,19 @@
     = split_on_capitals(type)
   %div{ class: "flex items-center p-1 #{col_class} row-start-2" }
     = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:land?)
+             lesson: type_lessons.find(&:kindy?)
   %div{ class: "flex items-center p-1 #{col_class} row-start-3" }
     = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:sky?)
+             lesson: type_lessons.find(&:land?)
   %div{ class: "flex items-center p-1 #{col_class} row-start-4" }
     = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:galaxy?)
+             lesson: type_lessons.find(&:sky?)
   %div{ class: "flex items-center p-1 #{col_class} row-start-5" }
     = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:keep_up?)
+             lesson: type_lessons.find(&:galaxy?)
   %div{ class: "flex items-center p-1 #{col_class} row-start-6" }
+    = render 'teachers/lesson_resources',
+             lesson: type_lessons.find(&:keep_up?)
+  %div{ class: "flex items-center p-1 #{col_class} row-start-7" }
     = render 'teachers/lesson_resources',
              lesson: type_lessons.find(&:specialist?)
