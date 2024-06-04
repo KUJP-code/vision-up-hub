@@ -1,32 +1,9 @@
 # frozen_string_literal: true
 
 class Exercise < Lesson
-  include ExercisePdf, Linkable, Listable, PdfImageable
+  ATTRIBUTES = %i[goal guide resources subtype].freeze
 
-  ATTRIBUTES = %i[
-    add_difficulty
-    extra_fun
-    pdf_image
-    intro
-    instructions
-    large_groups
-    links
-    materials
-    notes
-    outro
-    subtype
-  ].freeze
-
-  LISTABLE_ATTRIBUTES = %i[
-    add_difficulty
-    extra_fun
-    intro
-    instructions
-    large_groups
-    materials
-    notes
-    outro
-  ].freeze
+  LISTABLE_ATTRIBUTES = %i[].freeze
 
   enum subtype: {
     aerobics: 0,
@@ -35,5 +12,14 @@ class Exercise < Lesson
     throwing: 3
   }
 
-  validates :intro, :instructions, presence: true
+  validate :guide_is_pdf?
+
+  private
+
+  def guide_is_pdf?
+    return true unless guide.attached?
+    return true if guide.content_type == 'application/pdf'
+
+    errors.add(:guide, 'must be a PDF')
+  end
 end

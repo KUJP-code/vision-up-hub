@@ -1,8 +1,10 @@
 -# locals: (attr:, f:, lesson:)
 
+- value = lesson.send(attr).instance_of?(Array) ? lesson.send(attr).join("\n") : lesson.send(attr)
+
 .form-group
   = f.label attr
   = f.text_area attr,
-                value: lesson.send(attr).join("\n"),
-                rows: attr == :instructions ? 10 : 4
+                value:,
+                rows: attr == 4
   %small.-mt-1 Separate items with new lines
