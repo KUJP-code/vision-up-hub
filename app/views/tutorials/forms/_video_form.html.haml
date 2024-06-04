@@ -1,15 +1,19 @@
-= form_with model: @tutorial, url: tutorials_path(type: 'Video'), local: true do |form|
-  = form.hidden_field :type, value: 'Video'
-  .field
-    = form.label :title
-    = form.text_field :title, class: 'form-control'
+= form_with model: @tutorial, url: tutorials_path(type: 'Video'), local: true, html: { class: 'form', data: { controller: 'fields' } } do |f|
+  = f.hidden_field :type, value: 'Video'
 
-  .field
-    = form.label :video_path
-    = form.text_field :video_path, class: 'form-control'
+  = render 'shared/form_errors', resource: @tutorial
 
-  .field
-    = form.label :section
-    = form.select :section, options_for_select(sections), {}, class: 'form-control'
+  .form-group
+    = f.label :title
+    = f.text_field :title, required: true
 
-  = form.submit 'Create Video Tutorial', class: 'btn btn-primary'
+  .form-group
+    = f.label :video_path
+    = f.text_field :video_path, required: true
+
+  .form-group
+    = f.label :section
+    = f.select :section, options_for_select(sections), {}
+
+  .form-group
+    = f.submit 'Create Video Tutorial', class: 'btn btn-primary'

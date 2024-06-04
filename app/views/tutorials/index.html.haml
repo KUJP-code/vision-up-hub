@@ -1,34 +1,49 @@
-= render 'shared/subtitle', text: t('.tutorials')
-
 - admin = current_user.is?('Admin')
 
-- if admin 
-  .w-full.flex.justify-center.p-3 
-    %details{
-      class: 'cursor-pointer bg-color-main text-white font-semibold rounded-md overflow-hidden',
-      id: 'create_tutorial'
-    }
-      %summary.btn.btn-info Create a new tutorial
-      %nav.flex.flex-col
-        = link_to 'PDF Form', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90', id: 'create_pdf_form'
-        = link_to 'Video Form', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90', id: 'create_video_form'
-        = link_to 'FAQ Form', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90', id: 'create_faq_form'
+= render 'shared/subtitle', text: t('.tutorials')
 
-.sections-container
+- if admin
+  .w-full.p-3
+    %details{ class: 'cursor-pointer bg-color-main text-white rounded-md overflow-hidden', id: 'create_tutorial' }
+      %summary.bg-color-secondary.p-2
+        Create a Tutorial
+      %nav.flex.flex-col
+        = link_to 'PDF Tutorial', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90', id: 'create_pdf_form'
+        = link_to 'Video Tutorial', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90', id: 'create_video_form'
+        = link_to 'FAQ Tutorial', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90', id: 'create_faq_form'
+
+.sections-container.flex.flex-wrap.gap-8.p-8
   - @sections.each do |section_name, section_key|
-    .section-box
+    .section-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
       %details
-        %summary.subtitle= section_name
+        %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
+          = section_name
 
         - if section_key == 'faq'
           - @faq_tutorials.each do |tutorial|
             %details
-              %summary{ style: "color: green;" }= tutorial.question
-              %p{ style: "color: red;" }= tutorial.answer
+              %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
+                = tutorial.question
+                - if admin
+                  = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+              %p.text-red-500
+                = tutorial.answer
         - else
-          - @pdf_tutorials.where(section: section_key).each do |tutorial|
-            %div
-              %h3= link_to tutorial.title, tutorial.full_file_path, target: '_blank'
-          - @video_tutorials.where(section: section_key).each do |tutorial|
-            %div
-              %h3= link_to tutorial.title, tutorial.full_video_path, target: '_blank'
+          %div
+            %h4.mt-2
+              Manuals & Guides
+            %ul.list-disc.list-inside
+              - @pdf_tutorials.where(section: section_key).each do |tutorial|
+                %li.cursor-pointer.flex.justify-between.items-center
+                  = link_to tutorial.title, tutorial.full_file_path, target: '_blank', class: 'text-blue-500 hover:underline'
+                  - if admin
+                    = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+
+            %h4.mt-4
+              Videos
+            %ul.list-disc.list-inside
+              - @video_tutorials.where(section: section_key).each do |tutorial|
+                %li.cursor-pointer.flex.justify-between.items-center
+                  = link_to tutorial.title, tutorial.full_video_path, target: '_blank', class: 'text-blue-500 hover:underline'
+                  - if admin
+                    = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
