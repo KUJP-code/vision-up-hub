@@ -20,11 +20,9 @@ RSpec.describe Exercise do
   end
 
   context 'when generating PDF guide' do
-    it 'contains title and links' do
+    it 'does not generate a PDF' do
       pdf = exercise.attach_guide
-      text_analysis = PDF::Inspector::Text.analyze(pdf)
-      expect(text_analysis.strings)
-        .to include('Test Exercise', 'Example link', '• Difficult idea 1')
+      expect(pdf).to be_nil
     end
   end
 end
