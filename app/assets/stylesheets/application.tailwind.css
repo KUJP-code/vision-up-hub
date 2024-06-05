@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+	details[open] {
+		@apply z-10;
+	}
+
 	h1 {
 		@apply text-3xl text-center;
 	}
