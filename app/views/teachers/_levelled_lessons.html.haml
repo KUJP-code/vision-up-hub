@@ -13,7 +13,7 @@
 
     col_class = col_classes[type]
 
-  %h2{ class: "flex items-center #{col_class} row-start-1 text-wrap" }
+  %h2{ class: "flex items-center font-bold #{col_class} row-start-1 text-wrap" }
     = split_on_capitals(type)
   %div{ class: "flex items-center p-1 #{col_class} row-start-2" }
     = render 'teachers/lesson_resources',

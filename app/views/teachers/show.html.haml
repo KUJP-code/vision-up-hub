@@ -6,13 +6,13 @@
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3
   - if @unlevelled_lessons.any?
-    %section{ class: 'basis-2/5 flex-shrink-0 flex flex-wrap justify-center md:justify-start' }
+    %section{ class: 'basis-[48%] flex-shrink-0 flex flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons,
                as: :lesson
 
   - if @levelled_lessons.any?
-    %section{ class: 'flex-shrink-0 basis-2/5 grid grid-rows-7 auto-cols-fr' }
+    %section{ class: 'flex-shrink-0 basis-[48%] grid grid-rows-5 auto-cols-fr' }
       .col-start-1
       .flex.items-center.justify-center.col-start-1= image_tag('levels/kindy.svg')
       .flex.items-center.justify-center.col-start-1= image_tag('levels/land.svg')

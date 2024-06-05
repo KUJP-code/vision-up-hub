@@ -15,7 +15,7 @@
 
     %div{ class: 'relative h-[34px]' }
       %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full
-        %summary{ class: "px-3 py-1 text-nowrap #{resource_classes}" }
+        %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
           Resources
         .flex.flex-col.gap-2.p-1.bg-white
           - lesson.resources.each do |r|
