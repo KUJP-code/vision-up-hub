@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe LessonHelper do
   context 'when getting filepath for level icon' do
     it "returns 'levels/{short_level}.svg' for any elementary level" do
-      level = EnglishClass.levels.keys.reject { |l| l == 'all_levels' }.sample
+      avoid_levels = %w[all_levels keep_up]
+      level = EnglishClass.levels.keys.reject { |l| avoid_levels.include?(l) }.sample
       lesson = build(:english_class, level:)
       short_level = lesson.short_level.downcase
       expect(level_icon_path(lesson)).to eq("levels/#{short_level}.svg")
