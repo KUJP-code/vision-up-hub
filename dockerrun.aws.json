@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.14-remove-entrypoint"
+    "Name": "thatbballguy/materials:0.10.15-keep-up"
   },
   "Ports": [
     {
