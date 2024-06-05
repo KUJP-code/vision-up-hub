@@ -3,7 +3,11 @@
 module Pdfable
   extend ActiveSupport::Concern
 
-  UPLOADED_GUIDES = %w[EnglishClass Exercise KindyPhonic StandShowSpeak].freeze
+  UPLOADED_GUIDES = %w[EnglishClass
+                       Exercise
+                       KindyPhonic
+                       SpecialLesson
+                       StandShowSpeak].freeze
 
   included do
     require 'prawn/measurement_extensions'

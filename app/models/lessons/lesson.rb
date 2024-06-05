@@ -8,6 +8,7 @@ class Lesson < ApplicationRecord
              Exercise
              KindyPhonic
              PhonicsClass
+             SpecialLesson
              StandShowSpeak].freeze
 
   before_destroy :check_not_used

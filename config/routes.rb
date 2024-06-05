@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       resources :phonics_classes, only: %i[create index update]
       resources :plans
       resources :school_classes
+      resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
       resources :student_searches, only: %i[index update]
