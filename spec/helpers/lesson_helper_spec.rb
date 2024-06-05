@@ -10,6 +10,11 @@ RSpec.describe LessonHelper do
       short_level = lesson.short_level.downcase
       expect(level_icon_path(lesson)).to eq("levels/#{short_level}.svg")
     end
+
+    it 'adds underscores when short level has spaces' do
+      lesson = build(:english_class, level: :keep_up_one)
+      expect(level_icon_path(lesson)).to eq('levels/keep_up.svg')
+    end
   end
 
   context 'when formatting links for display in form' do

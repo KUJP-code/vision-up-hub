@@ -2,7 +2,8 @@
 
 module LessonHelper
   def level_icon_path(lesson)
-    "levels/#{lesson.short_level.downcase}.svg"
+    level = lesson.short_level.downcase.tr(' ', '_')
+    "levels/#{level}.svg"
   end
 
   def status_color(lesson)
