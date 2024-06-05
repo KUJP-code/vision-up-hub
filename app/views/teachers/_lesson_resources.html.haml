@@ -17,10 +17,12 @@
       %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full
         %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
           Resources
-        .flex.flex-col.gap-2.p-1.bg-white
-          - lesson.resources.each do |r|
-            = link_to r.blob.filename,
-                      file_path(r.blob),
+        .flex.flex-col.gap-2.p-1.bg-white.text-secondary
+          - lesson.resources.each_with_index do |r, i|
+            = link_to file_path(r.blob),
                       target: '_blank',
                       rel: 'noopener',
-                      class: 'text-secondary'
+                      class: ('border-t border-secondary' unless i.zero?) do
+              .flex.items-center
+                %span= r.blob.filename
+                = image_tag 'download.svg'
