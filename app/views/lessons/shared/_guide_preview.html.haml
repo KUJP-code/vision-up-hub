@@ -9,6 +9,5 @@
                 class: 'guide_image w-full'
     %h3.rounded.text-white.bg-main.text-center.p-2.font-semibold
       Download Guide
-
-- else
+- elsif lesson.type != 'SpecialLesson'
   %h3.guide_link Guide missing, try editing the lesson again or call Brett

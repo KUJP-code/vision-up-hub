@@ -16,6 +16,8 @@ RSpec.describe 'creating an Special lesson' do
     click_link 'create_special_lesson'
     within '#special_lesson_form' do
       fill_in 'special_lesson_title', with: 'Test Special Lesson'
+      fill_in 'special_lesson_goal', with: 'Test Goal'
+      select 'All Levels', from: 'special_lesson_level'
       attach_file 'special_lesson_resources',
                   Rails.root.join('spec/Brett_Tanner_Resume.pdf')
 

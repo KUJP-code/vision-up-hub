@@ -41,7 +41,7 @@
 
   .form-group
     = f.label :goal
-    = f.text_area :goal
+    = f.text_area :goal, required: true
 
   - unless lesson.type == 'KindyPhonic'
     .form-group
