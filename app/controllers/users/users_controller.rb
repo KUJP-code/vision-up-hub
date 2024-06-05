@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @users = policy_scope(User).order(type: :asc, name: :asc)
+    @users = policy_scope(User).order(updated_at: :desc).limit(10)
     @users = @users.includes(:organisation) if current_user.is?('Admin')
     @orgs = policy_scope(Organisation).pluck(:name, :id)
     render 'users/index'
