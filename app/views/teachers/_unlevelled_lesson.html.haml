@@ -1,7 +1,8 @@
 -# locals: (lesson:)
 
 %div{ class: 'basis-[23%] flex flex-col justify-start gap-5 p-3' }
-  %h2.text-secondary.font-bold.text-center= lesson.subtype.titleize
+  - if lesson.subtype
+    %h2.text-secondary.font-bold.text-center= lesson.subtype.titleize
   %h3.text-secondary.font-bold.text-center= lesson.title
   = image_tag type_icon_path(lesson), class: 'w-full'
   = render 'teachers/lesson_resources', lesson:

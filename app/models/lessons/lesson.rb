@@ -31,7 +31,7 @@ class Lesson < ApplicationRecord
 
   has_many_attached :resources
 
-  scope :unlevelled, -> { where(type: %w[DailyActivity Exercise]) }
+  scope :unlevelled, -> { where(type: %w[DailyActivity Exercise SpecialLesson]) }
   scope :levelled, -> { where(type: %w[EnglishClass KindyPhonic PhonicsClass StandShowSpeak]) }
 
   def self.reassign_editor(old_editor_id, new_editor_id)
