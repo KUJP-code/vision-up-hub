@@ -3,7 +3,12 @@
 class Lesson < ApplicationRecord
   include Approvable, Levelable, Pdfable, Proposable
 
-  TYPES = %w[DailyActivity EnglishClass Exercise PhonicsClass StandShowSpeak].freeze
+  TYPES = %w[DailyActivity
+             EnglishClass
+             Exercise
+             KindyPhonics
+             PhonicsClass
+             StandShowSpeak].freeze
 
   before_destroy :check_not_used
 
