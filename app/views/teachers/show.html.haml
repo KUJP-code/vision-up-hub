@@ -16,9 +16,12 @@
       .col-start-1
       .flex.items-center.justify-center.col-start-1
         = image_tag 'levels/kindy.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1= image_tag('levels/land.svg')
-      .flex.items-center.justify-center.col-start-1= image_tag('levels/sky.svg')
-      .flex.items-center.justify-center.col-start-1= image_tag('levels/galaxy.svg')
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/land.svg', class: 'w-[70%]'
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/sky.svg', class: 'w-[70%]'
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/galaxy.svg', class: 'w-[70%]'
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
 = render 'teachers/day_select',
