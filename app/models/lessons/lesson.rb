@@ -6,7 +6,7 @@ class Lesson < ApplicationRecord
   TYPES = %w[DailyActivity
              EnglishClass
              Exercise
-             KindyPhonics
+             KindyPhonic
              PhonicsClass
              StandShowSpeak].freeze
 

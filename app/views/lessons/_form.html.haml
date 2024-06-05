@@ -43,12 +43,13 @@
     = f.label :goal
     = f.text_area :goal
 
-  .form-group
-    = f.label :level
-    = f.select :level,
-               lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
-               required: true,
-               prompt: 'Select a level'
+  - unless lesson.type == 'KindyPhonic'
+    .form-group
+      = f.label :level
+      = f.select :level,
+                 lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
+                 required: true,
+                 prompt: 'Select a level'
 
   = type_fields
 

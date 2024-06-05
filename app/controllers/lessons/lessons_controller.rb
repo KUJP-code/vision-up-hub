@@ -56,13 +56,15 @@ class LessonsController < ApplicationController
 
   def lesson_params
     default_params = [
-      :goal, :level, :title, :type, :curriculum_approval_id, :curriculum_approval_name,
-      :internal_notes, { resources: [] }
+      :goal, :level, :title, :type, :curriculum_approval_id,
+      :curriculum_approval_name, :internal_notes, { resources: [] },
+      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }
     ]
     return default_params unless current_user.is?('Admin')
 
-    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released, :status,
-                      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
+    default_params + %i[
+      assigned_editor_id admin_approval_id admin_approval_name released status
+    ]
   end
 
   def after_update_url

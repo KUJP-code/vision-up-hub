@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
-class KindyPhonics < Lesson
+class KindyPhonic < Lesson
   include Listable
 
   ATTRIBUTES = %i[blending_words guide lesson_topic notes term unit vocab].freeze
   LISTABLE_ATTRIBUTES = %i[blending_words notes vocab].freeze
+
+  enum level: { kindy: 1 }
 
   attr_accessor :lesson_topic, :term, :unit
 

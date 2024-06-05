@@ -1,0 +1,39 @@
+-# locals: (f:, lesson:)
+
+:ruby
+  topic = lesson.topic
+  term = topic ? topic.scan(/\d+/).first : 1
+  unit = topic ? lesson.topic.scan(/\d+/).last : 1
+  lesson_topic = topic ? topic.scan(/(?<=- ).+/).first : ''
+
+= f.hidden_field :type, value: lesson.type
+
+.form-group
+  = f.label :guide
+  = f.file_field :guide, accept: 'application/pdf'
+
+.flex.gap-2
+  .form-group
+    = f.label :term
+    = f.number_field :term,
+                     minimum: 1,
+                     maximum: 3,
+                     value: term,
+                     required: true
+
+  .form-group
+    = f.label :unit
+    = f.number_field :unit,
+                     minimum: 1,
+                     maximum: 20,
+                     value: unit,
+                     required: true
+
+  .form-group
+    = f.label :lesson_topic
+    = f.text_field :lesson_topic,
+                   value: lesson_topic,
+                   required: true
+
+- KindyPhonic::LISTABLE_ATTRIBUTES.each do |attr|
+  = render('lessons/shared/list_fields', f:, lesson:, attr:)
