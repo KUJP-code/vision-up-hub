@@ -14,7 +14,8 @@
   - if @levelled_lessons.any?
     %section{ class: 'flex-shrink-0 basis-[48%] grid grid-rows-5 auto-cols-fr' }
       .col-start-1
-      .flex.items-center.justify-center.col-start-1= image_tag('levels/kindy.svg')
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/kindy.svg', class: 'w-[70%]'
       .flex.items-center.justify-center.col-start-1= image_tag('levels/land.svg')
       .flex.items-center.justify-center.col-start-1= image_tag('levels/sky.svg')
       .flex.items-center.justify-center.col-start-1= image_tag('levels/galaxy.svg')
