@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.11-nginx-max"
+    "Name": "thatbballguy/materials:0.10.12-entrypoint-retry"
   },
   "Ports": [
     {
