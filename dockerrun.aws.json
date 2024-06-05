@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.12-entrypoint-retry"
+    "Name": "thatbballguy/materials:0.10.13-entrypoint-permissions"
   },
   "Ports": [
     {
