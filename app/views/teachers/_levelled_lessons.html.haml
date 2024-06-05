@@ -27,9 +27,3 @@
   %div{ class: "flex items-center p-1 #{col_class} row-start-5" }
     = render 'teachers/lesson_resources',
              lesson: type_lessons.find(&:galaxy?)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-6" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:keep_up?)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-7" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:specialist?)
