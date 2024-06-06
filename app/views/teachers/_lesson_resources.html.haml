@@ -1,23 +1,28 @@
 -# locals: (lesson:)
 
+- resources_present = 'bg-secondary text-white'
+- resources_absent = 'bg-neutral-light text-neutral-dark'
+
 - if lesson
+  - resource_classes = lesson.resources.attached? ? resources_present : resources_absent
   .w-full.flex.flex-col.gap-3
     - if lesson.guide.blob
       = link_to 'Guide',
                 file_path(id: lesson.guide.blob.id),
                 target: '_blank',
                 rel: 'noopener',
-                class: 'flex items-center bg-color-main rounded-xl font-bold text-white py-1 px-3'
+                class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3'
 
-    %details.rounded-xl.border.border-color-secondary.overflow-hidden
-      %summary.flex.items-center.bg-color-secondary.font-bold.text-white.py-1.px-3
-        Resources
-        .flex-grow
-        %span.font-extrabold.text-xl= '>'
-      .flex.flex-col.gap-2.p-1
-        - lesson.resources.each do |r|
-          = link_to r.blob.filename,
-                    file_path(r.blob),
-                    target: '_blank',
-                    rel: 'noopener',
-                    class: 'text-color-secondary'
+    %div{ class: 'relative h-[34px]' }
+      %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full
+        %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
+          Resources
+        .flex.flex-col.gap-2.p-1.bg-white.text-secondary
+          - lesson.resources.each_with_index do |r, i|
+            = link_to file_path(r.blob),
+                      target: '_blank',
+                      rel: 'noopener',
+                      class: ('border-t border-secondary' unless i.zero?) do
+              .flex.items-center
+                %span= r.blob.filename
+                = image_tag 'download.svg'

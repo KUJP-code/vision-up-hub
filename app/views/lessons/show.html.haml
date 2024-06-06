@@ -2,16 +2,23 @@
   .flex.p-3
     %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
       .flex.gap-2.items-center
-        = image_tag @lesson.icon_filename,
+        = image_tag type_icon_path(@lesson),
                     height: 50,
                     width: 50
         %h1= @lesson.title
+        = image_tag level_icon_path(@lesson),
+                    height: 50,
+                    width: 50
         - unless @lesson.changed_lesson_id.nil?
           %h1
             = ' - Proposal for '
             = link_to @lesson.changed_lesson.title,
                       lesson_path(@lesson.changed_lesson)
         = render 'shared/visibility_toggles', resource: @lesson
+        = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
+                  edit_lesson_path(@lesson),
+                  class: 'btn btn-secondary px-3 py-1'
+
       - if @lesson.subtype
         %h3
           #{split_on_capitals(@lesson.type)}#{" - #{@lesson.subtype.titleize}"}
@@ -37,13 +44,11 @@
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  = render 'lessons/shared/attribute_list', lesson: @lesson
+  .flex.flex-col.p-3.gap-3
+    = render 'lessons/shared/attribute_list', lesson: @lesson
+    = render 'lessons/shared/resource_list', resources: @resources
 
   .flex.justify-center.gap-3
-    = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
-              edit_lesson_path(@lesson),
-              class: 'btn btn-info'
-
     = link_to 'Delete',
               lesson_path(@lesson),
               data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' },

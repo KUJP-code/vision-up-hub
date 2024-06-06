@@ -8,18 +8,18 @@
     .form-group
       = f.label :subject
       = f.text_field :subject,
-                     class: 'w-4/5 p-1 text-color-neutral-dark self-center'
+                     class: 'w-4/5 p-1 text-neutral-dark self-center'
     .form-group
       = f.label :category
       = f.select :category,
                  SupportRequest.select_categories,
                  {},
-                 { class: 'w-4/5 bg-white text-color-main p-1 self-center' }
+                 { class: 'w-4/5 bg-white text-main p-1 self-center' }
 
   .form-group
     = f.label :description
     = f.text_area :description,
-                  class: 'w-full text-color-neutral-dark min-h-20'
+                  class: 'w-full text-neutral-dark min-h-20'
 
   = f.submit current_user.is?('Parent') ? t('.send_message') : t('.submit_request'),
              class: 'btn btn-primary cursor-pointer'

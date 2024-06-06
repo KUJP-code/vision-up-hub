@@ -3,18 +3,19 @@
   %table.w-full
     %thead
       %tr
-        %th name
-        %th email
-        %th password
-        %th password_confirmation
+        - Teacher::CSV_HEADERS.each do |header|
+          :ruby
+            classes = 'thead bg-secondary-50'
+            classes = "#{classes} thead-s" if header == Teacher::CSV_HEADERS.first
+            classes = "#{classes} thead-e" if header == Teacher::CSV_HEADERS.last
+
+          %th{ class: classes }= header
     %tbody
       %tr
         %td 陽葵
         %td example@gmail.com
         %td akgsdgh3242%($
-        %td akgsdgh3242%($
       %tr
-        %td ...
         %td ...
         %td ...
         %td ...
@@ -22,4 +23,3 @@
         %td Name in Japanese or English
         %td Teacher's email
         %td Teacher's password
-        %td Confirm teacher's password

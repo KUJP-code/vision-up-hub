@@ -1,4 +1,4 @@
--# locals: (courses:, lesson:)
+-# locals: (courses:, lesson:, resource_ids:)
 
 = form_with model: lesson,
             html: { id: "#{lesson.type.underscore}_form",
@@ -30,7 +30,7 @@
 
     %div{ 'data-fields-target' => 'target' }
 
-    %button.btn.btn-info.self-center{ 'data-action' => 'fields#add' }
+    %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
       Add Course
 
   = yield :priority_fields
@@ -41,19 +41,25 @@
 
   .form-group
     = f.label :goal
-    = f.text_area :goal
+    = f.text_area :goal, required: true
 
-  .form-group
-    = f.label :level
-    = f.select :level,
-               lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
-               required: true,
-               prompt: 'Select a level'
+  - unless lesson.type == 'KindyPhonic'
+    .form-group
+      = f.label :level
+      = f.select :level,
+                 lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
+                 required: true,
+                 prompt: 'Select a level'
 
   = type_fields
 
   .form-group
     = f.label :resources
     = f.file_field :resources, multiple: true
+    - if resource_ids
+      - resource_ids.each do |id|
+        = f.hidden_field :resources,
+                         multiple: true,
+                         value: id
 
   = f.submit class: 'btn btn-primary'

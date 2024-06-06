@@ -4,8 +4,8 @@
                       'keydown.esc->dropdown#hide'
   container_class = 'inline-block relative flex items-center p-3 ' \
                     "#{main_nav_class('upload', controller_name)} hover:scale-100"
-  menu_styles = 'hidden absolute top-12 -left-1 z-10 flex flex-col bg-color-main ' \
-                'gap-2 p-3 rounded-b-lg text-white'
+  menu_styles = 'hidden absolute top-12 -left-1 z-10 flex flex-col bg-main ' \
+                'gap-2 p-3 rounded-b text-white'
   org_id = current_user.organisation_id
 
 %div{ class: container_class,

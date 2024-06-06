@@ -4,7 +4,10 @@ class AdminsController < UsersController
   def show
     @assigned_lessons = @user.assigned_lessons
     @created_lessons = @user.created_lessons
-    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
+    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id)
+    @org_teachers = Organisation.all
+                                .map { |org| { org:, teacher: org.teachers.first } }
+                                .reject { |h| h[:teacher].nil? }
   end
 
   def update

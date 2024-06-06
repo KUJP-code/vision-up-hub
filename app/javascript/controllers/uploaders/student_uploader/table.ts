@@ -1,15 +1,8 @@
 import type { status } from "../declarations.d.ts";
 import type { student } from "./student_uploader_controller.ts";
 
-const requiredFields = ["name", "level", "school_id"];
-
 // Css constants
-const invalidClasses = [
-	"border",
-	"border-red-500",
-	"text-red-500",
-	"font-bold",
-];
+const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
 const missingClasses = [
 	"border-yellow-500",
 	"text-yellow-500",
@@ -20,7 +13,7 @@ const pendingClasses = [
 	"border-slate-800",
 	"bg-slate-100",
 	"border-slate-500",
-	"text-color-secondary",
+	"text-secondary",
 ];
 
 export function newStudentUploadTable() {
@@ -28,15 +21,15 @@ export function newStudentUploadTable() {
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="p-2 bg-color-main/50 rounded-s-lg border-r border-r-white">Name</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Student ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Level</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">School ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Parent ID</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Start Date</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Quit Date</th>
-						<th class="p-2 bg-color-main/50 border-r border-r-white">Birthday</th>
-						<th class="p-2 bg-color-main/50 rounded-e-lg">Status</th>
+						<th class="thead thead-s bg-secondary-50">Name</th>
+						<th class="thead bg-secondary-50">Student ID</th>
+						<th class="thead bg-secondary-50">Level</th>
+						<th class="thead bg-secondary-50">School ID</th>
+						<th class="thead bg-secondary-50">Parent ID</th>
+						<th class="thead bg-secondary-50">Start Date</th>
+						<th class="thead bg-secondary-50">Quit Date</th>
+						<th class="thead bg-secondary-50">Birthday</th>
+						<th class="thead thead-e bg-secondary-50">Status</th>
 					</tr>
 				</thead>
 				<tbody id="student-table">
@@ -48,25 +41,21 @@ export function newStudentUploadTable() {
 export function addStudentRow({
 	csvStudent,
 	index,
+	headers,
 	status = "Pending",
-}: { csvStudent: student; index: number; status?: status }) {
+}: { csvStudent: student; index: number; headers: string[]; status?: status }) {
 	const table = document.querySelector("#student-table");
 	const row = document.createElement("tr");
 	row.id = `student-row-${index}`;
-	if (validateStudent(csvStudent)) {
-		row.classList.add(...pendingClasses);
-	} else {
-		row.classList.add(...invalidClasses);
-		status = "Invalid";
-	}
+	row.classList.add(...pendingClasses);
 
 	if (status === "Error") {
 		row.classList.add(...invalidClasses);
 	}
 
 	let rowContents = "";
-	for (const attribute of Object.keys(csvStudent)) {
-		rowContents += attributeCellHTML(csvStudent, attribute);
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvStudent, attribute, headers);
 	}
 	rowContents += statusIndicatorHTML(status);
 	row.innerHTML = rowContents;
@@ -79,12 +68,12 @@ export function addStudentRow({
 	}
 }
 
-function validateStudent(student: student) {
-	return requiredFields.every((field) => student[field]);
-}
-
-function attributeCellHTML(student: student, attribute: string) {
-	if (requiredFields.includes(attribute)) {
+function attributeCellHTML(
+	student: student,
+	attribute: string,
+	headers: string[],
+) {
+	if (headers.includes(attribute)) {
 		return `
 			<td>${student[attribute] || "なし"}</td>
 

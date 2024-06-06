@@ -7,16 +7,16 @@ export default class extends Controller {
   validate() {
     if (this.inputTarget.reportValidity() && this.withinRange()) {
       this.inputTarget.classList.remove(
-        "border-color-neutral-dark",
-        "border-red-500",
+        "border-neutral-dark",
+        "border-danger",
         "border-2"
       );
-      this.inputTarget.classList.add("border-green-500");
+      this.inputTarget.classList.add("border-success");
     } else {
-      this.inputTarget.classList.add("border-red-500", "border-2");
+      this.inputTarget.classList.add("border-danger", "border-2");
       this.inputTarget.classList.remove(
-        "border-color-neutral-dark",
-        "border-green-500"
+        "border-neutral-dark",
+        "border-success"
       );
     }
   }

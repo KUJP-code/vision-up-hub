@@ -5,10 +5,10 @@ source 'https://rubygems.org'
 ruby '3.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: "main"
-gem 'rails', '7.1.3.2'
+gem 'rails', '7.1.3.4'
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem 'propshaft', '0.8.0'
+gem 'propshaft', '~> 0.9'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '1.5.5'
@@ -49,14 +49,14 @@ gem 'prawn', '2.4.0'
 
 # Generate PDF previews
 gem 'image_processing', '1.12.2'
-gem 'poppler', '4.2.0'
+gem 'poppler', '4.2.2'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
-gem 'solid_queue', '0.2.1'
+gem 'solid_queue', '0.3.2'
 
 # And mission control to manage SQ jobs
-gem 'mission_control-jobs', '0.1.1'
+gem 'mission_control-jobs', '0.2.1'
 
 # PgHero for DB stats
 gem 'pghero', '3.4.1'
@@ -76,6 +76,9 @@ gem 'rdoc', '6.6.3.1'
 # Lock nokogiri for CVE-2024-34459
 gem 'nokogiri', '1.16.5'
 
+# Lock rexml for CVE-2024-35176
+gem 'rexml', '3.2.8'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
@@ -89,6 +92,7 @@ group :development do
   gem 'web-console'
 
   # Linting
+  gem 'haml_lint', '~> 0.58', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

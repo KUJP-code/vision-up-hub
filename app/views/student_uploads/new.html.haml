@@ -7,19 +7,23 @@
     - @orgs.each do |org|
       = link_to org.name,
                 new_organisation_student_upload_path(organisation_id: org.id),
-                class: "sub_nav_link #{'bg-color-main' if org.id == @organisation.id}"
+                class: "sub_nav_link #{'bg-main' if org.id == @organisation.id}"
 
-%main.flex.flex-col.justify-start.gap-12.overflow-y-auto.p-3
+%main.flex.flex-col.gap-12.overflow-y-auto.p-3
   = render 'student_uploads/format_explainer'
+  = link_to t('.download_sample'),
+            organisation_student_upload_path(current_user.organisation, 1),
+            class: 'btn btn-primary w-full'
 
-  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
     %h2= t('.create_students', org: @organisation.name)
     = form_with scope: :student_upload,
                 html: { class: 'form',
                         data: { controller: 'student-uploader',
                                 action: 'student-uploader#displayStudents',
                                 'student-uploader-org-value': @organisation.id,
-                                'student-uploader-action-value': 'create' },
+                                'student-uploader-action-value': 'create',
+                                'student-uploader-headers-value': Student::CSV_HEADERS.to_json },
                         id: 'student_create_form' } do |f|
       = f.file_field :file,
                      required: true,
@@ -27,7 +31,7 @@
       = f.submit t('.create_students', org: @organisation.name),
                  class: 'btn btn-primary'
 
-  %section.w-full.flex.flex-col.gap-3.border-2.border-color-main.rounded-xl.p-3
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
     %h2= t('.update_students', org: @organisation.name)
     = form_with scope: :student_upload,
                 html: { class: 'form',

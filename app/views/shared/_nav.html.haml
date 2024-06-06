@@ -1,22 +1,23 @@
 :ruby
-  common = 'flex justify-center items-center bg-color-main p-2 transition gap-1 md:gap-3'
+  common = 'flex justify-center items-center bg-main p-2 transition gap-1 md:gap-3'
   desktop = 'md:flex-grow md:relative md:translate-x-0 md:h-full md:flex-row md:opacity-100'
   mobile = 'fixed inset-0 translate-x-full z-40 w-screen h-screen flex-col opacity-0'
 
-%nav{ class: 'w-full bg-color-main h-16 text-white font-bold ' \
+%nav{ class: 'w-full bg-main h-16 text-white font-bold px-3 ' \
              'flex print:hidden md:justify-around md:items-center',
       data: { controller: 'nav-reveal' },
       id: 'main_nav' }
   = link_to root_path,
             class: 'flex-shrink-0 flex items-center p-2 justify-center' do
-    %image.w-12.h-12{ src: '/favicon.svg' }
-  %p.flex-shrink-0.flex.items-center.p-1.md:p-2
-    = ja_date(Time.zone.now)
+    %image{ height: '64px', width: '120px', src: org_favicon(current_user.presence) }
+  - unless current_user.is?('Admin')
+    %p.flex-shrink-0.flex.items-center.p-1.md:p-2
+      = ja_date(Time.zone.now)
   %div{ class: "#{common} #{desktop} #{mobile}",
         data: { 'nav-reveal-target': 'links' },
         id: 'main_nav_links' }
     .md:hidden.flex-grow.w-full.flex.justify-end.items-start
-      %button{ class: 'border border-white rounded-xl px-3 py-1',
+      %button{ class: 'border border-white rounded px-3 py-1',
                data: { action: 'nav-reveal#toggle' },
                type: 'button' }
         X
@@ -33,7 +34,7 @@
             destroy_user_session_path,
             data: { turbo_method: :delete },
             class: 'p-2 transition hover:scale-105 hidden md:block text-nowrap'
-  %button{ class: 'md:hidden border border-white rounded-xl p-2 self-center mr-2 ' \
+  %button{ class: 'md:hidden border border-white rounded p-2 self-center mr-2 ' \
                   'w-8 h-8 flex flex-col items-center justify-center gap-1',
            data: { action: 'nav-reveal#toggle' }, type: 'button' }
     %hr{ class: 'border border-white w-full' }

@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+	details[open] {
+		@apply z-10;
+	}
+
 	h1 {
 		@apply text-3xl text-center;
 	}
@@ -18,8 +22,7 @@
 	input,
 	select,
 	textarea {
-		@apply border-2 border-color-main;
-		border-radius: 0.25rem;
+		@apply border-2 border-main rounded;
 		padding: 0.25rem;
 
 		&:disabled {
@@ -55,8 +58,8 @@
 
 @layer components {
 	.btn {
+		@apply rounded text-white;
 		cursor: pointer;
-		border-radius: 0.25rem;
 		padding: 0.5rem 1rem;
 		font-weight: 700;
 		text-align: center;
@@ -71,16 +74,19 @@
 	}
 
 	.btn-primary {
-		@apply bg-color-main text-white;
+		@apply bg-main;
 	}
 
 	.btn-danger {
-		background-color: #dc3545;
-		color: #ffffff;
+		@apply bg-danger text-white;
+
+		&:hover {
+			@apply bg-red-500;
+		}
 	}
 
-	.btn-info {
-		@apply bg-color-secondary text-white;
+	.btn-secondary {
+		@apply bg-secondary;
 	}
 
 	.form {
@@ -108,7 +114,19 @@
 	}
 
 	.sub_nav_link {
-		@apply bg-color-secondary text-white rounded-xl p-2;
+		@apply bg-secondary text-white rounded p-2;
+	}
+
+	.thead-e {
+		@apply rounded-e;
+	}
+
+	.thead {
+		@apply p-2 text-white border-r border-r-white;
+	}
+
+	.thead-s {
+		@apply border-r border-r-white rounded-s;
 	}
 
 	.turbo-progress-bar {
@@ -116,6 +134,6 @@
 	}
 
 	.week-arrow {
-		@apply rounded-full flex items-center font-extrabold text-3xl text-color-main border-4 border-color-main p-1;
+		@apply rounded-full flex items-center font-extrabold text-3xl text-main border-4 border-main p-1;
 	}
 }

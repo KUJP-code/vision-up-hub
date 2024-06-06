@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 module LessonHelper
+  def level_icon_path(lesson)
+    level = lesson.short_level.downcase.tr(' ', '_')
+    "levels/#{level}.svg"
+  end
+
   def status_color(lesson)
     case lesson.status
     when 'proposed', 'changes_needed'
-      'bg-color-main'
+      'bg-main'
     when 'accepted'
-      'bg-green-600'
+      'bg-success'
     when 'rejected'
-      'bg-red-500'
+      'bg-danger'
     end
   end
 
@@ -18,5 +23,22 @@ module LessonHelper
     else
       links
     end
+  end
+
+  def type_icon_path(lesson)
+    type = case lesson.type
+           when 'DailyActivity', 'Exercise'
+             lesson.subtype
+           else
+             lesson.type.underscore
+           end
+
+    "lesson_types/#{type}.svg"
+  end
+
+  def with_subtype(lesson)
+    return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype)
+
+    "#{lesson.title} (#{lesson.subtype.humanize})"
   end
 end

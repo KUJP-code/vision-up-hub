@@ -9,13 +9,16 @@ Rails.application.routes.draw do
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]
-      resources :files, only: %i[show]
+      resources :files, only: %i[destroy show]
+      resources :kindy_phonics, only: %i[create index update]
       resources :lessons
       resources :lesson_searches, only: %i[index]
+      resources :lesson_uses, only: %i[index]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]
       resources :plans
       resources :school_classes
+      resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
       resources :tutorials, only: %i[new create index destroy]
@@ -29,11 +32,12 @@ Rails.application.routes.draw do
 
       resources :organisations, except: %i[destroy] do
         resources :schools
-        resources :student_uploads, only: %i[create new]
+
+        resources :student_uploads, only: %i[create new show]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
-        resources :teacher_uploads, only: %i[create new]
+        resources :teacher_uploads, only: %i[create new show]
         patch 'teacher_uploads', to: 'teacher_uploads#update', as: :teacher_uploads_update
-        resources :parent_uploads, only: %i[create new]
+        resources :parent_uploads, only: %i[create new show]
         patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
 
         resources :users, except: %i[destroy]

@@ -28,7 +28,7 @@ class TeacherPolicy < ApplicationPolicy
   private
 
   def ku_staff?
-    user.is?('Admin', 'Sales')
+    user.is?('Admin', 'Sales', 'Writer')
   end
 
   def managing_self?

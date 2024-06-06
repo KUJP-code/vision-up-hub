@@ -1,6 +1,11 @@
--# locals: (attr: :guide_image, f:)
+-# locals: (attr:, f:, lesson:)
 
-.form-group
-  = f.label attr
-  = f.file_field attr,
-                 accept: %w[image/jpeg image/png]
+.flex.gap-3
+  - if lesson.send(attr).present?
+    = image_tag lesson.send(attr),
+                alt: lesson.send(attr).filename
+
+  .form-group
+    = f.label attr, t('.image')
+    = f.file_field attr,
+                   accept: %w[image/jpeg image/png]

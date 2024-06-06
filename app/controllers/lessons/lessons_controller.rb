@@ -2,13 +2,13 @@
 
 class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[destroy edit show update]
-  before_action :set_courses, only: %i[new edit]
+  before_action :set_form_info, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :generate_guide, only: %i[create update]
 
   def index
-    @lessons = policy_scope(Lesson).accepted.order(title: :asc)
+    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
     @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
   end
 
@@ -17,6 +17,7 @@ class LessonsController < ApplicationController
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
                         .includes(:creator)
+    @resources = @lesson.resources.includes(:blob)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
@@ -55,13 +56,15 @@ class LessonsController < ApplicationController
 
   def lesson_params
     default_params = [
-      :goal, :level, :title, :type, :curriculum_approval_id, :curriculum_approval_name,
-      :internal_notes, { resources: [] }
+      :goal, :level, :title, :type, :curriculum_approval_id,
+      :curriculum_approval_name, :internal_notes, { resources: [] },
+      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }
     ]
     return default_params unless current_user.is?('Admin')
 
-    default_params + [:assigned_editor_id, :admin_approval_id, :admin_approval_name, :released, :status,
-                      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }]
+    default_params + %i[
+      assigned_editor_id admin_approval_id admin_approval_name released status
+    ]
   end
 
   def after_update_url
@@ -94,8 +97,9 @@ class LessonsController < ApplicationController
     end
   end
 
-  def set_courses
+  def set_form_info
     @courses = Course.pluck(:title, :id)
+    @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
   end
 
   def set_lesson

@@ -6,7 +6,8 @@
 
   = link_to 'Edit',
             edit_organisation_writer_path(@user.organisation_id, @user),
-            class: 'btn btn-info'
+            class: 'btn btn-secondary'
+  = render 'users/teacher_spy', org_teachers: @org_teachers
 
   = render 'proposals/table',
            proposals: @proposals

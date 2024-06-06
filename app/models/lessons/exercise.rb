@@ -1,32 +1,10 @@
 # frozen_string_literal: true
 
 class Exercise < Lesson
-  include ExercisePdf, Linkable, Listable, PdfImageable
+  include PdfUploadable
 
-  ATTRIBUTES = %i[
-    add_difficulty
-    extra_fun
-    guide_image
-    intro
-    instructions
-    large_groups
-    links
-    materials
-    notes
-    outro
-    subtype
-  ].freeze
-
-  LISTABLE_ATTRIBUTES = %i[
-    add_difficulty
-    extra_fun
-    intro
-    instructions
-    large_groups
-    materials
-    notes
-    outro
-  ].freeze
+  ATTRIBUTES = %i[goal guide resources subtype].freeze
+  LISTABLE_ATTRIBUTES = %i[].freeze
 
   enum subtype: {
     aerobics: 0,
@@ -34,10 +12,4 @@ class Exercise < Lesson
     jumping: 2,
     throwing: 3
   }
-
-  validates :intro, :instructions, presence: true
-
-  def icon_filename
-    "#{subtype}.svg"
-  end
 end

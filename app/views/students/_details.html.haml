@@ -1,33 +1,36 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between border-4 border-color-secondary/50 rounded-xl p-3',
+%div{ class: 'flex justify-between rounded p-3',
       id: 'student_details' }
   %ul{ class: 'basis-3/5 flex-shrink-0 font-bold' }
     %li.flex.flex-col
-      %span{ class: 'text-color-secondary/50' }= t('.student_id')
-      %span.text-color-secondary= @student.student_id || 'なし'
+      %span.text-secondary-50= t('.student_id')
+      %span.text-secondary= @student.student_id || 'なし'
     %li.flex.flex-col
-      %span{ class: 'text-color-secondary/50' }= t('.name')
-      %span.text-color-secondary= redact(@student)
+      %span.text-secondary-50= t('.name')
+      %span.text-secondary= redact(@student, @student.name)
     %li.flex.flex-col
-      %span{ class: 'text-color-secondary/50' }= t('.level')
-      %span.text-color-secondary= @student.level.titleize
+      %span.text-secondary-50= t('.en_name')
+      %span.text-secondary= redact(@student, @student.en_name)
     %li.flex.flex-col
-      %span{ class: 'text-color-secondary/50' }= t('.school')
-      %span.text-color-secondary= @student.school.name
+      %span.text-secondary-50= t('.level')
+      %span.text-secondary= @student.level.titleize
+    %li.flex.flex-col
+      %span.text-secondary-50= t('.school')
+      %span.text-secondary= @student.school.name
     - if @teachers.any?
       %li.flex.flex-col.teachers
-        %span{ class: 'text-color-secondary/50' }= t('.teachers')
-        %span.text-color-secondary= @teachers.map(&:name).to_sentence
+        %span.text-secondary-50= t('.teachers')
+        %span.text-secondary= @teachers.map(&:name).to_sentence
     - if @classes.any?
       %li.flex.flex-col.classes
-        %span{ class: 'text-color-secondary/50' }= t('.classes')
-        %span.text-color-secondary= @classes.map(&:name).to_sentence
+        %span.text-secondary-50= t('.classes')
+        %span.text-secondary= @classes.map(&:name).to_sentence
   %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
     = render 'shared/print_button', text: t('.print_report')
     = link_to t('edit'),
               edit_student_path(@student),
-              class: 'btn btn-info'
+              class: 'btn btn-secondary'
     - unless @potential_classes.empty?
       = form_with model: @student, html: { class: 'flex flex-col' } do |f|
         = f.fields_for :student_classes, @student.student_classes.new do |sc_f|

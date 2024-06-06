@@ -1,22 +1,27 @@
 - in_future = Time.zone.today < @date
 
 = render 'shared/subtitle',
-         classes: in_future ? 'bg-color-neutral-dark text-color-main' : '',
+         classes: in_future ? 'bg-neutral-dark text-main' : '',
          text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3
   - if @unlevelled_lessons.any?
-    %section{ class: 'basis-2/5 flex-shrink-0 flex flex-wrap justify-center md:justify-start' }
+    %section{ class: 'basis-[48%] flex-shrink-0 flex flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons,
                as: :lesson
 
   - if @levelled_lessons.any?
-    %section{ class: 'flex-shrink-0 basis-2/5 grid grid-rows-4 auto-cols-fr' }
+    %section{ class: 'flex-shrink-0 basis-[48%] grid grid-rows-5 auto-cols-fr' }
       .col-start-1
-      .flex.items-center.justify-center.col-start-1 Land Logo
-      .flex.items-center.justify-center.col-start-1 Sky Logo
-      .flex.items-center.justify-center.col-start-1 Galaxy Logo
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/kindy.svg', class: 'w-[70%]'
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/land.svg', class: 'w-[70%]'
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/sky.svg', class: 'w-[70%]'
+      .flex.items-center.justify-center.col-start-1
+        = image_tag 'levels/galaxy.svg', class: 'w-[70%]'
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
 = render 'teachers/day_select',

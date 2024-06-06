@@ -2,14 +2,14 @@
 
 %tr.uploaded{ data: { controller: 'upload-summary',
                       'upload-summary-status-value': 'Uploaded' } }
-  %td.bg-green-200= student.name
-  %td.bg-green-200= student.student_id
-  %td.bg-green-200= student.level
-  %td.bg-green-200= student.school.name
-  %td.bg-green-200= student.parent_id
-  %td.bg-green-200= student.start_date
-  %td.bg-green-200= student.quit_date
-  %td.bg-green-200= student.birthday
-  %td.bg-green-200.flex.items-center.justify-center.gap-2.p-2
+  %td.bg-success= student.name
+  %td.bg-success= student.student_id
+  %td.bg-success= student.level
+  %td.bg-success= student.school.name
+  %td.bg-success= student.parent_id
+  %td.bg-success= student.start_date
+  %td.bg-success= student.quit_date
+  %td.bg-success= student.birthday
+  %td.bg-success.flex.items-center.justify-center.gap-2.p-2
     %p Uploaded
     %span.material-symbols-outlined download_done

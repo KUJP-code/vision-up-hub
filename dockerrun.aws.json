@@ -3,13 +3,13 @@
   "containerDefinitions": [
     {
       "linuxParameters": {
-        "maxSwap": 48000,
+        "maxSwap": 24000,
         "swappiness": 0
       }
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.10.4-enable-swap"
+    "Name": "thatbballguy/materials:0.10.18-throwing"
   },
   "Ports": [
     {

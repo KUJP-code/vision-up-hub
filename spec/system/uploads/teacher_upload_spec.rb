@@ -21,17 +21,25 @@ RSpec.describe 'creating teacher records from a CSV', :js do
       attach_file 'teacher_upload_file', Rails.root.join('tmp/teachers.csv')
       click_button I18n.t('teacher_uploads.new.create_teachers', org: user.organisation.name)
     end
-    expect(find_by_id('pending_count')).to have_content('3')
     expect(page).to have_css('.error', count: 1)
     expect(page).to have_css('.uploaded', count: 2)
     expect(Teacher.count).to eq(2)
+    within '#teacher-row-2' do
+      fill_in 'teacher_upload[name]', with: 'Jane Doe'
+      fill_in 'teacher_upload[email]', with: 'jane@doe.com'
+      fill_in 'teacher_upload[password]', with: 'testpassword'
+      fill_in 'teacher_upload[password_confirmation]', with: 'testpassword'
+      click_button 'Create User'
+    end
+    expect(page).to have_css('.uploaded', count: 3)
+    expect(Teacher.count).to eq(3)
   end
 end
 
 def create_teachers_csv
   teachers = create_teachers
   CSV.open('tmp/teachers.csv', 'w') do |csv|
-    csv << %w[name email password password_confirmation]
+    csv << Teacher::CSV_HEADERS
     teachers.each do |teacher|
       csv << teacher
     end
@@ -44,5 +52,5 @@ def create_teachers
                         password_confirmation: 'testpassword')
   invalid_teacher = build(:user, :teacher, email: '')
   teachers << invalid_teacher
-  teachers.map { |t| [t.name, t.email, t.password, t.password] }
+  teachers.map { |t| Teacher::CSV_HEADERS.map { |h| t.send(h.to_sym) } }
 end

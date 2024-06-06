@@ -75,6 +75,11 @@ RUN gem install foreman && \
     sed -i 's/access_log\s.*;/access_log stdout;/' /etc/nginx/nginx.conf && \
     sed -i 's/error_log\s.*;/error_log stderr info;/' /etc/nginx/nginx.conf
 
+# configure client_max_body_size
+COPY <<-EOF /etc/nginx/conf.d/client_max_body_size.conf
+client_max_body_size 100M;
+EOF
+
 COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
   listen 80 default_server;
@@ -108,8 +113,7 @@ COPY --from=build /rails /rails
 
 # Deployment options
 ENV PORT="3001" \
-	RUBY_YJIT_ENABLE="1" \
-	MALLOC_ARENA_MAX="2"
+	RUBY_YJIT_ENABLE="1"
 
 # Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod

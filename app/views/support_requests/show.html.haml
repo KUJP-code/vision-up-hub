@@ -1,5 +1,5 @@
 %main.flex.flex-col.gap-3.p-3
-  .flex.flex-col.items-center.justify-center.gap-2.p-3.rounded-md.border
+  .flex.flex-col.items-center.justify-center.gap-2.p-3.rounded.border
     .flex.gap-2
       %h1= @support_request.subject
       = render 'support_requests/status_badge',
@@ -12,7 +12,7 @@
     .flex.gap-2
       = link_to t('.edit'),
                 edit_support_request_path(@support_request),
-                class: 'btn btn-info'
+                class: 'btn btn-secondary'
       = form_with model: @support_request do |f|
         = f.hidden_field :resolved_by, value: current_user.id
         = f.hidden_field :resolved_at, value: Time.zone.now

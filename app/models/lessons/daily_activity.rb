@@ -54,8 +54,4 @@ class DailyActivity < Lesson
     motor_skills: 9,
     coloring: 10
   }
-
-  def icon_filename
-    "#{subtype}.svg"
-  end
 end

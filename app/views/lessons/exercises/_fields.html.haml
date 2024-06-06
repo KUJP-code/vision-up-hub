@@ -2,15 +2,14 @@
 
 = f.hidden_field :type, value: lesson.type
 
-= render 'lessons/shared/pdf_image_field', f:
-
 .form-group
   = f.label :subtype
   = f.select :subtype,
              Exercise.subtypes.keys.map { |k| [k.titleize, k] },
              {}
+.form-group
+  = f.label :guide
+  = f.file_field :guide, accept: 'application/pdf'
 
 - Exercise::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', attr:, f:, lesson:)
-
-= render('lessons/shared/link_fields', f:, lesson:)

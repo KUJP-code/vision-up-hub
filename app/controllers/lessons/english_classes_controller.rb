@@ -15,7 +15,7 @@ class EnglishClassesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'English class successfully created!'
     else
-      set_courses
+      set_form_info
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'English class could not be created'
@@ -30,7 +30,7 @@ class EnglishClassesController < LessonsController
       redirect_to after_update_url,
                   notice: 'English class successfully updated.'
     else
-      set_courses
+      set_form_info
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'English class could not be updated'

@@ -6,7 +6,7 @@
     - unless request.seen_by?(current_user.id)
       .rounded-full.p-2.bg-blue-800
     = render 'support_requests/status_badge', resolved: request.resolved?
-    %h3.rounded.bg-color-secondary.px-2.py-1.text-white.text-base
+    %h3.rounded.bg-secondary.px-2.py-1.text-white.text-base
       = request.category.titleize
     %h1= request.subject
   - unless current_user.id == request.user_id

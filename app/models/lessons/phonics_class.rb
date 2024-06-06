@@ -21,8 +21,4 @@ class PhonicsClass < Lesson
   ].freeze
 
   validates :instructions, presence: true
-
-  def icon_filename
-    'phonics_class.svg'
-  end
 end

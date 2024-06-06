@@ -28,7 +28,7 @@
 
   .form-group
     = f.label :birthday, t('.birthday')
-    = f.date_field :birthday
+    = f.date_field :birthday, required: true
 
   .form-group
     = f.label :start_date, t('.start_date')
@@ -62,7 +62,7 @@
                f: sc_f,
                resource: student)
 
-  %button.btn.btn-info{ 'data-action' => 'fields#add' }
+  %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
     = t('.add_class')
 
   = f.submit class: 'btn btn-primary'

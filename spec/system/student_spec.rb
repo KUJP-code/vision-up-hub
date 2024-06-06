@@ -19,6 +19,7 @@ RSpec.describe 'creating a student' do
       fill_in 'student_name', with: 'Test Student'
       select 'Sky Three', from: 'student_level'
       fill_in 'student_student_id', with: 's77777777'
+      fill_in 'student_birthday', with: '20/02/2020'
       select school.name, from: 'student_school_id'
     end
     click_button '登録する'

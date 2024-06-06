@@ -24,10 +24,18 @@ module ApplicationHelper
     if controller == title ||
        controller.include?(title) ||
        user_subcontroller?(controller, title)
-      return "#{default_classes} text-color-main bg-white rounded-lg"
+      return "#{default_classes} text-main bg-white rounded"
     end
 
     "#{default_classes} text-white"
+  end
+
+  def org_favicon(user = nil)
+    org_favicons = [1]
+    org_id = user ? user.organisation_id : params[:organisation_id].to_i
+
+    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'favicon.svg'
+    image_path(favicon_file)
   end
 
   def org_theme(user = nil)
@@ -67,7 +75,7 @@ module ApplicationHelper
                         width: 40, height: 40)
     link_to(
       svg_tag,
-      url_for(locale: new_locale),
+      url_for(params.permit(:id, :locale, :organisation_id, :type).merge(locale: new_locale)),
       class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
@@ -77,6 +85,7 @@ module ApplicationHelper
   private
 
   def user_subcontroller?(controller, title)
+    return true if current_user_own_profile? && title == 'today'
     return false if title != 'users' || current_user_own_profile?
     return true if controller == 'sales'
 
