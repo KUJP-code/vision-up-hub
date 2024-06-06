@@ -1,4 +1,4 @@
-= form_with model: @tutorial, url: tutorials_path(type: 'PDF'), local: true, html: { class: 'form', data: { controller: 'fields' } } do |f|
+= form_with model: @tutorial, url: tutorials_path(type: 'PDF'), html: { class: 'form', data: { controller: 'fields' }, multipart: true } do |f|
   = f.hidden_field :type, value: 'PDF'
 
   = render 'shared/form_errors', resource: @tutorial
@@ -8,8 +8,8 @@
     = f.text_field :title, required: true
 
   .form-group
-    = f.label :file_path
-    = f.text_field :file_path, required: true
+    = f.label :file
+    = f.file_field :file, required: true
 
   .form-group
     = f.label :section

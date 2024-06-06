@@ -4,13 +4,13 @@
 
 - if admin
   .w-full.p-3
-    %details{ class: 'cursor-pointer bg-color-main text-white rounded-md overflow-hidden', id: 'create_tutorial' }
+    %details{ class: 'cursor-pointer bg-color-main text-white rounded-md overflow-hidden'}
       %summary.bg-color-secondary.p-2
         Create a Tutorial
       %nav.flex.flex-col
-        = link_to 'PDF Tutorial', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90', id: 'create_pdf_form'
-        = link_to 'Video Tutorial', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90', id: 'create_video_form'
-        = link_to 'FAQ Tutorial', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90', id: 'create_faq_form'
+        = link_to 'PDF Tutorial', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90'
+        = link_to 'Video Tutorial', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90'
+        = link_to 'FAQ Tutorial', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90'
 
 .sections-container.flex.flex-wrap.gap-8.p-8
   - @sections.each do |section_name, section_key|
@@ -25,7 +25,7 @@
               %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
                 = tutorial.question
                 - if admin
-                  = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+                  = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
               %p.text-red-500
                 = tutorial.answer
         - else
@@ -35,9 +35,9 @@
             %ul.list-disc.list-inside
               - @pdf_tutorials.where(section: section_key).each do |tutorial|
                 %li.cursor-pointer.flex.justify-between.items-center
-                  = link_to tutorial.title, tutorial.full_file_path, target: '_blank', class: 'text-blue-500 hover:underline'
+                  = link_to tutorial.title, rails_blob_path(tutorial.file, disposition: "attachment"), target: '_blank', class: 'text-blue-500 hover:underline'
                   - if admin
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+                    = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
 
             %h4.mt-4
               Videos
@@ -46,4 +46,4 @@
                 %li.cursor-pointer.flex.justify-between.items-center
                   = link_to tutorial.title, tutorial.full_video_path, target: '_blank', class: 'text-blue-500 hover:underline'
                   - if admin
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), method: :delete, data: { confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+                    = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'

@@ -1,4 +1,4 @@
-= form_with model: @tutorial, url: tutorials_path(type: 'FAQ'), local: true, html: { class: 'form', data: { controller: 'fields' } } do |f|
+= form_with model: @tutorial, url: tutorials_path(type: 'FAQ'), html: { class: 'form', data: { controller: 'fields' } } do |f|
   = f.hidden_field :type, value: 'FAQ'
 
   = render 'shared/form_errors', resource: @tutorial

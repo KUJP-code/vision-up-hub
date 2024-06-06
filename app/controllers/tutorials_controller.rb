@@ -1,20 +1,17 @@
+# frozen_string_literal: true
+
 class TutorialsController < ApplicationController
   before_action :set_tutorial, only: :destroy
 
+  # index to list all tutorials
   def index
     @sections = PdfTutorial.sections.keys.map { |key| [key.titleize, key] }
-
-    if params[:query].present?
-      @video_tutorials = VideoTutorial.where('title ILIKE ?', "%#{params[:query]}%")
-      @pdf_tutorials = PdfTutorial.where('title ILIKE ?', "%#{params[:query]}%")
-      @faq_tutorials = FaqTutorial.where('question ILIKE ?', "%#{params[:query]}%")
-    else
-      @video_tutorials = VideoTutorial.all
-      @pdf_tutorials = PdfTutorial.all
-      @faq_tutorials = FaqTutorial.all
-    end
+    @video_tutorials = VideoTutorial.all
+    @pdf_tutorials = PdfTutorial.all
+    @faq_tutorials = FaqTutorial.all
   end
 
+  # initialize new tutorial object based on type parameter
   def new
     @type = params[:type]
     @tutorial = case @type
@@ -30,19 +27,24 @@ class TutorialsController < ApplicationController
                 end
   end
 
+
+  # create action for new tutorial
   def create
+    Rails.logger.debug("Params: #{params.inspect}")
+    # initialize a new object based on type
     @tutorial = case params[:type]
                 when 'PDF'
-                  PdfTutorial.new(tutorial_params(:pdf_tutorial))
+                  PdfTutorial.new(pdf_tutorial_params)
                 when 'Video'
-                  VideoTutorial.new(tutorial_params(:video_tutorial))
+                  VideoTutorial.new(video_tutorial_params)
                 when 'FAQ'
-                  FaqTutorial.new(tutorial_params(:faq_tutorial).merge(section: 'faq'))
+                  FaqTutorial.new(faq_tutorial_params.merge(section: 'faq'))
                 else
                   redirect_to new_tutorial_path, alert: 'Invalid tutorial type'
                   return
                 end
 
+    #save object and redirect or rerender based on result
     if @tutorial.save
       redirect_to tutorials_path, notice: "#{params[:type]} tutorial was successfully created."
     else
@@ -58,14 +60,25 @@ class TutorialsController < ApplicationController
 
   private
 
-  def tutorial_params(model)
-    params.require(model).permit(:title, :video_path, :file_path, :section, :question, :answer)
+  # strong parameters for each tutorial
+  def pdf_tutorial_params
+    params.require(:pdf_tutorial).permit(:title, :section, :file)
   end
 
+  def video_tutorial_params
+    params.require(:video_tutorial).permit(:title, :section, :video_path)
+  end
+
+  def faq_tutorial_params
+    params.require(:faq_tutorial).permit(:question, :answer, :section)
+  end
+
+  # set tutorial object based on type
   def set_tutorial
     @tutorial = tutorial_class.find(params[:id])
   end
 
+  # determine the class based on the type parameter
   def tutorial_class
     case params[:type]
     when 'PDF'

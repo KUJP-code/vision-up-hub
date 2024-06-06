@@ -2,15 +2,16 @@
 
 class PdfTutorial < ApplicationRecord
   include Tutorials
+  has_one_attached :file
+
   attribute :title, :string
-  attribute :file_path, :string
   attribute :section, :string
 
   validates :title, presence: true
-  validates :file_path, presence: true
   validates :section, presence: true
+  validates :file, presence: true
 
   def full_file_path
-    file_path =~ /^https?:\/\// ? file_path : "http://#{file_path}"
+    Rails.application.routes.url_helpers.rails_blob_path(file, only_path: true)
   end
 end

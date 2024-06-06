@@ -2,16 +2,10 @@
 
 - case @type
 - when 'PDF'
-  = form_with model: @tutorial, url: tutorials_path(type: 'PDF'), local: true do |form|
-    = render 'tutorials/forms/pdf_form', form: form, sections: sections
-    = form.hidden_field :type, value: 'PDF'
+  = render 'tutorials/forms/pdf_form', tutorial: @tutorial, sections: sections
 - when 'Video'
-  = form_with model: @tutorial, url: tutorials_path(type: 'Video'), local: true do |form|
-    = render 'tutorials/forms/video_form', form: form, sections: sections
-    = form.hidden_field :type, value: 'Video'
+  = render 'tutorials/forms/video_form', tutorial: @tutorial, sections: sections
 - when 'FAQ'
-  = form_with model: @tutorial, url: tutorials_path(type: 'FAQ'), local: true do |form|
-    = render 'tutorials/forms/faq_form', form: form, sections: sections
-    = form.hidden_field :type, value: 'FAQ'
+  = render 'tutorials/forms/faq_form', tutorial: @tutorial, sections: sections
 - else
   %p Invalid tutorial type.
