@@ -59,20 +59,6 @@ module DailyActivityPdf
     end
   end
 
-  def add_image(pdf)
-    return unless pdf_image.attached?
-
-    pdf_image.blob.open do |file|
-      pdf.image(
-        file.path,
-        position: 120.mm,
-        vposition: 15.mm,
-        width: 198,
-        height: 130
-      )
-    end
-  end
-
   def draw_lang_goals(pdf)
     x_position = HEADER_INDENT + 2.mm
 

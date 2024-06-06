@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PhonicsClass < Lesson
-  include PhonicsClassPdf, Linkable, Listable
+  include PdfImageable, PhonicsClassPdf, Linkable, Listable
 
   ATTRIBUTES = %i[
     add_difficulty
@@ -10,6 +10,7 @@ class PhonicsClass < Lesson
     links
     materials
     notes
+    pdf_image
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[

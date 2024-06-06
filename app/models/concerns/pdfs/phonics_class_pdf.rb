@@ -2,39 +2,49 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfHeader, PdfLinks, PdfList
+  include PdfLinks, PdfList
+
+  BACKGROUND_PATH = Rails.root.join('app/assets/pdf_backgrounds/phonics.png').to_s
+  BODY_INDENT = 48.mm
+  HEADER_INDENT = 21.mm
 
   included do
     private
 
     def generate_guide
-      pdf = Prawn::Document.new
-
-      pdf_header(pdf)
-      add_unordered_lists(pdf)
-      add_ordered_lists(pdf)
-      pdf_links(links:, dimensions: { height: 3.cm, width: pdf.bounds.width },
-                pdf:, title: 'Links:')
-
-      pdf
+      Prawn::Document.new(margin: 0, page_size: 'A4', page_layout: :portrait) do |pdf|
+        apply_defaults(pdf)
+        pdf.image BACKGROUND_PATH, height: 297.mm, width: 210.mm
+        draw_header(pdf)
+        add_image(pdf)
+      end
     end
-  end
 
-  def add_unordered_lists(pdf)
-    pdf_list(array: extra_fun, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Extra Fun:', type: :dot)
-    pdf_list(array: materials, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Materials:', type: :dot)
-    pdf_list(array: notes, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Notes:', type: :dot)
-    pdf_list(array: extra_fun, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Extra Fun:', type: :dot)
-  end
+    def draw_header(pdf)
+      draw_level(pdf)
+      draw_title(pdf)
+      draw_goal(pdf)
+    end
 
-  def add_ordered_lists(pdf)
-    pdf_list(array: add_difficulty, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Add Difficulty:', type: :number)
-    pdf_list(array: instructions, dimensions: { height: 3.cm, width: pdf.bounds.width },
-             pdf:, title: 'Instructions:', type: :number)
+    def draw_level(pdf)
+      pdf.bounding_box([HEADER_INDENT, 280.mm], width: 90.mm, height: 4.mm) do
+        pdf.text "#{short_level.upcase} Phonics",
+                 size: SUBHEADING_SIZE, overflow: :shrink_to_fit
+      end
+    end
+
+    def draw_title(pdf)
+      pdf.bounding_box([HEADER_INDENT, 272.mm], width: 90.mm, height: 20.mm) do
+        pdf.stroke_bounds
+        pdf.text title, size: HEADING_SIZE, overflow: :shrink_to_fit
+      end
+    end
+
+    def draw_goal(pdf)
+      pdf.bounding_box([HEADER_INDENT, 252.mm], width: 90.mm, height: 12.mm) do
+        pdf.stroke_bounds
+        pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
+      end
+    end
   end
 end

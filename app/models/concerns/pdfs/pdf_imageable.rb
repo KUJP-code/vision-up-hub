@@ -10,6 +10,20 @@ module PdfImageable
 
     private
 
+    def add_image(pdf)
+      return unless pdf_image.attached?
+
+      pdf_image.blob.open do |file|
+        pdf.image(
+          file.path,
+          position: 120.mm,
+          vposition: 15.mm,
+          width: 198,
+          height: 130
+        )
+      end
+    end
+
     def valid_pdf_image_filetype?
       return true if pdf_image.blank?
 

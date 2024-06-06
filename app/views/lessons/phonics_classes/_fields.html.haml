@@ -2,6 +2,12 @@
 
 = f.hidden_field :type, value: lesson.type
 
+= content_for :priority_fields do
+  = render 'lessons/shared/pdf_image_field',
+           f:,
+           lesson:,
+           attr: :pdf_image
+
 - PhonicsClass::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)
 
