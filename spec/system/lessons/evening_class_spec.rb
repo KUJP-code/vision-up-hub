@@ -11,8 +11,8 @@ RSpec.describe 'creating an Evening class' do
   end
 
   it 'can create an evening class' do
-    visit classs_path
-    find_by_id('create_class').click
+    visit lessons_path
+    find_by_id('create_lesson').click
     click_link 'create_evening_class'
     within '#evening_class_form' do
       fill_in 'evening_class_title', with: 'Test Evening Lesson'

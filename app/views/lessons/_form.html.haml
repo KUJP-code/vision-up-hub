@@ -9,6 +9,7 @@
                          f:, lesson:)
 
   = render 'shared/form_errors', resource: lesson
+  = f.hidden_field :type, value: lesson.type
 
   - if current_user.is?('Admin')
     %h3.font-bold.text-center Courses
