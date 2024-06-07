@@ -8,7 +8,10 @@
   - if @unlevelled_lessons.any?
     %section{ class: 'basis-[48%] flex-shrink-0 flex flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
-               collection: @unlevelled_lessons,
+               collection: @unlevelled_lessons.select(&:kindy?),
+               as: :lesson
+      = render partial: 'teachers/unlevelled_lesson',
+               collection: @unlevelled_lessons.reject(&:kindy?),
                as: :lesson
 
   - if @levelled_lessons.any?

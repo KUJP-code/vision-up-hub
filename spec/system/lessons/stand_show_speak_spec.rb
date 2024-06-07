@@ -25,6 +25,6 @@ RSpec.describe 'creating an Stand Show Speak lesson' do
     end
     expect(page).to have_content('Test Stand Show Speak')
     expect(page).to have_content('Test Goal')
-    expect(page).to have_css('a', count: 1, text: 'Download Guide')
+    expect(page).to have_css('a', count: 1, text: 'Guide')
   end
 end

@@ -54,7 +54,8 @@ puts "Creating today's lessons..."
 
 Lesson::TYPES.map do |type|
   puts "Creating #{type}..."
-  Lesson.create!(fb.attributes_for( type.underscore.to_sym))
+  p fb.attributes_for(type.underscore.to_sym) if type == 'Exercise'
+  Lesson.create!(fb.attributes_for(type.underscore.to_sym))
 end
 
 %i[land_two sky_three galaxy_one].each do |level|
