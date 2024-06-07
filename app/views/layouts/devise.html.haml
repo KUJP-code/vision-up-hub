@@ -2,10 +2,11 @@
 %html{ class: org_theme,
        data: { controller: 'theme', 'theme-target': 'html' } }
   %head
-    %title Materials
+    %title Vision UP Hub
     %meta{ charset: 'utf-8' }
     %meta{ name: 'viewport', content: 'width=device-width,initial-scale=1' }
-    %meta{ property: 'og:image', content: "#{request.base_url}#{org_favicon}" }
+    %meta{ property: 'og:image',
+           content: "#{request.base_url}#{image_path('opengraph.svg')}" }
     = csrf_meta_tags
     = csp_meta_tag
     = favicon_link_tag image_path('favicon.svg')

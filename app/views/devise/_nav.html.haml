@@ -3,7 +3,6 @@
 %nav.flex.items-center.gap-3.bg-main.h-16.text-white.font-bold.px-3
   = link_to root_path do
     %image{ height: '64px', width: '120px', src: org_favicon }
-  = ja_date(Time.zone.today)
   .flex-grow
   = locale_toggle
   - if controller_name != 'registrations'

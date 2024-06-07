@@ -6,6 +6,7 @@ module PdfDefaults
   PADDING = 2.mm
   GAP = 0.5.cm
   HEADING_SIZE = 0.5.cm
+  RED = 'f27875'
   SUBHEADING_SIZE = 0.4.cm
 
   def apply_defaults(pdf)
