@@ -7,7 +7,9 @@
             class: 'guide_link h-fit flex flex-col gap-1' do
     = image_tag lesson.guide.preview(:thumb),
                 class: 'guide_image w-full'
-    %h3.rounded.text-white.bg-main.text-center.p-2.font-semibold
-      Download Guide
+    %h3.flex.items-center.justify-center.gap-2.btn.btn-primary
+      Guide
+      = render 'shared/svgs/download_icon',
+               classes: 'fill-white'
 - elsif lesson.type != 'SpecialLesson'
   %h3.guide_link Guide missing, try editing the lesson again or call Brett

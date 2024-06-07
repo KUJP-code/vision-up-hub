@@ -7,11 +7,14 @@
   - resource_classes = lesson.resources.attached? ? resources_present : resources_absent
   .w-full.flex.flex-col.gap-3
     - if lesson.guide.blob
-      = link_to 'Guide',
-                file_path(id: lesson.guide.blob.id),
+      = link_to file_path(id: lesson.guide.blob.id),
                 target: '_blank',
                 rel: 'noopener',
-                class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3'
+                class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3' do
+        %p Guide
+        .flex-grow
+        = render 'shared/svgs/download_icon',
+                 classes: 'fill-white'
 
     %div{ class: 'relative h-[34px]' }
       %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full
@@ -24,5 +27,6 @@
                       rel: 'noopener',
                       class: ('border-t border-secondary' unless i.zero?) do
               .flex.items-center
-                %span= r.blob.filename
-                = image_tag 'download.svg'
+                %span{ class: 'basis-5/6 truncate' }= r.blob.filename
+                = render 'shared/svgs/download_icon',
+                         classes: 'fill-secondary basis-1/6'
