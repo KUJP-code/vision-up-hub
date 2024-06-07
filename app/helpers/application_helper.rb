@@ -34,7 +34,7 @@ module ApplicationHelper
     org_favicons = [1]
     org_id = user ? user.organisation_id : params[:organisation_id].to_i
 
-    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'favicon.svg'
+    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'org_1.svg'
     image_path(favicon_file)
   end
 
