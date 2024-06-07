@@ -5,6 +5,7 @@ module Pdfable
 
   UPLOADED_GUIDES = %w[EnglishClass
                        Exercise
+                       EveningClass
                        KindyPhonic
                        SpecialLesson
                        StandShowSpeak].freeze

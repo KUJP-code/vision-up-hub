@@ -6,6 +6,7 @@ class Lesson < ApplicationRecord
   TYPES = %w[DailyActivity
              EnglishClass
              Exercise
+             EveningClass
              KindyPhonic
              PhonicsClass
              SpecialLesson
