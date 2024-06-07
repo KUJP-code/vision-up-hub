@@ -4,6 +4,8 @@ module PdfDefaults
   BORDER_RADIUS = 0.3.cm
   FONT_SIZE = 2.5.mm
   PADDING = 2.mm
+  PAGE_HEIGHT = 297.mm
+  PAGE_WIDTH = 210.mm
   GAP = 0.5.cm
   HEADING_SIZE = 0.5.cm
   RED = 'f27875'
