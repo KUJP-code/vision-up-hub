@@ -1,10 +1,12 @@
 -# locals: (lesson:)
 
-- resources_present = 'bg-secondary text-white'
-- resources_absent = 'bg-neutral-light text-neutral-dark'
-
 - if lesson
-  - resource_classes = lesson.resources.attached? ? resources_present : resources_absent
+  :ruby
+    resources_present = 'bg-secondary text-white'
+    resources_absent = 'bg-neutral-light text-neutral-dark'
+    sorted_resources = lesson.resources.sort { |r, rn| r.blob.filename <=> rn.blob.filename }
+    resource_classes = lesson.resources.attached? ? resources_present : resources_absent
+
   .w-full.flex.flex-col.gap-3
     - if lesson.guide.blob
       = link_to file_path(id: lesson.guide.blob.id),
@@ -19,7 +21,7 @@
         %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
           Resources
         .flex.flex-col.gap-2.p-1.bg-white.text-secondary
-          - lesson.resources.each_with_index do |r, i|
+          - sorted_resources.each_with_index do |r, i|
             = link_to file_path(r.blob),
                       class: ('border-t border-secondary' unless i.zero?) do
               .flex.items-center

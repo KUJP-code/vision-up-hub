@@ -17,7 +17,7 @@ class LessonsController < ApplicationController
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
                         .includes(:creator)
-    @resources = @lesson.resources.includes(:blob)
+    @resources = @lesson.resources.includes(:blob).order('active_storage_blobs.filename ASC')
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
   end
 
