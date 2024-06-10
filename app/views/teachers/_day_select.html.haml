@@ -5,7 +5,7 @@
   week_start = date.beginning_of_week.to_date
   weekdays = (0...5).map { |n| week_start + n.days }
 
-%nav.w-full.flex.justify-between.items-stretch
+%nav.w-full.flex.justify-between.items-stretch.py-6
   .spacer
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                       id: @user.id, date: date - 7.days),

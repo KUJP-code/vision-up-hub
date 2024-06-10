@@ -6,25 +6,17 @@
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3
   - if @unlevelled_lessons.any?
-    %section{ class: 'basis-[48%] shrink-0 grow flex flex-wrap justify-around' }
+    %section{ class: 'basis-[38%] shrink-0 grow flex flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons.select(&:kindy?),
                as: :lesson
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons.reject(&:kindy?),
                as: :lesson
+      %div{ class: 'basis-[38%] grow' }
 
   - if @levelled_lessons.any?
-    %section{ class: 'shrink-0 grow basis-[48%] grid grid-rows-5 auto-cols-fr' }
-      .col-start-1
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/kindy.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/land.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/sky.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/galaxy.svg', class: 'w-[70%]'
+    %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr' }
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
 = render 'teachers/day_select',
@@ -32,6 +24,6 @@
 
 - if current_user.is?('Admin')
   .flex.justify-center.p-3
-    = link_to t('.edit'),
+    = link_to t('.edit_teacher'),
               edit_organisation_teacher_path(@user),
               class: 'btn btn-primary'

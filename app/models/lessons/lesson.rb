@@ -32,7 +32,7 @@ class Lesson < ApplicationRecord
 
   has_many_attached :resources
 
-  scope :levelled, -> { where(type: %w[EnglishClass KindyPhonic PhonicsClass StandShowSpeak]) }
+  scope :levelled, -> { where(type: %w[EnglishClass EveningClass KindyPhonic PhonicsClass StandShowSpeak]) }
   scope :released, -> { where(released: true) }
   scope :unlevelled, -> { where(type: %w[DailyActivity Exercise SpecialLesson]) }
 
