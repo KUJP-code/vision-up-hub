@@ -44,5 +44,8 @@ module Materials
 
     # Use SolidQueue for ActiveJob
     config.active_job.queue_adapter = :solid_queue
+
+    # Lazyload images by default
+    config.action_view.image_loading = "lazy"
   end
 end
