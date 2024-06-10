@@ -1,20 +1,25 @@
 -# locals: (date:)
 
-- week_start = date.beginning_of_week.to_date
-- weekdays = (0...5).map { |n| week_start + n.days }
+:ruby
+  arrow_classes = 'flex items-center font-extrabold text-6xl text-main p-3'
+  week_start = date.beginning_of_week.to_date
+  weekdays = (0...5).map { |n| week_start + n.days }
 
-%nav.w-full.flex.justify-between.items-center
+%nav.w-full.flex.justify-between.items-stretch
   .spacer
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                       id: @user.id, date: date - 7.days),
-            class: 'week-arrow' do
-    = '<'
-  .spacer
+            class: arrow_classes do
+    %p «
+  = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                      id: @user.id, date: date - 1.day),
+            class: arrow_classes do
+    %p ‹
 
   - unless weekdays.include?(Time.zone.today)
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                         id: @user.id, date: Time.zone.today),
-              class: 'self-stretch flex flex-col justify-center items-center gap-2 rounded-3xl bg-main p-2' do
+              class: 'flex flex-col justify-center items-center gap-2 rounded-3xl bg-main p-2' do
       %h3.rounded-full.bg-white.text-main.text-xl.font-bold.p-2
         Click here
       %div
@@ -30,9 +35,12 @@
         = day.strftime('%-m/%-d')
       .font-bold.text-white.text-2xl.py-5= day.strftime('%a').first
 
-  .spacer
+  = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                      id: @user.id, date: date + 1.day),
+            class: arrow_classes do
+    %p ›
   = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                       id: @user.id, date: date + 7.days),
-            class: 'week-arrow' do
-    = '>'
+            class: arrow_classes do
+    %p »
   .spacer
