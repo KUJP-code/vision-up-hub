@@ -8,10 +8,10 @@
       data: { controller: 'nav-reveal' },
       id: 'main_nav' }
   = link_to root_path,
-            class: 'flex-shrink-0 flex items-center p-2 justify-center' do
+            class: 'shrink-0 flex items-center p-2 justify-center' do
     %image{ height: '64px', width: '120px', src: org_favicon(current_user.presence) }
   - unless current_user.is?('Admin')
-    %p.flex-shrink-0.flex.items-center.p-1.md:p-2
+    %p.shrink-0.flex.items-center.p-1.md:p-2
       = ja_date(Time.zone.now)
   %div{ class: "#{common} #{desktop} #{mobile}",
         data: { 'nav-reveal-target': 'links' },

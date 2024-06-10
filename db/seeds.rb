@@ -13,14 +13,14 @@ end
 
 puts 'Creating users...'
 
-Admin.create!(fb.attributes_for(
-                :user,
-                :admin,
-                name: 'Brett',
-                email: 'admin@gmail.com',
-                password: 'adminadminadmin',
-                organisation_id: kids_up.id
-              ))
+admin = Admin.create!(fb.attributes_for(
+                        :user,
+                        :admin,
+                        name: 'Brett',
+                        email: 'admin@gmail.com',
+                        password: 'adminadminadmin',
+                        organisation_id: kids_up.id
+                      ))
 
 User::TYPES.each do |type|
   org = %w[Admin Sales Writer Teacher].include?(type) ? kids_up : test_org
@@ -52,15 +52,18 @@ end
 
 puts "Creating today's lessons..."
 
+released_attrs = { released: true, status: :accepted,
+                   admin_approval: [{ id: admin.id, name: admin.name }] }
+
 Lesson::TYPES.map do |type|
   puts "Creating #{type}..."
-  Lesson.create!(fb.attributes_for(type.underscore.to_sym))
+  Lesson.create!(fb.attributes_for(type.underscore.to_sym).merge(released_attrs))
 end
 
 %i[land_two sky_three galaxy_one].each do |level|
-  fb.create(:english_class, level:)
-  fb.create(:phonics_class, level:)
-  fb.create(:stand_show_speak, level:)
+  fb.create(:english_class, level:, **released_attrs)
+  fb.create(:phonics_class, level:, **released_attrs)
+  fb.create(:stand_show_speak, level:, **released_attrs)
 end
 
 Lesson.all.each do |lesson|

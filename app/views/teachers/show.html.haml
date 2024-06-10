@@ -6,7 +6,7 @@
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3
   - if @unlevelled_lessons.any?
-    %section{ class: 'basis-[48%] flex-shrink-0 flex flex-wrap justify-around' }
+    %section{ class: 'basis-[48%] shrink-0 grow flex flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons.select(&:kindy?),
                as: :lesson
@@ -15,7 +15,7 @@
                as: :lesson
 
   - if @levelled_lessons.any?
-    %section{ class: 'flex-shrink-0 basis-[48%] grid grid-rows-5 auto-cols-fr' }
+    %section{ class: 'shrink-0 grow basis-[48%] grid grid-rows-5 auto-cols-fr' }
       .col-start-1
       .flex.items-center.justify-center.col-start-1
         = image_tag 'levels/kindy.svg', class: 'w-[70%]'

@@ -5,8 +5,8 @@ class TeachersController < UsersController
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
     lessons = @user.day_lessons(@date)
                    .includes({ resources_attachments: :blob, guide_attachment: :blob })
-    @unlevelled_lessons = lessons.unlevelled
-    @levelled_lessons = lessons.levelled
+    @unlevelled_lessons = lessons.unlevelled.released
+    @levelled_lessons = lessons.levelled.released
   end
 
   def new
