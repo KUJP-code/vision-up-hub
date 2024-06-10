@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
 
   def show
     @lessons = @course.lessons
-                      .accepted
+                      .released
                       .select(:id, :subtype, :title, :type)
                       .includes(:course_lessons)
                       .order('course_lessons.week ASC, course_lessons.day ASC')
