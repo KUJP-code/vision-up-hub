@@ -8,7 +8,7 @@ test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org
 fb.create_list(:organisation, 2)
 
 Organisation.all.each do |org|
-  org.schools << fb.create_list(:school, 2)
+  org.schools << fb.create_list(:school, 2, ip: '*')
 end
 
 puts 'Creating users...'
@@ -23,7 +23,6 @@ admin = Admin.create!(fb.attributes_for(
                       ))
 
 User::TYPES.each do |type|
-  org = %w[Admin Sales Writer Teacher].include?(type) ? kids_up : test_org
   underscored = type.parameterize(separator: '_')
   User.create!(fb.attributes_for(
                  :user,
@@ -31,7 +30,7 @@ User::TYPES.each do |type|
                  name: "Test #{type}",
                  email: "#{underscored}@example.com",
                  password: "#{underscored}password",
-                 organisation_id: org.id
+                 organisation_id: kids_up.id
                ))
 end
 
