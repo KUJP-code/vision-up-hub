@@ -9,6 +9,7 @@ en:
   nav:
     request_support: "Request Support"
   not_approved: "Not Approved"
+  not_in_school: "You can only access this site from your school. Please contact Leroy if you're receiving this message there."
   number:
     currency:
       format:

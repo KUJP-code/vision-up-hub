@@ -7,9 +7,19 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_params, if: :devise_controller?
 
-  before_action :set_locale
+  before_action :check_ip, :set_locale
 
   private
+
+  def check_ip
+    return unless user_signed_in? && current_user.ku?
+    return if current_user.allowed_ip?(request.ip)
+
+    rejected_user = current_user
+    sign_out
+    redirect_to after_sign_out_path_for(rejected_user),
+                alert: I18n.t('not_in_school')
+  end
 
   def configure_permitted_params
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name organisation_id])
