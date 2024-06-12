@@ -18,13 +18,6 @@ class User < ApplicationRecord
   devise :confirmable, :database_authenticatable, :lockable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  def allowed_ip?(ip)
-    return true unless is?('SchoolManager', 'Teacher')
-
-    ips = schools.pluck(:ip)
-    ips.include?('*') || ips.include?(ip)
-  end
-
   def is?(*types)
     types.include?(type)
   end

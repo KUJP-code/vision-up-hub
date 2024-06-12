@@ -12,13 +12,18 @@ class ApplicationController < ActionController::Base
   private
 
   def check_ip
-    return unless user_signed_in? && current_user.ku?
+    return unless needs_ip_check?
     return if current_user.allowed_ip?(request.ip)
 
     rejected_user = current_user
     sign_out
     redirect_to after_sign_out_path_for(rejected_user),
                 alert: I18n.t('not_in_school')
+  end
+
+  def needs_ip_check?
+    current_user&.ku? &&
+      current_user&.is?('SchoolManager', 'Teacher')
   end
 
   def configure_permitted_params

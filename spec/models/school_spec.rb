@@ -29,5 +29,10 @@ RSpec.describe School do
       school = build(:school, ip: '')
       expect(school).to be_valid
     end
+
+    it 'accepts nil IP address' do
+      school = build(:school, ip: nil)
+      expect(school).to be_valid
+    end
   end
 end

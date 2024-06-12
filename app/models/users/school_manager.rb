@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SchoolManager < User
+  include IpLockable
+
   VISIBLE_TYPES = %w[Parent Teacher].freeze
 
   has_many :managements, dependent: :destroy
