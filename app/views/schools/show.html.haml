@@ -5,11 +5,12 @@
   %h3
     = @managers.blank? ? t('.unmanaged') : t('.managed_by', managers: @managers)
 
-  %h3= t('.classes')
-  - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
-    = link_to t('.create_class'),
-              new_school_class_path,
-              class: 'btn btn-primary'
+  .flex.items-center.gap-3
+    %h3.font-bold= t('.classes')
+    - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+      = link_to t('.create_class'),
+                new_school_class_path,
+                class: 'btn btn-secondary'
   = render 'school_classes/table', classes: @classes
 
   = link_to t('.edit'),

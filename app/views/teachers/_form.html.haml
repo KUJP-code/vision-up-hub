@@ -8,19 +8,24 @@
 
   = render 'users/fields', f:
 
+  %h3.text-center.font-bold Schools
+
   - unless current_user.is?('Teacher')
     - if user.schools.empty?
       = f.fields_for :school_teachers, user.school_teachers.new do |st_f|
-        = render 'school_teachers/fields', f: st_f, schools:, user:
+        = render 'school_teachers/fields', f: st_f, collection: schools,
+                                           resource: user
     - else
       = f.fields_for :school_teachers do |st_f|
-        = render 'school_teachers/fields', f: st_f, schools:, user:
+        = render 'school_teachers/fields', f: st_f, collection: schools,
+                                           resource: user
 
   %template{ 'data-fields-target' => 'template' }
     = f.fields_for :school_teachers,
                    user.school_teachers.new,
                    child_index: 'CHILD' do |st_f|
-      = render 'school_teachers/fields', f: st_f, schools:, user:
+      = render 'school_teachers/fields', f: st_f, collection: schools,
+                                         resource: user
 
   %div{ 'data-fields-target' => 'target' }
 

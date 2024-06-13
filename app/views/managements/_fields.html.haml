@@ -1,6 +1,6 @@
 -# locals: (f:, collection:, resource:)
 
-.fields-wrapper.flex.flex-col.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
+.fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
   - if resource.instance_of?(SchoolManager)
     = f.hidden_field :school_manager_id,
                      value: resource.id
@@ -18,7 +18,6 @@
                      value: resource.id
 
     .form-group
-      = f.label :school_manager_id
       = f.select :school_manager_id,
                  collection,
                  prompt: t('.select_manager'),
@@ -29,6 +28,6 @@
                             type: 'button' }
       = t('.remove')
   - else
-    .form-check
+    .flex.items-center.gap-1
       = f.check_box :_destroy
       = f.label :_destroy, t('.destroy')
