@@ -38,7 +38,7 @@ export default class extends Controller<HTMLFormElement> {
 
 		const main = document.querySelector("main");
 		if (main) {
-			main.innerHTML = newParentUploadTable();
+			main.innerHTML = newParentUploadTable(this.headersValue);
 			main.prepend(newUploadSummary(parents.length));
 		} else {
 			alert("Could not find main element");

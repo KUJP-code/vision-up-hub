@@ -1,31 +1,25 @@
+import {
+	attributeCellHTML,
+	invalidClasses,
+	pendingClasses,
+	tableHeader,
+} from "../table.ts";
+
 import type { status } from "../declarations.d.ts";
 import type { parent } from "./parent_uploader_controller.ts";
 
-// Css constants
-const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
-const missingClasses = [
-	"border-yellow-500",
-	"text-yellow-500",
-	"font-semibold",
-];
-const pendingClasses = [
-	"border",
-	"border-slate-800",
-	"bg-slate-100",
-	"border-slate-500",
-	"text-secondary",
-];
+export function newParentUploadTable(headers: string[]) {
+	headers.splice(headers.indexOf("password"), 0, "password_confirmation");
+	let headerString = headers
+		.map((header) => tableHeader(header, headers.indexOf(header)))
+		.join("");
+	headerString += `<th class="thead thead-e bg-secondary-50">status</th>`;
 
-export function newParentUploadTable() {
 	return `
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="thead thead-s bg-secondary-50">Name</th>
-						<th class="thead bg-secondary-50">Email</th>
-						<th class="thead bg-secondary-50">Password</th>
-						<th class="thead bg-secondary-50">Password Confirmation</th>
-						<th class="thead thead-e bg-secondary-50">Status</th>
+						${headerString}
 					</tr>
 				</thead>
 				<tbody id="parent-table">
@@ -62,25 +56,6 @@ export function addParentRow({
 		alert("Could not find table element");
 		return;
 	}
-}
-
-function attributeCellHTML(
-	parent: parent,
-	attribute: string,
-	headers: string[],
-) {
-	if (headers.includes(attribute)) {
-		return `
-			<td>${parent[attribute] || "なし"}</td>
-
-	`;
-	}
-
-	return `
-		<td class="p-2 ${parent[attribute] ? "" : missingClasses.join(" ")}">${
-			parent[attribute] || "なし"
-		}</td>
-	`;
 }
 
 function statusIndicatorHTML(status: status) {

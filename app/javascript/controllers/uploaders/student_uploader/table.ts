@@ -1,20 +1,12 @@
+import {
+	attributeCellHTML,
+	invalidClasses,
+	pendingClasses,
+	tableHeader,
+} from "../table.ts";
+
 import type { status } from "../declarations.d.ts";
 import type { student } from "./student_uploader_controller.ts";
-
-// Css constants
-const invalidClasses = ["border", "border-danger", "text-danger", "font-bold"];
-const missingClasses = [
-	"border-yellow-500",
-	"text-yellow-500",
-	"font-semibold",
-];
-const pendingClasses = [
-	"border",
-	"border-slate-800",
-	"bg-slate-100",
-	"border-slate-500",
-	"text-secondary",
-];
 
 export function newStudentUploadTable(headers: string[]) {
 	let headerString = headers
@@ -33,14 +25,6 @@ export function newStudentUploadTable(headers: string[]) {
 				</tbody>
 			</table>
 			`;
-}
-
-function tableHeader(title: string, index: number) {
-	if (index === 0) {
-		return `<th class="thead thead-s bg-secondary-50">${title}</th>`;
-	}
-
-	return `<th class="thead bg-secondary-50">${title}</th>`;
 }
 
 export function addStudentRow({
@@ -71,24 +55,6 @@ export function addStudentRow({
 		alert("Could not find table element");
 		return;
 	}
-}
-
-function attributeCellHTML(
-	student: student,
-	attribute: string,
-	headers: string[],
-) {
-	if (headers.includes(attribute)) {
-		return `
-			<td>${student[attribute] || "なし"}</td>
-
-	`;
-	}
-
-	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${student[attribute] || "なし"
-		}</td>
-	`;
 }
 
 function statusIndicatorHTML(status: status) {

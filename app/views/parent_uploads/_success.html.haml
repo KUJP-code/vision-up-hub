@@ -1,9 +1,13 @@
 -# locals: (parent:)
 
+- redacted = %w[password password_confirmation]
+
 %tr.uploaded{ data: { controller: 'upload-summary',
                       'upload-summary-status-value': 'Uploaded' } }
-  %td.bg-success= parent.name
-  %td.bg-success= parent.email
+  - Parent::CSV_HEADERS.each do |header|
+    - next if redacted.include?(header)
+
+    %td.bg-success= parent.send(header)
   %td.bg-success ****
   %td.bg-success ****
   %td.bg-success.flex.items-center.justify-center.gap-2.p-2
