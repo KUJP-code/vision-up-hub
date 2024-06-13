@@ -11,6 +11,7 @@ export async function createStudent(
 			index: index,
 			student_upload: {
 				name: student.name,
+				en_name: student.en_name,
 				student_id: student.student_id,
 				level: student.level,
 				school_id: student.school_id,
@@ -34,6 +35,7 @@ export async function updateStudent(
 			index: index,
 			student_upload: {
 				name: student.name,
+				en_name: student.en_name,
 				student_id: student.student_id,
 				level: student.level,
 				school_id: student.school_id,

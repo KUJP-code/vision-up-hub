@@ -16,26 +16,31 @@ const pendingClasses = [
 	"text-secondary",
 ];
 
-export function newStudentUploadTable() {
+export function newStudentUploadTable(headers: string[]) {
+	let headerString = headers
+		.map((header) => tableHeader(header, headers.indexOf(header)))
+		.join("");
+	headerString += `<th class="thead thead-e bg-secondary-50">status</th>`;
+
 	return `
 			<table class="w-full text-center">
 				<thead>
 					<tr>
-						<th class="thead thead-s bg-secondary-50">Name</th>
-						<th class="thead bg-secondary-50">Student ID</th>
-						<th class="thead bg-secondary-50">Level</th>
-						<th class="thead bg-secondary-50">School ID</th>
-						<th class="thead bg-secondary-50">Parent ID</th>
-						<th class="thead bg-secondary-50">Start Date</th>
-						<th class="thead bg-secondary-50">Quit Date</th>
-						<th class="thead bg-secondary-50">Birthday</th>
-						<th class="thead thead-e bg-secondary-50">Status</th>
+						${headerString}
 					</tr>
 				</thead>
 				<tbody id="student-table">
 				</tbody>
 			</table>
 			`;
+}
+
+function tableHeader(title: string, index: number) {
+	if (index === 0) {
+		return `<th class="thead thead-s bg-secondary-50">${title}</th>`;
+	}
+
+	return `<th class="thead bg-secondary-50">${title}</th>`;
 }
 
 export function addStudentRow({
@@ -81,8 +86,7 @@ function attributeCellHTML(
 	}
 
 	return `
-		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${
-			student[attribute] || "なし"
+		<td class="p-2 ${student[attribute] ? "" : missingClasses.join(" ")}">${student[attribute] || "なし"
 		}</td>
 	`;
 }

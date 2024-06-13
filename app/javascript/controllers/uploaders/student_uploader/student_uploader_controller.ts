@@ -6,6 +6,7 @@ import { newUploadSummary } from "../summary.ts";
 
 export interface student {
 	name: string;
+	en_name: string;
 	student_id: string;
 	level: string;
 	school_id: string;
@@ -43,7 +44,7 @@ export default class extends Controller<HTMLFormElement> {
 
 		const main = document.querySelector("main");
 		if (main) {
-			main.innerHTML = newStudentUploadTable();
+			main.innerHTML = newStudentUploadTable(this.headersValue);
 			main.prepend(newUploadSummary(students.length));
 		} else {
 			alert("Could not find main element");

@@ -1,9 +1,11 @@
+- headers = Student::CSV_HEADERS
+
 %section.w-full.text-center.flex.flex-col.gap-3
   %h3 CSVs should be formatted as follows:
   %table.w-full
     %thead
       %tr
-        - Student::CSV_HEADERS.each do |header|
+        - headers.each do |header|
           :ruby
             classes = 'thead bg-secondary-50'
             classes = "#{classes} thead-s" if header == Student::CSV_HEADERS.first
@@ -13,6 +15,7 @@
     %tbody
       %tr
         %td 陽葵
+        %td Timmy Thomas
         %td 236u2345nsghsferf4
         %td sky_two
         %td 2
@@ -21,16 +24,11 @@
         %td 2022-09-01
         %td 2013-01-01
       %tr
-        %td ...
-        %td ...
-        %td ...
-        %td ...
-        %td ...
-        %td ...
-        %td ...
-        %td ...
+        - headers.each do |_|
+          %td ...
       %tr
-        %td Name in Japanese or English
+        %td Name in Japanese
+        %td Name in English
         %td
           %p A string of letters and numbers
           %p Or can be left blank to auto-generate
