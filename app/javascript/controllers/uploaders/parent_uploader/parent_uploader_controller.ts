@@ -74,11 +74,13 @@ export default class extends Controller<HTMLFormElement> {
 	async uploadParents(parents: parent[]) {
 		while (parents.length > 0) {
 			const index = parents.length - 1;
+			const delay = new Promise((resolve) => setTimeout(resolve, 500));
 			const parent = parents.pop();
 			if (parent === undefined) continue;
 			this.actionValue === "create"
 				? await createParent(parent, this.orgValue, index)
 				: await updateParent(parent, this.orgValue, index);
+			await delay;
 		}
 	}
 }

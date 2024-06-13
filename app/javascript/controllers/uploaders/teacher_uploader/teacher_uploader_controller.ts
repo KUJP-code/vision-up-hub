@@ -74,11 +74,13 @@ export default class extends Controller<HTMLFormElement> {
 	async uploadTeachers(teachers: teacher[]) {
 		while (teachers.length > 0) {
 			const index = teachers.length - 1;
+			const delay = new Promise((resolve) => setTimeout(resolve, 500));
 			const teacher = teachers.pop();
 			if (teacher === undefined) continue;
 			this.actionValue === "create"
 				? await createTeacher(teacher, this.orgValue, index)
 				: await updateTeacher(teacher, this.orgValue, index);
+			await delay;
 		}
 	}
 }
