@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.13.1-enname-csv"
+    "Name": "thatbballguy/materials:0.13.2-refactor-uploaders"
   },
   "Ports": [
     {
