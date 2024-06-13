@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class School < ApplicationRecord
+  require 'resolv'
+
   validates :name, presence: true
   validate :valid_ip?
 
