@@ -1,21 +1,40 @@
+:ruby
+  manager = if @managers.blank?
+    t('.unmanaged')
+  else
+    t('.managed_by', managers: @managers)
+  end
+  organisation_id = @school.organisation_id
+
 = render 'shared/subtitle', text: @school.name
 
 %main.flex.flex-col.items-center.p-3.gap-3
-  %h3= t('.student_count', count: @school.students_count)
-  %h3
-    = @managers.blank? ? t('.unmanaged') : t('.managed_by', managers: @managers)
+  %h3.font-bold= manager
+  %h3.font-bold= t('.student_count', count: @school.students_count)
+
+  %section.w-full.flex.justify-around.gap-3
+    .flex.flex-col.items-center.gap-3
+      .flex.items-center.gap-3
+        %h3.font-bold= t('.classes')
+        - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+          = link_to t('.create_class'),
+                    new_school_class_path,
+                    class: 'btn btn-secondary'
+      = render 'school_classes/table', classes: @classes
+
+    .flex.flex-col.items-center.gap-3
+      .flex.items-center.gap-3
+        %h3.font-bold= t('.teachers')
+        - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+          = link_to t('.create_teacher'),
+                    new_organisation_teacher_path(organisation_id),
+                    class: 'btn btn-secondary'
+      = render 'users/table', users: @teachers
 
   .flex.items-center.gap-3
-    %h3.font-bold= t('.classes')
-    - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
-      = link_to t('.create_class'),
-                new_school_class_path,
-                class: 'btn btn-secondary'
-  = render 'school_classes/table', classes: @classes
-
-  = link_to t('.edit'),
-            edit_organisation_school_path(@school.organisation_id, @school),
-            class: 'btn btn-secondary'
-  = link_to t('.add_student'),
-            new_student_path(school_id: @school.id),
-            class: 'btn btn-secondary'
+    = link_to t('.edit'),
+              edit_organisation_school_path(@school.organisation_id, @school),
+              class: 'btn btn-secondary'
+    = link_to t('.add_student'),
+              new_student_path(school_id: @school.id),
+              class: 'btn btn-secondary'
