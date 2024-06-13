@@ -2,6 +2,7 @@ import {
 	attributeCellHTML,
 	invalidClasses,
 	pendingClasses,
+	statusIndicatorHTML,
 	tableHeader,
 } from "../table.ts";
 
@@ -55,32 +56,4 @@ export function addStudentRow({
 		alert("Could not find table element");
 		return;
 	}
-}
-
-function statusIndicatorHTML(status: status) {
-	let iconText = "";
-	let animation = "";
-	switch (status) {
-		case "Uploaded":
-			iconText = "download_done";
-			break;
-		case "Invalid":
-			iconText = "warning";
-			animation = "animate-pulse";
-			break;
-		case "Pending":
-			iconText = "hourglass_empty";
-			animation = "animate-spin";
-			break;
-		case "Error":
-			iconText = "error";
-			animation = "animate-pulse";
-			break;
-	}
-	return `
-		<td class="flex items-center justify-center gap-2 p-2">
-			<p>${status}</p>
-			<span class="material-symbols-outlined ${animation}">${iconText}</span>
-		</td>
-	`;
 }
