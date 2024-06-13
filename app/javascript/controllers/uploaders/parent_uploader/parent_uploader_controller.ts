@@ -1,14 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
-import { addParentRow, newParentUploadTable } from "./table.ts";
+import { newParentUploadTable } from "./table.ts";
+import { addRow } from "../table.ts";
 import { createParent, updateParent } from "./api.ts";
 import { newUploadSummary } from "../summary.ts";
 
-export interface parent {
-	name: string;
-	email: string;
-	password: string;
-}
+import type { parent } from "../declarations.d.ts";
 
 // Connects to data-controller="parent-uploader"
 export default class extends Controller<HTMLFormElement> {
@@ -44,11 +41,12 @@ export default class extends Controller<HTMLFormElement> {
 			alert("Could not find main element");
 			return;
 		}
-		for (const [i, s] of parents.entries()) {
-			addParentRow({
-				csvParent: s,
+		for (const [i, parent] of parents.entries()) {
+			addRow({
+				csvRecord: parent,
 				headers: this.headersValue.concat("Password Confirmation"),
 				index: i,
+				uploadType: "parent",
 			});
 		}
 

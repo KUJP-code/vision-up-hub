@@ -1,6 +1,4 @@
-import type { student } from "./student_uploader/student_uploader_controller";
-import type { teacher } from "./teacher_uploader/teacher_uploader_controller";
-import type { parent } from "./parent_uploader/parent_uploader_controller";
+import type { parent, student, teacher } from "./declarations.d.ts";
 import type { status } from "./declarations.d.ts";
 
 export const invalidClasses = [
@@ -22,6 +20,43 @@ export const pendingClasses = [
 	"border-slate-500",
 	"text-secondary",
 ];
+
+export function addRow({
+	csvRecord,
+	index,
+	headers,
+	uploadType,
+	status = "Pending",
+}: {
+	csvRecord: student | parent | teacher;
+	index: number;
+	headers: string[];
+	uploadType: "student" | "parent" | "teacher";
+	status?: status;
+}) {
+	const table = document.querySelector(`#${uploadType}-table`);
+	const row = document.createElement("tr");
+	row.id = `${uploadType}-row-${index}`;
+	row.classList.add(...pendingClasses);
+
+	if (status === "Error") {
+		row.classList.add(...invalidClasses);
+	}
+
+	let rowContents = "";
+	for (const attribute of headers) {
+		rowContents += attributeCellHTML(csvRecord, attribute, headers);
+	}
+	rowContents += statusIndicatorHTML(status);
+	row.innerHTML = rowContents;
+
+	if (table) {
+		table.appendChild(row);
+	} else {
+		alert("Could not find table element");
+		return;
+	}
+}
 
 export function attributeCellHTML(
 	record: student | parent | teacher,

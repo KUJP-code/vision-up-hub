@@ -28,33 +28,3 @@ export function newTeacherUploadTable(headers: string[]) {
 			</table>
 			`;
 }
-
-export function addTeacherRow({
-	csvTeacher,
-	index,
-	headers,
-	status = "Pending",
-}: { csvTeacher: teacher; index: number; headers: string[]; status?: status }) {
-	const table = document.querySelector("#teacher-table");
-	const row = document.createElement("tr");
-	row.id = `teacher-row-${index}`;
-	row.classList.add(...pendingClasses);
-
-	if (status === "Error") {
-		row.classList.add(...invalidClasses);
-	}
-
-	let rowContents = "";
-	for (const attribute of headers) {
-		rowContents += attributeCellHTML(csvTeacher, attribute, headers);
-	}
-	rowContents += statusIndicatorHTML(status);
-	row.innerHTML = rowContents;
-
-	if (table) {
-		table.appendChild(row);
-	} else {
-		alert("Could not find table element");
-		return;
-	}
-}

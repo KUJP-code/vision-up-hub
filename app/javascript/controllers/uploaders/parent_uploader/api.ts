@@ -1,5 +1,5 @@
 import { patch, post } from "@rails/request.js";
-import type { parent } from "./parent_uploader_controller";
+import type { parent } from "../declarations.d.ts";
 
 export async function createParent(
 	parent: parent,

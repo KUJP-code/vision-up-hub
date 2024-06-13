@@ -1,20 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
-import { addStudentRow, newStudentUploadTable } from "./table.ts";
+import { newStudentUploadTable } from "./table.ts";
+import { addRow } from "../table.ts";
 import { createStudent, updateStudent } from "./api.ts";
 import { newUploadSummary } from "../summary.ts";
 
-export interface student {
-	name: string;
-	en_name: string;
-	student_id: string;
-	level: string;
-	school_id: string;
-	parent_id: string;
-	start_date: string;
-	quit_date: string;
-	birthday: string;
-}
+import type { student } from "../declarations.d.ts";
 
 // Connects to data-controller="student-uploader"
 export default class extends Controller<HTMLFormElement> {
@@ -50,8 +41,13 @@ export default class extends Controller<HTMLFormElement> {
 			alert("Could not find main element");
 			return;
 		}
-		for (const [i, s] of students.entries()) {
-			addStudentRow({ csvStudent: s, headers: this.headersValue, index: i });
+		for (const [i, student] of students.entries()) {
+			addRow({
+				csvRecord: student,
+				headers: this.headersValue,
+				index: i,
+				uploadType: "student",
+			});
 		}
 
 		this.uploadStudents(students);
