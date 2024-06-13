@@ -37,7 +37,7 @@
     %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
       = t('.add_manager')
 
-  .flex.gap-2.flex-wrap.justify-stretch{ 'data-controller': 'fields' }
+  .flex.gap-2.flex-wrap{ 'data-controller': 'fields' }
     %h3.w-full.font-bold.text-center Teachers
 
     = f.fields_for :school_teachers, school.school_teachers do |m_f|
