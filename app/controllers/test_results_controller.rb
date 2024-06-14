@@ -48,7 +48,10 @@ class TestResultsController < ApplicationController
   def set_index_vars
     @test = Test.find(params[:test_id])
     test_level = @test.short_level.downcase.to_sym
-    @students = policy_scope(Student).send(test_level).includes(:school, :test_results)
+    @students = policy_scope(Student)
+                .send(test_level)
+                .current
+                .includes(:school, :test_results)
   end
 
   def set_result

@@ -29,6 +29,9 @@ class Student < ApplicationRecord
   has_many :test_results, dependent: :destroy
   has_many :tests, through: :test_results
 
+  scope :current, -> { where('quit_date > ?', Time.zone.today) }
+  scope :former, -> { where(quit_date: ...Time.zone.today) }
+
   private
 
   def generate_student_id

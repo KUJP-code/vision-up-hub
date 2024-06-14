@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
-      resources :students
+      resources :students, except: %i[destroy]
       resources :student_searches, only: %i[index update]
       resources :support_requests do
         resources :support_messages, only: %i[create]
