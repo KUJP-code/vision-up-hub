@@ -43,13 +43,15 @@ class StudentsController < ApplicationController
   end
 
   def update
-    if @student.update(student_params)
-      redirect_to @student, notice: t('update_success')
-    else
-      set_form_data
-      render :edit,
-             status: :unprocessable_entity,
-             alert: t('update_failure')
+    Logidze.with_responsible(current_user.id) do
+      if @student.update(student_params)
+        redirect_to @student, notice: t('update_success')
+      else
+        set_form_data
+        render :edit,
+               status: :unprocessable_entity,
+               alert: t('update_failure')
+      end
     end
   end
 

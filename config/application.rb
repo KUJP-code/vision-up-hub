@@ -46,6 +46,9 @@ module Materials
     config.active_job.queue_adapter = :solid_queue
 
     # Lazyload images by default
-    config.action_view.image_loading = "lazy"
+    config.action_view.image_loading = 'lazy'
+
+    # logidze needs the schema to be in SQL format
+    config.active_record.schema_format = :sql
   end
 end

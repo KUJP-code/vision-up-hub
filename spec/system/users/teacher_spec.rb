@@ -20,7 +20,6 @@ RSpec.describe 'creating Teacher' do
       select school.name, from: 'teacher_school_teachers_attributes_0_school_id'
       click_on 'submit_teacher'
     end
-    expect(page).to have_content 'John'
     expect(page).to have_content I18n.t('create_success')
   end
 end

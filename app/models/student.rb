@@ -7,6 +7,8 @@ class Student < ApplicationRecord
 
   after_create :generate_student_id
 
+  has_logidze
+
   validates :birthday, :level, :name, presence: true
   # We want them to be able to add their own student ids if they have them
   # So can't make it globally unique

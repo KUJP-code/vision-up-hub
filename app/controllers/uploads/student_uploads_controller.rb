@@ -33,7 +33,9 @@ class StudentUploadsController < ApplicationController
     )
     @index = params[:index].to_i
     @status = 'Uploaded'
-    return if @student.update(student_upload_params)
+    Logidze.with_responsible(current_user.id) do
+      return if @student.update(student_upload_params)
+    end
 
     set_errors
   end
