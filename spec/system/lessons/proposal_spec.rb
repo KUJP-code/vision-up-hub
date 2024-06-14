@@ -69,7 +69,7 @@ RSpec.describe 'changing a lesson' do
       expect(page).to have_content('New Title')
       expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
       expect(page).to have_content(course.title)
-      expect { Lesson.find(lesson.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Lesson.find(proposal.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
