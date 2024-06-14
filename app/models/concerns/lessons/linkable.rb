@@ -11,19 +11,23 @@ module Linkable
     def set_links
       return unless links.instance_of?(String)
 
-      pairs = links.split("\n")
+      pairs = links.tr("\r", '').split("\n")
 
       self.links = pairs.to_h do |pair|
-        pair_array = pair.split(':', 2)
-        return add_errors(input(pair_array)) if missing_info?(pair_array)
-
-        unless http_included?(pair_array[1])
-          errors.add(:links, 'must include http:// or https://')
-          return self.links = links
-        end
-        pair_array.map(&:strip)
+        pair_to_link(pair)
       end
     end
+  end
+
+  def pair_to_link(pair)
+    pair_array = pair.split(':', 2)
+    return add_errors(input(pair_array)) if missing_info?(pair_array)
+
+    unless http_included?(pair_array[1])
+      errors.add(:links, 'must include http:// or https://')
+      return self.links = links
+    end
+    pair_array.map(&:strip)
   end
 
   def missing_info?(array)
