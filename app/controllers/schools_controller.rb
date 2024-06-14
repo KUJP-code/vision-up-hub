@@ -14,6 +14,7 @@ class SchoolsController < ApplicationController
     @managers = @school.school_managers.pluck(:name).to_sentence
     @classes = @school.classes.includes(:teachers)
     @teachers = @school.teachers.includes(:organisation)
+    @students = @school.students
   end
 
   def new

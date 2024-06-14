@@ -19,7 +19,7 @@ class SchoolClassesController < ApplicationController
   end
 
   def new
-    @school_class = authorize SchoolClass.new
+    @school_class = authorize SchoolClass.new(school_id: params[:school_id])
   end
 
   def edit; end

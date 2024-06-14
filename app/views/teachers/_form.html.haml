@@ -12,7 +12,8 @@
 
   - unless current_user.is?('Teacher')
     - if user.schools.empty?
-      = f.fields_for :school_teachers, user.school_teachers.new do |st_f|
+      = f.fields_for :school_teachers,
+                     user.school_teachers.new(school_id: params[:school_id]) do |st_f|
         = render 'school_teachers/fields', f: st_f, collection: schools,
                                            resource: user
     - else
