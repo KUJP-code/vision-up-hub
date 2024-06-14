@@ -8,6 +8,8 @@ class Lesson < ApplicationRecord
 
   before_destroy :check_not_used
 
+  has_logidze
+
   validates :goal, :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
 

@@ -880,7 +880,8 @@ CREATE TABLE public.lessons (
     interesting_fact character varying,
     status integer,
     changed_lesson_id integer,
-    warning character varying DEFAULT ''::character varying
+    warning character varying DEFAULT ''::character varying,
+    log_data jsonb
 );
 
 
@@ -2601,6 +2602,13 @@ CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unl
 
 
 --
+-- Name: lessons logidze_on_lessons; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER logidze_on_lessons BEFORE INSERT OR UPDATE ON public.lessons FOR EACH ROW WHEN ((COALESCE(current_setting('logidze.disabled'::text, true), ''::text) <> 'on'::text)) EXECUTE FUNCTION public.logidze_logger('2', 'updated_at', '{updated_at}');
+
+
+--
 -- Name: students logidze_on_students; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -2881,6 +2889,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240614070401'),
 ('20240614025159'),
 ('20240614023656'),
 ('20240614023655'),
