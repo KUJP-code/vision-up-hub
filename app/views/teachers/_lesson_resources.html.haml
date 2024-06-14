@@ -2,8 +2,8 @@
 
 - if lesson
   :ruby
-    resources_present = 'bg-secondary text-white'
-    resources_absent = 'bg-neutral-light text-neutral-dark'
+    resources_present = 'bg-secondary text-white cursor-pointer'
+    resources_absent = 'bg-neutral-light text-neutral-dark cursor-default'
     sorted_resources = lesson.resources.sort { |r, rn| r.blob.filename <=> rn.blob.filename }
     resource_classes = lesson.resources.attached? ? resources_present : resources_absent
 
@@ -11,10 +11,16 @@
     - if lesson.guide.blob
       = link_to file_path(id: lesson.guide.blob.id),
                 class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3' do
-        %p Guide
+        %p Lesson Plan
         .flex-grow
         = render 'shared/svgs/download_icon',
                  classes: 'fill-white'
+    - else
+      .flex.items-center.bg-neutral-light.rounded.py-1.px-3.cursor-default.border.border-secondary
+        %p.text-neutral-dark Lesson Plan
+        .flex-grow
+        = render 'shared/svgs/not_allowed_icon',
+                 classes: 'fill-neutral-dark stroke-3'
 
     %div{ class: 'relative h-[34px]' }
       %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full

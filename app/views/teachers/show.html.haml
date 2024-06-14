@@ -1,8 +1,18 @@
-- in_future = Time.zone.today < @date
+:ruby
+  in_future = Time.zone.today < @date
+  in_past = @date < Time.zone.today
+  subtitle = if in_future
+    "Future Lessons for #{ja_date(@date)}"
+  elsif in_past
+    "Past Lessons for #{ja_date(@date)}"
+  else
+    'Today\'s Lessons'
+  end
+
 
 = render 'shared/subtitle',
-         classes: in_future ? 'bg-neutral-dark text-main' : '',
-         text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
+         classes: in_future || in_past ? 'bg-neutral-dark text-main' : '',
+         text: subtitle
 
 %main.flex.flex-col.md:flex-row.justify-around.gap-3
   - if @unlevelled_lessons.any?
@@ -16,7 +26,7 @@
       %div{ class: 'basis-[38%] grow' }
 
   - if @levelled_lessons.any?
-    %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr' }
+    %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr p-3' }
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
 = render 'teachers/day_select',

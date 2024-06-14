@@ -9,21 +9,21 @@
 
 .col-start-1
 .flex.items-center.justify-center.col-start-1
-  = image_tag 'levels/kindy.svg', class: 'w-[70%]'
+  = image_tag 'levels/kindy.svg', class: 'w-[40%]'
 .flex.items-center.justify-center.col-start-1
-  = image_tag 'levels/land.svg', class: 'w-[70%]'
+  = image_tag 'levels/land.svg', class: 'w-[40%]'
 .flex.items-center.justify-center.col-start-1
-  = image_tag 'levels/sky.svg', class: 'w-[70%]'
+  = image_tag 'levels/sky.svg', class: 'w-[40%]'
 .flex.items-center.justify-center.col-start-1
-  = image_tag 'levels/galaxy.svg', class: 'w-[70%]'
+  = image_tag 'levels/galaxy.svg', class: 'w-[40%]'
 
 .flex.items-center.justify-center.col-start-1.border-t.border-secondary
-  = image_tag 'levels/keep_up.svg', class: 'w-[70%]'
+  = image_tag 'levels/keep_up.svg', class: 'w-[40%]'
 .flex.items-center.p-1.col-start-2.row-start-6.border-t.border-secondary
   = render 'teachers/lesson_resources',
            lesson: lessons.find(&:keep_up?)
 .flex.items-center.justify-center.col-start-3.border-t.border-secondary
-  = image_tag 'levels/specialist.svg', class: 'w-[70%]'
+  = image_tag 'levels/specialist.svg', class: 'w-[40%]'
 .flex.items-center.p-1.col-start-4.row-start-6.border-t.border-secondary
   = render 'teachers/lesson_resources',
            lesson: lessons.find(&:specialist?)
