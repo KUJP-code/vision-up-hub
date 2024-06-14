@@ -9,9 +9,10 @@
     %li.flex.flex-col
       %span.text-secondary-50= t('.name')
       %span.text-secondary= redact(@student, @student.name)
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.en_name')
-      %span.text-secondary= redact(@student, @student.en_name)
+    - if @student.en_name.present?
+      %li.flex.flex-col
+        %span.text-secondary-50= t('.en_name')
+        %span.text-secondary= redact(@student, @student.en_name)
     %li.flex.flex-col
       %span.text-secondary-50= t('.level')
       %span.text-secondary= @student.level.titleize
