@@ -1,0 +1,7 @@
+= link_to 'Back to Lesson',
+          lesson_path(@lesson), class: 'btn btn-secondary'
+
+= render 'shared/diff', diff: @diff
+
+= form_with url: lesson_version_path(@lesson), method: :patch do |f|
+  = f.submit 'Revert these changes', class: 'btn btn-primary'

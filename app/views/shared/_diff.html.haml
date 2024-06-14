@@ -1,0 +1,9 @@
+-# locals: (diff:)
+
+- diff.each do |attr, changes|
+  %h3= attr
+  - changes.each do |version, value|
+    - if version == 'old'
+      %p.text-red-500 #{version}: #{value}
+    - else
+      %p.text-green-500 #{version}: #{value}

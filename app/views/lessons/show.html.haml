@@ -18,6 +18,10 @@
         = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
                   edit_lesson_path(@lesson),
                   class: 'btn btn-secondary px-3 py-1'
+        - if current_user.is?('Admin')
+          = link_to 'View Diff',
+                    lesson_version_path(@lesson),
+                    class: 'btn btn-secondary px-3 py-1'
 
       - if @lesson.subtype
         %h3
