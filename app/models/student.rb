@@ -29,7 +29,10 @@ class Student < ApplicationRecord
   has_many :test_results, dependent: :destroy
   has_many :tests, through: :test_results
 
-  scope :current, -> { where('quit_date > ?', Time.zone.today) }
+  scope :current, lambda {
+                    where('quit_date > ?', Time.zone.today)
+                      .or(where(quit_date: nil))
+                  }
   scope :former, -> { where(quit_date: ...Time.zone.today) }
 
   private
