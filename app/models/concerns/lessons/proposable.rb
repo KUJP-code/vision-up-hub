@@ -2,6 +2,10 @@
 
 module Proposable
   extend ActiveSupport::Concern
+  NOT_PROPOSABLE =
+    %w[admin_approval assigned_editor_id changed_lesson_id created_at
+       creator_id curriculum_approval id released status type
+       updated_at].freeze
 
   included do
     belongs_to :changed_lesson,
@@ -18,5 +22,20 @@ module Proposable
       rejected: 2,
       accepted: 3
     }
+
+    def replace_with(proposal)
+      proposal.attributes.each do |key, value|
+        next if NOT_PROPOSABLE.include?(key)
+
+        send(:"#{key}=", value)
+      end
+
+      save
+    rescue StandardError
+      false
+    else
+      proposal.destroy
+      true
+    end
   end
 end

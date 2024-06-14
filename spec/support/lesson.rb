@@ -83,29 +83,61 @@ RSpec.shared_examples_for 'lesson' do
     end
   end
 
-  context 'when using replace()' do
-    let(:lesson) { create(described_class.name.underscore.to_sym) }
-    let(:proposal) { create(described_class.name.underscore.to_sym, :proposal) }
-
-    it 'transfers its course lessons to the proposal' do
-      course_lesson = create(:course_lesson, lesson:)
-      proposal.replace(lesson)
-      expect(proposal.course_lessons).to contain_exactly(course_lesson)
+  context 'when using replace_with(proposal), the lesson' do
+    let(:approval) do
+      [{ 'id' => 69, 'name' => 'Approver', 'time' => 'past' }]
+    end
+    let(:lesson) do
+      create(described_class.name.underscore.to_sym,
+             admin_approval: approval,
+             curriculum_approval: approval)
+    end
+    let(:proposal) do
+      create(described_class.name.underscore.to_sym, :proposal,
+             title: 'Proposal Title', goal: 'Proposal Goal',
+             internal_notes: "P1\nP2\nP3")
     end
 
-    it 'transfers its proposals to the proposal' do
+    it 'has its attributes replaced by those of the proposal' do
+      lesson.replace_with(proposal)
+      lesson_attrs = lesson.attributes
+      proposal_attrs = proposal.attributes
+      Lesson::NOT_PROPOSABLE.each do |attr|
+        lesson_attrs.delete(attr)
+        proposal_attrs.delete(attr)
+      end
+      expect(lesson_attrs).to include(proposal_attrs)
+    end
+
+    it 'keeps Lesson::NOT_PROPOSABLE attributes' do
+      original_values = lesson.attributes
+      lesson.replace_with(proposal)
+      Lesson::NOT_PROPOSABLE.each do |attr|
+        next if attr == 'updated_at'
+
+        expect(lesson.send(attr)).to eq(original_values[attr])
+      end
+    end
+
+    it 'keeps its course lessons' do
+      course_lesson = create(:course_lesson, lesson:)
+      lesson.replace_with(proposal)
+      expect(lesson.course_lessons).to contain_exactly(course_lesson)
+    end
+
+    it 'keeps its other proposals' do
       extra_proposal = create(
         described_class.name.underscore.to_sym,
         :proposal,
         changed_lesson: lesson
       )
-      proposal.replace(lesson)
-      expect(proposal.proposals).to contain_exactly(extra_proposal)
+      lesson.replace_with(proposal)
+      expect(lesson.proposals).to contain_exactly(extra_proposal)
     end
 
-    it 'self-destructs' do
-      proposal.replace(lesson)
-      expect(lesson.destroyed?).to be true
+    it 'destroys the accepted proposal' do
+      lesson.replace_with(proposal)
+      expect(proposal.destroyed?).to be true
     end
   end
 end

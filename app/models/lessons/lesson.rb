@@ -3,14 +3,8 @@
 class Lesson < ApplicationRecord
   include Approvable, Levelable, Pdfable, Proposable
 
-  TYPES = %w[DailyActivity
-             EnglishClass
-             Exercise
-             EveningClass
-             KindyPhonic
-             PhonicsClass
-             SpecialLesson
-             StandShowSpeak].freeze
+  TYPES = %w[DailyActivity EnglishClass Exercise EveningClass KindyPhonic
+             PhonicsClass SpecialLesson StandShowSpeak].freeze
 
   before_destroy :check_not_used
 
@@ -32,9 +26,13 @@ class Lesson < ApplicationRecord
 
   has_many_attached :resources
 
-  scope :levelled, -> { where(type: %w[EnglishClass EveningClass KindyPhonic PhonicsClass StandShowSpeak]) }
+  scope :levelled, lambda {
+                     where(type: %w[EnglishClass EveningClass KindyPhonic
+                                    PhonicsClass StandShowSpeak])
+                   }
   scope :released, -> { where(released: true) }
-  scope :unlevelled, -> { where(type: %w[DailyActivity Exercise SpecialLesson]) }
+  scope :unlevelled,
+        -> { where(type: %w[DailyActivity Exercise SpecialLesson]) }
 
   def self.reassign_editor(old_editor_id, new_editor_id)
     Lesson.where(assigned_editor_id: old_editor_id)
@@ -47,25 +45,6 @@ class Lesson < ApplicationRecord
 
   def day(course)
     course_lessons.find_by(course_id: course.id).day.capitalize
-  end
-
-  def replace(lesson)
-    lesson.course_lessons.each do |cl|
-      course_lessons << cl
-    end
-    lesson.proposals.each do |p|
-      next if p.id == id
-
-      proposals << p
-    end
-    update(status: :accepted, creator_id: lesson.creator_id,
-           admin_approval: lesson.admin_approval,
-           curriculum_approval: lesson.curriculum_approval)
-  rescue StandardError
-    false
-  else
-    lesson.destroy
-    true
   end
 
   def week(course)
