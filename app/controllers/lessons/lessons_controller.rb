@@ -2,7 +2,7 @@
 
 class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[destroy edit show update]
-  before_action :set_form_info, only: %i[new edit]
+  before_action :set_form_data, only: %i[new edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :generate_guide, only: %i[create update]
@@ -97,7 +97,7 @@ class LessonsController < ApplicationController
     end
   end
 
-  def set_form_info
+  def set_form_data
     @courses = Course.pluck(:title, :id)
     @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
   end

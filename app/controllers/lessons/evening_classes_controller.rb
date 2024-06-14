@@ -15,7 +15,7 @@ class EveningClassesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: "#{@lesson.level.titleize} successfully created!"
     else
-      set_form_info
+      set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: "#{@lesson.level.titleize} could not be created"
@@ -30,7 +30,7 @@ class EveningClassesController < LessonsController
       redirect_to after_update_url,
                   notice: "#{@lesson.level.titleize} successfully updated."
     else
-      set_form_info
+      set_form_data
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: "#{@lesson.level.titleize} could not be updated"

@@ -2,8 +2,7 @@
 
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
-  before_action :set_schools, only: %i[edit new show]
-  before_action :set_classes, only: %i[edit new show]
+  before_action :set_form_data, only: %i[edit new show]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -25,14 +24,10 @@ class StudentsController < ApplicationController
   end
 
   def new
-    @student = authorize Student.new
-    @student.school_id = params[:school_id] if params[:school_id]
-    build_classes
+    @student = authorize Student.new(school_id: params[:school_id])
   end
 
-  def edit
-    build_classes
-  end
+  def edit; end
 
   def create
     @student = authorize Student.new(student_params)
@@ -40,9 +35,7 @@ class StudentsController < ApplicationController
     if @student.save
       redirect_to @student, notice: t('create_success')
     else
-      build_classes
-      set_schools
-      set_classes
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -53,9 +46,7 @@ class StudentsController < ApplicationController
     if @student.update(student_params)
       redirect_to @student, notice: t('update_success')
     else
-      build_classes
-      set_schools
-      set_classes
+      set_form_data
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -109,19 +100,13 @@ class StudentsController < ApplicationController
     }
   end
 
-  def set_student
-    @student = authorize Student.find(params[:id])
-  end
-
-  def set_schools
+  def set_form_data
+    @classes = policy_scope(SchoolClass).pluck(:name, :id)
+    @student.student_classes.build(class_id: params[:class_id]) if params[:class_id]
     @schools = policy_scope(School).pluck(:name, :id)
   end
 
-  def set_classes
-    @classes = policy_scope(SchoolClass).pluck(:name, :id)
-  end
-
-  def build_classes
-    @student.student_classes.build(class_id: params[:class_id]) if params[:class_id]
+  def set_student
+    @student = authorize Student.find(params[:id])
   end
 end

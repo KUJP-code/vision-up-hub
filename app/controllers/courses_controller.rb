@@ -2,7 +2,7 @@
 
 class CoursesController < ApplicationController
   before_action :set_course, only: %i[show edit update]
-  before_action :set_lessons, only: %i[new edit]
+  before_action :set_form_data, only: %i[new edit]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -30,9 +30,9 @@ class CoursesController < ApplicationController
     if @course.save
       redirect_to @course
     else
-      render :new,
-             status: :unprocessable_entity,
-             alert: 'Course could not be created'
+      set_form_data
+      render :new, status: :unprocessable_entity,
+                   alert: 'Course could not be created'
     end
   end
 
@@ -40,7 +40,9 @@ class CoursesController < ApplicationController
     if @course.update(course_params)
       redirect_to @course
     else
-      render :edit
+      set_form_data
+      render :edit, status: :unprocessable_entity,
+                    alert: 'Course could not be updated'
     end
   end
 
@@ -57,7 +59,7 @@ class CoursesController < ApplicationController
     @course = authorize Course.find(params[:id])
   end
 
-  def set_lessons
+  def set_form_data
     @lessons = Lesson.pluck(:title, :id)
   end
 end

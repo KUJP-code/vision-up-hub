@@ -2,7 +2,7 @@
 
 class SchoolsController < ApplicationController
   before_action :set_school, only: %i[show edit update destroy]
-  before_action :set_staff, only: %i[edit new]
+  before_action :set_form_data, only: %i[edit new]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -31,7 +31,7 @@ class SchoolsController < ApplicationController
       redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('create_success')
     else
-      set_staff
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -43,7 +43,7 @@ class SchoolsController < ApplicationController
       redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('update_success')
     else
-      set_staff
+      set_form_data
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -74,7 +74,7 @@ class SchoolsController < ApplicationController
     @school = authorize School.find(params[:id])
   end
 
-  def set_staff
+  def set_form_data
     @managers = policy_scope(User)
                 .where(type: 'SchoolManager')
                 .pluck(:name, :id)

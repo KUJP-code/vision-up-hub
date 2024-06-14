@@ -5,7 +5,6 @@ puts 'Creating organisations...'
 
 kids_up = Organisation.create!(fb.attributes_for(:organisation, name: 'KidsUP'))
 test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org'))
-fb.create_list(:organisation, 2)
 
 Organisation.all.each do |org|
   org.schools << fb.create_list(:school, 2, ip: '*')
@@ -34,7 +33,8 @@ User::TYPES.each do |type|
                ))
 end
 
-Teacher.create!(fb.attributes_for(:user, :teacher, organisation_id: 2))
+Teacher.create!(fb.attributes_for(:user, :teacher,
+                                  organisation_id: test_org.id))
 
 SchoolManager.all.each do |manager|
   manager.schools << manager.organisation.schools.first
@@ -83,7 +83,10 @@ end
 
 Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
 Organisation.all.each do |org|
-  org.create_plan!(fb.attributes_for(:plan, course_id: Course.first.id, start: Date.today.beginning_of_week))
+  org.create_plan!(fb.attributes_for(
+                     :plan, course_id: Course.first.id,
+                            start: Date.today.beginning_of_week
+                   ))
 end
 Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 
@@ -102,7 +105,8 @@ puts 'Adding parents, and students to classes and schools...'
 
 School.all.each do |school|
   parent = fb.create(:user, :parent, organisation_id: school.organisation_id)
-  students = fb.create_list(:student, 2, school_id: school.id, parent_id: parent.id)
+  students = fb.create_list(:student, 2, school_id: school.id,
+                                         parent_id: parent.id)
   school.classes.each do |klass|
     klass.students << students
   end

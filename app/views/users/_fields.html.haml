@@ -17,10 +17,12 @@
     = f.label :password
     = f.text_field :password,
                    value: temp_pass,
-                   required: true
+                   required: true,
+                   minlength: 10
 
   .form-group
     = f.label :password_confirmation
     = f.text_field :password_confirmation,
                    value: temp_pass,
-                   required: true
+                   required: true,
+                   minlength: 10

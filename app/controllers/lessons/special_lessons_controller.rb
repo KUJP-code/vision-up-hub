@@ -16,7 +16,7 @@ class SpecialLessonsController < LessonsController
                   notice: 'Special lesson successfully created!'
     else
       p @lesson.errors
-      set_form_info
+      set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Special lesson could not be created'
@@ -31,7 +31,7 @@ class SpecialLessonsController < LessonsController
       redirect_to after_update_url,
                   notice: 'Special lesson successfully updated.'
     else
-      set_form_info
+      set_form_data
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Special lesson could not be updated'

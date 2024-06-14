@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TeachersController < UsersController
+  before_action :set_form_data, only: %i[new edit]
+
   def show
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
     lessons = @user.day_lessons(@date)
@@ -11,12 +13,9 @@ class TeachersController < UsersController
 
   def new
     @user = authorize Teacher.new(organisation_id: params[:organisation_id])
-    @schools = org_schools
   end
 
-  def edit
-    @schools = org_schools
-  end
+  def edit; end
 
   def create
     @user = authorize Teacher.new(teachers_params)
@@ -25,6 +24,7 @@ class TeachersController < UsersController
       redirect_to organisation_teacher_path(@user.organisation, @user),
                   notice: t('create_success')
     else
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -36,6 +36,7 @@ class TeachersController < UsersController
       redirect_to organisation_teacher_path(@user.organisation, @user),
                   notice: t('update_success')
     else
+      set_form_data
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -44,13 +45,14 @@ class TeachersController < UsersController
 
   private
 
-  def org_schools
-    policy_scope(School).pluck(:name, :id)
+  def set_form_data
+    @schools = policy_scope(School).pluck(:name, :id)
   end
 
   def teachers_params
     t_params = [:school_id,
-                { school_teachers_attributes: %i[id school_id teacher_id _destroy] }]
+                { school_teachers_attributes:
+                  %i[id school_id teacher_id _destroy] }]
     params.require(:teacher).permit(user_params + t_params)
   end
 

@@ -13,7 +13,7 @@ class PhonicsClassesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Phonics Class successfully created!'
     else
-      set_form_info
+      set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Phonics Class could not be created'
@@ -28,7 +28,7 @@ class PhonicsClassesController < LessonsController
       redirect_to after_update_url,
                   notice: 'Phonics Class successfully updated.'
     else
-      set_form_info
+      set_form_data
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Phonics Class could not be updated'
