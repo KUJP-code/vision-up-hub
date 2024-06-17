@@ -19,7 +19,8 @@
                     id: "test_#{test.id}"
       %tr
         %td= render 'tests/questions', questions: test.questions
-        %td= render 'tests/thresholds', thresholds: test.thresholds
+        %td.flex.flex-col
+          = render 'tests/thresholds', thresholds: test.thresholds
         - if admin
           %td
             = link_to 'Edit',
