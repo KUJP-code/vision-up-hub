@@ -2,7 +2,7 @@
 
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
-  before_action :set_form_data, only: %i[edit new show]
+  before_action :set_form_data, only: %i[edit show]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -26,6 +26,7 @@ class StudentsController < ApplicationController
 
   def new
     @student = authorize Student.new(school_id: params[:school_id])
+    set_form_data
   end
 
   def edit; end

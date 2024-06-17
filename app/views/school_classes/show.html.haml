@@ -1,6 +1,9 @@
 = render 'shared/subtitle', text: @school_class.name
 
 %main.flex.flex-col.items-center.gap-3.p-3
+  %h3
+    Teachers:
+    = @teachers.to_sentence
   %h3= t('.students', count: @students.size)
 
   = link_to t('.create_student'),
@@ -17,3 +20,7 @@
 
   = render 'students/table',
            students: @students
+
+  = link_to t('.edit'),
+            edit_school_class_path(@school_class),
+            class: 'btn btn-secondary'

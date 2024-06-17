@@ -21,17 +21,17 @@
         = render 'school_teachers/fields', f: st_f, collection: schools,
                                            resource: user
 
-  %template{ 'data-fields-target' => 'template' }
-    = f.fields_for :school_teachers,
-                   user.school_teachers.new,
-                   child_index: 'CHILD' do |st_f|
-      = render 'school_teachers/fields', f: st_f, collection: schools,
-                                         resource: user
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :school_teachers,
+                     user.school_teachers.new,
+                     child_index: 'CHILD' do |st_f|
+        = render 'school_teachers/fields', f: st_f, collection: schools,
+                                           resource: user
 
-  %div{ 'data-fields-target' => 'target' }
+    %div{ 'data-fields-target' => 'target' }
 
-  %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
-    Add School
+    %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+      Add School
 
   = f.submit class: 'btn btn-primary',
              id: 'submit_teacher'
