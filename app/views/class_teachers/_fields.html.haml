@@ -8,7 +8,7 @@
       = f.select :teacher_id, collection
   - else
     .form-group
-      = f.select :school_class_id, collection
+      = f.select :class_id, collection
 
   - if f.object.new_record?
     %button.btn.btn-danger{ 'data-action' => 'fields#remove' }

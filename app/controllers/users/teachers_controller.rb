@@ -47,12 +47,13 @@ class TeachersController < UsersController
 
   def set_form_data
     @schools = policy_scope(School).pluck(:name, :id)
+    @classes = policy_scope(SchoolClass).pluck(:name, :id)
   end
 
   def teachers_params
     t_params = [:school_id,
-                { school_teachers_attributes:
-                  %i[id school_id teacher_id _destroy] }]
+                { school_teachers_attributes: %i[id school_id _destroy] },
+                { class_teachers_attributes: %i[id class_id _destroy] }]
     params.require(:teacher).permit(user_params + t_params)
   end
 
