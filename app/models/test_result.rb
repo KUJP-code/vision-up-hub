@@ -8,9 +8,10 @@ class TestResult < ApplicationRecord
   store_accessor :answers, :speaking
   store_accessor :answers, :writing
 
-  enum :new_level, LEVELS, prefix: true
+  enum :new_level, LEVELS, suffix: true
   enum :prev_level, LEVELS, prefix: true
 
+  before_validation :scores_to_int
   after_save :update_student_level
 
   belongs_to :test
@@ -28,12 +29,10 @@ class TestResult < ApplicationRecord
   def radar_data
     {
       label: test.name,
-      data: [
-        read_percent || 0,
-        write_percent || 0,
-        speak_percent || 0,
-        listen_percent || 0
-      ]
+      data: [read_percent || 0,
+             write_percent || 0,
+             speak_percent || 0,
+             listen_percent || 0]
     }
   end
 
@@ -54,6 +53,10 @@ class TestResult < ApplicationRecord
 
     errors.add(:reason,
                I18n.t('test_results.errors.reason_required'))
+  end
+
+  def scores_to_int
+    answers.transform_values! { |answers| answers.map(&:to_i) }
   end
 
   def update_student_level

@@ -11,6 +11,12 @@ RSpec.describe TestResult do
     expect(test_result).to be_valid
   end
 
+  it 'converts string values for answers to integers' do
+    test_result.answers = { 'Reading' => %w[1 2 3 4] }
+    test_result.save
+    expect(test_result.answers).to eq({ 'Reading' => [1, 2, 3, 4] })
+  end
+
   it 'updates student level with new level when saved' do
     student = create(:student, level: :sky_one)
     test_result.student = student
