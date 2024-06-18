@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe TestResult do
-  subject(:test_result) { build(:test_result, test:, total_percent: 100, new_level: 'sky_three') }
+  subject(:test_result) { build(:test_result, test:, new_level: 'sky_three') }
 
-  let(:test) { create(:test, thresholds: 'Sky Three:80') }
+  let(:test) { create(:test, thresholds: "Sky Three:80\nSky Two:70\nSky One:60") }
 
   it 'has a valid factory' do
     expect(test_result).to be_valid

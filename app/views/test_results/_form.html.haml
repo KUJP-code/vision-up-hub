@@ -2,7 +2,7 @@
 
 - possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
 
-= form_for [test, result] do |f|
+= form_with model: [test, result] do |f|
   %tr{ data: { controller: 'test-result',
                'test-result-thresholds-value': test.thresholds.to_json,
                'test-result-questions-value': test.questions.to_json },

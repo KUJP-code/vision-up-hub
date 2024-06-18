@@ -37,9 +37,16 @@ class TestResult < ApplicationRecord
   end
 
   def recommended_level
-    test.thresholds.reduce(prev_level) do |_lvl, threshold|
-      threshold.first.tr(' ', '_').downcase if total_percent >= threshold.last
+    current_level = { level: prev_level, percent: 0 }
+    rec = test.thresholds.reduce(current_level) do |recommended, threshold|
+      level, percent = threshold
+      next recommended if recommended[:percent] > percent
+      next recommended if recommended[:percent] > total_percent
+
+      { level:, percent: }
     end
+
+    rec[:level].downcase.tr(' ', '_')
   end
 
   def total_score
