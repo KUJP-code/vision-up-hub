@@ -39,3 +39,6 @@ application.register("teacher-uploader", TeacherUploaderController);
 
 import ValidityController from "./validity_controller";
 application.register("validity", ValidityController);
+
+import DetailsController from "./details_controller";
+application.register("details", DetailsController);
