@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.13.4-new-tab"
+    "Name": "thatbballguy/materials:0.13.5-tailwind-shim"
   },
   "Ports": [
     {
