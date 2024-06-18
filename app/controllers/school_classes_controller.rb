@@ -16,6 +16,7 @@ class SchoolClassesController < ApplicationController
     @possible_students = policy_scope(Student).where
                                               .not(id: @students.ids)
                                               .pluck(:name, :id)
+    @teachers = @school_class.teachers.pluck(:name)
   end
 
   def new
@@ -72,5 +73,6 @@ class SchoolClassesController < ApplicationController
 
   def set_form_data
     @schools = policy_scope(School).pluck(:name, :id)
+    @teachers = policy_scope(User).where(type: 'Teacher').pluck(:name, :id)
   end
 end

@@ -1,9 +1,9 @@
 -# locals: (questions:)
 
-.flex.flex-wrap.justify-center.gap-3
+.flex.flex-wrap.justify-around
   - questions.each do |skill, scores|
-    %div{ class: 'basis-2/5 flex flex-col items-center gap-3' }
-      %h3.font-bold= skill
+    %div{ class: 'basis-1/5 flex flex-col items-center gap-' }
+      %h3.font-bold= skill.titleize
       %ul
         - scores.each_with_index do |score, i|
           %li Question #{i + 1}: #{score} #{'point'.pluralize(score)}
