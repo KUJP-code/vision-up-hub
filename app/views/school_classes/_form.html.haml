@@ -15,7 +15,7 @@
     = f.select :school_id, schools
 
   - unless current_user.is?('Teacher')
-    = f.fields_for :class_teachers, school_class.class_teachers.new do |ct_f|
+    = f.fields_for :class_teachers, school_class.class_teachers do |ct_f|
       = render 'class_teachers/fields', f: ct_f, collection: teachers,
                                         resource: school_class
 
