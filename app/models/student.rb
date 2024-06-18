@@ -23,7 +23,9 @@ class Student < ApplicationRecord
   has_many :teachers, through: :school
 
   has_many :student_classes, dependent: :destroy
-  accepts_nested_attributes_for :student_classes
+  accepts_nested_attributes_for :student_classes,
+                                allow_destroy: true,
+                                reject_if: :all_blank
   has_many :classes, through: :student_classes,
                      source: :school_class
 
