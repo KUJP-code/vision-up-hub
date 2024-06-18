@@ -113,7 +113,7 @@ School.all.each do |school|
   fb.create(:student, school_id: school.id, name: 'Orphan')
 end
 
-puts 'Creating a level check and test result...'
+puts 'Creating level checks'
 
 level_check = fb.create(
   :test,
@@ -121,50 +121,7 @@ level_check = fb.create(
   thresholds: "Sky One:60\nSky Two:70\nSky Three:80"
 )
 
-fb.create_list(:test, 5)
-rand_test = Test.last
-
-results = [
-  fb.attributes_for(
-    :test_result,
-    test_id: level_check.id,
-    prev_level: :sky_one,
-    new_level: :sky_two,
-    read_percent: rand(0..100),
-    write_percent: rand(0..100),
-    speak_percent: rand(0..100),
-    listen_percent: rand(0..100),
-    reason: 'I am a reason',
-    answers: {
-      'writing' => [2, 3, 1],
-      'reading' => [5, 0],
-      'listening' => [2, 1, 6],
-      'speaking' => [10]
-    }
-  ),
-  fb.attributes_for(
-    :test_result,
-    test_id: rand_test.id,
-    prev_level: :sky_one,
-    new_level: :sky_three,
-    read_percent: rand(0..100),
-    write_percent: rand(0..100),
-    speak_percent: rand(0..100),
-    listen_percent: rand(0..100),
-    answers: {
-      'writing' => [2, 3, 4],
-      'reading' => [5, 4],
-      'listening' => [2, 3, 6],
-      'speaking' => [10]
-    }
-  )
-]
-
-Student.all.each do |student|
-  results.each do |result|
-    student.test_results.create!(result)
-  end
-end
+fb.create_list(:test, 2)
 
 Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)

@@ -27,13 +27,11 @@ class TestResult < ApplicationRecord
               greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
   def radar_data
-    {
-      label: test.name,
+    { label: test.name,
       data: [read_percent || 0,
              write_percent || 0,
              speak_percent || 0,
-             listen_percent || 0]
-    }
+             listen_percent || 0] }
   end
 
   def recommended_level
@@ -41,7 +39,7 @@ class TestResult < ApplicationRecord
     rec = test.thresholds.reduce(current_level) do |recommended, threshold|
       level, percent = threshold
       next recommended if recommended[:percent] > percent
-      next recommended if recommended[:percent] > total_percent
+      next recommended if percent > total_percent
 
       { level:, percent: }
     end

@@ -25,8 +25,15 @@ RSpec.describe TestResult do
   end
 
   context 'when dealing with recommended level' do
-    it 'calculates the recommended level from total percent' do
+    it 'increases recommended level with high total percent' do
+      test_result.total_percent = 100
       expect(test_result.recommended_level).to eq('sky_three')
+    end
+
+    it 'retains prev level with low total percent' do
+      test_result.prev_level = :sky_one
+      test_result.total_percent = 0
+      expect(test_result.recommended_level).to eq('sky_one')
     end
 
     it 'prevents save without reason if new_level is diff from recommended' do

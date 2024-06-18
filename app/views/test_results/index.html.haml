@@ -32,7 +32,7 @@
 
             - @test.send(skill.to_sym).each do |max_score|
               %th{ class: 'p-1 bg-secondary' } /#{max_score}
-            %th{ class: 'w-12 p-1 bg-secondary' }= t(".#{fieldname_from_skill(skill)}")
+            %th{ class: 'w-12 p-1 bg-secondary' }= t(".#{attr_from_skill(skill)}")
 
       %tbody
         - @students.each do |student|
