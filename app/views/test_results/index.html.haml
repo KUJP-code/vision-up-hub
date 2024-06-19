@@ -8,7 +8,8 @@
     %table
       %thead.sticky.top-0.text-white
         %tr
-          %th{ class: 'p-1 bg-main', id: 'student-details', rowspan: 2 }= t('.student_id')
+          %th{ class: 'p-1 bg-main', id: 'student-details', rowspan: 2 }
+            = t('.student_id')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.name')
           %th.p-1.bg-main{ rowspan: 2 }= t('.en_name')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
@@ -23,8 +24,8 @@
                id: 'results',
                rowspan: 2 }
             = t('.total')
-          %th{ class: 'p-1 bg-main', rowspan: 2 } Prev level
-          %th{ class: 'p-1 bg-main', rowspan: 2 } New level
+          %th{ class: 'p-1 bg-main whitespace-nowrap', rowspan: 2 } Former lvl
+          %th{ class: 'p-1 bg-main', rowspan: 2 } Recommended lvl
           %th{ class: 'p-1 bg-main', rowspan: 2 }
         %tr
           - Test::SKILLS.each do |skill|
@@ -32,7 +33,8 @@
 
             - @test.send(skill.to_sym).each do |max_score|
               %th{ class: 'p-1 bg-secondary' } /#{max_score}
-            %th{ class: 'w-12 p-1 bg-secondary' }= t(".#{attr_from_skill(skill)}")
+            %th{ class: 'w-12 p-1 bg-secondary' }
+              = t(".#{attr_from_skill(skill)}")
 
       %tbody
         - @students.each do |student|

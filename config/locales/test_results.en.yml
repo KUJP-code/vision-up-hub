@@ -1,5 +1,7 @@
 en:
   test_results:
+    form:
+      give_reason: "Please give a reason"
     index:
       results_for: "%{name} Results"
       student_id: "ID"

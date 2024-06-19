@@ -1,7 +1,10 @@
 -# locals: (result:, student:, test:)
 
-- id = form = "student#{student.id}_form"
-- possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
+:ruby
+  id = form = "student#{student.id}_form"
+  possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
+  lvl_options = possible_levels.map { |k| [k.titleize, k] }
+  rec_lvl = result.new_level || student.level
 
 %tr{ data: { controller: 'test-result',
              'test-result-thresholds-value': test.thresholds.to_json,
@@ -44,7 +47,7 @@
   %td.p-1
     .flex.flex-col.gap-3
       = select_tag 'test_result[new_level]',
-                   options_for_select(possible_levels.map { |k| [k.titleize, k] }, result.new_level || test.level),
+                   options_for_select(lvl_options, rec_lvl),
                    class: (result.persisted? ? 'border-neutral-dark' : ''),
                    form:,
                    data: { action: 'test-result#checkRecommendedLevel',
@@ -54,7 +57,7 @@
                       class: 'hidden',
                       data: { 'test-result-target': 'reason' },
                       form:,
-                      placeholder: '理由を記入して下さい'
+                      placeholder: t('.give_reason')
 
   %td.p-1
     = form_with model: [test, result],

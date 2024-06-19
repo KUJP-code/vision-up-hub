@@ -2,6 +2,8 @@ ja:
   test_results:
     errors:
       reason_required: "理由は必須項目です"
+    form:
+      give_reason: "理由を記入して下さい"
     index:
       results_for: "%{name}のテスト結果"
       student_id: "ID"

@@ -127,8 +127,8 @@ export default class extends Controller {
 			},
 			prevLevel,
 		);
-		this.newLevel = newLevel;
-		this.newLevelTarget.value = newLevel.toLowerCase().replace(" ", "_");
+		this.newLevel = newLevel.toLowerCase().replace(" ", "_");
+		this.newLevelTarget.value = this.newLevel;
 	}
 
 	checkRecommendedLevel() {
