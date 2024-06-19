@@ -26,6 +26,7 @@ export default class extends Controller {
 		this.thresholds = this.thresholdsValue;
 		this.questions = this.questionsValue;
 		this.setSkillMaxes();
+		this.calculate();
 	}
 
 	setSkillMaxes() {
