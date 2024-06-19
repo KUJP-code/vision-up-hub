@@ -23,10 +23,13 @@ module Thresholdable
     end
 
     def threshold_pairs
+      return if thresholds.instance_of?(Hash)
+
       lines = thresholds.split("\n")
       return if invalid_lines?(lines)
 
-      lines.map { |s| s.split(':', 2).map(&:strip) }.reject { |p| invalid_pair?(p) }
+      lines.map { |s| s.split(':', 2).map(&:strip) }
+           .reject { |p| invalid_pair?(p) }
     end
 
     def invalid_pair?(pair)
@@ -41,7 +44,8 @@ module Thresholdable
     end
 
     def invalid_level?(string)
-      return false if self.class.levels.keys.map(&:titleize).include?(string.titleize)
+      return false if self.class.levels.keys
+                          .map(&:titleize).include?(string.titleize)
 
       errors.add(:thresholds, ": #{string} is not a valid level")
       true

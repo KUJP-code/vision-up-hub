@@ -24,6 +24,8 @@ module Questionable
     end
 
     def question_pairs
+      return if questions.instance_of?(Hash)
+
       lines = questions.split("\n").map { |s| s.gsub(/[[:space:]]/, '') }
       return if invalid_lines?(lines)
 

@@ -3,6 +3,9 @@
 class TestResult < ApplicationRecord
   include Levels
 
+  EVENING_COURSES = %w[keep_up_one keep_up_two keep_up_three
+                       specialist specialist_advanced].freeze
+
   store_accessor :answers, :listening
   store_accessor :answers, :reading
   store_accessor :answers, :speaking
@@ -12,6 +15,7 @@ class TestResult < ApplicationRecord
   enum :prev_level, LEVELS, prefix: true
 
   before_validation :scores_to_int
+  before_validation :prevent_evening
   after_save :update_student_level
 
   belongs_to :test
@@ -43,8 +47,10 @@ class TestResult < ApplicationRecord
 
       { level:, percent: }
     end
+    rec[:level] = rec[:level].downcase.tr(' ', '_')
+    rec[:level] = 'galaxy_two' if EVENING_COURSES.include?(rec[:level])
 
-    rec[:level].downcase.tr(' ', '_')
+    rec[:level]
   end
 
   def total_score
@@ -52,6 +58,10 @@ class TestResult < ApplicationRecord
   end
 
   private
+
+  def prevent_evening
+    self.new_level = 'galaxy_two' if EVENING_COURSES.include?(new_level)
+  end
 
   def reason_given?
     return true unless reason.blank? && new_level != recommended_level
@@ -65,6 +75,8 @@ class TestResult < ApplicationRecord
   end
 
   def update_student_level
+    self.new_level = 'galaxy_two' if EVENING_COURSES.include?(new_level)
+
     student.update!(level: new_level)
   end
 end

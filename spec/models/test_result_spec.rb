@@ -17,11 +17,22 @@ RSpec.describe TestResult do
     expect(test_result.answers).to eq({ 'Reading' => [1, 2, 3, 4] })
   end
 
-  it 'updates student level with new level when saved' do
-    student = create(:student, level: :sky_one)
-    test_result.student = student
-    test_result.save!
-    expect(student.reload.level).to eq('sky_three')
+  context 'when auto-updating student level' do
+    let(:student) { create(:student, level: :sky_one) }
+
+    it 'updates student level with new level when saved' do
+      test_result.student = student
+      test_result.save!
+      expect(student.reload.level).to eq('sky_three')
+    end
+
+    it 'updates student level to Galaxy 2 if they would join evening course' do
+      test.update(thresholds: 'Specialist:10')
+      test_result.student = student
+      test_result.new_level = 'specialist'
+      test_result.save!
+      expect(student.reload.level).to eq('galaxy_two')
+    end
   end
 
   context 'when dealing with recommended level' do
@@ -37,19 +48,22 @@ RSpec.describe TestResult do
     end
 
     it 'prevents save without reason if new_level is diff from recommended' do
-      result = build(:test_result, test:, prev_level: :sky_one, total_percent: 79, reason: '')
+      result = build(:test_result, test:, prev_level: :sky_one,
+                                   total_percent: 79, reason: '')
       expect(result).not_to be_valid
     end
 
     it 'provides helpful error message if required reason not provided' do
-      result = build(:test_result, test:, prev_level: :sky_one, total_percent: 79, reason: '')
+      result = build(:test_result, test:, prev_level: :sky_one,
+                                   total_percent: 79, reason: '')
       result.valid?
       expect(result.errors.full_messages)
         .to include("Reason #{I18n.t('test_results.errors.reason_required')}")
     end
 
     it 'allows results with new level diff from recommended if reason provided' do
-      result = create(:test_result, test:, prev_level: :sky_one, total_percent: 79, reason: 'too close')
+      result = create(:test_result, test:, prev_level: :sky_one,
+                                    total_percent: 79, reason: 'too close')
       expect(result).to be_valid
     end
   end
