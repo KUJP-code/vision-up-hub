@@ -3,12 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Teacher do
+  let(:teacher) { create(:user, :teacher) }
+
   it 'has a valid factory' do
     expect(build(:user, :teacher)).to be_valid
   end
 
   context 'when finding lessons for a day' do
-    let(:teacher) { create(:user, :teacher) }
     let(:course) { create(:course) }
     let(:thurs_lesson) { create(:daily_activity) }
 
@@ -55,6 +56,25 @@ RSpec.describe Teacher do
       late_lesson = create(:daily_activity)
       create(:course_lesson, course:, lesson: late_lesson, week: 5, day: :monday)
       expect(teacher.day_lessons(date)).to be_empty
+    end
+  end
+
+  context 'when finding category resources' do
+    let(:course) { create(:course) }
+
+    before do
+      teacher.organisation.create_plan!(attributes_for(:plan, course_id: course.id))
+    end
+
+    it 'gets category resources for its course' do
+      category_resource = create(:category_resource)
+      course.category_resources << category_resource
+      expect(teacher.category_resources).to contain_exactly(category_resource)
+    end
+
+    it 'cannot access category resources for other plans' do
+      create(:category_resource)
+      expect(teacher.category_resources).to be_empty
     end
   end
 end

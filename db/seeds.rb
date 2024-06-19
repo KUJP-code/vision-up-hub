@@ -74,6 +74,17 @@ Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
   lesson.guide.attach(File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')))
 end
 
+puts 'Creating category resources...'
+
+CategoryResource.lesson_categories.keys.each do |lc|
+  CategoryResource.resource_categories.keys.each do |rc|
+    category_resource = CategoryResource.new(lesson_category: lc, resource_category: rc)
+    next unless category_resource.valid?
+
+    category_resource.save
+  end
+end
+
 puts 'Creating courses...'
 
 course_lessons = Lesson.all.map do |lesson|
@@ -81,7 +92,9 @@ course_lessons = Lesson.all.map do |lesson|
   fb.build(:course_lesson, lesson:, week: 1, day: Time.zone.today.strftime('%A').downcase)
 end
 
-Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
+full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
+full_course.category_resources << CategoryResource.all
+
 Organisation.all.each do |org|
   org.create_plan!(fb.attributes_for(
                      :plan, course_id: Course.first.id,

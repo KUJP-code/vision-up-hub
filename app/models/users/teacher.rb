@@ -15,6 +15,7 @@ class Teacher < User
   belongs_to :organisation
   delegate :plan, to: :organisation
   delegate :course, to: :plan
+  delegate :category_resources, to: :course
   delegate :lessons, to: :course
   has_many :school_teachers, dependent: :destroy
   accepts_nested_attributes_for :school_teachers
