@@ -117,8 +117,9 @@ export default class extends Controller {
 	}
 
 	setNewLevel(totalPercent) {
+		const eveningCourses = ["Specialist", "Specialist Advanced"];
 		const prevLevel = this.prevLevelTarget.value;
-		const newLevel = Object.entries(this.thresholds).reduce(
+		let newLevel = Object.entries(this.thresholds).reduce(
 			(level, threshold) => {
 				if (totalPercent < threshold[1]) {
 					return level;
@@ -127,8 +128,33 @@ export default class extends Controller {
 			},
 			prevLevel,
 		);
+
+		if (eveningCourses.includes(newLevel)) {
+			this.flagEvening();
+			newLevel = "Galaxy Two";
+		} else {
+			this.unflagEvening();
+		}
+
 		this.newLevel = newLevel.toLowerCase().replace(" ", "_");
 		this.newLevelTarget.value = this.newLevel;
+	}
+
+	flagEvening() {
+		if (this.element.querySelector(".evening")) return;
+
+		this.element.classList.add("bg-green-300");
+		this.newLevelTarget.insertAdjacentHTML(
+			"afterend",
+			`<p class="text-secondary rounded bg-white font-bold evening">
+				Can join Specialist!
+			</p>`,
+		);
+	}
+
+	unflagEvening() {
+		this.element.classList.remove("bg-green-300");
+		this.element.querySelector(".evening")?.remove();
 	}
 
 	checkRecommendedLevel() {
