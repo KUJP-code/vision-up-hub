@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     devise_for :users
 
     authenticate :user do
-      resources :category_resources
+      resources :category_resources, except: %i[show]
       resources :courses, except: %i[destroy]
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
