@@ -740,6 +740,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: category_resources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.category_resources (
+    id bigint NOT NULL,
+    lesson_category integer,
+    resource_category integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: category_resources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.category_resources_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: category_resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.category_resources_id_seq OWNED BY public.category_resources.id;
+
+
+--
 -- Name: class_teachers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1730,6 +1762,13 @@ ALTER TABLE ONLY public.active_storage_variant_records ALTER COLUMN id SET DEFAU
 
 
 --
+-- Name: category_resources id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.category_resources ALTER COLUMN id SET DEFAULT nextval('public.category_resources_id_seq'::regclass);
+
+
+--
 -- Name: class_teachers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1948,6 +1987,14 @@ ALTER TABLE ONLY public.active_storage_variant_records
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: category_resources category_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.category_resources
+    ADD CONSTRAINT category_resources_pkey PRIMARY KEY (id);
 
 
 --
@@ -2882,6 +2929,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240619022246'),
 ('20240614070401'),
 ('20240614025159'),
 ('20240614023656'),
