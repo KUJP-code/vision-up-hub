@@ -49,6 +49,7 @@ class TestResultsController < ApplicationController
     test_level = @test.short_level.downcase.to_sym
     @students = policy_scope(Student)
                 .send(test_level)
+                .or(policy_scope(Student).where(test_results: { test_id: @test.id }))
                 .current
                 .includes(:school, :test_results)
   end
