@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-	connect() {
-		this.detailElements = document.querySelectorAll("details");
-		console.log(this.detailElements);
-	}
+	focus(e) {
+		const openDetails = document.querySelectorAll("details[open]");
+		for (const element of openDetails) {
+			if (element === e.target.parentNode) continue;
 
-	focus() {
-		console.log(this.detailElements);
+			element.open = false;
+		}
 	}
 }
