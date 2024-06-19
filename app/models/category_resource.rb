@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 class CategoryResource < ApplicationRecord
-  has_one_attached :resource
-
-  validates :lesson_category, :resource_category, presence: true
-  validate :valid_combo
-
   enum lesson_category: {
     phonics_class: 0,
     brush_up: 1,
@@ -21,6 +16,17 @@ class CategoryResource < ApplicationRecord
     worksheet: 3,
     slides: 4
   }
+
+  validates :lesson_category, :resource_category, presence: true
+  validate :valid_combo
+
+  has_many :course_resources, dependent: :destroy
+  accepts_nested_attributes_for :course_resources,
+                                allow_destroy: true,
+                                reject_if: :all_blank
+  has_many :courses, through: :course_resources
+
+  has_one_attached :resource
 
   private
 

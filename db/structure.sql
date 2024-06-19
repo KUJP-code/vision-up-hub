@@ -838,6 +838,38 @@ ALTER SEQUENCE public.course_lessons_id_seq OWNED BY public.course_lessons.id;
 
 
 --
+-- Name: course_resources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.course_resources (
+    id bigint NOT NULL,
+    course_id bigint NOT NULL,
+    category_resource_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: course_resources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.course_resources_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: course_resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.course_resources_id_seq OWNED BY public.course_resources.id;
+
+
+--
 -- Name: courses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1783,6 +1815,13 @@ ALTER TABLE ONLY public.course_lessons ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: course_resources id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_resources ALTER COLUMN id SET DEFAULT nextval('public.course_resources_id_seq'::regclass);
+
+
+--
 -- Name: courses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2011,6 +2050,14 @@ ALTER TABLE ONLY public.class_teachers
 
 ALTER TABLE ONLY public.course_lessons
     ADD CONSTRAINT course_lessons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: course_resources course_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_resources
+    ADD CONSTRAINT course_resources_pkey PRIMARY KEY (id);
 
 
 --
@@ -2275,6 +2322,20 @@ CREATE INDEX index_course_lessons_on_course_id ON public.course_lessons USING bt
 --
 
 CREATE INDEX index_course_lessons_on_lesson_id ON public.course_lessons USING btree (lesson_id);
+
+
+--
+-- Name: index_course_resources_on_category_resource_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_course_resources_on_category_resource_id ON public.course_resources USING btree (category_resource_id);
+
+
+--
+-- Name: index_course_resources_on_course_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_course_resources_on_course_id ON public.course_resources USING btree (course_id);
 
 
 --
@@ -2872,6 +2933,22 @@ ALTER TABLE ONLY public.student_classes
 
 
 --
+-- Name: course_resources fk_rails_bbab481d12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_resources
+    ADD CONSTRAINT fk_rails_bbab481d12 FOREIGN KEY (category_resource_id) REFERENCES public.category_resources(id);
+
+
+--
+-- Name: course_resources fk_rails_c039fa8431; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_resources
+    ADD CONSTRAINT fk_rails_c039fa8431 FOREIGN KEY (course_id) REFERENCES public.courses(id);
+
+
+--
 -- Name: managements fk_rails_c0ff73f86a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2929,6 +3006,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240619073514'),
 ('20240619022246'),
 ('20240614070401'),
 ('20240614025159'),
