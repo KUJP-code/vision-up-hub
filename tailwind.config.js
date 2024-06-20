@@ -24,6 +24,9 @@ export default {
 							"secondary-50": "#b2aabf",
 							success: "#8ac273",
 						},
+						fontFamily: {
+							sans: ["'M PLUS 1p'", "sans-serif"],
+						},
 						borderRadius: {
 							DEFAULT: "0.5rem",
 						},
