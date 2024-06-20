@@ -13,7 +13,7 @@ RSpec.describe 'creating a support request' do
     visit support_requests_path
     find_by_id('create_request').click
     within '#support_request_form' do
-      select I18n.t('support_requests.categories.bug_report'),
+      select I18n.t('support_requests.form.bug_report'),
              from: 'support_request_category'
       fill_in 'support_request_subject', with: 'Test Subject'
       fill_in 'support_request_description', with: 'Test Description'

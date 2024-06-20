@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe 'creating a test result', :js do
   before do
-    user = create(:user, :teacher)
+    organisation = create(:organisation)
+    user = create(:user, :teacher, organisation:)
     create(:school, ip: '*').teachers << user
     user.classes << create(:school_class)
     user.classes.first.students << student

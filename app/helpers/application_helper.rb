@@ -47,7 +47,7 @@ module ApplicationHelper
 
   def opts_from(model, attr)
     model.send(attr).keys
-         .map { |k| [k.titleize, k] }
+         .map { |k| [t(".#{k}"), k] }
   end
 
   def split_on_capitals(string)

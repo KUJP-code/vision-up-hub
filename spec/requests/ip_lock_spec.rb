@@ -20,42 +20,36 @@ RSpec.describe 'School IP Lock' do
     let(:user) { create(:user, :teacher, organisation: kids_up) }
 
     it 'allows access if in school' do
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => school.ip }
+      get students_path, env: { 'REMOTE_ADDR' => school.ip }
       expect(response).to have_http_status(:success)
     end
 
     it 'allows external access if only school has wildcard IP (*)' do
       school.update(ip: '*')
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to have_http_status(:success)
     end
 
     it 'allows external access if wildcard is part of allowed IPs' do
       wildcard_school = create(:school, ip: '*')
       user.schools << wildcard_school
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to have_http_status(:success)
     end
 
     it 'redirects to root if not in school' do
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to redirect_to(root_path)
     end
 
     it 'displays alert if not in school' do
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(flash[:alert]).to eq(I18n.t('not_in_school'))
     end
 
     it 'denies access if school has no IP' do
       school.update(ip: nil)
-      get organisation_teacher_path(kids_up, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(flash[:alert]).to eq(I18n.t('not_in_school'))
     end
   end
@@ -64,14 +58,12 @@ RSpec.describe 'School IP Lock' do
     let(:user) { create(:user, :teacher) }
 
     it 'allows access if in school' do
-      get organisation_teacher_path(user.organisation, user),
-          env: { 'REMOTE_ADDR' => school.ip }
+      get students_path, env: { 'REMOTE_ADDR' => school.ip }
       expect(response).to have_http_status(:success)
     end
 
     it 'allows access if outside school' do
-      get organisation_teacher_path(user.organisation, user),
-          env: { 'REMOTE_ADDR' => non_school_ip }
+      get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to have_http_status(:success)
     end
   end

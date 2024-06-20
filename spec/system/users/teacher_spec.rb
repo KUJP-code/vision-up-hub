@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'creating Teacher' do
   let!(:organisation) { create(:organisation) }
-  let!(:school) { organisation.schools.create!(attributes_for(:school)) }
+  let!(:school) { organisation.schools.create!(attributes_for(:school, ip: '*')) }
 
   before do
     sign_in create(:user, :school_manager, organisation:, schools: [school])
+    course = create(:course)
+    create(:plan, course:, organisation:)
   end
 
   it 'School Manager can create teacher at their schools' do
