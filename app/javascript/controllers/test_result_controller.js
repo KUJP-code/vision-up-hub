@@ -119,25 +119,23 @@ export default class extends Controller {
 
 	setNewLevel(totalPercent) {
 		const eveningCourses = ["Specialist", "Specialist Advanced"];
-		const prevLevel = this.prevLevelTarget.value;
-		let newLevel = Object.entries(this.thresholds).reduce(
-			(level, threshold) => {
-				if (totalPercent < threshold[1]) {
-					return level;
-				}
-				return threshold[0];
-			},
-			prevLevel,
-		);
+		const prevLevel = { lvl: this.prevLevelTarget.value, percent: 0 };
+		let rec = Object.entries(this.thresholds).reduce((rec, threshold) => {
+			const [lvl, percent] = threshold;
+			if (percent > totalPercent || rec.percent > percent) {
+				return rec;
+			}
+			return { lvl, percent };
+		}, prevLevel);
 
-		if (eveningCourses.includes(newLevel)) {
+		if (eveningCourses.includes(rec)) {
 			this.flagEvening();
-			newLevel = "Galaxy Two";
+			rec = "Galaxy Two";
 		} else {
 			this.unflagEvening();
 		}
 
-		this.newLevel = newLevel.toLowerCase().replace(" ", "_");
+		this.newLevel = rec.lvl.toLowerCase().replace(" ", "_");
 		this.newLevelTarget.value = this.newLevel;
 	}
 
