@@ -8,25 +8,33 @@
               new_test_path,
               class: 'btn btn-secondary'
 
-%table.w-full.text-center
-  %tbody
-    - @tests.each do |test|
-      %tr
-        %td.p-3{ colspan: '3' }
-          = link_to "#{test.name}, Level: #{test.short_level}",
-                    admin ? test_path(test) : test_test_results_path(test),
-                    class: 'font-bold text-2xl',
-                    id: "test_#{test.id}"
-      %tr
-        %td= render 'tests/questions', questions: test.questions
-        %td
-          = render 'tests/thresholds', thresholds: test.thresholds
-        %td
-          .flex.flex-col.gap-2
-            - if admin
-              = link_to 'Edit',
-                        edit_test_path(test),
+%main.flex.flex-col.gap-3.p-3
+  - @tests.each do |test|
+    %h2
+      = link_to "#{test.name}, Level: #{test.short_level}",
+                admin ? test_path(test) : test_test_results_path(test),
+                class: 'font-bold text-2xl',
+                id: "test_#{test.id}"
+    %table.w-full.text-center
+      %thead
+        - test.questions.each_key.with_index do |skill, i|
+          %th{ class: "thead bg-secondary-50 #{'thead-s' if i.zero?}" }
+            = t(".#{skill}")
+        %th.thead.bg-secondary-50= t('.thresholds')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+      %tbody
+        %tr
+          = render 'tests/questions', questions: test.questions
+          %td
+            %ul
+              - test.thresholds.each do |level, threshold|
+                %li #{level}: #{threshold}%
+          %td
+            .flex.flex-col.gap-2
+              - if admin
+                = link_to 'Edit',
+                          edit_test_path(test),
+                          class: 'btn btn-secondary'
+              = link_to t('.view_results'),
+                        test_test_results_path(test),
                         class: 'btn btn-secondary'
-            = link_to t('.view_results'),
-                      test_test_results_path(test),
-                      class: 'btn btn-secondary'
