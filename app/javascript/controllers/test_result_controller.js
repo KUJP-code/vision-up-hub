@@ -146,7 +146,7 @@ export default class extends Controller {
 		this.newLevelTarget.insertAdjacentHTML(
 			"afterend",
 			`<p class="text-secondary rounded bg-white font-bold evening">
-				Can join Specialist!
+				Specialist Check Required
 			</p>`,
 		);
 	}

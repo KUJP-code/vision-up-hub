@@ -20,7 +20,7 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
-    @orgs = policy_scope(Organisation)
+    @orgs = policy_scope(Organisation).pluck(:name, :id)
     set_results
   end
 
