@@ -21,12 +21,12 @@
         %td= render 'tests/questions', questions: test.questions
         %td
           = render 'tests/thresholds', thresholds: test.thresholds
-        - if admin
-          %td
-            .flex.flex-col.gap-2
+        %td
+          .flex.flex-col.gap-2
+            - if admin
               = link_to 'Edit',
                         edit_test_path(test),
                         class: 'btn btn-secondary'
-              = link_to t('.view_results'),
-                        test_test_results_path(test),
-                        class: 'btn btn-secondary'
+            = link_to t('.view_results'),
+                      test_test_results_path(test),
+                      class: 'btn btn-secondary'

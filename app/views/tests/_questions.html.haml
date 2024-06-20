@@ -2,7 +2,7 @@
 
 .flex.flex-wrap.justify-around
   - questions.each do |skill, scores|
-    %div{ class: 'basis-1/5 flex flex-col items-center gap-' }
+    %div{ class: 'basis-1/5 flex flex-col items-center' }
       %h3.font-bold= skill.titleize
       %ul
         - scores.each_with_index do |score, i|
