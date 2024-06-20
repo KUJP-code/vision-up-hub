@@ -6,7 +6,7 @@
   - Test::SKILLS.each do |skill|
     - next if @test.send(skill.to_sym).blank?
 
-    = link_to skill.titleize,
+    = link_to t(".#{skill}"),
               "##{skill}",
               data: { controller: 'scroll-to' },
               class: 'sub_nav_link'

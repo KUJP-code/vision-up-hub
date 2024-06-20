@@ -60,6 +60,8 @@ en:
       format:
         delimiter: ""
   shared:
+    subtitle:
+      back: "Back"
     upload_selector:
       students: "Students"
       uploads: "Uploads"
@@ -70,3 +72,4 @@ en:
       proposed: "Proposed"
       rejected: "Rejected"
   update_notes: "Update Notes"
+  update_success: "Updated Successfully!"

@@ -177,6 +177,8 @@ ja:
       format:
         delimiter: ""
   shared:
+    subtitle:
+      back: "戻る"
     visibility_toggles:
       accepted: "承認"
       changes_needed: "変更"
@@ -195,6 +197,7 @@ ja:
       short: "%m/%d %H:%M"
     pm: 午後
   update_notes: "更新履歴"
+  update_success: "更新成功"
   users:
     admin: "管理者"
     org_admin: "組織管理者"
