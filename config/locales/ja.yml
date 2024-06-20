@@ -177,6 +177,8 @@ ja:
       format:
         delimiter: ""
   shared:
+    nav:
+      sign_out: "ログアウト"
     subtitle:
       back: "戻る"
     visibility_toggles:

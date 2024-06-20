@@ -19,6 +19,7 @@ ja:
       student_id: "学生ID"
     index:
       create_student: "新しい学生を作成する"
+      students: "学生リスト"
     show:
       add_comment: "コメントを追加する"
       add_comments: "学生にコメントを追加する"
@@ -26,6 +27,7 @@ ja:
     table:
       classes: "クラス"
       edit: "編集"
+      en_name: "英語名"
       level: "レベル"
       name: "名前"
       school: "学校"

@@ -1,0 +1,13 @@
+en:
+  teachers:
+    nav:
+      classes: "Classes"
+      students: "Students"
+      support: "Support"
+      test: "Tests"
+      today: "Today"
+      tutorials: "Tutorials"
+    show:
+      future_lessons: "Future lessons for %{date}"
+      past_lessons: "Past lessons for %{date}"
+      today_lessons: "Today's lessons"

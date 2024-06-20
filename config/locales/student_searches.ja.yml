@@ -1,9 +1,11 @@
 ja:
   student_searches:
     form:
+      birthday: "誕生日"
       child_level: "子供レベル"
       child_name: "子供名"
       find_child: "子供を探す"
+      school: "学校"
       search: "検索"
       select_child_level: "子供レベルを選択してください"
       student_id: "学生ID"

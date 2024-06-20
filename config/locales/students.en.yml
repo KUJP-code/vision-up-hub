@@ -19,12 +19,14 @@ en:
       student_id: "Student ID"
     index:
       create_student: "Create new student"
+      students: "Student List"
     show:
       add_comment: "Add comment"
       add_comments: "Add your comments on this student here"
     table:
       classes: "Classes"
       edit: "Edit"
+      en_name: "English Name"
       level: "Level"
       name: "Name"
       school: "School"

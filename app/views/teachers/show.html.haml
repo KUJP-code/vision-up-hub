@@ -2,11 +2,11 @@
   in_future = Time.zone.today < @date
   in_past = @date < Time.zone.today
   subtitle = if in_future
-    "Future Lessons for #{ja_date(@date)}"
+    t('.future_lessons', date: ja_date(@date))
   elsif in_past
-    "Past Lessons for #{ja_date(@date)}"
+    t('.past_lessons', date: ja_date(@date))
   else
-    'Today\'s Lessons'
+    t('.today_lessons')
   end
 
 

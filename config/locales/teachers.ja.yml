@@ -1,5 +1,13 @@
 ja:
   teachers:
     nav:
-      request_support: "サポート依頼"
+      classes: "クラス"
+      students: "生徒"
+      support: "サポート"
+      test: "テスト"
+      today: "今日"
       tutorials: "チュートリアル"
+    show:
+      future_lessons: "次の授業: %{date}"
+      past_lessons: "過去の授業: %{date}"
+      today_lessons: "今日の授業"
