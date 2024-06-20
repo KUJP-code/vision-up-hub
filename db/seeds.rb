@@ -1,6 +1,15 @@
 require 'factory_bot_rails'
 fb = FactoryBot
 
+File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')) do |f|
+  ActiveStorage::Blob.create_and_upload!(
+    io: f,
+    filename: 'Brett_Tanner_Resume.pdf',
+    content_type: 'application/pdf'
+  )
+end
+test_file = ActiveStorage::Blob.find_by(filename: 'Brett_Tanner_Resume.pdf')
+
 puts 'Creating organisations...'
 
 kids_up = Organisation.create!(fb.attributes_for(:organisation, name: 'KidsUP'))
@@ -71,14 +80,16 @@ Lesson.all.each do |lesson|
 end
 
 Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
-  lesson.guide.attach(File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')))
+  lesson.guide.attach(test_file)
 end
 
 puts 'Creating category resources...'
 
 CategoryResource.lesson_categories.keys.each do |lc|
   CategoryResource.resource_categories.keys.each do |rc|
-    category_resource = CategoryResource.new(lesson_category: lc, resource_category: rc)
+    category_resource = CategoryResource.new(lesson_category: lc,
+                                             resource_category: rc,
+                                             resource: test_file)
     next unless category_resource.valid?
 
     category_resource.save

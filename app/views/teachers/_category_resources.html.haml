@@ -1,0 +1,16 @@
+-# locals: (resources:)
+
+.flex
+  - resources.group_by(&:resource_category).each do |category, resources|
+    %details.rounded.border.border-secondary.overflow-hidden.w-full{ name: 'resources' }
+      %summary= category.titleize.pluralize
+      .flex
+        - resources.each_with_index do |cr, i|
+          = link_to file_path(cr.resource.blob),
+                    target: '_blank',
+                    rel: 'noopener',
+                    class: ('border-t border-secondary' unless i.zero?) do
+            .flex.items-center
+              %span{ class: 'basis-5/6 truncate' }= cr.resource.blob.filename
+              = render 'shared/svgs/download_icon',
+                       classes: 'fill-secondary basis-1/6'

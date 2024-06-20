@@ -23,9 +23,9 @@ RSpec.describe 'creating a test' do
     end
     click_button I18n.t('helpers.submit.create')
     expect(page).to have_content('Test test')
-    expect(page).to have_content('Question 1: 1 point', count: 4)
-    expect(page).to have_content('Question 2: 2 points', count: 2)
-    expect(page).to have_content('Question 2: 6 points', count: 2)
+    expect(page).to have_content('Q1: 1 point', count: 4)
+    expect(page).to have_content('Q2: 2 points', count: 2)
+    expect(page).to have_content('Q2: 6 points', count: 2)
     expect(page).to have_content('Sky One: 60%')
   end
 end
