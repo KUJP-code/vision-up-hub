@@ -42,12 +42,11 @@ class TestResult < ApplicationRecord
     current_level = { level: prev_level, percent: 0 }
     rec = test.thresholds.reduce(current_level) do |recommended, threshold|
       level, percent = threshold
-      next recommended if recommended[:percent] > percent
-      next recommended if percent > total_percent
+      next recommended if recommended[:percent] > percent ||
+                          percent > total_percent
 
-      { level:, percent: }
+      { level: level.downcase.tr(' ', '_'), percent: }
     end
-    rec[:level] = rec[:level].downcase.tr(' ', '_')
     rec[:level] = 'galaxy_two' if EVENING_COURSES.include?(rec[:level])
 
     rec[:level]
