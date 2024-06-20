@@ -12,7 +12,7 @@
     .form-group
       = f.label :category
       = f.select :category,
-                 SupportRequest.select_categories,
+                 opts_from(SupportRequest, :categories),
                  {},
                  { class: 'w-4/5 bg-white text-main p-1 self-center' }
 

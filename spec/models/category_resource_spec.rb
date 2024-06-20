@@ -9,6 +9,13 @@ RSpec.describe CategoryResource do
     expect(category_resource).to be_valid
   end
 
+  it 'cannot be deleted when associated with a course' do
+    course = create(:course)
+    category_resource.save
+    course.category_resources << category_resource
+    expect(category_resource.destroy).to be false
+  end
+
   context 'when resource for phonics class' do
     before do
       category_resource.lesson_category = :phonics_class
@@ -104,7 +111,7 @@ RSpec.describe CategoryResource do
 
   context 'when resource for get up & go' do
     before do
-      category_resource.lesson_category = :up_and_go
+      category_resource.lesson_category = :get_up_and_go
     end
 
     it 'cannot have phonics set as a resource category' do

@@ -7,6 +7,9 @@ class CategoryResourcesController < ApplicationController
 
   def index
     @category_resources = policy_scope(CategoryResource)
+                          .with_attached_resource
+                          .includes(:courses)
+                          .order(created_at: :desc)
   end
 
   def new
@@ -41,7 +44,7 @@ class CategoryResourcesController < ApplicationController
       redirect_to category_resources_path,
                   notice: 'Category resource successfully destroyed'
     else
-      redirect_to category_resource_path(@category_resource),
+      redirect_to category_resources_path,
                   status: :unprocessable_entity,
                   alert: 'Category resource could not be destroyed'
     end
@@ -51,5 +54,9 @@ class CategoryResourcesController < ApplicationController
 
   def category_resource_params
     params.require(:category_resource).permit(:lesson_category, :resource_category)
+  end
+
+  def set_category_resource
+    @category_resource = authorize CategoryResource.find(params[:id])
   end
 end

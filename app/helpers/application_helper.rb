@@ -45,6 +45,11 @@ module ApplicationHelper
     org_themes.include?(org_id) ? "org_#{org_id}" : 'base'
   end
 
+  def opts_from(model, attr)
+    model.send(attr).keys
+         .map { |k| [k.titleize, k] }
+  end
+
   def split_on_capitals(string)
     string.gsub(/.(?=[[:upper:]])/) { |c| "#{c} " }
   end

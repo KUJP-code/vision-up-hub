@@ -3,8 +3,17 @@
 require 'rails_helper'
 
 RSpec.shared_examples_for 'lesson' do
+  let(:lesson) { build(described_class.name.underscore.to_sym) }
+
+  it 'cannot be deleted when associated with a course' do
+    course = create(:course)
+    lesson.save
+    course_lesson = create(:course_lesson, course_id: course.id, lesson_id: lesson.id)
+    lesson.course_lessons = [course_lesson]
+    expect(lesson.destroy).to be false
+  end
+
   context 'when managing approval' do
-    let(:lesson) { build(described_class.name.underscore.to_sym) }
     let(:admin) { create(:user, :admin) }
     let(:writer) { create(:user, :writer, organisation: admin.organisation) }
     let(:admin_approval) { [{ id: admin.id, name: admin.name, time: Time.zone.now }] }

@@ -16,7 +16,7 @@
                         class: 'w-full'
         %td
           = f.select :status,
-                     Lesson.statuses.keys.map { |k| [k.humanize, k] }
+                     opts_from(Lesson, :statuses)
           = f.submit 'Update', class: 'btn btn-primary'
 
   - else
@@ -27,7 +27,7 @@
                   rows: '4',
                   class: 'w-full'
     = f.select :status,
-               Lesson.statuses.keys.map { |k| [k.titleize, k] },
+               opts_from(Lesson, :statuses),
                class: 'basis-2/5'
 
     = f.submit class: 'btn btn-primary basis-2/5',

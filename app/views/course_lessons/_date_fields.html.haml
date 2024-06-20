@@ -14,4 +14,4 @@
 
   %div{ class: 'form-group basis-1/4' }
     = f.label :day
-    = f.select :day, CourseLesson.days.map { |k, _v| [k.capitalize, k] }
+    = f.select :day, opts_from(CourseLesson, :days)

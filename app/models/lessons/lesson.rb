@@ -62,5 +62,6 @@ class Lesson < ApplicationRecord
     errors.add(:course_lessons,
                :invalid,
                message: 'Cannot delete lesson if it is used in a course')
+    throw :abort
   end
 end

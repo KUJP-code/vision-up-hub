@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class CategoryResource < ApplicationRecord
+  before_destroy :check_not_used
+
   enum lesson_category: {
     phonics_class: 0,
     brush_up: 1,
     snack: 2,
-    up_and_go: 3,
+    get_up_and_go: 3,
     daily_gathering: 4
   }
 
@@ -30,6 +32,14 @@ class CategoryResource < ApplicationRecord
 
   private
 
+  def check_not_used
+    return true if course_resources.reload.empty?
+
+    errors.add(:course_resources, :invalid,
+               message: 'Cannot delete category resource if it is used in a course')
+    throw :abort
+  end
+
   def valid_combo
     send(:"#{lesson_category}_resource?")
   end
@@ -37,7 +47,7 @@ class CategoryResource < ApplicationRecord
   def phonics_class_resource?
     return true if %w[phonics_set word_family sight_words].include?(resource_category)
 
-    errors.add(:resource_category,
+    errors.add(:lesson_category,
                'Phonics Class requires a phonics set, word family, or sight words resource')
     false
   end
@@ -45,28 +55,28 @@ class CategoryResource < ApplicationRecord
   def brush_up_resource?
     return true if resource_category == 'worksheet'
 
-    errors.add(:resource_category, 'Brush Up requires a worksheet resource')
+    errors.add(:lesson_category, 'Brush Up requires a worksheet resource')
     false
   end
 
   def snack_resource?
     return true if %w[worksheet slides].include?(resource_category)
 
-    errors.add(:resource_category, 'Snack requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Snack requires a worksheet or slides resource')
     false
   end
 
-  def up_and_go_resource?
+  def get_up_and_go_resource? # rubocop:disable Naming/AccessorMethodName
     return true if %w[worksheet slides].include?(resource_category)
 
-    errors.add(:resource_category, 'Get Up & Go requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Get Up & Go requires a worksheet or slides resource')
     false
   end
 
   def daily_gathering_resource?
     return true if %w[worksheet slides].include?(resource_category)
 
-    errors.add(:resource_category, 'Daily Gathering requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Daily Gathering requires a worksheet or slides resource')
     false
   end
 end
