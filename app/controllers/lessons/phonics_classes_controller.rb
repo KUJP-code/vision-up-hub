@@ -38,6 +38,10 @@ class PhonicsClassesController < LessonsController
   private
 
   def type_params
-    params.require(:phonics_class).permit(lesson_params + PhonicsClass::ATTRIBUTES)
+    params.require(:phonics_class).permit(
+      lesson_params +
+      PhonicsClass::ATTRIBUTES +
+      [{ phonics_resources_attributes: %i[id blob_id week _destroy] }]
+    )
   end
 end

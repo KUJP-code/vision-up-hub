@@ -53,7 +53,10 @@ class CategoryResourcesController < ApplicationController
   private
 
   def category_resource_params
-    params.require(:category_resource).permit(:lesson_category, :resource_category)
+    params.require(:category_resource).permit(
+      :lesson_category, :resource_category,
+      [{ phonics_resources_attributes: %i[id week phonics_class_id _destroy] }]
+    )
   end
 
   def set_category_resource

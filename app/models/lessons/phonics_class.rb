@@ -22,4 +22,10 @@ class PhonicsClass < Lesson
   ].freeze
 
   validates :instructions, presence: true
+
+  has_many :phonics_resources, dependent: :destroy
+  accepts_nested_attributes_for :phonics_resources,
+                                reject_if: :all_blank,
+                                allow_destroy: true
+  has_many :category_resources, through: :phonics_resources
 end

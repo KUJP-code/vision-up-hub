@@ -2,7 +2,7 @@
 
 class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[destroy edit show update]
-  before_action :set_form_data, only: %i[new edit]
+  before_action :set_form_data, only: %i[edit]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :generate_guide, only: %i[create update]
@@ -24,6 +24,7 @@ class LessonsController < ApplicationController
   def new
     type = params[:type] if Lesson::TYPES.include?(params[:type])
     @lesson = authorize type.constantize.new
+    set_form_data
   end
 
   def edit; end
@@ -100,6 +101,15 @@ class LessonsController < ApplicationController
   def set_form_data
     @courses = Course.pluck(:title, :id)
     @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
+    @phonics_resources = set_phonics_resources if @lesson.type == 'PhonicsClass'
+  end
+
+  def set_phonics_resources
+    CategoryResource
+      .phonics_class
+      .joins(resource_attachment: :blob)
+      .pluck('active_storage_blobs.filename',
+             'active_storage_attachments.blob_id')
   end
 
   def set_lesson

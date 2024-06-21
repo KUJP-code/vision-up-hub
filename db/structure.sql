@@ -1040,8 +1040,8 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 CREATE TABLE public.phonics_resources (
     id bigint NOT NULL,
-    category_resource_id bigint NOT NULL,
-    lesson_id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    phonics_class_id bigint NOT NULL,
     week integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -2443,17 +2443,17 @@ CREATE UNIQUE INDEX index_organisations_on_phone ON public.organisations USING b
 
 
 --
--- Name: index_phonics_resources_on_category_resource_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_phonics_resources_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_phonics_resources_on_category_resource_id ON public.phonics_resources USING btree (category_resource_id);
+CREATE INDEX index_phonics_resources_on_blob_id ON public.phonics_resources USING btree (blob_id);
 
 
 --
--- Name: index_phonics_resources_on_lesson_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_phonics_resources_on_phonics_class_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_phonics_resources_on_lesson_id ON public.phonics_resources USING btree (lesson_id);
+CREATE INDEX index_phonics_resources_on_phonics_class_id ON public.phonics_resources USING btree (phonics_class_id);
 
 
 --
@@ -2802,6 +2802,14 @@ ALTER TABLE ONLY public.students
 
 
 --
+-- Name: phonics_resources fk_rails_0b53c57831; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT fk_rails_0b53c57831 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
 -- Name: support_messages fk_rails_25eba01695; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2850,14 +2858,6 @@ ALTER TABLE ONLY public.lessons
 
 
 --
--- Name: phonics_resources fk_rails_6f0f50e146; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.phonics_resources
-    ADD CONSTRAINT fk_rails_6f0f50e146 FOREIGN KEY (category_resource_id) REFERENCES public.category_resources(id);
-
-
---
 -- Name: plans fk_rails_72702359e8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2879,6 +2879,14 @@ ALTER TABLE ONLY public.plans
 
 ALTER TABLE ONLY public.schools
     ADD CONSTRAINT fk_rails_75ddd5ca62 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
+-- Name: phonics_resources fk_rails_80ff164249; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT fk_rails_80ff164249 FOREIGN KEY (phonics_class_id) REFERENCES public.lessons(id);
 
 
 --
@@ -3055,14 +3063,6 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 ALTER TABLE ONLY public.students
     ADD CONSTRAINT fk_rails_d3631a714a FOREIGN KEY (parent_id) REFERENCES public.users(id);
-
-
---
--- Name: phonics_resources fk_rails_dcea3d0546; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.phonics_resources
-    ADD CONSTRAINT fk_rails_dcea3d0546 FOREIGN KEY (lesson_id) REFERENCES public.lessons(id);
 
 
 --

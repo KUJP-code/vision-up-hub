@@ -1,0 +1,27 @@
+-# locals: (f:, collection:, resource:)
+
+.fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => resource.new_record?.to_s }
+  = f.number_field :week, min: 1, max: 52, placeholder: 'Week'
+
+  - if resource.instance_of?(PhonicsClass)
+    .form-group
+      = f.select :blob_id,
+                 collection,
+                 prompt: t('.select_resource'),
+                 required: true
+
+  - elsif resource.instance_of?(CategoryResource)
+    .form-group
+      = f.select :phonics_class_id,
+                 collection,
+                 prompt: t('.select_phonics_class'),
+                 required: true
+
+  - if f.object.new_record?
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove',
+                            type: 'button' }
+      = t('.remove')
+  - else
+    .flex.items-center.gap-1
+      = f.check_box :_destroy
+      = f.label :_destroy, t('.destroy')
