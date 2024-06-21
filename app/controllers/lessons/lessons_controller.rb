@@ -19,6 +19,7 @@ class LessonsController < ApplicationController
                         .includes(:creator)
     @resources = @lesson.resources.includes(:blob).order('active_storage_blobs.filename ASC')
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
+    @phonics_resources = @lesson.phonics_resources if @lesson.type == 'PhonicsClass'
   end
 
   def new
