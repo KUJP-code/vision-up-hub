@@ -1035,6 +1035,39 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 
 --
+-- Name: phonics_resources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.phonics_resources (
+    id bigint NOT NULL,
+    category_resource_id bigint NOT NULL,
+    lesson_id bigint NOT NULL,
+    week integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: phonics_resources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.phonics_resources_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: phonics_resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.phonics_resources_id_seq OWNED BY public.phonics_resources.id;
+
+
+--
 -- Name: plans; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1857,6 +1890,13 @@ ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: phonics_resources id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources ALTER COLUMN id SET DEFAULT nextval('public.phonics_resources_id_seq'::regclass);
+
+
+--
 -- Name: plans id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2097,6 +2137,14 @@ ALTER TABLE ONLY public.managements
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: phonics_resources phonics_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT phonics_resources_pkey PRIMARY KEY (id);
 
 
 --
@@ -2392,6 +2440,20 @@ CREATE UNIQUE INDEX index_organisations_on_name ON public.organisations USING bt
 --
 
 CREATE UNIQUE INDEX index_organisations_on_phone ON public.organisations USING btree (phone);
+
+
+--
+-- Name: index_phonics_resources_on_category_resource_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phonics_resources_on_category_resource_id ON public.phonics_resources USING btree (category_resource_id);
+
+
+--
+-- Name: index_phonics_resources_on_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phonics_resources_on_lesson_id ON public.phonics_resources USING btree (lesson_id);
 
 
 --
@@ -2788,6 +2850,14 @@ ALTER TABLE ONLY public.lessons
 
 
 --
+-- Name: phonics_resources fk_rails_6f0f50e146; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT fk_rails_6f0f50e146 FOREIGN KEY (category_resource_id) REFERENCES public.category_resources(id);
+
+
+--
 -- Name: plans fk_rails_72702359e8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2988,6 +3058,14 @@ ALTER TABLE ONLY public.students
 
 
 --
+-- Name: phonics_resources fk_rails_dcea3d0546; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT fk_rails_dcea3d0546 FOREIGN KEY (lesson_id) REFERENCES public.lessons(id);
+
+
+--
 -- Name: test_results fk_rails_dfaf0040f7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3013,6 +3091,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240621075920'),
 ('20240619073514'),
 ('20240619022246'),
 ('20240614070401'),
