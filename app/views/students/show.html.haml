@@ -3,13 +3,13 @@
 
 = render 'shared/subtitle', text: redact(@student, @student.name)
 
-%main.flex.flex-col.md:flex-row.md:flex-wrap.p-3#student
-  - if @student.parent_id.nil?
-    %section.w-full.flex.flex-col.gap-3.p-3.m-3.print:hidden
-      %h3.w-full.text-center.font-bold.text-secondary= t('.add_parent')
-      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
-      = turbo_frame_tag 'user_table'
+- if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
+  %section.w-full.flex.flex-col.gap-3.p-3.m-3.print:hidden
+    %h3.w-full.text-center.font-bold.text-secondary= t('.add_parent')
+    = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+    = turbo_frame_tag 'user_table'
 
+%main.flex.flex-col.md:flex-row.p-3#student
   %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-3' }
     = render 'students/details',
              student: @student,
@@ -26,7 +26,8 @@
                     rows: 7
       = f.submit t('.add_comment'), class: 'btn btn-primary w-full'
 
-  %section{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8', id: 'test_details' }
+  %section{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8',
+            id: 'test_details' }
     = render 'students/test_details',
              data: @data,
              results: @results
