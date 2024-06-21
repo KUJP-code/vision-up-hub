@@ -1,0 +1,9 @@
+en:
+  tests:
+    index:
+      listening: "Listening"
+      reading: "Reading"
+      speaking: "Speaking"
+      thresholds: "Thresholds"
+      writing: "Writing"
+      view_results: "View Results"

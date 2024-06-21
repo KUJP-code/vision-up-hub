@@ -7,7 +7,7 @@
   = render 'shared/form_errors', resource:
 
   .form-group
-    = f.label :name
+    = f.label :name, t('.name')
     = f.text_field :name,
                    autofocus: true,
                    autocomplete: 'name'
@@ -31,12 +31,12 @@
                      value: params[:organisation_id]
   - else
     .form-group
-      = f.label :organisation
+      = f.label :organisation, t('.organisation')
       = f.select :organisation_id,
                  Organisation.pluck(:name, :id)
 
   .actions
     = f.submit t('.sign_up'),
-               class: 'btn btn-primary'
+               class: 'btn btn-primary w-full'
 
 = render 'devise/shared/links'

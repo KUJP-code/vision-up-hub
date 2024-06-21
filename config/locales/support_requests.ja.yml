@@ -2,10 +2,13 @@ ja:
   support_requests:
     form:
       bug_report: "バグ報告"
+      category: "カテゴリ"
+      description: "説明"
       feature_request: "サポート依頼"
       general: "一般"
       send_message: "メッセージを送信する"
       submit_request: "依頼を送信する"
+      subject: "件名"
       typo_report: "タイプレポート"
     index:
       messages: "メッセージ"

@@ -1,4 +1,5 @@
 en:
+  actions: "Actions"
   activerecord:
     models:
       school_class: "Class"
@@ -8,6 +9,7 @@ en:
   copied: "Copied!"
   nav:
     request_support: "Request Support"
+    sign_out: "Sign Out"
   not_approved: "Not Approved"
   not_in_school: "You can only access this site from your school. Please contact Leroy if you're receiving this message there."
   number:

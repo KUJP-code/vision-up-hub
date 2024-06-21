@@ -26,7 +26,7 @@
 
     %div{ class: 'relative h-[34px]' }
       %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full{ name: 'resources' }
-        %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
+        %summary{ class: "cursor-pointer px-3 py-1 text-nowrap truncate #{resource_classes}" }
           Resources
         .flex.flex-col.gap-2.p-1.bg-white.text-secondary
           - sorted_resources.each_with_index do |r, i|

@@ -1,25 +1,32 @@
 -# locals: (request:)
 
+:ruby
+  submit_text = if current_user.is?('Parent')
+    t('.send_message')
+  else
+    t('.submit_request')
+  end
+
 = form_with model: request, html: { class: 'form',
                                     id: 'support_request_form' } do |f|
   = render 'shared/form_errors', resource: request
 
   .flex.gap-2
     .form-group
-      = f.label :subject
+      = f.label :subject, t('.subject')
       = f.text_field :subject,
                      class: 'w-4/5 p-1 text-neutral-dark self-center'
     .form-group
-      = f.label :category
+      = f.label :category, t('.category')
       = f.select :category,
                  opts_from(SupportRequest, :categories),
                  {},
                  { class: 'w-4/5 bg-white text-main p-1 self-center' }
 
   .form-group
-    = f.label :description
+    = f.label :description, t('.description')
     = f.text_area :description,
                   class: 'w-full text-neutral-dark min-h-20'
 
-  = f.submit current_user.is?('Parent') ? t('.send_message') : t('.submit_request'),
+  = f.submit submit_text,
              class: 'btn btn-primary cursor-pointer'

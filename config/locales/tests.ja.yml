@@ -1,4 +1,9 @@
 ja:
   tests:
-    show:
-      edit_results: "編集結果"
+    index:
+      listening: "聴力"
+      reading: "読解"
+      speaking: "会話力"
+      thresholds: "しきい値"
+      writing: "文章力"
+      view_results: "結果を表示"

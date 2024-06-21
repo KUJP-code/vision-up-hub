@@ -10,7 +10,7 @@
     %link{ rel: 'preconnect', href: 'https://fonts.googleapis.com' }
     %link{ rel: 'preconnect', href: 'https://fonts.gstatic.com',
            crossorigin: true }
-    %link{ href: 'https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;800&display=swap',
+    %link{ href: 'https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500&display=swap',
            rel: 'stylesheet' }
     = csrf_meta_tags
     = csp_meta_tag
@@ -20,7 +20,7 @@
                              'data-turbo-track': 'reload',
                              type: 'module'
     = yield :head
-  %body.text-secondary
+  %body.text-secondary.font-medium
     %turbo_frame#flash
       = render 'shared/flash'
     = render 'shared/nav' if user_signed_in?
