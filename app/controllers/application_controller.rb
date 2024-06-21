@@ -5,9 +5,10 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
 
-  before_action :check_ip, :set_locale
+  before_action :check_ip
 
   private
 
@@ -34,9 +35,9 @@ class ApplicationController < ActionController::Base
     { locale: I18n.locale }
   end
 
-  def set_locale
+  def set_locale(&)
     locale = params[:locale] || locale_from_accept_language || I18n.default_locale
-    I18n.locale = locale
+    I18n.with_locale(locale, &)
   end
 
   def locale_from_accept_language
