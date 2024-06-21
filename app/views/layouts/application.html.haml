@@ -23,5 +23,5 @@
   %body.text-secondary
     %turbo_frame#flash
       = render 'shared/flash'
-    = render 'shared/nav'
+    = render 'shared/nav' if user_signed_in?
     = yield
