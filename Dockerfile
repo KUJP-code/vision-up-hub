@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.3.1
-FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-bookworm-slim as base
+FROM quay.io/evl.ms/fullstaq-ruby:3.3.1-jemalloc-bookworm-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -18,7 +18,7 @@ RUN gem update --system --no-document && \
     gem install -N bundler
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build gems
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
@@ -29,7 +29,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 				libvips libyaml-dev unzip
 
 # Install Bun
-ARG BUN_VERSION=1.1.8
+ARG BUN_VERSION=1.1.15
 ENV BUN_INSTALL=/usr/local/bun
 ENV PATH=/usr/local/bun/bin:$PATH
 RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v${BUN_VERSION}"
