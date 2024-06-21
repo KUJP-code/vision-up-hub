@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PhonicsResourcesController < ApplicationController
+  after_action :verify_authorized
+
   def destroy
     @phonics_resource = PhonicsResource.find(params[:id])
     if @phonics_resource.destroy
