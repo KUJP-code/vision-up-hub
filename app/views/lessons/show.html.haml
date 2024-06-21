@@ -51,6 +51,9 @@
   .flex.flex-col.p-3.gap-3
     = render 'lessons/shared/attribute_list', lesson: @lesson
     = render 'lessons/shared/resource_list', resources: @resources
+    - if @phonics_resources
+      = render 'lessons/phonics_classes/phonics_resources',
+               resources: @phonics_resources
 
   .flex.justify-center.gap-3
     = link_to 'Delete',
