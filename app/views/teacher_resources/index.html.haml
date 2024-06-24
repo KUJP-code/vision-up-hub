@@ -1,0 +1,27 @@
+%main.flex.flex-wrap.justify-center.gap-3.p-3
+  %nav.w-full.flex.justify-around.gap-3
+    - CategoryResource.lesson_categories.keys.sort.each do |category|
+      = link_to t(".#{category}"),
+                teacher_resources_path(category:),
+                class: 'btn btn-secondary'
+
+  %h1.w-full= t(".#{@lesson_category}")
+
+  - @category_resources.each do |category|
+    - name, resources = category
+
+    %table
+      %thead
+        %tr
+          %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{name}")
+      %tbody
+        - resources.each do |cr|
+          - blob = cr.resource.blob
+
+          %tr
+            %td
+              = link_to file_path(blob.id),
+                        class: 'flex items-center gap-1' do
+                = blob.filename
+                = render 'shared/svgs/download_icon',
+                         classes: 'fill-secondary'

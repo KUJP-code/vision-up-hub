@@ -25,6 +25,9 @@
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons.reject(&:kindy?),
                as: :lesson
+      = link_to teacher_resources_path(category: 'brush_up'),
+                class: 'basis-[30%] grow flex cursor-pointer items-center bg-secondary rounded' do
+        %h2.font-bold.text-center.text-white Brush Up Resources
       %div{ class: 'basis-[38%] grow' }
 
   - if @levelled_lessons.any?

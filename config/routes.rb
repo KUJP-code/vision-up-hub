@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :support_requests do
         resources :support_messages, only: %i[create]
       end
+      resources :teacher_resources, only: %i[index]
       resources :tests, except: %i[show] do
         resources :test_results, only: %i[create index update]
       end
