@@ -30,9 +30,19 @@
 
 - levelled_types.each do |type|
   :ruby
+    # TODO: this N+1 map is a very temporary thing until we rework this page
+    # to be separated by category and use different controllers for each type
     type_lessons = if type == 'PhonicsClass'
       phonics_types = %w[KindyPhonic PhonicsClass].freeze
       lessons.select { |lesson| phonics_types.include?(lesson.type) }
+             .map do |lesson|
+               next lesson unless lesson.type == 'PhonicsClass'
+
+               week = current_user.course_week(@date)
+               pr_blobs = lesson.phonics_resources.where(week:).map(&:blob)
+               lesson.resources = pr_blobs + lesson.resources
+               lesson
+             end
     else
       lessons.select { |lesson| lesson.type == type }
     end
