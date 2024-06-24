@@ -20,3 +20,17 @@
     = f.file_field :resource, class: 'form-control'
 
   = f.submit class: 'btn btn-primary w-full'
+
+- if @phonics_resources&.any?
+  .flex.flex-col.items-center.text-center
+    %h3 Used by:
+    %table
+      %thead
+        %tr
+          %th.thead.thead-s.bg-secondary-50 Lesson
+          %th.thead.thead-e.bg-secondary-50 Week
+      %tbody
+        - @phonics_resources.each do |pr|
+          %tr
+            %td= link_to pr.phonics_class.title, lesson_path(pr.phonics_class)
+            %td= pr.week

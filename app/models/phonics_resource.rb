@@ -5,4 +5,6 @@ class PhonicsResource < ApplicationRecord
   belongs_to :phonics_class
 
   validates :week, presence: true
+  validates :week, numericality: { only_integer: true }
+  validates :week, comparison: { greater_than: 0, less_than: 53 }
 end

@@ -2,6 +2,7 @@
 
 class CourseLesson < ApplicationRecord
   validates :week, :day, presence: true
+  validates :week, numericality: { only_integer: true }
   validates :week, comparison: { greater_than: 0, less_than: 53 }
 
   enum day: {

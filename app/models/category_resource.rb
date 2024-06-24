@@ -27,13 +27,14 @@ class CategoryResource < ApplicationRecord
                                 allow_destroy: true,
                                 reject_if: :all_blank
   has_many :courses, through: :course_resources
-  has_many :phonics_resources, dependent: :destroy
-  accepts_nested_attributes_for :phonics_resources,
-                                allow_destroy: true,
-                                reject_if: :all_blank
-  has_many :phonics_classes, through: :phonics_resources
 
   has_one_attached :resource
+
+  def phonics_resources
+    return PhonicsResource.none unless lesson_category == 'phonics_class'
+
+    PhonicsResource.where(blob_id: resource.blob_id)
+  end
 
   private
 
