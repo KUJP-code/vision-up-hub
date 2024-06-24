@@ -100,7 +100,7 @@ class LessonsController < ApplicationController
   end
 
   def set_form_data
-    @courses = Course.pluck(:title, :id)
+    @courses = policy_scope(Course).includes(plans: :organisation)
     @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
     @phonics_resources = set_phonics_resources if @lesson.type == 'PhonicsClass'
   end

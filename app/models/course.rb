@@ -15,6 +15,11 @@ class Course < ApplicationRecord
                                 reject_if: :all_blank
   has_many :category_resources, through: :course_resources
 
-  has_many :plans, dependent: :destroy
+  has_many :plans, -> { includes(:organisation) },
+           dependent: :destroy, inverse_of: :course
   has_many :organisations, through: :plans
+
+  def plan_date_data
+    plans.to_h { |p| [p.organisation.name, { startDate: p.start }] }
+  end
 end

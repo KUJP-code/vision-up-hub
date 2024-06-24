@@ -10,6 +10,12 @@ application.register("fields", FieldsController);
 import FlashController from "./flash_controller";
 application.register("flash", FlashController);
 
+import CourseLessonsController from "./course_lessons_controller";
+application.register("course-lessons", CourseLessonsController);
+
+import DetailsController from "./details_controller";
+application.register("details", DetailsController);
+
 import NavRevealController from "./nav_reveal_controller";
 application.register("nav-reveal", NavRevealController);
 
@@ -39,6 +45,3 @@ application.register("teacher-uploader", TeacherUploaderController);
 
 import ValidityController from "./validity_controller";
 application.register("validity", ValidityController);
-
-import DetailsController from "./details_controller";
-application.register("details", DetailsController);

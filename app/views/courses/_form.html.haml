@@ -18,22 +18,22 @@
     = f.check_box :released
 
   - if current_user.is?('Admin')
+    - plan_data = { course.id => course.plan_date_data }.to_json
+
     %h3.fw-bold Lessons
 
     = f.fields_for :course_lessons, course.course_lessons do |cl_f|
-      = render('course_lessons/fields',
-               collection: lessons,
-               f: cl_f,
-               resource: course)
+      = render 'course_lessons/fields',
+               collection: lessons, f: cl_f,
+               plan_data:, resource: course
 
     %template{ 'data-fields-target' => 'template' }
       = f.fields_for :course_lessons,
                      course.course_lessons.new,
                      child_index: 'CHILD' do |cl_f|
         = render 'course_lessons/fields',
-                 collection: lessons,
-                 f: cl_f,
-                 resource: course
+                 collection: lessons, f: cl_f,
+                 plan_data:, resource: course
 
     %div{ 'data-fields-target' => 'target' }
 

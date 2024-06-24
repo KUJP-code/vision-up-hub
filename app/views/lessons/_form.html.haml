@@ -12,12 +12,15 @@
   = f.hidden_field :type, value: lesson.type
 
   - if current_user.is?('Admin')
+    - plan_data = courses.to_h { |c| [c.id, c.plan_date_data] }.to_json
+
     %h3.font-bold.text-center Courses
 
     = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
       = render 'course_lessons/fields',
                collection: courses,
                f: cl_f,
+               plan_data:,
                resource: lesson
 
     %template{ 'data-fields-target' => 'template' }
@@ -27,6 +30,7 @@
         = render 'course_lessons/fields',
                  collection: courses,
                  f: cl_f,
+                 plan_data:,
                  resource: lesson
 
     %div{ 'data-fields-target' => 'target' }

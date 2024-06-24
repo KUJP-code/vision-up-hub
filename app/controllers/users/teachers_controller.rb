@@ -9,9 +9,6 @@ class TeachersController < UsersController
                    .includes({ resources_attachments: :blob, guide_attachment: :blob })
     @unlevelled_lessons = lessons.unlevelled.released
     @levelled_lessons = lessons.levelled.released
-    @resources = @user.category_resources.where
-                      .associated(:resource_attachment)
-                      .includes(resource_attachment: :blob)
   end
 
   def new
