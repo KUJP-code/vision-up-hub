@@ -26,9 +26,8 @@
                collection: @unlevelled_lessons.reject(&:kindy?),
                as: :lesson
       = link_to teacher_resources_path(category: 'brush_up'),
-                class: 'basis-[30%] grow flex cursor-pointer items-center bg-secondary rounded' do
-        %h2.font-bold.text-center.text-white Brush Up Resources
-      %div{ class: 'basis-[38%] grow' }
+                class: 'basis-[30%] grow flex cursor-pointer items-center bg-secondary rounded m-3' do
+        %h2.w-full.font-bold.text-center.text-white Brush Up Resources
 
   - if @levelled_lessons.any?
     %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr p-3' }
