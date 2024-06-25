@@ -10,11 +10,7 @@
         %tr
           %th.p-1.bg-main.whitespace-nowrap{ id: 'student-details',
                                              rowspan: 2 }
-            = t('.student_id')
-          %th.p-1.bg-main.whitespace-nowrap{ rowspan: 2 }
             = t('.name')
-          %th.p-1.bg-main.whitespace-nowrap{ rowspan: 2 }
-            = t('.en_name')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
