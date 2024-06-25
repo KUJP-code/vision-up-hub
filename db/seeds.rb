@@ -15,8 +15,14 @@ puts 'Creating organisations...'
 kids_up = Organisation.create!(fb.attributes_for(:organisation, name: 'KidsUP'))
 test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org'))
 
-Organisation.all.each do |org|
-  org.schools << fb.create_list(:school, 2, ip: '*')
+I18n.with_locale(:ja) do
+  I18n.t('school_names').each do |name, _|
+    fb.create(:school, name:, organisation_id: kids_up.id)
+  end
+end
+
+Organisation.all.except(kids_up).each do |org|
+  org.schools << fb.create_list(:school, 2)
 end
 
 puts 'Creating users...'
