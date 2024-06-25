@@ -6,6 +6,18 @@ class TestResultsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    if current_user.is?('Admin')
+      @org = params[:org_id] ? Organisation.find(params[:org_id]) : current_user.organisation
+      authorize @org, :show?
+      @orgs = policy_scope(Organisation).select(:name, :id) if current_user.is?('Admin')
+    end
+
+    if current_user.is?('Admin', 'OrgAdmin')
+      @schools = policy_scope(School).where(organisation_id: @org.id).select(:name, :id)
+      # TODO: need to check it's in list of schools as well
+      @school = params[:school_id] ? School.find(params[:school_id]) : @schools.first
+      authorize @school, :show?
+    end
     set_index_vars
   end
 
