@@ -1,6 +1,6 @@
 -# locals: (active:, orgs:, school:)
 
-%nav.flex.gap-3.p-3
+%nav.flex.flex-wrap.gap-3.p-3
   - orgs.each do |org|
     = link_to org.name,
               test_test_results_path(test_id: @test.id,

@@ -6,17 +6,9 @@ class TestResultsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    if current_user.is?('Admin')
-      @org = params[:org_id] ? Organisation.find(params[:org_id]) : current_user.organisation
-      authorize @org, :show?
-      @orgs = policy_scope(Organisation).select(:name, :id) if current_user.is?('Admin')
-    end
-
     if current_user.is?('Admin', 'OrgAdmin')
-      @schools = policy_scope(School).where(organisation_id: @org.id).select(:name, :id)
-      # TODO: need to check it's in list of schools as well
-      @school = params[:school_id] ? School.find(params[:school_id]) : @schools.first
-      authorize @school, :show?
+      set_orgs
+      set_schools
     end
     set_index_vars
   end
@@ -58,15 +50,34 @@ class TestResultsController < ApplicationController
 
   def set_index_vars
     @test = Test.find(params[:test_id])
-    test_level = @test.short_level.downcase.to_sym
     @students = policy_scope(Student)
-                .send(test_level)
+                .send(@test.short_level.downcase.to_sym)
                 .or(policy_scope(Student).where(test_results: { test_id: @test.id }))
                 .current
                 .includes(:school, :test_results)
+    @students = @students.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
+  end
+
+  def set_orgs
+    return @org = current_user.organisation if current_user.is?('OrgAdmin')
+    return @org = current_user.organisation if params[:org_id].blank?
+
+    @org = authorize Organisation.find(params[:org_id]), :show?
+    @orgs = policy_scope(Organisation).where.associated(:schools)
+                                      .order(id: :asc)
+                                      .distinct.select(:name, :id)
   end
 
   def set_result
     @test_result = authorize TestResult.find(params[:id])
+  end
+
+  def set_schools
+    @schools = policy_scope(School).where(organisation_id: @org.id)
+                                   .order(id: :asc)
+                                   .select(:name, :organisation_id, :id)
+    param_school = @schools.find { |s| s.id == params[:school_id].to_i }
+    @school = param_school || @schools.first
+    authorize @school, :show?
   end
 end

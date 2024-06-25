@@ -17,7 +17,7 @@ test_org = Organisation.create!(fb.attributes_for(:organisation, name: 'Test Org
 
 I18n.with_locale(:ja) do
   I18n.t('school_names').each do |name, _|
-    fb.create(:school, name:, organisation_id: kids_up.id)
+    fb.create(:school, name:, organisation_id: kids_up.id, ip: '*')
   end
 end
 
