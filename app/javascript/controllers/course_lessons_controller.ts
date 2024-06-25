@@ -14,9 +14,10 @@ export default class extends Controller {
 		plans: Object,
 	};
 
-	static targets = ["date", "day", "week"];
+	static targets = ["course", "date", "day", "week"];
 
 	declare readonly plansValue: planData;
+	declare readonly courseTarget: HTMLSelectElement;
 	declare readonly dateTarget: HTMLUListElement;
 	declare readonly dayTarget: HTMLSelectElement;
 	declare readonly weekTarget: HTMLInputElement;
@@ -27,8 +28,10 @@ export default class extends Controller {
 
 	calculateDate() {
 		this.dateTarget.innerHTML = "";
-		const { week, day } = this.dateValues();
+		const { id, week, day } = this.selectValues();
 		for (const courseId in this.plansValue) {
+			if (id !== courseId) continue;
+
 			for (const orgName in this.plansValue[courseId]) {
 				const plan = this.plansValue[courseId][orgName];
 				const startDate = new Date(Date.parse(plan.startDate));
@@ -41,7 +44,7 @@ export default class extends Controller {
 		}
 	}
 
-	dateValues() {
+	selectValues() {
 		const dayMap = {
 			sunday: 0,
 			monday: 1,
@@ -52,10 +55,11 @@ export default class extends Controller {
 			saturday: 6,
 		};
 
-		const week = Number.parseInt(this.weekTarget.value) || 0;
+		const id = this.courseTarget.value;
+		const week = Number.parseInt(this.weekTarget.value) - 1 || 0;
 		const day = Number.parseInt(dayMap[this.dayTarget.value]);
 
-		return { week, day };
+		return { id, week, day };
 	}
 
 	lessonDate(startDate: Date, week: number, day: number) {

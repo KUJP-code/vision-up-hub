@@ -62,6 +62,8 @@ en:
       format:
         delimiter: ""
   shared:
+    nav:
+      sign_out: "Sign Out"
     subtitle:
       back: "Back"
     upload_selector:
