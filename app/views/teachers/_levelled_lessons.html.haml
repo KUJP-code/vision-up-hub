@@ -38,7 +38,7 @@
              .map do |lesson|
                next lesson unless lesson.type == 'PhonicsClass'
 
-               week = current_user.course_week(@date)
+               week = @user.course_week(@date)
                pr_blobs = lesson.phonics_resources.where(week:).map(&:blob)
                lesson.resources = pr_blobs + lesson.resources
                lesson
