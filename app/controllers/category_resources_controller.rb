@@ -9,7 +9,12 @@ class CategoryResourcesController < ApplicationController
     @category_resources = policy_scope(CategoryResource)
                           .with_attached_resource
                           .includes(:courses)
-                          .order(created_at: :desc)
+                          .order(
+                            lesson_category: :asc,
+                            level: :asc,
+                            resource_category: :asc,
+                            'active_storage_blobs.filename': :asc
+                          )
   end
 
   def new
@@ -56,7 +61,9 @@ class CategoryResourcesController < ApplicationController
   private
 
   def category_resource_params
-    params.require(:category_resource).permit(:lesson_category, :resource_category)
+    params.require(:category_resource).permit(
+      :lesson_category, :level, :resource_category, :resource
+    )
   end
 
   def set_category_resource

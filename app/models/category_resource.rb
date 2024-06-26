@@ -11,6 +11,16 @@ class CategoryResource < ApplicationRecord
     daily_gathering: 4
   }
 
+  enum level: {
+    all_levels: 0,
+    kindy: 1,
+    land: 2,
+    sky: 5,
+    galaxy: 8,
+    keep_up: 11,
+    specialist: 13
+  }
+
   enum resource_category: {
     phonics_set: 0,
     word_family: 1,

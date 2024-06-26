@@ -755,7 +755,8 @@ CREATE TABLE public.category_resources (
     lesson_category integer,
     resource_category integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    level integer DEFAULT 0
 );
 
 
@@ -3091,6 +3092,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240626024614'),
 ('20240621075920'),
 ('20240619073514'),
 ('20240619022246'),
