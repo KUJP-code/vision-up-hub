@@ -6,10 +6,10 @@ class TeacherResourcesController < ApplicationController
   ALLOWED_CATEGORIES = CategoryResource.lesson_categories.keys
 
   def index
+    set_lesson_category
     @category_resources = policy_scope(CategoryResource)
                           .with_attached_resource
                           .send(@lesson_category)
-                          .group_by(&:resource_category)
   end
 
   private
