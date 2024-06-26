@@ -18,7 +18,7 @@
       %span.text-secondary= @student.level.titleize
     %li.flex.flex-col
       %span.text-secondary-50= t('.school')
-      %span.text-secondary= @student.school.name
+      %span.text-secondary= t("school_names.#{@student.school.name}")
     - if @teachers.any?
       %li.flex.flex-col.teachers
         %span.text-secondary-50= t('.teachers')

@@ -52,9 +52,13 @@ class TestResultsController < ApplicationController
     @test = Test.find(params[:test_id])
     @students = policy_scope(Student)
                 .send(@test.short_level.downcase.to_sym)
-                .or(policy_scope(Student).where(test_results: { test_id: @test.id }))
+                .or(
+                  policy_scope(Student)
+                    .where(test_results: { test_id: @test.id })
+                )
                 .current
                 .includes(:school, :test_results)
+                .order(:en_name)
     @students = @students.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
   end
 
