@@ -58,7 +58,7 @@ class TestResultsController < ApplicationController
                 )
                 .current
                 .includes(:school, :test_results)
-                .order(:en_name)
+                .order(en_name: :desc)
     @students = @students.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
   end
 
