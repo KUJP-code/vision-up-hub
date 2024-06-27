@@ -3,6 +3,7 @@
 module PdfDefaults
   BORDER_RADIUS = 0.3.cm
   FONT_SIZE = 2.5.mm
+  SECONDARY_COLOR = '645780'
   PADDING = 2.mm
   PAGE_HEIGHT = 297.mm
   PAGE_WIDTH = 210.mm
@@ -18,6 +19,6 @@ module PdfDefaults
       }
     )
     pdf.font 'Shingo'
-    pdf.fill_color '645780'
+    pdf.fill_color SECONDARY_COLOR
   end
 end
