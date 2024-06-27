@@ -27,30 +27,30 @@ RSpec.describe 'creating a test result', :js do
       visit tests_path
       click_link "test_#{test.id}"
       within("#student#{student.id}_result", visible: false) do
-        all(:fillable_field, name: 'test_result[answers][listening][]')
+        all(:field, name: 'test_result[answers][listening][]')
           .each do |field|
-          field.set '2'
+          field.select '2'
         end
         expect(find_by_id('test_result_listen_percent', visible: false).value)
           .to eq('67')
 
-        all(:fillable_field, name: 'test_result[answers][reading][]')
+        all(:field, name: 'test_result[answers][reading][]')
           .each do |field|
-          field.set '3'
+          field.select '3'
         end
         expect(find_by_id('test_result_read_percent', visible: false).value)
           .to eq('50')
 
-        all(:fillable_field, name: 'test_result[answers][speaking][]')
+        all(:field, name: 'test_result[answers][speaking][]')
           .each do |field|
-          field.set '6'
+          field.select '6'
         end
         expect(find_by_id('test_result_speak_percent', visible: false).value)
           .to eq('86')
 
-        all(:fillable_field, name: 'test_result[answers][writing][]')
+        all(:field, name: 'test_result[answers][writing][]')
           .each do |field|
-          field.set '10'
+          field.select '10'
         end
         expect(find_by_id('test_result_write_percent', visible: false).value)
           .to eq('100')
@@ -79,23 +79,23 @@ RSpec.describe 'creating a test result', :js do
       visit tests_path
       click_link "test_#{test.id}"
       within("#student#{student.id}_result", visible: false) do
-        all(:fillable_field, name: 'test_result[answers][listening][]')
+        all(:field, name: 'test_result[answers][listening][]')
           .each do |field|
-          field.set '6'
+          field.select '6'
         end
         expect(find_by_id('test_result_listen_percent', visible: false).value)
           .to eq('100')
 
-        all(:fillable_field, name: 'test_result[answers][reading][]')
+        all(:field, name: 'test_result[answers][reading][]')
           .each do |field|
-          field.set '6'
+          field.select '6'
         end
         expect(find_by_id('test_result_read_percent', visible: false).value)
           .to eq('100')
 
-        all(:fillable_field, name: 'test_result[answers][writing][]')
+        all(:field, name: 'test_result[answers][writing][]')
           .each do |field|
-          field.set '6'
+          field.select '6'
         end
         expect(find_by_id('test_result_write_percent', visible: false).value)
           .to eq('100')
