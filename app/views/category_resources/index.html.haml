@@ -18,7 +18,10 @@
           %td.p-3
             - if cr.resource.blob
               = link_to cr.resource.blob.filename,
-                        file_path(cr.resource.blob_id)
+                        file_path(cr.resource.blob_id),
+                        target: '_blank',
+                        rel: 'noopener',
+                        class: 'p-1'
             - else
               No file attached
           %td.p-3= cr.lesson_category.titleize

@@ -27,6 +27,8 @@
           %tr
             %td
               = link_to file_path(blob.id),
+                        target: '_blank',
+                        rel: 'noopener',
                         class: 'flex items-center gap-1' do
                 = blob.filename
                 = render 'shared/svgs/download_icon',
