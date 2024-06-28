@@ -1,7 +1,7 @@
 -# locals: (lessons:)
 
 :ruby
-  levelled_types = %w[EnglishClass PhonicsClass StandShowSpeak].freeze
+  levelled_types = %w[EnglishClass KindyPhonic PhonicsClass StandShowSpeak].freeze
   col_classes = { 'EnglishClass' => 'col-start-2',
                   'KindyPhonic' => 'col-start-3',
                   'PhonicsClass' => 'col-start-3',
@@ -35,8 +35,9 @@
 
     col_class = col_classes[type]
 
-  %div{ class: "flex items-center font-bold #{col_class} row-start-1 text-wrap" }
-    %h2.w-full.text-center= split_on_capitals(type)
+  - unless type == 'KindyPhonic'
+    %div{ class: "flex items-center font-bold #{col_class} row-start-1 text-wrap" }
+      %h2.w-full.text-center= split_on_capitals(type)
   %div{ class: "flex items-center p-1 #{col_class} row-start-2" }
     = render 'teachers/lesson_resources',
              lesson: type_lessons.find(&:kindy?)

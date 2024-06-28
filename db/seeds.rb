@@ -69,12 +69,17 @@ puts "Creating today's lessons..."
 released_attrs = { released: true, status: :accepted,
                    admin_approval: [{ id: admin.id, name: admin.name }] }
 
-Lesson::TYPES.map do |type|
+Lesson::TYPES.each do |type|
+  next if type == 'PhonicsClass'
+
   puts "Creating #{type}..."
-  Lesson.create!(fb.attributes_for(type.underscore.to_sym).merge(released_attrs))
+  lesson = Lesson.create!(
+    fb.attributes_for(type.underscore.to_sym)
+    .merge(released_attrs)
+  )
 end
 
-%i[land_two sky_three galaxy_one].each do |level|
+%i[land_one sky_one galaxy_one].each do |level|
   fb.create(:english_class, level:, **released_attrs)
   fb.create(:phonics_class, level:, **released_attrs)
   fb.create(:stand_show_speak, level:, **released_attrs)
@@ -158,3 +163,5 @@ Student.all.each do |student|
 end
 
 puts 'Done!'
+
+p PhonicsClass.all.pluck(:level)
