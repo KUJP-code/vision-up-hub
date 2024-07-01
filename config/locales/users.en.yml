@@ -1,8 +1,19 @@
 ---
 en:
+  new_user_dropdown:
+    create_new: "Create new user"
+  org_admins:
+    show:
+      greet: "Hi, %{name}"
+  school_managers:
+    show:
+      greet: "Hi, %{name}"
   users:
-    new_user_dropdown:
-      create_new: "Create new user"
+    admin: "Admin"
+    org_admin: "Organisation Admin"
+    school_manager: "School Manager"
+    teacher: "Teacher"
+    writer: "Curriculum Team Member"
     index:
       users: "Users"
     table:
