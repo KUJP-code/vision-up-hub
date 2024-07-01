@@ -1,11 +1,12 @@
 -# locals: (lessons:)
 
 :ruby
-  levelled_types = %w[EnglishClass KindyPhonic PhonicsClass StandShowSpeak].freeze
   col_classes = { 'EnglishClass' => 'col-start-2',
                   'KindyPhonic' => 'col-start-3',
                   'PhonicsClass' => 'col-start-3',
                   'StandShowSpeak' => 'col-start-4' }
+  levels = %i[kindy land sky galaxy]
+  levelled_types = %w[EnglishClass KindyPhonic PhonicsClass StandShowSpeak].freeze
 
 .col-start-1
 .flex.items-center.justify-center.col-start-1
@@ -17,17 +18,6 @@
 .flex.items-center.justify-center.col-start-1
   = image_tag 'levels/galaxy.svg', class: 'w-[40%]'
 
-.flex.items-center.justify-center.col-start-1.border-t.border-secondary
-  = image_tag 'levels/keep_up.svg', class: 'w-[40%]'
-.flex.items-center.p-1.col-start-2.row-start-6.border-t.border-secondary
-  = render 'teachers/lesson_resources',
-           lesson: lessons.find(&:keep_up?)
-.flex.items-center.justify-center.col-start-3.border-t.border-secondary
-  = image_tag 'levels/specialist.svg', class: 'w-[40%]'
-.flex.items-center.p-1.col-start-4.row-start-6.border-t.border-secondary
-  = render 'teachers/lesson_resources',
-           lesson: lessons.find(&:specialist?)
-
 - levelled_types.each do |type|
   :ruby
     type_lessons = lessons.select { |lesson| lesson.type == type }
@@ -38,15 +28,22 @@
   - unless type == 'KindyPhonic'
     %div{ class: "flex items-center font-bold #{col_class} row-start-1 text-wrap" }
       %h2.w-full.text-center= split_on_capitals(type)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-2" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:kindy?)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-3" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:land?)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-4" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:sky?)
-  %div{ class: "flex items-center p-1 #{col_class} row-start-5" }
-    = render 'teachers/lesson_resources',
-             lesson: type_lessons.find(&:galaxy?)
+
+  - levels.each_with_index do |level, index|
+    - lesson = type_lessons.find { |l| l.send(:"#{level}?") }
+    - next if lesson.nil?
+
+    %div{ class: "flex items-center p-1 #{col_class} row-start-#{index + 2}" }
+      = render 'teachers/lesson_resources',
+               lesson:
+
+.flex.items-center.justify-center.col-start-1.border-t.border-secondary
+  = image_tag 'levels/keep_up.svg', class: 'w-[40%]'
+.flex.items-center.p-1.col-start-2.row-start-6.border-t.border-secondary
+  = render 'teachers/lesson_resources',
+           lesson: lessons.find(&:keep_up?)
+.flex.items-center.justify-center.col-start-3.border-t.border-secondary
+  = image_tag 'levels/specialist.svg', class: 'w-[40%]'
+.flex.items-center.p-1.col-start-4.row-start-6.border-t.border-secondary
+  = render 'teachers/lesson_resources',
+           lesson: lessons.find(&:specialist?)

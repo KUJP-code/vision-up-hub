@@ -17,7 +17,7 @@
     resource_classes = resources.any? ? resources_present : resources_absent
 
   .w-full.flex.flex-col.gap-3
-    - if lesson.guide.blob
+    - if lesson.guide.attached?
       = link_to file_path(id: lesson.guide.blob.id),
                 target: '_blank',
                 rel: 'noopener',

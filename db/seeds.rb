@@ -163,5 +163,3 @@ Student.all.each do |student|
 end
 
 puts 'Done!'
-
-p PhonicsClass.all.pluck(:level)
