@@ -51,14 +51,13 @@ class TestResultsController < ApplicationController
   def set_index_vars
     @test = Test.find(params[:test_id])
     @students = policy_scope(Student)
-                .send(@test.short_level.downcase.to_sym)
+                .send(@test.short_level.downcase)
                 .or(
                   policy_scope(Student)
                     .where(test_results: { test_id: @test.id })
                 )
                 .current
                 .includes(:school, :test_results)
-                .order(en_name: :desc)
     @students = @students.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
   end
 

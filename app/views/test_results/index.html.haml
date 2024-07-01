@@ -44,7 +44,7 @@
               = t(".#{attr_from_skill(skill)}")
 
       %tbody
-        - @students.each do |student|
+        - @students.sort_by(&:en_name).each do |student|
           :ruby
             result = student.test_results.find { |r| r.test_id == @test.id } ||
                      @test.test_results.new(student_id: student.id)
