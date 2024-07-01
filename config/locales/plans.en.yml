@@ -2,3 +2,8 @@ en:
   plans:
     index:
       create_plan: "Create Plan"
+    show:
+      organisation: "Organisation: %{name}"
+      student_limit: "Student Limit: %{limit}"
+      total_cost: "Total Cost: %{cost}円"
+      valid: "Valid from %{from} to %{to}"

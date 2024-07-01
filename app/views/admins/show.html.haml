@@ -1,23 +1,10 @@
 = render 'shared/subtitle', text: "Yo, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
-  %h3 You're an #{@user.type}
-  %h3= @user.email
+  = render 'admins/admin_tasks'
 
-  = link_to 'Edit',
-            edit_organisation_admin_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'
   = render 'users/teacher_spy', org_teachers: @org_teachers
 
-- if @user.id == 1 && current_user.id == 1
-  .w-full.flex.justify-center.gap-3
-    = link_to 'DB',
-              pg_hero_path,
-              class: 'btn btn-secondary'
-    = link_to 'Jobs',
-              mission_control_jobs_path,
-              class: 'btn btn-secondary'
-
-= render 'users/user_lessons',
-         assigned: @assigned_lessons,
-         created: @created_lessons
+  = render 'users/user_lessons',
+           assigned: @assigned_lessons,
+           created: @created_lessons
