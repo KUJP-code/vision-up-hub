@@ -10,7 +10,7 @@
     grouped_resources = if @lesson_category == 'brush_up'
       @category_resources.group_by(&:level)
     else
-      @category_resources.group_by(&:lesson_category)
+      @category_resources.group_by(&:resource_category)
     end
 
   - grouped_resources.each do |group|
