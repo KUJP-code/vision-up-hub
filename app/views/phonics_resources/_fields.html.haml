@@ -1,6 +1,6 @@
 -# locals: (f:, collection:, resource:)
 
-.fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => resource.new_record?.to_s }
+.fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
   = f.number_field :week, min: 1, max: 52, placeholder: 'Week'
 
   - if resource.instance_of?(PhonicsClass)
