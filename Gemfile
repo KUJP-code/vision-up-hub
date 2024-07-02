@@ -82,6 +82,9 @@ gem 'rexml', '3.2.8'
 # logidze for versioning
 gem 'logidze', '~> 1.1'
 
+# postgres-copy for csv export
+gem 'postgres-copy', '~> 1.7'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]

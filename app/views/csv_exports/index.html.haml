@@ -1,0 +1,14 @@
+%main.h-full.flex.flex-wrap.justify-around.items-center.gap-6
+  .flex.flex-col.gap-3.p-3.rounded.border.border-main
+    %h2 Export all records
+    - @allowed_models.each do |model|
+      = link_to "Export all #{model.titleize.pluralize}",
+                csv_export_path(id: 0, model:),
+                class: 'btn btn-primary'
+
+  .flex.flex-col.gap-3.p-3.rounded.border.border-secondary
+    %h2 Filter for export
+    - @allowed_models.each do |model|
+      = link_to model.titleize,
+                new_csv_export_path(model:),
+                class: 'btn btn-secondary'

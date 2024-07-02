@@ -4,6 +4,10 @@
             category_resources_path,
             class: 'btn btn-secondary'
 
+  = link_to 'CSV Exports',
+            csv_exports_path,
+            class: 'btn btn-secondary'
+
   - if @user.id == 1 && current_user.id == 1
     = link_to 'DB',
               pg_hero_path,

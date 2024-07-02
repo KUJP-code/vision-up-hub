@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     authenticate :user do
       resources :category_resources, except: %i[show]
       resources :courses, except: %i[destroy]
+      resources :csv_exports, only: %i[index new show]
       resources :daily_activities, only: %i[create index update]
       resources :english_classes, only: %i[create index update]
       resources :exercises, only: %i[create index update]

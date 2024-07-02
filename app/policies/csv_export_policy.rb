@@ -12,8 +12,4 @@ class CsvExportPolicy < ApplicationPolicy
   def new?
     user.is?('Admin')
   end
-
-  def create?
-    user.is?('Admin')
-  end
 end
