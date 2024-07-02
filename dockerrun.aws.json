@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.14-4-show-kindyphonic"
+    "Name": "thatbballguy/materials:0.14.5-clickable-guide"
   },
   "Ports": [
     {
