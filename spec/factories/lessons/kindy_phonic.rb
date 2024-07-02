@@ -7,6 +7,7 @@ FactoryBot.define do
     title { 'Test Kindy Phonics' }
     type { 'KindyPhonic' }
     unit { '10' }
+    lesson_topic { 'Topic' }
     vocab { "Vocabulary 1\nVocabulary 2" }
   end
 end
