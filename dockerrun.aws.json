@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.14.5.1-rollback-formatting"
+    "Name": "thatbballguy/materials:0.14.6-persist-topic"
   },
   "Ports": [
     {
