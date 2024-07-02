@@ -17,8 +17,10 @@ class CsvExportsController < ApplicationController
     path = build_path(params[:model])
 
     File.open(path, 'wb') do |f|
-      model.copy_to do |line|
-        f.write line
+      if params[:test_id]
+        export_results_for_test(f, params[:test_id])
+      else
+        export_whole_table(model, f)
       end
     end
 
@@ -26,6 +28,9 @@ class CsvExportsController < ApplicationController
   end
 
   def new
+    return disallowed_model unless ALLOWED_MODELS.include?(params[:model])
+
+    send(:"#{params[:model].downcase}_options")
   end
 
   private
@@ -44,5 +49,22 @@ class CsvExportsController < ApplicationController
   def disallowed_model
     redirect_to csv_exports_path,
                 alert: "#{params[:model]} is not an allowed model"
+  end
+
+  def export_results_for_test(file, test_id)
+    TestResult.where(test_id:).copy_to do |line|
+      file.write line
+    end
+  end
+
+  def export_whole_table(model, file)
+    model.copy_to do |line|
+      file.write line
+    end
+  end
+
+  def testresult_options
+    @tests = policy_scope(Test).order(created_at: :desc)
+    render 'csv_exports/test_result'
   end
 end
