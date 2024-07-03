@@ -4,7 +4,7 @@ class CsvExportsController < ApplicationController
   ALLOWED_MODELS = %w[TestResult].freeze
 
   after_action :verify_authorized
-  before_action :check_authorized
+  before_action :authorize_admin
 
   def index
     @allowed_models = ALLOWED_MODELS
@@ -42,7 +42,7 @@ class CsvExportsController < ApplicationController
     "/tmp/#{model_name}#{time}.csv"
   end
 
-  def check_authorized
+  def authorize_admin
     authorize :csv_export
   end
 

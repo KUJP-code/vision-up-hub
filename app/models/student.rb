@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Student < ApplicationRecord
-  include Levelable
+  include Gradeable, Levelable
 
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date].freeze
