@@ -8,7 +8,8 @@
 
 %tr{ data: { controller: 'test-result',
              'test-result-thresholds-value': test.thresholds.to_json,
-             'test-result-questions-value': test.questions.to_json },
+             'test-result-questions-value': test.questions.to_json,
+             'test-result-basics-value': test.basics },
      id: "student#{student.id}_result" }
   %td.p-1.bg-main-50
     = link_to redact(student, student.en_name.presence || student.name),

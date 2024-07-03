@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="test-result"
 export default class extends Controller {
 	static targets = [
+		"basics",
 		"listenPercent",
 		"listening",
 		"newLevel",
@@ -18,6 +19,7 @@ export default class extends Controller {
 	];
 
 	static values = {
+		basics: Number,
 		thresholds: Object,
 		questions: Object,
 	};
@@ -59,10 +61,12 @@ export default class extends Controller {
 			);
 			skillMaxes.push(this.writingMax);
 		}
-		this.maxScore = skillMaxes.reduce((total, max) => total + max, 0);
+		this.maxScore =
+			skillMaxes.reduce((total, max) => total + max, 0) + this.basicsValue;
 	}
 
 	calculate() {
+		const basicsScore = Number.parseInt(this.basicsTarget.value);
 		const listeningScore = this.calcSkillPercent(
 			this.listeningTargets,
 			this.listeningMax,
@@ -84,7 +88,11 @@ export default class extends Controller {
 			this.writePercentTargets,
 		);
 		const totalScore =
-			listeningScore + readingScore + speakingScore + writingScore;
+			listeningScore +
+			readingScore +
+			speakingScore +
+			writingScore +
+			basicsScore;
 		const totalPercent = Math.ceil((totalScore / this.maxScore) * 100);
 
 		this.setTotalPercent(totalPercent);

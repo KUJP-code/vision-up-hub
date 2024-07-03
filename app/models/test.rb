@@ -16,7 +16,7 @@ class Test < ApplicationRecord
   has_many :students, through: :test_results
 
   def max_score
-    questions.values.flatten.sum
+    questions.values.flatten.sum + basics
   end
 
   private
