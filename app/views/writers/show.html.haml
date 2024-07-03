@@ -1,12 +1,7 @@
 = render 'shared/subtitle', text: "Hi, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
-  %h3 You're a #{@user.type}
-  %h3= @user.email
-
-  = link_to 'Edit',
-            edit_organisation_writer_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'
+  = render 'writers/curriculum_tasks'
   = render 'users/teacher_spy', org_teachers: @org_teachers
 
   = render 'proposals/table',

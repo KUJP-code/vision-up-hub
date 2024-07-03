@@ -1,0 +1,15 @@
+%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
+  %h3.text-center Curriculum Links
+  %nav.w-full.flex.justify-center.gap-3
+    = link_to 'Category Resources',
+              category_resources_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Lesson/Course Matrix',
+              lesson_uses_path,
+              class: 'btn btn-secondary'
+
+    - if current_user.is?('Writer')
+      = link_to 'My Account',
+                edit_organisation_writer_path(@user.organisation_id, @user),
+                class: 'btn btn-secondary'

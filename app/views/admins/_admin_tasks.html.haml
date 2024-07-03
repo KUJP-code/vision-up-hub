@@ -1,32 +1,29 @@
-%h3.text-center Admin Tasks
-%nav.w-full.flex.justify-center.gap-3
-  = link_to 'Category Resources',
-            category_resources_path,
-            class: 'btn btn-secondary'
-
-  = link_to 'CSV Exports',
-            csv_exports_path,
-            class: 'btn btn-secondary'
-
-  - if @user.id == 1 && current_user.id == 1
-    = link_to 'DB',
-              pg_hero_path,
+%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
+  %h3.text-center Admin Links
+  %nav.w-full.flex.justify-center.gap-3
+    = link_to 'CSV Exports',
+              csv_exports_path,
               class: 'btn btn-secondary'
 
-  - if @user.id == current_user.id
-    = link_to 'Edit Self',
-              edit_organisation_admin_path(@user.organisation_id, @user),
+    - if @user.id == 1 && current_user.id == 1
+      = link_to 'DB',
+                pg_hero_path,
+                class: 'btn btn-secondary'
+
+    - if @user.id == current_user.id
+      = link_to 'My Account',
+                edit_organisation_admin_path(@user.organisation_id, @user),
+                class: 'btn btn-secondary'
+
+    = link_to 'Organisations',
+              organisations_path,
               class: 'btn btn-secondary'
 
-  = link_to 'Organisations',
-            organisations_path,
-            class: 'btn btn-secondary'
-
-  = link_to 'Plans',
-            plans_path,
-            class: 'btn btn-secondary'
-
-  - if @user.id == 1 && current_user.id == 1
-    = link_to 'Jobs',
-              mission_control_jobs_path,
+    = link_to 'Plans',
+              plans_path,
               class: 'btn btn-secondary'
+
+    - if @user.id == 1 && current_user.id == 1
+      = link_to 'Jobs',
+                mission_control_jobs_path,
+                class: 'btn btn-secondary'
