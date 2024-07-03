@@ -37,3 +37,8 @@ ja:
       max_grade: "最大評価"
       recommended_level: "お勧めレベル"
       student_grade: "学生の評価"
+    tests_table:
+      grade: "学年"
+      recommendation: "お勧めレベル"
+      score: "得点"
+      test_name: "テスト名"

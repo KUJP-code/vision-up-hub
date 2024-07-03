@@ -14,8 +14,7 @@ class TestResult < ApplicationRecord
   enum :new_level, LEVELS, suffix: true
   enum :prev_level, LEVELS, prefix: true
 
-  before_validation :scores_to_int
-  before_validation :prevent_evening
+  before_validation :scores_to_int, :set_grade, :prevent_evening
   after_save :update_student_level
 
   belongs_to :test
@@ -73,6 +72,12 @@ class TestResult < ApplicationRecord
 
   def scores_to_int
     answers.transform_values! { |answers| answers.map(&:to_i) }
+  end
+
+  def set_grade
+    return if grade.present?
+
+    self.grade = student.grade
   end
 
   def update_student_level

@@ -35,6 +35,25 @@ RSpec.describe TestResult do
     end
   end
 
+  context "when saving student's current grade" do
+    let(:student) { create(:student) }
+
+    it 'sets grade col as student grade' do
+      test_result.student = student
+      test_result.save!
+      expect(test_result.grade).to eq(student.grade)
+    end
+
+    it 'does not reset grade when updated' do
+      original_grade = student.grade
+      test_result.student = student
+      test_result.save!
+      student.update(birthday: Time.zone.today)
+      test_result.update!(answers: { 'Reading' => %w[1 2 3 4] })
+      expect(test_result.grade).to eq(original_grade)
+    end
+  end
+
   context 'when dealing with recommended level' do
     it 'increases recommended level with high total percent' do
       test_result.total_percent = 100

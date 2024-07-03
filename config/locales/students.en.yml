@@ -36,3 +36,8 @@ en:
       max_grade: "Max Grade"
       recommended_level: "Recommended Level"
       student_grade: "Student Grade"
+    tests_table:
+      grade: "Grade"
+      recommendation: "Recommendation"
+      score: "Score"
+      test_name: "Test Name"

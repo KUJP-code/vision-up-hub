@@ -17,15 +17,13 @@
         - active_result.answers.each_key do |skill|
           %th.thead.bg-secondary-50
             = t(".#{skill}")
-        %th.thead.bg-secondary-50= t('.total')
-        %th.thead.thead-e.bg-secondary-50= t('.recommendation')
+        %th.thead.thead-e.bg-secondary-50= t('.total')
     %tbody
       %tr.text-center.font-bold.text-secondary
-        %td #{active_result.basics} / #{active_result.test.basics}
+        %td.p-2 #{active_result.basics}/#{active_result.test.basics}
         - active_result.answers.each do |skill, scores|
-          %td #{scores.sum} / #{active_result.test.send(skill.to_sym).sum}
-        %td #{active_result.total_score} / #{active_result.test.max_score}
-        %td= active_result.new_level.titleize
+          %td.p-2 #{scores.sum}/#{active_result.test.send(skill.to_sym).sum}
+        %td.p-2 #{active_result.total_score}/#{active_result.test.max_score}
 
   = link_to t('.view_all_results'),
             student_path(@student.id),
