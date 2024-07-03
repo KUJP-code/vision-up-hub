@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CsvExportsController < ApplicationController
-  ALLOWED_MODELS = %w[TestResult].freeze
+  ALLOWED_MODELS = %w[Lesson TestResult].freeze
 
   after_action :verify_authorized
   before_action :authorize_admin
@@ -19,6 +19,8 @@ class CsvExportsController < ApplicationController
     File.open(path, 'wb') do |f|
       if params[:test_id]
         export_results_for_test(f, params[:test_id])
+      elsif params[:type]
+        export_type_lessons(f, params[:type])
       else
         export_whole_table(model, f)
       end
@@ -57,10 +59,21 @@ class CsvExportsController < ApplicationController
     end
   end
 
+  def export_type_lessons(file, type)
+    Lesson.where(type:).copy_to do |line|
+      file.write line
+    end
+  end
+
   def export_whole_table(model, file)
     model.copy_to do |line|
       file.write line
     end
+  end
+
+  def lesson_options
+    @types = Lesson::TYPES
+    render 'csv_exports/lesson'
   end
 
   def testresult_options

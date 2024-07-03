@@ -8,6 +8,7 @@ class Lesson < ApplicationRecord
 
   before_destroy :check_not_used
 
+  acts_as_copy_target
   has_logidze
 
   validates :goal, :level, :title, :type, presence: true

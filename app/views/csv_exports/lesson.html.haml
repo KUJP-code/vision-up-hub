@@ -1,0 +1,7 @@
+%main.h-full.flex.flex-wrap.justify-around.items-center.gap-6
+  .flex.flex-col.gap-3.p-3.rounded.border.border-main
+    %h2 Filter by Type
+    - @types.each do |type|
+      = link_to type.titleize.pluralize,
+                csv_export_path(id: 0, model: 'Lesson', type:),
+                class: 'btn btn-primary'
