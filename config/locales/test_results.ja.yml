@@ -5,6 +5,7 @@ ja:
     form:
       give_reason: "理由を記入して下さい"
     index:
+      basics: "名前と日付"
       en_name: "英語名"
       former_lvl: "過去レベル"
       level: "レベル"

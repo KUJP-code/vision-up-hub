@@ -1,5 +1,7 @@
 -# locals: (results:)
 
+- active_result = results.find { |r| r.test_id == params[:test_id].to_i }
+
 %table
   %thead
     %tr.text-white.font-bold.whitespace-nowrap
@@ -13,7 +15,7 @@
         %td.p-2
           = link_to result.created_at.strftime('%B %Y'),
                     student_path(@student.id, test_id: result.test_id),
-                    class: 'font-bold hover:underline'
+                    class: "font-bold underline #{'text-main' if result == active_result}"
         %td.p-2 #{result.total_score}/#{result.test.max_score}
         %td.p-2= result.total_percent
         %td.p-2= result.new_level.titleize

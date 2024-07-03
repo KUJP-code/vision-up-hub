@@ -18,6 +18,7 @@
                                              rowspan: 2 }
             = t('.name')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
+          %th.p-1.bg-main= t('.basics')
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 
@@ -35,6 +36,7 @@
             = t('.rec_lvl')
           %th{ class: 'p-1 bg-main', rowspan: 2 }
         %tr
+          %th.p-1.bg-secondary /#{@test.basics}
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 

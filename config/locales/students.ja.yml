@@ -33,6 +33,7 @@ ja:
       school: "学校"
       student_id: "学生ID"
     test_details:
+      basics: "名前と日付"
       max_grade: "最大評価"
       recommended_level: "お勧めレベル"
       student_grade: "学生の評価"

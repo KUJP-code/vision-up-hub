@@ -54,7 +54,7 @@ class TestsController < ApplicationController
   private
 
   def test_params
-    params.require(:test).permit(:name, :level, :questions, :thresholds)
+    params.require(:test).permit(:basics, :name, :level, :questions, :thresholds)
   end
 
   def set_test

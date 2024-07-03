@@ -19,13 +19,15 @@
                 id: "test_#{test.id}"
     %table.w-full.text-center
       %thead
-        - test.questions.each_key.with_index do |skill, i|
-          %th{ class: "thead bg-secondary-50 #{'thead-s' if i.zero?}" }
+        %th.thead.thead-s.bg-secondary-50= t('.basics')
+        - test.questions.each_key do |skill|
+          %th.thead.bg-secondary-50
             = t(".#{skill}")
         %th.thead.bg-secondary-50= t('.thresholds')
         %th.thead.thead-e.bg-secondary-50= t('actions')
       %tbody
         %tr
+          %td #{test.basics} points
           = render 'tests/questions', questions: test.questions
           %td
             %ul

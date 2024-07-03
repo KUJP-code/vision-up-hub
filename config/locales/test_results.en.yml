@@ -3,6 +3,7 @@ en:
     form:
       give_reason: "Please give a reason"
     index:
+      basics: "Name & Date"
       en_name: "English Name"
       former_lvl: "Former Level"
       level: "Level"

@@ -1,6 +1,9 @@
 en:
   tests:
+    form:
+      basics: "Name & Date"
     index:
+      basics: "Name & Date"
       listening: "Listening"
       reading: "Reading"
       speaking: "Speaking"

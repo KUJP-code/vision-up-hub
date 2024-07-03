@@ -1,6 +1,9 @@
 ja:
   tests:
+    form:
+      basics: "名前と日付"
     index:
+      basics: "名前と日付"
       listening: "聴力"
       reading: "読解"
       speaking: "会話力"

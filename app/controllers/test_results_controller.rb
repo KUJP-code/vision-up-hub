@@ -17,7 +17,7 @@ class TestResultsController < ApplicationController
     @test_result = authorize TestResult.new(test_result_params)
 
     if @test_result.save
-      redirect_to test_test_results_url(test_id: @test_result.test),
+      redirect_to school_org_test_path,
                   notice: t('create_success')
     else
       flash.now[:alert] = @test_result.errors.full_messages.to_sentence
@@ -28,7 +28,7 @@ class TestResultsController < ApplicationController
 
   def update
     if @test_result.update(test_result_params)
-      redirect_to test_test_results_url(test_id: @test_result.test),
+      redirect_to school_org_test_path,
                   notice: t('update_success')
     else
       flash.now[:alert] = @test_result.errors.full_messages.to_sentence
@@ -43,9 +43,17 @@ class TestResultsController < ApplicationController
     params.require(:test_result)
           .permit(:total_percent, :write_percent, :read_percent,
                   :listen_percent, :speak_percent, :prev_level,
-                  :new_level, :test_id, :student_id, :reason,
+                  :new_level, :test_id, :student_id, :reason, :basics,
                   { answers: { listening: [], reading: [],
                                speaking: [], writing: [] } })
+  end
+
+  def school_org_test_path
+    test_test_results_url(
+      test_id: @test_result.test,
+      org_id: @test_result.student.organisation_id,
+      school_id: @test_result.student.school_id
+    )
   end
 
   def set_index_vars

@@ -32,6 +32,7 @@ en:
       school: "School"
       student_id: "Student ID"
     test_details:
+      basics: "Name & Date"
       max_grade: "Max Grade"
       recommended_level: "Recommended Level"
       student_grade: "Student Grade"

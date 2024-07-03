@@ -10,10 +10,20 @@
              'test-result-thresholds-value': test.thresholds.to_json,
              'test-result-questions-value': test.questions.to_json },
      id: "student#{student.id}_result" }
-  %td{ class: 'p-1 bg-main-50' }
+  %td.p-1.bg-main-50
     = link_to redact(student, student.en_name.presence || student.name),
               student_path(student)
-  %td{ class: 'p-1 bg-main-50' }= student.level.titleize
+  %td.p-1.bg-main-50= student.level.titleize
+  %td.p-1{ data: { controller: 'validity' } }
+    .flex.justify-center.items-center.gap-1
+      = select_tag "test_result[basics]",
+                   options_for_select(0..test.basics, result.basics),
+                   class: 'outline-none outline-offset-0 focus:outline-main border w-10 text-center',
+                   id: "#{form}-basics",
+                   form:,
+                   data: { action: 'test-result#calculate validity#validate',
+                           'test-result-target': 'basics',
+                           'validity-target': 'input' }
 
   - Test::SKILLS.each do |skill|
     = render 'test_results/skill_fields',
@@ -21,7 +31,7 @@
              result:,
              skill:,
              test:
-  %td{ class: 'p-1 bg-main-50' }
+  %td.p-1.bg-main-50
     .flex.justify-center.items-center.gap-1
       = hidden_field_tag 'test_result[total_percent]',
                          result.total_percent || 0,

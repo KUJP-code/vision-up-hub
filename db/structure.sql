@@ -10,13 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
-
---
 -- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1706,7 +1699,9 @@ CREATE TABLE public.test_results (
     student_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    reason character varying
+    reason character varying,
+    basics integer DEFAULT 0,
+    grade character varying DEFAULT ''::character varying
 );
 
 
@@ -1740,7 +1735,8 @@ CREATE TABLE public.tests (
     questions jsonb DEFAULT '{}'::jsonb,
     thresholds jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    basics integer DEFAULT 0
 );
 
 
@@ -3092,6 +3088,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240703045256'),
+('20240703044625'),
 ('20240626024614'),
 ('20240621075920'),
 ('20240619073514'),

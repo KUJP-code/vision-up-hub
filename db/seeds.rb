@@ -152,11 +152,12 @@ puts 'Creating level checks'
 
 level_check = fb.create(
   :test,
+  basics: 2,
   questions: "writing: 2, 3, 4\nreading: 5, 4 \nlistening: 2, 3, 6 \nspeaking: 10",
   thresholds: "Sky One:60\nSky Two:70\nSky Three:80"
 )
 
-fb.create_list(:test, 2)
+fb.create_list(:test, 2, basics: 2)
 
 Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)
