@@ -1,0 +1,33 @@
+-# locals: (courses:, plan_data:)
+
+= form_with url: monthly_materials_path,
+            method: :get,
+            scope: :q,
+            html: { class: 'w-full flex flex-wrap justify-center gap-3',
+                    data: { controller: 'course-lessons',
+                            'course-lessons-plans-value': plan_data } } do |f|
+  .flex-row.items-center
+    = f.label :course
+    = f.select :course,
+               options_for_select(courses, params[:q][:course]), {},
+               data: { 'course-lessons-target': 'course',
+                       action: 'course-lessons#calculateDate' }
+
+  .flex-row.items-center
+    = f.label :from_week
+    = f.number_field :from_week,
+                     min: 1, max: 52, value: params[:q][:from_week],
+                     required: true,
+                     data: { action: 'course-lessons#calculateDate',
+                             'course-lessons-target': 'week' }
+
+  .flex-row.items-center
+    = f.label :weeks_forward
+    = f.number_field :weeks_forward,
+                     required: true,
+                     min: 1, max: 52, value: params[:q][:weeks_forward]
+
+  = f.submit 'Search', class: 'btn btn-primary'
+
+  %h2.w-full= t('.from_date')
+  %ul.w-full.text-center{ 'data-course-lessons-target': 'date' }

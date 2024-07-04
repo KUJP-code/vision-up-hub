@@ -1,0 +1,29 @@
+= render 'shared/subtitle', text: 'Monthly Materials'
+
+%main.flex.flex-col.items-center.gap-3.p-3
+  = render 'monthly_materials/form',
+           courses: @courses,
+           plan_data: @plan_data
+
+  %table.w-full.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.type')
+        %th.thead.bg-secondary-50=  t('title')
+        %th.thead.bg-secondary-50= t('.date')
+        %th.thead.thead-e.bg-secondary-50= t('.materials')
+    %tbody
+      - @lessons&.each_with_index do |l, i|
+        :ruby
+          course = params[:q][:course].to_i
+          date = l.course_lessons.find { |cl| cl.course_id == course }
+          new_type = @lessons[i - 1].type != l.type
+
+        %tr{ class: !i.zero? && new_type ? 'border-t-2 border-secondary' : '' }
+          - if new_type
+            %td.p-1= l.type.titleize
+          - else
+            %td.p-1
+          %td.p-1= link_to with_subtype(l), lesson_path(l)
+          %td.p-1 W#{date.week}/#{date.day.titleize[0..2]}
+          %td.p-1= l.materials.to_sentence

@@ -19,6 +19,7 @@ export default class extends Controller {
 	declare readonly plansValue: planData;
 	declare readonly courseTarget: HTMLSelectElement;
 	declare readonly dateTarget: HTMLUListElement;
+	declare readonly hasDayTarget: boolean;
 	declare readonly dayTarget: HTMLSelectElement;
 	declare readonly weekTarget: HTMLInputElement;
 
@@ -57,7 +58,9 @@ export default class extends Controller {
 
 		const id = this.courseTarget.value;
 		const week = Number.parseInt(this.weekTarget.value) - 1 || 0;
-		const day = Number.parseInt(dayMap[this.dayTarget.value]);
+		const day = this.hasDayTarget
+			? Number.parseInt(dayMap[this.dayTarget.value])
+			: 0;
 
 		return { id, week, day };
 	}

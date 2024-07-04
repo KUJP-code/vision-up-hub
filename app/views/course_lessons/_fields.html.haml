@@ -2,7 +2,7 @@
 
 %div{ class: 'fields-wrapper flex flex-wrap items-center justify-center gap-5',
       data: { controller: 'course-lessons',
-              'course-lessons-plans-value': plan_data,
+              'course-lessons-plans-value': @courses.to_h { |c| [c.id, c.plan_date_data] }.to_json,
               'new-record': f.object.new_record?.to_s } }
   - if resource.instance_of?(Course)
     = f.hidden_field :course_id, value: resource.id
