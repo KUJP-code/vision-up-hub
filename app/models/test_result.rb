@@ -54,7 +54,7 @@ class TestResult < ApplicationRecord
   end
 
   def total_score
-    answers.values.flatten.sum
+    answers.values.flatten.sum + basics
   end
 
   private
