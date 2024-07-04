@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.14.6-persist-topic"
+    "Name": "thatbballguy/materials:0.14.7-name-date"
   },
   "Ports": [
     {
