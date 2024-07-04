@@ -29,7 +29,7 @@ RSpec.describe 'Lesson search', :js do
       fill_in 'search_goal', with: 'st Go'
       select 'Discovery', from: 'search_subtype'
       select 'Elementary', from: 'search_level'
-      check 'search_released'
+      choose 'search_released_true'
       select user.name, from: 'search_creator_id'
       select user.name, from: 'search_assigned_editor_id'
       select 'Accepted', from: 'search_status'
