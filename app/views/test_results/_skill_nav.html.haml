@@ -1,10 +1,20 @@
-%nav.flex.justify-end.gap-3.p-3
+-# locals: (test:)
+
+%nav.flex.gap-3.p-3
+  %h2.flex.justify-center.items-center.font-bold.text-2xl
+    = image_tag level_icon_path(test),
+                height: 30,
+                width: 30
+    = test.name
+
+  .grow
+
   = link_to t('.student_details'),
             '#student-details',
             class: 'sub_nav_link',
             data: { controller: 'scroll-to' }
   - Test::SKILLS.each do |skill|
-    - next if @test.send(skill.to_sym).blank?
+    - next if test.send(skill.to_sym).blank?
 
     = link_to t(".#{skill}"),
               "##{skill}",

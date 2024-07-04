@@ -8,7 +8,7 @@
   - if @schools
     = render 'test_results/school_nav',
              active: @school, org: @org, schools: @schools
-  = render 'test_results/skill_nav'
+  = render 'test_results/skill_nav', test: @test
 
   %div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
     %table
