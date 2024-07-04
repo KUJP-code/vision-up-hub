@@ -4,4 +4,12 @@ ja:
       course: "コース"
       from_date: "開始日"
       from_week: "開始週"
+      search: "検索"
       weeks_forward: "週間後"
+    index:
+      date: "週/日"
+      material_list: "教材一覧"
+      monthly_materials: "月間教材"
+      title: "タイトル"
+      type: "レッスンタイプ"
+      week: "週"

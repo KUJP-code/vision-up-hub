@@ -27,7 +27,7 @@
                      required: true,
                      min: 1, max: 52, value: params[:q][:weeks_forward]
 
-  = f.submit 'Search', class: 'btn btn-primary'
+  = f.submit t('.search'), class: 'btn btn-primary'
 
   %h2.w-full= t('.from_date')
   %ul.w-full.text-center{ 'data-course-lessons-target': 'date' }

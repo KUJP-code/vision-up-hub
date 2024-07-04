@@ -1,4 +1,4 @@
-= render 'shared/subtitle', text: 'Monthly Materials'
+= render 'shared/subtitle', text: t('.monthly_materials')
 
 %main.flex.flex-col.items-center.gap-3.p-3
   = render 'monthly_materials/form',
@@ -9,9 +9,9 @@
     %thead
       %tr
         %th.thead.thead-s.bg-secondary-50= t('.type')
-        %th.thead.bg-secondary-50=  t('title')
+        %th.thead.bg-secondary-50=  t('.title')
         %th.thead.bg-secondary-50= t('.date')
-        %th.thead.thead-e.bg-secondary-50= t('.materials')
+        %th.thead.thead-e.bg-secondary-50= t('.material_list')
     %tbody
       - @lessons&.each_with_index do |l, i|
         :ruby
