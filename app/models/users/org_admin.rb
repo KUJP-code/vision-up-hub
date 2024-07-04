@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class OrgAdmin < User
+  include Courseable
+
   VISIBLE_TYPES = %w[OrgAdmin Parent SchoolManager Teacher].freeze
 
   belongs_to :organisation

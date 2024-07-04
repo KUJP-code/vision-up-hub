@@ -19,8 +19,14 @@ class MonthlyMaterialsController < ApplicationController
 
   def basic_data
     @courses = policy_scope(Course).pluck(:title, :id)
-    @plan_data = policy_scope(Course).includes(:plans)
-                                     .to_h { |c| [c.id, c.plan_date_data] }
+    course_plans = policy_scope(Course).includes(:plans)
+    @plan_data = if current_user.is?('Admin')
+                   course_plans.to_h { |c| [c.id, c.plan_date_data] }
+                 else
+                   course_plans.to_h do |c|
+                     [c.id, c.plan_date_data(current_user.organisation_id)]
+                   end
+                 end
   end
 
   def lessons_from_query

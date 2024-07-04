@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SchoolManager < User
-  include IpLockable
+  include Courseable, IpLockable
 
   VISIBLE_TYPES = %w[Parent Teacher].freeze
 

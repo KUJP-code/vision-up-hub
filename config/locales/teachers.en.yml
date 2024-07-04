@@ -2,6 +2,7 @@ en:
   teachers:
     nav:
       classes: "Classes"
+      monthly_materials: "Monthly Materials"
       students: "Students"
       support: "Support"
       test: "Tests"

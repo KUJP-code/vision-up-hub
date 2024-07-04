@@ -26,19 +26,19 @@ RSpec.describe MonthlyMaterialsPolicy do
   context 'when OrgAdmin' do
     let(:user) { build(:user, :org_admin) }
 
-    it { is_expected.not_to authorize_action(:index) }
+    it { is_expected.to authorize_action(:index) }
   end
 
   context 'when school manager' do
     let(:user) { build(:user, :school_manager) }
 
-    it { is_expected.not_to authorize_action(:index) }
+    it { is_expected.to authorize_action(:index) }
   end
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
 
-    it { is_expected.not_to authorize_action(:index) }
+    it { is_expected.to authorize_action(:index) }
   end
 
   context 'when parent' do

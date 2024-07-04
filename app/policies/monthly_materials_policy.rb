@@ -2,6 +2,6 @@
 
 class MonthlyMaterialsPolicy < ApplicationPolicy
   def index?
-    user.is?('Admin', 'Writer')
+    !user.is?('Parent', 'Sales')
   end
 end

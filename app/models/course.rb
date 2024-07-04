@@ -19,7 +19,12 @@ class Course < ApplicationRecord
            dependent: :destroy, inverse_of: :course
   has_many :organisations, through: :plans
 
-  def plan_date_data
-    plans.to_h { |p| [p.organisation.name, { startDate: p.start }] }
+  def plan_date_data(org_id = nil)
+    if org_id
+      plans.select { |p| p.organisation_id == org_id }
+           .to_h { |p| [p.organisation.name, { startDate: p.start }] }
+    else
+      plans.to_h { |p| [p.organisation.name, { startDate: p.start }] }
+    end
   end
 end

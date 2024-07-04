@@ -6,17 +6,23 @@
             html: { class: 'w-full flex flex-wrap justify-center gap-3',
                     data: { controller: 'course-lessons',
                             'course-lessons-plans-value': plan_data } } do |f|
-  .flex-row.items-center
-    = f.label :course, t('.course')
-    = f.select :course,
-               options_for_select(courses, params[:q][:course]), {},
-               data: { 'course-lessons-target': 'course',
-                       action: 'course-lessons#calculateDate' }
+  - if courses.size > 1
+    .flex-row.items-center
+      = f.label :course, t('.course')
+      = f.select :course,
+                 options_for_select(courses, params.dig(:q, :course)), {},
+                 data: { 'course-lessons-target': 'course',
+                         action: 'course-lessons#calculateDate' }
+  - else
+    = f.hidden_field :course,
+                     value: courses.first[1],
+                     data: { 'course-lessons-target': 'course' }
 
   .flex-row.items-center
     = f.label :from_week, t('.from_week')
     = f.number_field :from_week,
-                     min: 1, max: 52, value: params[:q][:from_week],
+                     min: 1, max: 52,
+                     value: params.dig(:q, :from_week),
                      required: true,
                      data: { action: 'course-lessons#calculateDate',
                              'course-lessons-target': 'week' }
@@ -25,7 +31,8 @@
     = f.label :weeks_forward, t('.weeks_forward')
     = f.number_field :weeks_forward,
                      required: true,
-                     min: 1, max: 52, value: params[:q][:weeks_forward]
+                     min: 1, max: 52,
+                     value: params.dig(:q, :weeks_forward)
 
   = f.submit t('.search'), class: 'btn btn-primary'
 

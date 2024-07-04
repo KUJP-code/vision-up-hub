@@ -2,6 +2,7 @@ ja:
   teachers:
     nav:
       classes: "クラス"
+      monthly_materials: "月間教材"
       students: "生徒"
       support: "サポート"
       test: "テスト"
