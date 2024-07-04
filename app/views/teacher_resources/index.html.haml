@@ -21,7 +21,7 @@
         %tr
           %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{name}")
       %tbody
-        - resources.each do |cr|
+        - resources.sort_by { |r| r.resource.blob.filename }.each do |cr|
           - blob = cr.resource.blob
 
           %tr
