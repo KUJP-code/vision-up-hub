@@ -5,7 +5,7 @@
            courses: @courses,
            plan_data: @plan_data
 
-  %table.w-full.text-center
+  %table.w-full.text-center.align-top
     %thead
       %tr
         %th.thead.thead-s.bg-secondary-50= t('.type')
@@ -21,9 +21,11 @@
 
         %tr{ class: !i.zero? && new_type ? 'border-t-2 border-secondary' : '' }
           - if new_type
-            %td.p-1= l.type.titleize
+            %td.align-top.p-1= l.type.titleize
           - else
-            %td.p-1
-          %td.p-1= link_to with_subtype(l), lesson_path(l)
-          %td.p-1 W#{date.week}/#{date.day.titleize[0..2]}
-          %td.p-1= l.materials.to_sentence
+            %td.align-top.p-1
+          %td.align-top.p-1= link_to with_subtype(l), lesson_path(l)
+          %td.align-top.p-1 W#{date.week}/#{date.day.titleize[0..2]}
+          %td.align-top.p-1
+            %ul
+              = list_from(l.materials)

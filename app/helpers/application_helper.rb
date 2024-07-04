@@ -71,6 +71,11 @@ module ApplicationHelper
     end
   end
 
+  def list_from(array)
+    list = array.map { |el| content_tag(:li, el) }
+    safe_join(list)
+  end
+
   def locale_toggle
     new_locale = I18n.locale == :en ? :ja : :en
     svg_tag = image_tag("#{I18n.locale}.svg",

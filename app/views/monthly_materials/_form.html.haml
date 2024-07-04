@@ -7,14 +7,14 @@
                     data: { controller: 'course-lessons',
                             'course-lessons-plans-value': plan_data } } do |f|
   .flex-row.items-center
-    = f.label :course
+    = f.label :course, t('.course')
     = f.select :course,
                options_for_select(courses, params[:q][:course]), {},
                data: { 'course-lessons-target': 'course',
                        action: 'course-lessons#calculateDate' }
 
   .flex-row.items-center
-    = f.label :from_week
+    = f.label :from_week, t('.from_week')
     = f.number_field :from_week,
                      min: 1, max: 52, value: params[:q][:from_week],
                      required: true,
@@ -22,7 +22,7 @@
                              'course-lessons-target': 'week' }
 
   .flex-row.items-center
-    = f.label :weeks_forward
+    = f.label :weeks_forward, t('.weeks_forward')
     = f.number_field :weeks_forward,
                      required: true,
                      min: 1, max: 52, value: params[:q][:weeks_forward]

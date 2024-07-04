@@ -1,2 +1,7 @@
 ja:
   monthly_materials:
+    form:
+      course: "コース"
+      from_date: "開始日"
+      from_week: "開始週"
+      weeks_forward: "週間後"
