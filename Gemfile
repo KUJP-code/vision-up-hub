@@ -82,7 +82,8 @@ gem 'rexml', '3.2.8'
 # logidze for versioning
 gem 'logidze', '~> 1.1'
 
-# postgres-copy for csv export
+# postgres-copy for csv export & csv cos it's not stdlib > 3.4
+gem 'csv', '~> 3.3'
 gem 'postgres-copy', '~> 1.7'
 
 group :development, :test do
@@ -131,7 +132,4 @@ group :test do
 
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
-
-  # CSV for creating test CSVs to upload
-  gem 'csv', '~> 3.3'
 end
