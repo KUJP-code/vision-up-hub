@@ -8,7 +8,7 @@
     .form-group
       = f.label :school_id
       = f.select :school_id,
-                 collection,
+                 collection.map { |s| [t("school_names.#{s[0]}"), s[1]] },
                  prompt: t('.select_school'),
                  required: true,
                  class: 'test'

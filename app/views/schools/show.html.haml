@@ -6,7 +6,7 @@
   end
   organisation_id = @school.organisation_id
 
-= render 'shared/subtitle', text: @school.name
+= render 'shared/subtitle', text: t("school_names.#{@school.name}")
 
 %main.flex.flex-col.items-center.p-3.gap-3
   %h3.font-bold= manager
