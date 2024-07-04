@@ -56,7 +56,12 @@
                  { prompt: t('.select_status') }
 
     %div{ class: field_classes }
-      = f.label :released, t('.released')
-      = f.check_box :released
+      = f.label :released, 'Released:'
+      .flex.gap-1
+        = f.label :released, 'Yes'
+        = f.radio_button :released, true, checked: true
+      .flex.gap-1
+        = f.label :released, 'No'
+        = f.radio_button :released, false
 
     = f.submit t('.search'), class: 'btn btn-primary w-full'
