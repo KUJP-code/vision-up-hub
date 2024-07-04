@@ -31,7 +31,14 @@ class LessonPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      authorized_ku_staff? ? scope.all : scope.none
+      case user.type
+      when 'Admin', 'Writer'
+        scope.all
+      when 'OrgAdmin', 'SchoolManager', 'Teacher'
+        user.lessons
+      else
+        scope.none
+      end
     end
 
     def authorized_ku_staff?
