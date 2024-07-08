@@ -80,7 +80,7 @@ module ApplicationHelper
     new_locale = I18n.locale == :en ? :ja : :en
     svg_tag = image_tag("#{I18n.locale}.svg",
                         alt: "Switch to #{new_locale.to_s.upcase}",
-                        width: 40, height: 40)
+                        width: 50, height: 50)
     link_to(
       svg_tag,
       url_for(request.query_parameters
