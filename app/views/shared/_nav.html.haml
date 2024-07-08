@@ -3,18 +3,21 @@
   desktop = ''
   mobile = ''
 
-%nav{ class: 'fixed top-0 left-0 h-screen bg-main w-16 print:hidden ' \
-             'z-50 flex flex-col rounded-e',
+%nav{ class: 'fixed top-0 left-0 h-screen bg-main print:hidden ' \
+             'z-50 flex flex-col rounded-e transition',
       data: { controller: 'nav' },
       id: 'main-nav' }
-  .flex
-    = image_tag 'hamburger.svg'
-    %image.link-text{ height: '64px', width: '120px',
-                      src: org_favicon(current_user.presence) }
+  %button{ class: 'flex items-center justify-center px-3',
+           type: 'button', 'data-action': 'nav#toggle' }
+    %image.main-nav-link-text{ height: '64px', width: '120px',
+                               src: org_favicon(current_user.presence) }
+    .grow.main-nav-link-text
+    %div{ data: { 'nav-target': 'toggleIcon' } }
+      = render 'shared/svgs/hamburger', classes: 'w-8 h-14'
   = link_to root_path,
             class: main_nav_class('home', '') do
-    = image_tag 'home.svg'
-    .link-text= t('.home')
+    = render 'shared/svgs/home', classes: 'w-8'
+    .main-nav-link-text= t('.home')
 
   %div{ class: "#{common} #{desktop} #{mobile}",
         data: { 'nav-target': 'links' },
@@ -25,5 +28,6 @@
   = locale_toggle
   = link_to destroy_user_session_path,
             data: { turbo_method: :delete },
-            class: 'p-2 transition hover:scale-105 text-nowrap' do
-    .link-text= t('.sign_out')
+            class: main_nav_class('sign_out', '') do
+    = image_tag 'sign_out.svg', class: 'w-8'
+    .main-nav-link-text= t('.sign_out')

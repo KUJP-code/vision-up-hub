@@ -1,0 +1,10 @@
+en:
+  admins:
+    nav:
+      courses: "Courses"
+      lessons: "Lessons"
+      students: "Students"
+      support: "Support"
+      test: "Tests"
+      uploads: "Uploads"
+      users: "Users"

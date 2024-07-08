@@ -16,18 +16,18 @@ module ApplicationHelper
   def main_nav_link(title, path)
     active = active_main_nav_link?(title, controller_name)
     link_to path, class: main_nav_class(title, controller_name) do
-      content_tag(:span, t(".#{title}"), class: 'link-text')
-      render "shared/svgs/#{title}", classes: "w-8 #{'fill-white' if active}"
+      (render "shared/svgs/#{title}", classes: "w-8 #{'fill-white' if active}") +
+        content_tag(:span, t(".#{title}"), class: 'main-nav-link-text')
     end
   end
 
   def main_nav_class(title, controller)
-    default_classes = 'basis-16 flex items-center justify-center hover:scale-105 transition'
+    default_classes = 'basis-16 flex items-center justify-center hover:scale-105 transition text-white'
     if active_main_nav_link?(title, controller)
-      return "#{default_classes} relative text-main before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded"
+      return "#{default_classes} relative before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded"
     end
 
-    "#{default_classes} text-white"
+    default_classes
   end
 
   def org_favicon(user = nil)
