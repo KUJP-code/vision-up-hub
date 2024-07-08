@@ -13,8 +13,7 @@
   %button{ class: 'flex items-center transition hover:scale-105',
            data: { action: 'dropdown#toggle:stop' },
            type: 'button' }
-    = render 'shared/svgs/delete_icon',
-             classes: 'fill-white'
+    = image_tag 'upload.svg'
     .link-text= t('.uploads')
   %ul{ class: menu_styles,
        data: { 'dropdown-target': 'menu' } }

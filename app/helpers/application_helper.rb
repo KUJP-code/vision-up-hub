@@ -16,8 +16,7 @@ module ApplicationHelper
   def main_nav_link(title, path)
     link_to path, class: main_nav_class(title, controller_name) do
       content_tag(:span, t(".#{title}"), class: 'link-text')
-      render 'shared/svgs/delete_icon',
-             classes: 'fill-white'
+      image_tag "#{title}.svg", height: 50, width: 50
     end
   end
 

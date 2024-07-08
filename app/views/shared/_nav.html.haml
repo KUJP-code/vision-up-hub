@@ -3,21 +3,20 @@
   desktop = ''
   mobile = ''
 
-%nav{ class: 'absolute top-0 left-0 h-full bg-main w-16 px-3 print:hidden ' \
+%nav{ class: 'fixed top-0 left-0 h-full bg-main w-16 px-3 print:hidden ' \
              'z-50 flex flex-col',
       data: { controller: 'nav' },
       id: 'main-nav' }
   = link_to root_path,
             class: 'shrink-0 flex items-center p-2 justify-center' do
-    = render 'shared/svgs/delete_icon',
-             classes: 'fill-white'
+    = image_tag 'hamburger.svg', width: '50px', height: '50px'
     %image.link-text{ height: '64px', width: '120px',
                       src: org_favicon(current_user.presence) }
   %div{ class: "#{common} #{desktop} #{mobile}",
         data: { 'nav-target': 'links' },
         id: 'main_nav_links' }
     = render "#{current_user.type.pluralize.underscore}/nav"
-  .lg:hidden.flex-grow
+  .flex-grow
   = render 'admins/theme_select' if current_user.is?('Admin')
   = locale_toggle
   = link_to destroy_user_session_path,
