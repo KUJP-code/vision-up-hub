@@ -14,11 +14,11 @@
          classes: in_future || in_past ? 'bg-neutral-dark text-main' : '',
          text: subtitle
 
-%main{ class: 'flex flex-col md:flex-row justify-around gap-3',
+%main{ class: 'flex flex-col md:flex-row md:flex-wrap justify-around gap-3',
        data: { action: 'click@window->details#focus',
                controller: 'details' } }
   - if @unlevelled_lessons.any?
-    %section{ class: 'basis-[38%] shrink-0 grow flex flex-wrap justify-around' }
+    %section{ class: 'basis-[38%] shrink-0 grow flex flex-col md:flex-row md:flex-wrap justify-around' }
       = render partial: 'teachers/unlevelled_lesson',
                collection: @unlevelled_lessons.select(&:kindy?),
                as: :lesson
@@ -33,11 +33,11 @@
     %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr p-3' }
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
 
-= render 'teachers/day_select',
-         date: @date
+  = render 'teachers/day_select',
+           date: @date
 
-- if current_user.is?('Admin')
-  .flex.justify-center.p-3
-    = link_to t('.edit_teacher'),
-              edit_organisation_teacher_path(@user),
-              class: 'btn btn-primary'
+  - if current_user.is?('Admin')
+    .flex.justify-center.p-3
+      = link_to t('.edit_teacher'),
+                edit_organisation_teacher_path(@user),
+                class: 'btn btn-primary'

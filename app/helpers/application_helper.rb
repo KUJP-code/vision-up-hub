@@ -14,18 +14,17 @@ module ApplicationHelper
   end
 
   def main_nav_link(title, path)
+    active = active_main_nav_link?(title, controller_name)
     link_to path, class: main_nav_class(title, controller_name) do
       content_tag(:span, t(".#{title}"), class: 'link-text')
-      image_tag "#{title}.svg", height: 50, width: 50
+      render "shared/svgs/#{title}", classes: "w-8 #{'fill-white' if active}"
     end
   end
 
   def main_nav_class(title, controller)
-    default_classes = 'p-3 hover:scale-105 transition'
-    if controller == title ||
-       controller.include?(title) ||
-       user_subcontroller?(controller, title)
-      return "#{default_classes} text-main bg-white rounded"
+    default_classes = 'basis-16 flex items-center justify-center hover:scale-105 transition'
+    if active_main_nav_link?(title, controller)
+      return "#{default_classes} relative text-main before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded"
     end
 
     "#{default_classes} text-white"
@@ -94,8 +93,14 @@ module ApplicationHelper
 
   private
 
+  def active_main_nav_link?(title, controller)
+    controller == title ||
+      controller.include?(title) ||
+      user_subcontroller?(controller, title)
+  end
+
   def user_subcontroller?(controller, title)
-    return true if current_user_own_profile? && title == 'today'
+    return true if current_user_own_profile? && %w[home today].include?(title)
     return false if title != 'users' || current_user_own_profile?
     return true if controller == 'sales'
 

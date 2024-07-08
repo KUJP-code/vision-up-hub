@@ -47,6 +47,13 @@
 		-moz-appearance: textfield;
 	}
 
+	main {
+		height: 100%;
+		margin-top: 3.5rem;
+		overflow-y: scroll;
+		width: 100%;
+	}
+
 	#main-nav .link-text {
 		display: none;
 	}

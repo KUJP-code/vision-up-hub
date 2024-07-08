@@ -3,15 +3,19 @@
   desktop = ''
   mobile = ''
 
-%nav{ class: 'fixed top-0 left-0 h-full bg-main w-16 px-3 print:hidden ' \
-             'z-50 flex flex-col',
+%nav{ class: 'fixed top-0 left-0 h-screen bg-main w-16 print:hidden ' \
+             'z-50 flex flex-col rounded-e',
       data: { controller: 'nav' },
       id: 'main-nav' }
-  = link_to root_path,
-            class: 'shrink-0 flex items-center p-2 justify-center' do
-    = image_tag 'hamburger.svg', width: '50px', height: '50px'
+  .flex
+    = image_tag 'hamburger.svg'
     %image.link-text{ height: '64px', width: '120px',
                       src: org_favicon(current_user.presence) }
+  = link_to root_path,
+            class: main_nav_class('home', '') do
+    = image_tag 'home.svg'
+    .link-text= t('.home')
+
   %div{ class: "#{common} #{desktop} #{mobile}",
         data: { 'nav-target': 'links' },
         id: 'main_nav_links' }
