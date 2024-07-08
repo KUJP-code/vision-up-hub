@@ -35,10 +35,6 @@
 		border: none;
 	}
 
-	select {
-		background: none;
-	}
-
 	input::-webkit-inner-spin-button,
 	input::-webkit-outer-spin-button,
 	input[type="number"] {
@@ -49,6 +45,18 @@
 	input[type="number"] {
 		appearance: textfield;
 		-moz-appearance: textfield;
+	}
+
+	#main-nav .link-text {
+		display: none;
+	}
+
+	#main-nav.expanded .link-text {
+		display: block;
+	}
+
+	select {
+		background: none;
 	}
 
 	small {
@@ -106,11 +114,6 @@
 		label {
 			@apply text-xl font-bold text-center;
 		}
-	}
-
-	#main_nav_links.revealed {
-		transform: translateX(0) !important;
-		opacity: 1 !important;
 	}
 
 	.sub_nav_link {

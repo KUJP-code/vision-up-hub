@@ -16,8 +16,8 @@ application.register("course-lessons", CourseLessonsController);
 import DetailsController from "./details_controller";
 application.register("details", DetailsController);
 
-import NavRevealController from "./nav_reveal_controller";
-application.register("nav-reveal", NavRevealController);
+import NavController from "./nav_controller";
+application.register("nav", NavController);
 
 import PrintController from "./print_controller";
 application.register("print", PrintController);
