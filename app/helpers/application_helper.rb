@@ -80,9 +80,8 @@ module ApplicationHelper
                         width: 50, height: 50)
     link_to(
       svg_tag,
-      url_for(request.query_parameters
-                     .merge(locale: new_locale)),
-      class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
+      url_for(request.query_parameters.merge(locale: new_locale)),
+      class: main_nav_class('locale', ''),
       id: 'locale_toggle',
       title: "Switch to #{new_locale.to_s.upcase}"
     )

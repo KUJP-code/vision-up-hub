@@ -68,9 +68,10 @@
           content: "";
           position: absolute;
           top: 0;
-          left: 0;
+          left: -3px;
           bottom: 0;
-          width: 2px;
+          border-radius: 0.5rem;
+          width: 6px;
           background-color: white;
         }
       }
