@@ -18,6 +18,7 @@ export default {
 							danger: "#ef7877",
 							main: "#69c0dd",
 							"main-50": "#aadaeb",
+							"main-nav-inactive": "#aadaeb",
 							"neutral-dark": "#b2aabf",
 							"neutral-light": "#f1f1f1",
 							secondary: "#645880",

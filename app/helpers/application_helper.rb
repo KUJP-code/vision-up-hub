@@ -24,7 +24,7 @@ module ApplicationHelper
   def main_nav_class(title, controller)
     return 'main-nav-link' unless active_main_nav_link?(title, controller)
 
-    'main-nav-link relative before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded'
+    'main-nav-link active'
   end
 
   def org_favicon(user = nil)
