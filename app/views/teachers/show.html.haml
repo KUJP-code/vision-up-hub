@@ -10,9 +10,10 @@
   end
 
 
-= render 'shared/subtitle',
-         classes: in_future || in_past ? 'bg-neutral-dark text-main' : '',
-         text: subtitle
+= content_for :subtitle do
+  = render 'shared/subtitle',
+           classes: in_future || in_past ? 'bg-neutral-dark text-main' : '',
+           text: subtitle
 
 %main{ class: 'flex flex-col md:flex-row md:flex-wrap justify-around gap-3',
        data: { action: 'click@window->details#focus',
