@@ -22,12 +22,9 @@ module ApplicationHelper
   end
 
   def main_nav_class(title, controller)
-    default_classes = 'basis-16 flex items-center justify-center hover:scale-105 transition text-white'
-    if active_main_nav_link?(title, controller)
-      return "#{default_classes} relative before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded"
-    end
+    return 'main-nav-link' unless active_main_nav_link?(title, controller)
 
-    default_classes
+    'main-nav-link relative before:absolute before:-left-1 before:h-full before:bg-white before:w-2 before:rounded'
   end
 
   def org_favicon(user = nil)

@@ -57,6 +57,10 @@
 	#main-nav {
 		width: 4rem;
 
+		.main-nav-link {
+			@apply basis-16 flex items-center justify-center hover:scale-105 transition text-white;
+		}
+
 		.main-nav-link-text {
 			display: none;
 			font-weight: 700;
