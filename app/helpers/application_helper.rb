@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def body_classes
+    base_classes = 'text-secondary font-medium'
+    if user_signed_in?
+      "#{base_classes} h-[calc(100vh-3.5rem)] w-[calc(100vw-4rem)] ml-16"
+    else
+      "#{base_classes} h-[calc(100vh-3.5rem)] w-screen"
+    end
+  end
+
   def ja_date(date)
     return '' if date.nil?
 

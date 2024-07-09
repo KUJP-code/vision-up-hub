@@ -23,7 +23,7 @@
                              'data-turbo-track': 'reload',
                              type: 'module'
     = yield :head
-  %body{ class: 'h-[calc(100vh-3.5rem)] w-[calc(100vw-4rem)] ml-16 text-secondary font-medium' }
+  %body{ class: body_classes }
     %turbo_frame#flash
       = render 'shared/flash'
     = render 'shared/nav' if user_signed_in?
