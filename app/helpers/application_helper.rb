@@ -82,18 +82,14 @@ module ApplicationHelper
     safe_join(list)
   end
 
-  def locale_toggle
+  def locale_toggle(classes = '')
     new_locale = I18n.locale == :en ? :ja : :en
-    svg_tag = image_tag("#{I18n.locale}.svg",
-                        alt: "Switch to #{new_locale.to_s.upcase}",
-                        width: 50, height: 50)
-    link_to(
-      svg_tag,
-      url_for(request.query_parameters.merge(locale: new_locale)),
-      class: main_nav_class('locale', ''),
-      id: 'locale_toggle',
-      title: "Switch to #{new_locale.to_s.upcase}"
-    )
+    link_to url_for(request.query_parameters.merge(locale: new_locale)),
+            class: main_nav_class('locale', ''),
+            id: 'locale_toggle',
+            title: "Switch to #{new_locale.to_s.upcase}" do
+      render "shared/svgs/#{new_locale}", classes:
+    end
   end
 
   private
