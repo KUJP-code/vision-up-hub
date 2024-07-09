@@ -28,10 +28,14 @@
             = t('.created')
     %tbody
       - users.each do |user|
+        :ruby
+          type = user.type.singularize.titleize.downcase.tr(' ', '_')
+        - path = :"edit_organisation_#{type}_path"
+
         %tr
           %td
             = link_to user.name,
-                      organisation_user_path(user.organisation_id, user),
+                      send(path, user.organisation_id, user),
                       data: { 'turbo-frame' => '_top' }
           %td= split_on_capitals(user.type)
           %td= mail_to user.email
