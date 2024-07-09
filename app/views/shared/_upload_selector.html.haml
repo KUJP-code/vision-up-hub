@@ -1,10 +1,12 @@
 :ruby
-  container_actions = 'click@window->dropdown#hide touchstart@window->dropdown#hide ' \
-                      'keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem ' \
+  container_actions = 'click@window->dropdown#hide' \
+                      'touchstart@window->dropdown#hide ' \
+                      'keydown.up->dropdown#previousItem' \
+                      'keydown.down->dropdown#nextItem ' \
                       'keydown.esc->dropdown#hide'
   container_class = "#{main_nav_class('upload', controller_name)} relative"
-  menu_styles = 'hidden absolute top-0 -right-20 z-10 flex flex-col bg-main ' \
-                'gap-2 p-3 rounded-e text-white'
+  menu_styles = 'hidden absolute top-0 -right-24 z-10 flex flex-col bg-main ' \
+                'gap-2 p-3 rounded-e text-white font-bold'
   org_id = current_user.organisation_id
 
 %div{ class: container_class,
@@ -12,7 +14,7 @@
   %button{ class: "main-nav-link !px-0 #{'!text-white' if container_class.include?('active')}",
            data: { action: 'dropdown#toggle:stop' },
            type: 'button' }
-    = image_tag 'upload.svg', class: 'w-8'
+    = image_tag 'upload.svg', class: 'w-8', title: 'Upload'
     .main-nav-link-text= t('.uploads')
   %ul{ class: menu_styles,
        data: { 'dropdown-target': 'menu' } }
