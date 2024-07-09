@@ -3,8 +3,8 @@
 = content_for :subtitle do
   %header#subtitle
     - unless viewing_self?
-      = link_to :back, class: 'absolute left-6 flex' do
+      = link_to :back, class: 'hidden md:flex absolute left-6' do
         = image_tag 'back.svg'
         %span= t('.back')
     %h1= text
-    .absolute.right-3= locale_toggle('fill-secondary')
+    .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')

@@ -144,11 +144,7 @@
 	}
 
 	.form-group {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		gap: 0.5rem;
+		@apply w-full flex flex-col items-stretch gap-2;
 
 		label {
 			@apply text-xl font-bold text-center;
@@ -167,7 +163,7 @@
 		@apply absolute top-0 left-0 right-0 bg-neutral-light text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
 
 		a {
-			@apply flex items-center justify-center h-full text-nowrap;
+			@apply items-center justify-center h-full text-nowrap;
 		}
 	}
 

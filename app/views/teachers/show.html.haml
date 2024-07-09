@@ -16,14 +16,14 @@
                                         id: @user.id, date: @date.prev_weekday),
               class: 'w-12' do
       = image_tag 'back.svg'
-    %h1= subtitle
+    %h1.text-base.md:text-3xl= subtitle
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
                                         id: @user.id, date: @date.next_weekday),
               class: 'w-12' do
       = image_tag 'next.svg'
-    .absolute.right-3= locale_toggle('fill-secondary')
+    .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')
 
-%main{ class: 'flex flex-col md:flex-row md:flex-wrap justify-around gap-3',
+%main{ class: 'flex flex-col md:flex-row md:flex-wrap justify-start gap-3',
        data: { action: 'click@window->details#focus',
                controller: 'details' } }
   - if @unlevelled_lessons.any?
@@ -41,9 +41,3 @@
   - if @levelled_lessons.any?
     %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr p-3' }
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
-
-  - if current_user.is?('Admin')
-    .flex.justify-center.p-3
-      = link_to t('.edit_teacher'),
-                edit_organisation_teacher_path(@user),
-                class: 'btn btn-primary'
