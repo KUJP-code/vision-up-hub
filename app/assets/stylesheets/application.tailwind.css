@@ -163,7 +163,7 @@
 		@apply absolute top-0 left-0 right-0 bg-neutral-light text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
 
 		a {
-			@apply flex items-center justify-center h-full w-16;
+			@apply flex items-center justify-center h-full;
 		}
 	}
 

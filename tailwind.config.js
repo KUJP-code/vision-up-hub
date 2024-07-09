@@ -29,7 +29,7 @@ export default {
 							sans: ["'M PLUS 1p'", "sans-serif"],
 						},
 						borderRadius: {
-							DEFAULT: "0.5rem",
+							DEFAULT: "0.625rem",
 						},
 					},
 				},

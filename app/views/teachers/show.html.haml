@@ -13,11 +13,13 @@
 = content_for :subtitle do
   %header#subtitle
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
-                                        id: @user.id, date: @date.prev_weekday) do
+                                        id: @user.id, date: @date.prev_weekday),
+              class: 'w-12' do
       = image_tag 'back.svg'
     %h1= subtitle
     = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
-                                        id: @user.id, date: @date.next_weekday) do
+                                        id: @user.id, date: @date.next_weekday),
+              class: 'w-12' do
       = image_tag 'next.svg'
     .absolute.right-3= locale_toggle('fill-secondary')
 
