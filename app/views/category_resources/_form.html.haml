@@ -1,7 +1,8 @@
 -# locals: (cr:, courses:)
 
 = form_with model: cr,
-            class: 'flex flex-wrap justify-center items-center p-3 gap-3' do |f|
+            class: 'flex flex-wrap justify-center items-center p-3 gap-3',
+            data: { controller: 'fields' } do |f|
   .w-full
     = render 'shared/form_errors', resource: cr
 
@@ -23,6 +24,27 @@
   %div{ class: 'form-group basis-1/3' }
     = f.label :resource, t('.resource'), class: 'form-label'
     = f.file_field :resource, class: 'form-control'
+
+  .flex.flex-wrap.gap-3.w-full
+    = f.fields_for :course_resources, cr.course_resources do |cl_f|
+      = render 'course_resources/fields',
+               collection: courses,
+               f: cl_f,
+               resource: cr
+
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :course_resources,
+                     cr.course_resources.new,
+                     child_index: 'CHILD' do |cl_f|
+        = render 'course_resources/fields',
+                 collection: courses,
+                 f: cl_f,
+                 resource: cr
+
+    %div{ 'data-fields-target' => 'target' }
+
+    %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
+      Add Course
 
   = f.submit class: 'btn btn-primary w-full'
 
