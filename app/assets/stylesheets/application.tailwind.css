@@ -155,6 +155,10 @@
 		}
 	}
 
+	.dropdown {
+		@apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
+	}
+
 	.sub_nav_link {
 		@apply bg-secondary text-white rounded p-2;
 	}
@@ -163,7 +167,7 @@
 		@apply absolute top-0 left-0 right-0 bg-neutral-light text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
 
 		a {
-			@apply flex items-center justify-center h-full;
+			@apply flex items-center justify-center h-full text-nowrap;
 		}
 	}
 

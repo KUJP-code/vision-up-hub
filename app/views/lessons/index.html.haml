@@ -1,9 +1,6 @@
 = render 'shared/subtitle', text: t('.lessons')
 
-.p-3
-  = render 'lessons/new_lesson_dropdown'
-
-= render 'lesson_searches/form', writers: @writers
-
 %main.p-3
+  = render 'lessons/new_lesson_dropdown'
+  = render 'lesson_searches/form', writers: @writers
   = render 'lessons/status_table', lessons: @lessons

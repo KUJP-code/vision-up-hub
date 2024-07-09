@@ -1,6 +1,6 @@
 = render 'shared/subtitle', text: t('.plans')
 
-%main.flex.flex-wrap.gap-3.p-3
+%main.flex.flex-col.justify-start.gap-3.p-3
   = link_to t('.create_plan'),
             new_plan_path,
             class: 'btn btn-secondary w-full'

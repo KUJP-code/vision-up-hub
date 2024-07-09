@@ -2,14 +2,17 @@
   %link{ rel: 'stylesheet',
          href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
 
-- if current_user.is?('Admin')
-  %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
-    - @orgs.each do |org|
-      = link_to org.name,
-                new_organisation_student_upload_path(organisation_id: org.id),
-                class: "sub_nav_link #{'bg-main' if org.id == @organisation.id}"
 
 %main.flex.flex-col.gap-12.overflow-y-auto.p-3
+  = render 'shared/subtitle', text: t('.create_students', org: @organisation.name)
+
+  - if current_user.is?('Admin')
+    %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
+      - @orgs.each do |org|
+        = link_to org.name,
+                  new_organisation_student_upload_path(organisation_id: org.id),
+                  class: "sub_nav_link #{'bg-main' if org.id == @organisation.id}"
+
   = render 'student_uploads/format_explainer'
   = link_to organisation_student_upload_path(current_user.organisation, 1),
             class: 'btn btn-primary w-full flex justify-center gap-2' do
