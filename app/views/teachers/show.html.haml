@@ -11,9 +11,15 @@
 
 
 = content_for :subtitle do
-  = render 'shared/subtitle',
-           classes: in_future || in_past ? 'bg-neutral-dark text-main' : '',
-           text: subtitle
+  %header#subtitle
+    = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                        id: @user.id, date: @date.prev_weekday) do
+      = image_tag 'back.svg'
+    %h1= subtitle
+    = link_to organisation_teacher_path(organisation_id: @user.organisation_id,
+                                        id: @user.id, date: @date.next_weekday) do
+      = image_tag 'next.svg'
+    .absolute.right-3= locale_toggle('fill-secondary')
 
 %main{ class: 'flex flex-col md:flex-row md:flex-wrap justify-around gap-3',
        data: { action: 'click@window->details#focus',
@@ -33,9 +39,6 @@
   - if @levelled_lessons.any?
     %section{ class: 'shrink-0 grow basis-[58%] grid grid-rows-6 auto-cols-fr p-3' }
       = render 'teachers/levelled_lessons', lessons: @levelled_lessons
-
-  = render 'teachers/day_select',
-           date: @date
 
   - if current_user.is?('Admin')
     .flex.justify-center.p-3
