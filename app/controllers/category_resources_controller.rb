@@ -2,6 +2,7 @@
 
 class CategoryResourcesController < ApplicationController
   before_action :set_category_resource, only: %i[edit update destroy]
+  before_action :set_form_data, only: %i[new create edit update]
   after_action :verify_authorized, only: %i[create edit destroy update]
   after_action :verify_policy_scoped, only: :index
 
@@ -62,11 +63,16 @@ class CategoryResourcesController < ApplicationController
 
   def category_resource_params
     params.require(:category_resource).permit(
-      :lesson_category, :level, :resource_category, :resource
+      :lesson_category, :level, :resource_category, :resource,
+      course_resources_attributes: %i[id course_id _destroy]
     )
   end
 
   def set_category_resource
     @category_resource = authorize CategoryResource.find(params[:id])
+  end
+
+  def set_form_data
+    @courses = Course.pluck(:title, :id)
   end
 end
