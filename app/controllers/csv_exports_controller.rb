@@ -13,17 +13,16 @@ class CsvExportsController < ApplicationController
   def show
     return disallowed_model unless ALLOWED_MODELS.include?(params[:model])
 
-    model = params[:model].constantize
     path = build_path(params[:model])
 
-    File.open(path, 'wb') do |f|
-      if params[:test_id]
-        export_results_for_test(f, params[:test_id])
-      elsif params[:type]
-        export_type_lessons(f, params[:type])
-      else
-        export_whole_table(model, f)
-      end
+    if params[:test_id]
+      export_results_for_test(path, params[:test_id])
+    elsif params[:type]
+      export_type_lessons(path, params[:type])
+    elsif params[:model] == 'Lesson'
+      export_all_lessons(path)
+    elsif params[:model] == 'TestResult'
+      export_all_test_results(path)
     end
 
     send_file path, type: 'text/csv', disposition: 'attachment'
@@ -53,22 +52,51 @@ class CsvExportsController < ApplicationController
                 alert: "#{params[:model]} is not an allowed model"
   end
 
-  def export_results_for_test(file, test_id)
-    TestResult.where(test_id:).copy_to do |line|
-      file.write line
+  def export_all_lessons(path)
+    File.open(path, 'wb') do |f|
+      Lesson.copy_to do |line|
+        f.write line
+      end
     end
   end
 
-  def export_type_lessons(file, type)
-    Lesson.where(type:).copy_to do |line|
-      file.write line
+  def export_type_lessons(path, type)
+    File.open(path, 'wb') do |f|
+      Lesson.where(type:).copy_to do |line|
+        f.write line
+      end
     end
   end
 
-  def export_whole_table(model, file)
-    model.copy_to do |line|
-      file.write line
+  def export_all_test_results(path)
+    File.open(path, 'wb') do |f|
+      TestResult.copy_to do |line|
+        f.write line
+      end
     end
+  end
+
+  def export_results_for_test(path, test_id)
+    headers = test_result_headers(Test.find(test_id))
+
+    CSV.open(path, 'wb') do |csv|
+      csv << headers
+      TestResult.includes(student: :school)
+                .where(test_id:).find_each do |result|
+        csv << [result.student.name, result.student.en_name,
+                result.student.grade, result.prev_level.titleize,
+                result.basics, *result.listening, *result.reading,
+                *result.writing, result.new_level.titleize, result.reason]
+      end
+    end
+  end
+
+  def test_result_headers(test)
+    headers = %w[name en_name grade current_level name_date]
+    test.listening.size.times { |i| headers << "listening_#{(i + 97).chr}" }
+    test.reading.size.times { |i| headers << "reading_#{(i + 97).chr}" }
+    test.writing.size.times { |i| headers << "writing_#{(i + 97).chr}" }
+    headers << 'new_level' << 'reason'
   end
 
   def lesson_options
