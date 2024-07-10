@@ -1,10 +1,11 @@
 -# locals: (classes: '', text:)
 
 = content_for :subtitle do
-  %header#subtitle
+  = turbo_frame_tag 'subtitle' do
     - unless viewing_self?
       = link_to :back, class: 'hidden md:flex absolute left-6' do
         = image_tag 'back.svg'
         %span= t('.back')
-    %h1= text
+    %header
+      %h1= text
     .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')

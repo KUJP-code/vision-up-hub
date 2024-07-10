@@ -8,8 +8,10 @@ class LessonsController < ApplicationController
   after_action :generate_guide, only: %i[create update]
 
   def index
-    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
-    @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
+    respond_to do |format|
+      format.html { staff_index }
+      format.turbo_stream { teacher_index }
+    end
   end
 
   def show
@@ -130,5 +132,30 @@ class LessonsController < ApplicationController
       I18n.t('approve'), I18n.t('awaiting_approval'), I18n.t('not_approved'), I18n.t('update_notes')
     ]
     status_attrs.none?(params[:commit])
+  end
+
+  def staff_index
+    raise Pundit::NotAuthorizedError unless current_user.is?('Admin', 'Writer')
+
+    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
+    @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
+  end
+
+  def teacher_index
+    @teacher = Teacher.find(params[:teacher_id])
+    @level = validated_level(params[:level], @teacher)
+    @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
+    @lessons = policy_scope(@teacher.day_lessons(@date).send(@level))
+  end
+
+  def validated_level(level_param, teacher)
+    @valid_levels = %w[kindy elementary evening]
+                    .select { |level| Flipper.enabled?(:"#{level}", teacher) }
+    if @valid_levels.none?(level_param)
+      return redirect_back fallback_location: root_path,
+                           alert: "Invalid level: #{level_param}"
+    end
+
+    level_param
   end
 end

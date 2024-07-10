@@ -1,0 +1,14 @@
+= turbo_stream.update 'teacher_lessons' do
+  %main.p-3
+    %nav
+      - @valid_levels.each do |level|
+        - active = @level == level
+
+        = link_to level.titleize,
+                  lessons_path(date: @date, level:, teacher_id: @teacher.id),
+                  class: "btn #{active ? 'btn-primary' : 'btn-secondary'}",
+                  data: { turbo_stream: true }
+
+    - @lessons.each do |lesson|
+      %button.card{ type: 'button' }
+        = lesson.type.titleize
