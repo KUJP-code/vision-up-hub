@@ -4,11 +4,8 @@ class TeachersController < UsersController
   before_action :set_form_data, only: %i[new edit]
 
   def show
-    @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    lessons = @user.day_lessons(@date)
-                   .includes({ resources_attachments: :blob, guide_attachment: :blob })
-    @unlevelled_lessons = lessons.unlevelled.released
-    @levelled_lessons = lessons.levelled.released
+    @levels = %w[kindy elementary evening]
+              .select { |level| Flipper.enabled?(:"#{level}", @user) }
   end
 
   def new

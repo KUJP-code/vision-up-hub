@@ -8,7 +8,7 @@ en:
       test: "Tests"
       today: "Today"
       tutorials: "Tutorials"
-    show:
+    subtitle:
       future_lessons: "Future lessons for %{date}"
       past_lessons: "Past lessons for %{date}"
       today_lessons: "Today's lessons"

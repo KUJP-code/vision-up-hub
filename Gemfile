@@ -86,6 +86,11 @@ gem 'logidze', '~> 1.1'
 gem 'csv', '~> 3.3'
 gem 'postgres-copy', '~> 1.7'
 
+# Use Flipper for feature flags
+gem 'flipper'
+gem 'flipper-active_record'
+gem 'flipper-ui'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
