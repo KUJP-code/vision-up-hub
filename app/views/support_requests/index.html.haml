@@ -1,17 +1,13 @@
 = render 'shared/subtitle',
          text: current_user.is?('Parent') ? t('.messages') : t('.support_requests')
 
-- unless current_user.is?('Admin')
-  %details{
-    class: 'm-3 bg-secondary text-white font-semibold rounded overflow-hidden',
-    id: 'create_request'
-  }
+%main.flex.flex-col.gap-3.p-3
+  %details.dropdown{ id: 'create_request' }
     %summary.cursor-pointer.bg-secondary.p-2
       = current_user.is?('Parent') ? t('.new_message') : t('.new_request')
     = render 'support_requests/form',
              request: SupportRequest.new
 
-%main.flex.flex-col.gap-3.p-3
   - if @support_requests.empty?
     %h2.mt-12
       = current_user.is?('Parent') ? t('.no_messages') : t('.no_support_requests')

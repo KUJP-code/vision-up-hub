@@ -8,6 +8,8 @@ ja:
       test: "テスト"
       today: "今日"
       tutorials: "チュートリアル"
+    show:
+      welcome: "ようこそ、 %{name}"
     subtitle:
       future_lessons: "次の授業: %{date}"
       past_lessons: "過去の授業: %{date}"

@@ -8,6 +8,8 @@ en:
       test: "Tests"
       today: "Today"
       tutorials: "Tutorials"
+    show:
+      welcome: "Welcome, %{name}"
     subtitle:
       future_lessons: "Future lessons for %{date}"
       past_lessons: "Past lessons for %{date}"

@@ -1,3 +1,14 @@
+:ruby
+  base = 'flex gap-6 p-3'
+  mobile = 'flex-col justify-start items-stretch'
+  desktop = 'md:flex-row md:items-center md:justify-center'
+
 = turbo_frame_tag 'teacher_lessons' do
-  - @levels.each do |level|
-    = image_tag "levels/#{level}.svg"
+  = render 'shared/subtitle', text: t('.welcome', name: current_user.name)
+
+  %main{ class: "#{base} #{mobile} #{desktop}" }
+    - @levels.each do |level|
+      = link_to '',
+                class: 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3' do
+        = image_tag "levels/#{level}.svg"
+        %h1= level.titleize
