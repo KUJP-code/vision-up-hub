@@ -22,7 +22,7 @@ module Courseable
 
       day = date.strftime('%A').downcase
       week = course_week(date)
-      lessons.where(course_lessons: { day:, week: })
+      lessons.released.where(course_lessons: { day:, week: })
     end
   end
 end

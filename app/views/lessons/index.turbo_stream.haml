@@ -11,4 +11,4 @@
 
     - @lessons.each do |lesson|
       %button.card{ type: 'button' }
-        = lesson.type.titleize
+        = link_to lesson.type.titleize, lesson_path(lesson)

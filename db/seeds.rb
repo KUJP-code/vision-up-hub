@@ -1,6 +1,8 @@
 require 'factory_bot_rails'
 fb = FactoryBot
 
+puts 'Adding test files...'
+
 File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')) do |f|
   ActiveStorage::Blob.create_and_upload!(
     io: f,
@@ -9,6 +11,14 @@ File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')) do |f|
   )
 end
 test_file = ActiveStorage::Blob.find_by(filename: 'Brett_Tanner_Resume.pdf')
+
+puts 'Creating features...'
+
+features = %i[elementary evening kindy]
+
+features.each do |feature|
+  Flipper.enable(feature)
+end
 
 puts 'Creating organisations...'
 
@@ -69,25 +79,24 @@ puts "Creating today's lessons..."
 released_attrs = { released: true, status: :accepted,
                    admin_approval: [{ id: admin.id, name: admin.name }] }
 
-Lesson::TYPES.each do |type|
-  next if type == 'PhonicsClass'
-
-  puts "Creating #{type}..."
-  lesson = Lesson.create!(
-    fb.attributes_for(type.underscore.to_sym)
-    .merge(released_attrs)
-  )
+%i[kindy elementary].each do |level|
+  fb.create(:daily_activity, level:, **released_attrs)
 end
 
-%i[land_one sky_one galaxy_one].each do |level|
+fb.create(:kindy_phonic, **released_attrs)
+
+%i[kindy land_one sky_one galaxy_one].each do |level|
   fb.create(:english_class, level:, **released_attrs)
   fb.create(:phonics_class, level:, **released_attrs)
   fb.create(:stand_show_speak, level:, **released_attrs)
 end
 
+%i[keep_up_one specialist].each do |level|
+  fb.create(:english_class, level:, **released_attrs)
+end
+
 Lesson.all.each do |lesson|
   lesson.attach_guide
-  lesson.proposals << fb.create( lesson.type.underscore.to_sym, :proposal)
 end
 
 Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
