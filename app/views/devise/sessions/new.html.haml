@@ -1,10 +1,10 @@
 = render 'devise/nav'
 
-%main.h-screen.-mt-16.flex.justify-center.items-center.p-1
+%main.h-screen.mt-0.flex.justify-center.items-center.p-1
   = form_for resource,
              as: resource_name,
              url: session_path(resource_name),
-             html: { class: 'form gap-6 bg-neutral-light rounded p-6' } do |f|
+             html: { class: 'form gap-6 bg-white rounded p-6' } do |f|
     .flex.flex-col.md:flex-row.items-center.justify-between.gap-3.md:gap-6
       = f.label :email
       = f.email_field :email, autofocus: true, autocomplete: 'email'
