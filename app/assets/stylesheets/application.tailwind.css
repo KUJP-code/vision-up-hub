@@ -22,7 +22,7 @@
 	input,
 	select,
 	textarea {
-		@apply border-2 border-main rounded;
+		@apply border-2 border-main rounded bg-white;
 		padding: 0.25rem;
 
 		&:disabled {
@@ -92,10 +92,6 @@
 		.main-nav-link-text {
 			@apply block;
 		}
-	}
-
-	select {
-		background: none;
 	}
 
 	small {
