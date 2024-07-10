@@ -2,7 +2,7 @@
 
 module ApplicationHelper
   def body_classes
-    base_classes = 'text-secondary font-medium'
+    base_classes = 'text-secondary font-medium bg-neutral-light'
     if user_signed_in?
       "#{base_classes} h-[calc(100vh-3.5rem)] w-[calc(100vw-4rem)] ml-16"
     else
