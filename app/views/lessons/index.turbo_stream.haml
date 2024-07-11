@@ -1,16 +1,17 @@
 = turbo_stream.update 'teacher_lessons' do
   %main.p-6.gap-3
-    %nav.h-14.w-full.flex.items-center.justify-center.py-2
+    %nav.w-full.flex.flex-col.md:flex-row.justify-center.gap-2.md:border-b-2.md:border-secondary
       - @valid_levels.each do |level|
         = link_to level.titleize,
                   lessons_path(date: @date, level:, teacher_id: @teacher.id),
-                  class: "btn #{@level == level ? 'btn-primary' : 'btn-secondary'}",
+                  class: "lvl_nav #{@level == level ? 'active' : 'inactive'}",
                   data: { turbo_stream: true }
 
-    %section.grid.grid-cols-2.md:grid-cols-5.gap-3
-      - @lessons.each do |lesson|
+    %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
+      - @types.each do |type|
         %button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
                  type: 'button' }
-          = image_tag type_icon_path(lesson), class: 'h-full'
+          = image_tag "lesson_types/#{type.underscore}.svg",
+                      class: 'h-full'
           %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-          = lesson.type.titleize
+          = type.titleize

@@ -152,6 +152,18 @@
     @apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
   }
 
+  .lvl_nav {
+    @apply basis-1/6 text-center rounded md:rounded-t md:rounded-b-none border-t-2 border-x-2 border-b-2 md:border-b-0 border-secondary;
+
+    &.active {
+      @apply md:relative p-1 md:p-2 md:after:h-2 md:after:w-full md:after:absolute md:after:-bottom-1 md:after:left-0 md:after:bg-neutral-light;
+    }
+
+    &.inactive {
+      @apply border-secondary-50 text-secondary-50 md:mt-2 p-1;
+    }
+  }
+
   .sub_nav_link {
     @apply bg-secondary text-white rounded p-2;
   }
