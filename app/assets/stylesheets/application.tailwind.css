@@ -156,10 +156,14 @@
 	}
 
 	#subtitle {
-		@apply absolute top-0 left-0 right-0 bg-white text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
+		@apply absolute top-0 left-0 right-0 bg-white text-secondary font-extrabold h-14 flex items-center justify-center gap-6;
 
 		a {
 			@apply items-center justify-center h-full text-nowrap;
+		}
+
+		a#back {
+			@apply ml-16;
 		}
 	}
 

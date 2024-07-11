@@ -103,7 +103,6 @@ module ApplicationHelper
   def user_subcontroller?(controller, title)
     return true if current_user_own_profile? && %w[home today].include?(title)
     return false if title != 'users' || current_user_own_profile?
-    return true if controller == 'sales'
 
     controller_as_type = controller.titleize.tr(' ', '').singularize
     User::TYPES.include?(controller_as_type)
