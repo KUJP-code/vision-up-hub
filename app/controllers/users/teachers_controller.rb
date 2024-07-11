@@ -4,7 +4,7 @@ class TeachersController < UsersController
   before_action :set_form_data, only: %i[new edit]
 
   def show
-    @levels = %w[kindy elementary evening]
+    @levels = %w[kindy elementary keep_up specialist]
               .select { |level| Flipper.enabled?(:"#{level}", @user) }
   end
 

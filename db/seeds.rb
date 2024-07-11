@@ -14,7 +14,7 @@ test_file = ActiveStorage::Blob.find_by(filename: 'Brett_Tanner_Resume.pdf')
 
 puts 'Creating features...'
 
-features = %i[elementary evening kindy]
+features = %i[elementary keep_up kindy specialist]
 
 features.each do |feature|
   Flipper.enable(feature)
@@ -91,8 +91,10 @@ fb.create(:kindy_phonic, **released_attrs)
   fb.create(:stand_show_speak, level:, **released_attrs)
 end
 
+PhonicsClass.find_by(level: :kindy).destroy
+
 %i[keep_up_one specialist].each do |level|
-  fb.create(:english_class, level:, **released_attrs)
+  fb.create(:evening_class, level:, **released_attrs)
 end
 
 Lesson.all.each do |lesson|

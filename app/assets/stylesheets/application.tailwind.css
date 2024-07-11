@@ -3,184 +3,184 @@
 @tailwind utilities;
 
 @layer base {
-	details[open] {
-		@apply z-10;
-	}
+  details[open] {
+    @apply z-10;
+  }
 
-	h1 {
-		@apply text-3xl text-center;
-	}
+  h1 {
+    @apply text-3xl text-center;
+  }
 
-	h2 {
-		@apply text-2xl text-center;
-	}
+  h2 {
+    @apply text-2xl text-center;
+  }
 
-	h3 {
-		@apply text-xl;
-	}
+  h3 {
+    @apply text-xl;
+  }
 
-	input,
-	select,
-	textarea {
-		@apply border-2 border-main rounded bg-white;
-		padding: 0.25rem;
+  input,
+  select,
+  textarea {
+    @apply border-2 border-main rounded bg-white;
+    padding: 0.25rem;
 
-		&:disabled {
-			cursor: not-allowed;
-			background-color: #f5f5f5;
-		}
-	}
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #f5f5f5;
+    }
+  }
 
-	input[type="submit"] {
-		border: none;
-	}
+  input[type="submit"] {
+    border: none;
+  }
 
-	input::-webkit-inner-spin-button,
-	input::-webkit-outer-spin-button,
-	input[type="number"] {
-		-webkit-appearance: none;
-		margin: 0;
-	}
+  input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button,
+  input[type="number"] {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-	input[type="number"] {
-		appearance: textfield;
-		-moz-appearance: textfield;
-	}
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
 
-	main {
-		@apply h-full bg-neutral-light mt-14 overflow-y-scroll w-full;
-	}
+  main {
+    @apply h-full bg-neutral-light mt-14 overflow-y-scroll w-full;
+  }
 
-	#main-nav {
-		@apply w-16;
+  #main-nav {
+    @apply w-16;
 
-		.main-nav-link {
-			@apply basis-16 flex items-center justify-center hover:scale-105 transition text-main-nav-inactive gap-3;
+    .main-nav-link {
+      @apply basis-16 flex items-center justify-center hover:scale-105 transition text-main-nav-inactive gap-3;
 
-			&.active {
-				color: white;
-				position: relative;
+      &.active {
+        color: white;
+        position: relative;
 
-				&::before {
-					content: "";
-					position: absolute;
-					top: 0;
-					left: -3px;
-					bottom: 0;
-					border-radius: 0.5rem;
-					width: 6px;
-					background-color: white;
-				}
-			}
-		}
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: -3px;
+          bottom: 0;
+          border-radius: 0.5rem;
+          width: 6px;
+          background-color: white;
+        }
+      }
+    }
 
-		.main-nav-link-text {
-			@apply hidden font-bold;
-		}
-	}
+    .main-nav-link-text {
+      @apply hidden font-bold;
+    }
+  }
 
-	#main-nav.open {
-		@apply w-48;
+  #main-nav.open {
+    @apply w-48;
 
-		.main-nav-link {
-			@apply justify-start px-4;
-		}
+    .main-nav-link {
+      @apply justify-start px-4;
+    }
 
-		.main-nav-link-text {
-			@apply block;
-		}
-	}
+    .main-nav-link-text {
+      @apply block;
+    }
+  }
 
-	small {
-		@apply text-sm text-slate-400;
-	}
+  small {
+    @apply text-sm text-slate-400;
+  }
 }
 
 @layer components {
-	.btn {
-		@apply rounded text-white;
-		cursor: pointer;
-		padding: 0.5rem 1rem;
-		font-weight: 700;
-		text-align: center;
+  .btn {
+    @apply rounded text-white;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    text-align: center;
 
-		&:disabled {
-			cursor: not-allowed;
-		}
+    &:disabled {
+      cursor: not-allowed;
+    }
 
-		&:hover {
-			opacity: 0.9;
-		}
-	}
+    &:hover {
+      opacity: 0.9;
+    }
+  }
 
-	.btn-primary {
-		@apply bg-main;
-	}
+  .btn-primary {
+    @apply bg-main;
+  }
 
-	.btn-danger {
-		@apply bg-danger text-white;
+  .btn-danger {
+    @apply bg-danger text-white;
 
-		&:hover {
-			@apply bg-red-500;
-		}
-	}
+    &:hover {
+      @apply bg-red-500;
+    }
+  }
 
-	.btn-secondary {
-		@apply bg-secondary;
-	}
+  .btn-secondary {
+    @apply bg-secondary;
+  }
 
-	.card {
-		@apply bg-white rounded shadow-lg shadow-slate-500;
-	}
+  .card {
+    @apply bg-white rounded shadow-lg shadow-gray-200;
+  }
 
-	.form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem;
-	}
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
 
-	.form-group {
-		@apply w-full flex flex-col items-stretch gap-2;
+  .form-group {
+    @apply w-full flex flex-col items-stretch gap-2;
 
-		label {
-			@apply text-xl font-bold text-center;
-		}
-	}
+    label {
+      @apply text-xl font-bold text-center;
+    }
+  }
 
-	.dropdown {
-		@apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
-	}
+  .dropdown {
+    @apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
+  }
 
-	.sub_nav_link {
-		@apply bg-secondary text-white rounded p-2;
-	}
+  .sub_nav_link {
+    @apply bg-secondary text-white rounded p-2;
+  }
 
-	#subtitle {
-		@apply absolute top-0 left-0 right-0 bg-white text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
+  #subtitle {
+    @apply absolute top-0 left-0 right-0 bg-white text-secondary font-extrabold h-14 flex items-center justify-center gap-6 ml-16;
 
-		h1 {
-			@apply text-lg md:text-xl;
-		}
+    h1 {
+      @apply text-lg md:text-xl;
+    }
 
-		a {
-			@apply items-center justify-center h-full text-nowrap;
-		}
-	}
+    a {
+      @apply items-center justify-center h-full text-nowrap;
+    }
+  }
 
-	.thead-e {
-		@apply rounded-e;
-	}
+  .thead-e {
+    @apply rounded-e;
+  }
 
-	.thead {
-		@apply p-2 text-white border-r border-r-white;
-	}
+  .thead {
+    @apply p-2 text-white border-r border-r-white;
+  }
 
-	.thead-s {
-		@apply border-r border-r-white rounded-s;
-	}
+  .thead-s {
+    @apply border-r border-r-white rounded-s;
+  }
 
-	.turbo-progress-bar {
-		display: none !important;
-	}
+  .turbo-progress-bar {
+    display: none !important;
+  }
 }

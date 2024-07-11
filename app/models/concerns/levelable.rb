@@ -13,7 +13,6 @@ module Levelable
     scope :elementary, -> { land.or(sky).or(galaxy) }
     scope :keep_up, -> { where(level: %i[keep_up_one keep_up_two]) }
     scope :specialist, -> { where(level: %i[specialist specialist_advanced]) }
-    scope :evening, -> { keep_up.or(specialist) }
 
     def elementary?
       %w[all_levels kindy keep_up_one keep_up_two specialist specialist_advanced]

@@ -145,11 +145,11 @@ class LessonsController < ApplicationController
     @teacher = Teacher.find(params[:teacher_id])
     @level = validated_level(params[:level], @teacher)
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    @lessons = policy_scope(@teacher.day_lessons(@date).send(@level))
+    @lessons = policy_scope(@teacher.day_lessons(@date)).send(@level)
   end
 
   def validated_level(level_param, teacher)
-    @valid_levels = %w[kindy elementary evening]
+    @valid_levels = %w[kindy elementary keep_up specialist]
                     .select { |level| Flipper.enabled?(:"#{level}", teacher) }
     if @valid_levels.none?(level_param)
       return redirect_back fallback_location: root_path,
