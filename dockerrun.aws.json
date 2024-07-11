@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.15.2-misc-qol"
+    "Name": "thatbballguy/materials:0.15.3-csv-testresults"
   },
   "Ports": [
     {
