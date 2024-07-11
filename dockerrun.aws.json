@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.15.3-csv-testresults"
+    "Name": "thatbballguy/materials:0.15.4-testresult-school"
   },
   "Ports": [
     {
