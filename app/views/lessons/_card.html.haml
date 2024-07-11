@@ -1,0 +1,8 @@
+-# locals: (type:)
+
+%button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
+         type: 'button' }
+  = image_tag "lesson_types/#{type.underscore}.svg",
+              class: 'h-full'
+  %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+  = type.titleize

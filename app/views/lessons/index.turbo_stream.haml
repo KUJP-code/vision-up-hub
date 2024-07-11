@@ -8,10 +8,10 @@
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
+      - %w[arrival_time brush_up snack_time].each do |type|
+        = render 'lessons/card', type:
+
       - @types.each do |type|
-        %button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
-                 type: 'button' }
-          = image_tag "lesson_types/#{type.underscore}.svg",
-                      class: 'h-full'
-          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-          = type.titleize
+        = render 'lessons/card', type:
+
+      = render 'lessons/card', type: 'bus_time'
