@@ -18,6 +18,7 @@ export default {
 							danger: "#ef7877",
 							main: "#69c0dd",
 							"main-50": "#aadaeb",
+							"main-nav-inactive": "#aadaeb",
 							"neutral-dark": "#b2aabf",
 							"neutral-light": "#f1f1f1",
 							secondary: "#645880",
@@ -28,7 +29,7 @@ export default {
 							sans: ["'M PLUS 1p'", "sans-serif"],
 						},
 						borderRadius: {
-							DEFAULT: "0.5rem",
+							DEFAULT: "0.625rem",
 						},
 					},
 				},

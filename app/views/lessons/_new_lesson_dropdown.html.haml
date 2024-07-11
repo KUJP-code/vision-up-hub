@@ -1,7 +1,6 @@
 -# locals: ()
 
-%details{ class: 'cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden',
-          id: 'create_lesson' }
+%details.dropdown{ id: 'create_lesson' }
   %summary.p-2.font-semibold Create a lesson
   %nav.flex.flex-col.p-2
     - Lesson::TYPES.each do |type|

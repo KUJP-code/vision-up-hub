@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def body_classes
+    base_classes = 'text-secondary font-medium bg-neutral-light'
+    if user_signed_in?
+      "#{base_classes} h-[calc(100vh-3.5rem)] w-[calc(100vw-4rem)] ml-16"
+    else
+      "#{base_classes} h-[calc(100vh-3.5rem)] w-screen"
+    end
+  end
+
   def ja_date(date)
     return '' if date.nil?
 
@@ -14,20 +23,17 @@ module ApplicationHelper
   end
 
   def main_nav_link(title, path)
-    link_to t(".#{title}"),
-            path,
-            class: main_nav_class(title, controller_name)
+    active = active_main_nav_link?(title, controller_name)
+    link_to path, class: main_nav_class(title, controller_name) do
+      (render "shared/svgs/#{title}", classes: "w-8 shrink-0 #{'fill-white' if active}") +
+        content_tag(:span, t(".#{title}"), class: 'main-nav-link-text')
+    end
   end
 
   def main_nav_class(title, controller)
-    default_classes = 'p-3 hover:scale-105 transition'
-    if controller == title ||
-       controller.include?(title) ||
-       user_subcontroller?(controller, title)
-      return "#{default_classes} text-main bg-white rounded"
-    end
+    return 'main-nav-link' unless active_main_nav_link?(title, controller)
 
-    "#{default_classes} text-white"
+    'main-nav-link active'
   end
 
   def org_favicon(user = nil)
@@ -76,25 +82,26 @@ module ApplicationHelper
     safe_join(list)
   end
 
-  def locale_toggle
+  def locale_toggle(classes = '')
     new_locale = I18n.locale == :en ? :ja : :en
-    svg_tag = image_tag("#{I18n.locale}.svg",
-                        alt: "Switch to #{new_locale.to_s.upcase}",
-                        width: 50, height: 50)
-    link_to(
-      svg_tag,
-      url_for(request.query_parameters
-                     .merge(locale: new_locale)),
-      class: 'shrink-0 p-3 flex items-center justify-center transition hover:scale-105',
-      id: 'locale_toggle',
-      title: "Switch to #{new_locale.to_s.upcase}"
-    )
+    link_to url_for(request.query_parameters.merge(locale: new_locale)),
+            class: main_nav_class('locale', ''),
+            id: 'locale_toggle',
+            title: "Switch to #{new_locale.to_s.upcase}" do
+      render "shared/svgs/#{new_locale}", classes:
+    end
   end
 
   private
 
+  def active_main_nav_link?(title, controller)
+    controller == title ||
+      controller.include?(title) ||
+      user_subcontroller?(controller, title)
+  end
+
   def user_subcontroller?(controller, title)
-    return true if current_user_own_profile? && title == 'today'
+    return true if current_user_own_profile? && %w[home today].include?(title)
     return false if title != 'users' || current_user_own_profile?
     return true if controller == 'sales'
 

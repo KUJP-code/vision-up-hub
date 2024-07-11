@@ -1,13 +1,13 @@
 -# locals: (org: current_user.organisation_id)
 
-%details{ class: 'cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden',
-          id: 'create_user' }
+%details.dropdown{ id: 'create_user' }
   %summary.font-semibold.p-2= t('.create_new')
   %nav.flex.flex-col.p-2
     - current_user.class::VISIBLE_TYPES.each do |type|
       - next if !current_user.ku? && User::KU_TYPES.include?(type)
 
-      - type_path = send(:"new_organisation_#{type.singularize.underscore}_path", org)
+      - type_path = send(:"new_organisation_#{type.singularize.underscore}_path",
+                         org)
       = link_to split_on_capitals(type),
                 type_path,
                 class: 'p-1 font-semibold border-t-2 border-white',

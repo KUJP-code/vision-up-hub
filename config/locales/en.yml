@@ -63,6 +63,7 @@ en:
         delimiter: ""
   shared:
     nav:
+      home: "Home"
       sign_out: "Sign Out"
     subtitle:
       back: "Back"
