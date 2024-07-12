@@ -15,13 +15,10 @@ class LessonsController < ApplicationController
   end
 
   def show
-    @courses = @lesson.courses
-    @proposals = @lesson.proposals
-                        .order(created_at: :desc)
-                        .includes(:creator)
-    @resources = @lesson.resources.includes(:blob).order('active_storage_blobs.filename ASC')
-    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
-    @phonics_resources = @lesson.phonics_resources.includes(:blob) if @lesson.type == 'PhonicsClass'
+    respond_to do |format|
+      format.html { staff_show }
+      format.turbo_stream { teacher_show }
+    end
   end
 
   def new
@@ -164,4 +161,16 @@ class LessonsController < ApplicationController
       .where(id: teacher.day_lessons(date).ids)
       .send(level).pluck(:type).uniq
   end
+
+  def staff_show
+    @courses = @lesson.courses
+    @proposals = @lesson.proposals
+                        .order(created_at: :desc)
+                        .includes(:creator)
+    @resources = @lesson.resources.includes(:blob).order('active_storage_blobs.filename ASC')
+    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
+    @phonics_resources = @lesson.phonics_resources.includes(:blob) if @lesson.type == 'PhonicsClass'
+  end
+
+  def teacher_show; end
 end

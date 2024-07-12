@@ -16,6 +16,9 @@ application.register("course-lessons", CourseLessonsController);
 import DetailsController from "./details_controller";
 application.register("details", DetailsController);
 
+import DialogController from "./dialog_controller";
+application.register("dialog", DialogController);
+
 import NavController from "./nav_controller";
 application.register("nav", NavController);
 

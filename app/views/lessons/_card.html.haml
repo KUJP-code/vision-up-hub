@@ -1,6 +1,9 @@
 -# locals: (type:)
 
 %button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
+         data: { action: 'dialog#open',
+                 controller: 'dialog',
+                 'dialog-id-value': 'lesson-resources' },
          type: 'button' }
   = image_tag "lesson_types/#{type.underscore}.svg",
               class: 'h-full'

@@ -6,6 +6,12 @@
 = render 'teachers/subtitle',
          date: Time.zone.today, level: @levels.first, teacher: @user
 
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+
 %main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
   - @levels.each do |level|
     = link_to lessons_path(level:, teacher_id: @user.id),
