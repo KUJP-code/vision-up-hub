@@ -15,14 +15,17 @@ export default {
 					selectors: [":root"],
 					theme: {
 						colors: {
-							danger: "#ef7877",
-							main: "#69c0dd",
 							"main-50": "#aadaeb",
 							"main-nav-inactive": "#aadaeb",
 							"neutral-dark": "#b2aabf",
 							"neutral-light": "#f1f1f1",
-							secondary: "#645880",
 							"secondary-50": "#b2aabf",
+							danger: "#ef7877",
+							galaxy: "#bc8ebe",
+							land: "#b0d07a",
+							main: "#69c0dd",
+							secondary: "#645880",
+							sky: "8eccda",
 							success: "#8ac273",
 						},
 						fontFamily: {

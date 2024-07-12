@@ -15,10 +15,9 @@ class LessonsController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html { staff_show }
-      format.turbo_stream { teacher_show }
-    end
+    teacher_show if teacher_request?
+
+    staff_show
   end
 
   def new
@@ -113,7 +112,25 @@ class LessonsController < ApplicationController
   end
 
   def set_lesson
-    @lesson = authorize Lesson.find(params[:id])
+    @lesson = if teacher_request?
+                authorize set_teacher_lesson
+              else
+                authorize Lesson.find(params[:id])
+              end
+  end
+
+  def set_teacher_lesson
+    set_date_level_teacher
+    @type = validated_type(params[:type])
+    @type_lessons = day_lessons(@teacher, @date)
+                    .send(@level).where(type: @type)
+                    .order(level: :asc)
+
+    if params[:id].to_i.zero?
+      @type_lessons.first
+    else
+      Lesson.find(params[:id])
+    end
   end
 
   def generate_guide
@@ -139,10 +156,16 @@ class LessonsController < ApplicationController
   end
 
   def teacher_index
-    @teacher = Teacher.find(params[:teacher_id])
+    set_date_level_teacher
     @level = validated_level(params[:level], @teacher)
+    @types = day_lessons(@teacher, @date)
+             .send(@level).pluck(:type).uniq
+  end
+
+  def set_date_level_teacher
+    @teacher = Teacher.find(params[:teacher_id])
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    @types = daily_lesson_types(@teacher, @date, @level)
+    @level = validated_level(params[:level], @teacher)
   end
 
   def validated_level(level_param, teacher)
@@ -156,10 +179,17 @@ class LessonsController < ApplicationController
     level_param
   end
 
-  def daily_lesson_types(teacher, date, level)
-    policy_scope(Lesson)
-      .where(id: teacher.day_lessons(date).ids)
-      .send(level).pluck(:type).uniq
+  def validated_type(type_param)
+    if Lesson::TYPES.none?(type_param)
+      return redirect_back fallback_location: root_path,
+                           alert: "Invalid level: #{level_param}"
+    end
+
+    type_param
+  end
+
+  def day_lessons(teacher, date)
+    policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
   end
 
   def staff_show
@@ -172,5 +202,12 @@ class LessonsController < ApplicationController
     @phonics_resources = @lesson.phonics_resources.includes(:blob) if @lesson.type == 'PhonicsClass'
   end
 
-  def teacher_show; end
+  def teacher_request?
+    params[:type].present? &&
+      params[:date].present? && params[:teacher_id].present?
+  end
+
+  def teacher_show
+    render 'lessons/teacher_show'
+  end
 end

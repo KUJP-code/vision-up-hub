@@ -6,7 +6,7 @@ class LessonPolicy < ApplicationPolicy
   end
 
   def show?
-    authorized_ku_staff?
+    authorized_ku_staff? || user.is?('Teacher')
   end
 
   def new?

@@ -1,0 +1,37 @@
+:ruby
+  sorted_resources = (@lesson.resources + @lesson.phonics_resources).sort_by { |r| r.blob.filename }
+  lvl_class = { 'Land' => 'border-land text-land',
+                'Sky' => 'border-sky text-sky',
+                'Galaxy' => 'border-galaxy text-galaxy' }[@lesson.short_level]
+
+= turbo_frame_tag 'lesson' do
+  .h-full.flex.flex-col.gap-3.p-8.text-secondary
+    %header.h-20.grid.grid-cols-5.grid-rows-2
+      %h1{ class: "col-span-3 border-b-2 border-secondary text-start font-bold text-2xl #{lvl_class.split.first}" }
+        = @lesson.type.titleize
+      %h1{ class: "border-b-2 border-secondary font-bold text-2xl text-end #{lvl_class}" }
+        = @lesson.short_level.upcase
+      = image_tag type_icon_path(@lesson),
+                  class: 'place-self-center row-span-2'
+      %h3.col-span-4.font-semibold.text-lg= @lesson.goal
+
+    %section{ class: 'w-1/3' }
+      - if @lesson.guide.attached?
+        = link_to file_path(id: @lesson.guide.blob.id),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn-resource w-4/5' do
+          %span{ class: 'basis-5/6 truncate' } Guide
+          = render 'shared/svgs/download_icon',
+                   classes: 'fill-secondary'
+
+    %section.grid.grid-cols-2.gap-8.items-center.overflow-y-scroll
+      %h3.col-span-2.font-semibold.text-lg Resources
+      - sorted_resources.each do |r|
+        = link_to file_path(r.blob),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn-resource w-5/6' do
+          %span{ class: 'basis-5/6 truncate' }= r.blob.filename
+          = render 'shared/svgs/download_icon',
+                   classes: 'fill-secondary basis-1/6'

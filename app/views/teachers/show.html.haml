@@ -8,9 +8,10 @@
 
 %dialog.resources-dialog#lesson-resources
   .body
-    %form
+    %form.h-0
       %button{ formmethod: :dialog }
         = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'lesson'
 
 %main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
   - @levels.each do |level|
@@ -18,4 +19,4 @@
               class: 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3',
               data: { turbo_stream: true } do
       = image_tag "levels/#{level}.svg"
-      %h1= level.titleize
+      %h1.text-center.text-3xl= level.titleize

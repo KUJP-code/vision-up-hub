@@ -18,12 +18,18 @@
       - unless evening
         - %w[arrival_time brush_up snack_time].each do |type|
           = render partial: 'lessons/card',
-                   formats: [:html], locals: { type: }
+                   formats: [:html],
+                   locals: { date: @date, level: @level,
+                             teacher_id: @teacher.id, type: }
 
       - @types.each do |type|
         = render partial: 'lessons/card',
-                 formats: [:html], locals: { type: }
+                 formats: [:html],
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: }
 
       - unless evening
         = render partial: 'lessons/card',
-                 formats: [:html], locals: { type: 'bus_time' }
+                 formats: [:html],
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: 'bus_time' }
