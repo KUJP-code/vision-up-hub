@@ -8,16 +8,29 @@ class LessonsController < ApplicationController
   after_action :generate_guide, only: %i[create update]
 
   def index
-    respond_to do |format|
-      format.html { staff_index }
-      format.turbo_stream { teacher_index }
-    end
+    raise Pundit::NotAuthorizedError unless current_user.is?('Admin', 'Writer')
+
+    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
+    @writers = policy_scope(User)
+               .where(type: %w[Admin Writer]).pluck(:name, :id)
   end
 
   def show
-    teacher_show if teacher_request?
+    @courses = @lesson.courses
+    @proposals = @lesson.proposals
+                        .order(created_at: :desc)
+                        .includes(:creator)
+    @resources = @lesson.resources.includes(:blob)
+                        .order('active_storage_blobs.filename ASC')
 
-    staff_show
+    if current_user.is?('Admin')
+      @writers = User.where(type: %w[Admin Writer])
+                     .pluck(:name, :id)
+    end
+    return unless @lesson.type == 'PhonicsClass'
+
+    @phonics_resources = @lesson.phonics_resources
+                                .includes(:blob)
   end
 
   def new
@@ -112,25 +125,7 @@ class LessonsController < ApplicationController
   end
 
   def set_lesson
-    @lesson = if teacher_request?
-                authorize set_teacher_lesson
-              else
-                authorize Lesson.find(params[:id])
-              end
-  end
-
-  def set_teacher_lesson
-    set_date_level_teacher
-    @type = validated_type(params[:type])
-    @type_lessons = day_lessons(@teacher, @date)
-                    .send(@level).where(type: @type)
-                    .order(level: :asc)
-
-    if params[:id].to_i.zero?
-      @type_lessons.first
-    else
-      Lesson.find(params[:id])
-    end
+    @lesson = authorize Lesson.find(params[:id])
   end
 
   def generate_guide
@@ -146,68 +141,5 @@ class LessonsController < ApplicationController
       I18n.t('approve'), I18n.t('awaiting_approval'), I18n.t('not_approved'), I18n.t('update_notes')
     ]
     status_attrs.none?(params[:commit])
-  end
-
-  def staff_index
-    raise Pundit::NotAuthorizedError unless current_user.is?('Admin', 'Writer')
-
-    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
-    @writers = policy_scope(User).where(type: %w[Admin Writer]).pluck(:name, :id)
-  end
-
-  def teacher_index
-    set_date_level_teacher
-    @level = validated_level(params[:level], @teacher)
-    @types = day_lessons(@teacher, @date)
-             .send(@level).pluck(:type).uniq
-  end
-
-  def set_date_level_teacher
-    @teacher = Teacher.find(params[:teacher_id])
-    @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    @level = validated_level(params[:level], @teacher)
-  end
-
-  def validated_level(level_param, teacher)
-    @valid_levels = %w[kindy elementary keep_up specialist]
-                    .select { |level| Flipper.enabled?(:"#{level}", teacher) }
-    if @valid_levels.none?(level_param)
-      return redirect_back fallback_location: root_path,
-                           alert: "Invalid level: #{level_param}"
-    end
-
-    level_param
-  end
-
-  def validated_type(type_param)
-    if Lesson::TYPES.none?(type_param)
-      return redirect_back fallback_location: root_path,
-                           alert: "Invalid level: #{level_param}"
-    end
-
-    type_param
-  end
-
-  def day_lessons(teacher, date)
-    policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
-  end
-
-  def staff_show
-    @courses = @lesson.courses
-    @proposals = @lesson.proposals
-                        .order(created_at: :desc)
-                        .includes(:creator)
-    @resources = @lesson.resources.includes(:blob).order('active_storage_blobs.filename ASC')
-    @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id) if current_user.is?('Admin')
-    @phonics_resources = @lesson.phonics_resources.includes(:blob) if @lesson.type == 'PhonicsClass'
-  end
-
-  def teacher_request?
-    params[:type].present? &&
-      params[:date].present? && params[:teacher_id].present?
-  end
-
-  def teacher_show
-    render 'lessons/teacher_show'
   end
 end

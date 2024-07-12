@@ -2,6 +2,7 @@
   base = 'flex gap-6 p-3'
   mobile = 'flex-col justify-start items-stretch'
   desktop = 'md:flex-row md:items-center md:justify-center'
+  card = 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3'
 
 = render 'teachers/subtitle',
          date: Time.zone.today, level: @levels.first, teacher: @user
@@ -15,8 +16,7 @@
 
 %main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
   - @levels.each do |level|
-    = link_to lessons_path(level:, teacher_id: @user.id),
-              class: 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3',
-              data: { turbo_stream: true } do
+    = link_to teacher_lessons_path(level:, teacher_id: @user.id),
+              class: card, data: { turbo_stream: true } do
       = image_tag "levels/#{level}.svg"
       %h1.text-center.text-3xl= level.titleize

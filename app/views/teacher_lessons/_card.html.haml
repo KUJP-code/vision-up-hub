@@ -1,12 +1,13 @@
 -# locals: (date:, level:, teacher_id:, type:)
 
+- src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
+
 %button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
          data: { action: 'dialog#open',
                  controller: 'dialog',
                  'dialog-dialog-value': 'lesson-resources',
                  'dialog-frame-value': 'lesson',
-                 'dialog-src-value': lesson_path(0, date:, level:,
-                                                    type:, teacher_id:) },
+                 'dialog-src-value': src },
          type: 'button' }
   = image_tag "lesson_types/#{type.underscore}.svg",
               class: 'h-full'
