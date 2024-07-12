@@ -12,15 +12,7 @@ class TeacherLessonsController < ApplicationController
   def show
     set_date_level_teacher
     @type = validated_type(params[:type])
-    @type_lessons = day_lessons(@teacher, @date)
-                    .send(@level).where(type: @type)
-                    .order(level: :asc)
-
-    @lesson = if params[:id].to_i.zero?
-                authorize @type_lessons.first
-              else
-                authorize Lesson.find(params[:id])
-              end
+    send(:"show_#{@type.titleize.downcase.tr(' ', '_')}")
   end
 
   private
@@ -55,9 +47,22 @@ class TeacherLessonsController < ApplicationController
   def validated_type(type_param)
     if Lesson::TYPES.none?(type_param)
       return redirect_back fallback_location: root_path,
-                           alert: "Invalid level: #{level_param}"
+                           alert: "Invalid level: #{type_param}"
     end
 
     type_param
+  end
+
+  def show_phonics_class
+    @type_lessons = day_lessons(@teacher, @date)
+                    .send(@level).where(type: @type)
+                    .order(level: :asc)
+
+    @lesson = if params[:id].to_i.zero?
+                authorize @type_lessons.first
+              else
+                authorize Lesson.find(params[:id])
+              end
+    render 'teacher_lessons/phonics_class'
   end
 end

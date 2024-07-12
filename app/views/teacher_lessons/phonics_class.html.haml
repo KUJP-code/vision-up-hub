@@ -5,6 +5,14 @@
                 'Galaxy' => 'text-galaxy' }[@lesson.short_level]
 
 = turbo_frame_tag 'lesson' do
+  - @type_lessons.each do |l|
+    - active = l == @lesson
+
+    = link_to teacher_lesson_path(l, teacher_id: @teacher.id, type: @type,
+                                     level: @level, date: @date),
+              class: "tab #{active ? 'active' : 'inactive'}" do
+      = image_tag level_icon_path(l)
+
   .h-full.flex.flex-col.gap-3.p-8.text-secondary
     %header.h-20.grid.grid-cols-5.grid-rows-2
       %h1.col-span-3.border-b-2.border-secondary.text-start.font-bold.text-2xl
