@@ -3,13 +3,13 @@
   mobile = 'flex-col justify-start items-stretch'
   desktop = 'md:flex-row md:items-center md:justify-center'
 
-= render 'shared/subtitle', text: t('.welcome', name: @user.name)
+= render 'teachers/subtitle',
+         date: Time.zone.today, level: @levels.first, teacher: @user
 
-= turbo_frame_tag 'teacher_lessons' do
-  %main{ class: "#{base} #{mobile} #{desktop}" }
-    - @levels.each do |level|
-      = link_to lessons_path(level:, teacher_id: @user.id),
-                class: 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3',
-                data: { turbo_stream: true } do
-        = image_tag "levels/#{level}.svg"
-        %h1= level.titleize
+%main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
+  - @levels.each do |level|
+    = link_to lessons_path(level:, teacher_id: @user.id),
+              class: 'card basis-1/2 max-w-full aspect-square p-3 flex flex-col gap-3',
+              data: { turbo_stream: true } do
+      = image_tag "levels/#{level}.svg"
+      %h1= level.titleize

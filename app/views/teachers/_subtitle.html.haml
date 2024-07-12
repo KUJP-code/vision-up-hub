@@ -1,4 +1,4 @@
--# locals: (date:, teacher:)
+-# locals: (date:, level:, teacher:)
 
 :ruby
   in_future = Time.zone.today < date
@@ -11,16 +11,20 @@
     t('.today_lessons')
   end
 
-= content_for :subtitle do
-  = turbo_frame_tag 'subtitle' do
-    %header
-      = link_to organisation_teacher_path(organisation_id: teacher.organisation_id,
-                                          id: teacher.id, date: date.prev_weekday),
-                class: 'w-12' do
-        = image_tag 'back.svg'
-      %h1.text-base.md:text-3xl= subtitle
-      = link_to organisation_teacher_path(organisation_id: teacher.organisation_id,
-                                          id: teacher.id, date: date.next_weekday),
-                class: 'w-12' do
-        = image_tag 'next.svg'
-      .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')
+%header#subtitle
+  = link_to lessons_path(date: date.prev_weekday,
+                         level:, teacher_id: teacher.id),
+            data: { turbo_stream: true },
+            class: 'w-12' do
+    = image_tag 'back.svg'
+  .flex.flex-col.text-center
+    %h1= subtitle
+    - if !in_past && !in_future
+      %small.text-xs.font-normal.text-secondary-50
+        = I18n.locale == 'ja' ? ja_date(date) : date.strftime('%A, %B %d, %Y')
+  = link_to lessons_path(date: date.next_weekday,
+                         level:, teacher_id: teacher.id),
+            data: { turbo_stream: true },
+            class: 'w-12' do
+    = image_tag 'next.svg'
+  .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')

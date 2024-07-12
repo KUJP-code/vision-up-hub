@@ -145,8 +145,7 @@ class LessonsController < ApplicationController
     @teacher = Teacher.find(params[:teacher_id])
     @level = validated_level(params[:level], @teacher)
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
-    @types = policy_scope(@teacher.day_lessons(@date))
-             .send(@level).pluck(:type).uniq
+    @types = daily_lesson_types(@teacher, @date, @level)
   end
 
   def validated_level(level_param, teacher)
@@ -158,5 +157,11 @@ class LessonsController < ApplicationController
     end
 
     level_param
+  end
+
+  def daily_lesson_types(teacher, date, level)
+    policy_scope(Lesson)
+      .where(id: teacher.day_lessons(date).ids)
+      .send(level).pluck(:type).uniq
   end
 end
