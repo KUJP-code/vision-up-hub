@@ -1,3 +1,5 @@
+- evening = %w[keep_up specialist].include?(@level)
+
 = turbo_stream.update 'teacher_lessons' do
   %main.p-6.gap-3
     %nav.w-full.flex.flex-col.md:flex-row.justify-center.gap-2.md:border-b-2.md:border-secondary
@@ -8,10 +10,11 @@
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
-      - %w[arrival_time brush_up snack_time].each do |type|
-        = render 'lessons/card', type:
+      - unless evening
+        - %w[arrival_time brush_up snack_time].each do |type|
+          = render 'lessons/card', type:
 
       - @types.each do |type|
         = render 'lessons/card', type:
 
-      = render 'lessons/card', type: 'bus_time'
+      = render 'lessons/card', type: 'bus_time' unless evening
