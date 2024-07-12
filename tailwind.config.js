@@ -25,7 +25,7 @@ export default {
 							land: "#b0d07a",
 							main: "#69c0dd",
 							secondary: "#645880",
-							sky: "8eccda",
+							sky: "#8eccda",
 							success: "#8ac273",
 						},
 						fontFamily: {

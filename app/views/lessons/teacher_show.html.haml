@@ -1,13 +1,13 @@
 :ruby
   sorted_resources = (@lesson.resources + @lesson.phonics_resources).sort_by { |r| r.blob.filename }
-  lvl_class = { 'Land' => 'border-land text-land',
-                'Sky' => 'border-sky text-sky',
-                'Galaxy' => 'border-galaxy text-galaxy' }[@lesson.short_level]
+  lvl_class = { 'Land' => 'text-land',
+                'Sky' => 'text-sky',
+                'Galaxy' => 'text-galaxy' }[@lesson.short_level]
 
 = turbo_frame_tag 'lesson' do
   .h-full.flex.flex-col.gap-3.p-8.text-secondary
     %header.h-20.grid.grid-cols-5.grid-rows-2
-      %h1{ class: "col-span-3 border-b-2 border-secondary text-start font-bold text-2xl #{lvl_class.split.first}" }
+      %h1.col-span-3.border-b-2.border-secondary.text-start.font-bold.text-2xl
         = @lesson.type.titleize
       %h1{ class: "border-b-2 border-secondary font-bold text-2xl text-end #{lvl_class}" }
         = @lesson.short_level.upcase
