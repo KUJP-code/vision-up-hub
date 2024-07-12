@@ -178,6 +178,10 @@
     a {
       @apply items-center justify-center h-full text-nowrap;
     }
+
+    a#back {
+      @apply ml-16;
+    }
   }
 
   .thead-e {

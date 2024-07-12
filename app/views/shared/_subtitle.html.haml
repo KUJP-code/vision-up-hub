@@ -3,7 +3,7 @@
 = content_for :subtitle do
   = turbo_frame_tag 'subtitle' do
     - unless viewing_self?
-      = link_to :back, class: 'hidden md:flex absolute left-6' do
+      = link_to :back, class: 'hidden md:flex absolute left-6', id: 'back' do
         = image_tag 'back.svg'
         %span= t('.back')
     %header

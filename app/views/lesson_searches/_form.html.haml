@@ -2,7 +2,7 @@
 
 :ruby
   field_classes = 'basis-1/5 flex-grow flex justify-center items-center gap-1'
-  levels = [%w[DAKindy 0], %w[DAElementary 1]] + Lesson.levels.map { |k, v| [k.titleize, v] }
+  levels = [%w[DAKindy 1], %w[DAElementary 2]] + Lesson.levels.map { |k, v| [k.titleize, v] }
   subtypes = DailyActivity.subtypes.merge(Exercise.subtypes).map { |k, v| [k.titleize, v] }
 
 = turbo_frame_tag 'lesson_search_frame',
