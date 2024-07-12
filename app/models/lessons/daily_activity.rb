@@ -38,7 +38,8 @@ class DailyActivity < Lesson
 
   enum level: {
     kindy: 0,
-    elementary: 1
+    elementary: 1,
+    new_elementary: 2
   }
 
   enum subtype: {
