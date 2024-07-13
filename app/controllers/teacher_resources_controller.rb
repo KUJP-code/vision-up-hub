@@ -6,7 +6,7 @@ class TeacherResourcesController < ApplicationController
   ALLOWED_CATEGORIES = CategoryResource.lesson_categories.keys
 
   def index
-    set_lesson_category
+    @lesson_cattegory = set_lesson_category
     @category_resources = policy_scope(CategoryResource)
                           .with_attached_resource
                           .send(@lesson_category)
@@ -16,8 +16,8 @@ class TeacherResourcesController < ApplicationController
 
   def set_lesson_category
     category = params[:category]
-    return CategoryResource.lesson_categories.keys.first unless ALLOWED_CATEGORIES.include?(category)
+    return ALLOWED_CATEGORIES.first unless ALLOWED_CATEGORIES.include?(category)
 
-    @lesson_category = category
+    category
   end
 end
