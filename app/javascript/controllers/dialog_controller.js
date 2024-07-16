@@ -9,8 +9,18 @@ export default class extends Controller {
 		this.frame = document.getElementById(this.frameValue);
 	}
 
-	open() {
+	open(e) {
 		this.frame.src = this.srcValue;
 		this.dialog.showModal();
+		e.stopPropagation();
+		document.addEventListener("click", (e) => this.close(e));
+	}
+
+	close(e) {
+		// hilariously enough, clicking 'outside' the dialog registers
+		// as clicking the dialog becuase of the ::backdrop element
+		if (e.target === this.dialog) {
+			this.dialog.close();
+		}
 	}
 }
