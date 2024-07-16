@@ -1,6 +1,6 @@
 = render 'shared/subtitle', text: t(".#{@lesson_category}")
 
-%main.flex.flex-wrap.justify-center.items-start.gap-3.p-3
+%main.flex.flex-wrap.justify-around.items-start.gap-3.p-3
   %nav.w-full.flex.justify-around.gap-3
     - CategoryResource.lesson_categories.keys.sort.each do |category|
       - active = @lesson_category == category

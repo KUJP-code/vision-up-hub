@@ -2,7 +2,6 @@
 
 = turbo_stream.replace 'subtitle' do
   = render partial: 'teachers/subtitle',
-           formats: [:html],
            locals: { date: @date, level: @level, teacher: @teacher }
 
 = turbo_stream.replace 'teacher-lessons' do
@@ -17,20 +16,22 @@
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
       - unless evening
-        - %w[arrival_time brush_up snack_time].each do |type|
+        - %w[arrival brush_up snack].each do |type|
           = render partial: 'teacher_lessons/card',
-                   formats: [:html],
                    locals: { date: @date, level: @level,
                              teacher_id: @teacher.id, type: }
 
       - @types.each do |type|
         = render partial: 'teacher_lessons/card',
-                 formats: [:html],
                  locals: { date: @date, level: @level,
                            teacher_id: @teacher.id, type: }
+        - next if type != 'DailyActivity'
+
+        = render partial: 'teacher_lessons/card',
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: 'daily_gathering' }
 
       - unless evening
         = render partial: 'teacher_lessons/card',
-                 formats: [:html],
                  locals: { date: @date, level: @level,
                            teacher_id: @teacher.id, type: 'bus_time' }

@@ -8,7 +8,9 @@ class CategoryResource < ApplicationRecord
     brush_up: 1,
     snack: 2,
     get_up_and_go: 3,
-    daily_gathering: 4
+    daily_gathering: 4,
+    arrival: 5,
+    bus_time: 6
   }
 
   enum level: {
