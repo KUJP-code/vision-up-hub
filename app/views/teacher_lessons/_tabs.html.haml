@@ -1,13 +1,16 @@
 -# locals: (active_lesson:, date:, lessons:, level:, teacher_id:, type:)
 
-- return if lessons.size <= 1
+:ruby
+  return if lessons.size <= 1
+
+  subtype_lessons = %w[DailyActivity Exercise].include?(type)
 
 - lessons.each do |l|
   - active = l == active_lesson
 
   = link_to teacher_lesson_path(l, teacher_id:, type:, level:, date:),
             class: "tab #{active ? 'active' : 'inactive'}" do
-    - if l.type == 'DailyActivity'
+    - if subtype_lessons.include?(l.type)
       = image_tag type_icon_path(l)
     - else
       = image_tag level_icon_path(l)

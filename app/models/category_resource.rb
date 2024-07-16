@@ -70,11 +70,19 @@ class CategoryResource < ApplicationRecord
     false
   end
 
+  def arrival_resource?
+    true
+  end
+
   def brush_up_resource?
     return true if resource_category == 'worksheet'
 
     errors.add(:lesson_category, 'Brush Up requires a worksheet resource')
     false
+  end
+
+  def bus_time_resource?
+    true
   end
 
   def snack_resource?
