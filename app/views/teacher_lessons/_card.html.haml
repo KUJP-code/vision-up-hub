@@ -3,7 +3,7 @@
 - if Lesson::TYPES.include?(type)
   :ruby
     src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
-    title = type == 'KindyPhonic' ? 'Phonics Class' : type.titleize
+    title = type.include?('Phonic') ? 'Phonics' : type.titleize
 
   %button{ class: 'card flex flex-col items-center p-2 gap-2',
            data: { action: 'dialog#open',

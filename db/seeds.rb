@@ -81,6 +81,7 @@ released_attrs = { released: true, status: :accepted,
 
 %i[kindy elementary].each do |level|
   fb.create(:daily_activity, level:, **released_attrs)
+  fb.create(:exercise, level:, **released_attrs)
 end
 
 fb.create(:kindy_phonic, **released_attrs)

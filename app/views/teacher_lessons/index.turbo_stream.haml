@@ -1,4 +1,18 @@
-- evening = %w[keep_up specialist].include?(@level)
+:ruby
+  evening = %w[keep_up specialist].include?(@level)
+  order_hash = {
+    'arrival' => 0,
+    'brush_up' => 1,
+    'snack' => 2,
+    'DailyActivity' => 3,
+    'Exercise' => 4,
+    'DailyGathering' => 5,
+    'PhonicsClass' => 6,
+    'KindyPhonic' => 6,
+    'EnglishClass' => 7,
+    'StandShowSpeak' => 8,
+    'bus_time' => 9
+  }
 
 = turbo_stream.replace 'subtitle' do
   = render partial: 'teachers/subtitle',
@@ -21,7 +35,7 @@
                    locals: { date: @date, level: @level,
                              teacher_id: @teacher.id, type: }
 
-      - @types.each do |type|
+      - @types.sort_by { |t| order_hash[t] }.each do |type|
         = render partial: 'teacher_lessons/card',
                  locals: { date: @date, level: @level,
                            teacher_id: @teacher.id, type: }
