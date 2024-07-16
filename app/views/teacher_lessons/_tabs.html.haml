@@ -1,0 +1,8 @@
+-# locals: (active_lesson:, date:, lessons:, level:, teacher_id:, type:)
+
+- lessons.each do |l|
+  - active = l == active_lesson
+
+  = link_to teacher_lesson_path(l, teacher_id:, type:, level:, date:),
+            class: "tab #{active ? 'active' : 'inactive'}" do
+    = image_tag level_icon_path(l)

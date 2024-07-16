@@ -78,7 +78,7 @@ class TeacherLessonsController < ApplicationController
     lesson = if params[:id].to_i.zero?
                authorize type_lessons.first
              else
-               authorize Lesson.find(params[:id])
+               authorize type_lessons.find(params[:id])
              end
 
     [type_lessons, lesson]

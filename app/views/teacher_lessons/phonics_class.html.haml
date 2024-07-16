@@ -4,13 +4,9 @@
   sorted_resources = (@lesson.resources + @lesson.phonics_resources).sort_by { |r| r.blob.filename }
 
 = turbo_frame_tag 'lesson' do
-  - @type_lessons.each do |l|
-    - active = l == @lesson
-
-    = link_to teacher_lesson_path(l, teacher_id: @teacher.id, type: @type,
-                                     level: @level, date: @date),
-              class: "tab #{active ? 'active' : 'inactive'}" do
-      = image_tag level_icon_path(l)
+  = render 'teacher_lessons/tabs',
+           lessons: @type_lessons, active_lesson: @lesson, level: @level,
+           teacher_id: @teacher.id, type: @type, date: @date
 
   .h-full.flex.flex-col.gap-3.p-8.text-secondary
     %header.h-20.grid.grid-cols-5.grid-rows-2
