@@ -53,21 +53,34 @@ class TeacherLessonsController < ApplicationController
     type_param
   end
 
+  def show_english_class
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+
+    render 'teacher_lessons/english_class'
+  end
+
   def show_kindy_phonic
-    @lesson = authorize day_lessons(@teacher, @date).where(type: @type).first
+    @lesson = authorize day_lessons(@teacher, @date).find_by(type: @type)
     render 'teacher_lessons/kindy_phonic'
   end
 
   def show_phonics_class
-    @type_lessons = day_lessons(@teacher, @date)
-                    .send(@level).where(type: @type)
-                    .order(level: :asc)
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
 
-    @lesson = if params[:id].to_i.zero?
-                authorize @type_lessons.first
-              else
-                authorize Lesson.find(params[:id])
-              end
     render 'teacher_lessons/phonics_class'
+  end
+
+  def lessons_for_type(teacher, date, level, type)
+    type_lessons = day_lessons(teacher, date)
+                   .send(level).where(type:)
+                   .order(level: :asc)
+
+    lesson = if params[:id].to_i.zero?
+               authorize type_lessons.first
+             else
+               authorize Lesson.find(params[:id])
+             end
+
+    [type_lessons, lesson]
   end
 end

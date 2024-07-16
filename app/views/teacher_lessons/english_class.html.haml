@@ -1,7 +1,7 @@
 :ruby
   border = "border-b-2 #{lvl_border(@lesson.short_level)}"
   text = lvl_text(@lesson.short_level)
-  sorted_resources = (@lesson.resources + @lesson.phonics_resources).sort_by { |r| r.blob.filename }
+  sorted_resources = @lesson.resources.sort_by { |r| r.blob.filename }
 
 = turbo_frame_tag 'lesson' do
   - @type_lessons.each do |l|
@@ -20,7 +20,7 @@
         = @lesson.short_level.upcase
       = image_tag type_icon_path(@lesson),
                   class: 'place-self-center row-span-2'
-      %h3.col-span-4.font-semibold.text-lg= @lesson.goal
+      %h3.col-span-4.font-semibold.text-lg= @lesson.topic
 
     %section{ class: 'w-1/3' }
       - if @lesson.guide.attached?
