@@ -15,6 +15,7 @@ export default {
 					selectors: [":root"],
 					theme: {
 						colors: {
+							"keep-up": "#8e9cf2",
 							"main-50": "#aadaeb",
 							"main-nav-inactive": "#aadaeb",
 							"neutral-dark": "#b2aabf",
@@ -27,6 +28,7 @@ export default {
 							main: "#69c0dd",
 							secondary: "#645880",
 							sky: "#8eccda",
+							specialist: "#e88d8d",
 							success: "#8ac273",
 						},
 						fontFamily: {

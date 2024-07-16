@@ -63,6 +63,11 @@ class TeacherLessonsController < ApplicationController
     render 'teacher_lessons/english_class'
   end
 
+  def show_evening_class
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+    render 'teacher_lessons/evening_class'
+  end
+
   def show_exercise
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
     render 'teacher_lessons/exercise'
