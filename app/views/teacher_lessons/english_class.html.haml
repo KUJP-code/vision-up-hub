@@ -4,10 +4,9 @@
   sorted_resources = @lesson.resources.sort_by { |r| r.blob.filename }
 
 = turbo_frame_tag 'lesson' do
-  - unless @level == 'kindy'
-    = render 'teacher_lessons/tabs',
-             lessons: @type_lessons, active_lesson: @lesson, level: @level,
-             teacher_id: @teacher.id, type: @type, date: @date
+  = render 'teacher_lessons/tabs',
+           lessons: @type_lessons, active_lesson: @lesson, level: @level,
+           teacher_id: @teacher.id, type: @type, date: @date
 
   .h-full.flex.flex-col.gap-3.p-8.text-secondary
     %header.h-20.grid.grid-cols-5.grid-rows-2

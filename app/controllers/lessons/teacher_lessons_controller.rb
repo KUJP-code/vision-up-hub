@@ -53,9 +53,13 @@ class TeacherLessonsController < ApplicationController
     type_param
   end
 
+  def show_daily_activity
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+    render 'teacher_lessons/daily_activity'
+  end
+
   def show_english_class
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-
     render 'teacher_lessons/english_class'
   end
 
@@ -66,7 +70,6 @@ class TeacherLessonsController < ApplicationController
 
   def show_phonics_class
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-
     render 'teacher_lessons/phonics_class'
   end
 
