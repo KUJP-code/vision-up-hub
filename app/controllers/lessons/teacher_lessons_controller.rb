@@ -73,6 +73,11 @@ class TeacherLessonsController < ApplicationController
     render 'teacher_lessons/phonics_class'
   end
 
+  def show_stand_show_speak
+    @type_lessons, = lessons_for_type(@teacher, @date, @level, @type)
+    render 'teacher_lessons/stand_show_speak'
+  end
+
   def lessons_for_type(teacher, date, level, type)
     type_lessons = day_lessons(teacher, date)
                    .send(level).where(type:)
