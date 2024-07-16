@@ -74,7 +74,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
   create_table "faq_tutorials", force: :cascade do |t|
     t.string "question"
     t.string "answer"
-    t.string "section"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -138,7 +137,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
   create_table "pdf_tutorials", force: :cascade do |t|
     t.string "title"
     t.string "file_path"
-    t.string "section"
+    t.integer "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -348,6 +347,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
     t.integer "speak_percent"
     t.integer "prev_level", null: false
     t.integer "new_level", null: false
+    t.jsonb "answers", default: {"reading"=>[], "writing"=>[], "speaking"=>[], "listening"=>[]}
     t.bigint "test_id", null: false
     t.bigint "student_id", null: false
     t.datetime "created_at", null: false
@@ -399,7 +399,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
   create_table "video_tutorials", force: :cascade do |t|
     t.string "title"
     t.string "video_path"
-    t.string "section"
+    t.integer "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

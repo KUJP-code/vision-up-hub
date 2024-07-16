@@ -21,7 +21,11 @@ Rails.application.routes.draw do
       resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
       resources :students
-      resources :tutorials, only: %i[new create index destroy]
+      resources :tutorials do
+        member do
+          get :video_modal
+        end
+      end
       resources :student_searches, only: %i[index update]
       resources :support_requests do
         resources :support_messages, only: %i[create]

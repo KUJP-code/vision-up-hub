@@ -4,7 +4,7 @@
 
 - if admin
   .w-full.p-3
-    %details{ class: 'cursor-pointer bg-color-main text-main rounded-md overflow-hidden'}
+    %details{ class: 'cursor-pointer bg-color-main text-main rounded-md overflow-hidden' }
       %summary.bg-color-secondary.p-2
         Create a Tutorial
       %nav.flex.flex-col
@@ -12,38 +12,49 @@
         = link_to 'Video Tutorial', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90'
         = link_to 'FAQ Tutorial', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90'
 
-.sections-container.flex.flex-wrap.gap-8.p-8
-  - @sections.each do |section_name, section_key|
-    .section-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
+.categories-container.flex.flex-wrap.gap-8.p-8
+  - @categories.each do |category_name, category_key|
+    .category-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
       %details
         %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
-          = section_name
+          = category_name
 
-        - if section_key == 'faq'
-          - @faq_tutorials.each do |tutorial|
-            %details
-              %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
-                = tutorial.question
+        %div
+          %h4.mt-2
+            Manuals & Guides
+          %ul.list-disc.list-inside
+            - @tutorials[:pdf].select { |t| t.category == category_key }.each do |tutorial|
+              %li.cursor-pointer.flex.justify-between.items-center
+                = link_to tutorial.title, file_path(tutorial.file.blob), target: '_blank', class: 'text-blue-500 hover:underline'
                 - if admin
-                  = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
-              %p.text-red-500
-                = tutorial.answer
-        - else
-          %div
-            %h4.mt-2
-              Manuals & Guides
-            %ul.list-disc.list-inside
-              - @pdf_tutorials.where(section: section_key).each do |tutorial|
-                %li.cursor-pointer.flex.justify-between.items-center
-                  = link_to tutorial.title, rails_blob_path(tutorial.file, disposition: "attachment"), target: '_blank', class: 'text-blue-500 hover:underline'
-                  - if admin
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+                  = link_to 'Edit', edit_tutorial_path(tutorial, type: 'PDF'), class: 'btn btn-secondary px-3 py-1'
+                  = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
 
-            %h4.mt-4
-              Videos
-            %ul.list-disc.list-inside
-              - @video_tutorials.where(section: section_key).each do |tutorial|
-                %li.cursor-pointer.flex.justify-between.items-center
-                  = link_to tutorial.title, tutorial.full_video_path, target: '_blank', class: 'text-blue-500 hover:underline'
-                  - if admin
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'bg-red-500 text-white px-2 py-1 rounded text-sm'
+          %h4.mt-4
+            Videos
+          %ul.list-disc.list-inside
+            - @tutorials[:video].select { |t| t.category == category_key }.each do |tutorial|
+              %li.cursor-pointer.flex.justify-between.items-center
+                = link_to tutorial.title, video_modal_tutorial_path(tutorial, type: 'Video'), data: { turbo_frame: "video_modal" }, class: 'text-blue-500 hover:underline'
+                - if admin
+                  = link_to 'Edit', edit_tutorial_path(tutorial, type: 'Video'), class: 'btn btn-secondary px-3 py-1'
+                  = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
+
+.category-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
+  %details
+    %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
+      FAQs
+
+    %div
+      %ul.list-disc.list-inside
+        - @tutorials[:faq].each do |tutorial|
+          %details
+            %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
+              = tutorial.question
+              - if admin
+                = link_to 'Edit', edit_tutorial_path(tutorial, type: 'FAQ'), class: 'btn btn-secondary px-3 py-1'
+                = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger'
+            %p.text-red-500
+              = tutorial.answer
+
+%turbo-frame#video_modal

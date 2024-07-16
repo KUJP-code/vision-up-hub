@@ -2,40 +2,43 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application";
+import { application } from "./application"
 
-import FieldsController from "./fields_controller";
-application.register("fields", FieldsController);
+import FieldsController from "./fields_controller"
+application.register("fields", FieldsController)
 
-import FlashController from "./flash_controller";
-application.register("flash", FlashController);
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
 
-import NavRevealController from "./nav_reveal_controller";
-application.register("nav-reveal", NavRevealController);
+import NavRevealController from "./nav_reveal_controller"
+application.register("nav-reveal", NavRevealController)
 
-import PrintController from "./print_controller";
-application.register("print", PrintController);
+import PrintController from "./print_controller"
+application.register("print", PrintController)
 
-import ScrollToController from "./scroll_to_controller";
-application.register("scroll-to", ScrollToController);
+import ScrollToController from "./scroll_to_controller"
+application.register("scroll-to", ScrollToController)
 
-import TestResultController from "./test_result_controller";
-application.register("test-result", TestResultController);
+import TestResultController from "./test_result_controller"
+application.register("test-result", TestResultController)
 
-import ThemeController from "./theme_controller";
-application.register("theme", ThemeController);
+import ThemeController from "./theme_controller"
+application.register("theme", ThemeController)
 
-import UploadSummaryController from "./uploaders/upload_summary_controller";
-application.register("upload-summary", UploadSummaryController);
+import TurboModalController from "./turbo_modal_controller"
+application.register("turbo-modal", TurboModalController)
 
-import ParentUploaderController from "./uploaders/parent_uploader/parent_uploader_controller";
-application.register("parent-uploader", ParentUploaderController);
+import Uploaders__ParentUploader__ParentUploaderController from "./uploaders/parent_uploader/parent_uploader_controller"
+application.register("uploaders--parent-uploader--parent-uploader", Uploaders__ParentUploader__ParentUploaderController)
 
-import StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller";
-application.register("student-uploader", StudentUploaderController);
+import Uploaders__StudentUploader__StudentUploaderController from "./uploaders/student_uploader/student_uploader_controller"
+application.register("uploaders--student-uploader--student-uploader", Uploaders__StudentUploader__StudentUploaderController)
 
-import TeacherUploaderController from "./uploaders/teacher_uploader/teacher_uploader_controller";
-application.register("teacher-uploader", TeacherUploaderController);
+import Uploaders__TeacherUploader__TeacherUploaderController from "./uploaders/teacher_uploader/teacher_uploader_controller"
+application.register("uploaders--teacher-uploader--teacher-uploader", Uploaders__TeacherUploader__TeacherUploaderController)
 
-import ValidityController from "./validity_controller";
-application.register("validity", ValidityController);
+import Uploaders__UploadSummaryController from "./uploaders/upload_summary_controller"
+application.register("uploaders--upload-summary", Uploaders__UploadSummaryController)
+
+import ValidityController from "./validity_controller"
+application.register("validity", ValidityController)

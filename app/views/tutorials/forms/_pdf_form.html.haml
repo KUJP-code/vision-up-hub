@@ -1,6 +1,4 @@
-= form_with model: @tutorial, url: tutorials_path(type: 'PDF'), html: { class: 'form', data: { controller: 'fields' }, multipart: true } do |f|
-  = f.hidden_field :type, value: 'PDF'
-
+= form_with model: @tutorial, url: @tutorial.new_record? ? tutorials_path(type: params[:type]) : tutorial_path(@tutorial, type: params[:type]), method: @tutorial.new_record? ? :post : :patch, html: { class: 'form', multipart: true } do |f|
   = render 'shared/form_errors', resource: @tutorial
 
   .form-group
@@ -9,11 +7,11 @@
 
   .form-group
     = f.label :file
-    = f.file_field :file, required: true
+    = f.file_field :file, required: @tutorial.new_record?
 
   .form-group
-    = f.label :section
-    = f.select :section, options_for_select(sections), {}
+    = f.label :category
+    = f.select :category, options_for_select(@categories), {}
 
   .form-group
-    = f.submit 'Create PDF Tutorial', class: 'btn btn-primary'
+    = f.submit @tutorial.new_record? ? "Create #{params[:type]} Tutorial" : "Update #{params[:type]} Tutorial", class: 'btn btn-primary'
