@@ -15,7 +15,7 @@
     = image_tag "lesson_types/#{type.underscore}.svg",
                 class: 'h-full'
     %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    = title
+    %h3.text-center= title
 
 - else
   = link_to teacher_resources_path(category: type),
@@ -24,4 +24,4 @@
     = image_tag "lesson_types/#{type.underscore}.svg",
                 class: 'h-full'
     %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    = type.titleize
+    %h3.text-center= type.titleize

@@ -35,7 +35,7 @@
                    locals: { date: @date, level: @level,
                              teacher_id: @teacher.id, type: }
 
-      - @types.sort_by { |t| order_hash[t] }.each do |type|
+      - @types.sort_by { |t| order_hash[t] || Float::INFINITY }.each do |type|
         = render partial: 'teacher_lessons/card',
                  locals: { date: @date, level: @level,
                            teacher_id: @teacher.id, type: }
