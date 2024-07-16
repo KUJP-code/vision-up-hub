@@ -102,7 +102,7 @@ Lesson.all.each do |lesson|
   lesson.attach_guide
 end
 
-Lesson.where(type: %w[EnglishClass StandShowSpeak]).each do |lesson|
+Lesson.where(type: %w[EnglishClass StandShowSpeak KindyPhonic]).each do |lesson|
   lesson.guide.attach(test_file)
 end
 

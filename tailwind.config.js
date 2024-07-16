@@ -17,7 +17,6 @@ export default {
 						colors: {
 							"keep-up": "#8e9cf2",
 							"main-50": "#aadaeb",
-							"main-nav-inactive": "#aadaeb",
 							"neutral-dark": "#b2aabf",
 							"neutral-light": "#f1f1f1",
 							"secondary-50": "#b2aabf",

@@ -43,7 +43,7 @@
 		@apply w-16;
 
 		.main-nav-link {
-			@apply basis-16 flex items-center justify-center hover:scale-105 transition text-main-nav-inactive gap-3;
+			@apply basis-16 flex items-center justify-center hover:scale-105 transition text-main-50 gap-3;
 
 			&.active {
 				color: white;
@@ -113,6 +113,19 @@
 		}
 	}
 
+	.btn-resource {
+		@apply flex items-center border-2 border-secondary text-secondary py-1 px-3 rounded;
+
+		&:active,
+		&:hover {
+			@apply bg-secondary text-white;
+
+			svg {
+				@apply fill-white;
+			}
+		}
+	}
+
 	.btn-secondary {
 		@apply bg-secondary;
 	}
@@ -168,16 +181,27 @@
 			@apply absolute -top-10 -right-10 w-20;
 		}
 
-		.btn-resource {
-			@apply flex items-center border-2 border-secondary text-secondary py-1 px-3 rounded;
+		.content {
+			@apply h-full flex flex-col gap-3 p-8 text-secondary;
+		}
 
-			&:active,
-			&:hover {
-				@apply bg-secondary text-white;
+		& header {
+			@apply md:h-20 grid grid-cols-2 grid-rows-3 md:grid-cols-5 md:grid-rows-2;
 
-				svg {
-					@apply fill-white;
-				}
+			& h1 {
+				@apply font-bold text-2xl;
+			}
+
+			& h1.type {
+				@apply col-span-3 text-start;
+			}
+
+			& h1.level {
+				@apply text-end;
+			}
+
+			& h3.details {
+				@apply col-span-4 font-semibold text-lg;
 			}
 		}
 
@@ -204,7 +228,7 @@
 	}
 
 	.tab-nav {
-		@apply h-12 w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
+		@apply w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
 	}
 
 	.sub_nav_link {
