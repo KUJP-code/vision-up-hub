@@ -1,6 +1,8 @@
 -# locals: (date:, level:, teacher_id:, type:)
 
-- src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
+:ruby
+  src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
+  title = type == 'KindyPhonic' ? 'Phonics Class' : type.titleize
 
 %button{ class: 'card aspect-square flex flex-col items-center p-2 gap-2',
          data: { action: 'dialog#open',
@@ -12,4 +14,4 @@
   = image_tag "lesson_types/#{type.underscore}.svg",
               class: 'h-full'
   %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-  = type.titleize
+  = title

@@ -53,6 +53,11 @@ class TeacherLessonsController < ApplicationController
     type_param
   end
 
+  def show_kindy_phonic
+    @lesson = authorize day_lessons(@teacher, @date).where(type: @type).first
+    render 'teacher_lessons/kindy_phonic'
+  end
+
   def show_phonics_class
     @type_lessons = day_lessons(@teacher, @date)
                     .send(@level).where(type: @type)

@@ -22,6 +22,7 @@ export default {
 							"secondary-50": "#b2aabf",
 							danger: "#ef7877",
 							galaxy: "#bc8ebe",
+							kindy: "#f9a373",
 							land: "#b0d07a",
 							main: "#69c0dd",
 							secondary: "#645880",
