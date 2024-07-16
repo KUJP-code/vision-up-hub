@@ -3,7 +3,7 @@
 :ruby
   return if lessons.size <= 1
 
-  subtype_lessons = %w[DailyActivity Exercise].include?(type)
+  subtype_lessons = %w[DailyActivity Exercise]
 
 - lessons.each do |l|
   - active = l == active_lesson
