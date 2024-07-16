@@ -12,7 +12,8 @@ class TeacherLessonsController < ApplicationController
   def show
     set_date_level_teacher
     @type = validated_type(params[:type])
-    send(:"show_#{@type.titleize.downcase.tr(' ', '_')}")
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+    render "teacher_lessons/#{@type.titleize.downcase.tr(' ', '_')}"
   end
 
   private
@@ -51,41 +52,6 @@ class TeacherLessonsController < ApplicationController
     end
 
     type_param
-  end
-
-  def show_daily_activity
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/daily_activity'
-  end
-
-  def show_english_class
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/english_class'
-  end
-
-  def show_evening_class
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/evening_class'
-  end
-
-  def show_exercise
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/exercise'
-  end
-
-  def show_kindy_phonic
-    @lesson = authorize day_lessons(@teacher, @date).find_by(type: @type)
-    render 'teacher_lessons/kindy_phonic'
-  end
-
-  def show_phonics_class
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/phonics_class'
-  end
-
-  def show_stand_show_speak
-    @type_lessons, = lessons_for_type(@teacher, @date, @level, @type)
-    render 'teacher_lessons/stand_show_speak'
   end
 
   def lessons_for_type(teacher, date, level, type)
