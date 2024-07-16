@@ -1,38 +1,38 @@
+:ruby
+  grouped_resources = if @lesson_category == 'brush_up'
+    @category_resources.group_by(&:level)
+  else
+    @category_resources.group_by(&:resource_category)
+  end
+
 = render 'shared/subtitle', text: t(".#{@lesson_category}")
 
-%main.flex.flex-wrap.justify-around.items-start.gap-3.p-3
-  %nav.w-full.flex.justify-around.gap-3
+%main.flex.flex-col.justify-start.items-around.gap-3.p-3
+  %nav.tab-nav
     - CategoryResource.lesson_categories.keys.sort.each do |category|
-      - active = @lesson_category == category
-
+      - active = @lesson_category == category ? 'active' : 'inactive'
       = link_to t(".#{category}"),
                 teacher_resources_path(category:),
-                class: "btn #{active ? 'btn-primary' : 'btn-secondary'}"
+                class: "lvl_nav #{active}"
 
-  :ruby
-    grouped_resources = if @lesson_category == 'brush_up'
-      @category_resources.group_by(&:level)
-    else
-      @category_resources.group_by(&:resource_category)
-    end
+  %section.flex.flew-wrap.justify-around.items-start
+    - grouped_resources.each do |group|
+      - name, resources = group
 
-  - grouped_resources.each do |group|
-    - name, resources = group
-
-    %table
-      %thead
-        %tr
-          %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{name}")
-      %tbody
-        - resources.sort_by { |r| r.resource.blob.filename }.each do |cr|
-          - blob = cr.resource.blob
-
+      %table
+        %thead
           %tr
-            %td
-              = link_to file_path(blob.id),
-                        target: '_blank',
-                        rel: 'noopener',
-                        class: 'flex items-center gap-1' do
-                = blob.filename
-                = render 'shared/svgs/download_icon',
-                         classes: 'fill-secondary'
+            %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{name}")
+        %tbody
+          - resources.sort_by { |r| r.resource.blob.filename }.each do |cr|
+            - blob = cr.resource.blob
+
+            %tr
+              %td
+                = link_to file_path(blob.id),
+                          target: '_blank',
+                          rel: 'noopener',
+                          class: 'flex items-center gap-1' do
+                  = blob.filename
+                  = render 'shared/svgs/download_icon',
+                           classes: 'fill-secondary'

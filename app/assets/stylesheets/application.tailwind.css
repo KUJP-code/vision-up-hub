@@ -203,6 +203,10 @@
 		}
 	}
 
+	.tab-nav {
+		@apply h-12 w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
+	}
+
 	.sub_nav_link {
 		@apply bg-secondary text-white rounded p-2;
 	}
