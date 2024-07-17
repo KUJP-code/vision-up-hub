@@ -8,13 +8,12 @@
 
   .content
     %header
-      %h1.col-span-3.text-start.font-bold.text-2xl.border-b-2.border-secondary
+      %h1.type.border-secondary
         = @lesson.type.titleize
-      %h1.font-bold.text-2xl.text-end.border-b-2.border-secondary
+      %h1.level.border-secondary
         = @lesson.subtype.titleize
-      = image_tag type_icon_path(@lesson),
-                  class: 'place-self-center row-span-2'
-      %h3.col-span-4.font-semibold.text-lg= @lesson.title
+      = image_tag type_icon_path(@lesson)
+      %h3.details= @lesson.title
 
     - if @lesson.guide.attached?
       = render 'teacher_lessons/guide_section',

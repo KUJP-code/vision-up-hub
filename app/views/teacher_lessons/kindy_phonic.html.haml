@@ -4,12 +4,11 @@
 = turbo_frame_tag 'lesson' do
   .content
     %header
-      %h1.type.border-b-2.border-kindy
+      %h1.type.border-kindy
         Phonics Class
-      %h1.level.border-b-2.border-kindy
+      %h1.level.border-kindy
         = @lesson.short_level.upcase
-      = image_tag type_icon_path(@lesson),
-                  class: 'place-self-center row-span-2'
+      = image_tag type_icon_path(@lesson)
       %h3.details= @lesson.topic
 
     - if @lesson.guide.attached?

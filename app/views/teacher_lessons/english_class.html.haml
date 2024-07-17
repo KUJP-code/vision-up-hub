@@ -14,8 +14,7 @@
         = @lesson.type.titleize
       %h1{ class: "level #{text} #{border}" }
         = @lesson.short_level.upcase
-      = image_tag type_icon_path(@lesson),
-                  class: 'place-self-center row-span-2'
+      = image_tag type_icon_path(@lesson)
       %h3.details= @lesson.topic
 
     - if @lesson.guide.attached?
