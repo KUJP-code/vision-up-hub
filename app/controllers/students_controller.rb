@@ -7,8 +7,9 @@ class StudentsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @students = policy_scope(Student).includes(:school)
-                                     .order(updated_at: :desc).limit(10)
+    @students = policy_scope(Student)
+                .includes(:school)
+                .order(level: :asc, en_name: :asc).limit(300)
     @schools = policy_scope(School).pluck(:name, :id)
   end
 
