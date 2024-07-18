@@ -1,0 +1,35 @@
+:ruby
+  expected_counts = {
+    'DailyActivity' => 2,
+    'EnglishClass' => 4,
+    'Exercise' => 2,
+    'EveningClass' => 2,
+    'KindyPhonic' => 1,
+    'PhonicsClass' => 3,
+    'SpecialLesson' => 0,
+    'StandShowSpeak' => 4
+  }
+
+= render 'shared/subtitle', text: 'Missing Lessons'
+
+%main.flex.justify-center.items-center
+  %table.text-center
+    %thead
+      %th
+      - Lesson::TYPES.each do |type|
+        %th{ class: 'thead bg-secondary-50' }
+          = type.titleize
+    %tbody
+    - Date::DAYNAMES.each do |day|
+      %tr
+        %th{ class: 'thead bg-secondary-50 p-2' }
+          = day
+        - Lesson::TYPES.each do |type|
+          :ruby
+            day_lessons = @course_lessons.count do |cl|
+              cl.lesson.type == type && cl.day == day.downcase
+            end
+            missing = expected_counts[type].nil? || expected_counts[type] > day_lessons
+
+          %td{ class: "p-2 #{'bg-danger' if missing}" }
+            = day_lessons
