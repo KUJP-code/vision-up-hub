@@ -6,8 +6,10 @@
     resources_absent = 'bg-neutral-light text-neutral-dark cursor-default'
     # TODO: this N+1 is a very temporary thing until we rework this page
     # to be separated by category and use different controllers for each type
-    week = @user.course_week(@date)
     resources = if lesson.type == 'PhonicsClass'
+      course_lesson = @user.course_lessons.find_by(lesson_id: lesson.id)
+      plan = @user.plans.find_by(course_id: course_lesson.course_id)
+      week = @user.course_week(plan, @date)
       lesson.phonics_resources.where(week:).includes(:blob) + lesson.resources
     else
       lesson.resources

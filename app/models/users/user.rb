@@ -7,7 +7,6 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :type, inclusion: { in: TYPES }
 
-  belongs_to :organisation
   has_many :support_requests,
            inverse_of: :user,
            dependent: :nullify

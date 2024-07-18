@@ -4,4 +4,6 @@ class Admin < User
   include KUStaffable, LessonCreator
 
   VISIBLE_TYPES = %w[OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
+
+  belongs_to :organisation
 end

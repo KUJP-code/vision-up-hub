@@ -19,17 +19,34 @@ RSpec.describe Teacher do
         :daily_activity,
         course_lessons: [create(:course_lesson, course:, week: 1, day: :tuesday)]
       )
-      teacher.organisation.create_plan!(
+      teacher.organisation.plans.create!(
         attributes_for(:plan,
                        course_id: course.id,
                        start: Date.parse('04-03-2024'),
-                       finish_date: Date.parse('30-03-2024'))
+                       finish_date: 7.days.from_now)
       )
     end
 
     it 'can find its daily lessons for a single course' do
       date = Date.parse('07-03-2024')
       expect(teacher.day_lessons(date)).to contain_exactly(thurs_lesson)
+    end
+
+    it 'can find daily lessons for multiple courses' do
+      new_course = create(:course)
+      plan_2_lesson = create(
+        :daily_activity,
+        course_lessons: [create(:course_lesson, course: new_course, week: 1, day: :thursday)]
+      )
+      teacher.organisation.plans.create!(
+        attributes_for(:plan,
+                       course_id: new_course.id,
+                       start: Date.parse('04-03-2024'),
+                       finish_date: 7.days.from_now)
+      )
+
+      date = Date.parse('07-03-2024')
+      expect(teacher.day_lessons(date)).to contain_exactly(thurs_lesson, plan_2_lesson)
     end
 
     it 'finds lessons on first Monday of plan' do
@@ -52,7 +69,7 @@ RSpec.describe Teacher do
     end
 
     it 'returns nothing if past end date of plan' do
-      date = Date.parse('1-04-2024')
+      date = Date.parse(8.days.from_now.to_s)
       late_lesson = create(:daily_activity)
       create(:course_lesson, course:, lesson: late_lesson, week: 5, day: :monday)
       expect(teacher.day_lessons(date)).to be_empty
@@ -63,7 +80,7 @@ RSpec.describe Teacher do
     let(:course) { create(:course) }
 
     before do
-      teacher.organisation.create_plan!(attributes_for(:plan, course_id: course.id))
+      teacher.organisation.plans.create(attributes_for(:plan, course_id: course.id))
     end
 
     it 'gets category resources for its course' do

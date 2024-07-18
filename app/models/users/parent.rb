@@ -6,6 +6,7 @@ class Parent < User
   CSV_HEADERS = %w[name email password].freeze
   VISIBLE_TYPES = [].freeze
 
+  belongs_to :organisation
   has_many :children, class_name: 'Student',
                       inverse_of: :parent,
                       dependent: :nullify

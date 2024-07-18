@@ -118,12 +118,15 @@ full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course', co
 full_course.category_resources << CategoryResource.all
 
 Organisation.all.each do |org|
-  org.create_plan!(fb.attributes_for(
-                     :plan, course_id: Course.first.id,
-                            start: Date.today.beginning_of_week
-                   ))
+  org.plans.create!(fb.attributes_for(
+                      :plan, course_id: Course.first.id,
+                             start: Date.today.beginning_of_week
+                    ))
 end
-Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
+empty_course = Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
+kids_up.plans.create!(
+  fb.attributes_for(:plan, course_id: empty_course.id, start: Date.today.beginning_of_week)
+)
 
 puts 'Adding classes to schools & teachers...'
 
