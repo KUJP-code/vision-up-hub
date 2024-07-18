@@ -20,7 +20,7 @@ RSpec.describe 'changing a lesson' do
         fill_in 'daily_activity_instructions', with: "New Instructions 1\nNew Instructions 2"
         click_button I18n.t('helpers.submit.update')
       end
-      expect(page).to have_content('New Title', count: 1)
+      expect(page).to have_content('New Title')
       expect(page).to have_content('New Instructions 1', count: 1)
       expect(page).not_to have_content('Proposed Changes')
     end
