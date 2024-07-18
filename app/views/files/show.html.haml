@@ -1,0 +1,4 @@
+= content_for :title do
+  %title= @file.filename.base
+
+%embed.h-full.w-full{ type: @file.content_type, src: url_for(@file) }

@@ -12,7 +12,6 @@ class Teacher < User
                      source: :school_class
   has_many :students, through: :classes
   has_many :test_results, through: :students
-  belongs_to :organisation
   has_many :school_teachers, dependent: :destroy
   accepts_nested_attributes_for :school_teachers
   has_many :schools, through: :school_teachers

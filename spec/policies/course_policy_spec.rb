@@ -45,7 +45,7 @@ RSpec.describe CoursePolicy do
     it 'scopes to org course' do
       course = create(:course)
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)
@@ -62,7 +62,7 @@ RSpec.describe CoursePolicy do
     it 'scopes to org course' do
       course = create(:course)
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)
@@ -79,7 +79,7 @@ RSpec.describe CoursePolicy do
     it 'scopes to org course' do
       course = create(:course)
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)

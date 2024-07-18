@@ -46,7 +46,7 @@ RSpec.describe LessonPolicy do
       lesson.course_lessons.create!(attributes_for(:course_lesson,
                                                    course_id: course.id))
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create!(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)
@@ -76,7 +76,7 @@ RSpec.describe LessonPolicy do
       lesson.course_lessons.create!(attributes_for(:course_lesson,
                                                    course_id: course.id))
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create!(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)
@@ -96,7 +96,7 @@ RSpec.describe LessonPolicy do
       lesson.course_lessons.create!(attributes_for(:course_lesson,
                                                    course_id: course.id))
       user.save
-      user.organisation.create_plan(
+      user.organisation.plans.create!(
         attributes_for(:plan,
                        organisation: user.organisation,
                        course_id: course.id)
