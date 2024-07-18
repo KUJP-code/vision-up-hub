@@ -18,10 +18,6 @@ class TeacherLessonsController < ApplicationController
 
   private
 
-  def day_lessons(teacher, date)
-    policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
-  end
-
   def index_vars
     set_date_level_teacher
     @types = day_lessons(@teacher, @date)
@@ -66,5 +62,9 @@ class TeacherLessonsController < ApplicationController
              end
 
     [type_lessons, lesson]
+  end
+
+  def day_lessons(teacher, date)
+    policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
   end
 end
