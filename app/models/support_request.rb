@@ -22,7 +22,8 @@ class SupportRequest < ApplicationRecord
            dependent: :destroy,
            class_name: 'SupportMessage',
            inverse_of: :support_request
-  has_many_attached :attachments
+
+  has_many_attached :images
 
   def mark_seen_by(user_id)
     seen_by << user_id unless seen_by?(user_id)

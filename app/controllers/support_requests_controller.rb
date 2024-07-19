@@ -59,7 +59,7 @@ class SupportRequestsController < ApplicationController
 
   def support_request_params
     params.require(:support_request).permit(
-      :category, :description, :internal_notes, :resolved_at,
+      :category, :description, :internal_notes, :resolved_at, :images, :priority,
       :resolved_by, :subject, support_messages_attributes: %i[id body]
     )
   end

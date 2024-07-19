@@ -1,32 +1,35 @@
 -# locals: (request:)
 
-:ruby
-  submit_text = if current_user.is?('Parent')
-    t('.send_message')
-  else
-    t('.submit_request')
-  end
+= render 'shared/subtitle', text: t('.request_support')
 
-= form_with model: request, html: { class: 'form',
-                                    id: 'support_request_form' } do |f|
+= form_with model: request,
+            html: { class: 'flex flex-col md:grid grid-cols-5 grid-rows-4 gap-3 p-3 text-center md:text-left',
+                    id: 'support_request_form' } do |f|
   = render 'shared/form_errors', resource: request
 
-  .flex.gap-2
-    .form-group
-      = f.label :subject, t('.subject')
-      = f.text_field :subject,
-                     class: 'w-4/5 p-1 text-neutral-dark self-center'
-    .form-group
-      = f.label :category, t('.category')
-      = f.select :category,
-                 opts_from(SupportRequest, :categories),
-                 {},
-                 { class: 'w-4/5 bg-white text-main p-1 self-center' }
+  .form-group.col-start-1.col-span-3
+    = f.label :subject, t('.subject')
+    = f.text_field :subject
 
-  .form-group
+  .form-group.col-start-1.col-span-3.row-span-2
     = f.label :description, t('.description')
-    = f.text_area :description,
-                  class: 'w-full text-neutral-dark min-h-20'
+    = f.text_area :description, rows: 5
 
-  = f.submit submit_text,
-             class: 'btn btn-main cursor-pointer'
+  .form-group.col-start-4.col-span-2.row-start-1
+    = f.label :priority, t('.priority')
+    = f.select :priority,
+               opts_from(SupportRequest, :priorities)
+
+  .form-group.col-start-4.col-span-2.row-start-2
+    = f.label :images
+    = f.file_field :images,
+                   accept: 'image/*',
+                   multiple: true
+
+  .form-group.col-start-4.col-span-2.row-start-3
+    = f.label :category, t('.category')
+    = f.select :category,
+               opts_from(SupportRequest, :categories)
+
+  = f.submit t('.submit_request'),
+             class: 'btn btn-main row-start-4 col-start-1 col-span-2'
