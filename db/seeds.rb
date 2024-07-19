@@ -70,7 +70,7 @@ released_attrs = { released: true, status: :accepted,
                    admin_approval: [{ id: admin.id, name: admin.name }] }
 
 Lesson::TYPES.each do |type|
-  next if type == 'PhonicsClass'
+  next if %w[PhonicsClass StandShowSpeak].include?(type)
 
   puts "Creating #{type}..."
   lesson = Lesson.create!(
