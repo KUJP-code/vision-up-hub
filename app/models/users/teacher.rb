@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Teacher < User
-  include Courseable, IpLockable
+  include IpLockable, LessonConsumable
 
   CSV_HEADERS = %w[name email password].freeze
   VISIBLE_TYPES = %w[].freeze

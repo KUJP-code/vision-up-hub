@@ -4,13 +4,6 @@ module Courseable
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :organisation
-    has_many :plans, through: :organisation
-    has_many :courses, through: :plans
-    has_many :course_lessons, through: :courses
-    has_many :category_resources, through: :courses
-    has_many :lessons, through: :courses
-
     def course_week(plan, date)
       (((date - plan.start).to_i + 1) / 7.0).ceil
     end

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Admin < User
-  include KUStaffable, LessonCreator
+  include KUStaffable, LessonCreatable
 
   VISIBLE_TYPES = %w[OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
-
-  belongs_to :organisation
 end
