@@ -13,17 +13,17 @@
 = render 'shared/subtitle', text: "Missing Lessons for #{@org.name}"
 
 %main.flex.flex-col.justify-center.items-center.gap-6
-  %h1 For the week starting on #{@date}
-  %h3 Subscribed to #{@plans.map(&:name).to_sentence}
+  %h1.text-3xl For the week starting on #{@date}
+  %h3.text-xl Subscribed to #{@plans.map(&:name).to_sentence}
   .w-full.flex.justify-between.p-3
     = link_to missing_lessons_path(org: @org, date: @date - 1.week),
-              class: 'btn bg-white text-secondary flex items-center gap-1' do
-      = image_tag 'back.svg', class: 'w-6 h-6'
+              class: 'btn btn-secondary flex items-center' do
+      = render 'shared/svgs/back', classes: 'fill-white h-12 w-12'
       %p Previous Week
     = link_to missing_lessons_path(org: @org, date: @date + 1.week),
-              class: 'btn bg-white text-secondary flex items-center gap-1' do
+              class: 'btn btn-secondary flex items-center' do
       %p Next Week
-      = image_tag 'next.svg', class: 'w-6 h-6'
+      = render 'shared/svgs/next', classes: 'fill-white'
 
   %nav.tab-nav
     - @orgs.each do |org|
@@ -31,7 +31,7 @@
 
       = link_to org.name,
                 missing_lessons_path(org:),
-                class: "nav-tab #{'active' if active}"
+                class: "nav-tab #{active ? 'active' : 'inactive'}"
 
   %table.text-center
     %thead

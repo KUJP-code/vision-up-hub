@@ -18,7 +18,7 @@
         = link_to level.titleize,
                   teacher_lessons_path(date: @date, level:,
                                        teacher_id: @teacher.id),
-                  class: "lvl_nav #{@level == level ? 'active' : 'inactive'}",
+                  class: "nav-tab #{@level == level ? 'active' : 'inactive'}",
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6

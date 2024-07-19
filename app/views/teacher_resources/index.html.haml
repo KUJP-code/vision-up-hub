@@ -13,7 +13,7 @@
       - active = @lesson_category == category ? 'active' : 'inactive'
       = link_to t(".#{category}"),
                 teacher_resources_path(category:),
-                class: "lvl_nav #{active}"
+                class: "nav-tab #{active}"
 
   %section.flex.flex-wrap.justify-around.items-start
     - grouped_resources.each do |group|

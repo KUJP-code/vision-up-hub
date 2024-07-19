@@ -15,8 +15,8 @@ class MissingLessonsController < ApplicationController
 
   def set_orgs
     @orgs = policy_scope(Organisation)
-    @org = if params[:org_id]
-             authorize Organisation.find(params[:organisation_id])
+    @org = if params[:org]
+             authorize Organisation.find(params[:org])
            else
              authorize @orgs.first
            end
