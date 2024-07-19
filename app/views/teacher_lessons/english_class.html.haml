@@ -1,7 +1,6 @@
 :ruby
   border = "border-b-2 #{lvl_border(@lesson.short_level)}"
   text = lvl_text(@lesson.short_level)
-  sorted_resources = @lesson.resources.sort_by { |r| r.blob.filename }
 
 = turbo_frame_tag 'lesson' do
   = render 'teacher_lessons/tabs',
@@ -21,6 +20,6 @@
       = render 'teacher_lessons/guide_section',
                lesson: @lesson
 
-    - if sorted_resources.any?
+    - if @resources.any?
       = render 'teacher_lessons/resources_section',
-               resources: sorted_resources
+               resources: @resources

@@ -1,6 +1,3 @@
-:ruby
-  sorted_resources = @lesson.resources.sort_by { |r| r.blob.filename }
-
 = turbo_frame_tag 'lesson' do
   .content
     %header
@@ -15,6 +12,6 @@
       = render 'teacher_lessons/guide_section',
                lesson: @lesson
 
-    - if sorted_resources.any?
+    - if @resources.any?
       = render 'teacher_lessons/resources_section',
-               resources: sorted_resources
+               resources: @resources

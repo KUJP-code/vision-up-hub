@@ -13,6 +13,7 @@ class TeacherLessonsController < ApplicationController
     set_date_level_teacher
     @type = validated_type(params[:type])
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+    @resources = set_resources
     render "teacher_lessons/#{@type.titleize.downcase.tr(' ', '_')}"
   end
 
@@ -28,6 +29,21 @@ class TeacherLessonsController < ApplicationController
     @teacher = Teacher.find(params[:teacher_id])
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
     @level = validated_level(params[:level], @teacher)
+  end
+
+  def set_resources
+    resources = @lesson.resources.includes(:blob)
+    resources += phonics_resources if @type == 'PhonicsClass'
+
+    resources.sort_by { |r| r.blob.filename }
+  end
+
+  def phonics_resources
+    # TODO: Must be a better way to do this
+    course_lesson = @teacher.course_lessons.find_by(lesson_id: @lesson.id)
+    plan = @teacher.plans.find_by(course_id: course_lesson.course_id)
+    week = @teacher.course_week(plan, @date)
+    @lesson.phonics_resources.where(week:).includes(:blob)
   end
 
   def validated_level(level_param, teacher)
