@@ -17,7 +17,7 @@
         %td
           = f.select :status,
                      opts_from(Lesson, :statuses)
-          = f.submit 'Update', class: 'btn btn-primary'
+          = f.submit 'Update', class: 'btn btn-main'
 
   - else
     = render 'shared/form_errors', resource: lesson
@@ -30,5 +30,5 @@
                opts_from(Lesson, :statuses),
                class: 'basis-2/5'
 
-    = f.submit class: 'btn btn-primary basis-2/5',
+    = f.submit class: 'btn btn-main basis-2/5',
                id: 'proposal_status_form_submit'

@@ -6,7 +6,7 @@
       = link_to file_path(resource.blob),
                 target: '_blank',
                 rel: 'noopener',
-                class: 'btn btn-primary resource flex justify-around' do
+                class: 'btn btn-main resource flex justify-around' do
         %p= resource.filename
         = render 'shared/svgs/download_icon',
                  classes: 'fill-white'

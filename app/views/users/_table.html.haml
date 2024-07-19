@@ -51,7 +51,7 @@
               = form_with model: child do |f|
                 = f.hidden_field :parent_id, value: user.id
                 = f.submit t('.add_as_parent'),
-                           class: 'btn btn-primary',
+                           class: 'btn btn-main',
                            data: { 'turbo-frame' => '_top' }
             - else
               = ja_date(user.created_at)

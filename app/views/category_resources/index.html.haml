@@ -34,7 +34,7 @@
           %td.p-3
             = link_to 'Edit',
                       edit_category_resource_path(cr),
-                      class: 'btn btn-primary'
+                      class: 'btn btn-main'
             - if cr.courses.empty?
               = link_to 'Delete',
                         category_resource_path(cr),

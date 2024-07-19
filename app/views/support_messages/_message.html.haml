@@ -2,11 +2,11 @@
 - user = message.user
 
 .flex.flex-wrap.p-1
-  .flex.items-end.gap-2.w-full
-    %h3
+  .flex.items-center.gap-2.w-full
+    %h3.font-bold
       - if user
         #{t("users.#{user.type.underscore}")}: #{user.name}
       - else
         = t('.deleted_user')
-    %small= ja_datetime(message.created_at)
+    %small.text-xs.text-secondary-50= ja_datetime(message.created_at)
   %p= message.message

@@ -8,7 +8,7 @@
 
   = link_to t('.create_student'),
             new_student_path(class_id: @school_class.id),
-            class: 'btn btn-primary'
+            class: 'btn btn-main'
 
   - unless @possible_students.empty?
     = form_with model: @school_class, class: 'flex items-center gap-3' do |f|
@@ -16,7 +16,7 @@
         .form-group
           = sc_f.select :student_id, @possible_students
 
-        = sc_f.submit t('.add_existing_student'), class: 'btn btn-primary'
+        = sc_f.submit t('.add_existing_student'), class: 'btn btn-main'
 
   = render 'students/table',
            students: @students

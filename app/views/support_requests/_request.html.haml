@@ -1,15 +1,8 @@
 -# locals: (request:)
 
-- prio_colors = { 'low' => 'bg-success', 'medium' => 'bg-warn', 'high' => 'bg-danger' }
-
 = link_to support_request_path(request),
           class: 'flex flex-col rounded border-2 border-secondary-50 p-3' do
-  .flex.gap-2.items-center
-    %p{ class: "rounded-full p-2 #{prio_colors[request.priority]}" }
-    %h3.btn.btn-outline.text-sm.p-1
-      = request.category.titleize
-    %h1.font-bold.truncate= request.subject
-    = render 'support_requests/resolved' if request.resolved?
+  = render 'support_requests/request_header', request:, index: true
 
   %small #{request.user.name}: #{request.user.email}
 

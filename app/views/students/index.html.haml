@@ -4,7 +4,7 @@
   - unless current_user.is?('Teacher', 'Writer')
     = link_to t('.create_student'),
               new_student_path,
-              class: 'btn btn-primary'
+              class: 'btn btn-main'
 
   = render 'student_searches/form',
            schools: @schools

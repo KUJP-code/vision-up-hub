@@ -4,7 +4,7 @@
     - @allowed_models.each do |model|
       = link_to "Export all #{model.titleize.pluralize}",
                 csv_export_path(id: 0, model:),
-                class: 'btn btn-primary'
+                class: 'btn btn-main'
 
   .flex.flex-col.gap-3.p-3.rounded.border.border-secondary
     %h2 Filter for export

@@ -42,6 +42,6 @@
       %span.material-symbols-outlined.animate-pulse error
 
       = hidden_field_tag(:index, @index, form:)
-      = f.submit class: 'btn btn-primary'
+      = f.submit class: 'btn btn-main'
 %tr{ id: "student-errors-#{@index}" }
   %td.bg-danger{ colspan: Student::CSV_HEADERS.size + 1 }= @errors

@@ -14,7 +14,7 @@
 
   = render 'teacher_uploads/format_explainer'
   = link_to organisation_teacher_upload_path(current_user.organisation, 1),
-            class: 'btn btn-primary w-full flex justify-center gap-2' do
+            class: 'btn btn-main w-full flex justify-center gap-2' do
     %p= t('.download_sample')
     = render 'shared/svgs/download_icon',
              classes: 'fill-white'
@@ -33,7 +33,7 @@
                      required: true,
                      data: { 'teacher-uploader-target': 'fileInput' }
       = f.submit t('.create_teachers', org: @organisation.name),
-                 class: 'btn btn-primary'
+                 class: 'btn btn-main'
 
   %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
     %h2= t('.update_teachers', org: @organisation.name)
@@ -48,4 +48,4 @@
                      required: true,
                      data: { 'teacher-uploader-target': 'fileInput' }
       = f.submit t('.update_teachers', org: @organisation.name),
-                 class: 'btn btn-primary'
+                 class: 'btn btn-main'

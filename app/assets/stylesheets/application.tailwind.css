@@ -10,7 +10,7 @@
 	input,
 	select,
 	textarea {
-		@apply border-2 border-main rounded bg-white;
+		@apply border-2 border-secondary-50 rounded bg-white;
 		padding: 0.25rem;
 
 		&:disabled {
@@ -86,11 +86,7 @@
 
 @layer components {
 	.btn {
-		@apply rounded text-white;
-		cursor: pointer;
-		padding: 0.5rem 1rem;
-		font-weight: 700;
-		text-align: center;
+		@apply rounded py-3 px-6 font-bold text-center cursor-pointer;
 
 		&:disabled {
 			cursor: not-allowed;
@@ -101,8 +97,8 @@
 		}
 	}
 
-	.btn-primary {
-		@apply bg-main;
+	.btn-main {
+		@apply bg-main text-white;
 	}
 
 	.btn-danger {
@@ -127,7 +123,7 @@
 	}
 
 	.btn-secondary {
-		@apply bg-secondary;
+		@apply bg-secondary text-white;
 	}
 
 	.card {

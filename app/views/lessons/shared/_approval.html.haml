@@ -18,7 +18,7 @@
       = f.label :assigned_editor_id, 'Change to:'
       = f.select :assigned_editor_id, @writers
 
-      = f.submit 'Reassign', class: 'btn btn-primary'
+      = f.submit 'Reassign', class: 'btn btn-main'
 
 - if approved_by.any?
   %h3 Approved by: #{approved_by.to_sentence}
@@ -28,4 +28,4 @@
     = f.label :internal_notes
     = f.text_area :internal_notes
 
-  = f.submit t('update_notes'), class: 'btn btn-primary w-full'
+  = f.submit t('update_notes'), class: 'btn btn-main w-full'
