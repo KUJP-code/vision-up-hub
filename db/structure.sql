@@ -1722,7 +1722,8 @@ CREATE TABLE public.support_requests (
     subject character varying,
     user_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    priority integer DEFAULT 0
 );
 
 
@@ -3196,6 +3197,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240719063829'),
 ('20240710023243'),
 ('20240703045256'),
 ('20240703044625'),

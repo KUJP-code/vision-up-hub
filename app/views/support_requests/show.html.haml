@@ -1,9 +1,10 @@
+= render 'shared/subtitle', text: @support_request.subject
+
 %main.flex.flex-col.gap-3.p-3
   .flex.flex-col.items-center.justify-center.gap-2.p-3.rounded.border
     .flex.gap-2
       %h1= @support_request.subject
-      = render 'support_requests/status_badge',
-               resolved: @support_request.resolved?
+      = render 'support_requests/resolved' if @support_request.resolved?
     %h3 #{t('.category')}: #{@support_request.category.titleize}
     %h3 #{t('.user')}: #{@support_request.user.name}
     %h3 #{t('.email')}: #{@support_request.user.email}

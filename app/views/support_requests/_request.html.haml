@@ -1,14 +1,16 @@
 -# locals: (request:)
 
+- prio_colors = { 'low' => 'bg-success', 'medium' => 'bg-warn', 'high' => 'bg-danger' }
+
 = link_to support_request_path(request),
-          class: 'flex flex-col' do
+          class: 'flex flex-col rounded border-2 border-secondary-50 p-3' do
   .flex.gap-2.items-center
-    - unless request.seen_by?(current_user.id)
-      .rounded-full.p-2.bg-blue-800
-    = render 'support_requests/status_badge', resolved: request.resolved?
-    %h3.rounded.bg-secondary.px-2.py-1.text-white.text-base
+    %p{ class: "rounded-full p-2 #{prio_colors[request.priority]}" }
+    %h3.btn.btn-outline.text-sm.p-1
       = request.category.titleize
-    %h1= request.subject
-  - unless current_user.id == request.user_id
-    %small #{request.user.name}: #{request.user.email}
+    %h1.font-bold.truncate= request.subject
+    = render 'support_requests/resolved' if request.resolved?
+
+  %small #{request.user.name}: #{request.user.email}
+
   %p= request.description

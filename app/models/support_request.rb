@@ -10,6 +10,12 @@ class SupportRequest < ApplicationRecord
     feature_request: 3
   }
 
+  enum priority: {
+    low: 0,
+    medium: 1,
+    high: 2
+  }
+
   belongs_to :user, optional: true
   delegate :organisation_id, to: :user
   has_many :messages,
