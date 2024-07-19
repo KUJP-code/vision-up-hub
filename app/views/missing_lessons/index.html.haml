@@ -1,0 +1,55 @@
+:ruby
+  expected_counts = {
+    'DailyActivity' => 2,
+    'EnglishClass' => 4,
+    'Exercise' => 2,
+    'EveningClass' => 2,
+    'KindyPhonic' => 1,
+    'PhonicsClass' => 3,
+    'SpecialLesson' => 0,
+    'StandShowSpeak' => 3
+  }
+
+= render 'shared/subtitle', text: "Missing Lessons for #{@org.name}"
+
+%main.flex.flex-col.justify-center.items-center.gap-6
+  %h1 For the week starting on #{@date}
+  %h3 Subscribed to #{@plans.map(&:name).to_sentence}
+  .w-full.flex.justify-between.p-3
+    = link_to missing_lessons_path(org: @org, date: @date - 1.week),
+              class: 'btn bg-white text-secondary flex items-center gap-1' do
+      = image_tag 'back.svg', class: 'w-6 h-6'
+      %p Previous Week
+    = link_to missing_lessons_path(org: @org, date: @date + 1.week),
+              class: 'btn bg-white text-secondary flex items-center gap-1' do
+      %p Next Week
+      = image_tag 'next.svg', class: 'w-6 h-6'
+
+  %nav.tab-nav
+    - @orgs.each do |org|
+      - active = org == @org
+
+      = link_to org.name,
+                missing_lessons_path(org:),
+                class: "nav-tab #{'active' if active}"
+
+  %table.text-center
+    %thead
+      %th
+      - Lesson::TYPES.each do |type|
+        %th{ class: 'thead bg-secondary' }
+          = type.titleize
+    %tbody
+    - Date::DAYNAMES.each do |day|
+      %tr.bg-white
+        %th{ class: 'thead bg-secondary text-left p-2' }
+          = day
+        - Lesson::TYPES.each do |type|
+          :ruby
+            day_lessons = @course_lessons.count do |cl|
+              cl.lesson.type == type && cl.day == day.downcase
+            end
+            missing = expected_counts[type].nil? || expected_counts[type] > day_lessons
+
+          %td{ class: "p-2 #{'bg-danger' if missing}" }
+            = day_lessons

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrgAdmin < User
-  include Courseable
+  include LessonConsumable
 
   VISIBLE_TYPES = %w[OrgAdmin Parent SchoolManager Teacher].freeze
 
