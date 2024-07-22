@@ -10,12 +10,15 @@
 	input,
 	select,
 	textarea {
-		@apply border-2 border-secondary-50 rounded bg-white;
-		padding: 0.25rem;
+		@apply border-2 border-secondary-50 rounded bg-white p-2;
 
 		&:disabled {
 			cursor: not-allowed;
 			background-color: #f5f5f5;
+		}
+
+		&:focus-visible {
+			@apply outline-none border-secondary border-4;
 		}
 	}
 
@@ -137,12 +140,19 @@
 		padding: 1rem;
 	}
 
-	.form-group {
+	.form-group,
+	.field_with_errors {
 		@apply w-full flex flex-col items-stretch gap-2;
 
 		label {
 			@apply text-xl font-bold;
 		}
+	}
+
+	.field_with_errors:has(input),
+	.field_with_errors:has(select),
+	.field_with_errors:has(textarea) {
+		@apply text-danger border-4 border-danger rounded;
 	}
 
 	.dropdown {
