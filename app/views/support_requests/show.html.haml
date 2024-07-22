@@ -12,6 +12,10 @@
 
     %p.text-center= @support_request.description
 
+    - if @support_request.images.attached?
+      = render 'support_requests/images',
+               images: @support_request.images
+
     .flex.gap-6.mt-6
       = link_to t('.edit'),
                 edit_support_request_path(@support_request),
@@ -30,4 +34,5 @@
               html: { class: 'form p-0 items-center',
                       id: 'new_support_message' } do |f|
     = f.text_area :message, rows: 5, class: 'w-full'
+    = f.file_field :images, accept: 'image/*', multiple: true, class: 'w-full'
     = f.submit t('.send'), class: 'btn btn-main w-full md:w-1/3'

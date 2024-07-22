@@ -10,3 +10,6 @@
         = t('.deleted_user')
     %small.text-xs.text-secondary-50= ja_datetime(message.created_at)
   %p= message.message
+  - if message.images.attached?
+    = render 'support_requests/images',
+             images: message.images

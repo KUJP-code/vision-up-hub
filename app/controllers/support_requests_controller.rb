@@ -12,7 +12,7 @@ class SupportRequestsController < ApplicationController
 
   def show
     @support_request.mark_seen_by(current_user.id)
-    @messages = @support_request.messages.includes(:user)
+    @messages = @support_request.messages.includes(:user).with_attached_images
   end
 
   def new
