@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_19_010824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -76,6 +76,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
     t.string "answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tutorial_category_id", null: false
+    t.index ["tutorial_category_id"], name: "index_faq_tutorials_on_tutorial_category_id"
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -136,10 +138,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
 
   create_table "pdf_tutorials", force: :cascade do |t|
     t.string "title"
-    t.string "file_path"
     t.integer "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tutorial_category_id", null: false
+    t.index ["tutorial_category_id"], name: "index_pdf_tutorials_on_tutorial_category_id"
   end
 
   create_table "plans", force: :cascade do |t|
@@ -366,6 +369,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tutorial_categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tutorial_categories_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "type", default: "Parent"
@@ -402,6 +412,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
     t.integer "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tutorial_category_id", null: false
+    t.index ["tutorial_category_id"], name: "index_video_tutorials_on_tutorial_category_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -410,11 +422,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
   add_foreign_key "class_teachers", "users", column: "teacher_id"
   add_foreign_key "course_lessons", "courses"
   add_foreign_key "course_lessons", "lessons"
+  add_foreign_key "faq_tutorials", "tutorial_categories"
   add_foreign_key "lessons", "lessons", column: "changed_lesson_id"
   add_foreign_key "lessons", "users", column: "assigned_editor_id"
   add_foreign_key "lessons", "users", column: "creator_id"
   add_foreign_key "managements", "schools"
   add_foreign_key "managements", "users", column: "school_manager_id"
+  add_foreign_key "pdf_tutorials", "tutorial_categories"
   add_foreign_key "plans", "courses"
   add_foreign_key "plans", "organisations"
   add_foreign_key "school_classes", "schools"
@@ -437,4 +451,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_03_041760) do
   add_foreign_key "test_results", "students"
   add_foreign_key "test_results", "tests"
   add_foreign_key "users", "organisations"
+  add_foreign_key "video_tutorials", "tutorial_categories"
 end

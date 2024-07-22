@@ -1,0 +1,11 @@
+= form_with model: category, html: { class: 'form', id: 'tutorial_category_form' } do |f|
+  = render 'shared/form_errors', resource: category
+
+  .flex.gap-2
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: 'w-4/5 p-1 text-neutral-dark self-center', required: true
+
+  .form-group
+    = f.submit category.new_record? ? 'Create Category' : 'Update Category',
+               class: 'btn btn-primary cursor-pointer'

@@ -11,19 +11,24 @@
         = link_to 'PDF Tutorial', new_tutorial_path(type: 'PDF'), class: 'p-1 opacity-90'
         = link_to 'Video Tutorial', new_tutorial_path(type: 'Video'), class: 'p-1 opacity-90'
         = link_to 'FAQ Tutorial', new_tutorial_path(type: 'FAQ'), class: 'p-1 opacity-90'
+    .mt-4
+      = link_to 'Add New Category', new_tutorial_category_path, class: 'btn btn-primary w-full'
 
 .categories-container.flex.flex-wrap.gap-8.p-8
-  - @categories.each do |category_name, category_key|
+  - @categories.each do |category|
     .category-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
       %details
         %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
-          = category_name
+          = category.name
+          - if admin
+            = link_to 'Edit', edit_tutorial_category_path(category), class: 'btn btn-secondary btn-sm ml-2'
+            = link_to 'Delete', tutorial_category_path(category), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm ml-2'
 
         %div
           %h4.mt-2
             Manuals & Guides
           %ul.list-disc.list-inside
-            - @tutorials[:pdf].select { |t| t.category == category_key }.each do |tutorial|
+            - @tutorials[:pdf].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
               %li.cursor-pointer.flex.justify-between.items-center
                 = link_to tutorial.title, file_path(tutorial.file.blob), target: '_blank', class: 'text-blue-500 hover:underline'
                 - if admin
@@ -33,28 +38,24 @@
           %h4.mt-4
             Videos
           %ul.list-disc.list-inside
-            - @tutorials[:video].select { |t| t.category == category_key }.each do |tutorial|
+            - @tutorials[:video].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
               %li.cursor-pointer.flex.justify-between.items-center
-                = link_to tutorial.title, video_modal_tutorial_path(tutorial, type: 'Video'), data: { turbo_frame: "video_modal" }, class: 'text-blue-500 hover:underline'
+                = link_to tutorial.title, tutorial_path(tutorial, type: 'Video'), data: { turbo_frame: "video_modal" }, class: 'text-blue-500 hover:underline'
                 - if admin
                   = link_to 'Edit', edit_tutorial_path(tutorial, type: 'Video'), class: 'btn btn-secondary px-3 py-1'
                   = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
 
-.category-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
-  %details
-    %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
-      FAQs
-
-    %div
-      %ul.list-disc.list-inside
-        - @tutorials[:faq].each do |tutorial|
-          %details
-            %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
-              = tutorial.question
-              - if admin
-                = link_to 'Edit', edit_tutorial_path(tutorial, type: 'FAQ'), class: 'btn btn-secondary px-3 py-1'
-                = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger'
-            %p.text-red-500
-              = tutorial.answer
+          %h4.mt-4
+            FAQs
+            %ul.list-disc.list-inside
+              - @tutorials[:faq].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
+                %details
+                  %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
+                    = tutorial.question
+                    - if admin
+                      = link_to 'Edit', edit_tutorial_path(tutorial, type: 'FAQ'), class: 'btn btn-secondary px-3 py-1'
+                      = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger'
+                  %p.text-red-500
+                    = tutorial.answer
 
 %turbo-frame#video_modal

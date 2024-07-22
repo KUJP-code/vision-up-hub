@@ -10,8 +10,9 @@
     = f.text_field :video_path, required: true
 
   .form-group
-    = f.label :category
-    = f.select :category, options_for_select(@categories), {}
+    = f.label :tutorial_category_id, "Category"
+    = f.select :tutorial_category_id, options_for_select(@categories), {}
 
   .form-group
-    = f.submit @tutorial.new_record? ? "Create #{params[:type]} Tutorial" : "Update #{params[:type]} Tutorial", class: 'btn btn-primary'
+    = f.submit @tutorial.new_record? ? "Create #{params[:type]} Tutorial" : "Update #{params[:type]} Tutorial",
+               class: 'btn btn-primary'
