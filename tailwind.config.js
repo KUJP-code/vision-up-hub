@@ -30,6 +30,7 @@ export default {
 							sky: "#8eccda",
 							specialist: "#e88d8d",
 							success: "#9ed26a",
+							warn: "#fdcd56",
 						},
 						fontFamily: {
 							sans: ["'M PLUS 1p'", "sans-serif"],
