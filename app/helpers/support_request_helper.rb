@@ -10,7 +10,7 @@ module SupportRequestHelper
   def prio_radio_class
     base = 'h-fit flex items-center justify-center cursor-pointer ' \
            'place-self-center relative py-2.5 basis-1/3 rounded ' \
-           'btn-outline font-bold has-[:checked]:text-white'
+           'btn-outline font-bold has-[:checked]:text-white border-secondary-50'
 
     { 'low' => "#{base} has-[:checked]:bg-success has-[:checked]:border-success",
       'medium' => "#{base} has-[:checked]:bg-warn has-[:checked]:border-warn",
