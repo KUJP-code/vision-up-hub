@@ -178,4 +178,16 @@ Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)
 end
 
+puts 'Creating Tutorials...'
+
+%i[extra_resources lms_functions lessons].each do |title|
+  fb.create(:tutorial_category, title:)
+end
+
+TutorialCategory.all.each do |category|
+  fb.create_list(:pdf_tutorial, 2, tutorial_category_id: category.id)
+  fb.create_list(:video_tutorial, 2, tutorial_category_id: category.id)
+  fb.create_list(:faq_tutorial, 2, tutorial_category_id: category.id)
+end
+
 puts 'Done!'

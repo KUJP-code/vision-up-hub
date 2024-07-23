@@ -1,10 +1,8 @@
-- categories = @categories
-
 - case @type
 - when 'PDF'
-  = render 'tutorials/forms/pdf_form', tutorial: @tutorial, categories: categories
+  = render 'tutorials/forms/pdf_form', tutorial: @tutorial, categories: @categories
 - when 'Video'
-  = render 'tutorials/forms/video_form', tutorial: @tutorial, categories: categories
+  = render 'tutorials/forms/video_form', tutorial: @tutorial, categories: @categories
 - when 'FAQ'
   = render 'tutorials/forms/faq_form', tutorial: @tutorial
 - else
