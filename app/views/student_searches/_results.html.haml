@@ -19,7 +19,7 @@
         = f.hidden_field :level, value: result.level
         = f.submit t('.claim_child',
                      child: redact(result, result.name)),
-                   class: 'btn btn-primary',
+                   class: 'btn btn-main',
                    data: { 'turbo-frame' => '_top' }
     - elsif result.parent_id
       %p.w-full.bg-danger.text-white.text-center.p-2.rounded

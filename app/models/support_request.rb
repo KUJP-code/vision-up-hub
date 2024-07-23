@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SupportRequest < ApplicationRecord
+  include ImagesAttachable
+
   validates :category, :description, :subject, presence: true
 
   enum category: {
@@ -10,13 +12,20 @@ class SupportRequest < ApplicationRecord
     feature_request: 3
   }
 
+  enum priority: {
+    low: 0,
+    medium: 1,
+    high: 2
+  }
+
   belongs_to :user, optional: true
   delegate :organisation_id, to: :user
   has_many :messages,
            dependent: :destroy,
            class_name: 'SupportMessage',
            inverse_of: :support_request
-  has_many_attached :attachments
+
+  has_many_attached :images
 
   def mark_seen_by(user_id)
     seen_by << user_id unless seen_by?(user_id)
@@ -34,11 +43,5 @@ class SupportRequest < ApplicationRecord
 
   def seen_by?(user_id)
     seen_by.include?(user_id)
-  end
-
-  def self.select_categories
-    categories.keys.map do |key|
-      [I18n.t("support_requests.categories.#{key}"), key]
-    end
   end
 end

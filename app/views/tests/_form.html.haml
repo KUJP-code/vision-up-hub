@@ -18,6 +18,10 @@
     = f.select :level, Test.levels.keys.map { |k| [short_level(k), k] }.uniq { |k, _v| k }
 
   .form-group
+    = f.label :basics, t('.basics')
+    = f.number_field :basics, min: 0
+
+  .form-group
     = f.label :questions
     = f.text_area :questions, value: questions
     %small Each line is a section (named after a skill)
@@ -32,4 +36,4 @@
     %small 'Sky Two: 70'
     %small 'Sky Three: 85'
 
-  = f.submit class: 'btn btn-primary'
+  = f.submit class: 'btn btn-main'

@@ -5,6 +5,7 @@ module Pdfable
 
   UPLOADED_GUIDES = %w[EnglishClass
                        Exercise
+                       EveningClass
                        KindyPhonic
                        SpecialLesson
                        StandShowSpeak].freeze
@@ -28,7 +29,7 @@ module Pdfable
       pdf_blob = ActiveStorage::Blob.create_and_upload!(
         io: pdf_io, filename:, content_type: 'application/pdf'
       )
-      guide.attach(pdf_blob)
+      Logidze.without_logging { guide.attach(pdf_blob) }
       pdf_io
     end
 

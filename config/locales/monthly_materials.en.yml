@@ -1,0 +1,15 @@
+en:
+  monthly_materials:
+    form:
+      course: "Course"
+      from_date: "From date"
+      from_week: "From week"
+      search: "Search"
+      weeks_forward: "Weeks forward"
+    index:
+      date: "Week/Day"
+      material_list: "Material list"
+      monthly_materials: "Monthly Materials"
+      title: "Title"
+      type: "Lesson Type"
+      week: "Week"

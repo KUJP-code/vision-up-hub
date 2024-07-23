@@ -15,7 +15,7 @@ class KindyPhonicsController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'Kindy phonics successfully created!'
     else
-      set_form_info
+      set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,
              alert: 'Kindy phonics could not be created'
@@ -30,7 +30,7 @@ class KindyPhonicsController < LessonsController
       redirect_to after_update_url,
                   notice: 'Kindy phonics successfully updated.'
     else
-      set_form_info
+      set_form_data
       render 'lessons/edit',
              status: :unprocessable_entity,
              alert: 'Kindy phonics could not be updated'

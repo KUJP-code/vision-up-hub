@@ -1,10 +1,9 @@
 -# locals: (classes: '', text:)
 
-%div{ class: 'w-full bg-neutral-light text-neutral-dark font-semibold py-2 px-3 ' \
-             "relative #{classes}" }
+%header#subtitle
   - unless viewing_self?
-    = link_to :back,
-              class: 'absolute inset-y-1/2 flex items-center gap-2 print:hidden' do
-      .w-0.h-0.border-r-8.border-r-neutral-dark.border-y-8.border-y-transparent.mt-1
-      %span.hidden.md:block= t('.back')
+    = link_to :back, class: 'hidden md:flex absolute left-6', id: 'back' do
+      = image_tag 'back.svg'
+      %span= t('.back')
   %h1= text
+  .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')

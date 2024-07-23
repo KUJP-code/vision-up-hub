@@ -76,8 +76,20 @@ gem 'rdoc', '6.6.3.1'
 # Lock nokogiri for CVE-2024-34459
 gem 'nokogiri', '1.16.5'
 
-# Lock rexml for CVE-2024-35176
-gem 'rexml', '3.2.8'
+# Bump rexml for CVE-2024-39908
+gem 'rexml', '~> 3.3.2'
+
+# logidze for versioning
+gem 'logidze', '~> 1.1'
+
+# postgres-copy for csv export & csv cos it's not stdlib > 3.4
+gem 'csv', '~> 3.3'
+gem 'postgres-copy', '~> 1.7'
+
+# Use Flipper for feature flags
+gem 'flipper'
+gem 'flipper-active_record'
+gem 'flipper-ui'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -125,7 +137,4 @@ group :test do
 
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
-
-  # CSV for creating test CSVs to upload
-  gem 'csv', '~> 3.3'
 end

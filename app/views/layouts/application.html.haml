@@ -2,19 +2,30 @@
 %html{ class: org_theme(current_user.presence),
        data: { controller: 'theme', 'theme-target': 'html' } }
   %head
-    %title Materials
+    %title Vision UP Hub
     %meta{ charset: 'utf-8' }
     %meta{ name: 'viewport', content: 'width=device-width,initial-scale=1' }
+    %meta{ property: 'og:image',
+           content: "#{request.base_url}#{image_path('opengraph.svg')}" }
+    %meta{ property: 'og:title', content: 'Vision UP Hub' }
+    %meta{ property: 'og:description',
+           content: 'Vision UP Learning Management System' }
+    %link{ rel: 'preconnect', href: 'https://fonts.googleapis.com' }
+    %link{ rel: 'preconnect', href: 'https://fonts.gstatic.com',
+           crossorigin: true }
+    %link{ href: 'https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500&display=swap',
+           rel: 'stylesheet' }
     = csrf_meta_tags
     = csp_meta_tag
-    = favicon_link_tag org_favicon(current_user.presence)
+    = favicon_link_tag image_path('favicon.svg')
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag 'application',
                              'data-turbo-track': 'reload',
                              type: 'module'
     = yield :head
-  %body.text-secondary
+  %body{ class: body_classes }
     %turbo_frame#flash
       = render 'shared/flash'
-    = render 'shared/nav'
+    = render 'shared/nav' if user_signed_in?
+    = yield :subtitle
     = yield

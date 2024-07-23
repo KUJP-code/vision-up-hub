@@ -2,13 +2,14 @@
 
 class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
-  before_action :set_schools, only: %i[edit new show]
-  before_action :set_classes, only: %i[edit new show]
+  before_action :set_form_data, only: %i[edit show]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @students = policy_scope(Student).includes(:school).order(updated_at: :desc).limit(10)
+    @students = policy_scope(Student)
+                .includes(:school)
+                .order(level: :asc, en_name: :asc).limit(300)
     @schools = policy_scope(School).pluck(:name, :id)
   end
 
@@ -20,19 +21,16 @@ class StudentsController < ApplicationController
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
-    @orgs = policy_scope(Organisation)
+    @orgs = policy_scope(Organisation).pluck(:name, :id)
     set_results
   end
 
   def new
-    @student = authorize Student.new
-    @student.school_id = params[:school_id] if params[:school_id]
-    build_classes
+    @student = authorize Student.new(school_id: params[:school_id])
+    set_form_data
   end
 
-  def edit
-    build_classes
-  end
+  def edit; end
 
   def create
     @student = authorize Student.new(student_params)
@@ -40,9 +38,7 @@ class StudentsController < ApplicationController
     if @student.save
       redirect_to @student, notice: t('create_success')
     else
-      build_classes
-      set_schools
-      set_classes
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -50,15 +46,15 @@ class StudentsController < ApplicationController
   end
 
   def update
-    if @student.update(student_params)
-      redirect_to @student, notice: t('update_success')
-    else
-      build_classes
-      set_schools
-      set_classes
-      render :edit,
-             status: :unprocessable_entity,
-             alert: t('update_failure')
+    Logidze.with_responsible(current_user.id) do
+      if @student.update(student_params)
+        redirect_to @student, notice: t('update_success')
+      else
+        set_form_data
+        render :edit,
+               status: :unprocessable_entity,
+               alert: t('update_failure')
+      end
     end
   end
 
@@ -77,7 +73,7 @@ class StudentsController < ApplicationController
   def student_params
     params.require(:student).permit(
       :comments, :level, :name, :school_id, :student_id, :parent_id,
-      :en_name, :birthday, :start_date, :end_date,
+      :en_name, :birthday, :start_date, :quit_date,
       student_classes_attributes: %i[id class_id _destroy]
     )
   end
@@ -109,19 +105,13 @@ class StudentsController < ApplicationController
     }
   end
 
-  def set_student
-    @student = authorize Student.find(params[:id])
-  end
-
-  def set_schools
+  def set_form_data
+    @classes = policy_scope(SchoolClass).pluck(:name, :id)
+    @student.student_classes.build(class_id: params[:class_id]) if params[:class_id]
     @schools = policy_scope(School).pluck(:name, :id)
   end
 
-  def set_classes
-    @classes = policy_scope(SchoolClass).pluck(:name, :id)
-  end
-
-  def build_classes
-    @student.student_classes.build(class_id: params[:class_id]) if params[:class_id]
+  def set_student
+    @student = authorize Student.find(params[:id])
   end
 end

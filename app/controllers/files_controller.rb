@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class FilesController < ApplicationController
+  layout 'file'
+
   before_action :set_file, only: %i[show destroy]
   after_action :verify_authorized
 
   def show
     @file.update(download_count: @file.download_count + 1)
-    send_data @file.download, filename: @file.filename.to_s
   end
 
   def destroy

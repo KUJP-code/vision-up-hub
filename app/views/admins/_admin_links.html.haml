@@ -1,0 +1,36 @@
+%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
+  %h3.text-center Admin Links
+  %nav.w-full.flex.flex-wrap.justify-center.gap-3
+    = link_to 'CSV Exports',
+              csv_exports_path,
+              class: 'btn btn-secondary'
+
+    - if @user.id == 1 && current_user.id == 1
+      = link_to 'DB',
+                pg_hero_path,
+                class: 'btn btn-secondary'
+
+      = link_to 'Flipper',
+                flipper_path,
+                class: 'btn btn-secondary'
+
+      = link_to 'Jobs',
+                mission_control_jobs_path,
+                class: 'btn btn-secondary'
+
+    - if @user.id == current_user.id
+      = link_to 'My Account',
+                edit_organisation_admin_path(@user.organisation_id, @user),
+                class: 'btn btn-secondary'
+
+    = link_to 'Organisations',
+              organisations_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Plans',
+              plans_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Schools',
+              organisation_schools_path(@user.organisation_id),
+              class: 'btn btn-secondary'

@@ -1,22 +1,34 @@
+:ruby
+  active_requests = @support_requests.reject(&:resolved?)
+  resolved_requests = @support_requests.select(&:resolved?)
+
 = render 'shared/subtitle',
          text: current_user.is?('Parent') ? t('.messages') : t('.support_requests')
 
-- unless current_user.is?('Admin')
-  %details{
-    class: 'm-3 bg-secondary text-white font-semibold rounded overflow-hidden',
-    id: 'create_request'
-  }
-    %summary.cursor-pointer.bg-secondary.p-2
-      = current_user.is?('Parent') ? t('.new_message') : t('.new_request')
-    = render 'support_requests/form',
-             request: SupportRequest.new
+%main.flex.flex-col.gap-6.p-3.md:py-6.md:px-12
+  = link_to new_support_request_path,
+            class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
+    = t('.new_request')
+    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
 
-%main.flex.flex-col.gap-3.p-3
-  - if @support_requests.empty?
-    %h2.mt-12
-      = current_user.is?('Parent') ? t('.no_messages') : t('.no_support_requests')
+  %section.flex.flex-col.gap-3
+    - if @support_requests.empty?
+      %h2.mt-12= t('.no_support_requests')
 
-  = render collection: @support_requests,
-           partial: 'support_requests/request',
-           as: :request,
-           spacer_template: 'shared/spacer'
+    - if active_requests.any?
+      %header.flex.justify-start.relative.text-center
+        %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+        %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+          = t('.active_requests')
+      = render collection: active_requests,
+               partial: 'support_requests/request',
+               as: :request
+
+    - if resolved_requests.any?
+      %header.flex.justify-start.relative.text-center
+        %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+        %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+          = t('.resolved_requests')
+      = render collection: resolved_requests,
+               partial: 'support_requests/request',
+               as: :request

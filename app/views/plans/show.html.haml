@@ -1,8 +1,10 @@
-%h1= @plan.name
-%h3= t('.organisation', name: @plan.organisation.name)
-%h3= t('.student_limit', limit: @plan.student_limit)
-%h3= t('.total_cost', cost: @plan.total_cost)
+%main.flex.flex-col.gap-3.p-3
+  %h1= @plan.name
+  %h3= t('.organisation', name: @plan.organisation.name)
+  %h3= t('.student_limit', limit: @plan.student_limit)
+  %h3= t('.total_cost', cost: @plan.total_cost)
+  %h3= t('.valid', from: @plan.start, to: @plan.finish_date)
 
-= link_to t('.edit_plan'),
-          edit_plan_path(@plan),
-          class: 'btn btn-secondary'
+  = link_to t('.edit_plan'),
+            edit_plan_path(@plan),
+            class: 'btn btn-secondary'

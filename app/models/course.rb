@@ -5,9 +5,26 @@ class Course < ApplicationRecord
 
   has_many :course_lessons, dependent: :destroy
   accepts_nested_attributes_for :course_lessons,
-                                reject_if: :all_blank,
-                                allow_destroy: true
+                                allow_destroy: true,
+                                reject_if: :all_blank
   has_many :lessons, through: :course_lessons
-  has_many :plans, dependent: :destroy
+
+  has_many :course_resources, dependent: :destroy
+  accepts_nested_attributes_for :course_resources,
+                                allow_destroy: true,
+                                reject_if: :all_blank
+  has_many :category_resources, through: :course_resources
+
+  has_many :plans, -> { includes(:organisation) },
+           dependent: :destroy, inverse_of: :course
   has_many :organisations, through: :plans
+
+  def plan_date_data(org_id = nil)
+    if org_id
+      plans.select { |p| p.organisation_id == org_id }
+           .to_h { |p| [p.organisation.name, { startDate: p.start }] }
+    else
+      plans.to_h { |p| [p.organisation.name, { startDate: p.start }] }
+    end
+  end
 end

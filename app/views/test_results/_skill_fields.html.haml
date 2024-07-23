@@ -1,29 +1,29 @@
--# locals: (f:, skill:, test:)
+-# locals: (form:, result:, skill:, test:)
 
 :ruby
   skill_symbol = skill.to_sym
   return if test.send(skill_symbol).blank?
 
-  saved = f.object.persisted?
-  input_classes = "outline-none border w-10 text-center #{'border-neutral-dark' if saved}"
+  input_classes = 'outline-none outline-offset-0 focus:outline-main border w-10 text-center'
 
 - test.send(skill_symbol).each_with_index do |max_score, i|
   %td.p-1{ data: { controller: 'validity' } }
     .flex.justify-center.items-center.gap-1
-      = number_field_tag "test_result[answers][#{skill}][]",
-                         f.object.answers[skill],
-                         min: 0,
-                         max: max_score,
-                         value: f.object.send(skill_symbol)[i] || 0,
-                         class: input_classes,
-                         data: { action: 'test-result#calculate validity#validate',
-                                 'test-result-target': skill,
-                                 'validity-target': 'input' }
+      = select_tag "test_result[answers][#{skill}][]",
+                   options_for_select(0..max_score, result.send(skill_symbol)[i] || 0),
+                   class: input_classes,
+                   id: "#{form}-#{skill}-#{i}",
+                   form:,
+                   data: { action: 'test-result#calculate validity#validate',
+                           'test-result-target': skill,
+                           'validity-target': 'input' }
 
 %td{ class: 'p-1 bg-secondary-50' }
   .flex.justify-center.items-center.gap-1
-    - value = f.object.send(fieldname_from_skill(skill).to_sym) || 0
-    = f.hidden_field fieldname_from_skill(skill),
-                     value:,
-                     data: { 'test-result-target': target_from_skill(skill) }
+    - attr = attr_from_skill(skill)
+    - value = result.send(attr.to_sym) || 0
+    = hidden_field_tag "test_result[#{attr}]",
+                       value,
+                       form:,
+                       data: { 'test-result-target': target_from_skill(skill) }
     %p{ data: { 'test-result-target': target_from_skill(skill) } } #{value}%

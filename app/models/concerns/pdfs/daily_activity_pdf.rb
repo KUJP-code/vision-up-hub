@@ -12,9 +12,12 @@ module DailyActivityPdf
     private
 
     def generate_guide
-      Prawn::Document.new(margin: 0, page_size: 'A4', page_layout: :portrait) do |pdf|
+      Prawn::Document.new(
+        margin: 0, page_size: 'A4', page_layout: :portrait
+      ) do |pdf|
         apply_defaults(pdf)
-        pdf.image BACKGROUND_PATH, height: 297.mm, width: 210.mm
+        pdf.image BACKGROUND_PATH, at: [0, PAGE_HEIGHT],
+                                   height: PAGE_HEIGHT, width: PAGE_WIDTH
         draw_subtype(pdf)
         draw_title(pdf)
         draw_goal(pdf)
@@ -31,7 +34,7 @@ module DailyActivityPdf
   end
 
   def draw_subtype(pdf)
-    pdf.bounding_box([HEADER_INDENT + PADDING, 279.mm],
+    pdf.bounding_box([HEADER_INDENT, 279.mm],
                      width: 41.mm, height: 3.mm) do
       pdf.text subtype.titleize, overflow: :shrink_to_fit
     end
@@ -55,21 +58,7 @@ module DailyActivityPdf
   def draw_warning(pdf)
     pdf.bounding_box([HEADER_INDENT, 246.mm - PADDING],
                      width: 88.mm, height: 8.mm) do
-      pdf.text warning, color: 'FF0000', overflow: :shrink_to_fit
-    end
-  end
-
-  def add_image(pdf)
-    return unless pdf_image.attached?
-
-    pdf_image.blob.open do |file|
-      pdf.image(
-        file.path,
-        position: 120.mm,
-        vposition: 15.mm,
-        width: 198,
-        height: 130
-      )
+      pdf.text warning, color: RED, overflow: :shrink_to_fit
     end
   end
 
@@ -101,7 +90,7 @@ module DailyActivityPdf
                overflow: :shrink_to_fit
     end
 
-    pdf.bounding_box([50.mm, 129.mm], width: 138.mm, height: 10.mm) do
+    pdf.bounding_box([50.mm, 127.mm], width: 138.mm, height: 10.mm) do
       pdf.text "Did you know? #{interesting_fact}",
                size: FONT_SIZE,
                overflow: :shrink_to_fit
@@ -133,7 +122,7 @@ module DailyActivityPdf
   end
 
   def draw_footer_level(pdf)
-    pdf.bounding_box([140.mm, 9.mm], width: 66.mm, height: 10.mm) do
+    pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
       pdf.text kindy? ? 'Kindergarten' : 'Elementary', color: 'FFFFFF', align: :right
     end
   end

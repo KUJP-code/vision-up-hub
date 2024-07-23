@@ -66,9 +66,20 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_deliveries = true
+  config.x.mail_from = %(Vision UP <no-reply@vision-up.app>)
+  config.action_mailer.default_url_options = { host: 'vision-up.app' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'email-smtp.ap-northeast-1.amazonaws.com',
+    port: 587,
+    authentication: :plain,
+    user_name: ENV.fetch('SES_USERNAME', nil),
+    password: ENV.fetch('SES_PASSWORD', nil),
+    enable_starttls_auto: true
+  }
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.perform_caching = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

@@ -1,19 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
-import { addStudentRow, newStudentUploadTable } from "./table.ts";
+import { newStudentUploadTable } from "./table.ts";
+import { addRow } from "../table.ts";
 import { createStudent, updateStudent } from "./api.ts";
 import { newUploadSummary } from "../summary.ts";
 
-export interface student {
-	name: string;
-	student_id: string;
-	level: string;
-	school_id: string;
-	parent_id: string;
-	start_date: string;
-	quit_date: string;
-	birthday: string;
-}
+import type { student } from "../declarations.d.ts";
 
 // Connects to data-controller="student-uploader"
 export default class extends Controller<HTMLFormElement> {
@@ -43,14 +35,19 @@ export default class extends Controller<HTMLFormElement> {
 
 		const main = document.querySelector("main");
 		if (main) {
-			main.innerHTML = newStudentUploadTable();
+			main.innerHTML = newStudentUploadTable(this.headersValue);
 			main.prepend(newUploadSummary(students.length));
 		} else {
 			alert("Could not find main element");
 			return;
 		}
-		for (const [i, s] of students.entries()) {
-			addStudentRow({ csvStudent: s, headers: this.headersValue, index: i });
+		for (const [i, student] of students.entries()) {
+			addRow({
+				csvRecord: student,
+				headers: this.headersValue,
+				index: i,
+				uploadType: "student",
+			});
 		}
 
 		this.uploadStudents(students);
@@ -75,11 +72,13 @@ export default class extends Controller<HTMLFormElement> {
 	async uploadStudents(students: student[]) {
 		while (students.length > 0) {
 			const index = students.length - 1;
+			const delay = new Promise((resolve) => setTimeout(resolve, 100));
 			const student = students.pop();
 			if (student === undefined) continue;
 			this.actionValue === "create"
 				? await createStudent(student, this.orgValue, index)
 				: await updateStudent(student, this.orgValue, index);
+			await delay;
 		}
 	}
 }

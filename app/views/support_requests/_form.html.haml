@@ -1,25 +1,44 @@
 -# locals: (request:)
 
-= form_with model: request, html: { class: 'form',
-                                    id: 'support_request_form' } do |f|
-  = render 'shared/form_errors', resource: request
+= render 'shared/subtitle', text: t('.request_support')
 
-  .flex.gap-2
-    .form-group
-      = f.label :subject
-      = f.text_field :subject,
-                     class: 'w-4/5 p-1 text-neutral-dark self-center'
-    .form-group
-      = f.label :category
-      = f.select :category,
-                 SupportRequest.select_categories,
-                 {},
-                 { class: 'w-4/5 bg-white text-main p-1 self-center' }
+= form_with model: request,
+            html: { class: 'flex flex-col md:grid grid-cols-5 grid-rows-5 gap-3 p-3 text-center md:text-left',
+                    id: 'support_request_form' } do |f|
+  .col-span-5
+    = render 'shared/form_errors', resource: request
 
-  .form-group
-    = f.label :description
-    = f.text_area :description,
-                  class: 'w-full text-neutral-dark min-h-20'
+  .form-group.col-start-1.col-span-3.row-start-2
+    = f.label :subject, t('.subject')
+    = f.text_field :subject,
+                   class: 'text-lg',
+                   placeholder: t('.subject')
 
-  = f.submit current_user.is?('Parent') ? t('.send_message') : t('.submit_request'),
-             class: 'btn btn-primary cursor-pointer'
+  .form-group.col-start-1.col-span-3.row-span-2.row-start-3
+    = f.label :description, t('.description')
+    = f.text_area :description, rows: 6, placeholder: t('.description')
+
+  .col-start-4.col-span-2.row-start-2.flex.gap-3.mt-5
+    - SupportRequest.priorities.each_key do |priority|
+      = f.label :priority,
+                value: priority,
+                class: prio_radio_class[priority] do
+        %span.w-full.cursor-pointer.text-center
+          = priority.titleize
+        = f.radio_button :priority,
+                         priority,
+                         class: 'absolute opacity-0 cursor-pointer'
+
+  .form-group.col-start-4.col-span-2.row-start-3.mt-6
+    = f.label :images
+    = f.file_field :images,
+                   accept: 'image/*',
+                   multiple: true
+
+  .form-group.col-start-4.col-span-2.row-start-4
+    = f.label :category, t('.category')
+    = f.select :category,
+               opts_from(SupportRequest, :categories)
+
+  = f.submit t('.submit_request'),
+             class: 'btn btn-main row-start-5 col-start-1 col-span-2 md:place-self-start'

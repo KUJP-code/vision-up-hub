@@ -3,24 +3,26 @@
   "private": "true",
   "scripts": {
     "build": "bun bun.config.js",
-    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify --postcss"
   },
+  "browserslist": ["defaults", "iOS > 12"],
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
-    "@hotwired/turbo-rails": "^8.0.0",
+    "@hotwired/turbo-rails": "^8.0.4",
     "@rails/request.js": "^0.0.9",
     "@stimulus-components/chartjs": "^6.0.0",
     "@stimulus-components/clipboard": "^5.0.0",
-    "autoprefixer": "latest",
     "papaparse": "^5.4.1",
     "postcss": "latest",
+    "postcss-preset-env": "^9.5.14",
     "stimulus-textarea-autogrow": "^4.1.0",
     "tailwindcss": "latest",
     "tailwindcss-stimulus-components": "^5.1.1",
-    "tailwindcss-theme-swapper": "^0.11.0"
+    "tailwindcss-theme-swapper": "^0.11.5"
   },
   "devDependencies": {
     "@types/papaparse": "^5.3.14",
+    "@types/postcss-preset-env": "^8.0.0",
     "@types/rails__request.js": "^0.0.0"
   }
 }

@@ -1,13 +1,15 @@
 en:
   support_requests:
-    categories:
+    form:
       bug_report: "Bug Report"
+      category: "Category"
+      description: "Description"
       feature_request: "Feature Request"
       general: "General"
-      typo_report: "Typo Report"
-    form:
       send_message: "Send Message"
       submit_request: "Submit Request"
+      subject: "Subject"
+      typo_report: "Typo Report"
     index:
       new_message: "New Message"
       new_request: "New Support Request"

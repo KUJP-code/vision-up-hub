@@ -29,8 +29,8 @@ class ProposalsController < ApplicationController
 
   def replace_lesson
     @lesson = authorize @proposal.changed_lesson
-    if @proposal.replace(@lesson)
-      redirect_to lesson_url(id: @proposal.id),
+    if @lesson.replace_with(@proposal)
+      redirect_to lesson_url(id: @lesson.id),
                   notice: t('update_success')
     else
       render :show,
@@ -40,6 +40,7 @@ class ProposalsController < ApplicationController
   end
 
   def set_proposal
-    @proposal = authorize(Lesson.find(params[:id]), policy_class: ProposalPolicy)
+    @proposal = authorize(Lesson.find(params[:id]),
+                          policy_class: ProposalPolicy)
   end
 end

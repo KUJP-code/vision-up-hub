@@ -1,8 +1,29 @@
 -# locals: (f:, lesson:)
 
-= f.hidden_field :type, value: lesson.type
+= content_for :priority_fields do
+  = render 'lessons/shared/pdf_image_field',
+           f:,
+           lesson:,
+           attr: :pdf_image
 
 - PhonicsClass::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)
+
+.flex.flex-col.gap-2{ 'data-controller': 'fields' }
+  = f.fields_for :phonics_resources, lesson.phonics_resources do |pr_f|
+    = render 'phonics_resources/fields', f: pr_f, resource: lesson,
+                                         collection: @phonics_resources
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :phonics_resources,
+                   lesson.phonics_resources.new,
+                   child_index: 'CHILD' do |pr_f|
+      = render 'phonics_resources/fields', f: pr_f, resource: lesson,
+                                           collection: @phonics_resources
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
+    = t('.add_phonics_resource')
 
 = render('lessons/shared/link_fields', f:, lesson:)

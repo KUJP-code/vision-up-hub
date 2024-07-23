@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 // Connects to data-controller="test-result"
 export default class extends Controller {
 	static targets = [
+		"basics",
 		"listenPercent",
 		"listening",
 		"newLevel",
@@ -18,6 +19,7 @@ export default class extends Controller {
 	];
 
 	static values = {
+		basics: Number,
 		thresholds: Object,
 		questions: Object,
 	};
@@ -26,6 +28,7 @@ export default class extends Controller {
 		this.thresholds = this.thresholdsValue;
 		this.questions = this.questionsValue;
 		this.setSkillMaxes();
+		this.calculate();
 	}
 
 	setSkillMaxes() {
@@ -58,10 +61,12 @@ export default class extends Controller {
 			);
 			skillMaxes.push(this.writingMax);
 		}
-		this.maxScore = skillMaxes.reduce((total, max) => total + max, 0);
+		this.maxScore =
+			skillMaxes.reduce((total, max) => total + max, 0) + this.basicsValue;
 	}
 
 	calculate() {
+		const basicsScore = Number.parseInt(this.basicsTarget.value);
 		const listeningScore = this.calcSkillPercent(
 			this.listeningTargets,
 			this.listeningMax,
@@ -83,7 +88,11 @@ export default class extends Controller {
 			this.writePercentTargets,
 		);
 		const totalScore =
-			listeningScore + readingScore + speakingScore + writingScore;
+			listeningScore +
+			readingScore +
+			speakingScore +
+			writingScore +
+			basicsScore;
 		const totalPercent = Math.ceil((totalScore / this.maxScore) * 100);
 
 		this.setTotalPercent(totalPercent);
@@ -117,18 +126,42 @@ export default class extends Controller {
 	}
 
 	setNewLevel(totalPercent) {
-		const prevLevel = this.prevLevelTarget.value;
-		const newLevel = Object.entries(this.thresholds).reduce(
-			(level, threshold) => {
-				if (totalPercent < threshold[1]) {
-					return level;
-				}
-				return threshold[0];
-			},
-			prevLevel,
+		const eveningCourses = ["Specialist", "Specialist Advanced"];
+		const prevLevel = { lvl: this.prevLevelTarget.value, percent: 0 };
+		const rec = Object.entries(this.thresholds).reduce((rec, threshold) => {
+			const [lvl, percent] = threshold;
+			if (percent > totalPercent || rec.percent > percent) {
+				return rec;
+			}
+			return { lvl, percent };
+		}, prevLevel);
+
+		if (eveningCourses.includes(rec.lvl)) {
+			this.flagEvening();
+			rec.lvl = "Galaxy Two";
+		} else {
+			this.unflagEvening();
+		}
+
+		this.newLevel = rec.lvl.toLowerCase().replace(" ", "_");
+		this.newLevelTarget.value = this.newLevel;
+	}
+
+	flagEvening() {
+		if (this.element.querySelector(".evening")) return;
+
+		this.element.classList.add("bg-green-300");
+		this.newLevelTarget.insertAdjacentHTML(
+			"afterend",
+			`<p class="text-secondary rounded bg-white font-bold evening">
+				Specialist Check Required
+			</p>`,
 		);
-		this.newLevel = newLevel;
-		this.newLevelTarget.value = newLevel.toLowerCase().replace(" ", "_");
+	}
+
+	unflagEvening() {
+		this.element.classList.remove("bg-green-300");
+		this.element.querySelector(".evening")?.remove();
 	}
 
 	checkRecommendedLevel() {

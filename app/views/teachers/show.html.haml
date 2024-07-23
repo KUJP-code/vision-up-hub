@@ -1,34 +1,22 @@
-- in_future = Time.zone.today < @date
+:ruby
+  base = 'flex gap-6 p-6'
+  mobile = 'flex-col justify-start items-stretch'
+  desktop = 'md:flex-row md:items-center md:justify-center'
+  card = 'card basis-1/2 max-w-full p-3 flex flex-col gap-3'
 
-= render 'shared/subtitle',
-         classes: in_future ? 'bg-neutral-dark text-main' : '',
-         text: in_future ? "Future Planning: #{ja_date(@date)}" : "Welcome, #{@user.name}"
+= render 'teachers/subtitle',
+         date: Time.zone.today, level: @levels.first, teacher: @user
 
-%main.flex.flex-col.md:flex-row.justify-around.gap-3
-  - if @unlevelled_lessons.any?
-    %section{ class: 'basis-[48%] flex-shrink-0 flex flex-wrap justify-around' }
-      = render partial: 'teachers/unlevelled_lesson',
-               collection: @unlevelled_lessons,
-               as: :lesson
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'lesson'
 
-  - if @levelled_lessons.any?
-    %section{ class: 'flex-shrink-0 basis-[48%] grid grid-rows-5 auto-cols-fr' }
-      .col-start-1
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/kindy.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/land.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/sky.svg', class: 'w-[70%]'
-      .flex.items-center.justify-center.col-start-1
-        = image_tag 'levels/galaxy.svg', class: 'w-[70%]'
-      = render 'teachers/levelled_lessons', lessons: @levelled_lessons
-
-= render 'teachers/day_select',
-         date: @date
-
-- if current_user.is?('Admin')
-  .flex.justify-center.p-3
-    = link_to t('.edit'),
-              edit_organisation_teacher_path(@user),
-              class: 'btn btn-primary'
+%main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
+  - @levels.each do |level|
+    = link_to teacher_lessons_path(level:, teacher_id: @user.id),
+              class: card, data: { turbo_stream: true } do
+      = image_tag "levels/#{level}.svg"
+      %h1.text-center.text-3xl= level.titleize

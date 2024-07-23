@@ -1,0 +1,12 @@
+en:
+  tests:
+    form:
+      basics: "Name & Date"
+    index:
+      basics: "Name & Date"
+      listening: "Listening"
+      reading: "Reading"
+      speaking: "Speaking"
+      thresholds: "Thresholds"
+      writing: "Writing"
+      view_results: "View Results"

@@ -2,7 +2,7 @@
 
 class SchoolClassesController < ApplicationController
   before_action :set_school_class, only: %i[edit show update destroy]
-  before_action :set_schools, only: %i[edit index new update]
+  before_action :set_form_data, only: %i[edit index new update]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -16,10 +16,11 @@ class SchoolClassesController < ApplicationController
     @possible_students = policy_scope(Student).where
                                               .not(id: @students.ids)
                                               .pluck(:name, :id)
+    @teachers = @school_class.teachers.pluck(:name)
   end
 
   def new
-    @school_class = authorize SchoolClass.new
+    @school_class = authorize SchoolClass.new(school_id: params[:school_id])
   end
 
   def edit; end
@@ -31,7 +32,7 @@ class SchoolClassesController < ApplicationController
       redirect_to school_class_url(@school_class),
                   notice: t('create_success')
     else
-      set_schools
+      set_form_data
       render :new, status: :unprocessable_entity,
                    alert: t('create_failure')
     end
@@ -42,7 +43,7 @@ class SchoolClassesController < ApplicationController
       redirect_to school_class_url(@school_class),
                   notice: t('update_success')
     else
-      set_schools
+      set_form_data
       render :edit, status: :unprocessable_entity,
                     alert: t('update_failure')
     end
@@ -62,7 +63,8 @@ class SchoolClassesController < ApplicationController
 
   def school_class_params
     params.require(:school_class).permit(
-      :name, :school_id, student_classes_attributes: %i[id student_id]
+      :name, :school_id,
+      class_teachers_attributes: %i[id teacher_id _destroy]
     )
   end
 
@@ -70,7 +72,8 @@ class SchoolClassesController < ApplicationController
     @school_class = authorize(SchoolClass.find(params[:id]))
   end
 
-  def set_schools
+  def set_form_data
     @schools = policy_scope(School).pluck(:name, :id)
+    @teachers = policy_scope(User).where(type: 'Teacher').pluck(:name, :id)
   end
 end

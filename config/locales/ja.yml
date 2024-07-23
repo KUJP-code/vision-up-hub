@@ -1,5 +1,6 @@
 ---
 ja:
+  actions: "アクション"
   activerecord:
     errors:
       messages:
@@ -126,6 +127,7 @@ ja:
       submit: 保存する
       update: 更新する
   not_approved: "未承認"
+  not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Leroy係長に連絡してください。"
   number:
     currency:
       format:
@@ -176,6 +178,10 @@ ja:
       format:
         delimiter: ""
   shared:
+    nav:
+      sign_out: "ログアウト"
+    subtitle:
+      back: "戻る"
     visibility_toggles:
       accepted: "承認"
       changes_needed: "変更"
@@ -194,9 +200,4 @@ ja:
       short: "%m/%d %H:%M"
     pm: 午後
   update_notes: "更新履歴"
-  users:
-    admin: "管理者"
-    org_admin: "組織管理者"
-    school_manager: "学校管理者"
-    teacher: "先生"
-    writer: "著者"
+  update_success: "更新成功"

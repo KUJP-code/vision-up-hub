@@ -1,9 +1,11 @@
 en:
   student_searches:
     form:
+      birthday: "Birthday"
       child_level: "Child Level"
       child_name: "Child Name"
       find_child: "Find Child"
+      school: "School"
       search: "Search"
       select_child_level: "Select child level"
       student_id: "Student ID"

@@ -10,8 +10,15 @@
 - else
   %div{ class: 'form-group basis-1/4' }
     = f.label :week
-    = f.number_field :week, min: 1, max: 52
+    = f.number_field :week,
+                     min: 1, max: 52,
+                     data: { action: 'course-lessons#calculateDate',
+                             'course-lessons-target': 'week' }
 
   %div{ class: 'form-group basis-1/4' }
     = f.label :day
-    = f.select :day, CourseLesson.days.map { |k, _v| [k.capitalize, k] }
+    = f.select :day,
+               opts_from(CourseLesson, :days),
+               {},
+               data: { action: 'course-lessons#calculateDate',
+                       'course-lessons-target': 'day' }

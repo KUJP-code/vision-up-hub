@@ -1,19 +1,19 @@
 = render 'shared/subtitle', text: t('.plans')
 
-%main.flex.flex-wrap.gap-3.p-3
+%main.flex.flex-col.justify-start.gap-3.p-3
   = link_to t('.create_plan'),
             new_plan_path,
-            class: 'btn btn-primary w-full'
+            class: 'btn btn-secondary w-full'
 
   %table.w-full.text-center
     %thead
       %tr
-        %th= t('.name')
-        %th= t('.course')
-        %th= t('.organisation')
-        %th= t('.student_limit')
-        %th= t('.start_end')
-        %th= t('.total_cost')
+        %th.thead.thead-s.bg-secondary-50= t('.name')
+        %th.thead.bg-secondary-50= t('.course')
+        %th.thead.bg-secondary-50= t('.organisation')
+        %th.thead.bg-secondary-50= t('.student_limit')
+        %th.thead.bg-secondary-50= t('.validity')
+        %th.thead.thead-e.bg-secondary-50= t('.total_cost')
     %tbody
       = render partial: 'plans/plan_row',
                collection: @plans,

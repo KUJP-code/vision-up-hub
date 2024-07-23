@@ -5,11 +5,27 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
 
-  before_action :set_locale
+  before_action :check_ip
 
   private
+
+  def check_ip
+    return unless needs_ip_check?
+    return if current_user.allowed_ip?(request.ip)
+
+    rejected_user = current_user
+    sign_out
+    redirect_to after_sign_out_path_for(rejected_user),
+                alert: I18n.t('not_in_school')
+  end
+
+  def needs_ip_check?
+    current_user&.ku? &&
+      current_user&.is?('SchoolManager', 'Teacher')
+  end
 
   def configure_permitted_params
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name organisation_id])
@@ -19,9 +35,9 @@ class ApplicationController < ActionController::Base
     { locale: I18n.locale }
   end
 
-  def set_locale
+  def set_locale(&)
     locale = params[:locale] || locale_from_accept_language || I18n.default_locale
-    I18n.locale = locale
+    I18n.with_locale(locale, &)
   end
 
   def locale_from_accept_language

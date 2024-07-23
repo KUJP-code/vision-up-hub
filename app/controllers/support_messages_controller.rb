@@ -17,6 +17,6 @@ class SupportMessagesController < ApplicationController
   private
 
   def support_message_params
-    params.require(:support_message).permit(:message)
+    params.require(:support_message).permit(:message, images: [])
   end
 end

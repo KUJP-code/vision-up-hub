@@ -1,0 +1,9 @@
+-# locals: (active:, org:, schools:)
+
+%nav.flex.flex-wrap.gap-3.p-3
+  - schools.each do |school|
+    = link_to t("school_names.#{school.name}"),
+              test_test_results_path(test_id: @test.id,
+                                     org_id: org.id,
+                                     school_id: school.id),
+              class: "btn #{active.id == school.id ? 'btn-main' : 'btn-secondary'}"

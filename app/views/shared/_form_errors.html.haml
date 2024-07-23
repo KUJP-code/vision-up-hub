@@ -1,5 +1,7 @@
 -# locals: (resource:)
 
-.flex.flex-col.text-white.bg-danger
+- return if resource.errors.blank?
+
+.flex.flex-col.text-white.bg-danger.font-bold.rounded
   - resource.errors.full_messages.each do |msg|
-    %p= msg
+    %p.p-3= msg

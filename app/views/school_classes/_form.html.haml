@@ -1,4 +1,4 @@
--# locals: (school_class:, schools:)
+-# locals: (school_class:, schools:, teachers:)
 
 = form_with model: school_class,
             html: { class: 'form',
@@ -14,4 +14,21 @@
     = f.label :school_id
     = f.select :school_id, schools
 
-  = f.submit class: 'btn btn-primary'
+  - unless current_user.is?('Teacher')
+    = f.fields_for :class_teachers, school_class.class_teachers do |ct_f|
+      = render 'class_teachers/fields', f: ct_f, collection: teachers,
+                                        resource: school_class
+
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :class_teachers,
+                     school_class.class_teachers.new,
+                     child_index: 'CHILD' do |ct_f|
+        = render 'class_teachers/fields', f: ct_f, collection: teachers,
+                                          resource: school_class
+
+    %div{ 'data-fields-target' => 'target' }
+
+    %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+      Add Teacher
+
+  = f.submit class: 'btn btn-main'

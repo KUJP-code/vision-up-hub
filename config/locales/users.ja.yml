@@ -8,10 +8,12 @@ ja:
   school_managers:
     show:
       greet: "こんにちは、%{name}"
-  teachers:
-    show:
-      greet: "こんにちは、%{name}"
   users:
+    admin: "管理者"
+    org_admin: "組織管理者"
+    school_manager: "学校管理者"
+    teacher: "先生"
+    writer: "著者"
     index:
       users: "ユーザー"
     table:

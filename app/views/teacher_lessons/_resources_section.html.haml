@@ -1,0 +1,12 @@
+-# locals: (resources:)
+
+%section.flex.flex-col.md:grid.md:grid-cols-2.gap-6.items-center.overflow-y-scroll
+  %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white Resources
+  - resources.each do |r|
+    = link_to file_path(r.blob),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'btn-outline w-full' do
+      %span{ class: 'basis-5/6 truncate' }= r.blob.filename
+      = render 'shared/svgs/download_icon',
+               classes: 'fill-secondary basis-1/6'

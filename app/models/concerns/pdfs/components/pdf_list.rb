@@ -22,12 +22,6 @@ module PdfList
     pdf.move_down GAP
   end
 
-  def add_title(pdf, title)
-    pdf.move_down PADDING
-    pdf.text title, size: HEADING_SIZE, indent_paragraphs: PADDING
-    pdf.move_down PADDING
-  end
-
   def create_list(array, dimensions, type, pdf)
     pdf.text_box(
       array_to_list(array, type),

@@ -7,27 +7,33 @@
     url = organisation_student_uploads_path(params[:organisation_id])
     method = :student_post
   end
+  levels = Student.levels.keys.map { |l| [l.titleize, l] }
 
 %tr.error{ data: { controller: 'upload-summary',
                    'upload-summary-status-value': 'Error' },
            id: "student-row-#{@index}" }
-  %td.bg-danger= text_field_tag 'student_upload[name]', @student.name, form:
-  %td.bg-danger= text_field_tag 'student_upload[student_id]', @student.student_id, form:
+  %td.bg-danger= text_field_tag 'student_upload[name]',
+                                @student.name, form:
+  %td.bg-danger= text_field_tag 'student_upload[en_name]',
+                                @student.en_name, form:
+  %td.bg-danger= text_field_tag 'student_upload[student_id]',
+                                @student.student_id, form:
   %td.bg-danger
     = select_tag 'student_upload[level]',
-                 options_for_select(Student.levels.keys.map { |l| [l.titleize, l] },
-                                    @student.level),
-                 class: 'bg-white',
-                 form:
+                 options_for_select(levels, @student.level),
+                 class: 'bg-white', form:
   %td.bg-danger
     = select_tag 'student_upload[school_id]',
                  options_for_select(@schools, @student.school_id),
-                 class: 'bg-white',
-                 form:
-  %td.bg-danger= number_field_tag 'student_upload[parent_id]', @student.parent_id, form:
-  %td.bg-danger= date_field_tag 'student_upload[start_date]', @student.start_date, form:
-  %td.bg-danger= date_field_tag 'student_upload[quit_date]', @student.quit_date, form:
-  %td.bg-danger= date_field_tag 'student_upload[birthday]', @student.birthday, form:
+                 class: 'bg-white', form:
+  %td.bg-danger= number_field_tag 'student_upload[parent_id]',
+                                  @student.parent_id, form:
+  %td.bg-danger= date_field_tag 'student_upload[birthday]',
+                                @student.birthday, form:
+  %td.bg-danger= date_field_tag 'student_upload[start_date]',
+                                @student.start_date, form:
+  %td.bg-danger= date_field_tag 'student_upload[quit_date]',
+                                @student.quit_date, form:
   %td.bg-danger
     = form_with model: @student, url:, method:, scope: :student_upload,
                 html: { class: 'flex items-center justify-center gap-2 p-2',
@@ -36,6 +42,6 @@
       %span.material-symbols-outlined.animate-pulse error
 
       = hidden_field_tag(:index, @index, form:)
-      = f.submit class: 'btn btn-primary'
+      = f.submit class: 'btn btn-main'
 %tr{ id: "student-errors-#{@index}" }
-  %td.bg-danger{ colspan: 9 }= @errors
+  %td.bg-danger{ colspan: Student::CSV_HEADERS.size + 1 }= @errors

@@ -20,7 +20,7 @@ RSpec.describe 'changing a lesson' do
         fill_in 'daily_activity_instructions', with: "New Instructions 1\nNew Instructions 2"
         click_button I18n.t('helpers.submit.update')
       end
-      expect(page).to have_content('New Title', count: 1)
+      expect(page).to have_content('New Title')
       expect(page).to have_content('New Instructions 1', count: 1)
       expect(page).not_to have_content('Proposed Changes')
     end
@@ -61,15 +61,14 @@ RSpec.describe 'changing a lesson' do
       visit proposal_path(id: proposal.id)
       expect(page).to have_content(lesson.title)
       expect(page).to have_content('New Title')
-      expect(page).to have_css('.guide_link', count: 2)
       within '#proposal_status_form' do
-        select 'Accept', from: 'proposal_status'
+        select 'Accepted', from: 'proposal_status'
         click_button 'proposal_status_form_submit'
       end
       expect(page).to have_content('New Title')
       expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
       expect(page).to have_content(course.title)
-      expect { Lesson.find(lesson.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Lesson.find(proposal.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

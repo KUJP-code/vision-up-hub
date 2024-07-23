@@ -1,19 +1,20 @@
--# locals: (f:, schools:, user:)
+-# locals: (f:, collection:, resource:)
 
-.fields-wrapper.flex.flex-col.gap-2{ 'data-new-record' => f.object.new_record?.to_s }
-  = f.hidden_field :user_id, value: user.id
+.fields-wrapper.flex.items-center.gap-3.grow{ 'data-new-record' => f.object.new_record?.to_s }
+  = f.hidden_field :id
 
-  .form-group
-    = f.label :school_id
-    = f.select :school_id,
-               schools,
-               { prompt: t('.select_school') }
+  - if resource.instance_of?(School)
+    .form-group
+      = f.select :teacher_id, collection
+  - else
+    .form-group
+      = f.select :school_id, collection
 
   - if f.object.new_record?
-    %button.w-full.btn.btn-danger{ 'data-action' => 'fields#remove' }
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove' }
       Remove
   - else
-    .w-full.form-check.text-center
+    .flex.items-center.gap-1
       = f.check_box :_destroy
       = f.label :_destroy,
                 'Remove'

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SupportMessage < ApplicationRecord
-  after_commit :mark_sr_unseen, on: :create
+  include ImagesAttachable
+
+  after_commit :mark_request_unseen, on: :create
 
   belongs_to :support_request
   belongs_to :user, optional: true
@@ -9,7 +11,7 @@ class SupportMessage < ApplicationRecord
 
   private
 
-  def mark_sr_unseen
+  def mark_request_unseen
     support_request.mark_all_unseen
     support_request.save
   end

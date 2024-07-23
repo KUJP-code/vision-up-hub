@@ -7,32 +7,34 @@ RSpec.describe 'language switcher' do
 
   before do
     sign_in user
+    allow(I18n).to receive(:with_locale).and_call_original
   end
 
   it 'can switch current page language to English' do
     I18n.with_locale(:ja) do
       visit '/'
-      click_on 'Switch to EN'
-      expect(I18n.locale).to eq :en
+      first('#locale_toggle').click
+      expect(I18n).to have_received(:with_locale).with('en').once
     end
   end
 
   it 'retains selected locale when clicking links to another page' do
     I18n.with_locale(:ja) do
       visit '/'
-      click_on 'Switch to EN'
-      expect(I18n.locale).to eq :en
+      first('#locale_toggle').click
+      expect(I18n).to have_received(:with_locale).with('en').once
       click_on 'Lessons'
-      expect(I18n.locale).to eq :en
+      expect(I18n).to have_received(:with_locale).with('en').exactly(2).times
     end
   end
 
-  it 'retains type query param when switching language' do
+  it 'retains params when switching language' do
     I18n.with_locale(:ja) do
       visit new_lesson_path(type: 'EnglishClass')
-      click_on 'Switch to EN'
-      expect(I18n.locale).to eq :en
-      expect(page).to have_current_path new_lesson_path(locale: :en, type: 'EnglishClass')
+      first('#locale_toggle').click
+      expect(I18n).to have_received(:with_locale).with('en').once
+      expect(page).to have_current_path new_lesson_path(locale: :en,
+                                                        type: 'EnglishClass')
     end
   end
 end

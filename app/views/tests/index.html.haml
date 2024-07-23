@@ -2,26 +2,43 @@
 
 = render 'shared/subtitle', text: 'Tests'
 
-- if admin
-  .w-full.flex.justify-center.p-3
+%main.flex.flex-col.gap-3.p-3
+  - if admin
     = link_to 'New Test',
               new_test_path,
-              class: 'btn btn-secondary'
+              class: 'btn btn-secondary w-full'
 
-%table.w-full.text-center
-  %tbody
-    - @tests.each do |test|
-      %tr
-        %td.p-3{ colspan: '3' }
-          = link_to "#{test.name}, Level: #{test.short_level}",
-                    admin ? test_path(test) : test_test_results_path(test),
-                    class: 'font-bold text-2xl',
-                    id: "test_#{test.id}"
-      %tr
-        %td= render 'tests/questions', questions: test.questions
-        %td= render 'tests/thresholds', thresholds: test.thresholds
-        - if admin
+  - @tests.each do |test|
+    %h2.flex.justify-center.items-center
+      = image_tag level_icon_path(test),
+                  height: 50,
+                  width: 50
+      = link_to test.name,
+                test_test_results_path(test),
+                class: 'font-bold text-2xl',
+                id: "test_#{test.id}"
+    %table.w-full.text-center
+      %thead
+        %th.thead.thead-s.bg-secondary-50= t('.basics')
+        - test.questions.each_key do |skill|
+          %th.thead.bg-secondary-50
+            = t(".#{skill}")
+        %th.thead.bg-secondary-50= t('.thresholds')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+      %tbody
+        %tr
+          %td #{test.basics} points
+          = render 'tests/questions', questions: test.questions
           %td
-            = link_to 'Edit',
-                      edit_test_path(test),
-                      class: 'btn btn-secondary'
+            %ul
+              - test.thresholds.each do |level, threshold|
+                %li #{level}: #{threshold}%
+          %td
+            .flex.flex-col.gap-2
+              - if admin
+                = link_to 'Edit',
+                          edit_test_path(test),
+                          class: 'btn btn-secondary'
+              = link_to t('.view_results'),
+                        test_test_results_path(test),
+                        class: 'btn btn-secondary'

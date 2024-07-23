@@ -7,7 +7,8 @@ module Questionable
     before_validation :set_questions
 
     def form_questions
-      questions.map { |skill, scores| "#{skill}: #{scores.join(', ')}" }.join("\n")
+      questions.map { |skill, scores| "#{skill}: #{scores.join(', ')}" }
+               .join("\n")
     end
 
     private
@@ -24,6 +25,8 @@ module Questionable
     end
 
     def question_pairs
+      return if questions.instance_of?(Hash)
+
       lines = questions.split("\n").map { |s| s.gsub(/[[:space:]]/, '') }
       return if invalid_lines?(lines)
 

@@ -2,6 +2,31 @@ ja:
   test_results:
     errors:
       reason_required: "理由は必須項目です"
+    form:
+      give_reason: "理由を記入して下さい"
     index:
+      basics: "名前と日付"
+      en_name: "英語名"
+      former_lvl: "過去レベル"
+      level: "レベル"
+      listening: "聴力"
+      listen_percent: "聴力 %"
+      name: "名前"
+      reading: "読解"
+      read_percent: "読解 %"
+      rec_lvl: "推奨レベル"
       results_for: "%{name}のテスト結果"
+      speaking: "会話力"
+      speak_percent: "会話力 %"
+      student_details: "生徒詳細"
       student_id: "ID"
+      writing: "文章力"
+      write_percent: "文章力 %"
+      total: "合計 %"
+    skill_nav:
+      listening: "聴力"
+      reading: "読解"
+      results: "結果"
+      speaking: "会話力"
+      student_details: "生徒詳細"
+      writing: "文章力"

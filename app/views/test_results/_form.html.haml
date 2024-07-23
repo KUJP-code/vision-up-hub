@@ -1,56 +1,72 @@
 -# locals: (result:, student:, test:)
 
-- possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
+:ruby
+  id = form = "student#{student.id}_form"
+  possible_levels = TestResult.new_levels.keys.reject { |l| l == 'all_levels' }
+  lvl_options = possible_levels.map { |k| [k.titleize, k] }
+  rec_lvl = result.new_level || student.level
 
-= form_for [test, result] do |f|
-  %tr{ data: { controller: 'test-result',
-               'test-result-thresholds-value': test.thresholds.to_json,
-               'test-result-questions-value': test.questions.to_json },
-       id: "student#{student.id}_result" }
-    %td{ class: 'p-1 bg-main-50' }
-      = link_to student.student_id || 'なし',
-                student_path(student)
-    %td{ class: 'p-1 bg-main-50' }
-      = link_to redact(student, student.name),
-                student_path(student)
-    %td{ class: 'p-1 bg-main-50' }
-      = link_to redact(student, student.en_name),
-                student_path(student)
-    %td{ class: 'p-1 bg-main-50' }= student.level.titleize
+%tr{ data: { controller: 'test-result',
+             'test-result-thresholds-value': test.thresholds.to_json,
+             'test-result-questions-value': test.questions.to_json,
+             'test-result-basics-value': test.basics },
+     id: "student#{student.id}_result" }
+  %td.p-1.bg-main-50
+    = link_to redact(student, student.en_name.presence || student.name),
+              student_path(student)
+  %td.p-1.bg-main-50= student.level.titleize
+  %td.p-1{ data: { controller: 'validity' } }
+    .flex.justify-center.items-center.gap-1
+      = select_tag "test_result[basics]",
+                   options_for_select(0..test.basics, result.basics),
+                   class: 'outline-none outline-offset-0 focus:outline-main border w-10 text-center',
+                   id: "#{form}-basics",
+                   form:,
+                   data: { action: 'test-result#calculate validity#validate',
+                           'test-result-target': 'basics',
+                           'validity-target': 'input' }
 
-    - Test::SKILLS.each do |skill|
-      = render 'test_results/skill_fields',
-               f:,
-               skill:,
-               test:
-    %td{ class: 'p-1 bg-main-50' }
-      .flex.justify-center.items-center.gap-1
-        = f.hidden_field :total_percent,
+  - Test::SKILLS.each do |skill|
+    = render 'test_results/skill_fields',
+             form:,
+             result:,
+             skill:,
+             test:
+  %td.p-1.bg-main-50
+    .flex.justify-center.items-center.gap-1
+      = hidden_field_tag 'test_result[total_percent]',
+                         result.total_percent || 0,
+                         form:,
                          data: { 'test-result-target': 'totalPercent' }
-        %p{ data: { 'test-result-target': 'totalPercent' } }
-          #{result.total_percent || 0}%
+      %p{ data: { 'test-result-target': 'totalPercent' } }
+        #{result.total_percent || 0}%
 
-    %td.p-1
-      - prev_level = result.prev_level || student.level
-      = prev_level.titleize
-      = f.hidden_field :prev_level,
-                       value: prev_level,
+  %td.p-1
+    - prev_level = result.prev_level || student.level
+    = prev_level.titleize
+    = hidden_field_tag 'test_result[prev_level]',
+                       prev_level,
+                       form:,
                        data: { 'test-result-target': 'prevLevel' }
 
-    %td.p-1
-      .flex.flex-col.gap-3
-        = f.select :new_level,
-                   possible_levels.map { |k| [k.titleize, k] },
-                   { selected: result.new_level || test.level },
-                   { class: (f.object.persisted? ? 'border-neutral-dark' : ''),
-                     data: { action: 'test-result#checkRecommendedLevel',
-                             'test-result-target': 'newLevel' } }
-        = f.text_area :reason,
+  %td.p-1
+    .flex.flex-col.gap-3
+      = select_tag 'test_result[new_level]',
+                   options_for_select(lvl_options, rec_lvl),
+                   class: (result.persisted? ? 'border-neutral-dark' : ''),
+                   form:,
+                   data: { action: 'test-result#checkRecommendedLevel',
+                           'test-result-target': 'newLevel' }
+      = text_area_tag 'test_result[reason]',
+                      '',
                       class: 'hidden',
                       data: { 'test-result-target': 'reason' },
-                      placeholder: '理由を記入して下さい'
+                      form:,
+                      placeholder: t('.give_reason')
 
-    %td.p-1
+  %td.p-1
+    = form_with model: [test, result],
+                html: { autocomplete: 'off', id: } do |f|
       = f.hidden_field :student_id
       = f.hidden_field :test_id
-      = f.submit class: 'btn btn-primary'
+      = f.submit class: 'btn btn-main'

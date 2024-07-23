@@ -1,0 +1,20 @@
+-# locals: (f:, collection:, resource:)
+
+.fields-wrapper.flex.items-center.gap-3.grow{ 'data-new-record' => f.object.new_record?.to_s }
+  = f.hidden_field :id
+
+  - if resource.instance_of?(SchoolClass)
+    .form-group
+      = f.select :teacher_id, collection
+  - else
+    .form-group
+      = f.select :class_id, collection
+
+  - if f.object.new_record?
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove' }
+      Remove
+  - else
+    .flex.items-center.gap-1
+      = f.check_box :_destroy
+      = f.label :_destroy,
+                'Remove'

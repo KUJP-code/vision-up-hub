@@ -1,6 +1,6 @@
 - classes = 'flex justify-between items-center gap-2 rounded p-3 transition-opacity duration-300'
 
-.flex.flex-col.fixed.top-3.right-3.text-white.text-sm.z-50
+%aside{ class: 'flex flex-col fixed top-1.5 right-1.5 text-white text-sm z-50' }
   - flash.each do |type, msg|
     %div{ aria: { label: 'Dismiss',
                   live: 'assertive',

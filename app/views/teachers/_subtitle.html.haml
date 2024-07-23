@@ -1,0 +1,30 @@
+-# locals: (date:, level:, teacher:)
+
+:ruby
+  in_future = Time.zone.today < date
+  in_past = date < Time.zone.today
+  subtitle = if in_future
+    t('.future_lessons', date: ja_date(date))
+  elsif in_past
+    t('.past_lessons', date: ja_date(date))
+  else
+    t('.today_lessons')
+  end
+
+%header#subtitle
+  = link_to lessons_path(date: date.prev_weekday,
+                         level:, teacher_id: teacher.id),
+            data: { turbo_stream: true },
+            class: 'w-12' do
+    = image_tag 'back.svg'
+  .flex.flex-col.text-center
+    %h1= subtitle
+    - if !in_past && !in_future
+      %small.text-xs.font-normal.text-secondary-50
+        = I18n.locale == 'ja' ? ja_date(date) : date.strftime('%A, %B %d, %Y')
+  = link_to lessons_path(date: date.next_weekday,
+                         level:, teacher_id: teacher.id),
+            data: { turbo_stream: true },
+            class: 'w-12' do
+    = image_tag 'next.svg'
+  .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')

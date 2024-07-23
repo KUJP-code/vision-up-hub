@@ -1,0 +1,43 @@
+= render 'shared/subtitle', text: t('.category_resources')
+
+%main.p-3.flex.flex-col.gap-3
+  = link_to 'New Category Resource',
+            new_category_resource_path,
+            class: 'btn btn-secondary w-full'
+
+  %table.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.filename')
+        %th.thead.bg-secondary-50= t('.lesson_category')
+        %th.thead.bg-secondary-50= t('.level')
+        %th.thead.bg-secondary-50= t('.resource_category')
+        %th.thead.bg-secondary-50= t('.used_by')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+    %tbody
+      - @category_resources.each do |cr|
+        %tr
+          %td.p-3
+            - if cr.resource.blob
+              = link_to cr.resource.blob.filename,
+                        file_path(cr.resource.blob_id),
+                        target: '_blank',
+                        rel: 'noopener',
+                        class: 'p-1'
+            - else
+              No file attached
+          %td.p-3= cr.lesson_category.titleize
+          %td.p-3= cr.level.titleize
+          %td.p-3= cr.resource_category.titleize
+          %td.p-3
+            = cr.courses.map(&:title).to_sentence
+          %td.p-3
+            = link_to 'Edit',
+                      edit_category_resource_path(cr),
+                      class: 'btn btn-main'
+            - if cr.courses.empty?
+              = link_to 'Delete',
+                        category_resource_path(cr),
+                        data: { turbo_method: :delete,
+                                turbo_confirm: 'Are you sure?' },
+                        class: 'btn btn-danger'

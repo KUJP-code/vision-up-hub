@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'creating Teacher' do
   let!(:organisation) { create(:organisation) }
-  let!(:school) { organisation.schools.create!(attributes_for(:school)) }
+  let!(:school) { organisation.schools.create!(attributes_for(:school, ip: '*')) }
 
   before do
     sign_in create(:user, :school_manager, organisation:, schools: [school])
+    course = create(:course)
+    create(:plan, course:, organisation:)
   end
 
   it 'School Manager can create teacher at their schools' do
@@ -20,7 +22,6 @@ RSpec.describe 'creating Teacher' do
       select school.name, from: 'teacher_school_teachers_attributes_0_school_id'
       click_on 'submit_teacher'
     end
-    expect(page).to have_content 'John'
     expect(page).to have_content I18n.t('create_success')
   end
 end

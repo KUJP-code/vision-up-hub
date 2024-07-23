@@ -2,7 +2,7 @@
 
 class SchoolsController < ApplicationController
   before_action :set_school, only: %i[show edit update destroy]
-  before_action :set_managers, only: %i[edit new]
+  before_action :set_form_data, only: %i[edit new]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -13,6 +13,8 @@ class SchoolsController < ApplicationController
   def show
     @managers = @school.school_managers.pluck(:name).to_sentence
     @classes = @school.classes.includes(:teachers)
+    @teachers = @school.teachers.includes(:organisation)
+    @students = @school.students
   end
 
   def new
@@ -30,7 +32,7 @@ class SchoolsController < ApplicationController
       redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('create_success')
     else
-      set_managers
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -42,7 +44,7 @@ class SchoolsController < ApplicationController
       redirect_to organisation_school_url(@school.organisation, @school),
                   notice: t('update_success')
     else
-      set_managers
+      set_form_data
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -63,8 +65,9 @@ class SchoolsController < ApplicationController
 
   def school_params
     params.require(:school).permit(
-      :name,
-      managements_attributes: %i[id school_id school_manager_id _destroy]
+      :name, :ip,
+      managements_attributes: %i[id school_id school_manager_id _destroy],
+      school_teachers_attributes: %i[id school_id teacher_id _destroy]
     )
   end
 
@@ -72,9 +75,12 @@ class SchoolsController < ApplicationController
     @school = authorize School.find(params[:id])
   end
 
-  def set_managers
+  def set_form_data
     @managers = policy_scope(User)
                 .where(type: 'SchoolManager')
+                .pluck(:name, :id)
+    @teachers = policy_scope(User)
+                .where(type: 'Teacher')
                 .pluck(:name, :id)
   end
 end

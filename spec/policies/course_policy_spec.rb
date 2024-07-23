@@ -42,8 +42,15 @@ RSpec.describe CoursePolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Course)).to eq(Course.none)
+    it 'scopes to org course' do
+      course = create(:course)
+      user.save
+      user.organisation.plans.create(
+        attributes_for(:plan,
+                       organisation: user.organisation,
+                       course_id: course.id)
+      )
+      expect(Pundit.policy_scope!(user, Course)).to contain_exactly(course)
     end
   end
 
@@ -52,8 +59,15 @@ RSpec.describe CoursePolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Course)).to eq(Course.none)
+    it 'scopes to org course' do
+      course = create(:course)
+      user.save
+      user.organisation.plans.create(
+        attributes_for(:plan,
+                       organisation: user.organisation,
+                       course_id: course.id)
+      )
+      expect(Pundit.policy_scope!(user, Course)).to contain_exactly(course)
     end
   end
 
@@ -62,8 +76,15 @@ RSpec.describe CoursePolicy do
 
     it_behaves_like 'unauthorized user'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Course)).to eq(Course.none)
+    it 'scopes to org course' do
+      course = create(:course)
+      user.save
+      user.organisation.plans.create(
+        attributes_for(:plan,
+                       organisation: user.organisation,
+                       course_id: course.id)
+      )
+      expect(Pundit.policy_scope!(user, Course)).to contain_exactly(course)
     end
   end
 

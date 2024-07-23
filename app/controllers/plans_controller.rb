@@ -2,6 +2,7 @@
 
 class PlansController < ApplicationController
   before_action :set_plan, only: %i[show edit update destroy]
+  before_action :set_form_data, only: %i[new edit]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -14,12 +15,9 @@ class PlansController < ApplicationController
 
   def new
     @plan = authorize Plan.new(organisation_id: params[:organisation_id])
-    set_form_vars
   end
 
-  def edit
-    set_form_vars
-  end
+  def edit; end
 
   def create
     @plan = authorize Plan.new(plan_params)
@@ -28,7 +26,7 @@ class PlansController < ApplicationController
       redirect_to @plan,
                   notice: t('create_success')
     else
-      set_form_vars
+      set_form_data
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -40,7 +38,7 @@ class PlansController < ApplicationController
       redirect_to @plan,
                   notice: t('update_success')
     else
-      set_form_vars
+      set_form_data
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -66,7 +64,7 @@ class PlansController < ApplicationController
     )
   end
 
-  def set_form_vars
+  def set_form_data
     @courses = Course.pluck(:title, :id)
     @organisations = Organisation.pluck(:name, :id)
   end

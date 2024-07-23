@@ -1,0 +1,33 @@
+-# locals: (date:, level:, teacher_id:, type:)
+
+- if Lesson::TYPES.include?(type)
+  :ruby
+    src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
+    title = if type == 'EveningClass'
+      level == 'specialist' ? 'Research Study' : 'Topic Study'
+    elsif type.include?('Phonic')
+      'Phonics'
+    else
+      type.titleize
+    end
+
+  %button{ class: 'card flex flex-col items-center p-2 gap-2',
+           data: { action: 'dialog#open',
+                   controller: 'dialog',
+                   'dialog-dialog-value': 'lesson-resources',
+                   'dialog-frame-value': 'lesson',
+                   'dialog-src-value': src },
+           type: 'button' }
+    = image_tag "lesson_types/#{type.underscore}.svg",
+                class: 'h-full'
+    %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+    %h3.text-center= title
+
+- else
+  = link_to teacher_resources_path(category: type),
+            class: 'card flex flex-col items-center p-2 gap-2',
+            data: { turbo_frame: '_top' } do
+    = image_tag "lesson_types/#{type.underscore}.svg",
+                class: 'h-full'
+    %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+    %h3.text-center= type.titleize

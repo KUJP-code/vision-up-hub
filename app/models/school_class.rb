@@ -16,5 +16,8 @@ class SchoolClass < ApplicationRecord
   has_many :class_teachers, dependent: :destroy,
                             foreign_key: :class_id,
                             inverse_of: :school_class
+  accepts_nested_attributes_for :class_teachers,
+                                allow_destroy: true,
+                                reject_if: :all_blank
   has_many :teachers, through: :class_teachers
 end

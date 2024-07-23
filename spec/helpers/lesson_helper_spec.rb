@@ -4,17 +4,20 @@ require 'rails_helper'
 
 RSpec.describe LessonHelper do
   context 'when getting filepath for level icon' do
+    let(:spaced_levels) { %w[all_levels keep_up_one keep_up_two specialist_advanced] }
+
     it "returns 'levels/{short_level}.svg' for any elementary level" do
-      avoid_levels = %w[all_levels keep_up]
-      level = EnglishClass.levels.keys.reject { |l| avoid_levels.include?(l) }.sample
+      level = EnglishClass.levels.keys.reject { |l| spaced_levels.include?(l) }.sample
       lesson = build(:english_class, level:)
       short_level = lesson.short_level.downcase
       expect(level_icon_path(lesson)).to eq("levels/#{short_level}.svg")
     end
 
     it 'adds underscores when short level has spaces' do
-      lesson = build(:english_class, level: :keep_up_one)
-      expect(level_icon_path(lesson)).to eq('levels/keep_up.svg')
+      level = spaced_levels.sample.to_sym
+      lesson = build(:english_class, level:)
+      short_level = lesson.short_level.downcase.tr(' ', '_')
+      expect(level_icon_path(lesson)).to eq("levels/#{short_level}.svg")
     end
   end
 

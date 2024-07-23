@@ -11,6 +11,10 @@
       = f.label :name, t('.name')
       = f.text_field :name
 
+    .form-group
+      = f.label :en_name, t('.en_name')
+      = f.text_field :en_name
+
   .form-group
     = f.label :student_id, t('.student_id')
     = f.text_field :student_id
@@ -24,7 +28,8 @@
 
   .form-group
     = f.label :school_id, t('.school')
-    = f.select :school_id, schools
+    = f.select :school_id,
+      schools.map { |name, id| [t("school_names.#{name}"), id] }
 
   .form-group
     = f.label :birthday, t('.birthday')
@@ -65,4 +70,4 @@
   %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
     = t('.add_class')
 
-  = f.submit class: 'btn btn-primary'
+  = f.submit class: 'btn btn-main'

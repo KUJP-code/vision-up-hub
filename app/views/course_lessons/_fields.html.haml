@@ -1,7 +1,9 @@
--# locals: (collection:, f:, resource:)
+-# locals: (collection:, f:, plan_data:, resource:)
 
 %div{ class: 'fields-wrapper flex flex-wrap items-center justify-center gap-5',
-      'data-new-record' => f.object.new_record?.to_s }
+      data: { controller: 'course-lessons',
+              'course-lessons-plans-value': @courses.to_h { |c| [c.id, c.plan_date_data] }.to_json,
+              'new-record': f.object.new_record?.to_s } }
   - if resource.instance_of?(Course)
     = f.hidden_field :course_id, value: resource.id
 
@@ -14,10 +16,15 @@
 
     %div{ class: 'form-group basis-1/4' }
       = f.label :course_id
-      = f.select :course_id,
-                 collection
+      = f.collection_select :course_id,
+                            collection,
+                            :id, :title, {},
+                            data: { 'course-lessons-target': 'course',
+                                    action: 'course-lessons#calculateDate' }
 
   = render 'course_lessons/date_fields', f:
+
+  %ul{ 'data-course-lessons-target': 'date' }
 
   - if f.object.new_record?
     %button{ class: 'btn btn-danger basis-1/4 self-center',

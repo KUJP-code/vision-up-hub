@@ -1,8 +1,7 @@
--# locals: (managers:, school:)
+-# locals: (managers:, school:, teachers:)
 
 = form_with model: [school.organisation, school],
             html: { class: 'form',
-                    data: { controller: 'fields' },
                     id: 'school_form' } do |f|
   = render 'shared/form_errors', resource: school
 
@@ -10,26 +9,55 @@
     = f.label :name
     = f.text_field :name
 
-  %h3.fw-bold Managers
+  - if current_user.ku?
+    .form-group
+      = f.label :ip, 'IP Address'
+      = f.text_field :ip
 
-  = f.fields_for :managements, school.managements do |m_f|
-    = render 'managements/fields',
-             collection: managers,
-             f: m_f,
-             resource: school
+  .flex.flex-col.gap-2{ 'data-controller': 'fields' }
+    %h3.font-bold.text-center Managers
 
-  %template{ 'data-fields-target' => 'template' }
-    = f.fields_for :managements,
-                   school.managements.new,
-                   child_index: 'CHILD' do |m_f|
+    = f.fields_for :managements, school.managements do |m_f|
       = render 'managements/fields',
                collection: managers,
                f: m_f,
                resource: school
 
-  %div{ 'data-fields-target' => 'target' }
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :managements,
+                     school.managements.new,
+                     child_index: 'CHILD' do |m_f|
+        = render 'managements/fields',
+                 collection: managers,
+                 f: m_f,
+                 resource: school
 
-  %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
-    = t('.add_manager')
+    %div{ 'data-fields-target' => 'target' }
 
-  = f.submit class: 'btn btn-primary'
+    %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+      = t('.add_manager')
+
+  .flex.gap-2.flex-wrap{ 'data-controller': 'fields' }
+    %h3.w-full.font-bold.text-center Teachers
+
+    = f.fields_for :school_teachers, school.school_teachers do |m_f|
+      = render 'school_teachers/fields',
+               collection: teachers,
+               f: m_f,
+               resource: school
+
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :school_teachers,
+                     school.school_teachers.new,
+                     child_index: 'CHILD' do |m_f|
+        = render 'school_teachers/fields',
+                 collection: teachers,
+                 f: m_f,
+                 resource: school
+
+    %div{ 'data-fields-target' => 'target' }
+
+    %button.w-full.btn.btn-secondary{ 'data-action' => 'fields#add' }
+      = t('.add_teacher')
+
+  = f.submit class: 'btn btn-main'

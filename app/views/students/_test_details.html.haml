@@ -13,16 +13,17 @@
   %table
     %thead
       %tr.text-white.font-bold
-        %th.thead.thead-s.bg-secondary-50= t('.max_grade')
-        %th.thead.bg-secondary-50= t('.student_grade')
-        %th.thead.bg-secondary-50 %
-        %th.thead.thead-e.bg-secondary-50= t('.recommended_level')
+        %th.thead.thead-s.bg-secondary-50= t('.basics')
+        - active_result.answers.each_key do |skill|
+          %th.thead.bg-secondary-50
+            = t(".#{skill}")
+        %th.thead.thead-e.bg-secondary-50= t('.total')
     %tbody
       %tr.text-center.font-bold.text-secondary
-        %td= active_result.test.max_score
-        %td= active_result.total_score
-        %td= active_result.total_percent
-        %td= active_result.new_level.titleize
+        %td.p-2 #{active_result.basics}/#{active_result.test.basics}
+        - active_result.answers.each do |skill, scores|
+          %td.p-2 #{scores.sum}/#{active_result.test.send(skill.to_sym).sum}
+        %td.p-2 #{active_result.total_score}/#{active_result.test.max_score}
 
   = link_to t('.view_all_results'),
             student_path(@student.id),

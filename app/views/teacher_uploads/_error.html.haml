@@ -11,10 +11,18 @@
 %tr.error{ data: { controller: 'upload-summary',
                    'upload-summary-status-value': 'Error' },
            id: "teacher-row-#{@index}" }
-  %td.bg-danger= text_field_tag 'teacher_upload[name]', @teacher.name, form:
-  %td.bg-danger= email_field_tag 'teacher_upload[email]', @teacher.email, form:
-  %td.bg-danger= password_field_tag 'teacher_upload[password]', '', form:
-  %td.bg-danger= password_field_tag 'teacher_upload[password_confirmation]', '', form:
+  %td.bg-danger
+    = text_field_tag 'teacher_upload[name]',
+                     @teacher.name, form:
+  %td.bg-danger
+    = email_field_tag 'teacher_upload[email]',
+                      @teacher.email, form:
+  %td.bg-danger
+    = password_field_tag 'teacher_upload[password]',
+                         '', form:
+  %td.bg-danger
+    = password_field_tag 'teacher_upload[password_confirmation]',
+                         '', form:
   %td.bg-danger
     = form_with model: @teacher, url:, method:,
                 html: { class: 'flex items-center justify-center gap-2 p-2',
@@ -23,6 +31,6 @@
       %span.material-symbols-outlined.animate-pulse error
 
       = hidden_field_tag(:index, @index, form:)
-      = f.submit class: 'btn btn-primary'
+      = f.submit class: 'btn btn-main'
 %tr{ id: "teacher-errors-#{@index}" }
   %td.bg-danger{ colspan: 9 }= @errors

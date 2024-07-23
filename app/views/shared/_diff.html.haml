@@ -1,0 +1,21 @@
+-# locals: (diff:)
+
+%table.text-center.m-3
+  %thead
+    %th.thead.thead-s.bg-secondary-50 Attribute
+    %th.thead.bg-secondary-50 Old
+    %th.thead.thead-e.bg-secondary-50 New
+  %tbody
+    - diff.each do |attr, changes|
+      %tr
+        %td.p-1.font-bold= attr.titleize
+        - changes.each do |version, value|
+          - color = version == 'old' ? 'text-red-500' : 'text-green-500'
+
+          %td.p-1{ class: color }
+            - if value.is_a?(Array)
+              %ul
+                - value.each do |v|
+                  %li= v
+            - else
+              = value

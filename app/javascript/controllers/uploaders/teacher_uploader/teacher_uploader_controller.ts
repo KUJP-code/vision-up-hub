@@ -1,14 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import Papa from "papaparse";
-import { addTeacherRow, newTeacherUploadTable } from "./table.ts";
+import { newTeacherUploadTable } from "./table.ts";
+import { addRow } from "../table.ts";
 import { createTeacher, updateTeacher } from "./api.ts";
 import { newUploadSummary } from "../summary.ts";
 
-export interface teacher {
-	name: string;
-	email: string;
-	password: string;
-}
+import type { teacher } from "../declarations.d.ts";
 
 // Connects to data-controller="teacher-uploader"
 export default class extends Controller<HTMLFormElement> {
@@ -38,17 +35,18 @@ export default class extends Controller<HTMLFormElement> {
 
 		const main = document.querySelector("main");
 		if (main) {
-			main.innerHTML = newTeacherUploadTable();
+			main.innerHTML = newTeacherUploadTable(this.headersValue);
 			main.prepend(newUploadSummary(teachers.length));
 		} else {
 			alert("Could not find main element");
 			return;
 		}
-		for (const [i, s] of teachers.entries()) {
-			addTeacherRow({
-				csvTeacher: s,
+		for (const [i, teacher] of teachers.entries()) {
+			addRow({
+				csvRecord: teacher,
 				index: i,
 				headers: this.headersValue.concat("Password Confirmation"),
+				uploadType: "teacher",
 			});
 		}
 
@@ -74,11 +72,13 @@ export default class extends Controller<HTMLFormElement> {
 	async uploadTeachers(teachers: teacher[]) {
 		while (teachers.length > 0) {
 			const index = teachers.length - 1;
+			const delay = new Promise((resolve) => setTimeout(resolve, 500));
 			const teacher = teachers.pop();
 			if (teacher === undefined) continue;
 			this.actionValue === "create"
 				? await createTeacher(teacher, this.orgValue, index)
 				: await updateTeacher(teacher, this.orgValue, index);
+			await delay;
 		}
 	}
 }

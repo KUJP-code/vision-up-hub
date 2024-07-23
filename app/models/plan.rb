@@ -5,4 +5,8 @@ class Plan < ApplicationRecord
 
   belongs_to :course
   belongs_to :organisation
+
+  def finished?
+    Time.zone.now > finish_date
+  end
 end

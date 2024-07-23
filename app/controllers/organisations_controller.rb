@@ -12,7 +12,7 @@ class OrganisationsController < ApplicationController
 
   def show
     @admins = @organisation.users.where(type: 'OrgAdmin').pluck(:name)
-    @plan = @organisation.plan
+    @plans = @organisation.plans
     @schools = @organisation.schools.includes(:school_managers)
   end
 

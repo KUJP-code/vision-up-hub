@@ -31,7 +31,14 @@ class CoursePolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      user.is?('Admin') ? scope.all : scope.none
+      case user.type
+      when 'Admin'
+        scope.all
+      when 'OrgAdmin', 'SchoolManager', 'Teacher'
+        user.courses
+      else
+        scope.none
+      end
     end
   end
 end

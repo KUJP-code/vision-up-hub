@@ -7,15 +7,17 @@ module Levelable
   included do
     enum level: LEVELS
 
-    scope :primary, -> { where.not(level: %i[all_levels kindy]) }
-    scope :land, -> { where(level: %i[land_one land_two land_three]) }
-    scope :sky, -> { where(level: %i[sky_one sky_two sky_three]) }
-    scope :galaxy, -> { where(level: %i[galaxy_one galaxy_two galaxy_three]) }
+    scope :kindy, -> { where(level: %i[all_levels kindy]) }
+    scope :land, -> { where(level: %i[all_levels land_one land_two land_three]) }
+    scope :sky, -> { where(level: %i[all_levels sky_one sky_two sky_three]) }
+    scope :galaxy, -> { where(level: %i[all_levels galaxy_one galaxy_two galaxy_three]) }
+    scope :elementary, -> { land.or(sky).or(galaxy) }
     scope :keep_up, -> { where(level: %i[keep_up_one keep_up_two]) }
     scope :specialist, -> { where(level: %i[specialist specialist_advanced]) }
 
-    def primary?
-      %w[all_levels kindy].exclude?(level)
+    def elementary?
+      %w[all_levels kindy keep_up_one keep_up_two specialist specialist_advanced]
+        .exclude?(level)
     end
 
     def land?

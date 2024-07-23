@@ -1,0 +1,17 @@
+= turbo_frame_tag 'lesson' do
+  .content
+    %header
+      %h1.type.border-kindy
+        Phonics Class
+      %h1.level.border-kindy
+        = @lesson.short_level.upcase
+      = image_tag type_icon_path(@lesson)
+      %h3.details= @lesson.topic
+
+    - if @lesson.guide.attached?
+      = render 'teacher_lessons/guide_section',
+               lesson: @lesson
+
+    - if @resources.any?
+      = render 'teacher_lessons/resources_section',
+               resources: @resources

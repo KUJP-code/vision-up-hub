@@ -6,8 +6,6 @@
   unit = topic ? lesson.topic.scan(/\d+/).last : 1
   lesson_topic = topic ? topic.scan(/(?<=- ).+/).first : ''
 
-= f.hidden_field :type, value: lesson.type
-
 .form-group
   = f.label :guide
   = f.file_field :guide, accept: 'application/pdf'

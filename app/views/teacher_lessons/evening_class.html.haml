@@ -1,0 +1,17 @@
+:ruby
+  border = "border-b-2 #{lvl_border(@lesson.short_level)}"
+  text = lvl_text(@lesson.short_level)
+
+= turbo_frame_tag 'lesson' do
+  .content
+    %header
+      %h1{ class: "type #{border}" }
+        = @lesson.type.titleize
+      %h1{ class: "level #{text} #{border}" }
+        = @lesson.short_level.upcase
+      = image_tag type_icon_path(@lesson)
+      %h3.details= @lesson.goal
+
+    - if @resources.any?
+      = render 'teacher_lessons/resources_section',
+               resources: @resources

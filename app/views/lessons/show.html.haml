@@ -1,3 +1,5 @@
+= render 'shared/subtitle', text: @lesson.title
+
 %main.flex.flex-col.text-center
   .flex.p-3
     %div{ class: 'flex-grow flex flex-col gap-3 text-start text-semibold' }
@@ -18,6 +20,10 @@
         = link_to current_user.is?('Writer') ? 'Propose Changes' : 'Edit',
                   edit_lesson_path(@lesson),
                   class: 'btn btn-secondary px-3 py-1'
+        - if current_user.is?('Admin')
+          = link_to 'View Diff',
+                    lesson_version_path(@lesson),
+                    class: 'btn btn-secondary px-3 py-1'
 
       - if @lesson.subtype
         %h3
@@ -47,6 +53,9 @@
   .flex.flex-col.p-3.gap-3
     = render 'lessons/shared/attribute_list', lesson: @lesson
     = render 'lessons/shared/resource_list', resources: @resources
+    - if @phonics_resources
+      = render 'lessons/phonics_classes/phonics_resources',
+               resources: @phonics_resources
 
   .flex.justify-center.gap-3
     = link_to 'Delete',

@@ -21,7 +21,7 @@ class TestsController < ApplicationController
     @test = authorize Test.new(test_params)
 
     if @test.save
-      redirect_to test_path(@test),
+      redirect_to tests_url,
                   notice: t('create_success')
     else
       render :new,
@@ -32,7 +32,7 @@ class TestsController < ApplicationController
 
   def update
     if @test.update(test_params)
-      redirect_to @test,
+      redirect_to tests_url,
                   notice: t('update_success')
     else
       render :edit,
@@ -54,7 +54,7 @@ class TestsController < ApplicationController
   private
 
   def test_params
-    params.require(:test).permit(:name, :level, :questions, :thresholds)
+    params.require(:test).permit(:basics, :name, :level, :questions, :thresholds)
   end
 
   def set_test

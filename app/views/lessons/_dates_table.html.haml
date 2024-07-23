@@ -1,4 +1,6 @@
--# locals: (lessons:, type:)
+-# locals: (course:, lessons:, type:)
+
+- reused_lesson_ids = []
 
 .flex.flex-col.gap-1
   %h2.flex.items-center.justify-center.gap-2.font-bold
@@ -15,17 +17,23 @@
           %p{ class: 'basis-3/5' }
     %tbody
       - lessons.each do |l|
-        %tr
-          %td
-            = link_to with_subtype(l),
-                      lesson_path(l),
-                      class: 'font-semibold'
-          %td
-            = form_with model: l,
-                        class: 'flex items-center gap-1' do |f|
-              = f.fields_for :course_lessons,
-                             l.course_lessons.find { |cl| cl.course_id == @course.id } do |cl_f|
-                = render 'course_lessons/date_fields',
-                         f: cl_f,
-                         table: true
-                = cl_f.submit 'Change Date', class: 'btn btn-primary text-sm'
+        - next if reused_lesson_ids.include?(l.id)
+
+        :ruby
+          course_lessons = l.course_lessons.select { |cl| cl.course_id == @course.id }
+          reused_lesson_ids << l.id if course_lessons.size > 1
+
+        - course_lessons.each do |cl|
+          %tr
+            %td.p-1
+              = link_to with_subtype(l),
+                        lesson_path(l),
+                        class: 'font-semibold'
+            %td.p-1
+              = form_with model: l,
+                          class: 'flex items-center gap-1' do |f|
+                = f.fields_for :course_lessons, cl do |cl_f|
+                  = render 'course_lessons/date_fields',
+                           f: cl_f,
+                           table: true
+                  = cl_f.submit 'Change Date', class: 'btn btn-main text-sm'

@@ -2,40 +2,51 @@
          text: t('.results_for', name: @test.name.titleize)
 
 %main
-  = render 'test_results/skill_nav'
+  - if @orgs
+    = render 'test_results/org_nav',
+             active: @org, orgs: @orgs, school: @school
+  - if @schools
+    = render 'test_results/school_nav',
+             active: @school, org: @org, schools: @schools
+  = render 'test_results/skill_nav', test: @test
 
   %div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
-    %table
-      %thead.sticky.top-0.text-white
+    %table.sticky.top-14
+      %thead.text-white
         %tr
-          %th{ class: 'p-1 bg-main', id: 'student-details', rowspan: 2 }= t('.student_id')
-          %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.name')
-          %th.p-1.bg-main{ rowspan: 2 }= t('.en_name')
+          %th.p-1.bg-main.whitespace-nowrap{ id: 'student-details',
+                                             rowspan: 2 }
+            = t('.name')
           %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
+          %th.p-1.bg-main= t('.basics')
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 
             %th{ class: 'p-1 bg-main',
                  colspan: @test.send(skill.to_sym).count + 1,
                  id: skill }
-              = skill.titleize
-          %th{ class: 'p-1 bg-main',
+              = t(".#{skill}")
+          %th{ class: 'p-1 bg-main whitespace-nowrap',
                id: 'results',
                rowspan: 2 }
             = t('.total')
-          %th{ class: 'p-1 bg-main', rowspan: 2 } Prev level
-          %th{ class: 'p-1 bg-main', rowspan: 2 } New level
+          %th{ class: 'p-1 bg-main whitespace-nowrap', rowspan: 2 }
+            = t('.former_lvl')
+          %th{ class: 'p-1 bg-main', rowspan: 2 }
+            = t('.rec_lvl')
           %th{ class: 'p-1 bg-main', rowspan: 2 }
         %tr
+          %th.p-1.bg-secondary /#{@test.basics}
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 
             - @test.send(skill.to_sym).each do |max_score|
               %th{ class: 'p-1 bg-secondary' } /#{max_score}
-            %th{ class: 'w-12 p-1 bg-secondary' }= t(".#{fieldname_from_skill(skill)}")
+            %th{ class: 'w-12 p-1 bg-secondary whitespace-nowrap' }
+              = t(".#{attr_from_skill(skill)}")
 
       %tbody
-        - @students.each do |student|
+        - @students.sort_by(&:en_name).each do |student|
           :ruby
             result = student.test_results.find { |r| r.test_id == @test.id } ||
                      @test.test_results.new(student_id: student.id)

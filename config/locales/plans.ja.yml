@@ -3,6 +3,7 @@ ja:
     index:
       create_plan: "新規作成"
     show:
-      organisation: "組織"
+      organisation: "組織: %{name}"
       student_limit: "学生数: %{limit}"
       total_cost: "合計金額: %{cost}円"
+      valid: "期間: %{from} - %{to}"

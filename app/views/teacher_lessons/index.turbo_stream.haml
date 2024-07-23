@@ -1,0 +1,54 @@
+:ruby
+  evening = %w[keep_up specialist].include?(@level)
+  order_hash = {
+    'arrival' => 0, 'brush_up' => 1, 'snack' => 2,
+    'DailyActivity' => 3, 'Exercise' => 4, 'DailyGathering' => 5,
+    'PhonicsClass' => 6, 'KindyPhonic' => 6, 'EnglishClass' => 7,
+    'StandShowSpeak' => 8, 'bus_time' => 9
+  }
+
+= turbo_stream.replace 'subtitle' do
+  = render partial: 'teachers/subtitle',
+           locals: { date: @date, level: @level, teacher: @teacher }
+
+= turbo_stream.replace 'teacher-lessons' do
+  %main.p-6.gap-3#teacher-lessons
+    %nav.tab-nav
+      - @valid_levels.each do |level|
+        = link_to level.titleize,
+                  teacher_lessons_path(date: @date, level:,
+                                       teacher_id: @teacher.id),
+                  class: "nav-tab #{@level == level ? 'active' : 'inactive'}",
+                  data: { turbo_stream: true }
+
+    %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
+      - if evening
+        = render 'teacher_lessons/evening_cards', level: @level
+      - else
+        - %w[arrival brush_up snack].each do |type|
+          = render partial: 'teacher_lessons/card',
+                   locals: { date: @date, level: @level,
+                             teacher_id: @teacher.id, type: }
+
+      - @types.sort_by { |t| order_hash[t] || Float::INFINITY }.each do |type|
+        = render partial: 'teacher_lessons/card',
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: }
+        - next if type != 'DailyActivity'
+
+        = render partial: 'teacher_lessons/card',
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: 'daily_gathering' }
+
+      - if @level == 'keep_up'
+        = link_to '',
+                  class: 'card flex flex-col items-center p-2 gap-2' do
+          = image_tag 'lesson_types/lesson_review.svg',
+                      class: 'h-full'
+          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+          %h3.text-center Lesson Review
+
+      - unless evening
+        = render partial: 'teacher_lessons/card',
+                 locals: { date: @date, level: @level,
+                           teacher_id: @teacher.id, type: 'bus_time' }

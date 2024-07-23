@@ -15,14 +15,6 @@ module PdfLinks
     end
   end
 
-  private
-
-  def add_title(pdf, title)
-    pdf.move_down PADDING
-    pdf.text title, size: HEADING_SIZE, indent_paragraphs: PADDING
-    pdf.move_down PADDING
-  end
-
   def create_links(links, dimensions, pdf)
     pdf.text_box(
       links_from_pairs(links, pdf),
@@ -35,7 +27,9 @@ module PdfLinks
 
   def links_from_pairs(links, pdf)
     link_array = links.map do |k, v|
-      pdf.text "<color rgb='0000FF'><u><link href='#{v}'>#{k}</link></u></color>", inline_format: true
+      pdf.text "<color rgb='645880'><u><link href='#{v}'>#{k}</link></u></color>",
+               inline_format: true,
+               size: FONT_SIZE
     end
     link_array.join("\n")
   end

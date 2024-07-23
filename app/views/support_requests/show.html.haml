@@ -1,24 +1,29 @@
+= render 'shared/subtitle', text: @support_request.subject
+
 %main.flex.flex-col.gap-3.p-3
-  .flex.flex-col.items-center.justify-center.gap-2.p-3.rounded.border
-    .flex.gap-2
-      %h1= @support_request.subject
-      = render 'support_requests/status_badge',
-               resolved: @support_request.resolved?
-    %h3 #{t('.category')}: #{@support_request.category.titleize}
-    %h3 #{t('.user')}: #{@support_request.user.name}
-    %h3 #{t('.email')}: #{@support_request.user.email}
-    %h3 #{t('.description')}
-    %p #{@support_request.description}
-    .flex.gap-2
+  .flex.flex-col.items-center.gap-3.p-3.rounded.border-dashed.border-2.border-secondary-50
+    = render 'support_requests/request_header', request: @support_request
+
+    %section.flex.flex-col.items-center.gap-1.font-bold.text-center
+      %h3 #{t('.category')}: #{@support_request.category.titleize}
+      %h3 #{t('.user')}: #{@support_request.user.name}
+      %h3 #{t('.email')}: #{@support_request.user.email}
+      %h3 #{t('.reported_at')}: #{ja_datetime(@support_request.created_at)}
+
+    %p.text-center= @support_request.description
+
+    - if @support_request.images.attached?
+      = render 'support_requests/images',
+               images: @support_request.images
+
+    .flex.gap-6.mt-6
       = link_to t('.edit'),
                 edit_support_request_path(@support_request),
-                class: 'btn btn-secondary'
+                class: 'btn btn-secondary basis-1/2'
       = form_with model: @support_request do |f|
         = f.hidden_field :resolved_by, value: current_user.id
         = f.hidden_field :resolved_at, value: Time.zone.now
-        = f.submit t('.mark_resolved'), class: 'btn btn-primary'
-
-  %h2= t('.messages')
+        = f.submit t('.mark_resolved'), class: 'btn btn-main basis-1/2'
 
   = render partial: 'support_messages/message',
            collection: @messages,
@@ -26,7 +31,8 @@
            spacer_template: 'shared/spacer'
 
   = form_with model: [@support_request, @support_request.messages.new],
-              html: { class: 'form p-0',
+              html: { class: 'form p-0 items-center',
                       id: 'new_support_message' } do |f|
-    = f.text_area :message, rows: 3
-    = f.submit t('.send'), class: 'btn btn-primary'
+    = f.text_area :message, rows: 5, class: 'w-full'
+    = f.file_field :images, accept: 'image/*', multiple: true, class: 'w-full'
+    = f.submit t('.send'), class: 'btn btn-main w-full md:w-1/3'

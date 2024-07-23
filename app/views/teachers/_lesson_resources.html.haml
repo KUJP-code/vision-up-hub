@@ -1,28 +1,51 @@
 -# locals: (lesson:)
 
-- resources_present = 'bg-secondary text-white'
-- resources_absent = 'bg-neutral-light text-neutral-dark'
-
 - if lesson
-  - resource_classes = lesson.resources.attached? ? resources_present : resources_absent
+  :ruby
+    resources_present = 'bg-secondary text-white cursor-pointer'
+    resources_absent = 'bg-neutral-light text-neutral-dark cursor-default'
+    # TODO: this N+1 is a very temporary thing until we rework this page
+    # to be separated by category and use different controllers for each type
+    resources = if lesson.type == 'PhonicsClass'
+      course_lesson = @user.course_lessons.find_by(lesson_id: lesson.id)
+      plan = @user.plans.find_by(course_id: course_lesson.course_id)
+      week = @user.course_week(plan, @date)
+      lesson.phonics_resources.where(week:).includes(:blob) + lesson.resources
+    else
+      lesson.resources
+    end
+
+    sorted_resources = resources.sort { |r, rn| r.blob.filename <=> rn.blob.filename }
+    resource_classes = resources.any? ? resources_present : resources_absent
+
   .w-full.flex.flex-col.gap-3
-    - if lesson.guide.blob
-      = link_to 'Guide',
-                file_path(id: lesson.guide.blob.id),
+    - if lesson.guide.attached?
+      = link_to file_path(id: lesson.guide.blob.id),
                 target: '_blank',
                 rel: 'noopener',
-                class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3'
+                class: 'flex items-center bg-main rounded font-bold text-white py-1 px-3' do
+        %p Lesson Plan
+        .flex-grow
+        = render 'shared/svgs/download_icon',
+                 classes: 'fill-white'
+    - else
+      .flex.items-center.bg-neutral-light.rounded.py-1.px-3.cursor-default.border.border-secondary
+        %p.text-neutral-dark Lesson Plan
+        .flex-grow
+        = render 'shared/svgs/not_allowed_icon',
+                 classes: 'fill-neutral-dark stroke-3'
 
     %div{ class: 'relative h-[34px]' }
-      %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full
-        %summary{ class: "px-3 py-1 text-nowrap truncate #{resource_classes}" }
+      %details.absolute.rounded.border.border-secondary.overflow-hidden.w-full{ name: 'resources' }
+        %summary{ class: "cursor-pointer px-3 py-1 text-nowrap truncate #{resource_classes}" }
           Resources
         .flex.flex-col.gap-2.p-1.bg-white.text-secondary
-          - lesson.resources.each_with_index do |r, i|
+          - sorted_resources.each_with_index do |r, i|
             = link_to file_path(r.blob),
                       target: '_blank',
                       rel: 'noopener',
                       class: ('border-t border-secondary' unless i.zero?) do
               .flex.items-center
-                %span= r.blob.filename
-                = image_tag 'download.svg'
+                %span{ class: 'basis-5/6 truncate' }= r.blob.filename
+                = render 'shared/svgs/download_icon',
+                         classes: 'fill-secondary basis-1/6'

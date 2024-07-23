@@ -1,0 +1,17 @@
+-# locals: (level:)
+
+:ruby
+  types = if level == 'specialist'
+    %w[homework_check break_&_quiz four_skills project]
+  elsif level == 'keep_up'
+    %w[conversation_time snack book_activity]
+  end
+
+-# this will be a file_path link, or to public
+- types.each do |type|
+  = link_to '',
+            class: 'card flex flex-col items-center p-2 gap-2' do
+    = image_tag "lesson_types/#{type.underscore}.svg",
+                class: 'h-full'
+    %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+    %h3.text-center= type.titleize
