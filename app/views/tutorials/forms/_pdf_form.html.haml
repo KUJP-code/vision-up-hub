@@ -1,4 +1,8 @@
-= form_with model: @tutorial, url: @tutorial.new_record? ? tutorials_path(type: params[:type]) : tutorial_path(@tutorial, type: params[:type]), method: @tutorial.new_record? ? :post : :patch, html: { class: 'form', multipart: true } do |f|
+-# locals: (categories:, tutorial:)
+
+= form_with model: @tutorial,
+            url: tutorials_path(type: 'PDF'),
+            html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @tutorial
 
   .form-group
@@ -7,11 +11,14 @@
 
   .form-group
     = f.label :file
-    = f.file_field :file, required: @tutorial.new_record?, accept: 'application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpeg,image/png'
+    = f.file_field :file,
+                   required: @tutorial.new_record?,
+                   accept: PdfTutorial::VALID_FILETYPES
+    %small Allowed filetypes: PDF, PPT, PPTX, XLS, XLSX, JPG, JPEG, PNG
 
   .form-group
-    = f.label :tutorial_category_id, "Category"
+    = f.label :tutorial_category_id, 'Category'
     = f.select :tutorial_category_id, options_for_select(@categories), {}
 
   .form-group
-    = f.submit @tutorial.new_record? ? "Create #{params[:type]} Tutorial" : "Update #{params[:type]} Tutorial", class: 'btn btn-primary'
+    = f.submit class: 'btn btn-main'

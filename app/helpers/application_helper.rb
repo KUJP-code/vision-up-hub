@@ -25,7 +25,8 @@ module ApplicationHelper
   def main_nav_link(title, path)
     active = active_main_nav_link?(title, controller_name)
     link_to path, class: main_nav_class(title, controller_name) do
-      (render "shared/svgs/#{title}", classes: "w-8 shrink-0 #{'fill-white' if active}") +
+      (render "shared/svgs/#{title}",
+              classes: "w-8 shrink-0 #{'fill-white' if active}") +
         content_tag(:span, t(".#{title}"), class: 'main-nav-link-text')
     end
   end

@@ -1,4 +1,10 @@
-= form_with model: @tutorial, url: @tutorial.new_record? ? tutorials_path(type: 'Video') : tutorial_path(@tutorial, type: 'Video'), method: @tutorial.new_record? ? :post : :patch, html: { class: 'form' } do |f|
+-# locals: (categories:, tutorial:)
+
+- valid_hosts = VideoTutorial::VALID_HOSTS.join(', or ')
+
+= form_with model: @tutorial,
+            url: tutorials_path(type: 'Video'),
+            html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @tutorial
 
   .form-group
@@ -8,11 +14,11 @@
   .form-group
     = f.label :video_path
     = f.text_field :video_path, required: true
+    %small Only links including #{valid_hosts} are accepted
 
   .form-group
-    = f.label :tutorial_category_id, "Category"
+    = f.label :tutorial_category_id, 'Category'
     = f.select :tutorial_category_id, options_for_select(@categories), {}
 
   .form-group
-    = f.submit @tutorial.new_record? ? "Create #{params[:type]} Tutorial" : "Update #{params[:type]} Tutorial",
-               class: 'btn btn-primary'
+    = f.submit class: 'btn btn-main'

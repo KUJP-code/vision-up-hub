@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class TutorialsController < ApplicationController
-  before_action :set_tutorial, only: %i[destroy show edit update]
-  before_action :set_type, only: %i[new create edit update]
-  before_action :set_categories, only: %i[new create edit update]
+  before_action :set_type, except: %i[index]
+  before_action :set_tutorial, except: %i[index create new]
+  before_action :set_categories, except: %i[index destroy]
 
-  # Fetch categories and tutorials grouped by type for index page
   def index
     @categories = TutorialCategory.all
     @tutorials = {
@@ -22,7 +21,6 @@ class TutorialsController < ApplicationController
     render partial: 'video_modal', locals: { tutorial: @tutorial }
   end
 
-  # Initialize new object based on type
   def new
     @tutorial = tutorial_class.new
   end
@@ -34,22 +32,22 @@ class TutorialsController < ApplicationController
 
     if @tutorial.save
       redirect_to tutorials_path,
-                  notice: "#{params[:type]} tutorial was successfully created."
+                  notice: "#{@type} tutorial was successfully created."
     else
       render :new,
              status: :unprocessable_entity,
-             alert: "#{params[:type]} tutorial could not be created."
+             alert: "#{@type} tutorial could not be created."
     end
   end
 
   def update
     if @tutorial.update(tutorial_params)
       redirect_to tutorials_path,
-                  notice: "#{params[:type]} tutorial was successfully updated."
+                  notice: "#{@type} tutorial was successfully updated."
     else
       render :edit,
              status: :unprocessable_entity,
-             alert: "#{params[:type]} tutorial could not be updated."
+             alert: "#{@type} tutorial could not be updated."
     end
   end
 
@@ -66,9 +64,11 @@ class TutorialsController < ApplicationController
   private
 
   def tutorial_params
-    case params[:type]
+    case @type
     when 'PDF'
-      params.require(:pdf_tutorial).permit(:title, :tutorial_category_id, :file)
+      params.require(:pdf_tutorial).permit(
+        :title, :tutorial_category_id, :file
+      )
     when 'Video'
       params.require(:video_tutorial).permit(
         :title, :tutorial_category_id, :video_path
@@ -84,6 +84,7 @@ class TutorialsController < ApplicationController
 
   def set_categories
     @categories = TutorialCategory.pluck(:title, :id)
+                                  .map { |title, id| [title.titleize, id] }
   end
 
   def set_type
@@ -95,7 +96,7 @@ class TutorialsController < ApplicationController
   end
 
   def tutorial_class
-    case params[:type]
+    case @type
     when 'PDF'
       PdfTutorial
     when 'Video'
