@@ -10,6 +10,13 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
 -- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -911,9 +918,9 @@ CREATE TABLE public.faq_tutorials (
     id bigint NOT NULL,
     question character varying,
     answer character varying,
+    tutorial_category_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    tutorial_category_id bigint NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1133,9 +1140,9 @@ CREATE TABLE public.pdf_tutorials (
     id bigint NOT NULL,
     title character varying,
     category integer,
+    tutorial_category_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    tutorial_category_id bigint NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1980,9 +1987,9 @@ CREATE TABLE public.video_tutorials (
     title character varying,
     video_path character varying,
     category integer,
+    tutorial_category_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    tutorial_category_id bigint NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3440,9 +3447,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240721051925'),
+('20240721051922'),
+('20240721051920'),
+('20240721045405'),
 ('20240719063829'),
-('20240719010824'),
-('20240718045405'),
 ('20240710023243'),
 ('20240703045256'),
 ('20240703044625'),
@@ -3459,9 +3468,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240603041759'),
 ('20240531083504'),
 ('20240531081127'),
-('20240517051925'),
-('20240517051922'),
-('20240517051920'),
 ('20240426053157'),
 ('20240412042428'),
 ('20240403021633'),

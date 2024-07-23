@@ -4,6 +4,7 @@ class CreateVideoTutorials < ActiveRecord::Migration[7.1]
       t.string :title
       t.string :video_path
       t.integer :category
+      t.references :tutorial_category, null: false, foreign_key: true
 
       t.timestamps
     end
