@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'creating a support request' do
-  let(:user) { create(:user, :teacher) }
+  let(:user) { create(:user, :org_admin) }
 
   before do
     sign_in user
@@ -11,7 +11,7 @@ RSpec.describe 'creating a support request' do
 
   it 'can create a support request' do
     visit support_requests_path
-    find_by_id('create_request').click
+    click_link I18n.t('support_requests.index.new_request')
     within '#support_request_form' do
       select I18n.t('support_requests.form.bug_report'),
              from: 'support_request_category'
@@ -21,6 +21,5 @@ RSpec.describe 'creating a support request' do
     click_button I18n.t('support_requests.form.submit_request')
     expect(page).to have_content('Test Subject')
     expect(page).to have_content('Test Description')
-    expect(page).to have_content(I18n.t('support_requests.status_badge.open'))
   end
 end

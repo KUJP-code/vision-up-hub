@@ -8,7 +8,7 @@ RSpec.describe 'Creating a PDF tutorial' do
 
   before do
     sign_in admin_user
-    create(:tutorial_category, name: 'Extra Resources')
+    create(:tutorial_category, title: 'Extra Resources')
   end
 
   it 'allows an admin user to create a new PDF tutorial' do

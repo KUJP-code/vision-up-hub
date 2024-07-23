@@ -7,7 +7,7 @@ RSpec.describe 'Creating a FAQ tutorial' do
 
   before do
     sign_in admin_user
-    create(:tutorial_category, name: 'FAQs')
+    create(:tutorial_category, title: 'FAQs')
   end
 
   it 'allows an admin user to create a new FAQ tutorial' do

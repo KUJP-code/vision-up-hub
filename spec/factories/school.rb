@@ -4,5 +4,6 @@ FactoryBot.define do
   factory :school do
     organisation
     sequence(:name) { |n| "School #{n}" }
+    ip { '*' }
   end
 end

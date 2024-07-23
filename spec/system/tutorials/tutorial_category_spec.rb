@@ -11,7 +11,7 @@ RSpec.describe 'Creating a tutorial category' do
 
   it 'allows an admin user to create a new tutorial category' do
     visit new_tutorial_category_path
-    fill_in 'Name', with: 'New Category'
+    fill_in 'Title', with: 'New Category'
     click_button 'Create Category'
 
     expect(page).to have_content('Category was successfully created.')
