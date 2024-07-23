@@ -77,7 +77,7 @@ class TutorialsController < ApplicationController
   end
 
   def set_categories
-    @categories = TutorialCategory.pluck(:name, :id)
+    @categories = TutorialCategory.pluck(:title, :id)
   end
 
   def set_type

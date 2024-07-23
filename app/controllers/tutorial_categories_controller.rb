@@ -39,7 +39,7 @@ class TutorialCategoriesController < ApplicationController
   private
 
   def tutorial_category_params
-    params.require(:tutorial_category).permit(:name)
+    params.require(:tutorial_category).permit(:title)
   end
 
   def set_tutorial_category

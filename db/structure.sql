@@ -1903,7 +1903,7 @@ ALTER SEQUENCE public.tests_id_seq OWNED BY public.tests.id;
 
 CREATE TABLE public.tutorial_categories (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3055,10 +3055,10 @@ CREATE INDEX index_test_results_on_test_id ON public.test_results USING btree (t
 
 
 --
--- Name: index_tutorial_categories_on_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_tutorial_categories_on_title; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_tutorial_categories_on_name ON public.tutorial_categories USING btree (name);
+CREATE UNIQUE INDEX index_tutorial_categories_on_title ON public.tutorial_categories USING btree (title);
 
 
 --

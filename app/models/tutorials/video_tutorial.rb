@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VideoTutorial < ApplicationRecord
   belongs_to :tutorial_category
 

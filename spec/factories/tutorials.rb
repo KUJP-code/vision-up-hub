@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :tutorial_category do
-    name { 'Extra Resources' }
+    title { 'Extra Resources' }
   end
 
   factory :pdf_tutorial do
@@ -20,6 +20,6 @@ FactoryBot.define do
   factory :video_tutorial do
     title { 'sample video' }
     tutorial_category
-    video_path { 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley' }
+    video_path { 'https://www.youtube.com/watch?v=o-YBDTqX_ZU' }
   end
 end

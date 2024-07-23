@@ -3,8 +3,8 @@
 
   .flex.gap-2
     .form-group
-      = f.label :name
-      = f.text_field :name, class: 'w-4/5 p-1 text-neutral-dark self-center', required: true
+      = f.label :title
+      = f.text_field :title, class: 'w-4/5 p-1 text-neutral-dark self-center', required: true
 
   .form-group
     = f.submit category.new_record? ? 'Create Category' : 'Update Category',
