@@ -12,6 +12,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.to authorize_action(:destroy) }
+
+    it 'scopes to all files' do
+      test_file = ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to contain_exactly(test_file)
+    end
   end
 
   context 'when writer' do
@@ -19,6 +28,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to all files' do
+      test_file = ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to contain_exactly(test_file)
+    end
   end
 
   context 'when sales' do
@@ -26,6 +44,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.not_to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to no files' do
+      ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to be_empty
+    end
   end
 
   context 'when OrgAdmin' do
@@ -33,6 +60,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to no files' do
+      ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to be_empty
+    end
   end
 
   context 'when SchoolManager' do
@@ -40,6 +76,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to no files' do
+      ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to be_empty
+    end
   end
 
   context 'when Teacher' do
@@ -47,6 +92,15 @@ RSpec.describe FilePolicy do
 
     it { is_expected.to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to no files' do
+      ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to be_empty
+    end
   end
 
   context 'when Parent' do
@@ -54,5 +108,14 @@ RSpec.describe FilePolicy do
 
     it { is_expected.not_to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
+
+    it 'scopes to no files' do
+      ActiveStorage::Blob.create_and_upload!(
+        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        filename: 'file.pdf'
+      )
+      expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
+        .to be_empty
+    end
   end
 end

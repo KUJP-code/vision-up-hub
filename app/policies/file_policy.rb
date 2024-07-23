@@ -8,4 +8,10 @@ class FilePolicy < ApplicationPolicy
   def destroy?
     user.is?('Admin')
   end
+
+  class Scope < Scope
+    def resolve
+      user.is?('Admin', 'Writer') ? scope.all : scope.none
+    end
+  end
 end
