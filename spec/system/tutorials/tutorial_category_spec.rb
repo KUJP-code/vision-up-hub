@@ -12,7 +12,7 @@ RSpec.describe 'Creating a tutorial category' do
   it 'allows an admin user to create a new tutorial category' do
     visit new_tutorial_category_path
     fill_in 'Title', with: 'New Category'
-    click_button 'Create Category'
+    find('input[type="submit"]').click
 
     expect(page).to have_content('Category was successfully created.')
     expect(page).to have_content('New Category')
