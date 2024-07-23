@@ -69,7 +69,8 @@ module DailyActivityPdf
       pdf.bounding_box([x_position, 220.mm], width: 51.mm, height: 11.mm) do
         pdf.text array_to_list(goals),
                  size: FONT_SIZE,
-                 overflow: :shrink_to_fit
+                 overflow: :shrink_to_fit,
+                 min_font_size: 0
       end
       x_position += 58.mm
     end

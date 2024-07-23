@@ -8,3 +8,5 @@
                 value:,
                 rows: attr == 4
   %small.-mt-1 Separate items with new lines
+  - if attr.to_s.include?('lang_goal')
+    %small.-mt-1 More than 3 lines will work but be ridiculously small
