@@ -1,7 +1,11 @@
 -# locals: (categories:, tutorial:)
 
-= form_with model: @tutorial,
-            url: tutorials_path(type: 'FAQ'),
+:ruby
+  type = 'FAQ'
+  url = tutorial.new_record? ? tutorials_path(type:) : tutorial_path(tutorial, type:)
+  method = tutorial.new_record? ? :post : :patch
+
+= form_with model: @tutorial, method:, url:,
             html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @tutorial
 

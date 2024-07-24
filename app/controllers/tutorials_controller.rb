@@ -14,7 +14,6 @@ class TutorialsController < ApplicationController
     }
   end
 
-  # Renders video modal
   def show
     return unless @tutorial.is_a?(VideoTutorial)
 

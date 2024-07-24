@@ -1,9 +1,12 @@
 -# locals: (categories:, tutorial:)
 
-- valid_hosts = VideoTutorial::VALID_HOSTS.join(', or ')
+:ruby
+  type = 'Video'
+  url = tutorial.new_record? ? tutorials_path(type:) : tutorial_path(tutorial, type:)
+  method = tutorial.new_record? ? :post : :patch
+  valid_hosts = VideoTutorial::VALID_HOSTS.join(', or ')
 
-= form_with model: @tutorial,
-            url: tutorials_path(type: 'Video'),
+= form_with model: @tutorial, url:, method:,
             html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @tutorial
 
