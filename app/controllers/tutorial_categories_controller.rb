@@ -16,8 +16,10 @@ class TutorialCategoriesController < ApplicationController
 
   def create
     @tutorial_category = TutorialCategory.new(tutorial_category_params)
+
     if @tutorial_category.save
-      redirect_to tutorials_path, notice: 'Category was successfully created.'
+      redirect_to tutorials_path,
+                  notice: 'Category was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,19 +29,21 @@ class TutorialCategoriesController < ApplicationController
     if @tutorial_category.update(tutorial_category_params)
       redirect_to tutorials_path, notice: 'Category was successfully updated.'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit,
+             status: :unprocessable_entity
     end
   end
 
   def destroy
     @tutorial_category.destroy
-    redirect_to tutorials_path, notice: 'Category was successfully deleted.'
+    redirect_to tutorials_path,
+                notice: 'Category was successfully deleted.'
   end
 
   private
 
   def tutorial_category_params
-    params.require(:tutorial_category).permit(:title)
+    params.require(:tutorial_category).permit(:svg, :title)
   end
 
   def set_tutorial_category

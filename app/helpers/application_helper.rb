@@ -57,6 +57,12 @@ module ApplicationHelper
          .map { |k| [t(".#{k}"), k] }
   end
 
+  def sanitized_svg(blob)
+    sanitize(blob.open(&:read),
+             tags: %w[svg defs path style],
+             attributes: %w[id xmlns d version encoding viewbox class])
+  end
+
   def split_on_capitals(string)
     string.gsub(/.(?=[[:upper:]])/) { |c| "#{c} " }
   end
