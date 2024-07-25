@@ -13,6 +13,7 @@ class TutorialCategory < ApplicationRecord
   validate :svg_type
 
   VALID_FILETYPES = ['image/svg+xml'].freeze
+  TUTORIAL_TYPES = %i[FAQ PDF Video].freeze
 
   private
 

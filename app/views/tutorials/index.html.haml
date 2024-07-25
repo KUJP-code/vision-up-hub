@@ -14,7 +14,7 @@
     %details.dropdown
       %summary.p-2.font-semibold Create a Tutorial
       %nav.dropdown-nav
-        - %w[FAQ PDF Video].each do |type|
+        - TutorialCategory::TUTORIAL_TYPES.each do |type|
           = link_to "#{type} Tutorial",
                     new_tutorial_path(type:),
                     class: 'dropdown-item'

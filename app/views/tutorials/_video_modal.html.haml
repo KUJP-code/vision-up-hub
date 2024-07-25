@@ -1,7 +1,0 @@
-- if @tutorial.is_a?(VideoTutorial)
-  %turbo-frame#video_modal
-    %div{ data: { controller: "turbo-modal" }, style: "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;" }
-      %div{ style: "background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); width: 600px;" }
-        %div.modal-content{ style: "display: flex; flex-direction: column; align-items: center;" }
-          %iframe{ width: "560", height: "315", src: @tutorial.video_path, frameborder: "0", allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture", allowfullscreen: true }
-          = button_to 'Close', '#', method: :get, remote: true, data: { action: 'turbo-modal#hideModal' }, style: "align-self: flex-end; background: none; border: none; font-size: 16px; cursor: pointer; margin-top: 10px; color: blue; text-decoration: underline;"

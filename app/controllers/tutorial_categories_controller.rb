@@ -7,7 +7,11 @@ class TutorialCategoriesController < ApplicationController
   end
 
   def show
-    @category = TutorialCategory.find(params[:id])
+    @tutorials = {
+      FAQ: @tutorial_category.faq_tutorials.order(:question),
+      PDF: @tutorial_category.pdf_tutorials.order(:title),
+      Video: @tutorial_category.video_tutorials.order(:title)
+    }
   end
 
   def new
