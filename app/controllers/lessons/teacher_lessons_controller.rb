@@ -13,10 +13,6 @@ class TeacherLessonsController < ApplicationController
     set_date_level_teacher
     @type = validated_type(params[:type])
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
-
-    Rails.logger.info 'Type lessons'
-    Rails.logger.info @type_lessons.pluck(:title)
-
     @resources = set_resources
     render "teacher_lessons/#{@type.titleize.downcase.tr(' ', '_')}"
   end
@@ -74,10 +70,6 @@ class TeacherLessonsController < ApplicationController
     type_lessons = day_lessons(teacher, date)
                    .send(level).where(type:)
                    .order(level: :asc)
-
-    Rails.logger.info 'Type lessons'
-    Rails.logger.info type_lessons.pluck(:title)
-
     lesson = if params[:id].to_i.zero?
                authorize type_lessons.first
              else
@@ -88,9 +80,6 @@ class TeacherLessonsController < ApplicationController
   end
 
   def day_lessons(teacher, date)
-    Rails.logger.info 'Day lessons'
-    Rails.logger.info policy_scope(Lesson).where(id: teacher.day_lessons(date).ids).pluck(:title)
-
-    policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
+    Lesson.where(id: teacher.day_lessons(date).ids)
   end
 end
