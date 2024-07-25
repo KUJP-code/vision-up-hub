@@ -180,8 +180,19 @@ end
 
 puts 'Creating Tutorials...'
 
+File.open(Rails.root.join('app/assets/icons/back.svg')) do |f|
+  ActiveStorage::Blob.create_and_upload!(
+    io: f,
+    filename: 'tutorials_test_icon.svg',
+    content_type: 'image/svg+xml'
+  )
+end
+test_svg = ActiveStorage::Blob.find_by(filename: 'tutorials_test_icon.svg')
+
 %i[extra_resources lms_functions lessons].each do |title|
-  fb.create(:tutorial_category, title:)
+  category = fb.build(:tutorial_category, title:)
+  category.svg.attach(test_svg)
+  category.save
 end
 
 TutorialCategory.all.each do |category|

@@ -12,6 +12,8 @@ RSpec.describe 'Creating a tutorial category' do
   it 'allows an admin user to create a new tutorial category' do
     visit new_tutorial_category_path
     fill_in 'Title', with: 'New Category'
+    attach_file('tutorial_category_svg',
+                Rails.root.join('app/assets/icons/back.svg'))
     find('input[type="submit"]').click
 
     expect(page).to have_content('Category was successfully created.')

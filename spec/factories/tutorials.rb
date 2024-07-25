@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :tutorial_category do
     title { 'Extra Resources' }
+    svg { Rack::Test::UploadedFile.new(Rails.root.join('app/assets/icons/back.svg'), 'image/svg+xml') }
   end
 
   factory :pdf_tutorial do
