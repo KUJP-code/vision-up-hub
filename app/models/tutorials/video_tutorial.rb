@@ -26,6 +26,10 @@ class VideoTutorial < ApplicationRecord
     disallowed_host_error
   end
 
+  def type
+    'Video'
+  end
+
   private
 
   def convert_video_link

@@ -23,6 +23,10 @@ class PdfTutorial < ApplicationRecord
     'image/png'
   ].freeze
 
+  def type
+    'PDF'
+  end
+
   private
 
   def file_presence

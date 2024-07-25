@@ -4,6 +4,16 @@
       .h-full.aspect-square
         = sanitized_svg(@tutorial_category.svg)
       %h1.text-3xl= @tutorial_category.title
+      - if current_user.is?('Admin')
+        .grow
+        = link_to 'Edit',
+                  edit_tutorial_category_path(@tutorial_category),
+                  class: 'btn btn-secondary'
+        = link_to 'Delete',
+                  tutorial_category_path(@tutorial_category),
+                  data: { turbo_method: 'delete',
+                          turbo_confirm: 'Check there are no attached tutorials' },
+                  class: 'btn btn-danger'
 
     - TutorialCategory::TUTORIAL_TYPES.each do |type|
       = render "tutorials/#{type.to_s.underscore}",
