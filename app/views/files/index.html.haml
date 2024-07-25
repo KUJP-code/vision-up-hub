@@ -7,7 +7,7 @@
         %th.thead.thead-s.bg-secondary-50 Filename
         %th.thead.bg-secondary-50 Size
         %th.thead.bg-secondary-50 Download Count
-        %th.thead.thead-e.bg-secondary-50 Total Downloaded
+        %th.thead.thead-e.bg-secondary-50 Total Bandwidth Used
     %tbody
       - @files.each do |file|
         %tr.even:bg-white.odd:bg-main-50.odd:text-white
@@ -18,7 +18,6 @@
                       rel: 'noopener'
           %td.text-end.p-2
             = number_to_human_size(file.byte_size)
-          %td.text-end.p-2
-            = number_to_human_size(file.download_count)
+          %td.text-end.p-2= file.download_count
           %td.text-end.p-2
             = number_to_human_size(file.byte_size * file.download_count)
