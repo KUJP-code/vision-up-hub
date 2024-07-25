@@ -15,7 +15,7 @@ class TeacherLessonsController < ApplicationController
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
 
     Rails.logger.info 'Type lessons'
-    Rails.logger.info @type_lessons
+    Rails.logger.info @type_lessons.inspect
 
     @resources = set_resources
     render "teacher_lessons/#{@type.titleize.downcase.tr(' ', '_')}"
@@ -76,7 +76,7 @@ class TeacherLessonsController < ApplicationController
                    .order(level: :asc)
 
     Rails.logger.info 'Type lessons'
-    Rails.logger.info type_lessons
+    Rails.logger.info type_lessons.inspect
 
     lesson = if params[:id].to_i.zero?
                authorize type_lessons.first
@@ -89,7 +89,7 @@ class TeacherLessonsController < ApplicationController
 
   def day_lessons(teacher, date)
     Rails.logger.info 'Day lessons'
-    Rails.logger.info policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
+    Rails.logger.info policy_scope(Lesson).where(id: teacher.day_lessons(date).ids).inspect
 
     policy_scope(Lesson).where(id: teacher.day_lessons(date).ids)
   end
