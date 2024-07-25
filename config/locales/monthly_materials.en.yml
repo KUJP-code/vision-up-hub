@@ -2,7 +2,7 @@ en:
   monthly_materials:
     form:
       course: "Course"
-      from_date: "From date"
+      from_date: "Week starting on:"
       from_week: "From week"
       search: "Search"
       weeks_forward: "Weeks forward"
