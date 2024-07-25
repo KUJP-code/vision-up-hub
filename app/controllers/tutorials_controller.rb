@@ -6,18 +6,12 @@ class TutorialsController < ApplicationController
   before_action :set_categories, except: %i[index destroy]
 
   def index
-    @categories = TutorialCategory.all
+    @categories = TutorialCategory.with_attached_svg.order(:title)
     @tutorials = {
       pdf: PdfTutorial.includes(file_attachment: :blob),
       video: VideoTutorial.all,
       faq: FaqTutorial.all
     }
-  end
-
-  def show
-    return unless @tutorial.is_a?(VideoTutorial)
-
-    render partial: 'video_modal', locals: { tutorial: @tutorial }
   end
 
   def new

@@ -1,0 +1,22 @@
+-# locals: (category:)
+
+-# :ruby
+-#   src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
+-#   title = if type == 'EveningClass'
+-#     level == 'specialist' ? 'Research Study' : 'Topic Study'
+-#   elsif type.include?('Phonic')
+-#     'Phonics'
+-#   else
+-#     type.titleize
+-#   end
+
+%button{ class: 'card flex flex-col items-center p-2 gap-2',
+         data: { action: 'dialog#open',
+                 controller: 'dialog',
+                 'dialog-dialog-value': 'tutorial-resources',
+                 'dialog-frame-value': 'tutorials',
+                 'dialog-src-value': 'need to add' },
+         type: 'button' }
+  = sanitized_svg(category.svg)
+  %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+  %h3.text-center= category.title

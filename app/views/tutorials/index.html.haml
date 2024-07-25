@@ -2,6 +2,13 @@
 
 = render 'shared/subtitle', text: t('.tutorials')
 
+%dialog.resources-dialog#tutorial-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'tutorials'
+
 %main.flex.flex-col.p-3.gap-3
   - if admin
     %details.dropdown
@@ -17,48 +24,6 @@
       %span Add New Category
       = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
 
-  .categories-container.flex.flex-wrap.gap-8.p-8
+  %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
     - @categories.each do |category|
-      .category-box.flex-1.bg-color-neutral-light.text-color-neutral-dark.shadow-md.rounded-lg.p-4.mb-4.self-start
-        %details
-          %summary.cursor-pointer.w-full.font-semibold.py-4.px-20.relative
-            = category.title
-            - if admin
-              = link_to 'Edit', edit_tutorial_category_path(category), class: 'btn btn-secondary btn-sm ml-2'
-              = link_to 'Delete', tutorial_category_path(category), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm ml-2'
-
-          %div
-            %h4.mt-2
-              Manuals & Guides
-            %ul.list-disc.list-inside
-              - @tutorials[:pdf].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
-                %li.cursor-pointer.flex.justify-between.items-center
-                  = link_to tutorial.title, file_path(tutorial.file.blob), target: '_blank', class: 'text-blue-500 hover:underline'
-                  - if admin
-                    = link_to 'Edit', edit_tutorial_path(tutorial, type: 'PDF'), class: 'btn btn-secondary px-3 py-1'
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'PDF'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
-
-            %h4.mt-4
-              Videos
-            %ul.list-disc.list-inside
-              - @tutorials[:video].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
-                %li.cursor-pointer.flex.justify-between.items-center
-                  = link_to tutorial.title, tutorial_path(tutorial, type: 'Video'), data: { turbo_frame: "video_modal" }, class: 'text-blue-500 hover:underline'
-                  - if admin
-                    = link_to 'Edit', edit_tutorial_path(tutorial, type: 'Video'), class: 'btn btn-secondary px-3 py-1'
-                    = link_to 'Delete', tutorial_path(tutorial, type: 'Video'), data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: 'btn btn-danger'
-
-            %h4.mt-4
-              FAQs
-              %ul.list-disc.list-inside
-                - @tutorials[:faq].select { |t| t.tutorial_category_id == category.id }.each do |tutorial|
-                  %details
-                    %summary.cursor-pointer.text-green-500.flex.justify-between.items-center
-                      = tutorial.question
-                      - if admin
-                        = link_to 'Edit', edit_tutorial_path(tutorial, type: 'FAQ'), class: 'btn btn-secondary px-3 py-1'
-                        = link_to 'Delete', tutorial_path(tutorial, type: 'FAQ'), data: { "turbo-method": :delete, turbo_confirm: "Are you sure?" }, class: 'btn btn-danger'
-                    %p.text-red-500
-                      = tutorial.answer
-
-  %turbo-frame#video_modal
+      = render 'tutorial_categories/card', category:

@@ -6,7 +6,9 @@ class TutorialCategoriesController < ApplicationController
     @tutorial_categories = TutorialCategory.all
   end
 
-  def show; end
+  def show
+    @category = TutorialCategory.find(params[:id])
+  end
 
   def new
     @tutorial_category = TutorialCategory.new
