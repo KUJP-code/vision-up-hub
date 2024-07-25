@@ -47,6 +47,7 @@
   .form-group
     = f.label :goal
     = f.text_area :goal, required: true
+    %small.-mt-1 More than 3 lines will work but be ridiculously small
 
   - unless lesson.type == 'KindyPhonic'
     .form-group

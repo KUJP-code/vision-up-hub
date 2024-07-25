@@ -1,11 +1,16 @@
 -# locals: (attr:, f:, lesson:)
 
-.flex.gap-3
-  - if lesson.send(attr).present?
+- attr_value = lesson.send(attr)
+
+.flex.flex-col.items-center.gap-3
+  - if attr_value.attached? && attr_value.blob.present? && attr_value.blob.persisted?
     = image_tag lesson.send(attr),
-                alt: lesson.send(attr).filename
+                alt: lesson.send(attr).filename,
+                class: 'w-1/3'
 
   .form-group
     = f.label attr, t('.image')
     = f.file_field attr,
                    accept: %w[image/jpeg image/png]
+    %small Only JPG/JPEG or PNG files
+    %small Dimensions are 200x130, I think Daniel & Luis made a Google Slides template to size it in
