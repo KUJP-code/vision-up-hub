@@ -2,9 +2,9 @@
 
 %details.dropdown
   %summary.font-semibold.p-2 See teacher profile for:
-  %nav.flex.flex-col.p-2
+  %nav.dropdown-nav
     - org_teachers.each do |org|
       = link_to org[:org].name,
                 organisation_teacher_path(id: org[:teacher].id,
                                           organisation_id: org[:org].id),
-                class: 'p-1 font-semibold border-t-2 border-white'
+                class: 'dropdown-item'

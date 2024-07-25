@@ -173,6 +173,14 @@
 
 	.dropdown {
 		@apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
+
+		.dropdown-nav {
+			@apply flex flex-col p-2;
+		}
+
+		.dropdown-item {
+			@apply py-1 font-semibold border-t-2 border-white;
+		}
 	}
 
 	.nav-tab {

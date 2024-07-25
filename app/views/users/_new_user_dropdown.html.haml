@@ -2,7 +2,7 @@
 
 %details.dropdown{ id: 'create_user' }
   %summary.font-semibold.p-2= t('.create_new')
-  %nav.flex.flex-col.p-2
+  %nav.dropdown-nav
     - current_user.class::VISIBLE_TYPES.each do |type|
       - next if !current_user.ku? && User::KU_TYPES.include?(type)
 
@@ -10,5 +10,5 @@
                          org)
       = link_to split_on_capitals(type),
                 type_path,
-                class: 'p-1 font-semibold border-t-2 border-white',
+                class: 'dropdown-item',
                 id: "create_#{type.singularize.underscore}"

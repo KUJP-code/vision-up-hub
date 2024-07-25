@@ -2,9 +2,9 @@
 
 %details.dropdown{ id: 'create_lesson' }
   %summary.p-2.font-semibold Create a lesson
-  %nav.flex.flex-col.p-2
+  %nav.dropdown-nav
     - Lesson::TYPES.each do |type|
       = link_to split_on_capitals(type),
                 new_lesson_path(type:),
-                class: 'py-1 font-semibold border-t-2 border-white',
+                class: 'dropdown-item',
                 id: "create_#{type.underscore}"
