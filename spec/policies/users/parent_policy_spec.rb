@@ -10,7 +10,7 @@ RSpec.describe ParentPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when writer' do
@@ -29,7 +29,7 @@ RSpec.describe ParentPolicy do
     context 'when admin of parent org' do
       let(:user) { build(:user, :org_admin, organisation: record.organisation) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when admin of different org' do
@@ -49,7 +49,7 @@ RSpec.describe ParentPolicy do
         record.update(organisation_id: user.organisation_id)
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when manager of different school' do

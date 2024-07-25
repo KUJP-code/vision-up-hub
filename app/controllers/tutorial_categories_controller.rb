@@ -2,9 +2,7 @@
 
 class TutorialCategoriesController < ApplicationController
   before_action :set_tutorial_category, only: %i[destroy show edit update]
-  def index
-    @tutorial_categories = TutorialCategory.all
-  end
+  after_action :verify_authorized
 
   def show
     @tutorials = {
@@ -15,13 +13,13 @@ class TutorialCategoriesController < ApplicationController
   end
 
   def new
-    @tutorial_category = TutorialCategory.new
+    @tutorial_category = authorize TutorialCategory.new
   end
 
   def edit; end
 
   def create
-    @tutorial_category = TutorialCategory.new(tutorial_category_params)
+    @tutorial_category = authorize TutorialCategory.new(tutorial_category_params)
 
     if @tutorial_category.save
       redirect_to tutorials_path,
@@ -53,6 +51,6 @@ class TutorialCategoriesController < ApplicationController
   end
 
   def set_tutorial_category
-    @tutorial_category = TutorialCategory.find(params[:id])
+    @tutorial_category = authorize TutorialCategory.find(params[:id])
   end
 end

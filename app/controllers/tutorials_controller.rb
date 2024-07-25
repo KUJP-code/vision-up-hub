@@ -4,6 +4,7 @@ class TutorialsController < ApplicationController
   before_action :set_type, except: %i[index show]
   before_action :set_tutorial, except: %i[index create new show]
   before_action :set_categories, except: %i[index destroy]
+  after_action :verify_authorized, except: %i[index show]
 
   def index
     @categories = TutorialCategory.with_attached_svg.order(:title)
@@ -15,17 +16,17 @@ class TutorialsController < ApplicationController
   end
 
   def show
-    @tutorial = VideoTutorial.find(params[:id])
+    @tutorial = authorize VideoTutorial.find(params[:id])
   end
 
   def new
-    @tutorial = tutorial_class.new
+    @tutorial = authorize tutorial_class.new
   end
 
   def edit; end
 
   def create
-    @tutorial = tutorial_class.new(tutorial_params)
+    @tutorial = authorize tutorial_class.new(tutorial_params)
 
     if @tutorial.save
       redirect_to tutorials_path,
@@ -89,7 +90,7 @@ class TutorialsController < ApplicationController
   end
 
   def set_tutorial
-    @tutorial = tutorial_class.find(params[:id])
+    @tutorial = authorize tutorial_class.find(params[:id])
   end
 
   def tutorial_class

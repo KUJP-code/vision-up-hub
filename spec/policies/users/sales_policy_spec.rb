@@ -10,7 +10,7 @@ RSpec.describe SalesPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when writer' do

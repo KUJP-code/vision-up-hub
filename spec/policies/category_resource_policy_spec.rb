@@ -10,7 +10,7 @@ RSpec.describe CategoryResourcePolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all category_resources' do
       record.save

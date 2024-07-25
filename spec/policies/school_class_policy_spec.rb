@@ -10,7 +10,7 @@ RSpec.describe SchoolClassPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all classes' do
       expect(Pundit.policy_scope!(user, SchoolClass)).to eq(SchoolClass.all)
@@ -41,7 +41,7 @@ RSpec.describe SchoolClassPolicy do
     context 'when admin of class org' do
       let(:user) { build(:user, :org_admin, organisation_id: record.organisation_id) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
 
       it 'scopes to all org classes' do
         org_classes = user.organisation.classes
@@ -69,7 +69,7 @@ RSpec.describe SchoolClassPolicy do
         user.schools << record.school
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
 
       it 'scopes to all managed classes' do
         managed_classes = user.schools.first.classes

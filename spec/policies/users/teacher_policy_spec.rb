@@ -10,7 +10,7 @@ RSpec.describe TeacherPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when writer' do
@@ -22,14 +22,14 @@ RSpec.describe TeacherPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when org admin' do
     context "when admin of teacher's org" do
       let(:user) { build(:user, :org_admin, organisation: record.organisation) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when admin of different org' do
@@ -48,7 +48,7 @@ RSpec.describe TeacherPolicy do
         school.teachers << record
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when manager of different school' do

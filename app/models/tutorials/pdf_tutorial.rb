@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class PdfTutorial < ApplicationRecord
+  def self.policy_class
+    TutorialPolicy
+  end
+
   has_one_attached :file
   belongs_to :tutorial_category
 

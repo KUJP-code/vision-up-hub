@@ -22,7 +22,7 @@ RSpec.describe SchoolPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
     it_behaves_like 'user scoped to all schools'
   end
 
@@ -36,7 +36,7 @@ RSpec.describe SchoolPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
     it_behaves_like 'user scoped to all schools'
   end
 
@@ -44,7 +44,7 @@ RSpec.describe SchoolPolicy do
     context "when admin of school's org" do
       let(:user) { create(:user, :org_admin, organisation: record.organisation) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
 
       it 'scopes to all org schools' do
         org_schools = School.where(organisation_id: user.organisation_id)

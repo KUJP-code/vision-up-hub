@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'writer for LessonPolicy' do
-  it_behaves_like 'fully authorized user'
+  it_behaves_like 'authorized user'
 
   it 'scopes to all lessons' do
     expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.all)

@@ -10,13 +10,13 @@ RSpec.describe SchoolManagerPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when writer' do
@@ -29,7 +29,7 @@ RSpec.describe SchoolManagerPolicy do
     context 'when SM in own org' do
       let(:user) { build(:user, :org_admin, organisation: record.organisation) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when SM in other org' do

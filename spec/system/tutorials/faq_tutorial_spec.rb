@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a FAQ tutorial' do
+RSpec.describe 'Creating a FAQ tutorial', :js do
   let(:admin_user) { create(:user, :admin) }
   let!(:category) { create(:tutorial_category, title: 'Pizza') }
 
@@ -20,7 +20,7 @@ RSpec.describe 'Creating a FAQ tutorial' do
       find('input[type="submit"]').click
     end
 
-    find('summary', text: category.title).click
+    click_button category.title
     expect(page).to have_content('sample question')
   end
 end

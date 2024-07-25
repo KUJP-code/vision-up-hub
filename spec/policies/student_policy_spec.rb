@@ -19,7 +19,7 @@ RSpec.describe StudentPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all students' do
       expect(Pundit.policy_scope!(user, Student)).to eq(Student.all)
@@ -50,7 +50,7 @@ RSpec.describe StudentPolicy do
     context 'when admin of student org' do
       let(:user) { build(:user, :org_admin, organisation_id: record.organisation_id) }
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
 
       it 'scopes to all org students' do
         org_students = user.organisation.schools.map(&:students).flatten
@@ -82,7 +82,7 @@ RSpec.describe StudentPolicy do
         user.schools << record.school
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
 
       it 'scopes to all students of managed schools' do
         expect(Pundit.policy_scope!(user, Student)).to eq(user.students)

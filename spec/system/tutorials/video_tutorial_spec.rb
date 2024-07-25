@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating and deleting a video tutorial' do
+RSpec.describe 'Creating and deleting a video tutorial', :js do
   let(:admin_user) { create(:user, :admin) }
   let!(:category) { create(:tutorial_category, title: 'Pizza') }
 
@@ -21,7 +21,7 @@ RSpec.describe 'Creating and deleting a video tutorial' do
       find('input[type="submit"]').click
     end
 
-    find('summary', text: category.title).click
+    click_button category.title
     expect(page).to have_content('sample video')
   end
 end

@@ -10,7 +10,7 @@ RSpec.describe TestPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all courses' do
       expect(Pundit.policy_scope!(user, Test)).to eq(Test.all)

@@ -10,7 +10,7 @@ RSpec.describe SupportRequestPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin, organisation_id: 1) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all support requests' do
       expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.all)
@@ -25,7 +25,7 @@ RSpec.describe SupportRequestPolicy do
         user.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when other support request' do
@@ -42,7 +42,7 @@ RSpec.describe SupportRequestPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales, organisation_id: 1) }
 
-    it_behaves_like 'fully authorized user'
+    it_behaves_like 'authorized user'
 
     it 'scopes to all support requests' do
       expect(Pundit.policy_scope!(user, SupportRequest)).to eq(SupportRequest.all)
@@ -57,7 +57,7 @@ RSpec.describe SupportRequestPolicy do
         user.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when viewing organisation support requests' do
@@ -70,7 +70,7 @@ RSpec.describe SupportRequestPolicy do
         requester.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when viewing other org support requests' do
@@ -102,7 +102,7 @@ RSpec.describe SupportRequestPolicy do
         user.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when manager of requester school' do
@@ -115,7 +115,7 @@ RSpec.describe SupportRequestPolicy do
         requester.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when requester is from different school' do
@@ -148,7 +148,7 @@ RSpec.describe SupportRequestPolicy do
         user.support_requests << support_request
       end
 
-      it_behaves_like 'fully authorized user'
+      it_behaves_like 'authorized user'
     end
 
     context 'when viewing other user requests' do

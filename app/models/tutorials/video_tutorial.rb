@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class VideoTutorial < ApplicationRecord
+  def self.policy_class
+    TutorialPolicy
+  end
+
   YOUTUBE_HOSTS = %w[youtube.com youtu.be].freeze
   YOUTUBE_EMBED_PATH = 'https://www.youtube.com/embed/'
 

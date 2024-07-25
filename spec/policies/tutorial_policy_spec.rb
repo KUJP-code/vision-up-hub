@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe WriterPolicy do
+RSpec.describe TutorialPolicy do
   subject(:policy) { described_class.new(user, record) }
 
-  let(:record) { create(:user, :writer) }
+  let(:record) { build(:faq_tutorial) }
 
   context 'when admin' do
     let(:user) { build(:user, :admin) }
@@ -14,46 +14,38 @@ RSpec.describe WriterPolicy do
   end
 
   context 'when writer' do
-    context 'when self' do
-      let(:user) { record }
+    let(:user) { build(:user, :writer) }
 
-      it_behaves_like 'authorized user for editing'
-    end
-
-    context 'when interacting with other writer' do
-      let(:user) { build(:user, :writer) }
-
-      it_behaves_like 'unauthorized user'
-    end
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user'
   end
 
   context 'when org admin' do
     let(:user) { build(:user, :org_admin) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when school manager' do
     let(:user) { build(:user, :school_manager) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when parent' do
     let(:user) { build(:user, :parent) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
   end
 end

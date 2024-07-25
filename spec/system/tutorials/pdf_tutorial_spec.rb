@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a PDF tutorial' do
+RSpec.describe 'Creating a PDF tutorial', :js do
   let(:admin_user) { create(:user, :admin) }
   let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
   let!(:category) { create(:tutorial_category, title: 'Pizza') }
@@ -21,7 +21,7 @@ RSpec.describe 'Creating a PDF tutorial' do
       find('input[type="submit"]').click
     end
 
-    find('summary', text: category.title).click
+    click_button category.title
     expect(page).to have_content('sample PDF tutorial')
   end
 end
