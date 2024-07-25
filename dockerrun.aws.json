@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.16.3.1-pdfimage-tweaks"
+    "Name": "thatbballguy/materials:0.17.0-teacher-ui"
   },
   "Ports": [
     {
