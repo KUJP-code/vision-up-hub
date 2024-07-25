@@ -8,6 +8,10 @@ class FilesController < ApplicationController
 
   def show
     @file.update(download_count: @file.download_count + 1)
+    send_data @file.download,
+              type: @file.content_type,
+              filename: @file.filename.to_s,
+              disposition: 'inline'
   end
 
   def destroy
