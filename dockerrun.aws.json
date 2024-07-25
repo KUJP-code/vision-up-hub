@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.17.0.3-debug3"
+    "Name": "thatbballguy/materials:0.17.1-unscope-lessons"
   },
   "Ports": [
     {
