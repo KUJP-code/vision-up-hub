@@ -11,7 +11,7 @@
 
 %main.flex.flex-col.p-3.gap-3
   - if admin
-    %details.dropdown
+    %details.dropdown.bg-secondary.text-white
       %summary.p-2.font-semibold Create a Tutorial
       %nav.dropdown-nav
         - TutorialCategory::TUTORIAL_TYPES.each do |type|

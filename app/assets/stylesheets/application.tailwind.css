@@ -172,7 +172,11 @@
 	}
 
 	.dropdown {
-		@apply cursor-pointer bg-secondary text-white font-semibold rounded overflow-hidden shrink-0;
+		@apply font-semibold rounded overflow-hidden shrink-0;
+
+		summary {
+			@apply bg-secondary text-white cursor-pointer p-2;
+		}
 
 		.dropdown-nav {
 			@apply flex flex-col p-2;

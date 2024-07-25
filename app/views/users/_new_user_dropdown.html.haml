@@ -1,6 +1,6 @@
 -# locals: (org: current_user.organisation_id)
 
-%details.dropdown{ id: 'create_user' }
+%details.dropdown.bg-secondary.text-white{ id: 'create_user' }
   %summary.font-semibold.p-2= t('.create_new')
   %nav.dropdown-nav
     - current_user.class::VISIBLE_TYPES.each do |type|

@@ -1,4 +1,12 @@
 -# locals: (tutorials:)
 
-%section
-  %h1 PDF
+%section.flex.flex-col.md:grid.md:grid-cols-2.gap-6.items-center.overflow-y-scroll
+  %h2.col-span-2.font-bold.text-xl Files
+  - tutorials.each do |tutorial|
+    = link_to file_path(id: tutorial.file.blob.id),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'btn-outline justify-between' do
+      %span{ class: 'basis-5/6 truncate' }= tutorial.title
+      = render 'shared/svgs/download_icon',
+               classes: 'fill-secondary'

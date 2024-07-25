@@ -1,4 +1,9 @@
 -# locals: (tutorials:)
 
-%section
-  %h1 FAQ
+%section.flex.flex-col.gap-3
+  %h2.font-bold.text-xl FAQs
+  - tutorials.each do |tutorial|
+    %details.dropdown.border.border-secondary
+      %summary= tutorial.question
+      .dropdown-item.border-secondary.p-2
+        = tutorial.answer

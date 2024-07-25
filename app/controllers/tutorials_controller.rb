@@ -14,6 +14,12 @@ class TutorialsController < ApplicationController
     }
   end
 
+  def show
+    return unless @tutorial.is_a?(VideoTutorial)
+
+    render partial: 'video_modal', locals: { tutorial: @tutorial }
+  end
+
   def new
     @tutorial = tutorial_class.new
   end
