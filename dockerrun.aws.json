@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.17.0-teacher-ui"
+    "Name": "thatbballguy/materials:0.17.0.1-debug-typelessons"
   },
   "Ports": [
     {
