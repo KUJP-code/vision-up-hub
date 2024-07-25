@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class TutorialsController < ApplicationController
-  before_action :set_type, except: %i[index]
-  before_action :set_tutorial, except: %i[index create new]
+  before_action :set_type, except: %i[index show]
+  before_action :set_tutorial, except: %i[index create new show]
   before_action :set_categories, except: %i[index destroy]
 
   def index
@@ -15,9 +15,7 @@ class TutorialsController < ApplicationController
   end
 
   def show
-    return unless @tutorial.is_a?(VideoTutorial)
-
-    render partial: 'video_modal', locals: { tutorial: @tutorial }
+    @tutorial = VideoTutorial.find(params[:id])
   end
 
   def new

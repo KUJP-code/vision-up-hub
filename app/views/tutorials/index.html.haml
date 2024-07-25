@@ -9,6 +9,13 @@
         = image_tag 'exit.svg', class: 'btn-close'
     = turbo_frame_tag 'tutorials'
 
+%dialog.resources-dialog#video-tutorial
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'video-tutorials'
+
 %main.flex.flex-col.p-3.gap-3
   - if admin
     %details.dropdown.bg-secondary.text-white

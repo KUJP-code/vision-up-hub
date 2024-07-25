@@ -1,6 +1,6 @@
 -# locals: (tutorials:)
 
-%section.flex.flex-col.md:grid.md:grid-cols-2.gap-6.items-center.overflow-y-scroll
+%section.resource-section
   %h2.col-span-2.font-bold.text-xl Files
   - tutorials.each do |tutorial|
     = link_to file_path(id: tutorial.file.blob.id),
