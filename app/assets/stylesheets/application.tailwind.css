@@ -234,7 +234,7 @@
 			}
 
 			& h3.details {
-				@apply col-start-1 col-span-2 md:col-span-4 font-semibold text-lg;
+				@apply col-start-1 col-span-2 md:col-span-4 font-semibold text-lg truncate;
 			}
 
 			& img {
