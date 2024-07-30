@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfList
+  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImagePage, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
@@ -22,6 +22,9 @@ module DailyActivityPdf
         draw_lang_goals(pdf)
         draw_body(pdf)
         draw_footer(pdf:, level: kindy? ? 'Kindergarten' : 'Elementary')
+        add_image_page(pdf:, image: image_page,
+                       text: { pre: subtype.titleize, main: title,
+                               sub: 'Photo guide' })
       end
     end
   end
