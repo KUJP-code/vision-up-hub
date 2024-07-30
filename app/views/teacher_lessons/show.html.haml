@@ -13,7 +13,7 @@
         = lesson_type_heading(@lesson)
       %h1{ class: "level #{text} #{border}" }
         = lesson_level_heading(@lesson)
-      = image_tag type_icon_path(@lesson)
+      = image_tag type_icon_path(@lesson), class: 'h-full place-self-end'
       %h3.details= lesson_details_heading(@lesson)
 
     - if @lesson.guide.attached?

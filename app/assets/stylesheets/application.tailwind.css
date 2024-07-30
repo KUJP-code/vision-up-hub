@@ -219,7 +219,7 @@
 		}
 
 		& header {
-			@apply md:h-20 grid grid-cols-2 grid-rows-3 md:grid-cols-5 md:grid-rows-2 gap-3 md:gap-0 items-start;
+			@apply md:h-20 grid grid-cols-2 grid-rows-3 md:grid-cols-6 md:grid-rows-2 gap-3 md:gap-0 items-start;
 
 			& h1 {
 				@apply font-bold text-2xl;
@@ -230,7 +230,7 @@
 			}
 
 			& h1.level {
-				@apply col-start-1 md:col-start-4 border-b-2 text-end place-self-start;
+				@apply col-start-1 md:col-start-4 md:col-span-2 border-b-2 md:text-end;
 			}
 
 			& h3.details {
@@ -238,7 +238,7 @@
 			}
 
 			& img {
-				@apply col-start-2 md:col-start-5 row-start-1 row-span-2;
+				@apply col-start-2 md:col-start-6 row-start-1 row-span-2;
 			}
 		}
 
