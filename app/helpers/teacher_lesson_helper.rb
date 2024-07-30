@@ -1,16 +1,49 @@
 # frozen_string_literal: true
 
 module TeacherLessonHelper
-  def lvl_border(level)
-    { 'Kindy' => 'border-kindy', 'Land' => 'border-land',
-      'Sky' => 'border-sky', 'Galaxy' => 'border-galaxy',
-      'Keep Up' => 'border-keep-up',
-      'Specialist' => 'border-specialist' }[level]
+  def lesson_type_heading(lesson)
+    case lesson.type
+    when 'KindyPhonic'
+      'Phonics Class'
+    when 'SpecialLesson'
+      lesson.title
+    else
+      lesson.type.titleize
+    end
   end
 
-  def lvl_text(level)
-    { 'Kindy' => 'text-kindy', 'Land' => 'text-land',
-      'Sky' => 'text-sky', 'Galaxy' => 'text-galaxy',
-      'Keep Up' => 'text-keep-up', 'Specialist' => 'text-specialist' }[level]
+  def lesson_level_heading(lesson)
+    return lesson.subtype.titleize if %w[DailyActivity Exercise].include?(lesson.type)
+
+    lesson.short_level.upcase
+  end
+
+  def lesson_details_heading(lesson)
+    case lesson.type
+    when 'DailyActivity', 'Exercise'
+      lesson.title
+    when 'EnglishClass', 'KindyPhonic'
+      lesson.topic
+    else
+      lesson.goal
+    end
+  end
+
+  def lvl_border_class(level)
+    lvl_classes = { 'Kindy' => 'border-kindy', 'Land' => 'border-land',
+                    'Sky' => 'border-sky', 'Galaxy' => 'border-galaxy',
+                    'Keep Up' => 'border-keep-up',
+                    'Specialist' => 'border-specialist' }
+
+    lvl_classes[level] || 'border-secondary'
+  end
+
+  def lvl_text_class(level)
+    lvl_classes = { 'Kindy' => 'text-kindy', 'Land' => 'text-land',
+                    'Sky' => 'text-sky', 'Galaxy' => 'text-galaxy',
+                    'Keep Up' => 'text-keep-up',
+                    'Specialist' => 'text-specialist' }
+
+    lvl_classes[level] || 'text-secondary'
   end
 end

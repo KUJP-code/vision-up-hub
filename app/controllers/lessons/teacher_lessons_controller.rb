@@ -14,7 +14,6 @@ class TeacherLessonsController < ApplicationController
     @type = validated_type(params[:type])
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
     @resources = set_resources
-    render "teacher_lessons/#{@type.titleize.downcase.tr(' ', '_')}"
   end
 
   private
