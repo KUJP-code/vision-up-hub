@@ -38,8 +38,6 @@ RSpec/ExampleLength:
   Enabled: false
 RSpec/MultipleExpectations:
   Enabled: false
-Style/ClassAndModuleChildren:
-  EnforcedStyle: "compact"
 Style/Documentation:
   Enabled: false
 Style/MixinGrouping:

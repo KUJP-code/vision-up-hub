@@ -2,10 +2,10 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfList
+  include PdfBodyItem, PdfList
 
-  BACKGROUND_PATH = Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
-  BODY_INDENT = 47.mm
+  BACKGROUND_PATH =
+    Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
   HEADER_INDENT = 20.mm
 
   included do
@@ -23,11 +23,7 @@ module DailyActivityPdf
         draw_goal(pdf)
         add_image(pdf)
         draw_lang_goals(pdf)
-        draw_materials(pdf)
-        draw_intro(pdf)
-        draw_instructions(pdf)
-        draw_large_groups(pdf)
-        draw_outro(pdf)
+        draw_body(pdf)
         draw_footer_level(pdf)
       end
     end
@@ -76,55 +72,28 @@ module DailyActivityPdf
     end
   end
 
-  def draw_materials(pdf)
-    pdf.bounding_box([BODY_INDENT, 193.mm], width: 140.mm, height: 30.mm) do
-      pdf.text array_to_list(materials, :number),
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
-  end
+  def draw_body(pdf)
+    factory = PdfBodyItemFactory.new(pdf)
 
-  def draw_intro(pdf)
-    pdf.bounding_box([BODY_INDENT, 150.mm], width: 140.mm, height: 20.mm) do
-      pdf.text array_to_list(intro, :dot),
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
-
-    pdf.bounding_box([50.mm, 127.mm], width: 138.mm, height: 10.mm) do
-      pdf.text "Did you know? #{interesting_fact}",
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
-  end
-
-  def draw_instructions(pdf)
-    pdf.bounding_box([BODY_INDENT, 111.mm], width: 140.mm, height: 40.mm) do
-      pdf.text array_to_list(instructions, :number),
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
-  end
-
-  def draw_large_groups(pdf)
-    pdf.bounding_box([BODY_INDENT, 71.mm], width: 140.mm, height: 10.mm) do
-      pdf.text array_to_list(large_groups, :dot),
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
-  end
-
-  def draw_outro(pdf)
-    pdf.bounding_box([BODY_INDENT, 53.mm], width: 140.mm, height: 30.mm) do
-      pdf.text array_to_list(outro, :dot),
-               size: FONT_SIZE,
-               overflow: :shrink_to_fit
-    end
+    factory.draw(text: array_to_list(materials, :number),
+                 y_pos: 193.mm, height: 30.mm)
+    factory.draw(text: array_to_list(intro, :dot),
+                 y_pos: 150.mm, height: 20.mm)
+    factory.draw(text: "Did you know? #{interesting_fact}",
+                 y_pos: 127.mm, height: 10.mm,
+                 indent: 50.mm, width: 138.mm)
+    factory.draw(text: array_to_list(instructions, :number),
+                 y_pos: 111.mm, height: 40.mm)
+    factory.draw(text: array_to_list(large_groups, :dot),
+                 y_pos: 71.mm, height: 10.mm)
+    factory.draw(text: array_to_list(outro, :dot),
+                 y_pos: 53.mm, height: 30.mm)
   end
 
   def draw_footer_level(pdf)
     pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
-      pdf.text kindy? ? 'Kindergarten' : 'Elementary', color: 'FFFFFF', align: :right
+      pdf.text kindy? ? 'Kindergarten' : 'Elementary',
+               color: 'FFFFFF', align: :right
     end
   end
 end
