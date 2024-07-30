@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfList
+  include PdfBodyItem, PdfFooter, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
@@ -24,7 +24,7 @@ module DailyActivityPdf
         add_image(pdf)
         draw_lang_goals(pdf)
         draw_body(pdf)
-        draw_footer_level(pdf)
+        draw_footer(pdf:, level: kindy? ? 'Kindergarten' : 'Elementary')
       end
     end
   end
@@ -88,12 +88,5 @@ module DailyActivityPdf
                  y_pos: 71.mm, height: 10.mm)
     factory.draw(text: array_to_list(outro, :dot),
                  y_pos: 53.mm, height: 30.mm)
-  end
-
-  def draw_footer_level(pdf)
-    pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
-      pdf.text kindy? ? 'Kindergarten' : 'Elementary',
-               color: 'FFFFFF', align: :right
-    end
   end
 end

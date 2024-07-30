@@ -2,7 +2,7 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfLinks, PdfList
+  include PdfBodyItem, PdfFooter, PdfLinks, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/phonics.png').to_s
@@ -21,7 +21,7 @@ module PhonicsClassPdf
         draw_header(pdf)
         add_image(pdf)
         draw_body(pdf)
-        draw_footer_level(pdf)
+        draw_footer(pdf:, level: 'Elementary')
       end
     end
 
@@ -65,12 +65,6 @@ module PhonicsClassPdf
                    y_pos: 70.mm, height: 20.mm)
       factory.draw(text: links_from_hash(links),
                    y_pos: 40.mm, height: 20.mm)
-    end
-
-    def draw_footer_level(pdf)
-      pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
-        pdf.text 'Elementary', color: 'FFFFFF', align: :right
-      end
     end
   end
 end
