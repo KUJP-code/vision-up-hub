@@ -7,33 +7,14 @@ class DailyActivity < Lesson
   has_one_attached :image_page
 
   ATTRIBUTES = %i[
-    subtype
-    pdf_image
-    image_page
-    warning
-    land_lang_goals
-    sky_lang_goals
-    galaxy_lang_goals
-    materials
-    intro
-    interesting_fact
-    instructions
-    large_groups
-    outro
-    notes
-    links
+    subtype pdf_image image_page warning land_lang_goals sky_lang_goals
+    galaxy_lang_goals materials intro interesting_fact instructions
+    large_groups outro notes links
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
-    land_lang_goals
-    sky_lang_goals
-    galaxy_lang_goals
-    materials
-    intro
-    instructions
-    large_groups
-    outro
-    notes
+    land_lang_goals sky_lang_goals galaxy_lang_goals materials intro
+    instructions large_groups outro notes
   ].freeze
 
   validates :intro, :instructions, :subtype, presence: true

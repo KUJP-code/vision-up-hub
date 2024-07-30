@@ -4,7 +4,6 @@ module Pdfable
   extend ActiveSupport::Concern
 
   UPLOADED_GUIDES = %w[EnglishClass
-                       Exercise
                        EveningClass
                        KindyPhonic
                        SpecialLesson
