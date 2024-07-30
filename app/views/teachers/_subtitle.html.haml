@@ -12,8 +12,8 @@
   end
 
 %header#subtitle
-  = link_to lessons_path(date: date.prev_weekday,
-                         level:, teacher_id: teacher.id),
+  = link_to teacher_lessons_path(date: date.prev_weekday,
+                                 level:, teacher_id: teacher.id),
             data: { turbo_stream: true },
             class: 'w-12' do
     = image_tag 'back.svg'
@@ -22,9 +22,8 @@
     - if !in_past && !in_future
       %small.text-xs.font-normal.text-secondary-50
         = I18n.locale == 'ja' ? ja_date(date) : date.strftime('%A, %B %d, %Y')
-  = link_to lessons_path(date: date.next_weekday,
-                         level:, teacher_id: teacher.id),
+  = link_to teacher_lessons_path(date: date.next_weekday,
+                                 level:, teacher_id: teacher.id),
             data: { turbo_stream: true },
             class: 'w-12' do
     = image_tag 'next.svg'
-  .hidden.md:block.absolute.right-3= locale_toggle('fill-secondary')
