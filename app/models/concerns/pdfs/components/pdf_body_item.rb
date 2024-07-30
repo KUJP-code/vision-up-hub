@@ -14,7 +14,7 @@ module PdfBodyItem
       @pdf.bounding_box([indent, y_pos], width:, height:) do
         @pdf.text text,
                   size: FONT_SIZE, overflow: :shrink_to_fit,
-                  inline_format: true
+                  inline_format: true, min_font_size: 0
       end
     end
   end

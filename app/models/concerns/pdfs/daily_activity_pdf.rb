@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfList
+  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
@@ -12,15 +12,12 @@ module DailyActivityPdf
     private
 
     def generate_guide
-      Prawn::Document.new(
-        margin: 0, page_size: 'A4', page_layout: :portrait
-      ) do |pdf|
+      Prawn::Document.new(margin: 0, page_size: 'A4',
+                          page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
         pdf.image BACKGROUND_PATH, at: [0, PAGE_HEIGHT],
                                    height: PAGE_HEIGHT, width: PAGE_WIDTH
-        draw_subtype(pdf)
-        draw_title(pdf)
-        draw_goal(pdf)
+        draw_header(pdf)
         add_image(pdf)
         draw_lang_goals(pdf)
         draw_body(pdf)
@@ -29,32 +26,20 @@ module DailyActivityPdf
     end
   end
 
-  def draw_subtype(pdf)
-    pdf.bounding_box([HEADER_INDENT, 279.mm],
-                     width: 41.mm, height: 3.mm) do
-      pdf.text subtype.titleize, overflow: :shrink_to_fit
-    end
-  end
+  def draw_header(pdf)
+    factory = PdfHeaderItemFactory.new(pdf)
 
-  def draw_title(pdf)
-    pdf.bounding_box([HEADER_INDENT, 272.mm], width: 90.mm, height: 10.mm) do
-      pdf.text title, size: HEADING_SIZE, overflow: :shrink_to_fit
-    end
-  end
-
-  def draw_goal(pdf)
-    pdf.bounding_box([HEADER_INDENT, 261.mm], width: 90.mm, height: 15.mm) do
-      pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
-    end
+    factory.draw(text: subtype.titleize, y_pos: 280.mm,
+                 height: 3.mm, size: FONT_SIZE)
+    factory.draw(text: title, y_pos: 275.mm,
+                 height: 10.mm, size: HEADING_SIZE)
+    factory.draw(text: goal, y_pos: 265.mm,
+                 height: 15.mm, size: FONT_SIZE)
     return if warning.blank?
 
-    draw_warning(pdf)
-  end
-
-  def draw_warning(pdf)
-    pdf.bounding_box([HEADER_INDENT, 246.mm - PADDING],
+    pdf.bounding_box([HEADER_INDENT, 244.mm],
                      width: 88.mm, height: 8.mm) do
-      pdf.text warning, color: RED, overflow: :shrink_to_fit
+      pdf.text warning, color: RED, overflow: :shrink_to_fit, min_font_size: 0
     end
   end
 
