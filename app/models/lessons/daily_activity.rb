@@ -4,10 +4,12 @@ class DailyActivity < Lesson
   include DailyActivityPdf, Linkable, Listable, PdfImageable
 
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
+  has_one_attached :image_page
 
   ATTRIBUTES = %i[
     subtype
     pdf_image
+    image_page
     warning
     land_lang_goals
     sky_lang_goals

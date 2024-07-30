@@ -1,10 +1,24 @@
 -# locals: (f:, lesson:)
 
+- image_page = lesson.image_page
+
 = content_for :priority_fields do
   = render 'lessons/shared/pdf_image_field',
            f:,
            lesson:,
            attr: :pdf_image
+
+  .flex.flex-col.gap-3.items-center
+    - if image_page.attached? && image_page.present? && image_page.persisted?
+      = image_tag image_page,
+                  alt: image_page.filename, class: 'h-[50vh] min-w-1/3'
+
+    .form-group
+      = f.label :image_page, 'Image Page'
+      = f.file_field :image_page,
+                     accept: %w[image/jpeg image/png]
+      %small Only JPG/JPEG or PNG files
+      %small Apparently there's a slides template you can use to create this
 
   .form-group
     = f.label :subtype
