@@ -6,9 +6,13 @@ class MonthlyMaterialsController < ApplicationController
   def index
     authorize :monthly_materials
     basic_data
-    return if params[:q].blank?
-
-    @lessons = lessons_from_query
+    if params[:q].blank?
+      next_week = Date.parse(7.days.from_now.to_s)
+      @from_week = current_user.course_week(current_user.plans.first,
+                                            next_week)
+    else
+      @lessons = lessons_from_query
+    end
   end
 
   private

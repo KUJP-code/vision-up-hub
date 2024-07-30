@@ -1,4 +1,6 @@
--# locals: (courses:, plan_data:)
+-# locals: (courses:, plan_data:, from_week: nil)
+
+- week = from_week || params.dig(:q, :from_week)
 
 = form_with url: monthly_materials_path,
             method: :get,
@@ -22,7 +24,7 @@
     = f.label :from_week, t('.from_week')
     = f.number_field :from_week,
                      min: 1, max: 52,
-                     value: params.dig(:q, :from_week),
+                     value: week,
                      required: true,
                      data: { action: 'course-lessons#calculateDate',
                              'course-lessons-target': 'week' }
