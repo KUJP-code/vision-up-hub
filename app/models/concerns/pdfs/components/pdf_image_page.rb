@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PdfImagePage
-  include PdfDefaults, PdfHeaderItem
+  include PdfDefaults, PdfFooter, PdfHeaderItem
 
   def add_image_page(pdf:, text:, image:)
     return unless image.attached?
@@ -12,6 +12,7 @@ module PdfImagePage
       pdf.image(file.path, position: 10.mm, vposition: 45.mm,
                            width: 190.mm, height: 230.mm)
     end
+    draw_footer(pdf:, level: text[:level], page_num: '2')
   end
 
   private
