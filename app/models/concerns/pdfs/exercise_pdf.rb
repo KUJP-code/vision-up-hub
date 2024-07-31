@@ -14,15 +14,19 @@ module ExercisePdf
       Prawn::Document.new(margin: 0, page_size: 'A4',
                           page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
-        factory = PdfBodyItemFactory.new(pdf)
-        add_page_one(pdf, factory)
+        body_factory = PdfBodyItemFactory.new(pdf)
+        image_factory =
+          PdfImageFactory.new(pdf:, x_pos: IMAGE_INDENT,
+                              width: IMAGE_WIDTH)
+
+        add_page_one(pdf, body_factory, image_factory)
         pdf.start_new_page
-        add_page_two(pdf, factory)
+        add_page_two(pdf, body_factory, image_factory)
       end
     end
   end
 
-  def add_page_one(pdf, factory)
+  def add_page_one(pdf, body_factory, image_factory)
     background_path =
       Rails.root.join('app/assets/pdf_backgrounds/exercise_page_one.png').to_s
     pdf.image background_path,
@@ -31,8 +35,8 @@ module ExercisePdf
     draw_header(pdf)
     draw_lang_goals(pdf:, y_start: 227.mm)
 
-    draw_page_one_body(factory)
-    add_page_one_images(pdf)
+    draw_page_one_body(body_factory)
+    add_page_one_images(image_factory)
   end
 
   def draw_header(pdf)
@@ -58,24 +62,21 @@ module ExercisePdf
                  y_pos: 93.mm, height: 35.mm)
   end
 
-  def add_page_one_images(pdf)
-    factory = PdfImageFactory.new(pdf:, x_pos: IMAGE_INDENT,
-                                  width: IMAGE_WIDTH)
-
+  def add_page_one_images(factory)
     factory.add_image(image: cardio_image, y_pos: 147.mm,
                       height: 40.mm)
     factory.add_image(image: form_practice_image, y_pos: 54.mm,
                       height: 30.mm)
   end
 
-  def add_page_two(pdf, factory)
+  def add_page_two(pdf, body_factory, image_factory)
     background_path =
       Rails.root.join('app/assets/pdf_backgrounds/exercise_page_two.png').to_s
     pdf.image background_path,
               at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
               width: PAGE_WIDTH
-    draw_page_two_body(factory)
-    add_page_two_images(pdf)
+    draw_page_two_body(body_factory)
+    add_page_two_images(image_factory)
   end
 
   def draw_page_two_body(factory)
@@ -85,10 +86,7 @@ module ExercisePdf
                  y_pos: 100.mm, height: 20.mm)
   end
 
-  def add_page_two_images(pdf)
-    factory = PdfImageFactory.new(pdf:, x_pos: IMAGE_INDENT,
-                                  width: IMAGE_WIDTH)
-
+  def add_page_two_images(factory)
     factory.add_image(image: activity_image, y_pos: 200.mm,
                       height: 80.mm)
     factory.add_image(image: cooldown_image, y_pos: 75.mm,
