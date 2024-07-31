@@ -37,6 +37,8 @@ module ExercisePdf
 
     draw_page_one_body(body_factory)
     add_page_one_images(image_factory)
+    draw_footer(pdf:, level: kindy? ? 'Kindergarten' : 'Elementary',
+                page_num: '1')
   end
 
   def draw_header(pdf)
@@ -77,6 +79,8 @@ module ExercisePdf
               width: PAGE_WIDTH
     draw_page_two_body(body_factory)
     add_page_two_images(image_factory)
+    draw_footer(pdf:, level: kindy? ? 'Kindergarten' : 'Elementary',
+                page_num: '2')
   end
 
   def draw_page_two_body(factory)
