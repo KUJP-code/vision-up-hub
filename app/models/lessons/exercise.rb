@@ -9,9 +9,9 @@ class Exercise < Lesson
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
   ATTRIBUTES = %i[
-    goal guide resources subtype land_lang_goals sky_lang_goals
+    goal resources subtype land_lang_goals sky_lang_goals
     galaxy_lang_goals materials goal warning cardio_and_stretching
-    instructions cooldown_and_recap
+    form_practice instructions cooldown_and_recap
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[

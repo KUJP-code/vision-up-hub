@@ -19,12 +19,6 @@ module PdfImagePage
 
   def draw_img_page_header(pdf:, text:)
     factory = PdfHeaderItemFactory.new(pdf)
-
-    factory.draw(text: text[:pre], y_pos: 280.mm,
-                 height: 3.mm, size: FONT_SIZE)
-    factory.draw(text: text[:main], y_pos: 275.mm,
-                 height: 10.mm, size: HEADING_SIZE)
-    factory.draw(text: text[:sub], y_pos: 265.mm,
-                 height: 15.mm, size: FONT_SIZE)
+    factory.draw_default_header(text:)
   end
 end

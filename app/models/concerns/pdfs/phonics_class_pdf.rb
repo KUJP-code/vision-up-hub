@@ -25,13 +25,9 @@ module PhonicsClassPdf
 
     def draw_header(pdf)
       factory = PdfHeaderItemFactory.new(pdf)
-
-      factory.draw(text: "#{short_level.upcase} Phonics", y_pos: 280.mm,
-                   height: 3.mm, size: FONT_SIZE)
-      factory.draw(text: title, y_pos: 275.mm,
-                   height: 10.mm, size: HEADING_SIZE)
-      factory.draw(text: goal, y_pos: 265.mm,
-                   height: 22.mm, size: FONT_SIZE)
+      factory.draw_default_header(text:
+        { pre: "#{short_level.upcase} Phonics",
+          main: title, sub: goal })
     end
 
     def draw_body(pdf)

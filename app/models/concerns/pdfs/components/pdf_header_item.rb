@@ -16,5 +16,14 @@ module PdfHeaderItem
         @pdf.text text, size:, overflow: :shrink_to_fit, min_font_size: 0
       end
     end
+
+    def draw_default_header(text:)
+      draw(text: text[:pre], y_pos: 280.mm,
+           height: 3.mm, size: FONT_SIZE)
+      draw(text: text[:main], y_pos: 275.mm,
+           height: 10.mm, size: HEADING_SIZE)
+      draw(text: text[:sub], y_pos: 265.mm,
+           height: 15.mm, size: FONT_SIZE)
+    end
   end
 end
