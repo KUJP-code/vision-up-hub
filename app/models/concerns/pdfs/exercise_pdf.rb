@@ -2,7 +2,10 @@
 
 module ExercisePdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfLanguageGoals, PdfList
+  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLanguageGoals, PdfList
+
+  IMAGE_INDENT = 25.mm
+  IMAGE_WIDTH = 160.mm
 
   included do
     private
@@ -29,6 +32,7 @@ module ExercisePdf
     draw_lang_goals(pdf:, y_start: 227.mm)
 
     draw_page_one_body(factory)
+    add_page_one_images(pdf)
   end
 
   def draw_header(pdf)
@@ -54,6 +58,16 @@ module ExercisePdf
                  y_pos: 93.mm, height: 35.mm)
   end
 
+  def add_page_one_images(pdf)
+    factory = PdfImageFactory.new(pdf:, x_pos: IMAGE_INDENT,
+                                  width: IMAGE_WIDTH)
+
+    factory.add_image(image: cardio_image, y_pos: 147.mm,
+                      height: 40.mm)
+    factory.add_image(image: form_practice_image, y_pos: 54.mm,
+                      height: 30.mm)
+  end
+
   def add_page_two(pdf, factory)
     background_path =
       Rails.root.join('app/assets/pdf_backgrounds/exercise_page_two.png').to_s
@@ -61,6 +75,7 @@ module ExercisePdf
               at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
               width: PAGE_WIDTH
     draw_page_two_body(factory)
+    add_page_two_images(pdf)
   end
 
   def draw_page_two_body(factory)
@@ -68,5 +83,15 @@ module ExercisePdf
                  y_pos: 270.mm, height: 60.mm)
     factory.draw(text: array_to_list(cooldown_and_recap, :number),
                  y_pos: 100.mm, height: 20.mm)
+  end
+
+  def add_page_two_images(pdf)
+    factory = PdfImageFactory.new(pdf:, x_pos: IMAGE_INDENT,
+                                  width: IMAGE_WIDTH)
+
+    factory.add_image(image: activity_image, y_pos: 200.mm,
+                      height: 80.mm)
+    factory.add_image(image: cooldown_image, y_pos: 75.mm,
+                      height: 40.mm)
   end
 end
