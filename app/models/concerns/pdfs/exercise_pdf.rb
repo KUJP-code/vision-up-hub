@@ -26,6 +26,8 @@ module ExercisePdf
               width: PAGE_WIDTH
     draw_header(pdf)
     draw_lang_goals(pdf:, y_start: 227.mm)
+    draw_body(pdf)
+    add_page_one_images(pdf:)
   end
 
   def add_page_two(pdf)
