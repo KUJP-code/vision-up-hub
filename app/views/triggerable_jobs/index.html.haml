@@ -1,0 +1,8 @@
+%main
+  = form_with url: triggerable_jobs_path, method: :post do |f|
+    .form-group
+      = f.label :type
+      = f.select :type, @types
+
+    = f.submit 'Regenerate all guides for this lesson type',
+               class: 'btn btn-main'

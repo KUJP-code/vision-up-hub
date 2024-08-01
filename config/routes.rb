@@ -70,6 +70,8 @@ Rails.application.routes.draw do
       mount Flipper::UI.app(Flipper) => '/flipper', as: :flipper
       mount MissionControl::Jobs::Engine, at: '/jobs'
       mount PgHero::Engine, at: '/pghero'
+
+      resources :triggerable_jobs, only: %i[index create]
     end
 
     authenticated :user do
