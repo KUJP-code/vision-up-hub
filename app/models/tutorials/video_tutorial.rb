@@ -5,10 +5,11 @@ class VideoTutorial < ApplicationRecord
     TutorialPolicy
   end
 
-  YOUTUBE_HOSTS = %w[youtube.com youtu.be].freeze
+  YOUTUBE_HOSTS = %w[youtube.com www.youtube.com youtu.be www.youtu.be].freeze
   YOUTUBE_EMBED_PATH = 'https://www.youtube.com/embed/'
 
-  VIMEO_HOSTS = %w[vimeo.com].freeze
+  VIMEO_HOSTS = %w[vimeo.com www.vimeo.com player.vimeo.com
+                   www.player.vimeo.com].freeze
   VIMEO_EMBED_PATH = 'https://player.vimeo.com/video/'
 
   VALID_HOSTS = YOUTUBE_HOSTS + VIMEO_HOSTS
@@ -19,12 +20,6 @@ class VideoTutorial < ApplicationRecord
 
   validates :title, :video_path, presence: true
   validate :allowed_host?
-
-  def allowed_host?
-    return true if VALID_HOSTS.any? { |host| video_path.include?(host) }
-
-    disallowed_host_error
-  end
 
   def type
     'Video'
@@ -44,6 +39,14 @@ class VideoTutorial < ApplicationRecord
     end
   end
 
+  def allowed_host?
+    return true if VALID_HOSTS.include?(URI.parse(video_path).host)
+
+    disallowed_host_error
+  rescue URI::InvalidURIError
+    invalid_uri_error
+  end
+
   def convert_youtube_link
     video_id = if video_path.include?('youtu.be')
                  video_path.split('/').last
@@ -51,8 +54,8 @@ class VideoTutorial < ApplicationRecord
                  CGI.parse(URI.parse(video_path).query)['v'].first
                end
     "#{YOUTUBE_EMBED_PATH}#{video_id}"
-  rescue StandardError
-    errors.add(:video_path, "#{video_path} is not a valid URL")
+  rescue URI::InvalidURIError, NoMethodError
+    invalid_uri_error
   end
 
   def disallowed_host_error
@@ -63,5 +66,9 @@ class VideoTutorial < ApplicationRecord
   def embeddable_link?
     video_path.include?(YOUTUBE_EMBED_PATH) ||
       video_path.include?(VIMEO_EMBED_PATH)
+  end
+
+  def invalid_uri_error
+    errors.add(:video_path, "#{video_path} is not a valid URL")
   end
 end
