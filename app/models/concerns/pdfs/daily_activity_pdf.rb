@@ -21,12 +21,11 @@ module DailyActivityPdf
         add_header_image(pdf)
         draw_lang_goals(pdf:, y_start: 220.mm)
         draw_body(pdf)
-        draw_footer(pdf:,
-                    level: kindy? ? 'Kindergarten' : 'Elementary',
-                    page_num: image_page ? '1' : nil)
+        level = kindy? ? 'Kindy' : 'Elementary'
+        draw_footer(pdf:, level:, page_num: image_page ? '1' : nil)
         add_image_page(pdf:, image: image_page,
                        text: { pre: subtype.titleize, main: title,
-                               sub: 'Photo guide' })
+                               sub: 'Photo guide', level: } )
       end
     end
   end

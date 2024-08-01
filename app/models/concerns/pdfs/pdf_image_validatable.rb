@@ -11,7 +11,7 @@ module PdfImageValidatable
 
     def image_filetypes
       self.class::PDF_IMAGES.each do |attr|
-        next if attr.blank?
+        next if send(attr).blank?
         next if VALID_IMAGE_TYPES.include?(send(attr).content_type)
 
         send(attr).purge
