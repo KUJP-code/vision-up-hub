@@ -2,7 +2,7 @@
 
 module ExercisePdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLanguageGoals, PdfList
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLanguageGoals, PdfList
 
   IMAGE_INDENT = 25.mm
   IMAGE_WIDTH = 160.mm
@@ -27,11 +27,7 @@ module ExercisePdf
   end
 
   def add_page_one(pdf, body_factory, image_factory)
-    background_path =
-      Rails.root.join('app/assets/pdf_backgrounds/exercise_page_one.png').to_s
-    pdf.image background_path,
-              at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
-              width: PAGE_WIDTH
+    add_background(pdf, 'exercise_page_one')
     draw_page_one_header(pdf)
     draw_lang_goals(pdf:)
 
@@ -72,11 +68,7 @@ module ExercisePdf
   end
 
   def add_page_two(pdf, body_factory, image_factory)
-    background_path =
-      Rails.root.join('app/assets/pdf_backgrounds/exercise_page_two.png').to_s
-    pdf.image background_path,
-              at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
-              width: PAGE_WIDTH
+    add_background(pdf, 'exercise_page_two')
     draw_page_two_header(pdf)
     draw_page_two_body(body_factory)
     add_page_two_images(image_factory)

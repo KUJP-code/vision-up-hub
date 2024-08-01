@@ -2,10 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList
-
-  BACKGROUND_PATH =
-    Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList
 
   included do
     private
@@ -14,9 +11,7 @@ module DailyActivityPdf
       Prawn::Document.new(margin: 0, page_size: 'A4',
                           page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
-        pdf.image BACKGROUND_PATH,
-                  at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
-                  width: PAGE_WIDTH
+        add_background(pdf, 'daily_activity')
         draw_header(pdf)
         add_header_image(pdf)
         draw_lang_goals(pdf:)

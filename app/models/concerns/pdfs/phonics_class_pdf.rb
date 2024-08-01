@@ -2,10 +2,7 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
-
-  BACKGROUND_PATH =
-    Rails.root.join('app/assets/pdf_backgrounds/phonics.png').to_s
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
 
   included do
     private
@@ -14,8 +11,7 @@ module PhonicsClassPdf
       Prawn::Document.new(margin: 0, page_size: 'A4',
                           page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
-        pdf.image BACKGROUND_PATH, at: [0, PAGE_HEIGHT],
-                                   height: PAGE_HEIGHT, width: PAGE_WIDTH
+        add_background(pdf, 'phonics')
         draw_header(pdf)
         add_header_image(pdf)
         draw_body(pdf)
