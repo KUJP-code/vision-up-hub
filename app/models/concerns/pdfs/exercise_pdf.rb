@@ -32,8 +32,8 @@ module ExercisePdf
     pdf.image background_path,
               at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
               width: PAGE_WIDTH
-    draw_header(pdf)
-    draw_lang_goals(pdf:, y_start: 227.mm)
+    draw_page_one_header(pdf)
+    draw_lang_goals(pdf:)
 
     draw_page_one_body(body_factory)
     add_page_one_images(image_factory)
@@ -41,7 +41,7 @@ module ExercisePdf
                 page_num: '1')
   end
 
-  def draw_header(pdf)
+  def draw_page_one_header(pdf)
     factory = PdfHeaderItemFactory.new(pdf)
     factory.draw_default_header(text:
                                 { pre: subtype.titleize,
@@ -57,17 +57,17 @@ module ExercisePdf
 
   def draw_page_one_body(factory)
     factory.draw(text: array_to_list(materials, :number),
-                 y_pos: 200.mm, height: 16.mm)
+                 y_pos: 192.mm, height: 16.mm)
     factory.draw(text: array_to_list(cardio_and_stretching, :number),
-                 y_pos: 175.mm, height: 20.mm)
+                 y_pos: 164.mm, height: 20.mm)
     factory.draw(text: array_to_list(form_practice, :number),
-                 y_pos: 93.mm, height: 35.mm)
+                 y_pos: 81.mm, height: 30.mm)
   end
 
   def add_page_one_images(factory)
-    factory.add_image(image: cardio_image, y_pos: 147.mm,
+    factory.add_image(image: cardio_image, y_pos: 140.mm,
                       height: 40.mm)
-    factory.add_image(image: form_practice_image, y_pos: 54.mm,
+    factory.add_image(image: form_practice_image, y_pos: 50.mm,
                       height: 30.mm)
   end
 
@@ -77,23 +77,31 @@ module ExercisePdf
     pdf.image background_path,
               at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
               width: PAGE_WIDTH
+    draw_page_two_header(pdf)
     draw_page_two_body(body_factory)
     add_page_two_images(image_factory)
     draw_footer(pdf:, level: kindy? ? 'Kindy' : 'Elementary',
                 page_num: '2')
   end
 
+  def draw_page_two_header(pdf)
+    factory = PdfHeaderItemFactory.new(pdf)
+    factory.draw_default_header(text:
+                                { pre: subtype.titleize,
+                                  main: title, sub: '' })
+  end
+
   def draw_page_two_body(factory)
     factory.draw(text: array_to_list(instructions, :number),
-                 y_pos: 270.mm, height: 60.mm)
+                 y_pos: 240.mm, height: 48.mm)
     factory.draw(text: array_to_list(cooldown_and_recap, :number),
-                 y_pos: 100.mm, height: 20.mm)
+                 y_pos: 90.mm, height: 15.mm)
   end
 
   def add_page_two_images(factory)
-    factory.add_image(image: activity_image, y_pos: 200.mm,
+    factory.add_image(image: activity_image, y_pos: 190.mm,
                       height: 80.mm)
-    factory.add_image(image: cooldown_image, y_pos: 75.mm,
+    factory.add_image(image: cooldown_image, y_pos: 70.mm,
                       height: 40.mm)
   end
 end

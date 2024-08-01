@@ -19,7 +19,7 @@ module DailyActivityPdf
                   width: PAGE_WIDTH
         draw_header(pdf)
         add_header_image(pdf)
-        draw_lang_goals(pdf:, y_start: 220.mm)
+        draw_lang_goals(pdf:)
         draw_body(pdf)
         level = kindy? ? 'Kindy' : 'Elementary'
         draw_footer(pdf:, level:, page_num: image_page ? '1' : nil)
@@ -37,8 +37,8 @@ module DailyActivityPdf
                                   main: title, sub: goal })
     return if warning.blank?
 
-    pdf.bounding_box([HEADER_INDENT, 244.mm],
-                     width: 88.mm, height: 8.mm) do
+    pdf.bounding_box([HEADER_INDENT, 240.mm],
+                     width: 90.mm, height: 10.mm) do
       pdf.text warning, color: RED, overflow: :shrink_to_fit,
                         min_font_size: 0
     end
@@ -53,17 +53,17 @@ module DailyActivityPdf
     factory = PdfBodyItemFactory.new(pdf)
 
     factory.draw(text: array_to_list(materials, :number),
-                 y_pos: 193.mm, height: 30.mm)
+                 y_pos: 191.mm, height: 30.mm)
     factory.draw(text: array_to_list(intro, :dot),
-                 y_pos: 150.mm, height: 20.mm)
+                 y_pos: 149.mm, height: 20.mm)
     factory.draw(text: "Did you know? #{interesting_fact}",
-                 y_pos: 127.mm, height: 10.mm,
+                 y_pos: 127.mm, height: 9.mm,
                  indent: 50.mm, width: 138.mm)
     factory.draw(text: array_to_list(instructions, :number),
-                 y_pos: 111.mm, height: 40.mm)
+                 y_pos: 110.mm, height: 40.mm)
     factory.draw(text: array_to_list(large_groups, :dot),
-                 y_pos: 71.mm, height: 10.mm)
+                 y_pos: 70.mm, height: 10.mm)
     factory.draw(text: array_to_list(outro, :dot),
-                 y_pos: 53.mm, height: 30.mm)
+                 y_pos: 52.mm, height: 30.mm)
   end
 end
