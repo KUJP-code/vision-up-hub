@@ -85,16 +85,17 @@ class StudentsController < ApplicationController
   end
 
   def radar_data
-    radar_colors = ['105, 192, 221', '100, 88, 128', '170, 218, 235', '178, 170, 191'].cycle
+    radar_colors = ['105, 192, 221', '100, 88, 128', '170, 218, 235',
+                    '178, 170, 191'].cycle
 
     {
-      labels: %w[Reading Writing Listening Speaking],
+      labels: %w[Reading Writing Listening],
       datasets: @results.map do |result|
-        radar_data = result.radar_data
+        data = result.radar_data
         color = radar_colors.next
         {
-          data: radar_data[:data],
-          label: radar_data[:label],
+          data: data[:data],
+          label: data[:label],
           backgroundColor: "rgba(#{color}, 0.2)",
           pointBackgroundColor: "rgb(#{color})",
           pointBorderColor: '#fff',

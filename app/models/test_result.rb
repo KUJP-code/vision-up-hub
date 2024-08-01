@@ -35,7 +35,6 @@ class TestResult < ApplicationRecord
     { label: test.name,
       data: [read_percent || 0,
              write_percent || 0,
-             speak_percent || 0,
              listen_percent || 0] }
   end
 
