@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class PhonicsClass < Lesson
-  include PdfImageable, PhonicsClassPdf, Linkable, Listable
+  include Linkable, Listable, PdfImageValidatable, PhonicsClassPdf
+
+  has_one_attached :pdf_image
+  PDF_IMAGES = %i[pdf_image].freeze
 
   ATTRIBUTES = %i[
     add_difficulty

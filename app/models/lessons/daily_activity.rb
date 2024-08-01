@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class DailyActivity < Lesson
-  include DailyActivityPdf, Linkable, Listable, PdfImageable
+  include DailyActivityPdf, Linkable, Listable, PdfImageValidatable
 
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
+
+  has_one_attached :pdf_image
   has_one_attached :image_page
+  PDF_IMAGES = %i[pdf_image image_page].freeze
 
   ATTRIBUTES = %i[
     subtype pdf_image image_page warning land_lang_goals sky_lang_goals

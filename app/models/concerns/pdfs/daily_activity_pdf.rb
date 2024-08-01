@@ -2,7 +2,7 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImagePage, PdfLanguageGoals, PdfList
+  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/daily_activity.png').to_s
@@ -18,7 +18,7 @@ module DailyActivityPdf
                   at: [0, PAGE_HEIGHT], height: PAGE_HEIGHT,
                   width: PAGE_WIDTH
         draw_header(pdf)
-        add_image(pdf)
+        add_header_image(pdf)
         draw_lang_goals(pdf:, y_start: 220.mm)
         draw_body(pdf)
         draw_footer(pdf:,
@@ -43,6 +43,11 @@ module DailyActivityPdf
       pdf.text warning, color: RED, overflow: :shrink_to_fit,
                         min_font_size: 0
     end
+  end
+
+  def add_header_image(pdf)
+    factory = PdfImageFactory.new(pdf:, x_pos: 120.mm, width: 70.mm)
+    factory.add_image(image: pdf_image, y_pos: 282.mm, height: 46.mm)
   end
 
   def draw_body(pdf)

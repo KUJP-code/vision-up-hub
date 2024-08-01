@@ -2,7 +2,7 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfLinks, PdfList
+  include PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
 
   BACKGROUND_PATH =
     Rails.root.join('app/assets/pdf_backgrounds/phonics.png').to_s
@@ -17,7 +17,7 @@ module PhonicsClassPdf
         pdf.image BACKGROUND_PATH, at: [0, PAGE_HEIGHT],
                                    height: PAGE_HEIGHT, width: PAGE_WIDTH
         draw_header(pdf)
-        add_image(pdf)
+        add_header_image(pdf)
         draw_body(pdf)
         draw_footer(pdf:, level: 'Elementary')
       end
@@ -28,6 +28,11 @@ module PhonicsClassPdf
       factory.draw_default_header(text:
         { pre: "#{short_level.upcase} Phonics",
           main: title, sub: goal })
+    end
+
+    def add_header_image(pdf)
+      factory = PdfImageFactory.new(pdf:, x_pos: 120.mm, width: 70.mm)
+      factory.add_image(image: pdf_image, y_pos: 282.mm, height: 46.mm)
     end
 
     def draw_body(pdf)
