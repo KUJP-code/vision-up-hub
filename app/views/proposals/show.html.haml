@@ -1,14 +1,28 @@
-- section_classes = 'basis-1/2 p-3'
+- section_classes = 'basis-1/2 p-3 flex flex-col gap-3'
+
+= render 'shared/subtitle', text: "Review Proposal for #{@lesson.title}"
 
 %main.flex.flex-wrap
   %section{ class: section_classes }
     %h2 Current Lesson - #{@lesson.title}
     = render 'lessons/shared/guide_preview', lesson: @lesson
     = render 'lessons/shared/attribute_list', lesson: @lesson
+
+    = render 'lessons/shared/resource_list', resources: @lesson.resources
+    - if @lesson.type == 'PhonicsClass'
+      = render 'lessons/phonics_classes/phonics_resources',
+               resources: @lesson.phonics_resources
+
   %section{ class: section_classes }
     %h2 Proposal - #{@proposal.title}
     = render 'lessons/shared/guide_preview', lesson: @proposal
     = render 'lessons/shared/attribute_list', lesson: @proposal
+
+    = render 'lessons/shared/resource_list', resources: @proposal.resources
+    - if @lesson.type == 'PhonicsClass'
+      = render 'lessons/phonics_classes/phonics_resources',
+               resources: @proposal.phonics_resources
+
   = render 'proposals/status_form',
            lesson: @lesson,
            proposal: @proposal
