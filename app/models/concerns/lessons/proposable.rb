@@ -37,7 +37,7 @@ module Proposable
       Rails.logger.error(e.message)
       false
     else
-      proposal.destroy
+      proposal.update(status: :accepted)
       true
     end
   end

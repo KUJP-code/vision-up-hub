@@ -1,0 +1,11 @@
+-# locals: (lesson:, type:)
+
+%section{ class: 'basis-1/2 p-3 flex flex-col gap-3' }
+  %h2.text-xl.font-bold #{type} Lesson - #{lesson.title}
+  = render('lessons/shared/guide_preview', lesson:)
+  = render('lessons/shared/attribute_list', lesson:)
+
+  = render 'lessons/shared/resource_list', resources: lesson.resources
+  - if lesson.type == 'PhonicsClass'
+    = render 'lessons/phonics_classes/phonics_resources',
+             resources: lesson.phonics_resources
