@@ -1,5 +1,9 @@
-%main
-  = form_with url: triggerable_jobs_path, method: :post do |f|
+= render 'shared/subtitle', text: 'Manually trigger background jobs'
+
+%main.p-3.flex.flex-col.items-center.justify-center
+  = form_with url: triggerable_jobs_path,
+              class: 'flex flex-col gap-3 items-center',
+              method: :post do |f|
     .form-group
       = f.label :type
       = f.select :type, @types

@@ -10,9 +10,10 @@ class TriggerableJobsController < ApplicationController
     return unless Lesson::TYPES.include?(type)
 
     type.constantize.find_each do |lesson|
-      p "queuing lesson #{lesson.id}"
       RegenerateGuidesJob.perform_later(lesson)
-      p SolidQueue::Job.count
     end
+
+    redirect_to triggerable_jobs_path,
+                notice: "Queued updates for all #{type.titleize} lessons"
   end
 end

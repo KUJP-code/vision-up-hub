@@ -7,6 +7,10 @@ class TestJob < ApplicationJob; end
 RSpec.describe ClearFinishedTransactionsJob do
   include ActiveJob::TestHelper
 
+  after do
+    clear_enqueued_jobs
+  end
+
   let(:invoice) { create(:invoice) }
 
   it 'clears finished jobs older than 7 days when run' do

@@ -18,7 +18,8 @@ RSpec.describe 'TriggerableJobs' do
       create_list(:daily_activity, 3)
       create_list(:stand_show_speak, 2)
       post triggerable_jobs_path, params: { type: 'DailyActivity' }
-      expect(SolidQueue::Job.count).to eq(3)
+      expect(ActiveJob::Base.queue_adapter.enqueued_jobs
+        .count { |j| j['job_class'] == 'RegenerateGuidesJob' }).to eq(3)
     end
   end
 end
