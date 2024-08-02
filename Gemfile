@@ -76,8 +76,8 @@ gem 'rdoc', '6.6.3.1'
 # Lock nokogiri for CVE-2024-34459
 gem 'nokogiri', '1.16.5'
 
-# Bump rexml for CVE-2024-39908
-gem 'rexml', '~> 3.3.2'
+# Bump rexml for CVE-2024-41123
+gem 'rexml', '~> 3.3.3'
 
 # logidze for versioning
 gem 'logidze', '~> 1.1'
