@@ -8,6 +8,8 @@ class Exercise < Lesson
   alias_attribute :cooldown_and_recap, :outro
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
+  has_one_attached :guide # TODO: remove this once guide is finalized
+
   has_one_attached :cardio_image
   has_one_attached :form_practice_image
   has_one_attached :activity_image
@@ -17,7 +19,7 @@ class Exercise < Lesson
     goal resources subtype land_lang_goals sky_lang_goals
     galaxy_lang_goals materials goal warning cardio_and_stretching
     form_practice instructions cooldown_and_recap cardio_image
-    form_practice_image activity_image cooldown_image
+    form_practice_image activity_image cooldown_image guide
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[

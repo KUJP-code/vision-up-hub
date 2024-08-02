@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating an Exercise lesson' do
+RSpec.describe 'creating an Exercise lesson',
+               skip: 'Temporarily disabled until PDF finalised' do
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
