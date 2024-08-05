@@ -4,7 +4,7 @@ module Courseable
   extend ActiveSupport::Concern
 
   included do
-    def course_tests
+    def available_tests
       date = Time.zone.today
       course_weeks = plans.active.map { |p| [p.course_id, course_week(p, date)] }
       query_string = course_weeks.map do |course_id, week|

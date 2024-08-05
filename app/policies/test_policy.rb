@@ -35,7 +35,7 @@ class TestPolicy < ApplicationPolicy
       when 'Admin'
         scope.all
       when 'OrgAdmin', 'SchoolManager', 'Teacher'
-        user.course_tests
+        user.available_tests
       else
         scope.none
       end
