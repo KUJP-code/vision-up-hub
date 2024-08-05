@@ -174,6 +174,10 @@ level_check = fb.create(
 
 fb.create_list(:test, 2, basics: 2)
 
+Test.all.each do |test|
+  full_course.course_tests.create!(test_id: test.id, week: 1)
+end
+
 Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)
 end
