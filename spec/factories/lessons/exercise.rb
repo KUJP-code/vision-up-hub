@@ -5,6 +5,7 @@ FactoryBot.define do
     title { 'Test Exercise' }
     subtype { 'jumping' }
     type { 'Exercise' }
+    level { 'all_levels' }
     land_lang_goals { "Goal 1\nGoal 2" }
     sky_lang_goals { "Goal 1\nGoal 2" }
     galaxy_lang_goals { "Goal 1\nGoal 2" }
