@@ -21,11 +21,19 @@ module Courseable
     def day_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      lessons.where(query_string(date))
+      lessons.where(lesson_query(date, :day))
+    end
+
+    def week_lessons(date)
+      return Lesson.none if plans.active.empty?
+
+      lessons.where(lesson_query(date, :week))
     end
   end
 
-  def query_string(date)
+  private
+
+  def lesson_query(date, period)
     day = date.strftime('%w').to_i + 1
     course_weeks =
       plans.active
@@ -33,10 +41,10 @@ module Courseable
 
     course_weeks.map do |w|
       course_cond = "course_lessons.course_id = #{w[:course_id]}"
-      day_cond = "course_lessons.day = #{w[:day]}"
-      week_cond = "course_lessons.week = #{w[:week]}"
+      week_cond = " AND course_lessons.week = #{w[:week]}"
+      day_cond = period == :day ? " AND course_lessons.day = #{w[:day]}" : ''
 
-      "#{course_cond} AND #{day_cond} AND #{week_cond}"
+      "#{course_cond}#{week_cond}#{day_cond}"
     end.join(' OR ')
   end
 end
