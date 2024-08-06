@@ -27,7 +27,7 @@ module Courseable
     def week_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      lessons.where(lesson_query(date, :week))
+      course_lessons.where(lesson_query(date, :week))
     end
   end
 
