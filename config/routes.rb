@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :files, only: %i[destroy index show]
       resources :kindy_phonics, only: %i[create index update]
       resources :lessons
+      resources :lesson_calendars, only: %i[index]
       resources :lesson_searches, only: %i[index]
       resources :lesson_uses, only: %i[index]
       resources :lesson_versions, only: %i[show update]

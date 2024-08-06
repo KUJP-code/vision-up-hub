@@ -81,15 +81,15 @@ released_attrs = { released: true, status: :accepted,
 
 %i[kindy elementary].each do |level|
   fb.create(:daily_activity, level:, **released_attrs)
-  fb.create(:exercise, level:, **released_attrs)
 end
 
+fb.create(:exercise, level: :all_levels, **released_attrs)
 fb.create(:kindy_phonic, **released_attrs)
 
 %i[kindy land_one sky_one galaxy_one].each do |level|
   fb.create(:english_class, level:, **released_attrs)
   fb.create(:phonics_class, level:, **released_attrs)
-  fb.create(:stand_show_speak, level:, **released_attrs)
+  fb.create(:stand_show_speak, level:, **released_attrs) unless level == :kindy
 end
 
 PhonicsClass.find_by(level: :kindy).destroy
@@ -121,13 +121,16 @@ end
 
 puts 'Creating courses...'
 
+full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course'))
+full_course.category_resources << CategoryResource.all
+
+lesson_days = (Date::DAYNAMES - %w[Sunday Saturday]).map(&:downcase)
 course_lessons = Lesson.all.map do |lesson|
   lesson.update(creator_id: 1, assigned_editor_id: writer.id)
-  fb.build(:course_lesson, lesson:, week: 1, day: Time.zone.today.strftime('%A').downcase)
+  lesson_days.map do |day|
+    fb.create(:course_lesson, lesson:, course: full_course, week: 1, day:)
+  end
 end
-
-full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
-full_course.category_resources << CategoryResource.all
 
 Organisation.all.each do |org|
   org.plans.create!(fb.attributes_for(

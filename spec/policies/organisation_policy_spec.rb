@@ -10,14 +10,6 @@ RSpec.shared_examples 'KU staff for OrganisationPolicy' do
   end
 end
 
-RSpec.shared_examples 'unauthorized user for OrganisationPolicy' do
-  it_behaves_like 'unauthorized user'
-
-  it 'scopes to nothing' do
-    expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
-  end
-end
-
 RSpec.describe OrganisationPolicy do
   subject(:policy) { described_class.new(user, org) }
 
@@ -32,7 +24,7 @@ RSpec.describe OrganisationPolicy do
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    it_behaves_like 'unauthorized user for OrganisationPolicy'
+    it_behaves_like 'authorized user for viewing'
   end
 
   context 'when org admin' do
@@ -58,7 +50,11 @@ RSpec.describe OrganisationPolicy do
     context 'when admin of other org' do
       let(:user) { build(:user, :org_admin) }
 
-      it_behaves_like 'unauthorized user for OrganisationPolicy'
+      it_behaves_like 'unauthorized user'
+
+      it 'scopes to nothing' do
+        expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+      end
     end
   end
 
@@ -71,18 +67,30 @@ RSpec.describe OrganisationPolicy do
   context 'when school manager' do
     let(:user) { build(:user, :school_manager) }
 
-    it_behaves_like 'unauthorized user for OrganisationPolicy'
+    it_behaves_like 'authorized user for viewing'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    end
   end
 
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
 
-    it_behaves_like 'unauthorized user for OrganisationPolicy'
+    it_behaves_like 'authorized user for viewing'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    end
   end
 
   context 'when parent' do
     let(:user) { build(:user, :parent) }
 
-    it_behaves_like 'unauthorized user for OrganisationPolicy'
+    it_behaves_like 'authorized user for viewing'
+
+    it 'scopes to nothing' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    end
   end
 end

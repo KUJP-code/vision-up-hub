@@ -1,0 +1,14 @@
+= render 'shared/subtitle', text: t('.calendar_for', date: ja_date(@date))
+
+%main
+  .grid.grid-cols-8.text-center
+    %div
+    - Date::DAYNAMES.each do |day|
+      %div= day
+    - lesson_type_rows.each do |type, rows|
+      %h2{ class: "col-start-1 vertical-text #{rows}" }
+        = type.titleize
+    - @course_lessons.each do |cl|
+      %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)}" }
+        = cl.lesson.title
+        = cl.lesson.short_level

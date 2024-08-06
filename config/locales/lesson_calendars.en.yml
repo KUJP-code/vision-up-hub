@@ -1,0 +1,4 @@
+en:
+  lesson_calendars:
+    index:
+      calendar_for: "Week starting %{date}"

@@ -1,0 +1,4 @@
+ja:
+  lesson_calendars:
+    index:
+      calendar_for: "週の開始日: %{date}"

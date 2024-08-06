@@ -11,6 +11,7 @@ class Organisation < ApplicationRecord
   has_many :classes, through: :schools
   has_many :plans, dependent: :destroy
   has_many :courses, through: :plans
+  has_many :course_lessons, through: :courses
   has_many :lessons, through: :courses
   has_many :users, dependent: :destroy
   has_many :support_requests, through: :users

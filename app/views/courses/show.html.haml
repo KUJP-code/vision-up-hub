@@ -1,15 +1,18 @@
-.flex.flex-col.justify-center.items-center.gap-3.p-3.text-center
-  %h1.flex.justify-center.items-center.gap-3
-    = @course.title
-    = render 'shared/visibility_toggles', resource: @course
-  %h3= @course.description
-  .flex.gap-3
-    = link_to 'Edit',
-              edit_course_path(@course),
-              class: 'btn btn-secondary'
+= render 'shared/subtitle', text: @course.title
 
-  %h2 Lessons
-  = render 'lessons/new_lesson_dropdown'
-  %main.w-full.flex.flex-wrap.justify-around.gap-3
-    - @lessons.group_by(&:type).sort.each do |type, lessons|
-      = render 'lessons/dates_table', course: @course, lessons:, type:
+%main
+  .flex.flex-col.justify-center.items-center.gap-3.p-3.text-center
+    %h1.flex.justify-center.items-center.gap-3
+      = @course.title
+      = render 'shared/visibility_toggles', resource: @course
+    %h3= @course.description
+    .flex.gap-3
+      = link_to 'Edit',
+                edit_course_path(@course),
+                class: 'btn btn-secondary'
+
+    %h2 Lessons
+    = render 'lessons/new_lesson_dropdown'
+    %main.w-full.flex.flex-wrap.justify-around.gap-3
+      - @lessons.group_by(&:type).sort.each do |type, lessons|
+        = render 'lessons/dates_table', course: @course, lessons:, type:
