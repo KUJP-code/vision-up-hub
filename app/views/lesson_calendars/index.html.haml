@@ -1,14 +1,25 @@
 = render 'shared/subtitle', text: t('.calendar_for', date: ja_date(@date))
 
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'lesson'
+
 %main
   .grid.grid-cols-8.text-center
-    %div
+    #top-left
+
     - Date::DAYNAMES.each do |day|
-      %div= day
+      %h2= day
+
     - lesson_type_rows.each do |type, rows|
       %h2{ class: "col-start-1 vertical-text #{rows}" }
         = type.titleize
+
     - @course_lessons.each do |cl|
       %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)}" }
-        = cl.lesson.title
-        = cl.lesson.short_level
+        = render 'lesson_calendars/lesson_button',
+                 date: @date, level: cl.lesson.calendar_level,
+                 teacher_id: current_user.id, type: cl.lesson.type
