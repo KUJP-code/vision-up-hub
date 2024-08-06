@@ -1,0 +1,15 @@
+-# locals: (date:)
+
+:ruby
+  iteration_day = date.beginning_of_week
+  today = Time.zone.today.strftime('%A')
+
+- Date::DAYNAMES.each do |day|
+  - current_class = today == day ? 'bg-secondary text-white rounded my-2' : ''
+
+  %header{ class: 'flex flex-col items-center justify-center p-2 odd:bg-neutral-dark ' \
+                  "rounded-t #{current_class}" }
+    %h2.font-bold= day
+    %p.text-sm
+      = iteration_day.strftime("%B #{iteration_day.day.ordinalize}")
+    - iteration_day += 1

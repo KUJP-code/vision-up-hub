@@ -7,12 +7,13 @@
         = image_tag 'exit.svg', class: 'btn-close'
     = turbo_frame_tag 'lesson'
 
-%main
-  .grid.grid-cols-8.text-center
+%main.p-3
+  .grid.grid-cols-8.text-center.gap-2
     #top-left
 
-    - Date::DAYNAMES.each do |day|
-      %h2= day
+    = render 'lesson_calendars/day_header', date: @date
+
+    %hr.col-start-2.col-span-7.row-start-2.border.border-secondary-50.rounded.-my-2
 
     - lesson_type_rows.each do |type, rows|
       %h2{ class: "col-start-1 vertical-text #{rows}" }

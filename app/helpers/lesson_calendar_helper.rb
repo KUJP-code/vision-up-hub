@@ -21,14 +21,14 @@ module LessonCalendarHelper
              lesson.type
            end
 
-    { 'DailyActivity' => { 'Kindy' => 'row-start-2', 'Elementary' => 'row-start-4' },
-      'Exercise' => { 'All Levels' => 'row-start-3' },
-      'PhonicsClass' => { 'Kindy' => 'row-start-5', 'Land' => 'row-start-6', 'Sky' => 'row-start-7',
-                          'Galaxy' => 'row-start-8' },
-      'EnglishClass' => { 'Kindy' => 'row-start-9', 'Land' => 'row-start-10', 'Sky' => 'row-start-11',
-                          'Galaxy' => 'row-start-12' },
-      'StandShowSpeak' => { 'Land' => 'row-start-[13]', 'Sky' => 'row-start-[14]', 'Galaxy' => 'row-start-[15]' },
-      'EveningClass' => { 'Keep Up' => 'row-start-[16]',
-                          'Specialist' => 'row-start-[17]' } }[type][lesson.short_level]
+    { 'DailyActivity' => { 'Kindy' => 'row-start-3', 'Elementary' => 'row-start-5' },
+      'Exercise' => { 'All Levels' => 'row-start-4' },
+      'PhonicsClass' => { 'Kindy' => 'row-start-6', 'Land' => 'row-start-7', 'Sky' => 'row-start-8',
+                          'Galaxy' => 'row-start-9' },
+      'EnglishClass' => { 'Kindy' => 'row-start-10', 'Land' => 'row-start-11', 'Sky' => 'row-start-12',
+                          'Galaxy' => 'row-start-13' },
+      'StandShowSpeak' => { 'Land' => 'row-start-[12]', 'Sky' => 'row-start-[13]', 'Galaxy' => 'row-start-[14]' },
+      'EveningClass' => { 'Keep Up' => 'row-start-[15]',
+                          'Specialist' => 'row-start-[16]' } }[type][lesson.short_level]
   end
 end
