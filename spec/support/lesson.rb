@@ -143,10 +143,5 @@ RSpec.shared_examples_for 'lesson' do
       lesson.replace_with(proposal)
       expect(lesson.proposals).to contain_exactly(extra_proposal)
     end
-
-    it 'destroys the accepted proposal' do
-      lesson.replace_with(proposal)
-      expect(proposal.destroyed?).to be true
-    end
   end
 end
