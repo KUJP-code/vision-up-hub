@@ -12,13 +12,13 @@
     = f.label :week
     = f.number_field :week,
                      min: 1, max: 52,
-                     data: { action: 'course-lessons#calculateDate',
-                             'course-lessons-target': 'week' }
+                     data: { action: 'course-dates#calculateDate',
+                             'course-dates-target': 'week' }
 
   %div{ class: 'form-group basis-1/4' }
     = f.label :day
     = f.select :day,
                opts_from(CourseLesson, :days),
                {},
-               data: { action: 'course-lessons#calculateDate',
-                       'course-lessons-target': 'day' }
+               data: { action: 'course-dates#calculateDate',
+                       'course-dates-target': 'day' }

@@ -6,19 +6,19 @@
             method: :get,
             scope: :q,
             html: { class: 'w-full flex flex-wrap justify-center gap-3',
-                    data: { controller: 'course-lessons',
-                            'course-lessons-plans-value': plan_data } } do |f|
+                    data: { controller: 'course-dates',
+                            'course-dates-plans-value': plan_data } } do |f|
   - if courses.size > 1
     .flex-row.items-center
       = f.label :course, t('.course')
       = f.select :course,
                  options_for_select(courses, params.dig(:q, :course)), {},
-                 data: { 'course-lessons-target': 'course',
-                         action: 'course-lessons#calculateDate' }
+                 data: { 'course-dates-target': 'course',
+                         action: 'course-dates#calculateDate' }
   - else
     = f.hidden_field :course,
                      value: courses.first[1],
-                     data: { 'course-lessons-target': 'course' }
+                     data: { 'course-dates-target': 'course' }
 
   .flex-row.items-center
     = f.label :from_week, t('.from_week')
@@ -26,8 +26,8 @@
                      min: 1, max: 52,
                      value: week,
                      required: true,
-                     data: { action: 'course-lessons#calculateDate',
-                             'course-lessons-target': 'week' }
+                     data: { action: 'course-dates#calculateDate',
+                             'course-dates-target': 'week' }
 
   .flex-row.items-center
     = f.label :weeks_forward, t('.weeks_forward')
@@ -40,4 +40,4 @@
 
   %h2.w-full.text-center.font-bold.text-2xl
     = t('.from_date')
-  %ul.w-full.text-center{ 'data-course-lessons-target': 'date' }
+  %ul.w-full.text-center{ 'data-course-dates-target': 'date' }

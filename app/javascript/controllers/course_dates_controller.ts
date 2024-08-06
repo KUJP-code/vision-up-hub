@@ -8,7 +8,7 @@ interface planData {
 	};
 }
 
-// Connects to data-controller="course-lessons"
+// Connects to data-controller="course-dates"
 export default class extends Controller {
 	static values = {
 		plans: Object,
