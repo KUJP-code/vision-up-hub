@@ -8,6 +8,14 @@
     = turbo_frame_tag 'lesson'
 
 %main.p-3
+  - if current_user.is?('Admin', 'Writer')
+    %nav.tab-nav
+      - @orgs.each do |org|
+        - active = @organisation == org ? 'active' : 'inactive'
+        = link_to org.name,
+                  lesson_calendars_path(date: @date, org:),
+                  class: "nav-tab #{active}"
+
   %header.flex.p-3
     .grow
     = render 'lesson_calendars/dots_explainer'
