@@ -7,7 +7,7 @@
         = image_tag 'exit.svg', class: 'btn-close'
     = turbo_frame_tag 'lesson'
 
-%main.p-3
+%main.flex.flex-col.gap-3.p-3
   - if current_user.is?('Admin', 'Writer')
     %nav.tab-nav
       - @orgs.each do |org|
@@ -16,9 +16,18 @@
                   lesson_calendars_path(date: @date, org:),
                   class: "nav-tab #{active}"
 
-  %header.flex.p-3
-    .grow
+  %header.flex.flex-col.gap-3.p-3
     = render 'lesson_calendars/dots_explainer'
+
+    .flex.justify-between
+      = link_to lesson_calendars_path(date: @date - 1.week, org: @organisation),
+                class: 'btn btn-secondary flex items-center' do
+        = render 'shared/svgs/back', classes: 'w-12 fill-white'
+        %p= t('.previous_week')
+      = link_to lesson_calendars_path(date: @date + 1.week, org: @organisation),
+                class: 'btn btn-secondary flex items-center' do
+        %p= t('.next_week')
+        = render 'shared/svgs/next', classes: 'w-12 fill-white'
 
   .grid.grid-cols-8.text-center
     #top-left
