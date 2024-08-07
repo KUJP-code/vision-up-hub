@@ -8,16 +8,21 @@
     = turbo_frame_tag 'lesson'
 
 %main.p-3
-  .grid.grid-cols-8.text-center.gap-2
+  .grid.grid-cols-8.text-center.gap-3
     #top-left
-
-    = render 'lesson_calendars/day_header', date: @date
-
-    %hr.col-start-2.col-span-7.row-start-2.border.border-secondary-50.rounded.-my-2
+    = render 'lesson_calendars/day_header',
+             course_lessons: @course_lessons, date: @date
+    %hr.row-start-2.calendar-separator.-my-3
 
     - lesson_type_rows.each do |type, rows|
-      %h2{ class: "col-start-1 vertical-text #{rows}" }
+      %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 border-secondary ' \
+                  "flex items-end justify-center p-3 my-3 #{rows}" }
         = type.titleize
+
+    %hr.row-start-6.calendar-separator
+    %hr.row-start-11.calendar-separator
+    %hr{ class: 'row-start-[16] calendar-separator' }
+    %hr{ class: 'row-start-[20] calendar-separator' }
 
     - @course_lessons.each do |cl|
       %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)}" }

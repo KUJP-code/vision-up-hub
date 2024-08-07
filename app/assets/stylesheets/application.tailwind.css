@@ -150,6 +150,10 @@
 		@apply bg-secondary text-white;
 	}
 
+	.calendar-separator {
+		@apply col-start-2 col-span-7 border border-secondary-50 rounded;
+	}
+
 	.card {
 		@apply bg-white rounded shadow-lg shadow-gray-200;
 	}
