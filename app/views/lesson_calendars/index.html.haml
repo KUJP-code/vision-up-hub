@@ -1,3 +1,5 @@
+- teacher_id = current_user.is?('Teacher') ? current_user.id : @organisation.teachers.first.id
+
 = render 'shared/subtitle', text: t('.calendar_for', date: ja_date(@date))
 
 %dialog.resources-dialog#lesson-resources
@@ -49,4 +51,4 @@
       %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)} py-3 px-2" }
         = render 'lesson_calendars/lesson_button',
                  date: @date, level: cl.lesson.calendar_level,
-                 teacher_id: current_user.id, lesson: cl.lesson
+                 teacher_id:, lesson: cl.lesson
