@@ -3,11 +3,13 @@
 :ruby
   src = teacher_lesson_path(0, date:, level:, type: lesson.type, teacher_id:)
 
-%button{ class: 'flex items-center w-full aspect-video py-10 rounded border-secondary border-2 font-bold',
+%button{ class: 'flex items-center w-full aspect-video py-10 rounded ' \
+                'border-secondary border-2 font-bold relative',
          data: { action: 'dialog#open',
                  controller: 'dialog',
                  'dialog-dialog-value': 'lesson-resources',
                  'dialog-frame-value': 'lesson',
                  'dialog-src-value': src },
          type: 'button' }
+  = calendar_level_dots(lesson.short_level)
   %h3.w-full.text-center= calendar_lesson_title(lesson)

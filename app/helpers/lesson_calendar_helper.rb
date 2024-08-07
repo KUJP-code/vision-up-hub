@@ -42,4 +42,23 @@ module LessonCalendarHelper
       'EnglishClass' => 'row-start-12 row-span-4', 'StandShowSpeak' => 'row-start-[17] row-span-3',
       'EveningClass' => 'row-start-[21] row-span-2' }
   end
+
+  def calendar_level_dots(level)
+    base_dot_classes = 'absolute rounded-full w-3 h-3 top-1'
+    return all_levels_dot(base_dot_classes) if ['All Levels', 'Elementary'].include?(level)
+
+    content_tag(:div, '',
+                class: "#{base_dot_classes} right-1 #{calendar_dot_bg(level)}")
+  end
+
+  def calendar_dot_bg(level)
+    { 'Kindy' => 'bg-kindy', 'Land' => 'bg-land', 'Sky' => 'bg-sky', 'Galaxy' => 'bg-galaxy',
+      'Keep Up' => 'bg-keep-up', 'Specialist' => 'bg-specialist' }[level]
+  end
+
+  def all_levels_dot(base_classes)
+    content_tag(:div, '', class: "#{base_classes} right-1 bg-land") +
+      content_tag(:div, '', class: "#{base_classes} right-3 bg-sky") +
+      content_tag(:div, '', class: "#{base_classes} right-5 bg-galaxy")
+  end
 end
