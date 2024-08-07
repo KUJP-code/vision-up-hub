@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 module LessonCalendarHelper
-  def lesson_type_rows
-    { 'DailyActivity' => 'row-start-3 row-span-3', 'PhonicsClass' => 'row-start-7 row-span-4',
-      'EnglishClass' => 'row-start-12 row-span-4', 'StandShowSpeak' => 'row-start-[17] row-span-3',
-      'EveningClass' => 'row-start-[21] row-span-2' }
+  def calendar_lesson_title(lesson)
+    case lesson.type
+    when 'DailyActivity', 'Exercise'
+      lesson.subtype.titleize
+    when 'KindyPhonic', 'EnglishClass'
+      lesson.topic.gsub(/Term \d+/, '')
+    else
+      lesson.title
+    end
   end
 
   def day_column(day)
@@ -30,5 +35,11 @@ module LessonCalendarHelper
       'StandShowSpeak' => { 'Land' => 'row-start-[17]', 'Sky' => 'row-start-[18]', 'Galaxy' => 'row-start-[19]' },
       'EveningClass' => { 'Keep Up' => 'row-start-[21]',
                           'Specialist' => 'row-start-[22]' } }[type][lesson.short_level]
+  end
+
+  def lesson_type_rows
+    { 'DailyActivity' => 'row-start-3 row-span-3', 'PhonicsClass' => 'row-start-7 row-span-4',
+      'EnglishClass' => 'row-start-12 row-span-4', 'StandShowSpeak' => 'row-start-[17] row-span-3',
+      'EveningClass' => 'row-start-[21] row-span-2' }
   end
 end
