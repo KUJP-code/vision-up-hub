@@ -8,6 +8,10 @@
     = turbo_frame_tag 'lesson'
 
 %main.p-3
+  %header.flex.p-3
+    .grow
+    = render 'lesson_calendars/dots_explainer'
+
   .grid.grid-cols-8.text-center.gap-3
     #top-left
     = render 'lesson_calendars/day_header',
