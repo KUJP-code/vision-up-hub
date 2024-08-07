@@ -2,10 +2,10 @@
 
 :ruby
   iteration_day = date.beginning_of_week
-  today = Time.zone.today.strftime('%A')
+  today = Time.zone.today
 
 - Date::DAYNAMES.each do |day|
-  - current_class = today == day ? 'bg-secondary text-white rounded py-2 px-3' : ''
+  - current_class = today == iteration_day - 1 ? 'bg-secondary text-white rounded py-2 px-3' : ''
   - no_lessons = course_lessons.none? { |cl| cl.day == day.downcase }
 
   %header{ class: 'flex flex-col items-center justify-center p-2 odd:bg-neutral-dark ' \
