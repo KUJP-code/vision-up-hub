@@ -12,11 +12,11 @@
     .grow
     = render 'lesson_calendars/dots_explainer'
 
-  .grid.grid-cols-8.text-center.gap-3
+  .grid.grid-cols-8.text-center
     #top-left
     = render 'lesson_calendars/day_header',
              course_lessons: @course_lessons, date: @date
-    %hr.row-start-2.calendar-separator.-my-3
+    %hr.row-start-2.calendar-separator
 
     - lesson_type_rows.each do |type, rows|
       %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 border-secondary ' \
@@ -29,7 +29,7 @@
     %hr{ class: 'row-start-[20] calendar-separator' }
 
     - @course_lessons.each do |cl|
-      %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)}" }
+      %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)} py-3 px-2" }
         = render 'lesson_calendars/lesson_button',
                  date: @date, level: cl.lesson.calendar_level,
                  teacher_id: current_user.id, lesson: cl.lesson

@@ -13,9 +13,11 @@ module LessonCalendarHelper
   end
 
   def day_column(day)
-    { 'sunday' => 'col-start-2', 'monday' => 'col-start-3', 'tuesday' => 'col-start-4',
-      'wednesday' => 'col-start-5', 'thursday' => 'col-start-6', 'friday' => 'col-start-7',
-      'saturday' => 'col-start-8' }[day]
+    col = { 'sunday' => 'col-start-2', 'monday' => 'col-start-3', 'tuesday' => 'col-start-4',
+            'wednesday' => 'col-start-5', 'thursday' => 'col-start-6', 'friday' => 'col-start-7',
+            'saturday' => 'col-start-8' }[day]
+
+    %w[monday wednesday friday].include?(day) ? "#{col} bg-neutral-dark" : col
   end
 
   def lesson_row(lesson)
