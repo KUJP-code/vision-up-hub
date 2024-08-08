@@ -3,12 +3,18 @@
 class Notification
   include StoreModel::Model
 
+  MAX_NOTIFICATIONS = 10
+
   attribute :link, :string
   attribute :read, :boolean, default: false
   attribute :text, :string
 
   validates :link, :text, presence: true
   validate :valid_uri
+
+  def mark_read
+    self.read = true
+  end
 
   private
 

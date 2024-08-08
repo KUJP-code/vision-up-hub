@@ -28,4 +28,14 @@ RSpec.describe User do
       expect(writer.is?('Admin', 'Teacher')).to be false
     end
   end
+
+  context 'when working with notifications' do
+    # let(:user) { build(:user) }
+    # let(:notification) { build(:notification) }
+    #
+    # it 'can add notifications' do
+    #   user.add_notification
+    #   expect(user.notifications.count).to eq(1)
+    # end
+  end
 end
