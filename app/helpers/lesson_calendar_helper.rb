@@ -50,7 +50,7 @@ module LessonCalendarHelper
           'Sky' => 'row-start-9', 'Galaxy' => 'row-start-10' },
       'EnglishClass' =>
         { 'Kindy' => 'row-start-12', 'Land' => 'row-start-13',
-          'Sky' => 'row-start-14', 'Galaxy' => 'row-start-15' },
+          'Sky' => 'row-start-[14]', 'Galaxy' => 'row-start-[15]' },
       'StandShowSpeak' =>
         { 'Land' => 'row-start-[17]', 'Sky' => 'row-start-[18]',
           'Galaxy' => 'row-start-[19]' },
