@@ -35,6 +35,12 @@ module LessonCalendarHelper
              lesson.type
            end
 
+    level = if lesson.short_level == 'Specialist'
+              lesson.level
+            else
+              lesson.short_level
+            end
+
     { 'DailyActivity' =>
         { 'Kindy' => 'row-start-3', 'Elementary' => 'row-start-5' },
       'Exercise' =>
@@ -50,7 +56,8 @@ module LessonCalendarHelper
           'Galaxy' => 'row-start-[19]' },
       'EveningClass' =>
         { 'Keep Up' => 'row-start-[21]',
-          'Specialist' => 'row-start-[22]' } }[type][lesson.short_level]
+          'specialist' => 'row-start-[22]',
+          'specialist_advanced' => 'row-start-[23]' } }[type][level]
   end
 
   def lesson_type_rows
@@ -58,7 +65,7 @@ module LessonCalendarHelper
       'PhonicsClass' => 'row-start-7 row-span-4',
       'EnglishClass' => 'row-start-12 row-span-4',
       'StandShowSpeak' => 'row-start-[17] row-span-3',
-      'EveningClass' => 'row-start-[21] row-span-2' }
+      'EveningClass' => 'row-start-[21] row-span-3' }
   end
 
   def calendar_level_dots(level)

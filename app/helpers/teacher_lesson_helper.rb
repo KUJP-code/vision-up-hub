@@ -15,7 +15,11 @@ module TeacherLessonHelper
   def lesson_level_heading(lesson)
     return lesson.subtype.titleize if %w[DailyActivity Exercise].include?(lesson.type)
 
-    lesson.short_level.upcase
+    if lesson.short_level == 'Specialist'
+      lesson.level.titleize
+    else
+      lesson.short_level
+    end.upcase
   end
 
   def lesson_details_heading(lesson)

@@ -21,13 +21,13 @@ module Courseable
     def day_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      lessons.where(lesson_query(date, :day))
+      lessons.where(lesson_query(date, :day)).distinct
     end
 
     def week_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      course_lessons.where(lesson_query(date, :week))
+      course_lessons.where(lesson_query(date, :week)).distinct
     end
   end
 
