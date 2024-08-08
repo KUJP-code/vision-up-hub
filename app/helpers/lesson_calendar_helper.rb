@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module LessonCalendarHelper
+  def calendar_date(date, course_lesson)
+    # date is always a Monday to be start of week
+    # so need to get the date offset by 2 from cl day
+    date + (CourseLesson.days[course_lesson.day] - 2).days
+  end
+
   def calendar_lesson_title(lesson)
     case lesson.type
     when 'DailyActivity', 'Exercise'

@@ -35,6 +35,7 @@ module Courseable
 
   def lesson_query(date, period)
     day = date.strftime('%w').to_i + 1
+
     course_weeks =
       plans.active
            .map do |plan|
