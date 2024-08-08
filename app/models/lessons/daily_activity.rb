@@ -22,10 +22,7 @@ class DailyActivity < Lesson
 
   validates :intro, :instructions, :subtype, presence: true
 
-  enum level: {
-    kindy: 1,
-    elementary: 2
-  }
+  enum level: { kindy: 1, elementary: 2 }
 
   enum subtype: {
     discovery: 0,

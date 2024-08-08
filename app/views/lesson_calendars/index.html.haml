@@ -38,8 +38,9 @@
     %hr.row-start-2.calendar-separator
 
     - lesson_type_rows.each do |type, rows|
-      %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 border-secondary ' \
-                  "flex items-end justify-center p-3 my-3 #{rows}" }
+      %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 ' \
+                  'border-secondary flex items-end justify-center p-3 ' \
+                  "my-3 #{rows}" }
         = type.titleize
 
     %hr.row-start-6.calendar-separator

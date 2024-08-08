@@ -27,7 +27,7 @@ class Exercise < Lesson
     cardio_and_stretching form_practice instructions cooldown_and_recap
   ].freeze
 
-  enum level: { all_levels: 0 }
+  enum level: { kindy: 1, elementary: 2 }
 
   enum subtype: {
     aerobics: 0,

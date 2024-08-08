@@ -81,9 +81,9 @@ released_attrs = { released: true, status: :accepted,
 
 %i[kindy elementary].each do |level|
   fb.create(:daily_activity, level:, **released_attrs)
+  fb.create(:exercise, level:, **released_attrs)
 end
 
-fb.create(:exercise, level: :all_levels, **released_attrs)
 fb.create(:kindy_phonic, **released_attrs)
 
 %i[kindy land_one sky_one galaxy_one].each do |level|
@@ -142,6 +142,9 @@ empty_course = Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 kids_up.plans.create!(
   fb.attributes_for(:plan, course_id: empty_course.id, start: Date.today.beginning_of_week)
 )
+
+Exercise.find_by(level: :kindy).course_lessons.where.not(day: %w[monday tuesday]).destroy_all
+DailyActivity.find_by(level: :kindy).course_lessons.where(day: %w[monday tuesday]).destroy_all
 
 puts 'Adding classes to schools & teachers...'
 

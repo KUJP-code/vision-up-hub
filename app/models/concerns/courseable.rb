@@ -37,7 +37,9 @@ module Courseable
     day = date.strftime('%w').to_i + 1
     course_weeks =
       plans.active
-           .map { |plan| { course_id: plan.course_id, day:, week: course_week(plan, date) } }
+           .map do |plan|
+        { course_id: plan.course_id, day:, week: course_week(plan, date) }
+      end
 
     course_weeks.map do |w|
       course_cond = "course_lessons.course_id = #{w[:course_id]}"

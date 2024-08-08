@@ -20,8 +20,8 @@ class TeacherLessonsController < ApplicationController
 
   def index_vars
     set_date_level_teacher
-    @types = day_lessons(@teacher, @date)
-             .send(@level).pluck(:type).uniq
+    @types = @teacher.day_lessons(@date)
+                     .send(@level).pluck(:type).uniq
   end
 
   def set_date_level_teacher
@@ -66,9 +66,9 @@ class TeacherLessonsController < ApplicationController
   end
 
   def lessons_for_type(teacher, date, level, type)
-    type_lessons = day_lessons(teacher, date)
-                   .send(level).where(type:)
-                   .order(level: :asc)
+    type_lessons = teacher.day_lessons(date)
+                          .send(level).where(type:)
+                          .order(level: :asc)
     lesson = if params[:id].to_i.zero?
                authorize type_lessons.first
              else
@@ -76,9 +76,5 @@ class TeacherLessonsController < ApplicationController
              end
 
     [type_lessons, lesson]
-  end
-
-  def day_lessons(teacher, date)
-    Lesson.where(id: teacher.day_lessons(date).ids)
   end
 end
