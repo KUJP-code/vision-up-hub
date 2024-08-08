@@ -15,7 +15,7 @@ export default {
 					selectors: [":root"],
 					theme: {
 						colors: {
-							"keep-up": "#8e9cf2",
+							"keep-up": "#e88d8d",
 							"main-50": "#aadaeb",
 							"neutral-dark": "#e1e0e3",
 							"neutral-light": "#f1f1f1",
@@ -28,7 +28,7 @@ export default {
 							medium: "#fdcd56",
 							secondary: "#645880",
 							sky: "#8eccda",
-							specialist: "#e88d8d",
+							specialist: "#8e9cf2",
 							success: "#9ed26a",
 							warn: "#fdcd56",
 						},

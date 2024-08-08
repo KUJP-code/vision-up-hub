@@ -5,11 +5,11 @@
   today = Time.zone.today
 
 - Date::DAYNAMES.each do |day|
-  - current_class = today == iteration_day - 1 ? 'bg-secondary text-white rounded py-2 px-8' : ''
-  - no_lessons = course_lessons.none? { |cl| cl.day == day.downcase }
+  - current_class = today == iteration_day - 1 ? 'bg-secondary text-white rounded py-2 w-full' : ''
+  - no_lessons = course_lessons.none? { |cl| cl.day == day.downcase } ? 'no-lessons' : ''
 
-  %header{ class: 'flex flex-col items-center justify-center p-2 odd:bg-neutral-dark ' \
-                  "rounded-t #{'opacity-50' if no_lessons}" }
+  %header{ class: 'flex flex-col items-center justify-center p-3 odd:bg-neutral-dark ' \
+                  "even:bg-neutral-light rounded-t sticky -top-3 z-50 #{no_lessons}" }
     %div{ class: current_class }
       %h2.font-bold= day
       %p.text-sm

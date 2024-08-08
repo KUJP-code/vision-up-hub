@@ -62,11 +62,11 @@ module LessonCalendarHelper
   end
 
   def calendar_level_dots(level)
-    base_dot_classes = 'absolute rounded-full w-3 h-3 top-1'
+    base_dot_classes = 'absolute rounded-full w-3 h-3 top-2'
     return all_levels_dot(base_dot_classes) if ['All Levels', 'Elementary'].include?(level)
 
     content_tag(:div, '',
-                class: "#{base_dot_classes} right-1 #{calendar_dot_bg(level)}")
+                class: "#{base_dot_classes} right-2 #{calendar_dot_bg(level)}")
   end
 
   def calendar_dot_bg(level)
@@ -76,8 +76,8 @@ module LessonCalendarHelper
   end
 
   def all_levels_dot(base_classes)
-    content_tag(:div, '', class: "#{base_classes} right-1 bg-land") +
-      content_tag(:div, '', class: "#{base_classes} right-3 bg-sky") +
-      content_tag(:div, '', class: "#{base_classes} right-5 bg-galaxy")
+    content_tag(:div, '', class: "#{base_classes} right-2 bg-land") +
+      content_tag(:div, '', class: "#{base_classes} right-4 bg-sky") +
+      content_tag(:div, '', class: "#{base_classes} right-6 bg-galaxy")
   end
 end

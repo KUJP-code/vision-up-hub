@@ -150,8 +150,14 @@
 		@apply bg-secondary text-white;
 	}
 
-	.calendar-separator {
-		@apply col-start-2 col-span-7 border border-secondary-50 rounded;
+	.calendar {
+		.no-lessons {
+			@apply text-secondary-50;
+		}
+
+		.calendar-separator {
+			@apply col-start-2 col-span-7 border border-secondary-50 rounded;
+		}
 	}
 
 	.card {
