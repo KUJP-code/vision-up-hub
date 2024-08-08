@@ -2,8 +2,7 @@
 
 %main.flex.flex-col.items-center.gap-3.p-3
   = render 'monthly_materials/form',
-           courses: @courses,
-           plan_data: @plan_data,
+           courses: @courses, plan_data: @plan_data,
            from_week: @from_week
 
   %table.w-full.text-center.align-top
@@ -25,7 +24,11 @@
             %td.align-top.p-1= l.type.titleize
           - else
             %td.align-top.p-1
-          %td.align-top.p-1= link_to with_subtype(l), lesson_path(l)
+          %td.align-top.p-1
+            - if current_user.is?('Admin', 'Writer')
+              = link_to with_subtype(l), lesson_path(l)
+            - else
+              = with_subtype(l)
           %td.align-top.p-1 W#{date.week}/#{date.day.titleize[0..2]}
           %td.align-top.p-1
             %ul
