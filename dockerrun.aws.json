@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.18.2-materials-nolink"
+    "Name": "thatbballguy/materials:0.18.3-correct-weekday"
   },
   "Ports": [
     {
