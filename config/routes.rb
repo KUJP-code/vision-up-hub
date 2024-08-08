@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       resources :lesson_versions, only: %i[show update]
       resources :missing_lessons, only: %i[index]
       resources :monthly_materials, only: %i[index]
+      resources :notifications, only: %i[index destroy new update]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]
       resources :phonics_resources, only: %i[destroy]
