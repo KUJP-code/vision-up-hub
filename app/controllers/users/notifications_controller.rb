@@ -20,9 +20,28 @@ class NotificationsController < ApplicationController
                 notice: create_notice(@notification, @organisation, @user_type)
   end
 
-  def update; end
+  def update
+    @user = current_user
 
-  def destroy; end
+    if params[:id] == 'all'
+      @user.mark_all_notifications_read
+    else
+      @user.notifications[params[:id].to_i].mark_read
+    end
+    respond_to do |format|
+      format.turbo_stream {}
+      format.html { redirect_to notifications_path, notice: t('.marked_read') }
+    end
+  end
+
+  def destroy
+    @user = current_user
+    @user.delete_notification(index: params[:id].to_i)
+    respond_to do |format|
+      format.turbo_stream {}
+      format.html { redirect_to notifications_path, notice: t('destroyed') }
+    end
+  end
 
   private
 

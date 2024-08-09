@@ -49,17 +49,24 @@ RSpec.describe 'Notifications' do
       deleted_notification = build(:notification, text: 'Deleted Notification')
       user.notify(deleted_notification)
       # id here is the index in the notifications jsonb column array
-      delete notification_path(id: 1, user_id: user.id)
+      delete notification_path(id: 1)
       expect(user.notifications.count).to eq 1
       expect(user.notifications.none?(deleted_notification)).to be true
     end
 
-    it 'can update own notifications' do
+    it 'can mark own notification read' do
       user.notify(build(:notification))
       expect(user.notifications.first.read).to be false
       # id here is the index in the notifications jsonb column array
-      patch notification_path(id: 0, user_id: user.id)
+      patch notification_path(id: 0)
       expect(user.notifications.first.read).to be true
+    end
+
+    it 'can mark all notifications read' do
+      user.notify(*build_list(:notification, 4))
+      expect(user.notifications.size).to eq 4
+      patch notification_path(id: 'all')
+      expect(user.notifications.all?(&:read)).to be true
     end
   end
 end
