@@ -53,7 +53,7 @@ gem 'poppler', '4.2.2'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
-gem 'solid_queue', '0.3.2'
+gem 'solid_queue', '~> 0.4'
 
 # And mission control to manage SQ jobs
 gem 'mission_control-jobs', '0.2.1'
