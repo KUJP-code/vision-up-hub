@@ -20,7 +20,7 @@ class Notification
   private
 
   def valid_uri
-    return if URI.parse(link).instance_of?(URI::HTTPS)
+    return if link.nil? || URI.parse(link).instance_of?(URI::HTTPS)
 
     errors.add(:link, "#{link} is not a valid URL")
   end
