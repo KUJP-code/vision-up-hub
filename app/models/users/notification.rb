@@ -5,6 +5,7 @@ class Notification
 
   MAX_NOTIFICATIONS = 10
 
+  attribute :created_at, :datetime, default: -> { Time.zone.now }
   attribute :link, :string
   attribute :read, :boolean, default: false
   attribute :text, :string
