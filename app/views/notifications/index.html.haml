@@ -1,1 +1,57 @@
 = render 'shared/subtitle', text: t('.notification_list')
+
+%main.flex.flex-col.gap-3.p-3.text-center
+  - if current_user.is?('Admin')
+    = link_to 'New notification',
+              new_notification_path,
+              class: 'btn btn-secondary'
+
+    %table
+      %caption.caption-top.text-2xl.font-bold.p-3 Recently Queued Notifications
+      %thead
+        %th.thead.thead-s.bg-secondary-50 User
+        %th.thead.bg-secondary-50 Text/Link
+        %th.thead.thead-e.bg-secondary-50 Queued
+      %tbody
+        - @recent_notifications.each do |notification|
+          :ruby
+            user_id = notification.arguments['arguments'].first['user_id']
+            notified_user = @notified_users.find { |u| u.id == user_id }
+            link = notification.arguments['arguments'].first['link']
+            text = notification.arguments['arguments'].first['text']
+
+          %tr
+            %td
+              = link_to notified_user.name,
+                        organisation_user_path(notified_user.organisation_id, notified_user.id)
+            %td
+              - if link.present?
+                = link_to text, link
+              - else
+                = text
+            %td #{time_ago_in_words(notification.created_at)} ago
+
+  %table
+    %caption.caption-top.text-2xl.font-bold.p-3= t('.notification_list')
+    %thead
+      %th.thead.thead-s.bg-secondary-50= t('.text')
+      %th.thead.bg-secondary-50= t('.time_ago')
+      %th.thead.bg-secondary-50= t('.read')
+      %th.thead.thead-e.bg-secondary-50= t('.delete')
+    %tbody
+      - current_user.notifications.each_with_index do |notification, i|
+        %tr
+          %td.p-3
+            - if notification.link.present?
+              %p.underline.underline-offset-2= link_to notification.text, notification.link
+            - else
+              %p= notification.text
+          %td.p-3= time_ago_in_words(notification.created_at)
+          %td
+            .h-full.flex.justify-center.items-center
+              = read_status(notification, i)
+          %td.p-3
+            = link_to 'Delete',
+                      notification_path(i),
+                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                      class: 'btn btn-danger'

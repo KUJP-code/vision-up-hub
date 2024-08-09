@@ -25,7 +25,7 @@ RSpec.describe 'Notifications' do
       notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
                                   .select { |j| j[:queue] == 'materials_production_notifications' }
       expect(notif_jobs.size).to eq 1
-      expect(notif_jobs.first[:args].first).to eq teacher.id
+      expect(notif_jobs.first[:args].first['user_id']).to eq teacher.id
     end
 
     it 'can send a notification targeting an organisation' do
@@ -39,7 +39,7 @@ RSpec.describe 'Notifications' do
       notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
                                   .select { |j| j[:queue] == 'materials_production_notifications' }
       expect(notif_jobs.size).to eq 1
-      expect(notif_jobs.first[:args].first).to eq org_1_user.id
+      expect(notif_jobs.first[:args].first['user_id']).to eq org_1_user.id
     end
   end
 

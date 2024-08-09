@@ -24,7 +24,7 @@ RSpec.describe Notification do
 
     it 'can add a notification' do
       user.notify(notification)
-      expect(user.notifications).to contain_exactly(notification)
+      expect(user.notifications.first.text).to eq notification.text
     end
 
     it 'can add multiple notifications at once' do

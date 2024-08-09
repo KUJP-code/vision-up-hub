@@ -1,7 +1,15 @@
 # frozen_string_literal: true
 
 class NotificationsController < ApplicationController
-  def index; end
+  def index
+    return unless current_user.is?('Admin')
+
+    @recent_notifications = SolidQueue::Job
+                            .where(queue_name: 'materials_production_notifications')
+                            .order(updated_at: :desc).limit(10)
+    notified_ids = @recent_notifications.map { |n| n.arguments['arguments'].first['user_id'] }
+    @notified_users = User.where(id: notified_ids)
+  end
 
   def new
     @notification = Notification.new
@@ -12,11 +20,15 @@ class NotificationsController < ApplicationController
     @organisation = validate_organisation
     @user_type = validate_user_type
     @notification = Notification.new(notification_params.except(:organisation_id, :user_type))
+
     notify_jobs = user_query(@organisation, @user_type)
-                  .map { |id| NotifyUserJob.new(id, text: @notification.text, link: @notification.link) }
+                  .map do |user_id|
+      NotifyUserJob.new(user_id:, text: @notification.text,
+                        link: @notification.link)
+    end
     ActiveJob.perform_all_later(notify_jobs)
 
-    redirect_to notifications_path,
+    redirect_to notifications_url,
                 notice: create_notice(@notification, @organisation, @user_type)
   end
 
@@ -26,21 +38,14 @@ class NotificationsController < ApplicationController
     if params[:id] == 'all'
       @user.mark_all_notifications_read
     else
-      @user.notifications[params[:id].to_i].mark_read
+      @user.mark_notification_read(index: params[:id].to_i)
     end
-    respond_to do |format|
-      format.turbo_stream {}
-      format.html { redirect_to notifications_path, notice: t('.marked_read') }
-    end
+    @user.save
   end
 
   def destroy
     @user = current_user
     @user.delete_notification(index: params[:id].to_i)
-    respond_to do |format|
-      format.turbo_stream {}
-      format.html { redirect_to notifications_path, notice: t('destroyed') }
-    end
   end
 
   private
