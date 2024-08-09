@@ -9,7 +9,7 @@ class Notification
   attribute :read, :boolean, default: false
   attribute :text, :string
 
-  validates :link, :text, presence: true
+  validates :text, presence: true
   validate :valid_uri
 
   def mark_read

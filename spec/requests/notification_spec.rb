@@ -18,30 +18,28 @@ RSpec.describe 'Notifications' do
   context 'when creating manual notifications' do
     it 'can send a notification targeting a user type' do
       teacher = create(:user, :teacher)
-      parent = create(:user, :parent)
+      create(:user, :parent)
       post notifications_path,
-           params: { type: 'Teacher', notification: { text:, link: } }
+           params: { user_type: 'Teacher', notification: { text:, link: } }
 
-      expect(parent.notifications.size).to eq 0
-      expect(teacher.notifications.size).to eq 1
-      expect(teacher.notifications.first.text).to eq text
-      expect(teacher.notifications.first.link).to eq link
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 1
+      expect(notif_jobs.first[:args].first).to eq teacher.id
     end
 
     it 'can send a notification targeting an organisation' do
-      create_list(:organisation, 2)
-      org_1_user = create(:user, :org_admin,
-                          organisation_id: Organisation.first.id)
-      org_2_user = create(:user, :org_admin,
-                          organisation_id: Organisation.last.id)
+      orgs = create_list(:organisation, 2)
+      org_1_user = create(:user, :org_admin, organisation_id: orgs.first.id)
+      create(:user, :org_admin, organisation_id: orgs.last.id)
       post notifications_path,
-           params: { org_id: Organisation.first.id,
+           params: { organisation_id: org_1_user.organisation_id,
                      notification: { text:, link: } }
 
-      expect(org_2_user.notifications.size).to eq 0
-      expect(org_1_user.notifications.size).to eq 1
-      expect(org_1_user.notifications.first.text).to eq text
-      expect(org_1_user.notifications.first.link).to eq link
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 1
+      expect(notif_jobs.first[:args].first).to eq org_1_user.id
     end
   end
 
