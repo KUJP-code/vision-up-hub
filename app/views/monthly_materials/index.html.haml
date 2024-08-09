@@ -12,7 +12,7 @@
         %th.thead.bg-secondary-50= t('.title')
         %th.thead.bg-secondary-50= t('.date')
         %th.thead.thead-e.bg-secondary-50= t('.material_list')
-    - if @lessons.any?
+    - if @lessons
       %tbody
         - @lessons.uniq.each_with_index do |l, i|
           :ruby
