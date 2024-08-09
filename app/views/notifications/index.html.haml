@@ -1,13 +1,13 @@
 = render 'shared/subtitle', text: t('.notification_list')
 
-%main.flex.flex-col.gap-3.p-3.text-center
+%main.flex.flex-col.gap-5.p-3.text-center
   - if current_user.is?('Admin')
     = link_to 'New notification',
               new_notification_path,
               class: 'btn btn-secondary'
 
     %table
-      %caption.caption-top.text-2xl.font-bold.p-3 Recently Queued Notifications
+      %caption.caption-top.text-2xl.font-bold.p-5 Recently Queued Notifications
       %thead
         %th.thead.thead-s.bg-secondary-50 User
         %th.thead.bg-secondary-50 Text/Link
@@ -32,7 +32,7 @@
             %td #{time_ago_in_words(notification.created_at)} ago
 
   %table
-    %caption.caption-top.text-2xl.font-bold.p-3= t('.notification_list')
+    %caption.caption-top.text-2xl.font-bold.p-5= t('.notification_list')
     %thead
       %th.thead.thead-s.bg-secondary-50= t('.text')
       %th.thead.bg-secondary-50= t('.time_ago')
@@ -41,31 +41,32 @@
     %tbody
       - current_user.notifications.each_with_index do |notification, i|
         %tr
-          %td.p-3
+          %td.p-5
             - if notification.link.present?
               %p.underline.underline-offset-2= link_to notification.text, notification.link
             - else
               %p= notification.text
-          %td.p-3= time_ago_in_words(notification.created_at)
+          %td.p-5= time_ago_in_words(notification.created_at)
           %td
             .h-full.flex.justify-center.items-center
               = read_status(notification, i)
-          %td.p-3
+          %td.p-5
             = link_to 'Delete',
                       notification_path(i),
                       data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
                       class: 'btn btn-danger'
-      %tr
-        %td{ colspan: 2 }
-        %td
-          - if current_user.notifications.any?(&:unread?)
-            = link_to t('.mark_all_read'),
-                      notification_path('all'),
-                      data: { turbo_method: :patch },
-                      class: 'btn btn-secondary'
-        %td
-          - if current_user.notifications.size > 1
-            = link_to 'Delete',
-                      notification_path('all'),
-                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
-                      class: 'btn btn-danger'
+      - if current_user.notifications.any?(&:unread?) || current_user.notifications.size > 1
+        %tr
+          %td.border-t-2.border-secondary.p-5{ colspan: 2 }
+          %td.border-t-2.border-secondary.p-5
+            - if current_user.notifications.any?(&:unread?)
+              = link_to t('.mark_all_read'),
+                        notification_path('all'),
+                        data: { turbo_method: :patch },
+                        class: 'btn btn-secondary'
+          %td.border-t-2.border-secondary.p-5
+            - if current_user.notifications.size > 1
+              = link_to 'Delete All',
+                        notification_path('all'),
+                        data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                        class: 'btn btn-danger'
