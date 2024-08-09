@@ -34,18 +34,12 @@ class NotificationsController < ApplicationController
 
   def update
     @user = current_user
-
-    if params[:id] == 'all'
-      @user.mark_all_notifications_read
-    else
-      @user.mark_notification_read(index: params[:id].to_i)
-    end
-    @user.save
+    @user.mark_notification_read(index: params[:id])
   end
 
   def destroy
     @user = current_user
-    @user.delete_notification(index: params[:id].to_i)
+    @user.delete_notification(index: params[:id])
   end
 
   private

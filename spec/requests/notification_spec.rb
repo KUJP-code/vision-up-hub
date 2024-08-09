@@ -54,6 +54,13 @@ RSpec.describe 'Notifications' do
       expect(user.notifications.none?(deleted_notification)).to be true
     end
 
+    it 'can destroy all notifications' do
+      user.notify(*build_list(:notification, 4))
+      expect(user.notifications.size).to eq 4
+      delete notification_path(id: 'all')
+      expect(user.notifications.count).to eq 0
+    end
+
     it 'can mark own notification read' do
       user.notify(build(:notification))
       expect(user.notifications.first.read).to be false

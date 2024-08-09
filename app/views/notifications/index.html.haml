@@ -55,3 +55,17 @@
                       notification_path(i),
                       data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
                       class: 'btn btn-danger'
+      %tr
+        %td{ colspan: 2 }
+        %td
+          - if current_user.notifications.any?(&:unread?)
+            = link_to t('.mark_all_read'),
+                      notification_path('all'),
+                      data: { turbo_method: :patch },
+                      class: 'btn btn-secondary'
+        %td
+          - if current_user.notifications.size > 1
+            = link_to 'Delete',
+                      notification_path('all'),
+                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                      class: 'btn btn-danger'

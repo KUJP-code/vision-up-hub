@@ -39,7 +39,7 @@ RSpec.describe Notification do
 
     it 'prunes read if adding notification would make count > max' do
       user.notify(*(1..Notification::MAX_NOTIFICATIONS).map { notification })
-      user.mark_all_notifications_read
+      user.mark_notification_read(index: 'all')
       unread_notification = build(:notification, read: false)
       user.notify(unread_notification, unread_notification)
       expect(user.notifications.size).to eq Notification::MAX_NOTIFICATIONS
@@ -47,15 +47,13 @@ RSpec.describe Notification do
 
     it 'can mark notifications read' do
       user.notify(notification)
-      user.notifications[0].mark_read
-      user.save
+      user.mark_notification_read(index: 0)
       expect(user.reload.notifications[0].read).to be true
     end
 
     it 'can mark all notifications read' do
       3.times { user.notify(notification) }
-      user.mark_all_notifications_read
-      user.save
+      user.mark_notification_read(index: 'all')
       expect(user.reload.notifications.all?(&:read)).to be true
     end
 
@@ -63,9 +61,14 @@ RSpec.describe Notification do
       extra = build(:notification, text: 'extra')
       delete_notif = build(:notification, text: 'delete target')
       user.notify(extra, extra, delete_notif, extra)
-      user.save
       user.delete_notification(index: 2)
       expect(user.notifications.none?(delete_notif)).to be true
+    end
+
+    it 'can delete all notifications' do
+      3.times { user.notify(notification) }
+      user.delete_notification(index: 'all')
+      expect(user.reload.notifications.empty?).to be true
     end
   end
 end

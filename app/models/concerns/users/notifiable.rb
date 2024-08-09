@@ -5,25 +5,30 @@ module Notifiable
 
   included do
     def delete_notification(index:)
-      notifications.delete_at(index)
-      prune_read_notifications
-      mark_dirty_and_save
-    end
+      if index == 'all'
+        notifications.clear
+      else
+        notifications.delete_at(index.to_i)
+      end
 
-    def mark_all_notifications_read
-      notifications.each(&:mark_read)
       prune_read_notifications
       mark_dirty_and_save
     end
 
     def mark_notification_read(index:)
-      notifications[index].mark_read
+      if index == 'all'
+        notifications.each(&:mark_read)
+      else
+        notifications[index.to_i].mark_read
+      end
+
       prune_read_notifications
       mark_dirty_and_save
     end
 
     def notify(*new_notifications)
       new_notifications.each { |n| notifications.prepend(n) }
+
       prune_read_notifications
       mark_dirty_and_save
     end
