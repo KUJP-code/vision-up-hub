@@ -42,7 +42,7 @@ RSpec.describe Notification do
       user.mark_all_notifications_read
       unread_notification = build(:notification, read: false)
       user.notify(unread_notification, unread_notification)
-      expect(user.notifications.size).to eq 10
+      expect(user.notifications.size).to eq Notification::MAX_NOTIFICATIONS
     end
 
     it 'can mark notifications read' do

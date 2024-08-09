@@ -6,16 +6,19 @@ module Notifiable
   included do
     def delete_notification(index:)
       notifications.delete_at(index)
+      prune_read_notifications
       mark_dirty_and_save
     end
 
     def mark_all_notifications_read
       notifications.each(&:mark_read)
+      prune_read_notifications
       mark_dirty_and_save
     end
 
     def mark_notification_read(index:)
       notifications[index].mark_read
+      prune_read_notifications
       mark_dirty_and_save
     end
 

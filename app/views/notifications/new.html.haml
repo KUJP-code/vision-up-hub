@@ -9,7 +9,8 @@
       = label_tag :user_type
       = select_tag :user_type,
                    options_for_select(User::TYPES.map { |type| [type.titleize, type] }),
-                   include_blank: true
+                   include_blank: true,
+                   autofocus: true
 
     .form-group
       = label_tag :organisation_id

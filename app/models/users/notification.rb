@@ -3,10 +3,10 @@
 class Notification
   include StoreModel::Model
 
-  MAX_NOTIFICATIONS = 10
+  MAX_NOTIFICATIONS = 9
 
   attribute :created_at, :datetime, default: -> { Time.zone.now }
-  attribute :link, :string
+  attribute :link, :string, default: ''
   attribute :read, :boolean, default: false
   attribute :text, :string
 
@@ -17,10 +17,14 @@ class Notification
     self.read = true
   end
 
+  def unread?
+    !read
+  end
+
   private
 
   def valid_uri
-    return if link.nil? || URI.parse(link).instance_of?(URI::HTTPS)
+    return if link.blank? || URI.parse(link).instance_of?(URI::HTTPS)
 
     errors.add(:link, "#{link} is not a valid URL")
   end
