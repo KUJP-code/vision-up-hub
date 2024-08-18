@@ -7,11 +7,12 @@
   = render 'shared/subtitle', text: t('.create_students', org: @organisation.name)
 
   - if current_user.is?('Admin')
-    %nav.flex.flex-wrap.justify-between.items-center.gap-1.p-3
+    %nav.tab-nav
       - @orgs.each do |org|
+        - active = @organisation == org ? 'active' : 'inactive'
         = link_to org.name,
                   new_organisation_student_upload_path(organisation_id: org.id),
-                  class: "sub_nav_link #{'bg-main' if org.id == @organisation.id}"
+                  class: "nav-tab #{active}"
 
   = render 'student_uploads/format_explainer'
   = link_to organisation_student_upload_path(current_user.organisation, 1),

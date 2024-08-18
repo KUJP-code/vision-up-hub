@@ -89,7 +89,7 @@ fb.create(:kindy_phonic, **released_attrs)
 %i[kindy land_one sky_one galaxy_one].each do |level|
   fb.create(:english_class, level:, **released_attrs)
   fb.create(:phonics_class, level:, **released_attrs)
-  fb.create(:stand_show_speak, level:, **released_attrs)
+  fb.create(:stand_show_speak, level:, **released_attrs) unless level == :kindy
 end
 
 PhonicsClass.find_by(level: :kindy).destroy
@@ -121,13 +121,16 @@ end
 
 puts 'Creating courses...'
 
+full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course'))
+full_course.category_resources << CategoryResource.all
+
+lesson_days = (Date::DAYNAMES - %w[Sunday Saturday]).map(&:downcase)
 course_lessons = Lesson.all.map do |lesson|
   lesson.update(creator_id: 1, assigned_editor_id: writer.id)
-  fb.build(:course_lesson, lesson:, week: 1, day: Time.zone.today.strftime('%A').downcase)
+  lesson_days.map do |day|
+    fb.create(:course_lesson, lesson:, course: full_course, week: 1, day:)
+  end
 end
-
-full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course', course_lessons:))
-full_course.category_resources << CategoryResource.all
 
 Organisation.all.each do |org|
   org.plans.create!(fb.attributes_for(
@@ -139,6 +142,9 @@ empty_course = Course.create!(fb.attributes_for(:course, title: 'Empty Course'))
 kids_up.plans.create!(
   fb.attributes_for(:plan, course_id: empty_course.id, start: Date.today.beginning_of_week)
 )
+
+Exercise.find_by(level: :kindy).course_lessons.where.not(day: %w[monday tuesday]).destroy_all
+DailyActivity.find_by(level: :kindy).course_lessons.where(day: %w[monday tuesday]).destroy_all
 
 puts 'Adding classes to schools & teachers...'
 
@@ -173,6 +179,10 @@ level_check = fb.create(
 )
 
 fb.create_list(:test, 2, basics: 2)
+
+Test.all.each do |test|
+  full_course.course_tests.create!(test_id: test.id, week: 1)
+end
 
 Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)

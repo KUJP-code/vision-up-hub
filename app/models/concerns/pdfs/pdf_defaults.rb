@@ -8,7 +8,8 @@ module PdfDefaults
   PAGE_HEIGHT = 297.mm
   PAGE_WIDTH = 210.mm
   GAP = 0.5.cm
-  HEADING_SIZE = 0.5.cm
+  HEADER_INDENT = 20.mm
+  HEADING_SIZE = 0.75.cm
   RED = 'f27875'
   SUBHEADING_SIZE = 0.4.cm
 

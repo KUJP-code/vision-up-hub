@@ -1,13 +1,15 @@
--# locals: (test:)
+-# locals: (test:, courses:)
 
 :ruby
   questions = test.new_record? ? '' : test.form_questions
   thresholds = test.new_record? ? '' : test.form_thresholds
+  plan_data = courses.to_h { |c| [c.id, c.plan_date_data] }.to_json
 
-= form_with model: @test,
+= form_with model: test,
             html: { class: 'form',
-                    id: 'test_form' } do |f|
-  = render 'shared/form_errors', resource: @test
+                    id: 'test_form',
+                    data: { controller: 'fields' } } do |f|
+  = render 'shared/form_errors', resource: test
 
   .form-group
     = f.label :name
@@ -35,5 +37,30 @@
     %small Each line is a level (all in words), followed by a ':', then the threshold e.g.
     %small 'Sky Two: 70'
     %small 'Sky Three: 85'
+
+
+  %h3.font-bold.text-center.text-2xl Courses
+
+  = f.fields_for :course_tests, test.course_tests do |cl_f|
+    = render 'course_tests/fields',
+             courses:,
+             f: cl_f,
+             plan_data:,
+             test:
+
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :course_tests,
+                   test.course_tests.new,
+                   child_index: 'CHILD' do |cl_f|
+      = render 'course_tests/fields',
+               courses:,
+               f: cl_f,
+               plan_data:,
+               test:
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+    Add Course
 
   = f.submit class: 'btn btn-main'

@@ -89,12 +89,13 @@ module ApplicationHelper
     safe_join(list)
   end
 
-  def locale_toggle(classes = '')
+  def locale_toggle(classes: '', turbo_stream: false)
     new_locale = I18n.locale == :en ? :ja : :en
     link_to url_for(request.query_parameters.merge(locale: new_locale)),
             class: main_nav_class('locale', ''),
             id: 'locale_toggle',
-            title: "Switch to #{new_locale.to_s.upcase}" do
+            title: "Switch to #{new_locale.to_s.upcase}",
+            data: { turbo_stream: } do
       render "shared/svgs/#{new_locale}", classes:
     end
   end

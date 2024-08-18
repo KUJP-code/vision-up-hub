@@ -9,6 +9,9 @@ RSpec.describe 'creating a test result', :js do
     create(:school, ip: '*').teachers << user
     user.classes << create(:school_class)
     user.classes.first.students << student
+    course = create(:course)
+    course.plans.create(organisation_id: user.organisation_id, start: Time.zone.today)
+    test.course_tests.create(course_id: course.id, week: 1)
     sign_in user
   end
 

@@ -6,7 +6,7 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def show?
-    authorized_ku_staff? || admin_of_org?
+    authorized_ku_staff? || user.organisation_id == record.id
   end
 
   def new?

@@ -1,13 +1,25 @@
 -# locals: (f:, lesson:)
 
+- image_attrs = Exercise::ATTRIBUTES.grep(/image/)
+
+-# TODO: remove once guide finalized
+.form-group
+  = f.label :guide
+  = f.file_field :guide, accept: 'application/pdf'
+
 .form-group
   = f.label :subtype
   = f.select :subtype,
              Exercise.subtypes.keys.map { |k| [k.titleize, k] },
              {}
+
 .form-group
-  = f.label :guide
-  = f.file_field :guide, accept: 'application/pdf'
+  = f.label :warning
+  = f.text_field :warning
+
+- image_attrs.each do |attr|
+  = render 'lessons/shared/pdf_image_field',
+           attr:, f:, lesson:
 
 - Exercise::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', attr:, f:, lesson:)

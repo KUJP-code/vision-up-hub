@@ -2,109 +2,50 @@
 
 module PhonicsClassPdf
   extend ActiveSupport::Concern
-  include PdfLinks, PdfList
-
-  BACKGROUND_PATH = Rails.root.join('app/assets/pdf_backgrounds/phonics.png').to_s
-  BODY_INDENT = 48.mm
-  HEADER_INDENT = 21.mm
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
 
   included do
     private
 
     def generate_guide
-      Prawn::Document.new(
-        margin: 0, page_size: 'A4', page_layout: :portrait
-      ) do |pdf|
+      Prawn::Document.new(margin: 0, page_size: 'A4',
+                          page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
-        pdf.image BACKGROUND_PATH, at: [0, PAGE_HEIGHT],
-                                   height: PAGE_HEIGHT, width: PAGE_WIDTH
+        add_background(pdf, 'phonics')
         draw_header(pdf)
-        add_image(pdf)
-        draw_materials(pdf)
-        draw_instructions(pdf)
-        draw_difficulty(pdf)
-        draw_extra_fun(pdf)
-        draw_notes(pdf)
-        draw_links(pdf)
-        draw_footer_level(pdf)
+        add_header_image(pdf)
+        draw_body(pdf)
+        draw_footer(pdf:, level: 'Elementary')
       end
     end
 
     def draw_header(pdf)
-      draw_level(pdf)
-      draw_title(pdf)
-      draw_goal(pdf)
+      factory = PdfHeaderItemFactory.new(pdf)
+      factory.draw_default_header(text:
+        { pre: "#{short_level.upcase} Phonics",
+          main: title, sub: goal })
     end
 
-    def draw_level(pdf)
-      pdf.bounding_box([HEADER_INDENT, 280.mm], width: 90.mm, height: 4.mm) do
-        pdf.text "#{short_level.upcase} Phonics",
-                 size: SUBHEADING_SIZE, overflow: :shrink_to_fit
-      end
+    def add_header_image(pdf)
+      factory = PdfImageFactory.new(pdf:, x_pos: 120.mm, width: 70.mm)
+      factory.add_image(image: pdf_image, y_pos: 282.mm, height: 46.mm)
     end
 
-    def draw_title(pdf)
-      pdf.bounding_box([HEADER_INDENT, 272.mm], width: 90.mm, height: 20.mm) do
-        pdf.text title, size: HEADING_SIZE, overflow: :shrink_to_fit
-      end
-    end
+    def draw_body(pdf)
+      factory = PdfBodyItemFactory.new(pdf)
 
-    def draw_goal(pdf)
-      pdf.bounding_box([HEADER_INDENT, 252.mm], width: 90.mm, height: 12.mm) do
-        pdf.text goal, size: SUBHEADING_SIZE, overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_materials(pdf)
-      pdf.bounding_box([BODY_INDENT, 222.mm], width: 140.mm, height: 25.mm) do
-        pdf.text array_to_list(materials, :number),
-                 size: FONT_SIZE,
-                 overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_instructions(pdf)
-      pdf.bounding_box([BODY_INDENT, 180.mm], width: 140.mm, height: 35.mm) do
-        pdf.text array_to_list(instructions, :number),
-                 size: FONT_SIZE,
-                 overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_difficulty(pdf)
-      pdf.bounding_box([BODY_INDENT, 133.mm], width: 140.mm, height: 20.mm) do
-        pdf.text array_to_list(add_difficulty, :dot),
-                 size: FONT_SIZE,
-                 overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_extra_fun(pdf)
-      pdf.bounding_box([BODY_INDENT, 103.mm], width: 140.mm, height: 23.mm) do
-        pdf.text array_to_list(extra_fun, :dot),
-                 size: FONT_SIZE,
-                 overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_notes(pdf)
-      pdf.bounding_box([BODY_INDENT, 70.mm], width: 140.mm, height: 20.mm) do
-        pdf.text array_to_list(notes, :dot),
-                 size: FONT_SIZE,
-                 overflow: :shrink_to_fit
-      end
-    end
-
-    def draw_links(pdf)
-      pdf.bounding_box([BODY_INDENT, 40.mm], width: 140.mm, height: 20.mm) do
-        links_from_pairs(links, pdf)
-      end
-    end
-
-    def draw_footer_level(pdf)
-      pdf.bounding_box([140.mm, 7.mm], width: 66.mm, height: 10.mm) do
-        pdf.text 'Elementary', color: 'FFFFFF', align: :right
-      end
+      factory.draw(text: array_to_list(materials, :number),
+                   y_pos: 222.mm, height: 25.mm)
+      factory.draw(text: array_to_list(instructions, :number),
+                   y_pos: 180.mm, height: 35.mm)
+      factory.draw(text: array_to_list(add_difficulty, :dot),
+                   y_pos: 133.mm, height: 20.mm)
+      factory.draw(text: array_to_list(extra_fun, :dot),
+                   y_pos: 103.mm, height: 23.mm)
+      factory.draw(text: array_to_list(notes, :dot),
+                   y_pos: 70.mm, height: 20.mm)
+      factory.draw(text: links_from_hash(links),
+                   y_pos: 40.mm, height: 20.mm)
     end
   end
 end

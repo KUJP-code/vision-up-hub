@@ -1,6 +1,6 @@
 :ruby
-  border = "border-b-2 #{lvl_border(@lesson.short_level)}"
-  text = lvl_text(@lesson.short_level)
+  border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
+  text = lvl_text_class(@lesson.short_level)
 
 = turbo_frame_tag 'lesson' do
   = render 'teacher_lessons/tabs',
@@ -10,11 +10,11 @@
   .content
     %header
       %h1{ class: "type #{border}" }
-        = @lesson.type.titleize
+        = lesson_type_heading(@lesson)
       %h1{ class: "level #{text} #{border}" }
-        = @lesson.short_level.upcase
-      = image_tag type_icon_path(@lesson)
-      %h3.details= @lesson.goal
+        = lesson_level_heading(@lesson)
+      = image_tag type_icon_path(@lesson), class: 'h-full place-self-end'
+      %h3.details= lesson_details_heading(@lesson)
 
     - if @lesson.guide.attached?
       = render 'teacher_lessons/guide_section',

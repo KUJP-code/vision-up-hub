@@ -1,14 +1,11 @@
-- section_classes = 'basis-1/2 p-3'
+= render 'shared/subtitle', text: "Review Proposal for #{@lesson.title}"
 
 %main.flex.flex-wrap
-  %section{ class: section_classes }
-    %h2 Current Lesson - #{@lesson.title}
-    = render 'lessons/shared/guide_preview', lesson: @lesson
-    = render 'lessons/shared/attribute_list', lesson: @lesson
-  %section{ class: section_classes }
-    %h2 Proposal - #{@proposal.title}
-    = render 'lessons/shared/guide_preview', lesson: @proposal
-    = render 'lessons/shared/attribute_list', lesson: @proposal
+  = render 'proposals/comparable_lesson',
+           lesson: @lesson, type: 'Current'
+  = render 'proposals/comparable_lesson',
+           lesson: @proposal, type: 'Proposed'
+
   = render 'proposals/status_form',
            lesson: @lesson,
            proposal: @proposal

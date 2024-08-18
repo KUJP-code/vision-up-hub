@@ -871,6 +871,39 @@ ALTER SEQUENCE public.course_resources_id_seq OWNED BY public.course_resources.i
 
 
 --
+-- Name: course_tests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.course_tests (
+    id bigint NOT NULL,
+    course_id bigint NOT NULL,
+    test_id bigint NOT NULL,
+    week integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: course_tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.course_tests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: course_tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.course_tests_id_seq OWNED BY public.course_tests.id;
+
+
+--
 -- Name: courses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2055,6 +2088,13 @@ ALTER TABLE ONLY public.course_resources ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: course_tests id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_tests ALTER COLUMN id SET DEFAULT nextval('public.course_tests_id_seq'::regclass);
+
+
+--
 -- Name: courses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2340,6 +2380,14 @@ ALTER TABLE ONLY public.course_lessons
 
 ALTER TABLE ONLY public.course_resources
     ADD CONSTRAINT course_resources_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: course_tests course_tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_tests
+    ADD CONSTRAINT course_tests_pkey PRIMARY KEY (id);
 
 
 --
@@ -2674,6 +2722,20 @@ CREATE INDEX index_course_resources_on_category_resource_id ON public.course_res
 --
 
 CREATE INDEX index_course_resources_on_course_id ON public.course_resources USING btree (course_id);
+
+
+--
+-- Name: index_course_tests_on_course_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_course_tests_on_course_id ON public.course_tests USING btree (course_id);
+
+
+--
+-- Name: index_course_tests_on_test_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_course_tests_on_test_id ON public.course_tests USING btree (test_id);
 
 
 --
@@ -3111,6 +3173,14 @@ CREATE TRIGGER logidze_on_students BEFORE INSERT OR UPDATE ON public.students FO
 
 
 --
+-- Name: course_tests fk_rails_02f9b72077; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_tests
+    ADD CONSTRAINT fk_rails_02f9b72077 FOREIGN KEY (course_id) REFERENCES public.courses(id);
+
+
+--
 -- Name: support_requests fk_rails_03ae9ca37e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3399,6 +3469,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: course_tests fk_rails_ccafea4c74; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.course_tests
+    ADD CONSTRAINT fk_rails_ccafea4c74 FOREIGN KEY (test_id) REFERENCES public.tests(id);
+
+
+--
 -- Name: students fk_rails_d3631a714a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3440,6 +3518,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240805024052'),
 ('20240721051925'),
 ('20240721051922'),
 ('20240721051920'),

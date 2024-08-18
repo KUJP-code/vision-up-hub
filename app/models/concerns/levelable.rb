@@ -56,5 +56,14 @@ module Levelable
         level.titleize
       end
     end
+
+    def calendar_level
+      case short_level
+      when 'Land', 'Sky', 'Galaxy', 'All Levels'
+        'elementary'
+      else
+        short_level.downcase.tr(' ', '_')
+      end
+    end
   end
 end

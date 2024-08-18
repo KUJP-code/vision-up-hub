@@ -1,0 +1,59 @@
+- teacher_id = current_user.is?('Teacher') ? current_user.id : @organisation.teachers.first.id
+
+= render 'shared/subtitle', text: t('.calendar')
+
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'lesson'
+
+%main.flex.flex-col.gap-6.p-3
+  - if current_user.is?('Admin', 'Writer')
+    %nav.tab-nav
+      - @orgs.each do |org|
+        - active = @organisation == org ? 'active' : 'inactive'
+        = link_to org.name,
+                  lesson_calendars_path(date: @date, org:),
+                  class: "nav-tab #{active}"
+
+  %header.flex.flex-col.gap-6.p-3
+    = render 'lesson_calendars/dots_explainer'
+
+    .flex.items-center.justify-between
+      = link_to lesson_calendars_path(date: @date - 1.week, org: @organisation),
+                class: 'btn btn-secondary flex items-center' do
+        = render 'shared/svgs/back', classes: 'w-12 fill-white'
+        %p= t('.previous_week')
+
+      %h2.font-bold.text-xl= t('.calendar_for', date: ja_date(@date))
+
+      = link_to lesson_calendars_path(date: @date + 1.week, org: @organisation),
+                class: 'btn btn-secondary flex items-center' do
+        %p= t('.next_week')
+        = render 'shared/svgs/next', classes: 'w-12 fill-white'
+
+  .grid.text-center.calendar
+    #top-left
+    = render 'lesson_calendars/day_header',
+             course_lessons: @course_lessons, date: @date
+    %hr.row-start-2.calendar-separator
+
+    - lesson_type_rows.each do |type, rows|
+      %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 ' \
+                  'border-secondary flex items-end justify-center p-3 ' \
+                  "my-3 #{rows}" }
+        = type.titleize
+
+    %hr.row-start-6.calendar-separator
+    %hr.row-start-11.calendar-separator
+    %hr{ class: 'row-start-[16] calendar-separator' }
+    %hr{ class: 'row-start-[20] calendar-separator' }
+
+    - @course_lessons.each do |cl|
+      %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)} py-3 px-2" }
+        = render 'lesson_calendars/lesson_button',
+                 date: calendar_date(@date, cl),
+                 level: cl.lesson.calendar_level,
+                 teacher_id:, lesson: cl.lesson

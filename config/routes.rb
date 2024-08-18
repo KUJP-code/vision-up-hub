@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       resources :files, only: %i[destroy index show]
       resources :kindy_phonics, only: %i[create index update]
       resources :lessons
+      resources :lesson_calendars, only: %i[index]
       resources :lesson_searches, only: %i[index]
       resources :lesson_uses, only: %i[index]
       resources :lesson_versions, only: %i[show update]
@@ -70,6 +71,8 @@ Rails.application.routes.draw do
       mount Flipper::UI.app(Flipper) => '/flipper', as: :flipper
       mount MissionControl::Jobs::Engine, at: '/jobs'
       mount PgHero::Engine, at: '/pghero'
+
+      resources :triggerable_jobs, only: %i[index create]
     end
 
     authenticated :user do

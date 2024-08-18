@@ -13,9 +13,12 @@ class TestsController < ApplicationController
 
   def new
     @test = authorize Test.new
+    set_courses
   end
 
-  def edit; end
+  def edit
+    set_courses
+  end
 
   def create
     @test = authorize Test.new(test_params)
@@ -24,6 +27,7 @@ class TestsController < ApplicationController
       redirect_to tests_url,
                   notice: t('create_success')
     else
+      set_courses
       render :new,
              status: :unprocessable_entity,
              alert: t('create_failure')
@@ -35,6 +39,7 @@ class TestsController < ApplicationController
       redirect_to tests_url,
                   notice: t('update_success')
     else
+      set_courses
       render :edit,
              status: :unprocessable_entity,
              alert: t('update_failure')
@@ -54,10 +59,15 @@ class TestsController < ApplicationController
   private
 
   def test_params
-    params.require(:test).permit(:basics, :name, :level, :questions, :thresholds)
+    params.require(:test).permit(:basics, :name, :level, :questions, :thresholds,
+                                 course_tests_attributes: %i[course_id week])
   end
 
   def set_test
     @test = authorize Test.find(params[:id])
+  end
+
+  def set_courses
+    @courses = policy_scope(Course).includes(:plans)
   end
 end

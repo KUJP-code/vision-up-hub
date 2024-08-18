@@ -30,12 +30,40 @@ module Proposable
         send(:"#{key}=", value)
       end
 
+      replace_resources(proposal)
+      replace_phonics_resources(proposal) if type == 'PhonicsClass'
       save
-    rescue StandardError
+    rescue StandardError => e
+      Rails.logger.error(e.message)
       false
     else
-      proposal.destroy
+      proposal.update(status: :accepted)
       true
     end
+  end
+
+  private
+
+  def replace_resources(proposal)
+    proposal.resources.each do |resource|
+      next if resources.any? { |r| r.filename == resource.filename }
+
+      resource.open do |f|
+        resources.attach(io: f, filename: resource.filename,
+                         content_type: resource.content_type)
+      end
+    end
+  end
+
+  def replace_phonics_resources(proposal)
+    proposal.phonics_resources.each do |resource|
+      next if phonics_resource_duplicated?(resource)
+
+      phonics_resources.create!(blob_id: resource.blob_id, week: resource.week)
+    end
+  end
+
+  def phonics_resource_duplicated?(resource)
+    phonics_resources.find_by(blob_id: resource.blob_id, week: resource.week)
   end
 end

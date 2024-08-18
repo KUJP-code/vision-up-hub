@@ -1,5 +1,8 @@
 -# locals: (courses:, lesson:, resource_ids:)
 
+= render 'shared/subtitle',
+         text: "#{lesson.new_record? ? 'Edit' : 'New'} #{lesson.type.titleize}"
+
 = form_with model: lesson,
             html: { id: "#{lesson.type.underscore}_form",
                     class: 'form',

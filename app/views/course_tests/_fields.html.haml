@@ -1,0 +1,33 @@
+-# locals: (courses:, f:, plan_data:, test:)
+
+%div{ class: 'fields-wrapper flex flex-wrap items-center justify-center gap-5',
+      data: { controller: 'course-dates',
+              'course-dates-plans-value': courses.to_h { |c| [c.id, c.plan_date_data] }.to_json,
+              'new-record': f.object.new_record?.to_s } }
+  = f.hidden_field :lesson_id, value: test.id
+
+  %div{ class: 'form-group basis-1/4' }
+    = f.label :course_id
+    = f.collection_select :course_id,
+                          courses,
+                          :id, :title, {},
+                          data: { 'course-dates-target': 'course',
+                                  action: 'course-dates#calculateDate' }
+
+  %div{ class: 'form-group basis-1/4' }
+    = f.label :week
+    = f.number_field :week,
+                     min: 1, max: 52,
+                     data: { action: 'course-dates#calculateDate',
+                             'course-dates-target': 'week' }
+
+  %ul{ 'data-course-dates-target': 'date' }
+
+  - if f.object.new_record?
+    %button{ class: 'btn btn-danger basis-1/4 self-center',
+             'data-action' => 'fields#remove' }
+      Remove
+  - else
+    .w-full.form-check.text-center
+      = f.check_box :_destroy
+      = f.label :_destroy, 'Remove'

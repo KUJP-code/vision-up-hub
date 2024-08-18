@@ -3,12 +3,8 @@
 module Pdfable
   extend ActiveSupport::Concern
 
-  UPLOADED_GUIDES = %w[EnglishClass
-                       Exercise
-                       EveningClass
-                       KindyPhonic
-                       SpecialLesson
-                       StandShowSpeak].freeze
+  UPLOADED_GUIDES = %w[EnglishClass EveningClass Exercise KindyPhonic
+                       SpecialLesson StandShowSpeak].freeze
 
   included do
     require 'prawn/measurement_extensions'
@@ -20,11 +16,11 @@ module Pdfable
     end
 
     def attach_guide
-      # We're just uploading them for now
+      # We're just uploading them for now, will have generated guides later
       return if UPLOADED_GUIDES.include?(type)
 
       timestamp = Time.zone.now.strftime('%Y%M%d%H%m%s')
-      filename = "#{timestamp}_#{title.parameterize(separator: '_')}_guide.pdf"
+      filename = "#{title.parameterize(separator: '_')}_guide_#{timestamp}.pdf"
       pdf_io = guide_tempfile
       pdf_blob = ActiveStorage::Blob.create_and_upload!(
         io: pdf_io, filename:, content_type: 'application/pdf'

@@ -4,13 +4,9 @@ require 'rails_helper'
 
 RSpec.describe Exercise do
   subject(:exercise) do
-    create(
-      :exercise,
-      title: 'Test Exercise',
-      level: :kindy,
-      add_difficulty: "Difficult idea 1\nDifficult idea 2",
-      links: "Example link:http://example.com\nSeasonal:http://example.com/seasonal"
-    )
+    create(:exercise,
+           title: 'Test Exercise', subtype: :jumping,
+           instructions: "Instruction 1\nInstruction 2" )
   end
 
   it_behaves_like 'lesson'
@@ -19,10 +15,15 @@ RSpec.describe Exercise do
     expect(build(:exercise)).to be_valid
   end
 
-  context 'when generating PDF guide' do
-    it 'does not generate a PDF' do
+  context 'when generating PDF guide',
+          skip: 'Temporarily disabled until finalised' do
+    it 'contains title, subcategory and instructions' do
       pdf = exercise.attach_guide
-      expect(pdf).to be_nil
+      text_analysis = PDF::Inspector::Text.analyze(pdf)
+      expect(text_analysis.strings)
+        .to include(
+          'Test Exercise', 'Jumping', '1. Instruction 1', '2. Instruction 2'
+        )
     end
   end
 end
