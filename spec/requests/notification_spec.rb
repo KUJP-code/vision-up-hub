@@ -76,4 +76,32 @@ RSpec.describe 'Notifications' do
       expect(user.notifications.all?(&:read)).to be true
     end
   end
+
+  context 'when automatically notifying parent of test result' do
+    let(:student) { create(:student, parent: create(:user, :parent)) }
+
+    it 'notifies parent when student gets test result' do
+      test = create(:test)
+      post test_test_results_path(test),
+           params: { test_result: attributes_for(:test_result,
+                                                 student_id: student.id,
+                                                 test_id: test.id, reason: 'test') }
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 1
+      expect(notif_jobs.first[:args].first['user_id']).to eq student.parent_id
+    end
+
+    it 'does not enque job if student does not have parent' do
+      student.update(parent_id: nil)
+      test = create(:test)
+      post test_test_results_path(test),
+           params: { test_result: attributes_for(:test_result,
+                                                 student_id: student.id,
+                                                 test_id: test.id, reason: 'test') }
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 0
+    end
+  end
 end
