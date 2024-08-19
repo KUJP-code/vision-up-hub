@@ -44,4 +44,26 @@ RSpec.describe SupportRequest do
       expect(request.seen_by?(4)).to be false
     end
   end
+
+  context 'when providing lists of participants' do
+    let(:request) { create(:support_request, user: create(:user, :teacher)) }
+
+    it 'includes creator of request' do
+      expect(request.participants).to include(request.user)
+    end
+
+    it 'lists all people who messaged' do
+      message_senders = create_list(:user, 2)
+      message_senders.each do |sender|
+        create(:support_message, user: sender, support_request: request)
+      end
+      expect(request.participants).to match_array(message_senders + [request.user])
+    end
+
+    it 'does not duplicate creator if they also messaged' do
+      request.messages.create(attributes_for(:support_message, user: request.user))
+      request_user_count = request.participants.count { |u| u == request.user }
+      expect(request_user_count).to be 1
+    end
+  end
 end
