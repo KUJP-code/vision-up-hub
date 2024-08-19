@@ -1,8 +1,10 @@
 -# locals: (notifications:)
 
+- no_notifications = notifications.count(&:unread?).zero?
+
 #notification-list{ class: 'flex flex-col text-secondary max-w-[50vw] md:max-w-[30vw]' }
   %h3.text-center.bg-secondary.text-white.p-3= t('.notifications')
-  - if notifications.select(&:unread?).any?
+  - if !no_notifications
     - notifications.each_with_index do |notification, i|
       - next if notification.read
 
@@ -17,4 +19,8 @@
           #{time_ago_in_words(notification.created_at)} ago
       %hr.border.border-secondary-50
   - else
-    %h3.p-3= t('.no_notifications')
+    %h3.p-3= t('.no_new_notifications')
+
+  - if no_notifications
+    %hr.border-2.border-secondary
+  = link_to t('.view_all_notifications'), notifications_path, class: 'btn btn-secondary m-3'
