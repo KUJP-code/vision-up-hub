@@ -2,31 +2,39 @@
 
 %main.flex.flex-col.items-center.gap-3.p-3
   = render 'monthly_materials/form',
-           courses: @courses,
-           plan_data: @plan_data,
+           courses: @courses, plan_data: @plan_data,
            from_week: @from_week
 
   %table.w-full.text-center.align-top
     %thead
       %tr
         %th.thead.thead-s.bg-secondary-50= t('.type')
-        %th.thead.bg-secondary-50=  t('.title')
+        %th.thead.bg-secondary-50= t('.title')
         %th.thead.bg-secondary-50= t('.date')
         %th.thead.thead-e.bg-secondary-50= t('.material_list')
-    %tbody
-      - @lessons&.each_with_index do |l, i|
-        :ruby
-          course = params[:q][:course].to_i
-          date = l.course_lessons.find { |cl| cl.course_id == course }
-          new_type = @lessons[i - 1].type != l.type
+    - if @lessons
+      %tbody
+        - @lessons.uniq.each_with_index do |l, i|
+          :ruby
+            course = params[:q][:course].to_i
+            date = l.course_lessons.find do |cl|
+              cl.course_id == course &&
+                cl.week >= @from_week &&
+                cl.week <= @to_week
+            end
+            new_type = @lessons[i - 1].type != l.type
 
-        %tr{ class: !i.zero? && new_type ? 'border-t-2 border-secondary' : '' }
-          - if new_type
-            %td.align-top.p-1= l.type.titleize
-          - else
+          %tr{ class: !i.zero? && new_type ? 'border-t-2 border-secondary' : '' }
+            - if new_type
+              %td.align-top.p-1= l.type.titleize
+            - else
+              %td.align-top.p-1
             %td.align-top.p-1
-          %td.align-top.p-1= link_to with_subtype(l), lesson_path(l)
-          %td.align-top.p-1 W#{date.week}/#{date.day.titleize[0..2]}
-          %td.align-top.p-1
-            %ul
-              = list_from(l.materials)
+              - if current_user.is?('Admin', 'Writer')
+                = link_to with_subtype(l), lesson_path(l)
+              - else
+                = with_subtype(l)
+            %td.align-top.p-1 W#{date.week}/#{date.day.titleize[0..2]}
+            %td.align-top.p-1
+              %ul
+                = list_from(l.materials)
