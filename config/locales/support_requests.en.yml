@@ -1,7 +1,7 @@
 en:
   support_requests:
     create:
-      new_request_from: "New support request from %{user}"
+      new_request_from: "Support request from %{user}"
     form:
       bug_report: "Bug Report"
       category: "Category"

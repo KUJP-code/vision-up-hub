@@ -1,7 +1,7 @@
 ja:
   support_requests:
     create:
-      new_request_from: "新しいサポート依頼: %{user}"
+      new_request_from: "サポート依頼: %{user}"
     form:
       bug_report: "バグ報告"
       category: "カテゴリ"
