@@ -1,5 +1,7 @@
 en:
   test_results:
+    create:
+      result_available: "Test result available for %{student}"
     form:
       give_reason: "Please give a reason"
     index:

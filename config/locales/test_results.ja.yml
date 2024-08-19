@@ -2,6 +2,8 @@ ja:
   test_results:
     errors:
       reason_required: "理由は必須項目です"
+    create:
+      result_available: "%{student}のテスト結果が利用可能です"
     form:
       give_reason: "理由を記入して下さい"
     index:
