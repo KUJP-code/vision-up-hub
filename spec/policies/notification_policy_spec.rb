@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'notification receiver' do
+  it { is_expected.to authorize_action(:show) }
   it { is_expected.not_to authorize_action(:new) }
   it { is_expected.not_to authorize_action(:create) }
   it { is_expected.to authorize_action(:update) }
@@ -17,6 +18,7 @@ RSpec.describe NotificationPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
+    it { is_expected.to authorize_action(:show) }
     it { is_expected.to authorize_action(:new) }
     it { is_expected.to authorize_action(:create) }
     it { is_expected.to authorize_action(:update) }

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class NotificationPolicy < ApplicationPolicy
+  def show?
+    true
+  end
+
   def new?
     user.is?('Admin')
   end

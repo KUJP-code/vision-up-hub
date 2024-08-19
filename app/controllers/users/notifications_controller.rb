@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class NotificationsController < ApplicationController
+  after_action :verify_authorized
+
   def index
     return unless current_user.is?('Admin')
 
@@ -11,15 +13,21 @@ class NotificationsController < ApplicationController
     @notified_users = User.where(id: notified_ids)
   end
 
+  def show
+    @notification = authorize current_user.notifications[params[:id].to_i]
+    current_user.mark_notification_read(index: params[:id])
+    redirect_to @notification.link
+  end
+
   def new
-    @notification = Notification.new
+    @notification = authorize Notification.new
     @organisations = policy_scope(Organisation).pluck(:name, :id)
   end
 
   def create
     @organisation = validate_organisation
     @user_type = validate_user_type
-    @notification = Notification.new(notification_params.except(:organisation_id, :user_type))
+    @notification = authorize Notification.new(notification_params.except(:organisation_id, :user_type))
 
     notify_jobs = user_query(@organisation, @user_type)
                   .map do |user_id|
@@ -33,12 +41,13 @@ class NotificationsController < ApplicationController
   end
 
   def update
-    @user = current_user
+    @user = authorize current_user
     @user.mark_notification_read(index: params[:id])
     @notifications = @user.notifications
   end
 
   def destroy
+    authorize :notification
     @user = current_user
     @user.delete_notification(index: params[:id])
   end

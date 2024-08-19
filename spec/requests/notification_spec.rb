@@ -75,6 +75,14 @@ RSpec.describe 'Notifications' do
       patch notification_path(id: 'all')
       expect(user.notifications.all?(&:read)).to be true
     end
+
+    it 'marks notification read when their path is visited' do
+      user.notify(*build_list(:notification, 4))
+      user.notify(build(:notification, text: 'Visted show route'))
+      expect(user.notifications.size).to eq 5
+      get notification_path(id: 4)
+      expect(user.notifications.count(&:read)).to eq 1
+    end
   end
 
   context 'when automatically notifying parent of test result' do
