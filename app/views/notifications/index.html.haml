@@ -1,3 +1,5 @@
+- multiple_notifications = current_user.notifications.size > 1
+
 = render 'shared/subtitle', text: t('.notification_list')
 
 %main.flex.flex-col.gap-5.p-3.text-center
@@ -41,11 +43,7 @@
     %tbody
       - current_user.notifications.each_with_index do |notification, i|
         %tr
-          %td.p-5
-            - if notification.link.present?
-              %p.underline.underline-offset-2= link_to notification.text, notification.link
-            - else
-              %p= notification.text
+          %td.p-5= notification_text(notification)
           %td.p-5= time_ago_in_words(notification.created_at)
           %td
             .h-full.flex.justify-center.items-center
@@ -55,17 +53,17 @@
                       notification_path(i),
                       data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
                       class: 'btn btn-danger'
-      - if current_user.notifications.any?(&:unread?) || current_user.notifications.size > 1
+      - if multiple_notifications
         %tr
           %td.border-t-2.border-secondary.p-5{ colspan: 2 }
           %td.border-t-2.border-secondary.p-5
-            - if current_user.notifications.any?(&:unread?)
+            - if current_user.notifications.count(&:unread?) > 1
               = link_to t('.mark_all_read'),
                         notification_path('all'),
                         data: { turbo_method: :patch },
                         class: 'btn btn-secondary'
           %td.border-t-2.border-secondary.p-5
-            - if current_user.notifications.size > 1
+            - if multiple_notifications
               = link_to 'Delete All',
                         notification_path('all'),
                         data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },

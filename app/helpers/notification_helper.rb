@@ -11,6 +11,15 @@ module NotificationHelper
     content_tag(:div, count, class: classes )
   end
 
+  def notification_text(notification)
+    if notification.link.present?
+      link_to notification.text, notification.link,
+              class: 'underline underline-offset-2'
+    else
+      content_tag :span, notification.text
+    end
+  end
+
   def read_status(notification, index)
     classes = "w-3 h-3 rounded-full #{notification.read? ? 'bg-success' : 'bg-danger'}"
     dot = content_tag(:div, '', class: classes)
