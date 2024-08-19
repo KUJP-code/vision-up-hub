@@ -43,7 +43,7 @@
     %tbody
       - current_user.notifications.each_with_index do |notification, i|
         %tr
-          %td.p-5.break-all= notification_text(notification)
+          %td.p-5.break-all= notification_text(notification, i)
           %td.p-5= time_ago_in_words(notification.created_at)
           %td
             .h-full.flex.justify-center.items-center

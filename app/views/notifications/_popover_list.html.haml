@@ -10,7 +10,7 @@
 
       .grid.grid-cols-5.md:grid-cols-10.p-3
         %span.truncate.row-start-1.col-start-1.col-span-4.md:col-span-9
-          = notification_text(notification)
+          = notification_text(notification, i)
         = link_to notification_path(i),
                   class: 'col-span-1 row-start-1 row-span-2 col-start-5 md:col-start-10 place-self-center',
                   data: { turbo_method: :patch } do

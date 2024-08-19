@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# These do not have their own table, they're a JSONB column on User
 class Notification
   include StoreModel::Model
 

@@ -11,9 +11,9 @@ module NotificationHelper
     content_tag(:div, count, class: classes )
   end
 
-  def notification_text(notification)
+  def notification_text(notification, index)
     if notification.link.present?
-      link_to notification.text, notification.link,
+      link_to notification.text, notification_path(index),
               class: 'underline underline-offset-2'
     else
       content_tag :span, notification.text

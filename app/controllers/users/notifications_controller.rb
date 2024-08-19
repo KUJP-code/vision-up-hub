@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NotificationsController < ApplicationController
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :index
 
   def index
     return unless current_user.is?('Admin')
