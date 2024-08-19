@@ -26,7 +26,7 @@
             %td
               = link_to notified_user.name,
                         organisation_user_path(notified_user.organisation_id, notified_user.id)
-            %td
+            %td.break-all
               - if link.present?
                 = link_to text, link
               - else
@@ -43,7 +43,7 @@
     %tbody
       - current_user.notifications.each_with_index do |notification, i|
         %tr
-          %td.p-5= notification_text(notification)
+          %td.p-5.break-all= notification_text(notification)
           %td.p-5= time_ago_in_words(notification.created_at)
           %td
             .h-full.flex.justify-center.items-center
@@ -61,10 +61,10 @@
               = link_to t('.mark_all_read'),
                         notification_path('all'),
                         data: { turbo_method: :patch },
-                        class: 'btn btn-secondary'
+                        class: 'btn btn-secondary text-nowrap'
           %td.border-t-2.border-secondary.p-5
             - if multiple_notifications
               = link_to 'Delete All',
                         notification_path('all'),
                         data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
-                        class: 'btn btn-danger'
+                        class: 'btn btn-danger text-nowrap'

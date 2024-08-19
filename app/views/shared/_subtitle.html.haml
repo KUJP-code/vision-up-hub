@@ -8,27 +8,9 @@
 
   %h1= text
 
-  .absolute.right-3.md:right-16
-    %button.relative{ popovertarget: 'notifications' }
-      = notification_count
-      = image_tag 'notifications.svg', width: '48px', height: '48px'
-
+  = render 'notifications/icon'
   .mt-10.mr-10.md:mr-20.rounded.border-2.border-secondary.p-0#notifications{ popover: 'auto' }
-    %div{ class: 'flex flex-col text-secondary max-w-[50vw] md:max-w-[30vw]' }
-      %h3.text-center.bg-secondary.text-white.p-3= t('.notifications')
-      - if current_user.notifications.any?
-        - current_user.notifications.each do |notification|
-          .grid.grid-cols-5.md:grid-cols-10.p-3
-            %span.truncate.row-start-1.col-start-1.col-span-4.md:col-span-9
-              = notification_text(notification)
-            %button.row-start-1.row-span-2.col-start-5.md:col-start-10.place-self-center
-              = image_tag 'exit.svg', width: '40px', height: '40px'
-            %span.w-full.text-xs.text-secondary-50.row-start-2.col-span-4.md:col-span-9
-              #{time_ago_in_words(notification.created_at)} ago
-
-          - unless notification == current_user.notifications.last
-            %hr.border.border-secondary-50
-      - else
-        = t('.no_notifications')
+    = render 'notifications/popover_list',
+             notifications: current_user.notifications
 
   .hidden.md:block.absolute.right-3= locale_toggle(classes: 'fill-secondary')

@@ -35,6 +35,7 @@ class NotificationsController < ApplicationController
   def update
     @user = current_user
     @user.mark_notification_read(index: params[:id])
+    @notifications = @user.notifications
   end
 
   def destroy
