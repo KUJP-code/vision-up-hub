@@ -1,0 +1,4 @@
+ja:
+  support_messages:
+    create:
+      new_message_from: "新しいサポートメッセージ: %{user}"

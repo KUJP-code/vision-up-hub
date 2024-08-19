@@ -112,4 +112,32 @@ RSpec.describe 'Notifications' do
       expect(notif_jobs.size).to eq 0
     end
   end
+
+  context 'when automatically notifying participants of support request/message' do
+    it 'notifies admins and sales on creation' do
+      sales = create(:user, :sales, organisation: user.organisation)
+      post support_requests_path, params: { support_request: attributes_for(:support_request) }
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 2
+      notified_users = notif_jobs.map { |j| j[:args].first['user_id'] }
+      expect(notified_users).to contain_exactly(sales.id, user.id)
+    end
+
+    it 'notifies participants (except message sender) when message sent' do
+      request = create(:support_request, user: create(:user, :teacher))
+      participant = create(:user, :org_admin, name: 'Participant')
+      request.messages.create(attributes_for(:support_message,
+                                             user_id: participant.id,
+                                             support_request: request))
+      post support_request_support_messages_path(request),
+           params: { support_message: attributes_for(:support_message) }
+      notif_jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
+                                  .select { |j| j[:queue] == 'materials_production_notifications' }
+      expect(notif_jobs.size).to eq 2
+      notified_users = notif_jobs.map { |j| j[:args].first['user_id'] }
+      expect(notified_users).to contain_exactly(request.user_id, participant.id)
+      expect(notified_users).not_to include(user.id)
+    end
+  end
 end

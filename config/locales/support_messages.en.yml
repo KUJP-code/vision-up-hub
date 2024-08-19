@@ -1,0 +1,4 @@
+en:
+  support_messages:
+    create:
+      new_message_from: "New support message from %{user}"
