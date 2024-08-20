@@ -22,12 +22,12 @@ RSpec.describe CategoryResource do
     end
 
     it 'can have phonics set as a resource category' do
-      category_resource.resource_category = :phonics_set
+      category_resource.resource_category = :phonics_sets
       expect(category_resource).to be_valid
     end
 
     it 'can have word family as a resource category' do
-      category_resource.resource_category = :word_family
+      category_resource.resource_category = :word_families
       expect(category_resource).to be_valid
     end
 
@@ -36,13 +36,18 @@ RSpec.describe CategoryResource do
       expect(category_resource).to be_valid
     end
 
-    it 'cannot have worksheet as a resource category' do
-      category_resource.resource_category = :worksheet
+    it 'cannot have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
       expect(category_resource).not_to be_valid
     end
 
     it 'cannot have slides as a resource category' do
       category_resource.resource_category = :slides
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
       expect(category_resource).not_to be_valid
     end
   end
@@ -53,12 +58,12 @@ RSpec.describe CategoryResource do
     end
 
     it 'cannnot have phonics set as a resource category' do
-      category_resource.resource_category = :phonics_set
+      category_resource.resource_category = :phonics_sets
       expect(category_resource).not_to be_valid
     end
 
     it 'cannot have word family as a resource category' do
-      category_resource.resource_category = :word_family
+      category_resource.resource_category = :word_families
       expect(category_resource).not_to be_valid
     end
 
@@ -67,13 +72,18 @@ RSpec.describe CategoryResource do
       expect(category_resource).not_to be_valid
     end
 
-    it 'can have worksheet as a resource category' do
-      category_resource.resource_category = :worksheet
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
       expect(category_resource).to be_valid
     end
 
     it 'cannot have slides as a resource category' do
       category_resource.resource_category = :slides
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
       expect(category_resource).not_to be_valid
     end
   end
@@ -84,12 +94,12 @@ RSpec.describe CategoryResource do
     end
 
     it 'cannot have phonics set as a resource category' do
-      category_resource.resource_category = :phonics_set
+      category_resource.resource_category = :phonics_sets
       expect(category_resource).not_to be_valid
     end
 
     it 'cannot have word family as a resource category' do
-      category_resource.resource_category = :word_family
+      category_resource.resource_category = :word_families
       expect(category_resource).not_to be_valid
     end
 
@@ -98,14 +108,19 @@ RSpec.describe CategoryResource do
       expect(category_resource).not_to be_valid
     end
 
-    it 'can have worksheet as a resource category' do
-      category_resource.resource_category = :worksheet
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
       expect(category_resource).to be_valid
     end
 
     it 'can have slides as a resource category' do
       category_resource.resource_category = :slides
       expect(category_resource).to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
     end
   end
 
@@ -115,12 +130,12 @@ RSpec.describe CategoryResource do
     end
 
     it 'cannot have phonics set as a resource category' do
-      category_resource.resource_category = :phonics_set
+      category_resource.resource_category = :phonics_sets
       expect(category_resource).not_to be_valid
     end
 
     it 'cannot have word family as a resource category' do
-      category_resource.resource_category = :word_family
+      category_resource.resource_category = :word_families
       expect(category_resource).not_to be_valid
     end
 
@@ -129,14 +144,19 @@ RSpec.describe CategoryResource do
       expect(category_resource).not_to be_valid
     end
 
-    it 'can have worksheet as a resource category' do
-      category_resource.resource_category = :worksheet
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
       expect(category_resource).to be_valid
     end
 
     it 'can have slides as a resource category' do
       category_resource.resource_category = :slides
       expect(category_resource).to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
     end
   end
 
@@ -146,12 +166,12 @@ RSpec.describe CategoryResource do
     end
 
     it 'cannot have phonics set as a resource category' do
-      category_resource.resource_category = :phonics_set
+      category_resource.resource_category = :phonics_sets
       expect(category_resource).not_to be_valid
     end
 
     it 'cannot have word family as a resource category' do
-      category_resource.resource_category = :word_family
+      category_resource.resource_category = :word_families
       expect(category_resource).not_to be_valid
     end
 
@@ -160,14 +180,55 @@ RSpec.describe CategoryResource do
       expect(category_resource).not_to be_valid
     end
 
-    it 'can have worksheet as a resource category' do
-      category_resource.resource_category = :worksheet
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
       expect(category_resource).to be_valid
     end
 
     it 'can have slides as a resource category' do
       category_resource.resource_category = :slides
       expect(category_resource).to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+  end
+
+  context 'when resource for evening class' do
+    before do
+      category_resource.lesson_category = :evening_class
+    end
+
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).to be_valid
+    end
+
+    it 'cannot have word families as a resource category' do
+      category_resource.resource_category = :word_families
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have phonics sets as a resource category' do
+      category_resource.resource_category = :phonics_sets
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have sight_words as a resource category' do
+      category_resource.resource_category = :sight_words
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).not_to be_valid
     end
   end
 end
