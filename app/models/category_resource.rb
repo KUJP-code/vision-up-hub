@@ -10,7 +10,8 @@ class CategoryResource < ApplicationRecord
     get_up_and_go: 3,
     daily_gathering: 4,
     arrival: 5,
-    bus_time: 6
+    bus_time: 6,
+    evening_class: 7
   }
 
   enum level: {
@@ -24,11 +25,12 @@ class CategoryResource < ApplicationRecord
   }
 
   enum resource_category: {
-    phonics_set: 0,
-    word_family: 1,
+    phonics_sets: 0,
+    word_families: 1,
     sight_words: 2,
-    worksheet: 3,
-    slides: 4
+    worksheets: 3,
+    slides: 4,
+    activities: 5
   }
 
   validates :lesson_category, :resource_category, presence: true
@@ -63,10 +65,18 @@ class CategoryResource < ApplicationRecord
   end
 
   def phonics_class_resource?
-    return true if %w[phonics_set word_family sight_words].include?(resource_category)
+    return true if %w[phonics_sets word_families sight_words].include?(resource_category)
 
     errors.add(:lesson_category,
                'Phonics Class requires a phonics set, word family, or sight words resource')
+    false
+  end
+
+  def evening_class_resource?
+    return true if %w[activities worksheets].include?(resource_category)
+
+    errors.add(:lesson_category,
+               'Evening class requires a activity or worksheet resource')
     false
   end
 
@@ -75,7 +85,7 @@ class CategoryResource < ApplicationRecord
   end
 
   def brush_up_resource?
-    return true if resource_category == 'worksheet'
+    return true if resource_category == 'worksheets'
 
     errors.add(:lesson_category, 'Brush Up requires a worksheet resource')
     false
@@ -86,23 +96,23 @@ class CategoryResource < ApplicationRecord
   end
 
   def snack_resource?
-    return true if %w[worksheet slides].include?(resource_category)
+    return true if %w[worksheets slides].include?(resource_category)
 
-    errors.add(:lesson_category, 'Snack requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Snack requires a worksheet or slide resource')
     false
   end
 
   def get_up_and_go_resource? # rubocop:disable Naming/AccessorMethodName
-    return true if %w[worksheet slides].include?(resource_category)
+    return true if %w[worksheets slides].include?(resource_category)
 
-    errors.add(:lesson_category, 'Get Up & Go requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Get Up & Go requires a worksheet or slide resource')
     false
   end
 
   def daily_gathering_resource?
-    return true if %w[worksheet slides].include?(resource_category)
+    return true if %w[worksheets slides].include?(resource_category)
 
-    errors.add(:lesson_category, 'Daily Gathering requires a worksheet or slides resource')
+    errors.add(:lesson_category, 'Daily Gathering requires a worksheet or slide resource')
     false
   end
 end
