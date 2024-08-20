@@ -91,6 +91,9 @@ gem 'flipper'
 gem 'flipper-active_record'
 gem 'flipper-ui'
 
+# lock fugit for CVE-2024-43380
+gem 'fugit', '~> 1.11.1'
+
 # Use store_model to reduce boilerplate for jsonb col models
 gem 'store_model', '~> 3.0'
 
