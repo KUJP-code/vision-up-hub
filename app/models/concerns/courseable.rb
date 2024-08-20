@@ -21,13 +21,15 @@ module Courseable
     def day_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      lessons.where(lesson_query(date, :day)).distinct
+      query = lesson_query(date, :day)
+      lessons.where(query[:string], *query[:conditions]).distinct
     end
 
     def week_lessons(date)
       return Lesson.none if plans.active.empty?
 
-      course_lessons.where(lesson_query(date, :week)).distinct
+      query = lesson_query(date, :week)
+      course_lessons.where(query[:string], *query[:conditions]).distinct
     end
   end
 
@@ -37,17 +39,27 @@ module Courseable
     day = date.strftime('%w').to_i + 1
 
     course_weeks =
-      plans.active
-           .map do |plan|
+      plans.active.map do |plan|
         { course_id: plan.course_id, day:, week: course_week(plan, date) }
       end
 
-    course_weeks.map do |w|
-      course_cond = "course_lessons.course_id = #{w[:course_id]}"
-      week_cond = " AND course_lessons.week = #{w[:week]}"
-      day_cond = period == :day ? " AND course_lessons.day = #{w[:day]}" : ''
+    build_query(course_weeks, period)
+  end
 
-      "#{course_cond}#{week_cond}#{day_cond}"
-    end.join(' OR ')
+  def build_query(course_weeks, period)
+    result = { string: '', conditions: [] }
+    course_weeks.each do |w|
+      query_string = 'course_lessons.course_id = ? AND course_lessons.week = ?' \
+                     "#{period == :day ? ' AND course_lessons.day = ?' : ''}"
+
+      result[:string] = if result[:string].empty?
+                          query_string
+                        else
+                          "#{result[:string]} OR #{query_string}"
+                        end
+      result[:conditions] = result[:conditions] + [w[:course_id], w[:week], w[:day]]
+    end
+
+    result
   end
 end
