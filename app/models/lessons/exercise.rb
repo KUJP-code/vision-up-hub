@@ -8,8 +8,6 @@ class Exercise < Lesson
   alias_attribute :cooldown_and_recap, :outro
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
-  has_one_attached :guide # TODO: remove this once guide is finalized
-
   has_one_attached :cardio_image
   has_one_attached :form_practice_image
   has_one_attached :activity_image

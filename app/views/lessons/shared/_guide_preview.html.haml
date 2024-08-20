@@ -5,7 +5,7 @@
             target: '_blank',
             rel: 'noopener',
             class: 'guide_link h-fit flex flex-col gap-1' do
-    = image_tag lesson.guide.preview(:thumb),
+    = image_tag lesson.guide.preview(:thumb).processed,
                 class: 'guide_image w-full'
     %h3.flex.items-center.justify-center.gap-2.btn.btn-main
       Lesson Plan
