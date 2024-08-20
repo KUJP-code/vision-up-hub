@@ -6,6 +6,6 @@ class LessonCalendarsController < ApplicationController
     @orgs = policy_scope(Organisation)
     @organisation = Organisation.find(params[:org] || current_user.organisation_id)
     authorize @organisation, :show?
-    @course_lessons = @organisation.week_lessons(@date).includes(:lesson)
+    @course_lessons = @organisation.week_course_lessons(@date).includes(:lesson)
   end
 end

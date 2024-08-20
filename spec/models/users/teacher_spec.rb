@@ -14,10 +14,12 @@ RSpec.describe Teacher do
     let(:thurs_lesson) { create(:daily_activity) }
 
     before do
-      create(:course_lesson, course:, lesson: thurs_lesson, week: 1, day: :thursday)
+      create(:course_lesson, course:, lesson: thurs_lesson,
+                             week: 1, day: :thursday)
       create(
         :daily_activity,
-        course_lessons: [create(:course_lesson, course:, week: 1, day: :tuesday)]
+        course_lessons: [create(:course_lesson, course:, week: 1,
+                                                day: :tuesday)]
       )
       teacher.organisation.plans.create!(
         attributes_for(:plan,
@@ -36,7 +38,8 @@ RSpec.describe Teacher do
       new_course = create(:course)
       plan_2_lesson = create(
         :daily_activity,
-        course_lessons: [create(:course_lesson, course: new_course, week: 1, day: :thursday)]
+        course_lessons: [create(:course_lesson, course: new_course,
+                                                week: 1, day: :thursday)]
       )
       teacher.organisation.plans.create!(
         attributes_for(:plan,
@@ -46,20 +49,23 @@ RSpec.describe Teacher do
       )
 
       date = Date.parse('07-03-2024')
-      expect(teacher.day_lessons(date)).to contain_exactly(thurs_lesson, plan_2_lesson)
+      expect(teacher.day_lessons(date))
+        .to contain_exactly(thurs_lesson, plan_2_lesson)
     end
 
     it 'finds lessons on first Monday of plan' do
       date = Date.parse('04-03-2024')
       first_day_lesson = create(:daily_activity)
-      create(:course_lesson, course:, lesson: first_day_lesson, week: 1, day: :monday)
+      create(:course_lesson, course:, lesson: first_day_lesson,
+                             week: 1, day: :monday)
       expect(teacher.day_lessons(date)).to contain_exactly(first_day_lesson)
     end
 
     it 'finds lessons for the current week on Friday' do
       date = Date.parse('08-03-2024')
       friday_lesson = create(:daily_activity)
-      create(:course_lesson, course:, lesson: friday_lesson, week: 1, day: :friday)
+      create(:course_lesson, course:, lesson: friday_lesson,
+                             week: 1, day: :friday)
       expect(teacher.day_lessons(date)).to contain_exactly(friday_lesson)
     end
 
@@ -71,8 +77,34 @@ RSpec.describe Teacher do
     it 'returns nothing if past end date of plan' do
       date = Date.parse(8.days.from_now.to_s)
       late_lesson = create(:daily_activity)
-      create(:course_lesson, course:, lesson: late_lesson, week: 5, day: :monday)
+      create(:course_lesson, course:, lesson: late_lesson, week: 5,
+                             day: :monday)
       expect(teacher.day_lessons(date)).to be_empty
+    end
+  end
+
+  context 'when finding course_lessons for a week' do
+    let(:course) { create(:course) }
+    let(:week_course_lesson) do
+      create(:course_lesson, course:, lesson: create(:daily_activity),
+                             week: 1, day: :thursday)
+    end
+
+    before do
+      teacher.organisation.plans.create!(
+        attributes_for(:plan,
+                       course_id: course.id,
+                       start: Time.zone.today,
+                       finish_date: 7.days.from_now)
+      )
+    end
+
+    it 'finds course_lessons only for the current week' do
+      create(:daily_activity,
+             course_lessons: [create(:course_lesson, course:, week: 2,
+                                                     day: :thursday)])
+      expect(teacher.week_course_lessons(Time.zone.today))
+        .to contain_exactly(week_course_lesson)
     end
   end
 

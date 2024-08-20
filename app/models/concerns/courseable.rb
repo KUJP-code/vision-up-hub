@@ -20,7 +20,7 @@ module Courseable
       lessons.where(query[:string], *query[:conditions]).distinct
     end
 
-    def week_lessons(date)
+    def week_course_lessons(date)
       return Lesson.none if plans.active.empty?
 
       query = lesson_query(date, :week)
@@ -52,7 +52,9 @@ module Courseable
                         else
                           "#{result[:string]} OR #{query_string}"
                         end
-      result[:conditions] = result[:conditions] + [w[:course_id], w[:week], w[:day]]
+      result[:conditions] = result[:conditions] +
+                            [w[:course_id], w[:week]] +
+                            (period == :day ? [w[:day]] : [])
     end
 
     result

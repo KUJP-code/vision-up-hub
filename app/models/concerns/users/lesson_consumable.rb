@@ -13,6 +13,6 @@ module LessonConsumable
     delegate :available_tests, to: :organisation
     delegate :course_week, to: :organisation
     delegate :day_lessons, to: :organisation
-    delegate :week_lessons, to: :organisation
+    delegate :week_course_lessons, to: :organisation
   end
 end
