@@ -80,7 +80,9 @@ RSpec.describe Teacher do
     let(:course) { create(:course) }
 
     before do
-      teacher.organisation.plans.create(attributes_for(:plan, course_id: course.id))
+      teacher.organisation.plans.create(
+        attributes_for(:plan, course_id: course.id)
+      )
     end
 
     it 'gets category resources for its course' do
@@ -92,6 +94,34 @@ RSpec.describe Teacher do
     it 'cannot access category resources for other plans' do
       create(:category_resource)
       expect(teacher.category_resources).to be_empty
+    end
+  end
+
+  context 'when finding tests' do
+    let(:course) { create(:course) }
+
+    before do
+      teacher.organisation.plans.create(
+        attributes_for(:plan, course_id: course.id, start: 7.days.ago)
+      )
+    end
+
+    it 'gets tests for this week' do
+      test = create(:test)
+      course.course_tests.create(test:, week: 2)
+      expect(teacher.available_tests).to contain_exactly(test)
+    end
+
+    it 'gets tests for past weeks' do
+      test = create(:test)
+      course.course_tests.create(test:, week: 1)
+      expect(teacher.available_tests).to contain_exactly(test)
+    end
+
+    it 'does not get tests for future weeks' do
+      test = create(:test)
+      course.course_tests.create(test:, week: 3)
+      expect(teacher.available_tests.empty?).to be true
     end
   end
 end
