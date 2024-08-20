@@ -18,6 +18,16 @@ RSpec.describe Notification do
     expect(notification.errors.full_messages).to include(error)
   end
 
+  it 'accepts http URLs' do
+    notification = build(:notification, link: 'http://example.com')
+    expect(notification.valid?).to be true
+  end
+
+  it 'accepts https URLs' do
+    notification = build(:notification, link: 'https://example.com')
+    expect(notification.valid?).to be true
+  end
+
   context 'when calling methods on User through Notifiable' do
     let(:user) { build(:user) }
     let(:notification) { build(:notification) }
