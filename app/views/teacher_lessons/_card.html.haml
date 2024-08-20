@@ -24,7 +24,16 @@
     %h3.text-center= title
 
 - else
-  = link_to teacher_resources_path(category: type),
+  :ruby
+    evening_types = %w[homework_check break_&_quiz four_skills project
+                       conversation_time book_activity lesson_review]
+    category = if evening_types.include?(type)
+      'evening_class'
+    else
+      type
+    end
+
+  = link_to teacher_resources_path(category:),
             class: 'card flex flex-col items-center p-2 gap-2',
             data: { turbo_frame: '_top' } do
     = image_tag "lesson_types/#{type.underscore}.svg",

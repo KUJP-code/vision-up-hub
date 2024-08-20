@@ -12,6 +12,22 @@ module TeacherLessonHelper
     end
   end
 
+  def lesson_order_hash(level)
+    case level
+    when 'kindy', 'elementary'
+      { 'arrival' => 0, 'brush_up' => 1, 'snack' => 2,
+        'DailyActivity' => 3, 'Exercise' => 4, 'DailyGathering' => 5,
+        'PhonicsClass' => 6, 'KindyPhonic' => 6, 'EnglishClass' => 7,
+        'StandShowSpeak' => 8, 'bus_time' => 9 }
+    when 'keep_up'
+      { 'conversation_time' => 0, 'snack' => 1, 'book_activity' => 2,
+        'EveningClass' => 3, 'lesson_review' => 4 }
+    when 'specialist'
+      { 'homework_check' => 0, 'break_&_quiz' => 1, 'four_skills' => 2,
+        'project' => 3, 'EveningClass' => 4 }
+    end
+  end
+
   def lesson_level_heading(lesson)
     return lesson.subtype.titleize if %w[DailyActivity Exercise].include?(lesson.type)
 
