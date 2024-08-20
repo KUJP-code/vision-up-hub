@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.19.0-notifications"
+    "Name": "thatbballguy/materials:0.19.1-allow-https"
   },
   "Ports": [
     {
