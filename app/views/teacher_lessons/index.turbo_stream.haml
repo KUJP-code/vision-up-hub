@@ -1,6 +1,3 @@
-:ruby
-  evening = %w[keep_up specialist].include?(@level)
-
 = turbo_stream.replace 'subtitle' do
   = render partial: 'teachers/subtitle',
            locals: { date: @date, level: @level, teacher: @teacher }
@@ -16,28 +13,9 @@
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
-      - if evening
-        - lesson_order_hash(@level).each_key do |type|
-          = render partial: 'teacher_lessons/card',
-                   locals: { date: @date, level: @level,
-                             teacher_id: @teacher.id, type: }
-      - else
-        - %w[arrival brush_up snack].each do |type|
-          = render partial: 'teacher_lessons/card',
-                   locals: { date: @date, level: @level,
-                             teacher_id: @teacher.id, type: }
+      - lesson_order_hash(@level).each_key do |type|
+        - next if Lesson::TYPES.include?(type) && @types.exclude?(type)
 
-      - @types.sort_by { |t| lesson_order_hash(@level)[t] || Float::INFINITY }.each do |type|
         = render partial: 'teacher_lessons/card',
                  locals: { date: @date, level: @level,
                            teacher_id: @teacher.id, type: }
-        - next if type != 'DailyActivity'
-
-        = render partial: 'teacher_lessons/card',
-                 locals: { date: @date, level: @level,
-                           teacher_id: @teacher.id, type: 'daily_gathering' }
-                           
-      - unless evening
-        = render partial: 'teacher_lessons/card',
-                 locals: { date: @date, level: @level,
-                           teacher_id: @teacher.id, type: 'bus_time' }
