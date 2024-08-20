@@ -62,8 +62,3 @@
               lesson_path(@lesson),
               data: { turbo_method: 'delete', turbo_confirm: 'Are you sure?' },
               class: 'btn btn-danger'
-
-    = link_to 'Copy as Template',
-              lessons_path(copy_lesson_id: @lesson.id),
-              data: { turbo_method: 'post' },
-              class: 'btn btn-secondary'
