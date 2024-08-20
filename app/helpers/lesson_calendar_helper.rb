@@ -57,7 +57,10 @@ module LessonCalendarHelper
       'EveningClass' =>
         { 'Keep Up' => 'row-start-[21]',
           'specialist' => 'row-start-[22]',
-          'specialist_advanced' => 'row-start-[23]' } }[type][level]
+          'specialist_advanced' => 'row-start-[23]' },
+      'SpecialLesson' =>
+        { 'All Levels' => 'row-start-[25]', 'Land' => 'row-start-[26]',
+          'Sky' => 'row-start-[27]', 'Galaxy' => 'row-start-[28]' } }[type][level]
   end
 
   def lesson_type_rows
@@ -65,7 +68,8 @@ module LessonCalendarHelper
       'PhonicsClass' => 'row-start-7 row-span-4',
       'EnglishClass' => 'row-start-12 row-span-4',
       'StandShowSpeak' => 'row-start-[17] row-span-3',
-      'EveningClass' => 'row-start-[21] row-span-3' }
+      'EveningClass' => 'row-start-[21] row-span-3',
+      'SpecialLesson' => 'row-start-[25] row-span-3' }
   end
 
   def calendar_level_dots(level)
