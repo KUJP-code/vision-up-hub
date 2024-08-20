@@ -1,0 +1,26 @@
+-# locals: (notifications:)
+
+- no_notifications = notifications.count(&:unread?).zero?
+
+#notification-list{ class: 'flex flex-col text-secondary max-w-[50vw] md:max-w-[30vw]' }
+  %h3.text-center.bg-secondary.text-white.p-3= t('.notifications')
+  - if !no_notifications
+    - notifications.each_with_index do |notification, i|
+      - next if notification.read
+
+      .grid.grid-cols-5.md:grid-cols-10.p-3
+        %span.truncate.row-start-1.col-start-1.col-span-4.md:col-span-9
+          = notification_text(notification, i)
+        = link_to notification_path(i),
+                  class: 'col-span-1 row-start-1 row-span-2 col-start-5 md:col-start-10 place-self-center',
+                  data: { turbo_method: :patch } do
+          = image_tag 'exit.svg', width: '40px', height: '40px'
+        %span.w-full.text-xs.text-secondary-50.row-start-2.col-span-4.md:col-span-9
+          #{time_ago_in_words(notification.created_at)} ago
+      %hr.border.border-secondary-50
+  - else
+    %h3.p-3= t('.no_new_notifications')
+
+  - if no_notifications
+    %hr.border-2.border-secondary
+  = link_to t('.view_all_notifications'), notifications_path, class: 'btn btn-secondary m-3'

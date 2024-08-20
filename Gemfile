@@ -53,7 +53,7 @@ gem 'poppler', '4.2.2'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
-gem 'solid_queue', '0.3.2'
+gem 'solid_queue', '~> 0.4'
 
 # And mission control to manage SQ jobs
 gem 'mission_control-jobs', '0.2.1'
@@ -90,6 +90,12 @@ gem 'postgres-copy', '~> 1.7'
 gem 'flipper'
 gem 'flipper-active_record'
 gem 'flipper-ui'
+
+# lock fugit for CVE-2024-43380
+gem 'fugit', '~> 1.11.1'
+
+# Use store_model to reduce boilerplate for jsonb col models
+gem 'store_model', '~> 3.0'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

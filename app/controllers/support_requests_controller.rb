@@ -26,6 +26,7 @@ class SupportRequestsController < ApplicationController
       authorize current_user.support_requests.new(support_request_params)
 
     if @support_request.save
+      notify_staff
       redirect_to @support_request,
                   notice: t('create_success')
     else
@@ -63,6 +64,15 @@ class SupportRequestsController < ApplicationController
       :resolved_by, :subject, { support_messages_attributes: %i[id body] },
       { images: [] }
     )
+  end
+
+  def notify_staff
+    notify_jobs = User.where(type: %w[Admin Sales]).map do |user|
+      NotifyUserJob.new(user_id: user.id,
+                        text: t('.new_request_from', user: @support_request.user.name),
+                        link: support_request_url(@support_request))
+    end
+    ActiveJob.perform_all_later(notify_jobs)
   end
 
   def set_support_request

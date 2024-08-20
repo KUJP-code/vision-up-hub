@@ -37,6 +37,12 @@ class SupportRequest < ApplicationRecord
     save
   end
 
+  def participants
+    participant_ids = (messages.pluck(:user_id) + [user_id]).uniq
+
+    User.where(id: participant_ids)
+  end
+
   def resolved?
     resolved_at.present? && resolved_by.present?
   end

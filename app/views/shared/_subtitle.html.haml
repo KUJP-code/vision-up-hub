@@ -5,5 +5,12 @@
     = link_to :back, class: 'hidden md:flex absolute left-6', id: 'back' do
       = image_tag 'back.svg'
       %span= t('.back')
+
   %h1= text
+
+  = render 'notifications/icon'
+  .mt-10.mr-10.md:mr-20.rounded.border-2.border-secondary.p-0#notifications{ popover: 'auto' }
+    = render 'notifications/popover_list',
+             notifications: current_user.notifications
+
   .hidden.md:block.absolute.right-3= locale_toggle(classes: 'fill-secondary')

@@ -17,10 +17,10 @@ class TestResultsController < ApplicationController
     @test_result = authorize TestResult.new(test_result_params)
 
     if @test_result.save
+      notify_parent(@test_result.student)
       redirect_to school_org_test_path,
                   notice: t('create_success')
     else
-      flash.now[:alert] = @test_result.errors.full_messages.to_sentence
       set_index_vars
       render 'test_results/index', status: :unprocessable_entity
     end
@@ -46,6 +46,14 @@ class TestResultsController < ApplicationController
                   :new_level, :test_id, :student_id, :reason, :basics,
                   { answers: { listening: [], reading: [],
                                speaking: [], writing: [] } })
+  end
+
+  def notify_parent(student)
+    return if student.parent_id.blank?
+
+    NotifyUserJob.perform_later(user_id: student.parent_id,
+                                text: t('.result_available', student: student.name),
+                                link: student_url(student))
   end
 
   def school_org_test_path

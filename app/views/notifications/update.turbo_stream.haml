@@ -1,0 +1,5 @@
+= turbo_stream.replace 'notification-icon', partial: 'notifications/icon'
+
+= turbo_stream.replace 'notification-list',
+                       partial: 'notifications/popover_list',
+                       locals: { notifications: @notifications }

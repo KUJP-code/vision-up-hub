@@ -27,6 +27,10 @@
                 edit_organisation_admin_path(@user.organisation_id, @user),
                 class: 'btn btn-secondary'
 
+    = link_to 'New Notification',
+              new_notification_path,
+              class: 'btn btn-secondary'
+
     = link_to 'Organisations',
               organisations_path,
               class: 'btn btn-secondary'

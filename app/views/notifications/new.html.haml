@@ -1,0 +1,29 @@
+= render 'shared/subtitle', text: 'Creating new notification'
+
+%main
+  = form_for @notification,
+             html: { class: 'flex flex-col gap-3 p-3' } do |f|
+    = render 'shared/form_errors', resource: @notification
+
+    .form-group
+      = label_tag :user_type
+      = select_tag :user_type,
+                   options_for_select(User::TYPES.map { |type| [type.titleize, type] }),
+                   include_blank: true,
+                   autofocus: true
+
+    .form-group
+      = label_tag :organisation_id
+      = select_tag :organisation_id,
+                   options_for_select(@organisations),
+                   include_blank: true
+
+    .form-group
+      = f.label :text
+      = f.text_field :text
+
+    .form-group
+      = f.label :link
+      = f.text_field :link
+
+    = f.submit class: 'btn btn-main'

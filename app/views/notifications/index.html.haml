@@ -1,0 +1,70 @@
+- multiple_notifications = current_user.notifications.size > 1
+
+= render 'shared/subtitle', text: t('.notification_list')
+
+%main.flex.flex-col.gap-5.p-3.text-center
+  - if current_user.is?('Admin')
+    = link_to 'New notification',
+              new_notification_path,
+              class: 'btn btn-secondary'
+
+    %table
+      %caption.caption-top.text-2xl.font-bold.p-5 Recently Queued Notifications
+      %thead
+        %th.thead.thead-s.bg-secondary-50 User
+        %th.thead.bg-secondary-50 Text/Link
+        %th.thead.thead-e.bg-secondary-50 Queued
+      %tbody
+        - @recent_notifications.each do |notification|
+          :ruby
+            user_id = notification.arguments['arguments'].first['user_id']
+            notified_user = @notified_users.find { |u| u.id == user_id }
+            link = notification.arguments['arguments'].first['link']
+            text = notification.arguments['arguments'].first['text']
+
+          %tr
+            %td
+              = link_to notified_user.name,
+                        organisation_user_path(notified_user.organisation_id, notified_user.id)
+            %td.break-all
+              - if link.present?
+                = link_to text, link
+              - else
+                = text
+            %td #{time_ago_in_words(notification.created_at)} ago
+
+  %table
+    %caption.caption-top.text-2xl.font-bold.p-5= t('.notification_list')
+    %thead
+      %th.thead.thead-s.bg-secondary-50= t('.text')
+      %th.thead.bg-secondary-50= t('.time_ago')
+      %th.thead.bg-secondary-50= t('.read')
+      %th.thead.thead-e.bg-secondary-50= t('.delete')
+    %tbody
+      - current_user.notifications.each_with_index do |notification, i|
+        %tr
+          %td.p-5.break-all= notification_text(notification, i)
+          %td.p-5= time_ago_in_words(notification.created_at)
+          %td
+            .h-full.flex.justify-center.items-center
+              = read_status(notification, i)
+          %td.p-5
+            = link_to 'Delete',
+                      notification_path(i),
+                      data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                      class: 'btn btn-danger'
+      - if multiple_notifications
+        %tr
+          %td.border-t-2.border-secondary.p-5{ colspan: 2 }
+          %td.border-t-2.border-secondary.p-5
+            - if current_user.notifications.count(&:unread?) > 1
+              = link_to t('.mark_all_read'),
+                        notification_path('all'),
+                        data: { turbo_method: :patch },
+                        class: 'btn btn-secondary text-nowrap'
+          %td.border-t-2.border-secondary.p-5
+            - if multiple_notifications
+              = link_to 'Delete All',
+                        notification_path('all'),
+                        data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' },
+                        class: 'btn btn-danger text-nowrap'
