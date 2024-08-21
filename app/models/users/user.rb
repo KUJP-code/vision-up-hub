@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include Notifiable, StoreModel::NestedAttributes
+  include Notifiable
 
   KU_TYPES = %w[Admin Sales Writer].freeze
   TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
@@ -19,7 +19,6 @@ class User < ApplicationRecord
 
   # This is the JSONB column, managed by StoreModel
   attribute :notifications, Notification.to_array_type
-  accepts_nested_attributes_for :notifications
   validates :notifications, store_model: true
 
   devise :confirmable, :database_authenticatable, :lockable, :registerable,
