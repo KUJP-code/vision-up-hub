@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FieldAttributes
+class InputAttributes
   include StoreModel::Model
 
   attribute :placeholder, :string

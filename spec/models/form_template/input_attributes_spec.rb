@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe FieldAttributes do
+RSpec.describe InputAttributes do
   it 'has a valid factory' do
-    expect(build(:field_attributes)).to be_valid
+    expect(build(:input_attributes)).to be_valid
   end
 end

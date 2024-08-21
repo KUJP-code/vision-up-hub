@@ -4,5 +4,6 @@ class FormTemplateTextField
   include StoreModel::Model
 
   attribute :name, :string
-  attribute :field_attributes, FieldAttributes.to_type
+  attribute :input_attributes, InputAttributes.to_type
+  accepts_nested_attributes_for :input_attributes
 end
