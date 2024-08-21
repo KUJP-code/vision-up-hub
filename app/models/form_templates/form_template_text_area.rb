@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FormTemplateTextField
+class FormTemplateTextArea
   include StoreModel::Model
 
   attribute :name, :string
@@ -8,6 +8,6 @@ class FormTemplateTextField
   accepts_nested_attributes_for :input_attributes
 
   def form_helper
-    :text_field
+    :text_area
   end
 end

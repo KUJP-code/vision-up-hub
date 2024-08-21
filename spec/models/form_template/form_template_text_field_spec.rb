@@ -7,5 +7,9 @@ RSpec.describe FormTemplateTextField do
     expect(build(:form_template_text_field)).to be_valid
   end
 
+  it 'responds to #form_helper with :text_field' do
+    expect(build(:form_template_text_field).form_helper).to eq(:text_field)
+  end
+
   it_behaves_like 'input attributable'
 end
