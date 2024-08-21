@@ -4,5 +4,5 @@ class FormTemplateTextField
   include StoreModel::Model
 
   attribute :name, :string
-  attribute :options, :json
+  attribute :field_attributes, FieldAttributes.to_type
 end
