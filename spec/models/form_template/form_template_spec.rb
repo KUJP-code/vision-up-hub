@@ -28,5 +28,9 @@ RSpec.describe FormTemplate do
   end
 
   it 'shows validation errors for fields' do
+    template = build(:form_template,
+                     fields: [attributes_for(:form_template_text_field, name: nil)])
+    template.valid?
+    expect(template.errors.full_messages).to include('Fields [0] Name を入力してください')
   end
 end

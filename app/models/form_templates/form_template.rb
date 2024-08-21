@@ -17,7 +17,7 @@ class FormTemplate < ApplicationRecord
 
   attribute :fields, FormTemplateField.to_array_type
   accepts_nested_attributes_for :fields
-  validates :fields, store_model: { merge_errors: true }
+  validates :fields, store_model: { merge_array_errors: true }
 
   belongs_to :organisation
   has_many :form_submissions, dependent: :restrict_with_error
