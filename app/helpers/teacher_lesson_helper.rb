@@ -12,19 +12,16 @@ module TeacherLessonHelper
     end
   end
 
-  def lesson_order_hash(level)
+  def lesson_type_order(level)
     case level
     when 'kindy', 'elementary'
-      { 'arrival' => 0, 'brush_up' => 1, 'snack' => 2, 'SpecialLesson' => 3,
-        'DailyActivity' => 4, 'Exercise' => 5, 'DailyGathering' => 6,
-        'PhonicsClass' => 7, 'KindyPhonic' => 7, 'EnglishClass' => 8,
-        'StandShowSpeak' => 9, 'bus_time' => 10 }
+      %w[arrival brush_up snack SpecialLesson DailyActivity Exercise
+         DailyGathering PhonicsClass KindyPhonic EnglishClass
+         StandShowSpeak bus_time]
     when 'keep_up'
-      { 'conversation_time' => 0, 'snack' => 1, 'book_activity' => 2,
-        'EveningClass' => 3, 'lesson_review' => 4 }
+      %w[conversation_time snack book_activity EveningClass lesson_review]
     when 'specialist'
-      { 'homework_check' => 0, 'break_&_quiz' => 1, 'four_skills' => 2,
-        'project' => 3, 'EveningClass' => 4 }
+      %w[homework_check break_&_quiz four_skills project EveningClass]
     end
   end
 

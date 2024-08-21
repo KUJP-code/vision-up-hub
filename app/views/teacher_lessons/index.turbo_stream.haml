@@ -13,7 +13,7 @@
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
-      - lesson_order_hash(@level).each_key do |type|
+      - lesson_type_order(@level).each do |type|
         - next if Lesson::TYPES.include?(type) && @types.exclude?(type)
 
         = render partial: 'teacher_lessons/card',
