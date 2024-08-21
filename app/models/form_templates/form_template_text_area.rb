@@ -3,6 +3,7 @@
 class FormTemplateTextArea
   include StoreModel::Model
 
+  attribute :input_type, :string, default: 'text_area'
   attribute :name, :string
   attribute :input_attributes, InputAttributes.to_type
   accepts_nested_attributes_for :input_attributes
@@ -10,6 +11,6 @@ class FormTemplateTextArea
   validates :name, presence: true
 
   def form_helper
-    :text_area
+    input_type.to_sym
   end
 end

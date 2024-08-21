@@ -4,7 +4,8 @@ class FormTemplate < ApplicationRecord
   include StoreModel::NestedAttributes
 
   FormTemplateField = StoreModel.one_of do |json|
-    case json['input_type']
+    input_type = json[:input_type] || json['input_type']
+    case input_type
     when 'text_field'
       FormTemplateTextField
     when 'check_box'

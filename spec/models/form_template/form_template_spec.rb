@@ -7,12 +7,24 @@ RSpec.describe FormTemplate do
     expect(build(:form_template)).to be_valid
   end
 
-  it 'can add fields' do
-    template = create(:form_template,
-                      fields:
-                        [attributes_for(:form_template_text_field)
-                          .merge('input_type' => 'text_field')])
-    expect(template.fields.first.class).to eq(FormTemplateTextField)
+  context 'when adding fields' do
+    it 'can add text fields' do
+      template = create(:form_template,
+                        fields: [attributes_for(:form_template_text_field)])
+      expect(template.fields.first.class).to eq(FormTemplateTextField)
+    end
+
+    it 'can add text areas' do
+      template = create(:form_template,
+                        fields: [attributes_for(:form_template_text_area)])
+      expect(template.fields.first.class).to eq(FormTemplateTextArea)
+    end
+
+    it 'can add check boxes' do
+      template = create(:form_template,
+                        fields: [attributes_for(:form_template_check_box)])
+      expect(template.fields.first.class).to eq(FormTemplateCheckBox)
+    end
   end
 
   it 'shows validation errors for fields' do
