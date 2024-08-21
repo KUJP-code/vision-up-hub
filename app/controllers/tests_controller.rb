@@ -60,7 +60,7 @@ class TestsController < ApplicationController
 
   def test_params
     params.require(:test).permit(:basics, :name, :level, :questions, :thresholds,
-                                 course_tests_attributes: %i[course_id week])
+                                 course_tests_attributes: %i[id course_id week _destroy])
   end
 
   def set_test

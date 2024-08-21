@@ -4,8 +4,6 @@
       data: { controller: 'course-dates',
               'course-dates-plans-value': courses.to_h { |c| [c.id, c.plan_date_data] }.to_json,
               'new-record': f.object.new_record?.to_s } }
-  = f.hidden_field :lesson_id, value: test.id
-
   %div{ class: 'form-group basis-1/4' }
     = f.label :course_id
     = f.collection_select :course_id,
