@@ -1041,6 +1041,7 @@ CREATE TABLE public.form_submissions (
     id bigint NOT NULL,
     parent_id bigint NOT NULL,
     staff_id bigint NOT NULL,
+    organisation_id bigint NOT NULL,
     form_template_id bigint NOT NULL,
     responses jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
@@ -2866,6 +2867,13 @@ CREATE INDEX index_form_submissions_on_form_template_id ON public.form_submissio
 
 
 --
+-- Name: index_form_submissions_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_form_submissions_on_organisation_id ON public.form_submissions USING btree (organisation_id);
+
+
+--
 -- Name: index_form_submissions_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3337,6 +3345,14 @@ ALTER TABLE ONLY public.phonics_resources
 
 ALTER TABLE ONLY public.faq_tutorials
     ADD CONSTRAINT fk_rails_1176cd5d25 FOREIGN KEY (tutorial_category_id) REFERENCES public.tutorial_categories(id);
+
+
+--
+-- Name: form_submissions fk_rails_119b838eb0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions
+    ADD CONSTRAINT fk_rails_119b838eb0 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
 
 
 --

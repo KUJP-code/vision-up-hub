@@ -5,6 +5,9 @@ class SchoolManager < User
 
   VISIBLE_TYPES = %w[Parent Teacher].freeze
 
+  has_many :form_submissions, dependent: :restrict_with_error,
+                              foreign_key: :staff_id,
+                              inverse_of: :staff
   has_many :managements, dependent: :destroy
   accepts_nested_attributes_for :managements,
                                 allow_destroy: true,
