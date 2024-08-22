@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       end
 
       resources :organisations, except: %i[destroy] do
+        resources :form_templates, shallow: true
         resources :schools
 
         resources :student_uploads, only: %i[create new show]

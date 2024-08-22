@@ -1,0 +1,30 @@
+= render 'shared/subtitle', text: t('.form_templates')
+
+%main.flex.flex-col.gap-3.p-3
+  - if current_user.is?('Admin')
+    = render 'organisations/nav',
+             active_org: @org, orgs: @orgs,
+             path_func: :organisation_form_templates_path
+
+  = link_to new_organisation_form_template_path(@org),
+            class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
+    = t('.new_template')
+    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
+
+  %table
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary= t('.template_name')
+        %th.thead.bg-secondary= t('.description')
+        %th.thead.bg-secondary= t('.fields')
+        %th.thead.thead-e.bg-secondary= t('.actions')
+    %tbody
+      - @form_templates.each do |ft|
+        %tr
+          %td= link_to ft.name, form_template_path(ft)
+          %td= ft.description
+          %td= ft.fields.map(&:name).to_sentence
+          %td
+            = link_to t('.edit'),
+                      edit_form_template_path(ft),
+                      class: 'btn btn-secondary'
