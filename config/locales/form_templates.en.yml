@@ -1,0 +1,7 @@
+en:
+  form_templates:
+    form:
+      check_box: "Checkbox"
+      select: "Select"
+      text_field: "Text Field"
+      text_area: "Text Area"

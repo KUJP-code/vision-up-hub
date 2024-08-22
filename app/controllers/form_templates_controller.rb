@@ -10,4 +10,8 @@ class FormTemplatesController < ApplicationController
              @orgs.first
            end
   end
+
+  def new
+    @template = FormTemplate.new(organisation_id: params[:organisation_id])
+  end
 end

@@ -1,0 +1,7 @@
+ja:
+  form_templates:
+    form:
+      check_box: "チェックボックス"
+      select: "選択"
+      text_field: "テキストフィールド"
+      text_area: "テキストエリア"

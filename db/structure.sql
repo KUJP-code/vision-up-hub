@@ -1042,7 +1042,7 @@ CREATE TABLE public.form_templates (
     organisation_id bigint NOT NULL,
     title character varying,
     description character varying,
-    fields jsonb,
+    fields jsonb DEFAULT '[]'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

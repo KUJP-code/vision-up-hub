@@ -4,7 +4,7 @@ class CreateFormTemplates < ActiveRecord::Migration[7.1]
       t.references :organisation, null: false, foreign_key: true
       t.string :title
       t.string :description
-      t.jsonb :fields
+      t.jsonb :fields, default: []
 
       t.timestamps
     end

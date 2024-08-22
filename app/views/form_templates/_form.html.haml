@@ -1,0 +1,38 @@
+-# locals: (template:)
+
+= form_with model: [template.organisation, template],
+            html: { class: 'form' } do |f|
+  = render 'shared/form_errors', resource: template
+
+  %h2.text-center.text-2xl For #{template.organisation.name}
+  = f.hidden_field :organisation_id
+
+  .form-group
+    = f.label :title
+    = f.text_field :title, autofocus: true, required: true
+
+  .form-group
+    = f.label :description
+    = f.text_area :description
+
+
+  .flex.flex-wrap.justify-around.gap-3
+    - FormTemplate::AVAILABLE_INPUT_TYPES.each do |type|
+      - current_fields = template.fields.select { |field| field.input_type == type }
+
+      .flex.flex-col.gap-3{ data: { controller: 'fields' } }
+        %h2.text-center.text-2xl= t(".#{type}").pluralize
+        = f.fields_for :fields, current_fields do |ff|
+          = render "form_templates/#{type}", current_fields:, f: ff
+
+        %template{ 'data-fields-target' => 'template' }
+          = f.fields_for :fields, "FormTemplate#{type.titleize.tr(' ', '')}".constantize.new,
+                                  child_index: 'CHILD' do |ff|
+            = render "form_templates/#{type}", current_fields:, f: ff
+
+        %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
+          = t(".add_#{type}")
+
+        %div{ 'data-fields-target' => 'target' }
+
+  = f.submit class: 'btn btn-main'
