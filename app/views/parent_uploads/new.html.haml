@@ -6,12 +6,8 @@
   = render 'shared/subtitle', text: t('.create_parents', org: @organisation.name)
 
   - if current_user.is?('Admin')
-    %nav.tab-nav
-      - @orgs.each do |org|
-        - active = @organisation == org ? 'active' : 'inactive'
-        = link_to org.name,
-                  new_organisation_parent_upload_path(organisation_id: org.id),
-                  class: "nav-tab #{active}"
+    = render 'organisations/nav',
+             orgs: @orgs, active_org: @organisation, path_func: :new_organisation_parent_upload_path
 
   = render 'parent_uploads/format_explainer'
   = link_to organisation_parent_upload_path(current_user.organisation, 1),

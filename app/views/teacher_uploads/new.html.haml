@@ -6,12 +6,9 @@
   = render 'shared/subtitle', text: t('.create_teachers', org: @organisation.name)
 
   - if current_user.is?('Admin')
-    %nav.tab-nav
-      - @orgs.each do |org|
-        - active = @organisation == org ? 'active' : 'inactive'
-        = link_to org.name,
-                  new_organisation_student_upload_path(organisation_id: org.id),
-                  class: "nav-tab #{active}"
+    = render 'organisations/nav',
+             orgs: @orgs, active_org: @organisation,
+             path_func: :new_organisation_teacher_upload_path
 
   = render 'teacher_uploads/format_explainer'
   = link_to organisation_teacher_upload_path(current_user.organisation, 1),

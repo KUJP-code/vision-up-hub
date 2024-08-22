@@ -1,0 +1,8 @@
+-# locals: (active_org:, orgs:, path_args: {}, path_func:)
+
+%nav.tab-nav
+  - orgs.each do |org|
+    - active_class = active_org == org ? 'active' : 'inactive'
+    = link_to org.name,
+              send(path_func, path_args.merge(organisation_id: org.id)),
+              class: "nav-tab #{active_class}"
