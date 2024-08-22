@@ -26,6 +26,10 @@
               organisation_form_templates_path(@user.organisation_id),
               class: 'btn btn-secondary'
 
+    = link_to 'Form Submissions',
+              organisation_form_submissions_path(@user.organisation_id),
+              class: 'btn btn-secondary'
+
     - if @user.id == current_user.id
       = link_to 'My Account',
                 edit_organisation_admin_path(@user.organisation_id, @user),

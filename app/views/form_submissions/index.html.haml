@@ -1,0 +1,39 @@
+= render 'shared/subtitle', text: t('.form_submissions')
+
+%main.flex.flex-col.gap-3.p-3
+  - if current_user.is?('Admin')
+    = render 'organisations/nav',
+             active_org: @org, orgs: @orgs,
+             path_func: :organisation_form_submissions_path
+
+  = link_to new_organisation_form_submission_path(@org),
+            class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
+    = t('.new_submission')
+    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
+
+  %table.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.submission_title')
+        %th.thead.bg-secondary-50= t('.template_name')
+        %th.thead.bg-secondary-50= t('.parent')
+        %th.thead.bg-secondary-50= t('.staff')
+        %th.thead.bg-secondary-50= t('.responses')
+        %th.thead.thead-e.bg-secondary-50= t('.actions')
+    %tbody
+      - @submissions.each do |s|
+        %tr
+          %td.p-3= link_to s.title, form_submission_path(s)
+          %td.p-3= s.form_template.title
+          %td.p-3= s.parent.name
+          %td.p-3= s.staff.name
+          %td.p-3= s.responses
+          %td.p-3
+            .flex.justify-around.gap-3
+              = link_to t('.edit'),
+                        edit_form_submission_path(ft),
+                        class: 'btn btn-secondary'
+              = form_with model: [s.organisation_id, s] do |f|
+                = f.hidden_field :locked, value: !s.locked
+                = f.submit s.locked ? t('.unlock') : t('.lock'),
+                           class: 'btn btn-main'
