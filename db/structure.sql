@@ -1034,6 +1034,40 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 
 --
+-- Name: form_submissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.form_submissions (
+    id bigint NOT NULL,
+    parent_id bigint NOT NULL,
+    staff_id bigint NOT NULL,
+    form_template_id bigint NOT NULL,
+    responses jsonb DEFAULT '{}'::jsonb,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: form_submissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.form_submissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: form_submissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.form_submissions_id_seq OWNED BY public.form_submissions.id;
+
+
+--
 -- Name: form_templates; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2158,6 +2192,13 @@ ALTER TABLE ONLY public.flipper_gates ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: form_submissions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions ALTER COLUMN id SET DEFAULT nextval('public.form_submissions_id_seq'::regclass);
+
+
+--
 -- Name: form_templates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2462,6 +2503,14 @@ ALTER TABLE ONLY public.flipper_features
 
 ALTER TABLE ONLY public.flipper_gates
     ADD CONSTRAINT flipper_gates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: form_submissions form_submissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions
+    ADD CONSTRAINT form_submissions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2807,6 +2856,27 @@ CREATE UNIQUE INDEX index_flipper_features_on_key ON public.flipper_features USI
 --
 
 CREATE UNIQUE INDEX index_flipper_gates_on_feature_key_and_key_and_value ON public.flipper_gates USING btree (feature_key, key, value);
+
+
+--
+-- Name: index_form_submissions_on_form_template_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_form_submissions_on_form_template_id ON public.form_submissions USING btree (form_template_id);
+
+
+--
+-- Name: index_form_submissions_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_form_submissions_on_parent_id ON public.form_submissions USING btree (parent_id);
+
+
+--
+-- Name: index_form_submissions_on_staff_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_form_submissions_on_staff_id ON public.form_submissions USING btree (staff_id);
 
 
 --
@@ -3286,6 +3356,14 @@ ALTER TABLE ONLY public.managements
 
 
 --
+-- Name: form_submissions fk_rails_2d41d61f87; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions
+    ADD CONSTRAINT fk_rails_2d41d61f87 FOREIGN KEY (staff_id) REFERENCES public.users(id);
+
+
+--
 -- Name: solid_queue_recurring_executions fk_rails_318a5533ed; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3454,6 +3532,14 @@ ALTER TABLE ONLY public.support_messages
 
 
 --
+-- Name: form_submissions fk_rails_a6b3db8d26; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions
+    ADD CONSTRAINT fk_rails_a6b3db8d26 FOREIGN KEY (form_template_id) REFERENCES public.form_templates(id);
+
+
+--
 -- Name: school_classes fk_rails_a78da68107; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3499,6 +3585,14 @@ ALTER TABLE ONLY public.student_classes
 
 ALTER TABLE ONLY public.course_resources
     ADD CONSTRAINT fk_rails_bbab481d12 FOREIGN KEY (category_resource_id) REFERENCES public.category_resources(id);
+
+
+--
+-- Name: form_submissions fk_rails_bd208a0140; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.form_submissions
+    ADD CONSTRAINT fk_rails_bd208a0140 FOREIGN KEY (parent_id) REFERENCES public.users(id);
 
 
 --
@@ -3583,6 +3677,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240822085050'),
 ('20240821042907'),
 ('20240808061229'),
 ('20240805024052'),
