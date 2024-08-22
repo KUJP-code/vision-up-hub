@@ -23,5 +23,5 @@ class FormTemplate < ApplicationRecord
   validates :fields, store_model: { merge_array_errors: true }
 
   belongs_to :organisation
-  has_many :form_submissions, dependent: :restrict_with_error
+  # has_many :form_submissions, dependent: :restrict_with_error
 end

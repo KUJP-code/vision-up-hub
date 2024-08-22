@@ -11,20 +11,25 @@
     = t('.new_template')
     = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
 
-  %table
+  %table.text-center
     %thead
       %tr
-        %th.thead.thead-s.bg-secondary= t('.template_name')
-        %th.thead.bg-secondary= t('.description')
-        %th.thead.bg-secondary= t('.fields')
-        %th.thead.thead-e.bg-secondary= t('.actions')
+        %th.thead.thead-s.bg-secondary-50= t('.template_title')
+        %th.thead.bg-secondary-50= t('.description')
+        %th.thead.bg-secondary-50= t('.fields')
+        %th.thead.thead-e.bg-secondary-50= t('.actions')
     %tbody
       - @form_templates.each do |ft|
         %tr
-          %td= link_to ft.name, form_template_path(ft)
-          %td= ft.description
-          %td= ft.fields.map(&:name).to_sentence
-          %td
-            = link_to t('.edit'),
-                      edit_form_template_path(ft),
-                      class: 'btn btn-secondary'
+          %td.p-3= link_to ft.title, form_template_path(ft)
+          %td.p-3= ft.description
+          %td.p-3= ft.fields.map(&:name).to_sentence
+          %td.p-3
+            .flex.justify-around.gap-3
+              = link_to t('.edit'),
+                        edit_form_template_path(ft),
+                        class: 'btn btn-secondary'
+              = link_to 'Delete',
+                        form_template_path(ft),
+                        data: { turbo_method: :delete, turbo_confirm: t('confirm') },
+                        class: 'btn btn-danger'

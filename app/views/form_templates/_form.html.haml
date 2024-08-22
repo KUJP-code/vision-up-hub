@@ -1,7 +1,8 @@
 -# locals: (template:)
 
-= form_with model: [template.organisation, template],
-            html: { class: 'form' } do |f|
+- model = action_name == 'new' ? [template.organisation, template]  : template
+
+= form_with model:, html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: template
 
   %h2.text-center.text-2xl For #{template.organisation.name}

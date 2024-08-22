@@ -3,7 +3,7 @@
 - new_record = current_fields.none?(f.object)
 
 .fields-wrapper.flex.flex-wrap.items-center.gap-3{ data: { 'new-record' => new_record.to_s } }
-  = f.hidden_field :input_type, value: 'text_field'
+  = f.hidden_field :input_type, value: 'text_area'
 
   .form-group
     = f.label :name, t('.name')
