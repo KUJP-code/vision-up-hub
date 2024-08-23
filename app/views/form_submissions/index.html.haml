@@ -11,7 +11,9 @@
     %nav.dropdown-nav
       - @templates.each do |template|
         = link_to "#{template.title} template",
-                  new_organisation_form_submission_path(@org, template_id: template.id),
+                  new_organisation_form_submission_path(@org,
+                                                        template_id: template.id,
+                                                        staff_id: current_user.id),
                   class: 'dropdown-item',
                   id: "create_#{template.id}"
 
@@ -27,17 +29,17 @@
     %tbody
       - @submissions.each do |s|
         %tr
-          %td.p-3= link_to s.title, form_submission_path(s)
+          %td.p-3= link_to s.form_template.title, form_submission_path(s)
           %td.p-3= s.form_template.title
-          %td.p-3= s.parent.name
+          %td.p-3= s.parent&.name
           %td.p-3= s.staff.name
           %td.p-3= s.responses
           %td.p-3
             .flex.justify-around.gap-3
               = link_to t('.edit'),
-                        edit_form_submission_path(ft),
+                        edit_form_submission_path(s),
                         class: 'btn btn-secondary'
-              = form_with model: [s.organisation_id, s] do |f|
+              = form_with model: s do |f|
                 = f.hidden_field :locked, value: !s.locked
                 = f.submit s.locked ? t('.unlock') : t('.lock'),
                            class: 'btn btn-main'

@@ -5,6 +5,5 @@ FactoryBot.define do
     input_type { 'check_box' }
     name { 'test_check_box' }
     position { 1 }
-    input_attributes { {} }
   end
 end

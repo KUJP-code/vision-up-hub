@@ -1039,7 +1039,7 @@ ALTER SEQUENCE public.flipper_gates_id_seq OWNED BY public.flipper_gates.id;
 
 CREATE TABLE public.form_submissions (
     id bigint NOT NULL,
-    parent_id bigint NOT NULL,
+    parent_id bigint,
     staff_id bigint NOT NULL,
     organisation_id bigint NOT NULL,
     form_template_id bigint NOT NULL,

@@ -16,6 +16,6 @@ class FormTemplateTextField
   validates :name, :position, presence: true
 
   def form_helper
-    input_type.to_sym
+    :"#{input_type}_tag"
   end
 end

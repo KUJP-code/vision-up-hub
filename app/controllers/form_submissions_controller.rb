@@ -19,24 +19,24 @@ class FormSubmissionsController < ApplicationController
   def new
     @template = FormTemplate.find(params[:template_id])
     @organisation = authorize Organisation.find(params[:organisation_id])
+    @staff = authorize User.find(params[:staff_id]), :show?
     @submission = authorize FormSubmission.new(
       organisation_id: @organisation.id, form_template_id: @template.id
     )
   end
 
   def edit
-    @organisation = authorize Organisation.find(params[:organisation_id])
-    @submission = authorize FormSubmission.new(
-      organisation_id: @organisation.id, form_template_id: @template.id
-    )
+    @submission = authorize FormSubmission.find(params[:id])
+    set_form_data
   end
 
   def create
     @submission = authorize FormSubmission.new(submission_params)
     if @submission.save
-      redirect_to organisation_form_submissions_url(@submission.organisation),
+      redirect_to form_submission_url(@submission),
                   notice: t('create_success')
     else
+      set_form_data
       render :new, status: :unprocessable_entity,
                    alert: t('create_failure')
     end
@@ -44,9 +44,10 @@ class FormSubmissionsController < ApplicationController
 
   def update
     if @submission.update(submission_params)
-      redirect_to organisation_form_submissions_url(@submission.organisation),
+      redirect_to form_submission_url(@submission),
                   notice: t('update_success')
     else
+      set_form_data
       render :edit, status: :unprocessable_entity,
                     alert: t('update_failure')
     end
@@ -65,14 +66,17 @@ class FormSubmissionsController < ApplicationController
   private
 
   def submission_params
-    params.require(:form_submission).permit(
-      :description, :organisation_id, :title,
-      fields_attributes: [:explanation, :input_type, :name, :position, :_destroy,
-                          { input_attributes_attributes: %i[placeholder required] }]
-    )
+    params.require(:form_submission).permit(:form_template_id, :organisation_id,
+                                            :parent_id, :staff_id, :locked, { responses: {} })
   end
 
   def set_submission
     @submission = authorize FormSubmission.find(params[:id])
+  end
+
+  def set_form_data
+    @organisation = @submission.organisation
+    @template = @submission.form_template
+    @staff = @submission.staff
   end
 end

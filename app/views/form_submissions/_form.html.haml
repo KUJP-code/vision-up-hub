@@ -1,13 +1,27 @@
--# locals: (organisation:, submission:, template:)
+-# locals: (organisation:, staff:, submission:, template:)
 
 - model = submission.new_record? ? [organisation, submission] : submission
 
 = form_with model:, html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: submission
 
+  = f.hidden_field :form_template_id, value: template.id
+  = f.hidden_field :organisation_id, value: organisation.id
+  = f.hidden_field :staff_id, value: staff.id
+
   - template.fields.sort_by(&:position).each do |field|
+    :ruby
+      attributes = if field.form_helper == :check_box_tag
+        { checked: submission.responses[field.name].present? }
+      else
+        field.input_attributes.attributes
+      end
+
     .form-group
-      = f.label field.name
-      = f.send(field.form_helper, field.name)
+      = label_tag "form_submission[responses][#{field.name}]", field.name.titleize
+      = send(field.form_helper,
+             "form_submission[responses][#{field.name}]",
+             submission.responses[field.name],
+             **attributes)
 
   = f.submit class: 'btn btn-main'

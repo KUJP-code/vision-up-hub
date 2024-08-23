@@ -7,9 +7,7 @@ RSpec.describe FormTemplateCheckBox do
     expect(build(:form_template_check_box)).to be_valid
   end
 
-  it 'responds to #form_helper with :check_box' do
-    expect(build(:form_template_check_box).form_helper).to eq(:check_box)
+  it 'responds to #form_helper with :check_box_tag' do
+    expect(build(:form_template_check_box).form_helper).to eq(:check_box_tag)
   end
-
-  it_behaves_like 'input attributable'
 end
