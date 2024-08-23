@@ -1,6 +1,9 @@
 ja:
   form_submissions:
-    new:
-      new: "%{title}フォーム"
     edit:
       edit: "%{title}フォーム"
+    index:
+      lock: "ロック"
+      unlock: "アンロック"
+    new:
+      new: "%{title}フォーム"

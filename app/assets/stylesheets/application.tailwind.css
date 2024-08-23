@@ -134,6 +134,14 @@
 		}
 	}
 
+	.btn-success {
+		@apply bg-success text-white;
+
+		&:hover {
+			@apply bg-green-500;
+		}
+	}
+
 	.btn-outline {
 		@apply flex items-center border-2 border-secondary text-secondary py-1 px-3 rounded;
 

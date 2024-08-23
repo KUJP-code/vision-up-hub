@@ -20,8 +20,7 @@
   %table.text-center
     %thead
       %tr
-        %th.thead.thead-s.bg-secondary-50= t('.submission_title')
-        %th.thead.bg-secondary-50= t('.template_name')
+        %th.thead.thead-s.bg-secondary-50= t('.template_name')
         %th.thead.bg-secondary-50= t('.parent')
         %th.thead.bg-secondary-50= t('.staff')
         %th.thead.bg-secondary-50= t('.responses')
@@ -29,11 +28,17 @@
     %tbody
       - @submissions.each do |s|
         %tr
-          %td.p-3= link_to s.form_template.title, form_submission_path(s)
-          %td.p-3= s.form_template.title
-          %td.p-3= s.parent&.name
+          %td.p-3= link_to s.form_template.title.titleize, form_submission_path(s)
+          %td.p-3
+            = s.parent ? s.parent.name : 'なし'
           %td.p-3= s.staff.name
-          %td.p-3= s.responses
+          %td.p-3
+            %ul
+              - s.responses.each do |name, value|
+                %li
+                  %strong #{name.titleize}:
+                  = value
+
           %td.p-3
             .flex.justify-around.gap-3
               = link_to t('.edit'),
@@ -42,4 +47,4 @@
               = form_with model: s do |f|
                 = f.hidden_field :locked, value: !s.locked
                 = f.submit s.locked ? t('.unlock') : t('.lock'),
-                           class: 'btn btn-main'
+                           class: "btn #{s.locked ? 'btn-danger' : 'btn-success'}"

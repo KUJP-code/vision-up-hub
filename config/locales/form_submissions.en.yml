@@ -1,6 +1,9 @@
 en:
   form_submissions:
-    new:
-      new: "New %{title} form"
     edit:
       edit: "Edit %{title} form"
+    index:
+      lock: "Lock"
+      unlock: "Unlock"
+    new:
+      new: "New %{title} form"
