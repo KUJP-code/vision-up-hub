@@ -1,0 +1,13 @@
+-# locals: (organisation:, submission:, template:)
+
+- model = submission.new_record? ? [organisation, submission] : submission
+
+= form_with model:, html: { class: 'form' } do |f|
+  = render 'shared/form_errors', resource: submission
+
+  - template.fields.sort_by(&:position).each do |field|
+    .form-group
+      = f.label field.name
+      = f.send(field.form_helper, field.name)
+
+  = f.submit class: 'btn btn-main'

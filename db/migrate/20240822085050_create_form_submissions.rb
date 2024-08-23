@@ -6,6 +6,7 @@ class CreateFormSubmissions < ActiveRecord::Migration[7.1]
       t.references :organisation, null: false, foreign_key: true
       t.references :form_template, null: false, foreign_key: true
       t.jsonb :responses, default: {}
+      t.boolean :locked, default: false
 
       t.timestamps
     end

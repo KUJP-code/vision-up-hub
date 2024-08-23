@@ -1,0 +1,6 @@
+ja:
+  form_submissions:
+    new:
+      new: "%{title}フォーム"
+    edit:
+      edit: "%{title}フォーム"

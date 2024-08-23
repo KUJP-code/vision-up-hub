@@ -1,0 +1,8 @@
+= render 'shared/subtitle',
+         text: t('.new', title: @submission.form_template.title)
+
+%main
+  = render 'form_submissions/form',
+           organisation: @organisation,
+           submission: @submission,
+           template: @template

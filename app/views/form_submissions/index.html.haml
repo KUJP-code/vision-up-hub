@@ -6,10 +6,14 @@
              active_org: @org, orgs: @orgs,
              path_func: :organisation_form_submissions_path
 
-  = link_to new_organisation_form_submission_path(@org),
-            class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
-    = t('.new_submission')
-    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
+  %details.dropdown.bg-secondary.text-white{ id: 'create_submission' }
+    %summary.font-semibold.p-2= t('.create_new')
+    %nav.dropdown-nav
+      - @templates.each do |template|
+        = link_to "#{template.title} template",
+                  new_organisation_form_submission_path(@org, template_id: template.id),
+                  class: 'dropdown-item',
+                  id: "create_#{template.id}"
 
   %table.text-center
     %thead

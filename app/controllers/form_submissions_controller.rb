@@ -6,6 +6,7 @@ class FormSubmissionsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
+    @templates = policy_scope(FormTemplate)
     @submissions = policy_scope(FormSubmission).includes(:form_template, :staff, :parent)
     @orgs = policy_scope(Organisation)
     @org = if params[:organisation_id]
@@ -16,10 +17,19 @@ class FormSubmissionsController < ApplicationController
   end
 
   def new
-    @submission = authorize FormSubmission.new(organisation_id: params[:organisation_id])
+    @template = FormTemplate.find(params[:template_id])
+    @organisation = authorize Organisation.find(params[:organisation_id])
+    @submission = authorize FormSubmission.new(
+      organisation_id: @organisation.id, form_template_id: @template.id
+    )
   end
 
-  def edit; end
+  def edit
+    @organisation = authorize Organisation.find(params[:organisation_id])
+    @submission = authorize FormSubmission.new(
+      organisation_id: @organisation.id, form_template_id: @template.id
+    )
+  end
 
   def create
     @submission = authorize FormSubmission.new(submission_params)

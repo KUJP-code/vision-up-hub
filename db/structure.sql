@@ -1044,6 +1044,7 @@ CREATE TABLE public.form_submissions (
     organisation_id bigint NOT NULL,
     form_template_id bigint NOT NULL,
     responses jsonb DEFAULT '{}'::jsonb,
+    locked boolean DEFAULT false,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
