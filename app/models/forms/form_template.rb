@@ -5,8 +5,11 @@ class FormTemplate < ApplicationRecord
 
   FormTemplateField = StoreModel.one_of do |json|
     input_type = json[:input_type] || json['input_type']
-    FormTemplateSingleInput if FormTemplateSingleInput::INPUT_TYPES.include?(input_type)
-    # FormTemplateMultiInput if FormTemplateMultiInput::INPUT_TYPES.include?(input_type)
+    if FormTemplateSingleInput::INPUT_TYPES.include?(input_type)
+      FormTemplateSingleInput
+    elsif FormTemplateMultiInput::INPUT_TYPES.include?(input_type)
+      FormTemplateMultiInput
+    end
   end
 
   attribute :fields, FormTemplateField.to_array_type

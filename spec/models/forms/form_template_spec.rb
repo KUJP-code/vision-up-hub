@@ -8,22 +8,22 @@ RSpec.describe FormTemplate do
   end
 
   context 'when adding single input fields' do
-    it 'can add text fields' do
-      template = create(:form_template,
-                        fields: [attributes_for(:form_template_single_input, :text_field)])
-      expect(template.fields.first.input_type).to eq('text_field')
+    FormTemplateSingleInput::INPUT_TYPES.each do |input_type|
+      it 'can add text fields' do
+        template = create(:form_template,
+                          fields: [attributes_for(:form_template_single_input, input_type.to_sym)])
+        expect(template.fields.first.input_type).to eq(input_type)
+      end
     end
+  end
 
-    it 'can add text areas' do
-      template = create(:form_template,
-                        fields: [attributes_for(:form_template_single_input, :text_area)])
-      expect(template.fields.first.input_type).to eq('text_area')
-    end
-
-    it 'can add check boxes' do
-      template = create(:form_template,
-                        fields: [attributes_for(:form_template_single_input, :check_box)])
-      expect(template.fields.first.input_type).to eq('check_box')
+  context 'when adding multi input fields' do
+    FormTemplateMultiInput::INPUT_TYPES.each do |input_type|
+      it 'can add text fields' do
+        template = create(:form_template,
+                          fields: [attributes_for(:form_template_multi_input, input_type.to_sym)])
+        expect(template.fields.first.input_type).to eq(input_type)
+      end
     end
   end
 

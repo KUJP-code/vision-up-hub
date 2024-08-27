@@ -1,0 +1,31 @@
+-# locals: (current_fields:, f:, new_record:)
+
+.fields-wrapper.flex.flex-wrap.items-center.gap-3{ data: { 'new-record' => new_record.to_s } }
+  .form-group
+    = f.label :input_type, t('.input_type')
+    = f.select :input_type,
+               FormTemplateMultiInput::INPUT_TYPES.map { |type| [t(".#{type}"), type] }
+
+  .form-group
+    = f.label :name, t('.name')
+    = f.text_field :name
+
+  .form-group
+    = f.label :position, t('.position')
+    = f.number_field :position
+
+  .form-group
+    = f.label :explanation, t('.explanation')
+    = f.text_field :explanation
+
+  = render 'form_templates/input_attributes',
+           f:, current_attributes: f.object.input_attributes
+
+  - if new_record
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove',
+                            type: 'button' }
+      = t('.remove')
+  - else
+    .flex.items-center.gap-1
+      = f.check_box :_destroy
+      = f.label :_destroy, t('.destroy')

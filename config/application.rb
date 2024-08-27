@@ -33,6 +33,8 @@ module Materials
     config.autoload_paths += Dir[Rails.root.join('app/controllers/**/')]
     config.autoload_paths += Dir[Rails.root.join('app/models/**/')]
     config.autoload_paths += Dir[Rails.root.join('app/policies/**/')]
+    # Add path for custom types
+    config.autoload_paths += Dir[Rails.root.join('app/types/**/')]
 
     # Don't generate system test files.
     config.generators.system_tests = nil
