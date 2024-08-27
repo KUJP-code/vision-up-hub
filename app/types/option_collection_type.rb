@@ -7,7 +7,13 @@ class OptionCollectionType < ActiveRecord::Type::Value
 
   def cast(string)
     return [] if string.blank?
+    return string if string.is_a? Array
 
-    string.split(',').map { |pair| pair.split(':').map(&:strip) }
+    pairs = string.split(',')
+    pairs.map { |pair| pair.split(':').map(&:strip) }
+  end
+
+  def deserialize(array)
+    array.join(', ').join(': ')
   end
 end

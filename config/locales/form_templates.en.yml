@@ -1,11 +1,15 @@
 en:
   form_templates:
     form:
+      add_form_template_multi_input: "Add select box or radio button"
       add_form_template_single_input: "Add checkbox, text/date field or text area"
-      form_template_single_input: "Checkboxes, text/date fields and text areas"
       check_box: "Checkbox"
       date_field: "Date Field"
+      form_template_multi_input: "Select boxes and radio buttons"
+      form_template_single_input: "Checkboxes, text/date fields and text areas"
       radio_button: "Radio Button"
       select: "Select"
       text_field: "Text Field"
       text_area: "Text Area"
+    form_template_multi_input:
+      options_hint: "Options should be given in the form 'label:value, label:value'"

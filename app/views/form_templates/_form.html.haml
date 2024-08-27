@@ -17,7 +17,7 @@
     = f.text_area :description
 
   .flex.flex-wrap.justify-around.gap-3
-    - [FormTemplateSingleInput].each do |klass|
+    - [FormTemplateSingleInput, FormTemplateMultiInput].each do |klass|
       :ruby
         class_name = klass.name.underscore
         current_fields = template.fields.select { |field| field.instance_of?(klass) }

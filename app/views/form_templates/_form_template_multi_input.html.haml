@@ -18,6 +18,11 @@
     = f.label :explanation, t('.explanation')
     = f.text_field :explanation
 
+  .form-group
+    = f.label :options, t('.options')
+    = f.text_field :options
+    %small= t('.options_hint')
+
   = render 'form_templates/input_attributes',
            f:, current_attributes: f.object.input_attributes
 

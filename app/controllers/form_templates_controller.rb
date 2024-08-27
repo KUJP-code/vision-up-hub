@@ -57,7 +57,7 @@ class FormTemplatesController < ApplicationController
   def template_params
     params.require(:form_template).permit(
       :description, :organisation_id, :title,
-      fields_attributes: [:explanation, :input_type, :name, :position, :_destroy,
+      fields_attributes: [:explanation, :input_type, :name, :position, :_destroy, :options,
                           { input_attributes_attributes: %i[placeholder required] }]
     )
   end
