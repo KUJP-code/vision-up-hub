@@ -10,6 +10,7 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
   approve: "承認"
   awaiting_approval: "承認待ち"
+  confirm_delete: "本当に削除しますか?"
   copied: "コピーしました!"
   create_success: "リソースの作成に成功"
   date:
@@ -87,6 +88,7 @@ ja:
       day: 日
       month: 月
       year: 年
+  delete: "削除"
   edit: "編集"
   errors:
     format: "%{attribute} %{message}"

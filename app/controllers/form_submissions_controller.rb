@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FormSubmissionsController < ApplicationController
-  before_action :set_submission, only: %i[destroy edit update]
+  before_action :set_submission, only: %i[destroy edit show update]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
@@ -15,6 +15,8 @@ class FormSubmissionsController < ApplicationController
              @orgs.first
            end
   end
+
+  def show; end
 
   def new
     @template = FormTemplate.find(params[:template_id])

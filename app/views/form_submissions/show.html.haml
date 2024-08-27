@@ -1,0 +1,25 @@
+- parent = @submission.parent_id ? @submission.parent.name : 'なし'
+
+= render 'shared/subtitle', text: t('.submission_for',
+                                    template: @submission.form_template.title,
+                                    parent:)
+
+%main.p-3.flex.flex-col.gap-3.items-center
+  %section.w-full.flex.flex-col.gap-3.items-center.border-2.border-secondary.p-3.rounded
+    %h2= t('.template', template: @submission.form_template.title)
+    %h2= t('.parent', parent:)
+    %h2= t('.staff', staff: @submission.staff.name)
+    %h2= t('.submitted_on', submitted_on: ja_date(@submission.created_at))
+    .flex.gap-3
+      %h2= render 'form_submissions/lock_toggle', submission: @submission
+      = link_to t('delete'),
+                form_submission_path(@submission),
+                data: { turbo_method: :delete,
+                        turbo_confirm: t('confirm_delete') },
+                class: 'btn btn-danger'
+
+  %ul{ class: 'flex flex-col gap-3 w-3/4' }
+    - @submission.responses.each do |name, response|
+      %li.flex.justify-between
+        %strong #{name.titleize}:
+        %span= response

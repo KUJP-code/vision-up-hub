@@ -2,8 +2,14 @@ en:
   form_submissions:
     edit:
       edit: "Edit %{title} form"
-    index:
+    lock_toggle:
       lock: "Lock"
       unlock: "Unlock"
     new:
       new: "New %{title} form"
+    show:
+      parent: "Parent: %{parent}"
+      staff: "Staff: %{staff}"
+      submitted_on: "Submitted on: %{submitted_on}"
+      submission_for: "%{template} submission for %{parent}"
+      template: "Template: %{template}"

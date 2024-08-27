@@ -23,7 +23,6 @@
         %th.thead.thead-s.bg-secondary-50= t('.template_name')
         %th.thead.bg-secondary-50= t('.parent')
         %th.thead.bg-secondary-50= t('.staff')
-        %th.thead.bg-secondary-50= t('.responses')
         %th.thead.thead-e.bg-secondary-50= t('.actions')
     %tbody
       - @submissions.each do |s|
@@ -32,19 +31,10 @@
           %td.p-3
             = s.parent ? s.parent.name : 'なし'
           %td.p-3= s.staff.name
-          %td.p-3
-            %ul
-              - s.responses.each do |name, value|
-                %li
-                  %strong #{name.titleize}:
-                  = value
 
           %td.p-3
             .flex.justify-around.gap-3
               = link_to t('.edit'),
                         edit_form_submission_path(s),
                         class: 'btn btn-secondary'
-              = form_with model: s do |f|
-                = f.hidden_field :locked, value: !s.locked
-                = f.submit s.locked ? t('.unlock') : t('.lock'),
-                           class: "btn #{s.locked ? 'btn-danger' : 'btn-success'}"
+              = render 'form_submissions/lock_toggle', submission: s

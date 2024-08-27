@@ -6,7 +6,9 @@ en:
       test_result: "Result"
   approve: "Approve"
   awaiting_approval: "Awaiting Approval"
+  confirm_delete: "Are you sure you want to delete this?"
   copied: "Copied!"
+  delete: "Delete"
   nav:
     request_support: "Request Support"
     sign_out: "Sign Out"

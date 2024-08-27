@@ -2,8 +2,14 @@ ja:
   form_submissions:
     edit:
       edit: "%{title}フォーム"
-    index:
+    lock_toggle:
       lock: "ロック"
       unlock: "アンロック"
     new:
       new: "%{title}フォーム"
+    show:
+      parent: "親: %{parent}"
+      staff: "スタッフ: %{staff}"
+      submitted_on: "送信日: %{submitted_on}"
+      submission_for: "%{template}フォームの送信: %{parent}"
+      template: "テンプレート: %{template}"

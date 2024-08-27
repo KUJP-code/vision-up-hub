@@ -1,0 +1,8 @@
+-# locals: (submission:)
+
+- locked = submission.locked
+
+= form_with model: submission do |f|
+  = f.hidden_field :locked, value: !locked
+  = f.submit locked ? t('.unlock') : t('.lock'),
+             class: "btn #{locked ? 'btn-danger' : 'btn-success'}"
