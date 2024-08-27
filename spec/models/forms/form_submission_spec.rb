@@ -8,7 +8,7 @@ RSpec.describe FormSubmission do
   end
 
   it 'gets its fields from the template' do
-    template = create(:form_template, fields: [attributes_for(:form_template_text_field)])
+    template = create(:form_template, fields: [attributes_for(:form_template_single_input)])
     submission = create(:form_submission, form_template: template)
     expect(submission.fields).to eq(template.fields)
   end

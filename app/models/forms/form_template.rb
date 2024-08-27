@@ -3,18 +3,10 @@
 class FormTemplate < ApplicationRecord
   include StoreModel::NestedAttributes
 
-  AVAILABLE_INPUT_TYPES = %w[text_field check_box text_area].freeze
-
   FormTemplateField = StoreModel.one_of do |json|
     input_type = json[:input_type] || json['input_type']
-    case input_type
-    when 'text_field'
-      FormTemplateTextField
-    when 'check_box'
-      FormTemplateCheckBox
-    when 'text_area'
-      FormTemplateTextArea
-    end
+    FormTemplateSingleInput if FormTemplateSingleInput::INPUT_TYPES.include?(input_type)
+    # FormTemplateMultiInput if FormTemplateMultiInput::INPUT_TYPES.include?(input_type)
   end
 
   attribute :fields, FormTemplateField.to_array_type
