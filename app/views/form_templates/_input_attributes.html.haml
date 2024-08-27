@@ -1,11 +1,13 @@
--# locals: (f:)
+-# locals: (current_attributes:, f:)
 
-= f.fields_for :input_attributes, InputAttributes.new do |ia_f|
+- attributes = current_attributes.presence || InputAttributes.new
+
+= f.fields_for :input_attributes, attributes do |ia_f|
   .form-group
     = ia_f.label :placeholder, t('.placeholder')
     = ia_f.text_field :placeholder
 
-  - unless f.object.is_a?(FormTemplateCheckBox)
+  - unless f.object.input_type == 'check_box'
     .form-group
       = ia_f.label :required, t('.required')
       = ia_f.check_box :required

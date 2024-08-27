@@ -1,6 +1,6 @@
 -# locals: (template:)
 
-- model = action_name == 'new' ? [template.organisation, template]  : template
+- model = action_name == 'new' ? [template.organisation, template] : template
 
 = form_with model:, html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: template
@@ -16,23 +16,23 @@
     = f.label :description
     = f.text_area :description
 
-
   .flex.flex-wrap.justify-around.gap-3
-    - FormTemplate::AVAILABLE_INPUT_TYPES.each do |type|
-      - current_fields = template.fields.select { |field| field.input_type == type }
+    - [FormTemplateSingleInput].each do |klass|
+      :ruby
+        class_name = klass.name.underscore
+        current_fields = template.fields.select { |field| field.instance_of?(klass) }
 
       .flex.flex-col.gap-3{ data: { controller: 'fields' } }
-        %h2.text-center.text-2xl= t(".#{type}").pluralize
+        %h2.text-center.text-2xl= t(".#{class_name}").pluralize
         = f.fields_for :fields, current_fields do |ff|
-          = render "form_templates/#{type}", current_fields:, f: ff
+          = render "form_templates/#{class_name}", current_fields:, f: ff, new_record: false
 
         %template{ 'data-fields-target' => 'template' }
-          = f.fields_for :fields, "FormTemplate#{type.titleize.tr(' ', '')}".constantize.new,
-                                  child_index: 'CHILD' do |ff|
-            = render "form_templates/#{type}", current_fields:, f: ff
+          = f.fields_for :fields, klass.new, child_index: 'CHILD' do |ff|
+            = render "form_templates/#{class_name}", current_fields:, f: ff, new_record: true
 
         %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
-          = t(".add_#{type}")
+          = t(".add_#{class_name}")
 
         %div{ 'data-fields-target' => 'target' }
 

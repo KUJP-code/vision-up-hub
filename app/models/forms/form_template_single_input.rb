@@ -17,8 +17,18 @@ class FormTemplateSingleInput
 
   validates :name, :position, presence: true
   validates :input_type, inclusion: { in: INPUT_TYPES }
+  validate :no_attributes_if_checkbox
 
   def form_helper
     :"#{input_type}_tag"
+  end
+
+  private
+
+  def no_attributes_if_checkbox
+    return unless input_type == 'check_box'
+    return if input_attributes.blank?
+
+    errors.add(:input_attributes, 'cannot be set for a checkbox')
   end
 end

@@ -1,9 +1,10 @@
--# locals: (current_fields:, f:)
-
-- new_record = current_fields.none?(f.object)
+-# locals: (current_fields:, f:, new_record:)
 
 .fields-wrapper.flex.flex-wrap.items-center.gap-3{ data: { 'new-record' => new_record.to_s } }
-  = f.hidden_field :input_type, value: 'text_field'
+  .form-group
+    = f.label :input_type, t('.input_type')
+    = f.select :input_type,
+               FormTemplateSingleInput::INPUT_TYPES.map { |type| [t(".#{type}"), type] }
 
   .form-group
     = f.label :name, t('.name')
@@ -17,7 +18,8 @@
     = f.label :explanation, t('.explanation')
     = f.text_field :explanation
 
-  = render 'form_templates/input_attributes', f:
+  = render 'form_templates/input_attributes',
+           f:, current_attributes: f.object.input_attributes
 
   - if new_record
     %button.btn.btn-danger{ 'data-action' => 'fields#remove',

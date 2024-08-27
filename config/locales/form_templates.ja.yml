@@ -1,7 +1,11 @@
 ja:
   form_templates:
     form:
+      add_form_template_single_input: "チェックボックス、テキストフィールド、またはテキストエリアを追加する"
+      form_template_single_input: "チェックボックス、テキストフィールド、またはテキストエリア"
       check_box: "チェックボックス"
+      date_field: "日付フィールド"
+      radio_button: "ラジオボタン"
       select: "選択"
       text_field: "テキストフィールド"
       text_area: "テキストエリア"
