@@ -1,11 +1,12 @@
 -# locals: (course_lessons:, date:)
 
 :ruby
-  iteration_day = date.beginning_of_week
+  # beginning_of_week is Monday for Rails
+  iteration_day = date.beginning_of_week - 1
   today = Time.zone.today
 
 - Date::DAYNAMES.each do |day|
-  - current_class = today == iteration_day - 1 ? 'bg-secondary text-white rounded py-2 w-full' : ''
+  - current_class = today == iteration_day ? 'bg-secondary text-white rounded py-2 w-full' : ''
   - no_lessons = course_lessons.none? { |cl| cl.day == day.downcase } ? 'no-lessons' : ''
 
   %header{ class: 'flex flex-col items-center justify-center p-3 odd:bg-neutral-dark ' \
