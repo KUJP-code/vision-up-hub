@@ -13,16 +13,17 @@ module TeacherLessonHelper
   end
 
   def lesson_type_order(level)
-    case level
-    when 'kindy', 'elementary'
-      %w[arrival brush_up snack SpecialLesson DailyActivity Exercise
-         DailyGathering PhonicsClass KindyPhonic EnglishClass
-         StandShowSpeak bus_time]
-    when 'keep_up'
-      %w[conversation_time snack book_activity EveningClass lesson_review]
-    when 'specialist'
-      %w[homework_check break_&_quiz four_skills project EveningClass]
-    end
+    {
+      'kindy' => %w[arrival brush_up snack SpecialLesson DailyActivity
+                    Exercise KindyPhonic EnglishClass StandShowSpeak bus_time],
+      'elementary' => %w[arrival brush_up snack SpecialLesson DailyActivity
+                         Exercise daily_gathering PhonicsClass EnglishClass
+                         StandShowSpeak bus_time],
+      'keep_up' => %w[conversation_time snack book_activity EveningClass
+                      lesson_review],
+      'specialist' => %w[homework_check break_&_quiz four_skills project
+                         EveningClass]
+    }[level]
   end
 
   def lesson_level_heading(lesson)
