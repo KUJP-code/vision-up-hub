@@ -238,7 +238,7 @@
 			@apply absolute -top-10 -right-10 w-20;
 		}
 
-		.content {
+		.dialog-content {
 			@apply h-full flex flex-col gap-3 p-8 text-secondary overflow-y-scroll;
 		}
 

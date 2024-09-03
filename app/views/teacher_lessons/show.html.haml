@@ -7,7 +7,7 @@
            lessons: @type_lessons, active_lesson: @lesson, level: @level,
            teacher_id: @teacher.id, type: @type, date: @date
 
-  .content
+  .dialog-content
     %header
       %h1{ class: "type #{border}" }
         = lesson_type_heading(@lesson)
