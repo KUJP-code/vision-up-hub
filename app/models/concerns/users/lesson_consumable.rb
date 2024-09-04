@@ -7,7 +7,7 @@ module LessonConsumable
     has_many :plans, through: :organisation
     has_many :courses, through: :plans
     has_many :course_lessons, through: :courses
-    has_many :category_resources, through: :courses
+    has_many :category_resources, -> { distinct }, through: :courses
     has_many :lessons, through: :courses
 
     delegate :available_tests, to: :organisation
