@@ -7,7 +7,7 @@ class Course < ApplicationRecord
   has_many :lessons, through: :course_lessons
 
   has_many :course_resources, dependent: :destroy
-  has_many :category_resources, through: :course_resources
+  has_many :category_resources, -> { distinct }, through: :course_resources
 
   has_many :course_tests, dependent: :destroy
   has_many :tests, through: :course_tests

@@ -16,13 +16,11 @@
                 class: "nav-tab #{active}"
 
   %section.flex.flex-wrap.justify-around.items-start
-    - grouped_resources.each do |group|
-      - name, resources = group
-
+    - grouped_resources.each do |group, resources|
       %table
         %thead
           %tr
-            %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{name}")
+            %th.thead.thead-s.thead-e.bg-secondary-50= t(".#{group}")
         %tbody
           - resources.sort_by { |r| r.resource.blob.filename }.each do |cr|
             - blob = cr.resource.blob
