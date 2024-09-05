@@ -2,7 +2,6 @@ en:
   teachers:
     nav:
       calendar: "Calendar"
-      home: "Home"
       monthly_materials: "Monthly Materials List"
       students: "Students"
       support: "Support"

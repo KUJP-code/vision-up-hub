@@ -1,0 +1,9 @@
+en:
+  shared:
+    nav:
+      home: "Home"
+    upload_selector:
+      parents: "Parents"
+      students: "Students"
+      teachers: "Teachers"
+      uploads: "Uploads"

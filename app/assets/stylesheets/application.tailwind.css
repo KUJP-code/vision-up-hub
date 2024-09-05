@@ -62,7 +62,7 @@
 		@apply w-16;
 
 		.main-nav-link {
-			@apply basis-16 flex items-center justify-center hover:scale-105 transition text-main-50 gap-3;
+			@apply basis-16 flex items-center justify-center text-main-50 gap-3;
 
 			&.active {
 				color: white;
