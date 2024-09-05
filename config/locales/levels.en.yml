@@ -1,6 +1,9 @@
 en:
   levels:
     elementary: "Elementary"
+    galaxy: "Galaxy"
     keep_up: "Keep Up"
     kindy: "Kindy"
+    land: "Land"
+    sky: "Sky"
     specialist: "Specialist"
