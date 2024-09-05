@@ -1,0 +1,6 @@
+en:
+  notifications:
+    popover_list:
+      no_new: "No new notifications"
+      notifications: "Notifications"
+      view_all: "View all notifications"

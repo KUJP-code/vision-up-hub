@@ -1,0 +1,6 @@
+ja:
+  notifications:
+    popover_list:
+      no_new: "新着通知なし"
+      notifications: "通知"
+      view_all: "全ての通知を確認"
