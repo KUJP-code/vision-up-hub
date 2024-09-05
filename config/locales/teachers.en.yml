@@ -1,15 +1,13 @@
 en:
   teachers:
     nav:
-      classes: "Classes"
-      monthly_materials: "Monthly Materials"
+      calendar: "Calendar"
+      home: "Home"
+      monthly_materials: "Monthly Materials List"
       students: "Students"
       support: "Support"
       test: "Tests"
-      today: "Today"
       tutorials: "Tutorials"
-    show:
-      welcome: "Welcome, %{name}"
     subtitle:
       future_lessons: "Future lessons for %{date}"
       past_lessons: "Past lessons for %{date}"

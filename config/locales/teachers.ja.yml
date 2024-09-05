@@ -1,15 +1,13 @@
 ja:
   teachers:
     nav:
-      classes: "クラス"
-      monthly_materials: "月間教材"
+      calendar: "カレンダー"
+      home: "ホーム"
+      monthly_materials: "月間教材リスト"
       students: "生徒"
       support: "サポート"
       test: "テスト"
-      today: "今日"
-      tutorials: "チュートリアル"
-    show:
-      welcome: "ようこそ、 %{name}"
+      tutorials: インフォメーション
     subtitle:
       future_lessons: "次の授業: %{date}"
       past_lessons: "過去の授業: %{date}"
