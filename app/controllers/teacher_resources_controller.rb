@@ -3,8 +3,6 @@
 class TeacherResourcesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
-  ALLOWED_CATEGORIES = CategoryResource.lesson_categories.keys
-
   def index
     @lesson_category = set_lesson_category
     @category_resources = policy_scope(CategoryResource)
@@ -15,8 +13,15 @@ class TeacherResourcesController < ApplicationController
   private
 
   def set_lesson_category
+    allowed_categories = CategoryResource.lesson_categories.keys
+    unless Flipper.enabled?(:afterschool_extras, current_user)
+      allowed_categories -= CategoryResource::AFTERSCHOOL_EXTRAS
+    end
     category = params[:category]
-    return ALLOWED_CATEGORIES.first unless ALLOWED_CATEGORIES.include?(category)
+    unless allowed_categories.include?(category)
+      redirect_to teacher_resources_url(category: allowed_categories.first),
+                  alert: t('not_authorized')
+    end
 
     category
   end

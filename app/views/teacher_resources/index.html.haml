@@ -5,11 +5,20 @@
     @category_resources.group_by(&:resource_category)
   end
 
+  allowed_categories = CategoryResource.lesson_categories.keys
+  unless Flipper.enabled?(:afterschool_extras, current_user)
+    allowed_categories -= CategoryResource::AFTERSCHOOL_EXTRAS
+  end
+  unless Flipper.enabled?(:keep_up, current_user) ||
+         Flipper.enabled?(:specialist, current_user)
+    allowed_categories -= %w[evening_class]
+  end
+
 = render 'shared/subtitle', text: t(".#{@lesson_category}")
 
 %main.flex.flex-col.justify-start.items-around.gap-3.p-3
   %nav.tab-nav
-    - CategoryResource.lesson_categories.keys.sort.each do |category|
+    - allowed_categories.sort.each do |category|
       - active = @lesson_category == category ? 'active' : 'inactive'
       = link_to t(".#{category}"),
                 teacher_resources_path(category:),

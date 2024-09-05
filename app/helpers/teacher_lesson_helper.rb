@@ -13,7 +13,7 @@ module TeacherLessonHelper
   end
 
   def lesson_type_order(level)
-    {
+    order = {
       'kindy' => %w[arrival brush_up snack SpecialLesson DailyActivity
                     Exercise KindyPhonic EnglishClass StandShowSpeak bus_time],
       'elementary' => %w[arrival brush_up snack SpecialLesson DailyActivity
@@ -24,6 +24,9 @@ module TeacherLessonHelper
       'specialist' => %w[homework_check break_&_quiz four_skills project
                          EveningClass]
     }[level]
+    return order if Flipper.enabled?(:afterschool_extras, current_user)
+
+    order - CategoryResource::AFTERSCHOOL_EXTRAS
   end
 
   def lesson_level_heading(lesson)
