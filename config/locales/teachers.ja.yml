@@ -7,11 +7,6 @@ ja:
       support: "サポート"
       test: "テスト"
       tutorials: インフォメーション
-    show:
-      elementary: "小学生コース"
-      keep_up: "キーップアップ"
-      kindy: "幼児コース"
-      specialist: "スペシャリスト"
     subtitle:
       future_lessons: "次の授業: %{date}"
       past_lessons: "過去の授業: %{date}"

@@ -7,11 +7,6 @@ en:
       support: "Support"
       test: "Tests"
       tutorials: "Tutorials"
-    show:
-      elementary: "Elementary"
-      keep_up: "Keep Up"
-      kindy: "Kindy"
-      specialist: "Specialist"
     subtitle:
       future_lessons: "Future lessons for %{date}"
       past_lessons: "Past lessons for %{date}"
