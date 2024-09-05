@@ -66,6 +66,14 @@ module LessonCalendarHelper
     }[type][level]
   end
 
+  def lesson_separator_rows
+    { 'DailyActivity' => 'row-start-6',
+      'PhonicsClass' => 'row-start-11',
+      'EnglishClass' => 'row-start-[16]',
+      'StandShowSpeak' => 'row-start-[20]',
+      'EveningClass' => 'row-start-[24]' }
+  end
+
   def lesson_type_rows
     { 'DailyActivity' => 'row-start-3 row-span-3',
       'PhonicsClass' => 'row-start-7 row-span-4',
