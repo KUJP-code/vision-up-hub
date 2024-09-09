@@ -2,7 +2,7 @@
 
 %section.resource-section
   %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-    Resources
+    = t('.resources')
   - resources.each do |r|
     = link_to file_path(r.blob),
               target: '_blank',

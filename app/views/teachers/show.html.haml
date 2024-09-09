@@ -20,4 +20,4 @@
     = link_to teacher_lessons_path(level:, teacher_id: @user.id),
               class: card, data: { turbo_stream: true } do
       = image_tag "levels/#{level}.svg"
-      %h1.text-center.text-3xl= level.titleize
+      %h1.text-center.text-3xl= t("levels.#{level}")

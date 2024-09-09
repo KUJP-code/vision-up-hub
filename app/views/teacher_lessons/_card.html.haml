@@ -4,11 +4,11 @@
   :ruby
     src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
     title = if type == 'EveningClass'
-      level == 'specialist' ? 'Research Study' : 'Topic Study'
+      level == 'specialist' ? 'research_study' : 'topic_study'
     elsif type.include?('Phonic')
-      'Phonics'
+      'phonics'
     else
-      type.titleize
+      type.underscore
     end
 
   %button{ class: 'card flex flex-col items-center p-2 gap-2',
@@ -21,7 +21,7 @@
     = image_tag "lesson_types/#{type.underscore}.svg",
                 class: 'h-full'
     %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    %h3.text-center= title
+    %h3.text-center= t("lessons.#{title}")
 
 - else
   :ruby
@@ -30,13 +30,13 @@
     category = if evening_types.include?(type)
       'evening_class'
     else
-      type
+      type.underscore
     end
 
   = link_to teacher_resources_path(category:),
             class: 'card flex flex-col items-center p-2 gap-2',
             data: { turbo_frame: '_top' } do
-    = image_tag "lesson_types/#{type.underscore}.svg",
+    = image_tag "lesson_types/#{category}.svg",
                 class: 'h-full'
     %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    %h3.text-center= type.titleize
+    %h3.text-center= t("category_resources.#{type}")

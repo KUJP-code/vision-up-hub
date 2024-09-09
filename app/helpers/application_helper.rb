@@ -22,6 +22,12 @@ module ApplicationHelper
     datetime.strftime('%Y年%m月%d日 %H:%M')
   end
 
+  def ja_date_weekday(date)
+    weekday = %w[日 月 火 水 木 金 土][date.day - 1]
+
+    "#{ja_date(date)}(#{weekday})"
+  end
+
   def main_nav_link(title, path)
     active = active_main_nav_link?(title, controller_name)
     link_to path, class: main_nav_class(title, controller_name) do

@@ -3,8 +3,10 @@ en:
     nav:
       courses: "Courses"
       lessons: "Lessons"
+      monthly_materials: "Monthly Materials List"
       students: "Students"
       support: "Support"
       test: "Tests"
+      tutorials: "Information"
       uploads: "Uploads"
       users: "Users"

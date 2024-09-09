@@ -1,0 +1,9 @@
+ja:
+  shared:
+    nav:
+      home: "ホーム"
+    upload_selector:
+      parents: "親"
+      students: "生徒"
+      teachers: "先生"
+      uploads: "アップロード"

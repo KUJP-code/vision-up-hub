@@ -6,7 +6,7 @@
   %main.p-6.gap-3#teacher-lessons
     %nav.tab-nav
       - @valid_levels.each do |level|
-        = link_to level.titleize,
+        = link_to t("levels.#{level}"),
                   teacher_lessons_path(date: @date, level:,
                                        teacher_id: @teacher.id),
                   class: "nav-tab #{@level == level ? 'active' : 'inactive'}",

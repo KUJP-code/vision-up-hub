@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class CategoryResource < ApplicationRecord
+  AFTERSCHOOL_EXTRAS = %w[arrival brush_up bus_time daily_gathering
+                          get_up_and_go snack].freeze
+
   before_destroy :check_not_used
 
   enum lesson_category: {

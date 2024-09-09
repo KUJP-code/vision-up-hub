@@ -10,6 +10,11 @@
   else
     t('.today_lessons')
   end
+  date_string = if I18n.locale == :ja
+                  ja_date_weekday(date)
+                else
+                  date.strftime('%A, %B %d, %Y')
+                end
 
 %header#subtitle
   = link_to teacher_lessons_path(date: date.prev_weekday,
@@ -17,11 +22,13 @@
             data: { turbo_stream: true },
             class: 'w-12' do
     = image_tag 'back.svg'
+
   .flex.flex-col.text-center
     %h1= subtitle
     - if !in_past && !in_future
-      %small.text-xs.font-normal.text-secondary
-        = I18n.locale == 'ja' ? ja_date(date) : date.strftime('%A, %B %d, %Y')
+      %small.text-xs.font-normal.text-secondary= date_string
+
+
   = link_to teacher_lessons_path(date: date.next_weekday,
                                  level:, teacher_id: teacher.id),
             data: { turbo_stream: true },

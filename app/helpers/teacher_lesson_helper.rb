@@ -2,18 +2,20 @@
 
 module TeacherLessonHelper
   def lesson_type_heading(lesson)
-    case lesson.type
-    when 'KindyPhonic'
-      'Phonics Class'
-    when 'SpecialLesson'
-      lesson.title
-    else
-      lesson.type.titleize
-    end
+    heading = case lesson.type
+              when 'KindyPhonic', 'PhonicsClass'
+                'phonics'
+              when 'SpecialLesson'
+                lesson.title
+              else
+                lesson.type.underscore
+              end
+
+    t("lessons.#{heading}")
   end
 
   def lesson_type_order(level)
-    {
+    order = {
       'kindy' => %w[arrival brush_up snack SpecialLesson DailyActivity
                     Exercise KindyPhonic EnglishClass StandShowSpeak bus_time],
       'elementary' => %w[arrival brush_up snack SpecialLesson DailyActivity
@@ -24,16 +26,17 @@ module TeacherLessonHelper
       'specialist' => %w[homework_check break_&_quiz four_skills project
                          EveningClass]
     }[level]
+    return order if Flipper.enabled?(:afterschool_extras, current_user)
+
+    order - CategoryResource::AFTERSCHOOL_EXTRAS
   end
 
   def lesson_level_heading(lesson)
-    return lesson.subtype.titleize if %w[DailyActivity Exercise].include?(lesson.type)
-
-    if lesson.short_level == 'Specialist'
-      lesson.level.titleize
+    if %w[DailyActivity Exercise].include?(lesson.type)
+      t("lessons.subtypes.#{lesson.subtype}")
     else
-      lesson.short_level
-    end.upcase
+      t("levels.#{lesson.short_level.downcase.tr(' ', '_')}").upcase
+    end
   end
 
   def lesson_details_heading(lesson)
