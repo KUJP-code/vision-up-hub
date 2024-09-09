@@ -10,7 +10,7 @@ RSpec.describe EnglishClass do
   end
 
   context 'when working with topic' do
-    let(:english_class) { create(:english_class, lesson_topic: 'Topic', term: 5, unit: 4) }
+    let(:english_class) { create(:english_class, lesson_topic: 'Topic', term: '5', unit: '4') }
 
     it 'sets topic from lesson_topic, term and unit' do
       expect(english_class.topic).to eq('Term 5 Unit 4 - Topic')
