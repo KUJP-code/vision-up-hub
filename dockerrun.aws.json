@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.19.10-empty-calendar"
+    "Name": "thatbballguy/materials:0.19.11-topic-parsing"
   },
   "Ports": [
     {
