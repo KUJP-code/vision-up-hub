@@ -18,16 +18,18 @@
     = f.label :description, t('.description')
     = f.text_area :description, rows: 6, placeholder: t('.description')
 
-  .col-start-4.col-span-2.row-start-2.flex.gap-3.mt-5
-    - SupportRequest.priorities.each_key do |priority|
-      = f.label :priority,
-                value: priority,
-                class: prio_radio_class[priority] do
-        %span.w-full.cursor-pointer.text-center
-          = priority.titleize
-        = f.radio_button :priority,
-                         priority,
-                         class: 'absolute opacity-0 cursor-pointer'
+  .col-start-4.col-span-2.row-start-2.flex.flex-col.gap-2
+    %h3.text-xl.font-bold= t('.priority')
+    .flex.gap-3
+      - SupportRequest.priorities.each_key do |priority|
+        = f.label :priority,
+                  value: priority,
+                  class: prio_radio_class[priority] do
+          %span.w-full.cursor-pointer.text-center
+            = priority.titleize
+          = f.radio_button :priority,
+                           priority,
+                           class: 'absolute opacity-0 cursor-pointer'
 
   .form-group.col-start-4.col-span-2.row-start-3.mt-6
     = f.label :images
