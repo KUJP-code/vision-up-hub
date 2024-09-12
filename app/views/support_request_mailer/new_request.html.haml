@@ -1,0 +1,21 @@
+!!! 5
+%html{ lang: 'ja' }
+%head
+  %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }
+%body
+  = '------------------------------'
+  %h2 Details
+  = '------------------------------'
+  %p Subject: #{@request.subject}
+  %p Priority: #{@request.priority.titleize}
+  %p Category: #{@request.category.titleize}
+  = '------------------------------'
+  %h2 Issue Description
+  %p= '------------------------------'
+
+  = @request.description
+
+  %p= '------------------------------'
+
+  = link_to 'View the request here',
+            support_request_url(id: @request.id)

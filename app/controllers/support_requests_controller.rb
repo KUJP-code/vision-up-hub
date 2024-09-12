@@ -67,12 +67,15 @@ class SupportRequestsController < ApplicationController
   end
 
   def notify_staff
-    notify_jobs = User.where(type: %w[Admin Sales]).map do |user|
+    staff = User.where(type: %w[Admin Sales])
+    notify_jobs = staff.map do |user|
       NotifyUserJob.new(user_id: user.id,
                         text: t('.new_request_from', user: @support_request.user.name),
                         link: support_request_url(@support_request))
     end
     ActiveJob.perform_all_later(notify_jobs)
+
+    SupportRequestMailer.new_request(@support_request).deliver_later
   end
 
   def set_support_request
