@@ -6,19 +6,25 @@ class MonthlyMaterialsController < ApplicationController
   def index
     authorize :monthly_materials
     basic_data
-    if params[:q].blank?
-      next_week = Date.parse(7.days.from_now.to_s)
-      @from_week = current_user.course_week(current_user.plans.first,
-                                            next_week)
-    else
-      @lessons = lessons_from_query
-    end
+    @from_week = if params[:q].blank?
+                   current_week = Time.zone.today.beginning_of_week
+                   current_user.course_week(current_user.plans.first,
+                                            current_week)
+                 else
+                   query_params[:from_week].to_i
+                 end
+
+    @lessons = lessons_from_query(@from_week)
   end
 
   private
 
   def query_params
-    params.require(:q).permit(:course, :from_week, :weeks_forward)
+    if params[:q].blank?
+      { course: current_user.courses.first }
+    else
+      params.require(:q).permit(:course, :from_week, :weeks_forward)
+    end
   end
 
   def basic_data
@@ -33,10 +39,9 @@ class MonthlyMaterialsController < ApplicationController
                  end
   end
 
-  def lessons_from_query
-    @from_week = query_params[:from_week].to_i
-    weeks_forward = query_params[:weeks_forward].to_i
-    @to_week = @from_week + weeks_forward
+  def lessons_from_query(from_week)
+    @weeks_forward = query_params[:weeks_forward] ? query_params[:weeks_forward].to_i : 1
+    @to_week = from_week + @weeks_forward
 
     policy_scope(Lesson)
       .where.not("lessons.materials = '[]'")
@@ -44,7 +49,7 @@ class MonthlyMaterialsController < ApplicationController
       .where(course_lessons:
              { course_id: query_params[:course] })
       .where(course_lessons:
-             { week: @from_week..@to_week })
+             { week: from_week..@to_week })
       .order('lessons.type ASC, course_lessons.week ASC,
              course_lessons.day ASC')
   end

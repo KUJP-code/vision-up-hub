@@ -16,7 +16,8 @@
       %tbody
         - @lessons.uniq.each_with_index do |l, i|
           :ruby
-            course = params[:q][:course].to_i
+            course = params.dig(:q, :course)&.to_i ||
+                     l.course_lessons.first.course_id
             date = l.course_lessons.find do |cl|
               cl.course_id == course &&
                 cl.week >= @from_week &&

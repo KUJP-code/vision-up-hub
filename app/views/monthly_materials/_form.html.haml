@@ -34,7 +34,7 @@
     = f.number_field :weeks_forward,
                      required: true,
                      min: 1, max: 52,
-                     value: params.dig(:q, :weeks_forward)
+                     value: @weeks_forward
 
   = f.submit t('.search'), class: 'btn btn-main'
 
