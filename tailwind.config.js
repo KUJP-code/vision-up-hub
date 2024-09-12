@@ -41,25 +41,8 @@ export default {
 					},
 				},
 				{
-					name: "org_2",
-					selectors: [".org_2"],
-					theme: {
-						colors: {
-							main: "#fab650",
-							"main-50": "#fcd6a0",
-							"neutral-dark": "#b1a9bc",
-							"neutral-light": "#f9f9f9",
-							secondary: "#7e7195",
-							"secondary-50": "#b2aabf",
-						},
-						borderRadius: {
-							DEFAULT: "0.5rem",
-						},
-					},
-				},
-				{
-					name: "org_3",
-					selectors: [".org_3"],
+					name: "org_6969",
+					selectors: [".org_6969"],
 					theme: {
 						colors: {
 							main: "#32cd32",

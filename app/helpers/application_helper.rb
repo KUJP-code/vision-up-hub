@@ -52,7 +52,8 @@ module ApplicationHelper
   end
 
   def org_theme(user = nil)
-    org_themes = [2, 3]
+    # If you add a theme, add the org_id to this list
+    org_themes = []
     org_id = user ? user.organisation_id : params[:organisation_id].to_i
 
     org_themes.include?(org_id) ? "org_#{org_id}" : 'base'
