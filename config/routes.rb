@@ -85,6 +85,9 @@ Rails.application.routes.draw do
     root to: 'splashes#welcome'
   end
 
+  # Receives inquiries from contact form & forwards to Nakagawa
+  post 'inquiries' => 'inquiries#create'
+
   # Health check endpoint
   get 'up' => 'rails/health#show', as: :rails_health_check
 end
