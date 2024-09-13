@@ -26,13 +26,13 @@
                   value: priority,
                   class: prio_radio_class[priority] do
           %span.w-full.cursor-pointer.text-center
-            = priority.titleize
+            = t(".#{priority}")
           = f.radio_button :priority,
                            priority,
                            class: 'absolute opacity-0 cursor-pointer'
 
   .form-group.col-start-4.col-span-2.row-start-3.mt-6
-    = f.label :images
+    = f.label :images, t('.images')
     = f.file_field :images,
                    accept: 'image/*',
                    multiple: true
