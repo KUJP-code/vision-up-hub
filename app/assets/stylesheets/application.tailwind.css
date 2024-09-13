@@ -316,16 +316,16 @@
 		}
 	}
 
+	.thead {
+		@apply p-2 text-white border-r-2 border-r-white whitespace-nowrap;
+	}
+
 	.thead-e {
 		@apply rounded-e;
 	}
 
-	.thead {
-		@apply p-2 text-white border-r border-r-white;
-	}
-
 	.thead-s {
-		@apply border-r border-r-white rounded-s;
+		@apply border-r-2 border-r-white rounded-s;
 	}
 
 	.turbo-progress-bar {

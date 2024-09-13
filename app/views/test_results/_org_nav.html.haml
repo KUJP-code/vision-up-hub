@@ -6,4 +6,4 @@
               test_test_results_path(test_id: @test.id,
                                      org_id: org.id,
                                      school_id: school.id),
-              class: "btn #{active.id == org.id ? 'btn-main' : 'btn-secondary'}"
+              class: "btn btn-outline #{'bg-secondary text-white' if active.id == org.id}"

@@ -1,17 +1,15 @@
 -# locals: (test:)
 
 %nav.sticky.top-0.flex.gap-3.p-3
-  %h2.flex.justify-center.items-center.font-bold.text-2xl
-    = image_tag level_icon_path(test),
-                height: 30,
-                width: 30
-    = test.name
+  %h2.relative.flex.justify-center.items-center.font-bold.text-2xl
+    %div{ class: "absolute rounded full w-3 h-3 left-1 #{calendar_dot_bg(test.short_level)}" }
+    %span.text-lg.ms-5= test.name
 
   .grow
 
   = link_to t('.student_details'),
             '#student-details',
-            class: 'sub_nav_link',
+            class: 'btn btn-outline',
             data: { controller: 'scroll-to' }
   - Test::SKILLS.each do |skill|
     - next if test.send(skill.to_sym).blank?
@@ -19,8 +17,8 @@
     = link_to t(".#{skill}"),
               "##{skill}",
               data: { controller: 'scroll-to' },
-              class: 'sub_nav_link'
+              class: 'btn btn-outline'
   = link_to t('.results'),
             '#results',
-            class: 'sub_nav_link',
+            class: 'btn btn-outline',
             data: { controller: 'scroll-to' }

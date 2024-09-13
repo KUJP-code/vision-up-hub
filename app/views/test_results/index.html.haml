@@ -12,38 +12,41 @@
 
   %div{ class: 'w-full h-[calc(100vh-4rem)] overflow-x-auto text-center' }
     %table.sticky.top-14
-      %thead.text-white
+      %thead
         %tr
-          %th.p-1.bg-main.whitespace-nowrap{ id: 'student-details',
-                                             rowspan: 2 }
+          %th.thead.rounded-tl.bg-secondary{ id: 'student-details' }
             = t('.name')
-          %th{ class: 'p-1 bg-main', rowspan: 2 }= t('.level')
-          %th.p-1.bg-main= t('.basics')
+          %th.thead.bg-secondary= t('.level')
+          %th.thead.bg-secondary= t('.basics')
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 
-            %th{ class: 'p-1 bg-main',
+            %th{ class: 'thead bg-secondary',
                  colspan: @test.send(skill.to_sym).count + 1,
                  id: skill }
               = t(".#{skill}")
-          %th{ class: 'p-1 bg-main whitespace-nowrap',
-               id: 'results',
-               rowspan: 2 }
-            = t('.total')
-          %th{ class: 'p-1 bg-main whitespace-nowrap', rowspan: 2 }
-            = t('.former_lvl')
-          %th{ class: 'p-1 bg-main', rowspan: 2 }
-            = t('.rec_lvl')
-          %th{ class: 'p-1 bg-main', rowspan: 2 }
+          %th.thead.bg-secondary{ id: 'results' }= t('.total')
+          %th.thead.bg-secondary= t('.former_lvl')
+          %th.thead.rounded-tr.bg-secondary= t('.rec_lvl')
+          %th{ rowspan: 2 }
         %tr
-          %th.p-1.bg-secondary /#{@test.basics}
+          %td.thead.border-secondary.border-b-2
+          %td.thead.border-secondary.border-b-2
+
+          %th.thead.text-secondary.border-secondary.border-b-2
+            = "/#{@test.basics}"
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
 
             - @test.send(skill.to_sym).each do |max_score|
-              %th{ class: 'p-1 bg-secondary' } /#{max_score}
-            %th{ class: 'w-12 p-1 bg-secondary whitespace-nowrap' }
+              %th{ class: 'thead text-secondary border-r-0 border-secondary border-b-2' }
+                = "/#{max_score}"
+            %th{ class: 'thead text-secondary border-secondary border-b-2' }
               = t(".#{attr_from_skill(skill)}")
+
+          %td.thead.border-secondary.border-b-2
+          %td.thead.border-secondary.border-b-2
+          %td.thead.border-secondary.border-b-2
 
       %tbody
         - @students.sort_by(&:en_name).each do |student|
