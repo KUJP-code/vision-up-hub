@@ -8,6 +8,7 @@ en:
       school: "School"
       search: "Search"
       select_child_level: "Select child level"
+      select_school: "Select School"
       student_id: "Student ID"
     parent_form:
       child_level: "Child Level"

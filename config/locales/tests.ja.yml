@@ -3,10 +3,10 @@ ja:
     form:
       basics: "名前と日付"
     index:
-      basics: "名前と日付"
-      listening: "聴力"
-      reading: "読解"
-      speaking: "会話力"
-      thresholds: "しきい値"
-      writing: "文章力"
+      basics: "名前＋日付"
+      listening: "リスニング"
+      reading: "リーディング"
+      speaking: "スペッキング"
+      thresholds: "推奨レベル"
+      writing: "ライティング"
       view_results: "結果を表示"

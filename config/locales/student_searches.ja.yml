@@ -8,6 +8,7 @@ ja:
       school: "学校"
       search: "検索"
       select_child_level: "子供レベルを選択してください"
+      select_school: "スクール選択"
       student_id: "学生ID"
     parent_form:
       child_level: "子供レベル"
