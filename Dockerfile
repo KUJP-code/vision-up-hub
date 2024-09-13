@@ -115,6 +115,9 @@ COPY --from=build /rails /rails
 ENV PORT="3001" \
 	RUBY_YJIT_ENABLE="1"
 
+# Entrypoint prepares the database.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
 # Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"

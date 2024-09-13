@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "thatbballguy/materials:0.19.13-popover-polyfill"
+    "Name": "thatbballguy/materials:0.19.14-entrypoint-attempt"
   },
   "Ports": [
     {
