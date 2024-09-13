@@ -2,3 +2,5 @@ ja:
   lesson_calendars:
     index:
       calendar_for: "週の開始日: %{date}"
+      next_week: "来週"
+      previous_week: "先週"
