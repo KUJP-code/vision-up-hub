@@ -55,7 +55,7 @@ Rails.application.routes.draw do
         patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
 
         resources :users, except: %i[destroy]
-        resources :admins, except: %i[destroy]
+        resources :admins
         resources :org_admins
         resources :parents
         resources :sales

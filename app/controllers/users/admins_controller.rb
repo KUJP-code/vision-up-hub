@@ -10,6 +10,27 @@ class AdminsController < UsersController
                                 .reject { |h| h[:teacher].nil? }
   end
 
+  def new
+    # KidsUP is org 1
+    @user = authorize Admin.new(organisation_id: 1)
+  end
+
+  def edit; end
+
+  def create
+    # KidsUP
+    organisation_id = 1
+    @user = authorize Admin.new(admin_params.merge(organisation_id:))
+
+    if @user.save
+      redirect_to organisation_admin_path(@user.organisation, @user),
+                  notice: "#{@user.name} successfully created."
+    else
+      render :new, status: :unprocessable_entity,
+                   alert: "Couldn't create admin"
+    end
+  end
+
   def update
     if @user.update(admin_params)
       redirect_to organisation_admin_path(@user.organisation, @user),
@@ -18,6 +39,16 @@ class AdminsController < UsersController
       render :edit,
              status: :unprocessable_entity,
              alert: "Couldn't update admin"
+    end
+  end
+
+  def destroy
+    return redirect_to users_path, alert: 'Must have 1 admin' if Admin.count <= 1
+
+    if @user.destroy
+      redirect_to users_path, notice: "#{@user.name} successfully deleted."
+    else
+      redirect_to users_path, alert: "Couldn't delete admin"
     end
   end
 

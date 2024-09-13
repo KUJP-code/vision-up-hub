@@ -11,23 +11,17 @@ RSpec.describe AdminPolicy do
     context 'when touching self' do
       let(:user) { record }
 
-      it { is_expected.not_to authorize_action(:index) }
-      it { is_expected.to authorize_action(:show) }
-      it { is_expected.not_to authorize_action(:new) }
-      it { is_expected.to authorize_action(:edit) }
-      it { is_expected.not_to authorize_action(:create) }
-      it { is_expected.to authorize_action(:update) }
-      it { is_expected.to authorize_action(:reassign_editor) }
+      it_behaves_like 'authorized user'
     end
 
     context 'when interacting with other admin' do
-      let(:user) { build(:user, :admin) }
+      let(:user) { build(:user, :admin, organisation: record.organisation) }
 
       it { is_expected.not_to authorize_action(:index) }
       it { is_expected.to authorize_action(:show) }
-      it { is_expected.not_to authorize_action(:new) }
+      it { is_expected.to authorize_action(:new) }
       it { is_expected.not_to authorize_action(:edit) }
-      it { is_expected.not_to authorize_action(:create) }
+      it { is_expected.to authorize_action(:create) }
       it { is_expected.not_to authorize_action(:update) }
       it { is_expected.to authorize_action(:reassign_editor) }
     end

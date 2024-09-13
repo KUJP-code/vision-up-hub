@@ -6,6 +6,15 @@
 
   = render 'users/fields', f:
 
-  %p this is an admin form
+  .flex.gap-3
+    = f.submit class: 'btn btn-main'
+    - unless user.new_record?
+      = link_to 'Delete',
+                organisation_admin_path(user.organisation, user),
+                data: { turbo_method: :delete,
+                        turbo_confirm: 'YOU ARE DELETING AN ADMIN' },
+                class: 'btn btn-danger'
 
-  = f.submit class: 'btn btn-main'
+  .text-center
+    %h1.text-2xl Admin accounts have access to A LOT of sensitive information
+    %h2.text-xl Do not give them out like candy

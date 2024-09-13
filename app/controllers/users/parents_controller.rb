@@ -11,7 +11,8 @@ class ParentsController < UsersController
   end
 
   def create
-    @user = authorize Parent.new(parents_params.merge(organisation_id: current_user.organisation_id))
+    organisation_id = current_user.organisation_id
+    @user = authorize Parent.new(parents_params.merge(organisation_id:))
 
     if @user.save
       redirect_to organisation_parent_path(@user.organisation, @user),
@@ -28,9 +29,8 @@ class ParentsController < UsersController
       redirect_to organisation_parent_path(@user.organisation, @user),
                   notice: t('update_success')
     else
-      render :edit,
-             status: :unprocessable_entity,
-             alert: t('update_failure')
+      render :edit, status: :unprocessable_entity,
+                    alert: t('update_failure')
     end
   end
 
