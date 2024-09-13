@@ -11,10 +11,10 @@
     t('.today_lessons')
   end
   date_string = if I18n.locale == :ja
-                  ja_date_weekday(date)
-                else
-                  date.strftime('%A, %B %d, %Y')
-                end
+    ja_date_weekday(date)
+  else
+    date.strftime('%A, %B %d, %Y')
+  end
 
 %header#subtitle
   = link_to teacher_lessons_path(date: date.prev_weekday,
@@ -36,8 +36,8 @@
     = image_tag 'next.svg'
 
   = render 'notifications/icon'
-  .mt-10.mr-10.md:mr-20.rounded.border-2.border-secondary.p-0#notifications{ popover: 'auto' }
-    = render 'notifications/popover_list',
-             notifications: current_user.notifications
+  = render 'notifications/popover_list',
+           notifications: current_user.notifications
+
   .absolute.right-3.top-auto
     = locale_toggle(classes: 'fill-secondary', turbo_stream: true)

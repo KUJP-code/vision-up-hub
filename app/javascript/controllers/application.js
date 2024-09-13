@@ -4,6 +4,7 @@ import { Application } from "@hotwired/stimulus";
 import Chart from "@stimulus-components/chartjs";
 import Clipboard from "@stimulus-components/clipboard";
 import TextareaAutogrow from "stimulus-textarea-autogrow";
+import "@oddbird/popover-polyfill";
 
 // Misc NPM packages
 import { Dropdown } from "tailwindcss-stimulus-components";

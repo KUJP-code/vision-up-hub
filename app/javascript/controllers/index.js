@@ -52,3 +52,6 @@ application.register("validity", ValidityController);
 
 import TurboModalController from "./turbo_modal_controller";
 application.register("turbo-modal", TurboModalController);
+
+import PopoverController from "./popover_controller";
+application.register("popover", PopoverController);
