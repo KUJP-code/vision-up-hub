@@ -1,7 +1,7 @@
 = render 'shared/subtitle',
          text: t('.results_for', name: @test.name.titleize)
 
-%main
+%main.flex.flex-col.gap-3.p-3
   - if @orgs
     = render 'test_results/org_nav',
              active: @org, orgs: @orgs, school: @school
@@ -14,7 +14,7 @@
     %table.sticky.top-14
       %thead
         %tr
-          %th.thead.rounded-tl.bg-secondary{ id: 'student-details' }
+          %th.thead.thead-s.thead-t{ id: 'student-details' }
             = t('.name')
           %th.thead.bg-secondary= t('.level')
           %th.thead.bg-secondary= t('.basics')
@@ -27,13 +27,13 @@
               = t(".#{skill}")
           %th.thead.bg-secondary{ id: 'results' }= t('.total')
           %th.thead.bg-secondary= t('.former_lvl')
-          %th.thead.rounded-tr.bg-secondary= t('.rec_lvl')
+          %th.thead.thead-e.thead-t= t('.rec_lvl')
           %th{ rowspan: 2 }
         %tr
-          %td.thead.border-secondary.border-b-2
-          %td.thead.border-secondary.border-b-2
+          %td.thead.thead-b.thead-s
+          %td.thead.thead-b
 
-          %th.thead.text-secondary.border-secondary.border-b-2
+          %th.thead.thead-b
             = "/#{@test.basics}"
           - Test::SKILLS.each do |skill|
             - next if @test.send(skill.to_sym).blank?
@@ -42,11 +42,11 @@
               %th{ class: 'thead text-secondary border-r-0 border-secondary border-b-2' }
                 = "/#{max_score}"
             %th{ class: 'thead text-secondary border-secondary border-b-2' }
-              = t(".#{attr_from_skill(skill)}")
+              = t('.total')
 
-          %td.thead.border-secondary.border-b-2
-          %td.thead.border-secondary.border-b-2
-          %td.thead.border-secondary.border-b-2
+          %td.thead.thead-b
+          %td.thead.thead-b
+          %td.thead.thead-b.thead-e
 
       %tbody
         - @students.sort_by(&:en_name).each do |student|

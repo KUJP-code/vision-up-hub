@@ -317,15 +317,39 @@
 	}
 
 	.thead {
-		@apply p-2 text-white border-r-2 border-r-white whitespace-nowrap;
+		@apply p-2 text-neutral-light border-r-2 border-r-white whitespace-nowrap;
+	}
+
+	.thead-b {
+		@apply text-secondary border-secondary border-b-2;
 	}
 
 	.thead-e {
-		@apply rounded-e;
+		@apply rounded-e border-r-0;
+
+		&.thead-b {
+			@apply rounded-none rounded-br border-r-2;
+		}
+
+		&.thead-t {
+			@apply rounded-none rounded-tr;
+		}
 	}
 
 	.thead-s {
 		@apply border-r-2 border-r-white rounded-s;
+
+		&.thead-b {
+			@apply rounded-bl border-l-2 border-secondary;
+		}
+
+		&.thead-t {
+			@apply rounded-none rounded-tl;
+		}
+	}
+
+	.thead-t {
+		@apply bg-secondary;
 	}
 
 	.turbo-progress-bar {
