@@ -24,7 +24,7 @@ ja:
       student_id: "ID"
       writing: "文章力"
       write_percent: "文章力 %"
-      total: "合計 %"
+      total: "合計"
     skill_nav:
       listening: "聴力"
       reading: "読解"

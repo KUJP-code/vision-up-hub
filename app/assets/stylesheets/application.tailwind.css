@@ -102,6 +102,10 @@
 		@apply text-sm text-slate-400;
 	}
 
+	table tr:nth-child(2n):not(tr.thead-b) {
+		@apply bg-neutral-dark;
+	}
+
 	.vertical-text {
 		writing-mode: vertical-rl;
 		transform: rotate(180deg);
@@ -292,10 +296,6 @@
 		}
 	}
 
-	.tab-nav {
-		@apply w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
-	}
-
 	.sub_nav_link {
 		@apply bg-secondary text-white rounded p-2;
 	}
@@ -316,12 +316,20 @@
 		}
 	}
 
+	.tab-nav {
+		@apply w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
+	}
+
+	.testresult-input {
+		@apply outline-none outline-offset-0 focus:outline-main border w-10 text-center;
+	}
+
 	.thead {
 		@apply p-2 text-neutral-light border-r-2 border-r-white whitespace-nowrap;
 	}
 
 	.thead-b {
-		@apply text-secondary border-secondary border-b-2;
+		@apply text-secondary border-secondary border-b-2 bg-neutral-light;
 	}
 
 	.thead-e {
@@ -340,7 +348,7 @@
 		@apply border-r-2 border-r-white rounded-s;
 
 		&.thead-b {
-			@apply rounded-bl border-l-2 border-secondary;
+			@apply rounded-none rounded-bl border-l-2 border-secondary;
 		}
 
 		&.thead-t {

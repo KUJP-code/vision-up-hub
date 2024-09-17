@@ -21,7 +21,7 @@ en:
       student_id: "ID"
       writing: "Writing"
       write_percent: "Writing %"
-      total: "Total %"
+      total: "Total"
     skill_nav:
       listening: "Listening"
       reading: "Reading"
