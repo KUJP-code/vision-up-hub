@@ -1,31 +1,27 @@
 -# locals: (schools:)
 
-- field_classes = 'basis-3/12 flex-grow flex justify-center items-center gap-1'
-
 = turbo_frame_tag 'student_search_frame',
                   target: 'student_table' do
   = form_with url: student_searches_path,
               scope: :search,
               html: { class: 'flex flex-wrap justify-center items-center gap-3',
                       id: 'student_search', method: :get } do |f|
-    %div{ class: field_classes }
-      = f.label :student_id, t('.student_id')
-      = f.text_field :student_id
+    .w-full.flex.justify-around.gap-3
+      .form-group
+        = f.label :student_id, t('.student_id')
+        = f.text_field :student_id
 
-    %div{ class: field_classes }
-      = f.label :school_id, t('.school')
-      = f.select :school_id,
-                 schools,
-                 { prompt: t('.select_school') }
+      .form-group
+        = f.label :school_id, t('.school')
+        = f.select :school_id,
+                   schools, { prompt: t('.select_school') }
 
-    %div{ class: field_classes }
-      = f.label :level, t('.child_level')
-      = f.select :level,
-                 Student.levels.keys.map { |k| [k.titleize, k] },
-                 { prompt: t('.select_child_level') }
+      .form-group
+        = f.label :level, t('.child_level')
+        = f.select :level,
+                   Student.levels.keys.map { |k| [k.titleize, k] },
+                   { prompt: t('.select_child_level') }
 
-    %div{ class: field_classes }
-      = f.label :birthday, t('.birthday')
-      = f.date_field :birthday
-
-    = f.submit t('.search'), class: 'btn btn-main flex-grow'
+    .w-full.flex.justify-end
+      = f.submit t('.search'),
+                 class: 'btn btn-main w-1/3'

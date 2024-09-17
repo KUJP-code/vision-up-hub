@@ -65,13 +65,12 @@ RSpec.describe 'Student search', :js do
       school.students << student
     end
 
-    it 'can search with partial matching by name, school, level and student id' do
+    it 'can search with partial matching by school, level and student id' do
       visit students_path
       within '#student_search' do
         select school.name, from: 'search_school_id'
         select 'Sky One', from: 'search_level'
         fill_in 'search_student_id', with: 's12345678'
-        fill_in 'search_birthday', with: '01/01/2000'
         click_button I18n.t('student_searches.form.search')
       end
       expect(page).to have_css('a', text: student.student_id)
