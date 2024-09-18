@@ -10,20 +10,17 @@
 - if params[:test_id]
   - active_result = results.find { |r| r.test_id == params[:test_id].to_i }
 
-  %table
+  %table.w-full
     %thead
-      %tr.text-white.font-bold
-        %th.thead.thead-s.bg-secondary-50= t('.basics')
-        - active_result.answers.each_key do |skill|
-          %th.thead.bg-secondary-50
-            = t(".#{skill}")
-        %th.thead.thead-e.bg-secondary-50= t('.total')
+      %tr.text-white.font-bold.whitespace-nowrap
+        %th.thead.thead-s.bg-secondary-50= t('.test_name')
+        %th.thead.bg-secondary-50= t('.total')
+        %th.thead.thead-e.bg-secondary-50= t('.recommended_level')
     %tbody
       %tr.text-center.font-bold.text-secondary
-        %td.p-2 #{active_result.basics}/#{active_result.test.basics}
-        - active_result.answers.each do |skill, scores|
-          %td.p-2 #{scores.sum}/#{active_result.test.send(skill.to_sym).sum}
+        %td.p-2= active_result.test.name
         %td.p-2 #{active_result.total_score}/#{active_result.test.max_score}
+        %td.p-2= active_result.new_level.titleize
 
   = link_to t('.view_all_results'),
             student_path(@student.id),
