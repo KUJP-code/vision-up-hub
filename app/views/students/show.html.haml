@@ -3,31 +3,33 @@
 
 = render 'shared/subtitle', text: redact(@student, @student.name)
 
-- if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
-  %section.w-full.flex.flex-col.gap-3.p-3.m-3.print:hidden
-    %h3.w-full.text-center.font-bold.text-secondary= t('.add_parent')
-    = render 'user_searches/form', orgs: @orgs, student_id: @student.id
-    = turbo_frame_tag 'user_table'
+%main
+  - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
+    %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
+      %h3.w-full.text-center.font-bold.text-secondary.text-xl
+        = t('.add_parent')
+      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+      = turbo_frame_tag 'user_table'
 
-%main.flex.flex-col.md:flex-row.p-3#student
-  %section{ class: 'basis-2/5 flex flex-col justify-around gap-12 p-3' }
-    = render 'students/details',
-             student: @student,
-             classes: @classes,
-             potential_classes: @potential_classes,
-             teachers: @teachers
+  %section.flex.flex-col.md:flex-row.p-3#student
+    %div{ class: 'basis-2/5 flex flex-col justify-around gap-12' }
+      = render 'students/details',
+               student: @student,
+               classes: @classes,
+               potential_classes: @potential_classes,
+               teachers: @teachers
 
-    = render 'students/tests_table', results: @results
+      = render 'students/tests_table', results: @results
 
-    = form_for @student do |f|
-      = f.text_area :comments,
-                    placeholder: t('.add_comments'),
-                    class: 'w-full border-2 border-main-50 rounded focus:outline-none',
-                    rows: 7
-      = f.submit t('.add_comment'), class: 'btn btn-main w-full'
+      = form_with model: @student, class: 'flex flex-col gap-3' do |f|
+        = f.text_area :comments,
+                      placeholder: t('.add_comments'),
+                      class: 'w-full border-2 border-secondary-50 rounded focus:outline-none',
+                      rows: 7
+        = f.submit t('.add_comment'), class: 'btn btn-main w-full'
 
-  %section{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8',
-            id: 'test_details' }
-    = render 'students/test_details',
-             data: @data,
-             results: @results
+    %div{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8',
+          id: 'test_details' }
+      = render 'students/test_details',
+               data: @data,
+               results: @results
