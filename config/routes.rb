@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       resources :stand_show_speaks, only: %i[create index update]
       resources :tutorials
       resources :tutorial_categories
+      resources :announcements, only: %i[create, index, update, destroy]
       resources :students, except: %i[destroy]
       resources :student_searches, only: %i[index update]
       resources :support_requests do
