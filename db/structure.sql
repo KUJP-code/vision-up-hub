@@ -734,9 +734,11 @@ ALTER SEQUENCE public.active_storage_variant_records_id_seq OWNED BY public.acti
 CREATE TABLE public.announcements (
     id bigint NOT NULL,
     message text NOT NULL,
-    valid_from date NOT NULL,
-    valid_until date NOT NULL,
+    start_date date NOT NULL,
+    finish_date date NOT NULL,
     link character varying,
+    organisation_id bigint,
+    role integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2833,6 +2835,13 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 
 
 --
+-- Name: index_announcements_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_announcements_on_organisation_id ON public.announcements USING btree (organisation_id);
+
+
+--
 -- Name: index_class_teachers_on_class_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3435,6 +3444,14 @@ ALTER TABLE ONLY public.form_submissions
 
 ALTER TABLE ONLY public.solid_queue_recurring_executions
     ADD CONSTRAINT fk_rails_318a5533ed FOREIGN KEY (job_id) REFERENCES public.solid_queue_jobs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: announcements fk_rails_380d9b2e4b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.announcements
+    ADD CONSTRAINT fk_rails_380d9b2e4b FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
 
 
 --

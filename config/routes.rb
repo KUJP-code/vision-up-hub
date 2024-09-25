@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     devise_for :users
 
     authenticate :user do
+      resources :announcements
       resources :category_resources, except: %i[show]
       resources :courses, except: %i[destroy]
       resources :csv_exports, only: %i[index new show]
@@ -31,7 +32,6 @@ Rails.application.routes.draw do
       resources :stand_show_speaks, only: %i[create index update]
       resources :tutorials
       resources :tutorial_categories
-      resources :announcements, only: %i[create, index, update, destroy]
       resources :students, except: %i[destroy]
       resources :student_searches, only: %i[index update]
       resources :support_requests do

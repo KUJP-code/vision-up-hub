@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :announcement do
     message { 'Test announcement' }
-    valid_from { Time.Zone.today }
-    valid_until { Time.Zone.today + 7.days }
-    link { '/students' }
+    start_date { Time.zone.today }
+    finish_date { Time.zone.today + 7.days }
   end
 end
