@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     devise_for :users
 
     authenticate :user do
+      resources :announcements
       resources :category_resources, except: %i[show]
       resources :courses, except: %i[destroy]
       resources :csv_exports, only: %i[index new show]

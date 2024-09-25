@@ -8,7 +8,7 @@ RSpec.describe VideoTutorial do
   end
 
   it 'provides specific error if an invalid URL is entered' do
-    tutorial = build(:video_tutorial, video_path: 'thp:/youtube.com')
+    tutorial = build(:video_tutorial, video_path: 'thp :/youtube.com')
     error = "Video path #{tutorial.video_path} is not a valid URL"
     tutorial.valid?
     expect(tutorial.errors.full_messages).to include(error)
