@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:0.19.16-mmaterials-fix"
+    "Name": "kidsup/materials:0.19.17-announcements"
   },
   "Ports": [
     {

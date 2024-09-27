@@ -19,7 +19,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def create
-    @announcement = authorize Announcement.new(announcement_param)
+    @announcement = authorize Announcement.new(announcement_params)
     if @announcement.save
       redirect_to announcements_url, notice: t('success')
     else
