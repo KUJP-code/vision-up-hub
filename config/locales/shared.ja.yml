@@ -1,5 +1,7 @@
 ja:
   shared:
+    announcement_list:
+      announcements: "お知らせ"
     nav:
       home: "ホーム"
     upload_selector:

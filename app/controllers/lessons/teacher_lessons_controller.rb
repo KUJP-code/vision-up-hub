@@ -22,6 +22,7 @@ class TeacherLessonsController < ApplicationController
     set_date_level_teacher
     @types = @teacher.day_lessons(@date)
                      .send(@level).pluck(:type).uniq
+    @announcements = Pundit.policy_scope!(@teacher, Announcement)
   end
 
   def set_date_level_teacher

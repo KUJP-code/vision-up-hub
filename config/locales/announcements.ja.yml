@@ -1,4 +1,11 @@
 ja:
   announcements:
-  new_announcement: "お知らせの作成"
-  edit_announcement:  "お知らせの編集"
+    index: 
+      announcements: "お知らせ"
+      edit_announcement:  "お知らせの編集"
+      finish_date: "有効期限"
+      link: "リンク"
+      message:  "メッセージ"
+      new_announcement: "お知らせの作成"
+      role: "役割"
+      start_date: "開始日"

@@ -21,11 +21,10 @@
 
   .form-group
     = f.label :organisation_id
-    = f.collection_select :organisation_id, organisations, :id, :name
+    = f.collection_select :organisation_id, organisations, :id, :name, include_blank: true
 
-  .form-group 
+  .form-group
     = f.label :role
-    = f.select :role, User::TYPES.map { |type| [type, type.humanize] }
-
+    = f.select :role, User::TYPES.map { |type| [type, type.humanize] }, include_blank: true
 
   = f.submit class: 'btn btn-main'

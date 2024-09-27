@@ -1,4 +1,12 @@
 en:
   announcements:
-    new_announcement: "Create a new announcement"
-    edit_announcement: "Edit an announcement"
+    index:
+      announcements: "Announcements"
+      edit_announcement: "Edit an Announcement"
+      finish_date: "Finish Date"
+      link: "Link"
+      message:  "Message"
+      new_announcement: "Create a New Announcement"
+      role: "Role"
+      start_date: "Start Date"
+

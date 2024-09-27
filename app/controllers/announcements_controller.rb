@@ -5,7 +5,7 @@ class AnnouncementsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @announcements = policy_scope(Announcement)
+    @announcements = policy_scope(Announcement).order(start_date: :desc)
   end
 
   def show; end

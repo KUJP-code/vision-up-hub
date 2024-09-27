@@ -1,0 +1,10 @@
+-# locals: (announcements:)
+%ul#announcements{ class: 'text-secondary-50 w-7/12 relative border-secondary-50 border-[3px] rounded p-3' }
+  %h3.font-bold.absolute.-top-3.bg-neutral-light.px-2
+    = t('.announcements')
+  - announcements.each do |announcement|
+    %li.list-disc.ml-6
+      - if announcement.link.present?
+        = link_to announcement.message, announcement.link
+      - else
+        = announcement.message
