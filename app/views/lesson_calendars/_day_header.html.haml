@@ -14,6 +14,9 @@
     %div{ class: current_class }
       %h2.font-bold= day
       %p.text-sm
-        = iteration_day.strftime("%B #{iteration_day.day.ordinalize}")
+        - if I18n.locale == :en
+          = iteration_day.strftime("%B #{iteration_day.day.ordinalize}")
+        - else
+          = ja_date_weekday(iteration_day)
 
   - iteration_day += 1

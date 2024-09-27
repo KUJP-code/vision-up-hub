@@ -7,3 +7,9 @@ ja:
       add_existing_student: "既存の学生を追加する"
       create_student: "新しい学生を作成する"
       students: "学生: %{count}"
+    table:
+      class: "クラス"
+      name: "クラス"
+      school: "学校"
+      students: "生徒"
+      teachers: "教師"

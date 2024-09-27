@@ -23,7 +23,7 @@ module ApplicationHelper
   end
 
   def ja_date_weekday(date)
-    weekday = %w[日 月 火 水 木 金 土][date.day - 1]
+    weekday = %w[日 月 火 水 木 金 土][date.wday]
 
     "#{ja_date(date)}(#{weekday})"
   end
