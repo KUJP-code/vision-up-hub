@@ -1,0 +1,4 @@
+= render 'shared/subtitle', text: t('.new_announcement')
+
+%main
+  = render 'announcements/form', organisations: @organisations, announcement: @announcement 

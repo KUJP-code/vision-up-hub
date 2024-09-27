@@ -1,0 +1,31 @@
+-# locals: (announcement:, organisations:)
+
+= form_with model: announcement, html: { class: 'form' } do |f|
+  = render 'shared/form_errors', resource: announcement
+
+  .form-group
+    = f.label :message
+    = f.text_field :message, required: true
+
+  .form-group
+    = f.label :start_date
+    = f.date_field :start_date, required: true
+
+  .form-group
+    = f.label :finish_date
+    = f.date_field :finish_date, required: true
+
+  .form-group
+    = f.label :link
+    = f.url_field :link
+
+  .form-group
+    = f.label :organisation_id
+    = f.collection_select :organisation_id, organisations, :id, :name
+
+  .form-group 
+    = f.label :role
+    = f.select :role, User::TYPES.map { |type| [type, type.humanize] }
+
+
+  = f.submit class: 'btn btn-main'

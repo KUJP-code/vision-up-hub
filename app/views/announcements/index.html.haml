@@ -1,0 +1,31 @@
+= render 'shared/subtitle', text: t('.announcement_list')
+
+%main.px-3.py-6
+  - if current_user.is?('Admin', 'OrgAdmin')
+    = link_to t('.new_announcement'), new_announcement_path, class: 'btn btn-secondary'
+
+    %table
+      %caption.caption-top.text-2xl.font-bold.p-5= t('.announcement_list')
+      %thead
+        %tr
+          %th.thead.thead-s.bg-secondary= t('.message')
+          %th.thead.bg-secondary= t('.start_date')
+          %th.thead.bg-secondary= t('.finish_date')
+          %th.thead.bg-secondary= t('.link')
+          %th.thead.bg-secondary= t('.role')
+          %th.thead.thead-e.bg-secondary{ colspan: 2 }= t('actions')
+      %tbody
+        - @announcements.each do |announcement|
+          %tr
+            %td.p-3= announcement.message
+            %td= announcement.start_date
+            %td= announcement.finish_date
+            %td= announcement.link
+            %td= announcement.role
+            %td= link_to t('edit'),
+                          edit_announcement_path(announcement),
+                          class: 'btn btn-secondary'
+            %td= link_to t('delete'),
+                          announcement_path(announcement),
+                          data: { turbo_method: :delete, turbo_confirm: t('confirm_delete')},
+                          class: 'btn btn-danger'
