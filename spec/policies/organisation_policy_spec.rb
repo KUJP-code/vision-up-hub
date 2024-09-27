@@ -28,6 +28,8 @@ RSpec.describe OrganisationPolicy do
   end
 
   context 'when org admin' do
+    let(:user) { build(:user, :org_admin) }
+
     before do
       org.save
     end
@@ -41,20 +43,14 @@ RSpec.describe OrganisationPolicy do
       it { is_expected.to authorize_action(:edit) }
       it { is_expected.not_to authorize_action(:create) }
       it { is_expected.to authorize_action(:update) }
-
-      it 'scopes to nothing' do
-        expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
-      end
     end
 
     context 'when admin of other org' do
-      let(:user) { build(:user, :org_admin) }
-
       it_behaves_like 'unauthorized user'
+    end
 
-      it 'scopes to nothing' do
-        expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
-      end
+    it 'scopes to their org' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.where(id: user.organisation_id))
     end
   end
 

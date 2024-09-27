@@ -27,7 +27,15 @@ class OrganisationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      authorized_ku_staff? ? scope.all : scope.none
+      if authorized_ku_staff?
+        scope.all
+
+      elsif user.is?('OrgAdmin')
+        scope.where(id: user.organisation_id)
+
+      else
+        scope.none
+      end
     end
 
     def authorized_ku_staff?
