@@ -59,7 +59,7 @@
 	}
 
 	#main-nav {
-		@apply w-16;
+		@apply h-svh w-16;
 
 		.main-nav-link {
 			@apply basis-16 flex items-center justify-center text-main-50 gap-3;
