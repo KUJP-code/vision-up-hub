@@ -4,7 +4,8 @@
 
 = turbo_stream.replace 'teacher-lessons' do
   %main.p-6.flex.flex-col.gap-3#teacher-lessons
-    = render 'shared/announcement_list', announcements: @announcements
+    - if @announcements.any?
+      = render 'shared/announcement_list', announcements: @announcements
 
     %nav.tab-nav
       - @valid_levels.each do |level|
