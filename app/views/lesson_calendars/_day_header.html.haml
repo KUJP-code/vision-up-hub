@@ -10,7 +10,7 @@
   - no_lessons = course_lessons.none? { |cl| cl.day == day.downcase } ? 'no-lessons' : ''
 
   %header{ class: 'flex flex-col items-center justify-center p-3 odd:bg-neutral-dark ' \
-                  "even:bg-neutral-light rounded-t sticky -top-3 z-50 #{no_lessons}" }
+                  "even:bg-neutral-light rounded-t sticky -top-3 z-40 #{no_lessons}" }
     %div{ class: current_class }
       %h2.font-bold= day
       %p.text-sm
