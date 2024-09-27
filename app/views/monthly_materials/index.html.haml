@@ -16,10 +16,10 @@
       %tbody
         - @lessons.uniq.each_with_index do |l, i|
           :ruby
-            course = params.dig(:q, :course)&.to_i ||
-                     l.course_lessons.first.course_id
-            date = l.course_lessons.find do |cl|
-              cl.course_id == course &&
+            course_id = params.dig(:q, :course)&.to_i ||
+                        l.course_lessons.first.course_id
+            course_lesson = l.course_lessons.find do |cl|
+              cl.course_id == course_id &&
                 cl.week >= @from_week &&
                 cl.week <= @to_week
             end
@@ -35,7 +35,11 @@
                 = link_to with_subtype(l), lesson_path(l)
               - else
                 = with_subtype(l)
-            %td.align-top.p-1 W#{date.week}/#{date.day.titleize[0..2]}
+            %td.align-top.p-1
+              - if course_lesson
+                W#{course_lesson.week}/#{course_lesson.day.titleize[0..2]}
+              - else
+                'Unknown date'
             %td.align-top.p-1
               %ul
                 = list_from(l.materials)

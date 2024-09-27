@@ -172,8 +172,6 @@ ja:
           mb: MB
           pb: PB
           tb: TB
-    nth:
-      ordinalized: "%{number}th"
     percentage:
       format:
         delimiter: ""
