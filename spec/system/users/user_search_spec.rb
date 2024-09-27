@@ -40,7 +40,6 @@ RSpec.describe 'User search', :js do
       within '#user_search' do
         fill_in 'search_email', with: 'xjpjv'
         fill_in 'search_name', with: 'ent'
-        select 'Parent', from: 'search_type'
         click_button I18n.t('user_searches.form.search')
       end
       click_button I18n.t('users.table.add_as_parent')
