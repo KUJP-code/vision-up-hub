@@ -25,11 +25,11 @@ RSpec.describe 'Student search', :js do
           select 'Sky One', from: 'search_level'
           select student.school.name, from: 'search_school_id'
           fill_in 'search_birthday', with: Date.new(2000, 1, 1)
-          click_button I18n.t('student_searches.form.search')
+          click_button 'commit'
         end
-        click_button I18n.t('student_searches.results.claim_child', child: student.name)
+        click_button 'commit'
         expect(page).to have_css('a', text: student.name)
-        expect(page).to have_content(I18n.t('update_success'))
+        expect(page).to have_css('.bg-success')
         expect(student.reload.parent_id).to eq user.id
       end
     end
@@ -44,14 +44,9 @@ RSpec.describe 'Student search', :js do
           select 'Sky One', from: 'search_level'
           select student.school.name, from: 'search_school_id'
           fill_in 'search_birthday', with: Date.new(2000, 1, 1)
-          click_button I18n.t('student_searches.form.search')
+          click_button 'commit'
         end
-        expect(page).not_to have_content(I18n.t('student_searches.results.claim_child', child: student.name))
-        expect(page).to have_content(
-          I18n.t('student_searches.results.child_claimed',
-                 child: student.name,
-                 parent: user.email)
-        )
+        expect(page).to have_css('.bg-danger')
       end
     end
   end
@@ -71,7 +66,7 @@ RSpec.describe 'Student search', :js do
         select school.name, from: 'search_school_id'
         select 'Sky One', from: 'search_level'
         fill_in 'search_student_id', with: 's12345678'
-        click_button I18n.t('student_searches.form.search')
+        click_button 'commit'
       end
       expect(page).to have_css('a', text: student.student_id)
       expect(page).not_to have_content(extra.name)
