@@ -14,7 +14,7 @@ gem 'propshaft', '~> 0.9'
 gem 'pg', '1.5.5'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '6.4.2'
+gem 'puma', '6.4.3'
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem 'jsbundling-rails', '1.3.0'
@@ -66,6 +66,9 @@ gem 'aws-sdk-s3', '1.143.0', require: false
 
 # Lock rack to avoid vulnerabilities
 gem 'rack', '3.0.9.1'
+
+# Lock webrick version CVE-2024-27420
+gem 'webrick', '1.8.2'
 
 # Automatically set lang from user's preferred language
 gem 'http_accept_language', '2.1.1'
