@@ -25,10 +25,11 @@
         = f.label :remember_me
 
       = f.submit t('.sign_in'),
-                 class: 'btn btn-secondary text-xl'
+                 class: 'btn btn-main text-xl'
 
       %small.text-center.underline.text-secondary-50
         = link_to t('.forgot_your_password'),
                   new_password_path(resource_name)
 
-    = image_tag 'splash.jpg', class: 'hidden md:block rounded w-1/2 m-2 object-cover object-center'
+    = image_tag 'splash.jpg',
+                class: 'hidden md:block rounded w-1/2 m-2 object-cover object-center'

@@ -1,7 +1,18 @@
-%main.w-screen.h-screen.mt-0.flex.flex-col.justify-center.items-center.gap-6
-  = link_to t('.sign_in'),
-            new_user_session_path,
-            class: 'btn btn-main'
-  = link_to t('.sign_up'),
-            new_user_registration_path,
-            class: 'btn btn-main'
+%main.flex.justify-center.items-center.p-3.mt-0
+  %div{ class: 'flex h-4/5 w-full md:w-2/3 rounded bg-white overflow-y-scroll overflow-x-clip' }
+    %div{ class: 'w-full md:w-1/2 flex flex-col items-center justify-center gap-12 p-12' }
+      = image_tag 'landing_logo.svg', class: 'w-4/5'
+
+      .w-full.flex.flex-col.items-center.justify-center.gap-6.grow
+        = link_to t('.sign_in'),
+                  new_user_session_path,
+                  class: 'btn btn-secondary'
+
+        = render 'shared/spacer'
+
+        = link_to t('.sign_up'),
+                  new_user_registration_path,
+                  class: 'btn btn-secondary'
+
+    = image_tag 'splash.jpg',
+                class: 'hidden md:block rounded w-1/2 m-2 object-cover object-center'
