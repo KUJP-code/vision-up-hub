@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:0.19.19-bump-sq0.6"
+    "Name": "kidsup/materials:1.0.0-edx-version"
   },
   "Ports": [
     {
