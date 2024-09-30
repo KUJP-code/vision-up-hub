@@ -2,6 +2,7 @@
 ja:
   school_classes:
     index:
+      classes: "クラス"
       create_class: "新しいクラスを作成する"
     show:
       add_existing_student: "既存の学生を追加する"

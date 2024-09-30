@@ -2,6 +2,7 @@
 en:
   school_classes:
     index:
+      classes: "Classes"
       create_class: "Create new class"
     show:
       add_existing_student: "Add an existing student"
