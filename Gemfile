@@ -53,12 +53,12 @@ gem 'poppler', '4.2.2'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
-gem 'solid_queue', '0.7'
+gem 'solid_queue', '1.0'
 
 # And mission control to manage SQ jobs
 gem 'mission_control-jobs', '0.2.1'
 
-# PgHero for DB stats
+# PgHero for DB statsp
 gem 'pghero', '3.4.1'
 
 # Integration with AWS S3
