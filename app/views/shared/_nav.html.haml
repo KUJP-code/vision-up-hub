@@ -9,8 +9,7 @@
     .grow.main-nav-link-text
     %div{ data: { 'nav-target': 'toggleIcon' } }
       = render 'shared/svgs/hamburger', classes: 'w-8 h-14'
-  = link_to root_path,
-            class: main_nav_class('home', '') do
+  = link_to root_path, class: main_nav_class('home', '') do
     = render 'shared/svgs/home', classes: 'w-8'
     .main-nav-link-text= t('.home')
 

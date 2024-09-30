@@ -13,9 +13,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    type = @user.type.pluralize.underscore
-    path = "/organisations/#{@user.organisation_id}/#{type}/#{@user.id}"
-    redirect_to path
+    type = @user.type.underscore
+    redirect_to send(:"organisation_#{type}_path",
+                     @user.organisation_id, @user.id, locale: I18n.locale)
   end
 
   def edit; end
