@@ -1741,6 +1741,45 @@ ALTER SEQUENCE public.solid_queue_recurring_executions_id_seq OWNED BY public.so
 
 
 --
+-- Name: solid_queue_recurring_tasks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.solid_queue_recurring_tasks (
+    id bigint NOT NULL,
+    key character varying NOT NULL,
+    schedule character varying NOT NULL,
+    command character varying(2048),
+    class_name character varying,
+    arguments text,
+    queue_name character varying,
+    priority integer DEFAULT 0,
+    static boolean DEFAULT true,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: solid_queue_recurring_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.solid_queue_recurring_tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: solid_queue_recurring_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.solid_queue_recurring_tasks_id_seq OWNED BY public.solid_queue_recurring_tasks.id;
+
+
+--
 -- Name: solid_queue_scheduled_executions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2370,6 +2409,13 @@ ALTER TABLE ONLY public.solid_queue_recurring_executions ALTER COLUMN id SET DEF
 
 
 --
+-- Name: solid_queue_recurring_tasks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_tasks ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_recurring_tasks_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_scheduled_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2716,6 +2762,14 @@ ALTER TABLE ONLY public.solid_queue_ready_executions
 
 ALTER TABLE ONLY public.solid_queue_recurring_executions
     ADD CONSTRAINT solid_queue_recurring_executions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solid_queue_recurring_tasks solid_queue_recurring_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.solid_queue_recurring_tasks
+    ADD CONSTRAINT solid_queue_recurring_tasks_pkey PRIMARY KEY (id);
 
 
 --
@@ -3203,6 +3257,20 @@ CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_job_id ON public.s
 --
 
 CREATE UNIQUE INDEX index_solid_queue_recurring_executions_on_task_key_and_run_at ON public.solid_queue_recurring_executions USING btree (task_key, run_at);
+
+
+--
+-- Name: index_solid_queue_recurring_tasks_on_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solid_queue_recurring_tasks_on_key ON public.solid_queue_recurring_tasks USING btree (key);
+
+
+--
+-- Name: index_solid_queue_recurring_tasks_on_static; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_solid_queue_recurring_tasks_on_static ON public.solid_queue_recurring_tasks USING btree (static);
 
 
 --
@@ -3760,6 +3828,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240930022741'),
 ('20240924100115'),
 ('20240822085050'),
 ('20240821042907'),
