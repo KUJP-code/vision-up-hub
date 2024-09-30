@@ -2,8 +2,10 @@ ja:
   lessons:
     daily_activity: "デイリーアクティビティ"
     english_class: "イングリッシュクラス"
+    evening_class: "夜間クラス"
     exercise: "エクササイズ"
     phonics: "フォニックス"
+    phonics_class: "フォニックス"
     research_study: "研究学習"
     topic_study: "トピック学習"
     special_lesson: "特別レッスン"

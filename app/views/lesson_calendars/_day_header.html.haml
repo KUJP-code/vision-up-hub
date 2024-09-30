@@ -12,11 +12,11 @@
   %header{ class: 'flex flex-col items-center justify-center p-3 odd:bg-neutral-dark ' \
                   "even:bg-neutral-light rounded-t sticky -top-3 z-40 #{no_lessons}" }
     %div{ class: current_class }
-      %h2.font-bold= day
+      %h2.font-bold= t("day.#{day.downcase}")
       %p.text-sm
         - if I18n.locale == :en
           = iteration_day.strftime("%B #{iteration_day.day.ordinalize}")
         - else
-          = ja_date_weekday(iteration_day)
+          = ja_date(iteration_day)
 
   - iteration_day += 1

@@ -1,6 +1,7 @@
 en:
   lesson_calendars:
     index:
+      calendar: "Calendar"
       calendar_for: "Week starting %{date}"
       next_week: "Next Week"
       previous_week: "Previous Week"

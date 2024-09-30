@@ -43,10 +43,10 @@
     - lesson_type_rows.each do |type, rows|
       - next if @course_lessons.count { |cl| cl.lesson.type == type }.zero?
 
-      %h2{ class: 'col-start-1 vertical-text font-bold text-xl border-l-2 ' \
+      %h2{ class: 'col-start-1 vertical-text font-bold text-xl ' \
                   'border-secondary flex items-end justify-center p-3 ' \
-                  "my-3 #{rows}" }
-        = type.titleize
+                  "my-3 #{rows} #{I18n.locale == :ja ? 'border-r-2' : 'border-l-2 rotate-180'}" }
+        = t("lessons.#{type.underscore}")
 
       %hr{ class: "#{lesson_separator_rows[type]} calendar-separator" }
 

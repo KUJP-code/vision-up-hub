@@ -88,6 +88,14 @@ ja:
       day: 日
       month: 月
       year: 年
+  day:
+    sunday: 日
+    monday: 月
+    tuesday: 火
+    wednesday: 水
+    thursday: 木
+    friday: 金
+    saturday: 土
   delete: "削除"
   edit: "編集"
   errors:
