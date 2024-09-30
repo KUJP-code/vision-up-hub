@@ -33,7 +33,8 @@ class AnnouncementPolicy < ApplicationPolicy
       when 'OrgAdmin'
         scope.where(organisation_id: [user.organisation_id, nil])
       when 'Writer', 'Sales', 'SchoolManager', 'Teacher', 'Parent'
-        scope.where(organisation_id: [user.organisation_id, nil], role: [user.type, nil])
+        scope.where(organisation_id: [user.organisation_id, nil], role: [user.type, nil],
+                    start_date: ..Time.zone.today, finish_date: Time.zone.today..)
       end
     end
   end

@@ -25,6 +25,7 @@ RSpec.describe AnnouncementPolicy do
 
     it 'scopes to targetted announcements' do
       create(:announcement, organisation: create(:organisation), role: 'Sales') # unseen
+      create(:announcement, finish_date: 2.days.ago) # unseen
       role_announcement = create(:announcement, role: 'Writer', message: 'Writer announcement')
       org = create(:organisation, name: 'KidsUP')
       user.save
@@ -41,6 +42,7 @@ RSpec.describe AnnouncementPolicy do
 
     it 'scopes to targetted announcements' do
       create(:announcement, organisation: create(:organisation), role: 'Writer') # unseen
+      create(:announcement, finish_date: 2.days.ago) # unseen
       role_announcement = create(:announcement, role: 'Sales')
       org = create(:organisation, name: 'KidsUP')
       user.save
@@ -67,7 +69,7 @@ RSpec.describe AnnouncementPolicy do
     end
 
     it 'scopes to targetted announcements' do
-      create(:announcement, organisation: create(:organisation)) # unseen because its a different organisation
+      create(:announcement, organisation: create(:organisation)) # unseen
       org_announcement = create(:announcement, organisation: user.organisation)
       generic_announcement = create(:announcement)
       expect(Pundit.policy_scope!(user, Announcement)).to contain_exactly(generic_announcement, org_announcement)
@@ -81,6 +83,7 @@ RSpec.describe AnnouncementPolicy do
 
     it 'scopes to targetted announcements' do
       create(:announcement, organisation: create(:organisation), role: 'Sales') # unseen
+      create(:announcement, finish_date: 2.days.ago) # unseen
       role_announcement = create(:announcement, role: 'SchoolManager', message: 'School Manager announcement')
       org = create(:organisation)
       user.save
@@ -97,6 +100,7 @@ RSpec.describe AnnouncementPolicy do
 
     it 'scopes to targetted announcements' do
       create(:announcement, organisation: create(:organisation), role: 'Sales') # unseen
+      create(:announcement, finish_date: 2.days.ago) # unseen
       role_announcement = create(:announcement, role: 'Teacher', message: 'Teacher announcement')
       org = create(:organisation)
       user.save
@@ -113,6 +117,7 @@ RSpec.describe AnnouncementPolicy do
 
     it 'scopes to targetted announcements' do
       create(:announcement, organisation: create(:organisation), role: 'Sales') # unseen
+      create(:announcement, finish_date: 2.days.ago) # unseen
       role_announcement = create(:announcement, role: 'Parent', message: 'Parent announcement')
       org = create(:organisation)
       user.save
