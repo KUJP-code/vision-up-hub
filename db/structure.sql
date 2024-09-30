@@ -1653,7 +1653,8 @@ CREATE TABLE public.solid_queue_processes (
     pid integer NOT NULL,
     hostname character varying,
     metadata text,
-    created_at timestamp(6) without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    name character varying NOT NULL
 );
 
 
@@ -1753,7 +1754,7 @@ CREATE TABLE public.solid_queue_recurring_tasks (
     arguments text,
     queue_name character varying,
     priority integer DEFAULT 0,
-    static boolean DEFAULT true,
+    static boolean DEFAULT true NOT NULL,
     description text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -3232,6 +3233,13 @@ CREATE INDEX index_solid_queue_processes_on_last_heartbeat_at ON public.solid_qu
 
 
 --
+-- Name: index_solid_queue_processes_on_name_and_supervisor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_solid_queue_processes_on_name_and_supervisor_id ON public.solid_queue_processes USING btree (name, supervisor_id);
+
+
+--
 -- Name: index_solid_queue_processes_on_supervisor_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3828,6 +3836,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20240930025206'),
+('20240930024044'),
+('20240930024042'),
 ('20240930022741'),
 ('20240924100115'),
 ('20240822085050'),
