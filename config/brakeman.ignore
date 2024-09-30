@@ -1,0 +1,29 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "0187174ed24cf937bf42f23faba93de69f9534afb82cc3bd924c13cb4d93c78c",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/announcements_controller.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:announcement).permit(:message, :link, :finish_date, :start_date, :organisation_id, :role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AnnouncementsController",
+        "method": "announcement_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "Role is not sensitive, just for targeting."
+    }
+  ],
+  "updated": "2024-09-30 10:40:21 +0900",
+  "brakeman_version": "6.1.2"
+}

@@ -86,7 +86,9 @@ class TutorialsController < ApplicationController
   end
 
   def set_type
-    @type = params[:type]
+    return @type = params[:type] if %w[PDF Video FAQ].include?(params[:type])
+
+    redirect_to root_path
   end
 
   def set_tutorial
