@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.0-edx-version"
+    "Name": "kidsup/materials:1.0.1-nakagawa-direct"
   },
   "Ports": [
     {
