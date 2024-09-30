@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:0.19.18-bump-sq0.5"
+    "Name": "kidsup/materials:0.19.19-bump-sq0.6"
   },
   "Ports": [
     {
