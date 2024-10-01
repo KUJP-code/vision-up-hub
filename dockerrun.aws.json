@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.1-nakagawa-direct"
+    "Name": "kidsup/materials:1.0.2-www-cors"
   },
   "Ports": [
     {
