@@ -4,7 +4,7 @@ class Inquiry
   include ActiveModel::Validations, ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor :email, :phone, :message, :name
+  attr_accessor :email, :phone, :message, :name, :org
 
   validates :email, :message, :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
