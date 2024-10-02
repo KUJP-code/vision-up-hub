@@ -5,6 +5,8 @@ class InquiriesController < ApplicationController
 
   def create
     InquiryForwardingJob.perform_later(inquiry_params)
+    redirect_to 'https://www.vision-up.biz/confirmed',
+                allow_other_host: true
   end
 
   private
