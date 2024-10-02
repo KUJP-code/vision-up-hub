@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.2-www-cors"
+    "Name": "kidsup/materials:1.0.3-inquiry-org"
   },
   "Ports": [
     {
