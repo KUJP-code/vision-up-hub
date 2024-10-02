@@ -56,7 +56,7 @@ gem 'ruby-vips', '2.2.0'
 gem 'solid_queue', '1.0'
 
 # And mission control to manage SQ jobs
-gem 'mission_control-jobs', '0.2.1'
+gem 'mission_control-jobs', '~> 0.3'
 
 # PgHero for DB statsp
 gem 'pghero', '3.4.1'
