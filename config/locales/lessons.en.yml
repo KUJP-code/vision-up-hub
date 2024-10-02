@@ -2,8 +2,10 @@ en:
   lessons:
     daily_activity: "Daily Activity"
     english_class: "English Class"
+    evening_class: "Evening Class"
     exercise: "Exercise"
     phonics: "Phonics Class"
+    phonics_class: "Phonics Class"
     research_study: "Research Study"
     topic_study: "Topic Study"
     special_lesson: "Special Lesson"
