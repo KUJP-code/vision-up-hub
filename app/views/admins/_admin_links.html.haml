@@ -18,10 +18,6 @@
                 flipper_path,
                 class: 'btn btn-secondary'
 
-      = link_to 'Jobs',
-                mission_control_jobs_path,
-                class: 'btn btn-secondary'
-
       = link_to 'Triggerable Jobs',
                 triggerable_jobs_path,
                 class: 'btn btn-secondary'
@@ -32,6 +28,10 @@
 
     = link_to 'Form Submissions',
               organisation_form_submissions_path(@user.organisation_id),
+              class: 'btn btn-secondary'
+
+    = link_to 'Jobs',
+              mission_control_jobs_path,
               class: 'btn btn-secondary'
 
     - if @user.id == current_user.id
