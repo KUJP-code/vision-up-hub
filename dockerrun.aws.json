@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.4-show-jobs"
+    "Name": "kidsup/materials:1.0.4-calendar-text"
   },
   "Ports": [
     {
