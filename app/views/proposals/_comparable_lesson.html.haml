@@ -5,7 +5,7 @@
   = render('lessons/shared/guide_preview', lesson:)
   = render('lessons/shared/attribute_list', lesson:)
 
-  = render 'lessons/shared/resource_list', resources: lesson.resources
+  = render 'lessons/shared/resource_list', resources: lesson.resources, lesson:
   - if lesson.type == 'PhonicsClass'
     = render 'lessons/phonics_classes/phonics_resources',
              resources: lesson.phonics_resources

@@ -1,4 +1,4 @@
--# locals: (resources:)
+-# locals: (lesson:, resources:)
 
 .flex.flex-wrap.justify-start.items-center.gap-3
   - resources.each do |resource|
@@ -12,7 +12,7 @@
                          class: 'fill-white'
       - if current_user.is?('Admin')
         = link_to file_path(id: resource.blob.id,
-                            record_id: @lesson.id,
+                            record_id: lesson.id,
                             record_type: 'Lesson'),
                   data: { turbo_method: 'delete',
                           turbo_confirm: "Remove #{resource.filename} from this lessson?" },
