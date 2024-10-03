@@ -1,7 +1,7 @@
 - dot_levels = ['All Levels', 'Kindy', 'Land', 'Sky', 'Galaxy', 'Keep Up', 'Specialist']
 
 %button.self-end{ popovertarget: 'dot-key' }
-  = render 'shared/svgs/support', classes: 'fill-secondary-50'
+  = inline_svg_tag 'support.svg', class: 'fill-secondary-50'
 .mr-20.mt-24.rounded.p-3.bg-neutral-light.border-2.border-secondary#dot-key{ popover: 'auto' }
   %ul
     - dot_levels.each do |level|

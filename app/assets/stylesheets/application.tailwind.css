@@ -62,9 +62,10 @@
 		@apply h-svh w-16;
 
 		.main-nav-link {
-			@apply basis-16 flex items-center justify-center text-main-50 gap-3;
+			@apply basis-16 flex items-center justify-center text-main-50 gap-3 fill-main-50;
 
 			&.active {
+				fill: #fff;
 				color: white;
 				position: relative;
 

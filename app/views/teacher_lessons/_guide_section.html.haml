@@ -6,5 +6,5 @@
             rel: 'noopener',
             class: 'btn-outline' do
     %span{ class: 'basis-5/6 truncate' }= t('.guide')
-    = render 'shared/svgs/download_icon',
-             classes: 'fill-secondary'
+    = inline_svg_tag 'download_icon.svg',
+                     class: 'fill-secondary'

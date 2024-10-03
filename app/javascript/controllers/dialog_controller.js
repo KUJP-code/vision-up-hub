@@ -10,6 +10,7 @@ export default class extends Controller {
 	}
 
 	open(e) {
+		console.log(this.srcValue, this.frame, this.frameValue)
 		this.frame.src = this.srcValue;
 		this.dialog.showModal();
 		e.stopPropagation();

@@ -11,4 +11,4 @@
     = render 'support_requests/resolved' if request.resolved?
   - if index
     .hidden.md:block.grow
-    = render 'shared/svgs/next', classes: 'fill-secondary-50 w-8 h-8 hidden md:block'
+    = inline_svg_tag 'next.svg', class: 'fill-secondary-50 w-8 h-8 hidden md:block'

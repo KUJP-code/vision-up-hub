@@ -41,5 +41,5 @@
                           rel: 'noopener',
                           class: 'flex items-center gap-1' do
                   = blob.filename
-                  = render 'shared/svgs/download_icon',
-                           classes: 'fill-secondary'
+                  = inline_svg_tag 'download_icon.svg',
+                                   class: 'fill-secondary'

@@ -24,7 +24,7 @@
     .flex.items-center.justify-between
       = link_to lesson_calendars_path(date: @date - 1.week, org: @organisation),
                 class: 'btn btn-secondary flex items-center' do
-        = render 'shared/svgs/back', classes: 'w-12 fill-white'
+        = inline_svg_tag 'back.svg', class: 'w-12 fill-white'
         %p= t('.previous_week')
 
       %h2.font-bold.text-xl= t('.calendar_for', date: ja_date(@date))
@@ -32,7 +32,7 @@
       = link_to lesson_calendars_path(date: @date + 1.week, org: @organisation),
                 class: 'btn btn-secondary flex items-center' do
         %p= t('.next_week')
-        = render 'shared/svgs/next', classes: 'w-12 fill-white'
+        = inline_svg_tag 'next.svg', class: 'w-12 fill-white'
 
   .grid.text-center.calendar
     #top-left

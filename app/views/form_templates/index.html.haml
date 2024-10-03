@@ -9,7 +9,7 @@
   = link_to new_organisation_form_template_path(@org),
             class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
     = t('.new_template')
-    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
+    = inline_svg_tag 'next.svg', class: 'fill-white h-8 w-8'
 
   %table.text-center
     %thead

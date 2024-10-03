@@ -8,8 +8,8 @@
                 rel: 'noopener',
                 class: 'btn btn-main resource flex justify-around' do
         %p= resource.filename
-        = render 'shared/svgs/download_icon',
-                 classes: 'fill-white'
+        = inline_svg_tag 'download_icon.svg',
+                         class: 'fill-white'
       - if current_user.is?('Admin')
         = link_to file_path(id: resource.blob.id,
                             record_id: @lesson.id,
@@ -18,5 +18,5 @@
                           turbo_confirm: "Remove #{resource.filename} from this lessson?" },
                   class: 'btn btn-danger flex justify-around' do
           %p= resource.filename
-          = render 'shared/svgs/delete_icon',
-                   classes: 'fill-white'
+          = inline_svg_tag 'delete_icon.svg',
+                           class: 'fill-white'

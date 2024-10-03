@@ -9,5 +9,5 @@
               rel: 'noopener',
               class: 'btn-outline w-full' do
       %span{ class: 'basis-5/6 truncate' }= r.blob.filename
-      = render 'shared/svgs/download_icon',
-               classes: 'fill-secondary basis-1/6'
+      = inline_svg_tag 'download_icon.svg',
+                       class: 'fill-secondary basis-1/6'

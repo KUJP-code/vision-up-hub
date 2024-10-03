@@ -10,7 +10,7 @@
             class: 'btn btn-secondary flex items-center w-full md:w-1/3',
             id: 'create_request' do
     = t('.new_request')
-    = render 'shared/svgs/next', classes: 'fill-white h-8 w-8'
+    = inline_svg_tag 'next.svg', class: 'fill-white h-8 w-8'
 
   %section.flex.flex-col.gap-3
     - if @support_requests.empty?

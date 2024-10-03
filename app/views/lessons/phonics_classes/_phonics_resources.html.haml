@@ -11,13 +11,13 @@
                 rel: 'noopener',
                 class: 'btn btn-main resource flex justify-around' do
         %p= filename
-        = render 'shared/svgs/download_icon',
-                 classes: 'fill-white'
+        = inline_svg_tag 'download_icon.svg',
+                         class: 'fill-white'
       - if current_user.is?('Admin')
         = link_to phonics_resource_path(resource),
                   data: { turbo_method: 'delete',
                           turbo_confirm: "Remove #{filename} from this lessson?" },
                   class: 'btn btn-danger flex justify-around' do
           %p= filename
-          = render 'shared/svgs/delete_icon',
-                   classes: 'fill-white'
+          = inline_svg_tag 'delete_icon.svg',
+                           class: 'fill-white'

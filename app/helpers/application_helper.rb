@@ -31,8 +31,8 @@ module ApplicationHelper
   def main_nav_link(title, path)
     active = active_main_nav_link?(title, controller_name)
     link_to path, class: main_nav_class(title, controller_name) do
-      (render "shared/svgs/#{title}",
-              classes: "w-8 shrink-0 #{'fill-white' if active}") +
+      (inline_svg_tag "#{title}.svg",
+                      class: "w-8 shrink-0 #{'fill-white' if active}") +
         content_tag(:span, t(".#{title}"), class: 'main-nav-link-text')
     end
   end
@@ -103,7 +103,7 @@ module ApplicationHelper
             id: 'locale_toggle',
             title: "Switch to #{new_locale.to_s.upcase}",
             data: { turbo_stream: } do
-      render "shared/svgs/#{new_locale}", classes:
+      inline_svg_tag "#{new_locale}.svg", class: classes
     end
   end
 

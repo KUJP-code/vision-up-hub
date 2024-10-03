@@ -7,10 +7,11 @@
     %image.px-3.main-nav-link-text{ height: '64px', width: '120px',
                                     src: org_favicon(current_user.presence) }
     .grow.main-nav-link-text
-    %div{ data: { 'nav-target': 'toggleIcon' } }
-      = render 'shared/svgs/hamburger', classes: 'w-8 h-14'
+    = inline_svg_tag 'hamburger.svg',
+                     class: 'w-8 h-14 fill-main-50',
+                     data: { 'nav-target': 'toggleIcon' }
   = link_to root_path, class: main_nav_class('home', '') do
-    = render 'shared/svgs/home', classes: 'w-8'
+    = inline_svg_tag 'home.svg', class: 'w-8 shrink-0'
     .main-nav-link-text= t('.home')
 
   %div{ class: 'flex flex-col', id: 'main_nav_links' }

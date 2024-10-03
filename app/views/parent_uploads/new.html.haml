@@ -13,8 +13,8 @@
   = link_to organisation_parent_upload_path(current_user.organisation, 1),
             class: 'btn btn-main w-full flex justify-center gap-2' do
     %p= t('.download_sample')
-    = render 'shared/svgs/download_icon',
-             classes: 'fill-white'
+    = inline_svg_tag 'download_icon.svg',
+                     class: 'fill-white'
 
   %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
     %h2= t('.create_parents', org: @organisation.name)

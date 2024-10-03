@@ -18,12 +18,12 @@
   .w-full.flex.justify-between.p-3
     = link_to missing_lessons_path(org: @org, date: @date - 1.week),
               class: 'btn btn-secondary flex items-center' do
-      = render 'shared/svgs/back', classes: 'fill-white h-12 w-12'
+      = inline_svg_tag 'back.svg', class: 'fill-white h-12 w-12'
       %p Previous Week
     = link_to missing_lessons_path(org: @org, date: @date + 1.week),
               class: 'btn btn-secondary flex items-center' do
       %p Next Week
-      = render 'shared/svgs/next', classes: 'fill-white'
+      = inline_svg_tag 'next.svg', class: 'fill-white'
 
   %nav.tab-nav
     - @orgs.each do |org|
