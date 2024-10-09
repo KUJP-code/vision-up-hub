@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.4-calendar-text"
+    "Name": "kidsup/materials:1.0.5-mailer-from"
   },
   "Ports": [
     {
