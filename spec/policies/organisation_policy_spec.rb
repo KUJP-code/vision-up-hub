@@ -65,8 +65,8 @@ RSpec.describe OrganisationPolicy do
 
     it_behaves_like 'authorized user for viewing'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    it 'scopes to their org' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.where(id: user.organisation_id))
     end
   end
 
@@ -75,8 +75,8 @@ RSpec.describe OrganisationPolicy do
 
     it_behaves_like 'authorized user for viewing'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    it 'scopes to their org' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.where(id: user.organisation_id))
     end
   end
 
@@ -85,8 +85,8 @@ RSpec.describe OrganisationPolicy do
 
     it_behaves_like 'authorized user for viewing'
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.none)
+    it 'scopes to their org' do
+      expect(Pundit.policy_scope!(user, Organisation)).to eq(Organisation.where(id: user.organisation_id))
     end
   end
 end

@@ -50,11 +50,14 @@ RSpec.describe StudentPolicy do
     context 'when admin of student org' do
       let(:user) { build(:user, :org_admin, organisation_id: record.organisation_id) }
 
+      before do
+        record.update(organisation_id: user.organisation_id)
+      end
+
       it_behaves_like 'authorized user'
 
       it 'scopes to all org students' do
-        org_students = user.organisation.schools.map(&:students).flatten
-        expect(Pundit.policy_scope!(user, Student)).to eq(org_students)
+        expect(Pundit.policy_scope!(user, Student)).to contain_exactly(record)
       end
     end
 
@@ -142,12 +145,19 @@ RSpec.describe StudentPolicy do
       end
 
       it_behaves_like 'authorized user except destroy'
+
+      it 'scopes to own children' do
+        expect(Pundit.policy_scope!(user, Student)).to contain_exactly(record)
+      end
     end
 
-    context 'when parent of different student' do
+    context 'when parent with no children' do
       let(:user) { build(:user, :parent) }
 
       it_behaves_like 'unauthorized user except new'
+      it 'scopes to nothing' do
+        expect(Pundit.policy_scope!(user, Student)).to eq(Student.none)
+      end
     end
   end
 end

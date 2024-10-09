@@ -73,7 +73,7 @@ class StudentsController < ApplicationController
   def student_params
     params.require(:student).permit(
       :comments, :level, :name, :school_id, :student_id, :parent_id,
-      :en_name, :birthday, :start_date, :quit_date,
+      :en_name, :birthday, :start_date, :quit_date, :organisation_id,
       student_classes_attributes: %i[id class_id _destroy]
     )
   end
@@ -110,6 +110,7 @@ class StudentsController < ApplicationController
     @classes = policy_scope(SchoolClass).pluck(:name, :id)
     @student.student_classes.build(class_id: params[:class_id]) if params[:class_id]
     @schools = policy_scope(School).pluck(:name, :id)
+    @organisations = policy_scope(Organisation).pluck(:name, :id)
   end
 
   def set_student

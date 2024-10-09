@@ -1,4 +1,4 @@
--# locals: (classes:, schools:, student:)
+-# locals: (classes:, organisations:, schools:, student:)
 
 = form_with model: student,
             html: { class: 'form',
@@ -29,7 +29,11 @@
   .form-group
     = f.label :school_id, t('.school')
     = f.select :school_id,
-      schools.map { |name, id| [t("school_names.#{name}"), id] }
+               schools.map { |name, id| [t("school_names.#{name}"), id] }
+
+  .form-group 
+    = f.label :organisation_id, t('.organisation')
+    = f.select :organisation_id, organisations
 
   .form-group
     = f.label :birthday, t('.birthday')
