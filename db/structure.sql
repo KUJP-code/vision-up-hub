@@ -10,13 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
-
---
 -- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1903,7 +1896,8 @@ CREATE TABLE public.students (
     quit_date date,
     birthday date NOT NULL,
     en_name character varying DEFAULT ''::character varying,
-    log_data jsonb
+    log_data jsonb,
+    organisation_id bigint NOT NULL
 );
 
 
@@ -3331,6 +3325,13 @@ CREATE INDEX index_student_classes_on_student_id ON public.student_classes USING
 
 
 --
+-- Name: index_students_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_students_on_organisation_id ON public.students USING btree (organisation_id);
+
+
+--
 -- Name: index_students_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3495,6 +3496,14 @@ ALTER TABLE ONLY public.faq_tutorials
 
 ALTER TABLE ONLY public.form_submissions
     ADD CONSTRAINT fk_rails_119b838eb0 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
+-- Name: students fk_rails_1e6d7cc63d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.students
+    ADD CONSTRAINT fk_rails_1e6d7cc63d FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
 
 
 --
@@ -3843,6 +3852,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20241009081404'),
+('20241009080850'),
 ('20240930025206'),
 ('20240930024044'),
 ('20240930024042'),

@@ -6,5 +6,6 @@ FactoryBot.define do
     birthday { '20/02/2020' }
     level { 'sky_three' }
     school
+    organisation
   end
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Student do
+RSpec.describe Student, :js do
   include ActiveSupport::Testing::TimeHelpers
 
   it 'has a valid factory' do
