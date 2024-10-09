@@ -2,22 +2,23 @@
 
 require 'rails_helper'
 
-RSpec.describe Student, :js do
+RSpec.describe Student do
   include ActiveSupport::Testing::TimeHelpers
 
   it 'has a valid factory' do
     expect(build(:student)).to be_valid
   end
 
-  it 'cannot have duplicate student IDs at same school' do
-    student = create(:student, student_id: '123')
-    duplicate = build(:student, student_id: '123', school: student.school)
+  it 'cannot have duplicate student IDs at same organisation' do
+    organisation = create(:organisation)
+    create(:student, student_id: '123', organisation:)
+    duplicate = build(:student, student_id: '123', organisation:)
     expect(duplicate).not_to be_valid
   end
 
-  it 'can have duplicate student IDs at different schools' do
+  it 'can have duplicate student IDs at different organisations' do
     create(:student, student_id: '123')
-    duplicate = build(:student, student_id: '123', school: create(:school))
+    duplicate = build(:student, student_id: '123', organisation: create(:organisation))
     expect(duplicate).to be_valid
   end
 

@@ -3346,10 +3346,10 @@ CREATE INDEX index_students_on_school_id ON public.students USING btree (school_
 
 
 --
--- Name: index_students_on_student_id_and_school_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_students_on_student_id_and_organisation_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_students_on_student_id_and_school_id ON public.students USING btree (student_id, school_id);
+CREATE UNIQUE INDEX index_students_on_student_id_and_organisation_id ON public.students USING btree (student_id, organisation_id);
 
 
 --
@@ -3852,6 +3852,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20241009092550'),
+('20241009092138'),
 ('20241009081404'),
 ('20241009080850'),
 ('20240930025206'),
