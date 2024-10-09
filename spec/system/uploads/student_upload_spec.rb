@@ -40,6 +40,7 @@ end
 
 def create_students
   school = create(:school)
-  students = build_list(:student, 2, school:)
+  organisation = create(:organisation)
+  students = build_list(:student, 2, school:, organisation:)
   students.map { |s| Student::CSV_HEADERS.map { |h| s.send(h.to_sym) } }
 end

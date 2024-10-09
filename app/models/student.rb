@@ -4,7 +4,7 @@ class Student < ApplicationRecord
   include Gradeable, Levelable
 
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
-                   birthday start_date quit_date].freeze
+                   birthday start_date quit_date organisation_id].freeze
 
   after_create :generate_student_id
 
