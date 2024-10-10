@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.5-mailer-from"
+    "Name": "kidsup/materials:1.0.6-kids-orgid"
   },
   "Ports": [
     {
