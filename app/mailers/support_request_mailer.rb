@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SupportRequestMailer < ApplicationMailer
-  default from: 'support@vision-up.app'
+  default from: 'support@vision-up.app',
+          'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
+          'List-Unsubscribe' => 'https://vision-up.app'
   layout 'mailer'
 
   def new_request(request)
