@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.0.6-kids-orgid"
+    "Name": "kidsup/materials:1.0.7-hide-google"
   },
   "Ports": [
     {
