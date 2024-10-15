@@ -1,6 +1,8 @@
 = render 'shared/subtitle', text: "Yo, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
+  - if @announcements.any?
+    = render 'shared/announcement_list', announcements: @announcements
   .flex.flex-wrap.justify-center.gap-3
     = render 'admins/admin_links'
     = render 'writers/curriculum_links'

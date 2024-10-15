@@ -2,6 +2,7 @@
 
 class OrgAdminsController < UsersController
   def show
+    @announcements = policy_scope(Announcement)
     @organisation = @user.organisation
   end
 

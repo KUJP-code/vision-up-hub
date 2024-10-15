@@ -2,6 +2,7 @@
 
 class WritersController < UsersController
   def show
+    @announcements = policy_scope(Announcement)
     @assigned_lessons = @user.assigned_lessons
     @created_lessons = @user.created_lessons
     @proposals = @user.proposals.order(updated_at: :desc)

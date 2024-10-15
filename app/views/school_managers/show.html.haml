@@ -1,6 +1,8 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
 
 %main.flex.flex-col.gap-3.p-3
+  - if @announcements.any?
+    = render 'shared/announcement_list', announcements: @announcements
   %h3= @user.email
   %h3 You're a school manager
   = render 'organisations/new_parent_link', org_id: @user.organisation_id

@@ -3,6 +3,7 @@
 class AdminsController < UsersController
   def show
     @assigned_lessons = @user.assigned_lessons
+    @announcements = policy_scope(Announcement)
     @created_lessons = @user.created_lessons
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id)
     @org_teachers = Organisation.all

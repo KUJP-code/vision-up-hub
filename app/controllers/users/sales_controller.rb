@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SalesController < UsersController
-  def show; end
+  def show
+    @announcements = policy_scope(Announcement)
+  end
 
   def new
     @user = authorize Sales.new(organisation_id: params[:organisation_id])
