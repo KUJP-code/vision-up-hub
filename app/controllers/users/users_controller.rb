@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    type = @user.type.underscore
+    type = @user.type.underscore.singularize
     redirect_to send(:"organisation_#{type}_path", @user.id,
                      organisation_id: @user.organisation_id, locale: I18n.locale)
   end
