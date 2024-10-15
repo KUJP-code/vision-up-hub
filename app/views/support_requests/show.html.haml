@@ -6,8 +6,9 @@
 
     %section.flex.flex-col.items-center.gap-1.font-bold.text-center
       %h3 #{t('.category')}: #{@support_request.category.titleize}
-      %h3 #{t('.user')}: #{@support_request.user.name}
-      %h3 #{t('.email')}: #{@support_request.user.email}
+      - unless @support_request.user_id.nil?
+        %h3 #{t('.user')}: #{@support_request.user.name}
+        %h3 #{t('.email')}: #{@support_request.user.email}
       %h3 #{t('.reported_at')}: #{ja_datetime(@support_request.created_at)}
 
     %p.text-center= @support_request.description

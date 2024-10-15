@@ -3,7 +3,9 @@
 = link_to support_request_path(request),
           class: 'flex flex-col rounded border-2 border-secondary-50 p-3' do
   = render 'support_requests/request_header', request:, index: true
-
-  %small #{request.user.name}: #{request.user.email}
+  - if request.user_id.present?
+    %small #{request.user.name}: #{request.user.email}
+  - else
+    %small Deleted User
 
   %p= request.description
