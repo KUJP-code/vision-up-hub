@@ -39,8 +39,6 @@ class StudentSearchesController < ApplicationController
   def parent_search
     @results = Student.where(
       birthday: search_params[:birthday],
-      level: search_params[:level],
-      school_id: search_params[:school_id],
       student_id: search_params[:student_id]
     )
     @parent_id = search_params[:parent_id]

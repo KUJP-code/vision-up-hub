@@ -16,20 +16,6 @@
                      required: true
 
     %div{ class: field_classes }
-      = f.label :level, t('.child_level')
-      = f.select :level,
-                 Student.levels.keys.map { |k| [k.titleize, k] },
-                 { prompt: t('.select_child_level'),
-                   required: true }
-
-    %div{ class: field_classes }
-      = f.label :school_id, t('.school')
-      = f.select :school_id,
-                 schools.map { |s| [t("school_names.#{s.name}"), s.id] },
-                 { prompt: t('.select_school'),
-                   required: true }
-
-    %div{ class: field_classes }
       = f.label :birthday, t('.birthday')
       = f.date_field :birthday, required: true
 

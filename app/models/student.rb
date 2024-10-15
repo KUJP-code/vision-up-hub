@@ -6,12 +6,12 @@ class Student < ApplicationRecord
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date organisation_id].freeze
 
-  after_create :generate_student_id
+  before_validation :generate_student_id
 
   has_logidze
 
   validates :birthday, :level, :name, presence: true
-  validates :student_id, uniqueness: { allow_nil: true, scope: :organisation_id }
+  validates :student_id, presence: true, uniqueness: { scope: :organisation_id }
   encrypts :en_name, :name
 
   belongs_to :parent, optional: true
@@ -41,7 +41,7 @@ class Student < ApplicationRecord
   def generate_student_id
     return unless student_id.nil? || student_id.blank?
 
-    self.student_id = "#{id}-#{school_id}-#{SecureRandom.alphanumeric}"
+    self.student_id = "#{organisation_id}-#{school_id}-#{SecureRandom.alphanumeric}"
     save
   end
 end

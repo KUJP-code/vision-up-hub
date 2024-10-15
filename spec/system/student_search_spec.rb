@@ -17,13 +17,11 @@ RSpec.describe 'Student search', :js do
   context 'when parent' do
     let(:user) { create(:user, :parent) }
 
-    it 'can search and claim their student by student id and level' do
+    it 'can search and claim their student by student id and birthday' do
       I18n.with_locale(:en) do
         visit root_path
         within '#student_search' do
           fill_in 'search_student_id', with: 's12345678'
-          select 'Sky One', from: 'search_level'
-          select student.school.name, from: 'search_school_id'
           fill_in 'search_birthday', with: Date.new(2000, 1, 1)
           click_button 'commit'
         end
@@ -41,8 +39,6 @@ RSpec.describe 'Student search', :js do
         visit root_path
         within '#student_search' do
           fill_in 'search_student_id', with: 's12345678'
-          select 'Sky One', from: 'search_level'
-          select student.school.name, from: 'search_school_id'
           fill_in 'search_birthday', with: Date.new(2000, 1, 1)
           click_button 'commit'
         end
