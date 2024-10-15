@@ -10,6 +10,9 @@
     = turbo_frame_tag 'lesson'
 
 %main.flex.flex-col.gap-6.p-3
+  - if @announcements.any?
+    = render 'shared/announcement_list', announcements: @announcements
+
   - if current_user.is?('Admin', 'Writer')
     %nav.tab-nav
       - @orgs.each do |org|
