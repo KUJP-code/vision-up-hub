@@ -16,4 +16,6 @@ it 'allows an admin to change another users password' do
   fill_in 'new password', with: 'testpassword'
   fill_in 'confirm new password', with: 'testpassword'
   click_on 'commit'
+
+  expect(page).to have_content I18n.t('success')
 end
