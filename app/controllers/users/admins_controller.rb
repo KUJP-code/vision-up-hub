@@ -53,6 +53,26 @@ class AdminsController < UsersController
     end
   end
 
+  def change_password
+    authorize :admin
+    user = User.find_by(email: change_password_params[:email])
+    if user.nil?
+      redirect_to root_url, alert: 'No user found'
+      return
+    end
+    if change_password_params[:new_password] != change_password_params[:confirm_new_password]
+      redirect_to root_url,
+                  alert: 'Passwords did not match'
+      return
+    end
+    user.reset_password(change_password_params[:new_password], change_password_params[:confirm_new_password])
+    redirect_to root_url, notice: 'Password successfully changed'
+  end
+
+  def new_password_change
+    authorize :admin
+  end
+
   def reassign_editor
     authorize :admin
     @new_editor = User.find(params[:new_editor_id])
@@ -68,6 +88,10 @@ class AdminsController < UsersController
   end
 
   private
+
+  def change_password_params
+    params.permit(:email, :new_password, :confirm_new_password)
+  end
 
   def admin_params
     a_params = %i[]

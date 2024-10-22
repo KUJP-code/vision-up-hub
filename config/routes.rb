@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       resources :stand_show_speaks, only: %i[create index update]
       resources :tutorials
       resources :tutorial_categories
+      resources :user_searches, only: %i[index]
       resources :students, except: %i[destroy]
       resources :student_searches, only: %i[index update]
       resources :support_requests do
@@ -65,10 +66,11 @@ Rails.application.routes.draw do
         resources :writers
       end
       post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
+      get 'admin_password_change', to: 'admins#new_password_change', as: :admin_password_change
+      post 'admin_password_change', to: 'admins#change_password', as: :admin_change_password      
 
       # Index for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
-      resources :user_searches, only: %i[index]
     end
 
     authenticate :user, ->(user) { user.is?('Admin') } do

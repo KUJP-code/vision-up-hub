@@ -25,6 +25,14 @@ class AdminPolicy < ApplicationPolicy
     self?
   end
 
+  def change_password?
+    user.is?('Admin')
+  end
+
+  def new_password_change?
+    user.is?('Admin')
+  end
+
   def reassign_editor?
     user.is?('Admin')
   end
