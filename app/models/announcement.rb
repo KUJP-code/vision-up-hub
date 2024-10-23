@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Announcement < ApplicationRecord
-  VALID_HOSTS = %w[www.vision-up.app vision-up.app].freeze
+  VALID_HOSTS = %w[www.vision-up.app vision-up.app hub.kids-up.app].freeze
 
   validates :message, :start_date, :finish_date, presence: true
   validate :internal_link_only
