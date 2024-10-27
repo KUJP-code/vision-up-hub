@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Creating and viewing an announcement', :js do
   let(:admin) { create(:user, :org_admin) }
   let(:teacher) { create(:user, :teacher, organisation: admin.organisation) }
-  let(:announcement) { build(:announcement, link: 'https://vision-up.app') }
+  let(:announcement) { build(:announcement, link: 'https://hub.kids-up.app') }
 
   before do
     sign_in admin
