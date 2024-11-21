@@ -1140,6 +1140,44 @@ ALTER SEQUENCE public.form_templates_id_seq OWNED BY public.form_templates.id;
 
 
 --
+-- Name: invoices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invoices (
+    id bigint NOT NULL,
+    organisation_id bigint NOT NULL,
+    number_of_kids integer NOT NULL,
+    subtotal integer NOT NULL,
+    tax integer NOT NULL,
+    total_cost integer NOT NULL,
+    issued_at timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP,
+    seen_at timestamp(6) without time zone,
+    email_sent boolean DEFAULT false,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
+
+
+--
 -- Name: lessons; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2292,6 +2330,13 @@ ALTER TABLE ONLY public.form_templates ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
+
+
+--
 -- Name: lessons id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2620,6 +2665,14 @@ ALTER TABLE ONLY public.form_submissions
 
 ALTER TABLE ONLY public.form_templates
     ADD CONSTRAINT form_templates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invoices invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -3007,6 +3060,20 @@ CREATE INDEX index_form_submissions_on_staff_id ON public.form_submissions USING
 --
 
 CREATE INDEX index_form_templates_on_organisation_id ON public.form_templates USING btree (organisation_id);
+
+
+--
+-- Name: index_invoices_on_issued_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invoices_on_issued_at ON public.invoices USING btree (issued_at);
+
+
+--
+-- Name: index_invoices_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invoices_on_organisation_id ON public.invoices USING btree (organisation_id);
 
 
 --
@@ -3555,6 +3622,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: invoices fk_rails_4721119434; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invoices
+    ADD CONSTRAINT fk_rails_4721119434 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
 -- Name: form_templates fk_rails_4b34db54c6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3852,6 +3927,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20241120055836'),
 ('20241009092550'),
 ('20241009092138'),
 ('20241009081404'),
