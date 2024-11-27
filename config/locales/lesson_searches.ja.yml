@@ -15,3 +15,6 @@ ja:
       subtype: "サブタイプ"
       title: "タイトル"
       type: "タイプ"
+      course: "コース"
+      select_course: "コース選択"
+      week: "週"
