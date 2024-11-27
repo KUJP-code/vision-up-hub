@@ -56,6 +56,17 @@
                  { prompt: t('.select_status') }
 
     %div{ class: field_classes }
+    = f.label :course_id, t('.course')
+    = f.select :course_id,
+               Course.pluck(:title, :id),
+               { prompt: t('.select_course') }
+    %div{ class: field_classes }
+    = f.label :week, t('.week')
+    = f.number_field :week, step: 1, min: 1
+
+    %div{ class: 'basis-1/5' }
+
+    %div{ class: field_classes }
       = f.label :released, 'Released:'
       .flex.gap-1
         = f.label :released, 'Yes'

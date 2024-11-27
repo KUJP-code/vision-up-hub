@@ -6,8 +6,10 @@ class LessonSearchesController < ApplicationController
   PARTIAL_MATCHES = %w[goal title].freeze
 
   def index
-    @results = policy_scope(Lesson).where(query(search_params))
-                                   .order(title: :asc)
+    @results = policy_scope(Lesson)
+               .joins(:course_lessons)
+               .where(query(search_params))
+               .order(title: :asc)
     render partial: 'lessons/status_table', locals: { lessons: @results }
   end
 
@@ -22,7 +24,7 @@ class LessonSearchesController < ApplicationController
   def search_params
     params.require(:search)
           .permit(:assigned_editor_id, :creator_id, :goal, :level,
-                  :released, :status, :subtype, :title, :type)
+                  :released, :status, :subtype, :title, :type, :course_id, :week)
           .compact_blank
   end
 

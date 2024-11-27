@@ -16,13 +16,20 @@ RSpec.describe 'Lesson search', :js do
            admin_approval: [user.id.to_s],
            status: :accepted)
   end
+  let(:course) { create(:course, title: 'Test Course') }
+  let!(:course_lesson) do
+    create(:course_lesson,
+           lesson: result,
+           course:,
+           week: 3)
+  end
   let!(:extra) { create(:exercise) }
 
   before do
     sign_in user
   end
 
-  it 'can search lessons with partial matching' do
+  it 'can search lessons with partial matching and by week' do
     visit lessons_path
     within '#lesson_search' do
       fill_in 'search_title', with: 'Disco'
@@ -33,6 +40,7 @@ RSpec.describe 'Lesson search', :js do
       select user.name, from: 'search_creator_id'
       select user.name, from: 'search_assigned_editor_id'
       select 'Accepted', from: 'search_status'
+      fill_in 'search_week', with: 3
       click_button I18n.t('lesson_searches.form.search')
     end
     expect(page).to have_content(result.title)
