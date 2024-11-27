@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.1-kids-rebrand"
+    "Name": "kidsup/materials:1.1.1-lesson-filters"
   },
   "Ports": [
     {
