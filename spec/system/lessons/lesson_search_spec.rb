@@ -17,7 +17,7 @@ RSpec.describe 'Lesson search', :js do
            status: :accepted)
   end
   let(:course) { create(:course, title: 'Test Course') }
-  let!(:course_lesson) do
+  let(:course_lesson) do
     create(:course_lesson,
            lesson: result,
            course:,
