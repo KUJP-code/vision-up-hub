@@ -7,9 +7,16 @@ class LessonSearchesController < ApplicationController
 
   def index
     @results = policy_scope(Lesson)
-               .joins(:course_lessons)
-               .where(query(search_params))
-               .order(title: :asc)
+    # Apply joins and filters for course_lessons only if needed
+    if params[:week].present? || params[:course_id].present?
+      @results = @results.joins(:course_lessons)
+      @results = @results.where(course_lessons: { week: params[:week] }) if params[:week].present?
+      @results = @results.where(course_lessons: { course_id: params[:course_id] }) if params[:course_id].present?
+    end
+    generic_params = search_params.except(:week, :course_id)
+    @results = @results.where(query(generic_params)) if generic_params.present?
+    @results = @results.order(created_at: :desc)
+
     render partial: 'lessons/status_table', locals: { lessons: @results }
   end
 
