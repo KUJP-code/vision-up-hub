@@ -1,11 +1,10 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :invoice do
     organisation
-    number_of_kids { 50 }
-    issued_at { Time.current }
-    seen_at { nil }
-    email_sent { false }
+    number_of_kids { 10 }
+    payment_option { 'default' }
+    subtotal { 35_000 }
+    tax { 3500 }
+    total_cost { 38_500 }
   end
 end

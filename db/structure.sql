@@ -1146,13 +1146,12 @@ ALTER SEQUENCE public.form_templates_id_seq OWNED BY public.form_templates.id;
 CREATE TABLE public.invoices (
     id bigint NOT NULL,
     organisation_id bigint NOT NULL,
-    number_of_kids integer NOT NULL,
-    subtotal integer NOT NULL,
-    tax integer NOT NULL,
     total_cost integer NOT NULL,
-    issued_at timestamp(6) without time zone DEFAULT CURRENT_TIMESTAMP,
-    seen_at timestamp(6) without time zone,
-    email_sent boolean DEFAULT false,
+    tax integer NOT NULL,
+    subtotal integer NOT NULL,
+    number_of_kids integer NOT NULL,
+    payment_option character varying NOT NULL,
+    deleted_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3063,10 +3062,10 @@ CREATE INDEX index_form_templates_on_organisation_id ON public.form_templates US
 
 
 --
--- Name: index_invoices_on_issued_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_invoices_on_deleted_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_invoices_on_issued_at ON public.invoices USING btree (issued_at);
+CREATE INDEX index_invoices_on_deleted_at ON public.invoices USING btree (deleted_at);
 
 
 --
