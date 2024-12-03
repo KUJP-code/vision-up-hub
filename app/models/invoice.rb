@@ -6,6 +6,7 @@ class Invoice < ApplicationRecord
   validates :total_cost, :tax, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :number_of_kids, presence: true,
                              numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :payment_option, presence: true, inclusion: { in: PricingCalculatable::PAYMENT_OPTIONS.keys.map(&:to_s) }
   before_save :calculate_costs
 
   private
