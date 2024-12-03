@@ -1,0 +1,20 @@
+= form_with model: @invoice, html: { class: 'form' } do |f|
+  = render 'shared/form_errors', resource: @invoice
+
+  .form-group
+    = f.label :organisation_id, t('.organisation')
+    = f.collection_select :organisation_id, @organisations, :id, :name, { include_blank: true }, class: 'form-control'
+
+  .form-group
+    = f.label :number_of_kids, t('.number_of_kids')
+    = f.number_field :number_of_kids, required: true, disabled: true, id: 'number-of-kids', class: 'form-control'
+
+  .form-group
+    = f.label :payment_option, t('.payment_option')
+    = f.select :payment_option, PricingCalculatable::PAYMENT_OPTIONS.keys.map { |opt| [opt.humanize, opt] }, { include_blank: true }, class: 'form-control'
+
+  .form-group
+    = f.label :issued_at, t('.issued_at')
+    = f.date_field :issued_at, class: 'form-control'
+
+  = f.submit t('.create_invoice'), class: 'btn btn-main'

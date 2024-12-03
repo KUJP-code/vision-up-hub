@@ -1,0 +1,35 @@
+= render 'shared/subtitle', text: t('.invoices')
+
+%main.px-3.py-6
+  - if current_user.is?('Admin')
+    = link_to t('.new_invoice'), new_invoice_path, class: 'btn btn-secondary'
+
+    %table
+      %caption.caption-top.text-2xl.font-bold.p-5= t('.invoices')
+      %thead
+        %tr
+          %th.thead.thead-s.bg-secondary= t('.organisation')
+          %th.thead.bg-secondary= t('.number_of_kids')
+          %th.thead.bg-secondary= t('.subtotal')
+          %th.thead.bg-secondary= t('.tax')
+          %th.thead.bg-secondary= t('.total_cost')
+          %th.thead.bg-secondary= t('.payment_option')
+          %th.thead.thead-e.bg-secondary{ colspan: 2 }= t('actions')
+      %tbody
+        - @invoices.each do |invoice|
+          %tr
+            %td.p-3= invoice.organisation.name
+            %td= invoice.number_of_kids
+            %td= number_to_currency(invoice.subtotal)
+            %td= number_to_currency(invoice.tax)
+            %td= number_to_currency(invoice.total_cost)
+            %td= invoice.payment_option
+            %td
+              = link_to t('edit'),
+                        edit_invoice_path(invoice),
+                        class: 'btn btn-secondary'
+            %td
+              = link_to t('delete'),
+                        invoice_path(invoice),
+                        data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') },
+                        class: 'btn btn-danger'
