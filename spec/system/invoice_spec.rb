@@ -1,10 +1,10 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe 'Creating an Invoice' do
   let!(:admin) { create(:user, :admin) }
-  let!(:organisation) { create(:organisation, name: 'Test Organisation', number_of_kids: 50) }
+  let!(:organisation) { create(:organisation, name: 'Test Organisation') }
+  let!(:school) { create(:school, organisation:, name: 'Test School') }
+  let!(:students) { create_list(:student, 50, school:, organisation:) }
 
   before do
     sign_in admin
@@ -23,7 +23,7 @@ RSpec.describe 'Creating an Invoice' do
 
     expect(page).to have_content('Invoice was successfully created')
     expect(page).to have_content('Test Organisation')
-    expect(page).to have_content('50')
+    expect(page).to have_content('50') # Number of students
     expect(page).to have_content('Default')
     expect(page).to have_content((50 * PricingCalculatable::PAYMENT_OPTIONS[:default]).to_s)
   end
