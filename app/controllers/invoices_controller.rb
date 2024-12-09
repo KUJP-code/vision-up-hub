@@ -12,10 +12,6 @@ class InvoicesController < ApplicationController
     @organisations = Organisation.all
   end
 
-  def edit
-    @invoice = authorize Invoice.find(params[:id])
-  end
-
   def create
     @invoice = authorize Invoice.new(invoice_params)
     if @invoice.save
@@ -49,7 +45,7 @@ class InvoicesController < ApplicationController
         send_data @invoice.pdf,
                   filename: "Invoice-#{@invoice.id}.pdf",
                   type: 'application/pdf',
-                  disposition: 'inline' # or 'attachment' for download
+                  disposition: 'inline'
       end
     end
   end

@@ -31,6 +31,10 @@ class InvoicePolicy < ApplicationPolicy
     admin_only
   end
 
+  def pdf?
+    admin_only
+  end
+
   private
 
   def admin_only

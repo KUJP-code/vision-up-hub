@@ -1,12 +1,15 @@
-= form_with model: invoice, html: { class: 'form' } do |f|
-  = render 'shared/form_errors', resource: invoice
+= render 'shared/subtitle', text: t('.invoices')
+%main.px-3.py-6
 
-  .form-group
-    = f.label :organisation_id, t('.organisation')
-    = f.collection_select :organisation_id, organisations, :id, :name, { include_blank: true }, class: 'form-control'
+  = form_with model: invoice, html: { class: 'form' } do |f|
+    = render 'shared/form_errors', resource: invoice
 
-  .form-group
-    = f.label :payment_option, t('.payment_option')
-    = f.select :payment_option, PricingCalculatable::PAYMENT_OPTIONS.keys.map { |opt| [opt, opt] }, { include_blank: true }, class: 'form-control'
+    .form-group
+      = f.label :organisation_id, t('.organisation')
+      = f.collection_select :organisation_id, organisations, :id, :name, { include_blank: true }, class: 'form-control'
 
-  = f.submit t('.create_invoice'), class: 'btn btn-main'
+    .form-group
+      = f.label :payment_option, t('.payment_option')
+      = f.select :payment_option, PricingCalculatable::PAYMENT_OPTIONS.keys.map { |opt| [opt, opt] }, { include_blank: true }, class: 'form-control'
+
+    = f.submit t('.create_invoice'), class: 'btn btn-main'

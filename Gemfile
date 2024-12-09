@@ -46,6 +46,7 @@ gem 'haml-rails', '2.1.0'
 
 # Use prawn to generate PDFs
 gem 'prawn', '2.4.0'
+gem 'prawn-table'
 
 # Generate PDF previews
 gem 'image_processing', '1.12.2'

@@ -1,0 +1,21 @@
+ja:
+  invoices:
+    index:
+      subtitle: "請求書"
+      new_invoice: "新しい請求書"
+      organisation: "組織名"
+      number_of_kids: "子供の数"
+      subtotal: "小計"
+      tax: "税金"
+      total_cost: "合計金額"
+      payment_option: "支払方法"
+      created_at: "作成日"
+      actions: "操作"
+      download_pdf: "PDFをダウンロード"
+      delete: "削除"
+      confirm_delete: "この請求書を削除してもよろしいですか？"
+    form:
+      subtitle: "請求書"
+      organisation: "組織名"
+      payment_option: "支払方法"
+      create_invoice: "請求書を作成"

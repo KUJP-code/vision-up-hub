@@ -6,7 +6,11 @@ Rails.application.routes.draw do
 
     authenticate :user do
       resources :announcements
-      resources :invoices, only: %i[index new create edit update destroy]
+      resources :invoices, only: %i[index new create update destroy] do
+        member do
+          get :pdf, defaults: { format: :pdf }
+        end
+      end
       resources :category_resources, except: %i[show]
       resources :courses, except: %i[destroy]
       resources :csv_exports, only: %i[index new show]

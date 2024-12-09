@@ -1,0 +1,21 @@
+en:
+  invoices:
+    index:
+      subtitle: "Invoices"
+      new_invoice: "New Invoice"
+      organisation: "Organisation"
+      number_of_kids: "Number of Kids"
+      subtotal: "Subtotal"
+      tax: "Tax"
+      total_cost: "Total Cost"
+      payment_option: "Payment Option"
+      created_at: "Created At"
+      actions: "Actions"
+      download_pdf: "Download PDF"
+      delete: "Delete"
+      confirm_delete: "Are you sure you want to delete this invoice?"
+    form:
+      subtitle: "Invoices"
+      organisation: "Organisation"
+      payment_option: "Payment Option"
+      create_invoice: "Create Invoice"

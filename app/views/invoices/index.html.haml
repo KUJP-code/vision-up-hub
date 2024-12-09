@@ -14,7 +14,8 @@
           %th.thead.bg-secondary= t('.tax')
           %th.thead.bg-secondary= t('.total_cost')
           %th.thead.bg-secondary= t('.payment_option')
-          %th.thead.thead-e.bg-secondary{ colspan: 2 }= t('actions')
+          %th.thead.bg-secondary= t('.created_at')
+          %th.thead.thead-e.bg-secondary{ colspan: 2 }= t('.actions')
       %tbody
         - @invoices.each do |invoice|
           %tr
@@ -24,10 +25,12 @@
             %td= number_to_currency(invoice.tax)
             %td= number_to_currency(invoice.total_cost)
             %td= invoice.payment_option
+            %td= l(invoice.created_at, format: :short)
             %td
-              = link_to t('generate_pdf')
-                        
-              = link_to t('delete'),
+              = link_to t('.download_pdf'), pdf_invoice_path(invoice), class: 'btn btn-secondary'
+
+            %td
+              = link_to t('.delete'),
                         invoice_path(invoice),
                         data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') },
                         class: 'btn btn-danger'

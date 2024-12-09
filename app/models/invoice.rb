@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Invoice < ApplicationRecord
-  include PricingCalculatable
+  include InvoicePdfable, PricingCalculatable
   belongs_to :organisation
   before_validation :set_number_of_kids, if: -> { organisation_id.present? && number_of_kids.blank? }
   before_validation :calculate_costs
