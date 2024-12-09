@@ -2,16 +2,13 @@
 
 module InvoicePdfable
   extend ActiveSupport::Concern
-  require 'prawn'
   require 'prawn/measurement_extensions'
-  require 'prawn/table'
 
   included do
     def pdf
-      Rails.logger.info "Generating PDF for Invoice ##{id}"
       pdf = create_pdf_object
       pdf_header(pdf)
-      pdf_invoice_details(pdf)
+      pdf_body(pdf)
       pdf_footer(pdf)
       pdf.render
     end
@@ -20,60 +17,66 @@ module InvoicePdfable
   private
 
   def create_pdf_object
-    pdf = Prawn::Document.new
-    pdf.font_families.update(
-      'NotoSans' => {
-        normal: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf')
-      }
-    )
-    pdf.font('NotoSans')
-    pdf
+    Prawn::Document.new(page_size: 'A4', margin: 36).tap do |pdf|
+      pdf.font_families.update(
+        'NotoSansJP' => {
+          normal: Rails.root.join('app/assets/fonts/NotoSansJP-Medium.ttf')
+        }
+      )
+      pdf.font 'NotoSansJP'
+    end
   end
 
   def pdf_header(pdf)
-    pdf.text 'Invoice', size: 20, align: :center
+    pdf.text '請求書', size: 22, align: :center
+    pdf.move_down 15
+
+    pdf.bounding_box([0, pdf.cursor], width: pdf.bounds.width) do
+      pdf.text "発行日: #{created_at.strftime('%Y年%m月%d日')}", size: 12, align: :right
+      pdf.text "請求書番号: #{id}", size: 12, align: :right
+    end
+
     pdf.move_down 20
-
-    organisation = self.organisation
-
-    pdf.text "Issued Date: #{created_at.strftime('%Y-%m-%d')}", align: :right
-    pdf.text "Invoice ID: #{id}", align: :right
-    pdf.move_down 10
-
-    pdf.text 'Organisation Details:', size: 14
-    pdf.text "Name: #{organisation.name}"
-    pdf.text "Email: #{organisation.email}"
-    pdf.text "Phone: #{organisation.phone}"
-    pdf.move_down 20
+    pdf.text '組織情報:', size: 14, align: :left
+    pdf.move_down 5
+    pdf.text "組織名: #{organisation.name}", size: 12
+    pdf.text "メール: #{organisation.email}", size: 12
+    pdf.text "電話番号: #{organisation.phone}", size: 12
   end
 
-  def pdf_invoice_details(pdf)
-    pdf.text 'Invoice Details:', size: 14
-    pdf.table(
-      [
-        ['Number of Kids', number_of_kids],
-        ['Payment Option', payment_option],
-        ['Subtotal', yenify(subtotal)],
-        ['Tax', yenify(tax)],
-        ['Total Cost', yenify(total_cost)]
-      ],
-      header: false,
-      cell_style: { borders: [] }
-    )
+  def pdf_body(pdf)
     pdf.move_down 20
+    pdf.text '請求内容', size: 14, align: :left
+    pdf.move_down 10
+
+    data = [
+      ['項目', '詳細'],
+      ['子供の数', number_of_kids.to_s],
+      ['支払方法', payment_option],
+      ['小計', yenify(subtotal)],
+      ['消費税 (10%)', yenify(tax)],
+      ['合計金額', yenify(total_cost)]
+    ]
+
+    pdf.table(data, header: true, row_colors: %w[FFFFFF F5F5F5], cell_style: {
+                padding: [5, 10], borders: [:bottom]
+              }) do |table|
+      table.row(0).style(background_color: '2864f0', text_color: 'FFFFFF', size: 12)
+      table.cells.style(align: :left)
+      table.column(1).style(align: :right)
+    end
   end
 
   def pdf_footer(pdf)
-    # Footer with company information
     pdf.move_down 20
-    pdf.text('Thank you for your business!', align: :center, size: 12)
+    pdf.stroke_horizontal_rule
     pdf.move_down 10
 
-    # Company Info
-    pdf.text('株式会社Kids-UP', align: :center, size: 10)
-    pdf.text('〒120-0034', align: :center, size: 10)
-    pdf.text('住所：東京都足立区千住1-4-1東京芸術センター11階', align: :center, size: 10)
-    pdf.text('電話：03-3870-0099', align: :center, size: 10)
+    pdf.text '株式会社Kids-UP', size: 10, align: :center
+    pdf.text '〒120-0034 東京都足立区千住1-4-1 東京芸術センター11階', size: 10, align: :center
+    pdf.text '電話: 03-3870-0099', size: 10, align: :center
+    pdf.move_down 5
+    pdf.text 'ありがとうございました!', size: 12, align: :center
   end
 
   def yenify(amount)
