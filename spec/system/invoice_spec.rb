@@ -13,7 +13,7 @@ RSpec.describe 'Creating an Invoice' do
   it 'allows an admin to create an invoice' do
     visit invoices_path
 
-    click_link 'Create New Invoice'
+    click_link 'new invoice'
 
     select 'Test Organisation', from: 'invoice_organisation_id'
     select 'Default', from: 'invoice_payment_option'

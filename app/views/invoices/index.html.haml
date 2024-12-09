@@ -25,10 +25,8 @@
             %td= number_to_currency(invoice.total_cost)
             %td= invoice.payment_option
             %td
-              = link_to t('edit'),
-                        edit_invoice_path(invoice),
-                        class: 'btn btn-secondary'
-            %td
+              = link_to t('generate_pdf')
+                        
               = link_to t('delete'),
                         invoice_path(invoice),
                         data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') },
