@@ -1,10 +1,15 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :invoice do
     organisation
-    number_of_kids { 10 }
     payment_option { 'default' }
-    subtotal { 35_000 }
-    tax { 3500 }
-    total_cost { 38_500 }
+
+    after(:build) do |invoice|
+      invoice.number_of_kids = invoice.organisation.students_count
+      invoice.subtotal = invoice.number_of_kids * 3500
+      invoice.tax = (invoice.subtotal * 0.10).to_i
+      invoice.total_cost = invoice.subtotal + invoice.tax
+    end
   end
 end

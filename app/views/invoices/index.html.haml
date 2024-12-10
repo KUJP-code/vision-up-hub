@@ -24,6 +24,7 @@
             %td= number_to_currency(invoice.subtotal)
             %td= number_to_currency(invoice.tax)
             %td= number_to_currency(invoice.total_cost)
+            %span.hidden{ data: { test_id: 'invoice-total' } }= invoice.total_cost
             %td= invoice.payment_option
             %td= l(invoice.created_at, format: :short)
             %td
@@ -34,3 +35,4 @@
                         invoice_path(invoice),
                         data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') },
                         class: 'btn btn-danger'
+            

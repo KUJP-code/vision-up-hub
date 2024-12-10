@@ -18,7 +18,7 @@ class InvoicesController < ApplicationController
       redirect_to invoices_path, notice: 'Invoice was successfully created.'
     else
       @organisations = Organisation.all
-      render :new
+      render :new, alert: 'Invoice creation failed, please try again.'
     end
   end
 
