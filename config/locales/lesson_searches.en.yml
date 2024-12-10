@@ -15,3 +15,6 @@ en:
       subtype: "Subtype"
       title: "Title"
       type: "Type"
+      course: "Course"
+      select_course: "Select Course"
+      week: "Week"
