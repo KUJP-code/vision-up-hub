@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SeasonalActivity < Lesson
+  before_validation :set_default_level
   has_one_attached :ele_english_class
   has_one_attached :kindy_english_class
   has_one_attached :scrapbook
@@ -19,4 +20,11 @@ class SeasonalActivity < Lesson
     show_from
     show_until
   ].freeze
+  LISTABLE_ATTRIBUTES = %i[].freeze
+end
+
+private
+
+def set_default_level
+  self.level ||= :all_levels
 end

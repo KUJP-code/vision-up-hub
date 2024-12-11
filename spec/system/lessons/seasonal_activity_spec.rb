@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating a seasonal activity' do
+RSpec.describe 'creating a seasonal activity', :js do
   let!(:org) { create(:organisation, name: 'KidsUP') }
   let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
 
@@ -23,10 +23,9 @@ RSpec.describe 'creating a seasonal activity' do
       fill_in 'Event Date', with: Time.current
       fill_in 'Show From', with: Time.current
       fill_in 'Show Until', with: 7.days.from_now
+      fill_in 'seasonal_activity_goal', with: 'test'
       click_button 'commit'
-
-      expect(page).to have_content('Test Seasonal')
-      expect(page).to have_content('img.guide_image')
     end
+    expect(page).to have_content('Test Seasonal Activity')
   end
 end

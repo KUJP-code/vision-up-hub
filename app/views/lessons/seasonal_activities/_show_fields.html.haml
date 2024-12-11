@@ -1,0 +1,21 @@
+-# locals(lesson:)
+- if lesson.ele_english_class.attached?
+  %h3 Ele English Class
+  = link_to lesson.ele_english_class.filename.to_s, rails_blob_url(lesson.ele_english_class)
+
+- if lesson.kindy_english_class.attached?
+  %h3 Kindy English Class
+  = link_to lesson.kindy_english_class.filename.to_s, rails_blob_url(lesson.kindy_english_class)
+
+- if lesson.scrapbook.attached?
+  %h3 Scrapbook
+  = link_to lesson.scrapbook.filename.to_s, rails_blob_url(lesson.scrapbook)
+
+%h3 Event Date
+%p= lesson.event_date
+
+%h3 Show From
+%p= lesson.show_from
+
+%h3 Show Until
+%p= lesson.show_until
