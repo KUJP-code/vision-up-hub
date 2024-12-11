@@ -19,11 +19,10 @@ RSpec.describe 'creating a seasonal activity' do
       fill_in 'seasonal_activity_title', with: 'Test Seasonal Activity'
       attach_file('Ele English Class', dummy_file_path)
       attach_file('Kindy English Class', dummy_file_path)
-      attach_file('Guides', dummy_file_path, dummy_file_path)
       attach_file('Scrapbook', dummy_file_path)
-      fill_in 'Event Date', with: Time.Zone.Today
-      fill_in 'Show From', with: Time.Zone.Today
-      fill_in 'Show until', with: Time.zone.Today + 7.days
+      fill_in 'Event Date', with: Time.current
+      fill_in 'Show From', with: Time.current
+      fill_in 'Show Until', with: 7.days.from_now
       click_button 'commit'
 
       expect(page).to have_content('Test Seasonal')
