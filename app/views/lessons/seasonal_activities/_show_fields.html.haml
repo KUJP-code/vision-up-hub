@@ -1,21 +1,45 @@
--# locals(lesson:)
-- if lesson.ele_english_class.attached?
-  %h3 Ele English Class
-  = link_to lesson.ele_english_class.filename.to_s, rails_blob_url(lesson.ele_english_class)
+-# locals: (lesson:)
 
-- if lesson.kindy_english_class.attached?
-  %h3 Kindy English Class
-  = link_to lesson.kindy_english_class.filename.to_s, rails_blob_url(lesson.kindy_english_class)
+.flex.flex-wrap.justify-start.items-center.gap-3
+  - if lesson.ele_english_class.attached?
+    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+      %h3 Ele English Class
+      = link_to rails_blob_url(lesson.ele_english_class),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'btn btn-main resource flex justify-around' do
+        %p= lesson.ele_english_class.filename.to_s
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
-- if lesson.scrapbook.attached?
-  %h3 Scrapbook
-  = link_to lesson.scrapbook.filename.to_s, rails_blob_url(lesson.scrapbook)
+  - if lesson.kindy_english_class.attached?
+    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+      %h3 Kindy English Class
+      = link_to rails_blob_url(lesson.kindy_english_class),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'btn btn-main resource flex justify-around' do
+        %p= lesson.kindy_english_class.filename.to_s
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
-%h3 Event Date
-%p= lesson.event_date
+  - if lesson.scrapbook.attached?
+    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+      %h3 Scrapbook
+      = link_to rails_blob_url(lesson.scrapbook),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'btn btn-main resource flex justify-around' do
+        %p= lesson.scrapbook.filename.to_s
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
-%h3 Show From
-%p= lesson.show_from
+.flex.flex-wrap.justify-start.items-center.gap-3
+  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+    %h3 Event Date
+    %p= lesson.event_date
 
-%h3 Show Until
-%p= lesson.show_until
+  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+    %h3 Show From
+    %p= lesson.show_from
+
+  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+    %h3 Show Until
+    %p= lesson.show_until
