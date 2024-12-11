@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :phonics_resources, only: %i[destroy]
       resources :plans
       resources :school_classes
+      resources :seasonal_activities, only: %i[create index update]
       resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
       resources :tutorials

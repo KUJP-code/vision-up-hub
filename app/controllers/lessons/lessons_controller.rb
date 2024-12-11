@@ -34,6 +34,7 @@ class LessonsController < ApplicationController
   end
 
   def new
+    Rails.logger.info "params[:type] = #{params[:type].inspect}"
     type = params[:type] if Lesson::TYPES.include?(params[:type])
     @lesson = authorize type.constantize.new
     set_form_data
