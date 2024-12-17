@@ -11,6 +11,17 @@
         %p= lesson.ele_english_class.filename.to_s
         = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
+      - if current_user.is?('Admin')
+        = link_to file_path(id: lesson.ele_english_class.blob.id,
+                            record_id: lesson.id,
+                            record_type: 'Lesson'),
+                  data: { turbo_method: 'delete',
+                          turbo_confirm: "Remove #{lesson.ele_english_class.filename} from this lessson?" },
+                  class: 'btn btn-danger flex justify-around' do
+          %p= lesson.ele_english_class.filename
+          = inline_svg_tag 'delete_icon.svg',
+                            class: 'fill-white'
+
   - if lesson.kindy_english_class.attached?
     .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
       %h3 Kindy English Class
@@ -21,15 +32,36 @@
         %p= lesson.kindy_english_class.filename.to_s
         = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
-  - if lesson.guide.attached?
+      - if current_user.is?('Admin')
+        = link_to file_path(id: lesson.kindy_english_class.blob.id,
+                            record_id: lesson.id,
+                            record_type: 'Lesson'),
+                  data: { turbo_method: 'delete',
+                          turbo_confirm: "Remove #{lesson.kindy_english_class.filename} from this lessson?" },
+                  class: 'btn btn-danger flex justify-around' do
+          %p= lesson.kindy_english_class.filename
+          = inline_svg_tag 'delete_icon.svg',
+                            class: 'fill-white'
+
+  - if lesson.activity_guide.attached?
     .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
       %h3 Guide
-      = link_to rails_blob_url(lesson.guide),
+      = link_to rails_blob_url(lesson.activity_guide),
                 target: '_blank',
                 rel: 'noopener',
                 class: 'btn btn-main resource flex justify-around' do
-        %p= lesson.guide.filename.to_s
+        %p= lesson.activity_guide.filename.to_s
         = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+      - if current_user.is?('Admin')
+        = link_to file_path(id: lesson.activity_guide.blob.id,
+                            record_id: lesson.id,
+                            record_type: 'Lesson'),
+                  data: { turbo_method: 'delete',
+                          turbo_confirm: "Remove #{lesson.activity_guide.filename} from this lessson?" },
+                  class: 'btn btn-danger flex justify-around' do
+          %p= lesson.activity_guide.filename
+          = inline_svg_tag 'delete_icon.svg',
+                            class: 'fill-white'
 
   - if lesson.scrapbook.attached?
     .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
@@ -40,6 +72,16 @@
                 class: 'btn btn-main resource flex justify-around' do
         %p= lesson.scrapbook.filename.to_s
         = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+      - if current_user.is?('Admin')
+        = link_to file_path(id: lesson.scrapbook.blob.id,
+                            record_id: lesson.id,
+                            record_type: 'Lesson'),
+                  data: { turbo_method: 'delete',
+                          turbo_confirm: "Remove #{lesson.scrapbook.filename} from this lessson?" },
+                  class: 'btn btn-danger flex justify-around' do
+          %p= lesson.scrapbook.filename
+          = inline_svg_tag 'delete_icon.svg',
+                            class: 'fill-white'
 
 .flex.flex-wrap.justify-start.items-center.gap-3
   .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
