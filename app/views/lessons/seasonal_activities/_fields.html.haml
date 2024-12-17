@@ -10,12 +10,16 @@
     = f.file_field :kindy_english_class
 
   .form-group
+    = f.label :guide, 'Guide'
+    = f.file_field :guide
+
+  .form-group
     = f.label :scrapbook, 'Scrapbook'
     = f.file_field :scrapbook
 
   .form-group
     = f.label :event_date, 'Event Date'
-    = f.date_field :event_date
+    = f.date_field :event_date, min: '1900-01-01', max: '2100-12-31'
 
   .form-group
     = f.label :show_from, 'Show From'

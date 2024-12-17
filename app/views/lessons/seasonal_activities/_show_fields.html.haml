@@ -21,6 +21,16 @@
         %p= lesson.kindy_english_class.filename.to_s
         = inline_svg_tag 'download_icon.svg', class: 'fill-white'
 
+  - if lesson.guide.attached?
+    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+      %h3 Guide
+      = link_to rails_blob_url(lesson.guide),
+                target: '_blank',
+                rel: 'noopener',
+                class: 'btn btn-main resource flex justify-around' do
+        %p= lesson.guide.filename.to_s
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+
   - if lesson.scrapbook.attached?
     .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
       %h3 Scrapbook
