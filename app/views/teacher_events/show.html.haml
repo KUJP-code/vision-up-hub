@@ -1,6 +1,5 @@
 :ruby
   border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
-  text = lvl_text_class(@lesson.short_level)
 
 = turbo_frame_tag 'lesson' do
   .dialog-content
@@ -14,6 +13,6 @@
       = render 'teacher_events/guide_section',
                lesson: @lesson
 
-    - if @lesson.ele_english_class.attached? || @lesson.kindy_english_class.attached?
+    - if @resources.any?
       = render 'teacher_events/resources_section',
                resources: @lesson.resources

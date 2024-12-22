@@ -7,15 +7,18 @@
 = render 'shared/subtitle', text: t('events')
 
 = turbo_frame_tag 'event-lessons' do
-  %main#event-lessons{ class: "#{base} flex-col justify-start items-stretch #{desktop}" }
-  
+
+  %main.relative#event-lessons{ class: "#{base} flex-col justify-start items-stretch #{desktop}" }
+    - if params[:category].present? && @announcements.any?
+      %section.announcements.w-full.p-4.md:top-0.md:left-0.z-10
+        = render 'shared/announcement_list', announcements: @announcements
     - if params[:category].blank?
       - @supported_types.each do |type|
         = link_to teacher_events_path(category: type),
                   class: card,
                   data: { turbo_frame: 'event-lessons' } do
           = image_tag "levels/#{type.downcase}.svg"
-          %h1.text-center.text-3xl= t("categories.#{type.downcase}")
+          %h1.text-center.text-3xl= t("lessons.#{type}")
     - else
       %nav.tab-nav.flex.flex-col.md:flex-row.gap-3.p-0.w-full
         - @supported_types.each do |type|
@@ -23,13 +26,14 @@
           = link_to teacher_events_path(category: type),
                     class: "nav-tab #{active ? 'active' : 'inactive'}",
                     data: { turbo_frame: 'event-lessons' } do
-            %span= t("categories.#{type.downcase}")
+            %span= t("lessons.#{type.downcase}")
 
       %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
         - @lessons.each do |lesson|
           - next if params[:category].present? && lesson.type.downcase != params[:category]
+
           = render partial: 'teacher_events/card',
-                  locals: { lesson:, type: lesson.type }
+                   locals: { lesson:, type: lesson.type }
 %dialog.resources-dialog#lesson-resources
   .body
     %form.h-0

@@ -5,16 +5,13 @@ class TeacherEventsController < ApplicationController
   SUPPORTED_TYPES = %w[seasonalactivity parties events].freeze
   def index
     index_vars
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def show
     set_date_type_teacher
     @lesson = Lesson.find(params[:id])
     authorize @lesson
+    @resources = set_resources
   end
 
   private
@@ -31,6 +28,11 @@ class TeacherEventsController < ApplicationController
   def set_date_type_teacher
     @teacher = current_user
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
+  end
+
+  def set_resources
+    resources = @lesson.resources.includes(:blob)
+    resources.sort_by { |r| r.blob.filename }
   end
 
   def validated_type(type_param)
