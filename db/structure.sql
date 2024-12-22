@@ -1212,7 +1212,10 @@ CREATE TABLE public.lessons (
     status integer,
     changed_lesson_id integer,
     warning character varying DEFAULT ''::character varying,
-    log_data jsonb
+    log_data jsonb,
+    event_date date,
+    show_from date,
+    show_until date
 );
 
 
@@ -3926,6 +3929,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20241211071548'),
 ('20241120055836'),
 ('20241009092550'),
 ('20241009092138'),

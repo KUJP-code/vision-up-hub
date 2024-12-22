@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :phonics_resources, only: %i[destroy]
       resources :plans
       resources :school_classes
+      resources :seasonal_activities, only: %i[create index update]
       resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
       resources :tutorials
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
         resources :support_messages, only: %i[create]
       end
       resources :teacher_lessons, only: %i[index show]
+      resources :teacher_events, only: %i[index show]
       resources :teacher_resources, only: %i[index]
       resources :tests, except: %i[show] do
         resources :test_results, only: %i[create index update]

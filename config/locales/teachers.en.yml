@@ -7,6 +7,7 @@ en:
       support: "Support"
       test: "Tests"
       tutorials: "Tutorials"
+      events: "Events"
     subtitle:
       future_lessons: "Future lessons for %{date}"
       past_lessons: "Past lessons for %{date}"

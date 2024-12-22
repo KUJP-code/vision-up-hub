@@ -35,6 +35,8 @@
 
       %h3 Goal:
       %p= @lesson.goal
+      - if @lesson.type == 'SeasonalActivity'
+        = render 'lessons/seasonal_activities/show_fields', lesson: @lesson
 
       - if @courses.any?
         %h3 Used in the following courses:
@@ -49,14 +51,14 @@
       = render 'proposals/table', proposals: @proposals
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
-
+  
   .flex.flex-col.p-3.gap-3
     = render 'lessons/shared/attribute_list', lesson: @lesson
     = render 'lessons/shared/resource_list', resources: @resources, lesson: @lesson
     - if @phonics_resources
       = render 'lessons/phonics_classes/phonics_resources',
                resources: @phonics_resources
-
+  
   .flex.justify-center.gap-3
     = link_to 'Delete',
               lesson_path(@lesson),

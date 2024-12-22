@@ -1,0 +1,18 @@
+:ruby
+  border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
+
+= turbo_frame_tag 'lesson' do
+  .dialog-content
+    %header
+      %h1{ class: "type #{border}" }
+        = lesson_type_heading(@lesson)
+      = image_tag type_icon_path(@lesson), class: 'h-full place-self-end'
+      %h3.details= lesson_details_heading(@lesson)
+
+    - if @lesson.activity_guide.attached?
+      = render 'teacher_events/guide_section',
+               lesson: @lesson
+
+    - if @resources.any?
+      = render 'teacher_events/resources_section',
+               resources: @lesson.resources

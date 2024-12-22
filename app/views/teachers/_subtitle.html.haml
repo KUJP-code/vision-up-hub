@@ -3,17 +3,17 @@
 :ruby
   in_future = Time.zone.today < date
   in_past = date < Time.zone.today
-  subtitle = if in_future
-    t('.future_lessons', date: ja_date(date))
-  elsif in_past
-    t('.past_lessons', date: ja_date(date))
-  else
-    t('.today_lessons')
-  end
-  date_string = if I18n.locale == :ja
-    ja_date_weekday(date)
+  formatted_date = if I18n.locale == :ja
+  "#{ja_date(date)}"
   else
     date.strftime('%A, %B %d, %Y')
+  end
+  subtitle = if in_future
+    t('.future_lessons', date: formatted_date)
+  elsif in_past
+    t('.past_lessons', date: formatted_date)
+  else
+    t('.today_lessons')
   end
 
 %header#subtitle
@@ -26,7 +26,7 @@
   .flex.flex-col.text-center
     %h1= subtitle
     - if !in_past && !in_future
-      %small.text-xs.font-normal.text-secondary= date_string
+      %small.text-xs.font-normal.text-secondary= formatted_date
 
 
   = link_to teacher_lessons_path(date: date.next_weekday,

@@ -1,0 +1,6 @@
+-# locals: (lesson:)
+- if lesson.guide.attached?
+  = render partial: 'teacher_events/guide_section', locals: { lesson: }
+
+- if lesson.resources.attached?
+  = render partial: 'teacher_events/resources_section', locals: { resources: lesson.resources }

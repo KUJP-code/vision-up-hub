@@ -7,6 +7,7 @@ ja:
       support: "サポート"
       test: "テスト"
       tutorials: インフォメーション
+      events: "エベント"
     subtitle:
       future_lessons: "次の授業: %{date}"
       past_lessons: "過去の授業: %{date}"

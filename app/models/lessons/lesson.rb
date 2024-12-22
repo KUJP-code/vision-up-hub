@@ -4,7 +4,7 @@ class Lesson < ApplicationRecord
   include Approvable, Levelable, Pdfable, Proposable
 
   TYPES = %w[DailyActivity EnglishClass Exercise EveningClass KindyPhonic
-             PhonicsClass SpecialLesson StandShowSpeak].freeze
+             PhonicsClass SpecialLesson StandShowSpeak SeasonalActivity].freeze
 
   before_destroy :check_not_used
 
@@ -35,7 +35,7 @@ class Lesson < ApplicationRecord
                    }
   scope :released, -> { where(released: true) }
   scope :unlevelled,
-        -> { where(type: %w[DailyActivity Exercise SpecialLesson]) }
+        -> { where(type: %w[DailyActivity Exercise SpecialLesson SeasonalActivity]) }
 
   def self.reassign_editor(old_editor_id, new_editor_id)
     Lesson.where(assigned_editor_id: old_editor_id)
