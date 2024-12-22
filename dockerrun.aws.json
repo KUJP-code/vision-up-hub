@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.3-invoicing"
+    "Name": "kidsup/materials:1.3-eventsbeta"
   },
   "Ports": [
     {
