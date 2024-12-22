@@ -1,0 +1,13 @@
+-# locals: (resources:)
+
+%section.resource-section
+  %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
+    = t('.resources')
+  - resources.each do |r|
+    = link_to file_path(r.blob),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'btn-outline w-full' do
+      %span{ class: 'basis-5/6 truncate' }= r.blob.filename
+      = inline_svg_tag 'download_icon.svg',
+                       class: 'fill-secondary basis-1/6'

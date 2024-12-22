@@ -1,0 +1,11 @@
+-# locals: (lesson:)
+
+%header
+  %h1= lesson.title
+  %small.text-secondary= lesson.event_date.strftime('%A, %B %d, %Y')
+
+- if lesson.guide.attached?
+  = render partial: 'teacher_events/guide_section', locals: { lesson: }
+
+- if lesson.resources.attached?
+  = render partial: 'teacher_events/resources_section', locals: { resources: lesson.resources }

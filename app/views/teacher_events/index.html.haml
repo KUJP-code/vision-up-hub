@@ -1,0 +1,39 @@
+:ruby
+  base = 'flex gap-6 p-6'
+  card = 'card basis-1/3 max-w-full p-3 flex flex-col gap-3'
+  mobile = 'flex-col justify-start items-stretch'
+  desktop = params[:category].blank? ? 'md:flex-row md:items-center md:justify-center' : 'md:flex-col'
+
+= render 'shared/subtitle', text: t('events')
+
+= turbo_frame_tag 'event-lessons' do
+  %main#event-lessons{ class: "#{base} flex-col justify-start items-stretch #{desktop}" }
+  
+    - if params[:category].blank?
+      - @supported_types.each do |type|
+        = link_to teacher_events_path(category: type),
+                  class: card,
+                  data: { turbo_frame: 'event-lessons' } do
+          = image_tag "levels/#{type.downcase}.svg"
+          %h1.text-center.text-3xl= t("categories.#{type.downcase}")
+    - else
+      %nav.tab-nav.flex.flex-col.md:flex-row.gap-3.p-0.w-full
+        - @supported_types.each do |type|
+          - active = type == params[:category]
+          = link_to teacher_events_path(category: type),
+                    class: "nav-tab #{active ? 'active' : 'inactive'}",
+                    data: { turbo_frame: 'event-lessons' } do
+            %span= t("categories.#{type.downcase}")
+
+      %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
+        - @lessons.each do |lesson|
+          - next if params[:category].present? && lesson.type.downcase != params[:category]
+          = render partial: 'teacher_events/card',
+                  locals: { lesson:, type: lesson.type }
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+
+    = turbo_frame_tag 'lesson'
