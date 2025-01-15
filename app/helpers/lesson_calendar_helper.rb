@@ -77,10 +77,10 @@ module LessonCalendarHelper
   def lesson_type_rows
     { 'SpecialLesson' => 'row-start-3 row-span-3',
       'DailyActivity' => 'row-start-9 row-span-3',
-      'PhonicsClass' => 'row-start-12 row-span-4',
-      'EnglishClass' => 'row-start-[17] row-span-4',
-      'StandShowSpeak' => 'row-start-[22] row-span-3',
-      'EveningClass' => 'row-start-[26] row-span-3' }
+      'PhonicsClass' => 'row-start-[13] row-span-4',
+      'EnglishClass' => 'row-start-[18] row-span-4',
+      'StandShowSpeak' => 'row-start-[23] row-span-3',
+      'EveningClass' => 'row-start-[27] row-span-3' }
   end
 
   def calendar_level_dots(level)

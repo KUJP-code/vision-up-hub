@@ -42,7 +42,6 @@
     = render 'lesson_calendars/day_header',
              course_lessons: @course_lessons, date: @date
     %hr.row-start-10.calendar-separator
-    
 
     - lesson_type_rows.each do |type, rows|
       - next if @course_lessons.count { |cl| cl.lesson.type == type }.zero?
