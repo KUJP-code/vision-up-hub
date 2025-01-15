@@ -51,33 +51,33 @@ module LessonCalendarHelper
       'Exercise' =>
           { 'Kindy' => 'row-start-9', 'Elementary' => 'row-start-10' },
       'PhonicsClass' =>
-          { 'Kindy' => 'row-start-12', 'Land' => 'row-start-13',
-            'Sky' => 'row-start-[14]', 'Galaxy' => 'row-start-[15]' },
+          { 'Kindy' => 'row-start-13', 'Land' => 'row-start-[14]',
+            'Sky' => 'row-start-[15]', 'Galaxy' => 'row-start-[16]' },
       'EnglishClass' =>
-          { 'Kindy' => 'row-start-[17]', 'Land' => 'row-start-[18]',
-            'Sky' => 'row-start-[19]', 'Galaxy' => 'row-start-[20]' },
+          { 'Kindy' => 'row-start-[18]', 'Land' => 'row-start-[19]',
+            'Sky' => 'row-start-[20]', 'Galaxy' => 'row-start-[21]' },
       'StandShowSpeak' =>
-          { 'Land' => 'row-start-[22]', 'Sky' => 'row-start-[23]',
-            'Galaxy' => 'row-start-[24]' },
+          { 'Land' => 'row-start-[23]', 'Sky' => 'row-start-[24]',
+            'Galaxy' => 'row-start-[25]' },
       'EveningClass' =>
-          { 'Keep Up' => 'row-start-[26]',
-            'specialist' => 'row-start-[27]',
-            'specialist_advanced' => 'row-start-[28]' }
+          { 'Keep Up' => 'row-start-[27]',
+            'specialist' => 'row-start-[28]',
+            'specialist_advanced' => 'row-start-[29]' }
     }[type][level]
   end
 
   def lesson_separator_rows
     { 'DailyActivity' => 'row-start-6',
       'PhonicsClass' => 'row-start-12',
-      'EnglishClass' => 'row-start-[16]',
-      'StandShowSpeak' => 'row-start-[21]',
-      'EveningClass' => 'row-start-[25]' }
+      'EnglishClass' => 'row-start-[17]',
+      'StandShowSpeak' => 'row-start-[22]',
+      'EveningClass' => 'row-start-[26]' }
   end
 
   def lesson_type_rows
     { 'SpecialLesson' => 'row-start-3 row-span-3',
       'DailyActivity' => 'row-start-9 row-span-3',
-      'PhonicsClass' => 'row-start-[13] row-span-4',
+      'PhonicsClass' => 'row-start-12 row-span-4',
       'EnglishClass' => 'row-start-[18] row-span-4',
       'StandShowSpeak' => 'row-start-[23] row-span-3',
       'EveningClass' => 'row-start-[27] row-span-3' }
