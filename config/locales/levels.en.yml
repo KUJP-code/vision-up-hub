@@ -1,5 +1,6 @@
 en:
   levels:
+    all_levels: "All Levels"
     elementary: "Elementary"
     galaxy: "Galaxy"
     keep_up: "Keep Up"
