@@ -43,11 +43,19 @@ module ApplicationHelper
     'main-nav-link active'
   end
 
+  def asset_for_domain(type)
+    domain_assets = {
+      'hub.kids-up.app' => { favicon: 'favicon.svg', landing: 'landing_logo.svg', splash: 'splash.jpg' }
+    }
+    default_assets = { favicon: 'favicon_vision.svg', landing: 'landing_logo_vision.svg', splash: 'splash.jpg' }
+    domain_assets.fetch(request.host, default_assets)[type]
+  end
+
   def org_favicon(user = nil)
     org_favicons = [1]
     org_id = user ? user.organisation_id : params[:organisation_id].to_i
 
-    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'org_1.svg'
+    favicon_file = org_favicons.include?(org_id) ? "org_#{org_id}.svg" : 'org_1_vision.svg'
     image_path(favicon_file)
   end
 
