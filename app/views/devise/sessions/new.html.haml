@@ -31,5 +31,5 @@
         = link_to t('.forgot_your_password'),
                   new_password_path(resource_name)
 
-    = image_tag 'splash.jpg',
-                class: 'hidden md:block rounded w-1/2 m-2 object-cover object-center'
+    = image_tag(asset_for_domain(:splash), alt: "Landing Image",
+               class: 'hidden md:block rounded w-1/2 m-2 object-cover object-center')
