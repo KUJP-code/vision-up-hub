@@ -17,6 +17,7 @@ ja:
       name: "名前"
       school: "学校"
       student_id: "学生ID"
+      sex: "性別"
     index:
       create_student: "新しい学生を作成する"
       students: "学生リスト"
