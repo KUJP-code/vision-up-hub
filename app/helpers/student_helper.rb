@@ -6,7 +6,11 @@ module StudentHelper
     diff_org ? '****' : name
   end
 
-  def address_for(child)
-    render 'schools/address', locals: { school: child.school }
+  def school_details_for(children)
+    return 'No School Currently' unless children.any?
+
+    school = children.first.school
+
+    render partial: 'parents/address', locals: { school: }
   end
 end

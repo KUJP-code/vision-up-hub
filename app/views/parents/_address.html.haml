@@ -1,7 +1,15 @@
--if school.present?
-  %p asdasdasd
+-# locals: (school:)
+.w-full.flex.flex-col.md:flex-col.gap-4.md:gap-6.md:justify-center.text-left.md:text-center
 
-
-
-
-  
+  .flex.items-center.gap-2
+    = image_tag 'contact/address.svg', width: '24px', height: '24px'
+    %span= school.address
+  .flex.items-center.gap-2
+    = image_tag 'contact/website.svg', width: '24px', height: '24px'
+    = school.website
+  .flex.items-center.gap-2
+    = image_tag 'contact/email.svg', width: '24px', height: '24px'
+    = school.email
+  .flex.items-center.gap-2
+    = image_tag 'contact/phone.svg', width: '24px', height: '24px'
+    = school.phone_number
