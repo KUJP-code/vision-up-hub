@@ -6,7 +6,7 @@
                as: resource_name,
                url: session_path(resource_name),
                html: { class: 'w-full md:w-1/2 flex flex-col items-center justify-between p-12' } do |f|
-      = image_tag 'landing_logo.svg', class: 'w-4/5 md:w-3/5'
+      = image_tag(asset_for_domain(:landing), class: 'w-4/5 md:w-3/5')
 
       .relative.w-full
         = f.label :email, class: 'absolute -top-3 left-3 bg-white px-2 font-bold text-lg'
