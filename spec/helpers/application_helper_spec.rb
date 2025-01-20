@@ -7,7 +7,7 @@ RSpec.describe ApplicationHelper do
     let(:user) { build(:user, :org_admin) }
 
     it "returns 'base' if not in list of themed orgs" do
-      user.organisation_id = 999 # congrats if this breaks
+      user.organisation_id = 999
       expect(org_theme(user)).to eq('base')
     end
   end
@@ -16,12 +16,12 @@ RSpec.describe ApplicationHelper do
     let(:user) { build(:user, :org_admin, organisation_id: 9) }
 
     it "returns a path including 'org_n.svg'" do
-      expect(org_favicon(user)).to eq('/images/org_1.svg')
+      expect(org_favicon(user)).to eq('/images/org_1_vision.svg')
     end
 
     it "returns path including 'org_1.svg' if not in list of themed orgs" do
       user.organisation_id = 999
-      expect(org_favicon(user)).to eq('/images/org_1.svg')
+      expect(org_favicon(user)).to eq('/images/org_1_vision.svg')
     end
   end
 end
