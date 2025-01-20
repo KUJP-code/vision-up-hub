@@ -17,6 +17,7 @@ en:
       name: "Name"
       school: "School"
       student_id: "Student ID"
+      sex: "Gender"
     index:
       create_student: "Create new student"
       students: "Student List"
