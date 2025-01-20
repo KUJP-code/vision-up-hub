@@ -1941,7 +1941,8 @@ CREATE TABLE public.students (
     birthday date NOT NULL,
     en_name character varying DEFAULT ''::character varying,
     log_data jsonb,
-    organisation_id bigint NOT NULL
+    organisation_id bigint NOT NULL,
+    icon_preference character varying
 );
 
 
@@ -3933,6 +3934,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250120053344'),
 ('20250120020028'),
 ('20241211071548'),
 ('20241120055836'),

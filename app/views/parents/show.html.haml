@@ -25,7 +25,3 @@
   = render 'student_searches/parent_form',
            parent_id: @user.id,
            schools: @schools
-
-  = link_to 'Edit',
-            edit_organisation_parent_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'

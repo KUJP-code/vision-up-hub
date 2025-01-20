@@ -13,4 +13,14 @@ module StudentHelper
 
     render partial: 'parents/address', locals: { school: }
   end
+
+  def get_icon(child)
+    child.icon_preference || default_icon(child)
+  end
+
+  def default_icon(child)
+    return 'id/id-girl.svg' unless child.sex == (:male)
+
+    'id/id-boy.svg'
+  end
 end
