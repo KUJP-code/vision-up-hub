@@ -6,11 +6,13 @@ class Student < ApplicationRecord
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date organisation_id].freeze
 
+  enum sex: { undefined: 0, male: 1, female: 2 }
+
   before_validation :generate_student_id
 
   has_logidze
 
-  validates :birthday, :level, :name, presence: true
+  validates :birthday, :level, :name, :sex, presence: true
   validates :student_id, presence: true, uniqueness: { scope: :organisation_id }
   encrypts :en_name, :name
 
