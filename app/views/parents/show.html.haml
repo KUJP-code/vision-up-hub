@@ -1,14 +1,25 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
 
-%main.flex.flex-col.gap-3.p-3
-  %h3= @user.email
-  %h3= t('.extra_emails', emails: @user.extra_emails.to_sentence)
+%main.flex.flex-col.gap-3.p-10
+  -# - if user org events any? display them in swiper
+  
+  %section.flex.flex-col.gap-3
+    %header.flex.justify-start.relative.text-center
+      %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+      %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+        = ('My Children')
+    - if @children.any?
+      %h3= t('.children')
+      - @children.each do |child|
+        = link_to child.name,
+                  student_path(child)
 
-  - if @children.any?
-    %h3= t('.children')
-    - @children.each do |child|
-      = link_to child.name,
-                student_path(child)
+    %header.flex.justify-start.relative.text-center
+      %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+      %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+        = ('School Details')
+
+
 
   = render 'student_searches/parent_form',
            parent_id: @user.id,

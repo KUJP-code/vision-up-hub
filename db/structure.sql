@@ -1494,7 +1494,11 @@ CREATE TABLE public.schools (
     students_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    ip character varying
+    ip character varying,
+    address character varying,
+    phone_number character varying,
+    email character varying,
+    website character varying
 );
 
 
@@ -3929,6 +3933,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250120020028'),
 ('20241211071548'),
 ('20241120055836'),
 ('20241009092550'),
