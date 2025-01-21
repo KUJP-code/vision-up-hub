@@ -14,7 +14,8 @@ class CategoryResource < ApplicationRecord
     daily_gathering: 4,
     arrival: 5,
     bus_time: 6,
-    evening_class: 7
+    evening_class: 7,
+    homework: 8
   }
 
   enum level: {
@@ -33,7 +34,8 @@ class CategoryResource < ApplicationRecord
     sight_words: 2,
     worksheets: 3,
     slides: 4,
-    activities: 5
+    activities: 5,
+    homework_sheet: 6
   }
 
   validates :lesson_category, :resource_category, presence: true
@@ -65,6 +67,13 @@ class CategoryResource < ApplicationRecord
 
   def valid_combo
     send(:"#{lesson_category}_resource?")
+  end
+
+  def homework_resource?
+    return true if resource_category == 'homework_sheet'
+
+    errors.add(:lesson_category,
+               'requires a homework resource')
   end
 
   def phonics_class_resource?

@@ -4,6 +4,18 @@
 = render 'shared/subtitle', text: redact(@student, @student.name)
 
 %main
+
+  .flex.items-center.gap-4
+    = image_tag get_icon(@student), width: '96px', height: '96px', id: 'student-icon'
+    %button{ class: 'card flex flex-col items-center gap-2',
+             data: { action: 'dialog#open',
+                     controller: 'dialog',
+                     'dialog-dialog-value': 'icon-chooser',
+                     'dialog-frame-value': "student_#{@student.id}_icon",
+                     'dialog-src-value': student_path(@student, format: :html) },
+             type: 'button' }
+      %small.btn.btn-secondary Change Icon
+
   - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
     %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
       %h3.w-full.text-center.font-bold.text-secondary.text-xl

@@ -14,9 +14,9 @@
         = inline_svg_tag 'download_icon.svg',
                          class: 'fill-white'
       - if current_user.is?('Admin')
-        = link_to phonics_resource_path(resource),
+        = link_to homework_resource_path(resource),
                   data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{filename} from this lesson?" },
+                          turbo_confirm: "Remove #{filename} from this lessson?" },
                   class: 'btn btn-danger flex justify-around' do
           %p= filename
           = inline_svg_tag 'delete_icon.svg',

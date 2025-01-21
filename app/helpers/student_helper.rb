@@ -6,6 +6,16 @@ module StudentHelper
     diff_org ? '****' : name
   end
 
+  def icon_choices
+    %w[
+      id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer
+    ].freeze
+  end
+
+  def icon_path(icon_name)
+    "id/#{icon_name}.svg"
+  end
+
   def school_details_for(children)
     return 'No School Currently' unless children.any?
 

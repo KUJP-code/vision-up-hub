@@ -1,0 +1,13 @@
+%div.card.p-6
+  %h3.text-xl.font-bold.mb-4.text-center Choose an Icon
+  .grid.grid-cols-3.gap-4
+    - icon_choices.each do |icon|
+      = button_to student_path(student), 
+                  method: :patch,
+                  class: 'card flex flex-col items-center p-2 gap-2',
+                  params: { student: { icon_preference: icon } },
+                  data: { turbo_frame: "student_#{student.id}_icon" } do
+        = image_tag icon_path(icon), class: 'h-full'
+        %small.text-secondary= icon.humanize
+
+  %button{ class: 'btn btn-secondary mt-4', data: { action: 'dialog#close' } } Close

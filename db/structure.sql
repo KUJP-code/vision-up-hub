@@ -1347,7 +1347,8 @@ CREATE TABLE public.phonics_resources (
     phonics_class_id bigint NOT NULL,
     week integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    course_id bigint DEFAULT 1 NOT NULL
 );
 
 
@@ -3148,6 +3149,13 @@ CREATE INDEX index_phonics_resources_on_blob_id ON public.phonics_resources USIN
 
 
 --
+-- Name: index_phonics_resources_on_course_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phonics_resources_on_course_id ON public.phonics_resources USING btree (course_id);
+
+
+--
 -- Name: index_phonics_resources_on_phonics_class_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3822,6 +3830,14 @@ ALTER TABLE ONLY public.lessons
 
 
 --
+-- Name: phonics_resources fk_rails_af67db282c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phonics_resources
+    ADD CONSTRAINT fk_rails_af67db282c FOREIGN KEY (course_id) REFERENCES public.courses(id);
+
+
+--
 -- Name: test_results fk_rails_b56923d317; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3935,6 +3951,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250121060002'),
 ('20250120054934'),
 ('20250120053344'),
 ('20250120020028'),
