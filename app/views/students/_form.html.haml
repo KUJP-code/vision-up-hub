@@ -38,7 +38,7 @@
     .form-group
       = f.label :school_id, t('.school')
       = f.select :school_id,
-                schools.map { |name, id| [(school_names.#{name}), id] }
+                schools.map { |name, id| [t(".school_names.#{name}"), id] }
 
     .form-group 
       = f.label :organisation_id, t('.organisation')
