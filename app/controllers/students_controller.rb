@@ -75,10 +75,18 @@ class StudentsController < ApplicationController
   def set_homework_resources
     # TODO: this is super inefficient, i need to nest it
     org = @student.organisation
-    plans = org.plans.where('start <= ? AND finish_date >= ?', Date.today, Date.today)
+    plans = org.plans.where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
     course_ids = plans.pluck(:course_id)
 
-    lesson_ids = Lesson.where(level: @student.level).pluck(:id)
+    lesson_ids =
+      if @student.sky?
+        Lesson.sky.pluck(:id)
+      elsif @student.land?
+        Lesson.land.pluck(:id)
+      elsif @student.galaxy?
+        Lesson.galaxy.pluck(:id)
+
+      end
 
     @homework_resources = HomeworkResource
                           .where(course_id: course_ids)
