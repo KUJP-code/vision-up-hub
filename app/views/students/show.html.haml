@@ -4,7 +4,8 @@
 = render 'shared/subtitle', text: redact(@student, @student.name)
 
 %main
-
+  %h3 homework
+  = render 'homework_resources/index', homework_resources: @homework_resources
   .flex.items-center.gap-4
     = image_tag get_icon(@student), width: '96px', height: '96px', id: 'student-icon'
     %button{ class: 'card flex flex-col items-center gap-2',

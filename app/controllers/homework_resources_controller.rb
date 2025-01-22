@@ -3,6 +3,10 @@
 class HomeworkResourcesController < ApplicationController
   after_action :verify_authorized
 
+  def index
+    @time_period = params[:period]
+  end
+
   def destroy
     @homework_resource = HomeworkResource.find(params[:id])
     if @homework_resource.destroy

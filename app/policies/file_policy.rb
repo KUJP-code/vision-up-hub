@@ -2,7 +2,7 @@
 
 class FilePolicy < ApplicationPolicy
   def show?
-    user.is?('Admin', 'OrgAdmin', 'SchoolManager', 'Teacher', 'Writer')
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager', 'Teacher', 'Writer', 'Parent')
   end
 
   def destroy?

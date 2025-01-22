@@ -16,12 +16,14 @@ class StudentsController < ApplicationController
   def show
     @classes = @student.classes
     @teachers = @student.teachers
+    set_homework_resources
     @potential_classes =
       @student.school
               .classes
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
     @orgs = policy_scope(Organisation).pluck(:name, :id)
+
     set_results
   end
 
@@ -69,6 +71,19 @@ class StudentsController < ApplicationController
   end
 
   private
+
+  def set_homework_resources
+    # TODO: this is super inefficient, i need to nest it
+    org = @student.organisation
+    plans = org.plans.where('start <= ? AND finish_date >= ?', Date.today, Date.today)
+    course_ids = plans.pluck(:course_id)
+
+    lesson_ids = Lesson.where(level: @student.level).pluck(:id)
+
+    @homework_resources = HomeworkResource
+                          .where(course_id: course_ids)
+                          .where(english_class_id: lesson_ids)
+  end
 
   def student_params
     params.require(:student).permit(
