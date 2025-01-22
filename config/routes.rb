@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :exercises, only: %i[create index update]
       resources :evening_classes, only: %i[create index update]
       resources :files, only: %i[destroy index show]
+      resources :homework_resources, only: %i[destroy]
       resources :kindy_phonics, only: %i[create index update]
       resources :lessons
       resources :lesson_calendars, only: %i[index]

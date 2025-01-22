@@ -3,7 +3,7 @@
 .fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
   = f.number_field :week, min: 1, max: 52, placeholder: 'Week'
 
-  - if resource.instance_of?(PhonicsClass)
+  - if resource.instance_of?(EnglishClass)
     = f.select :course_id, options_from_collection_for_select(courses, :id, :title),
                { prompt: t('.select_course') },
                { required: true }
@@ -15,9 +15,9 @@
 
   - elsif resource.instance_of?(CategoryResource)
     .form-group
-      = f.select :phonics_class_id,
+      = f.select :english_class_id,
                  collection,
-                 prompt: t('.select_phonics_class'),
+                 prompt: t('.select_english_class'),
                  required: true
 
   - if f.object.new_record?

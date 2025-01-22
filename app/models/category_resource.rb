@@ -15,7 +15,7 @@ class CategoryResource < ApplicationRecord
     arrival: 5,
     bus_time: 6,
     evening_class: 7,
-    homework: 8
+    english_class: 8
   }
 
   enum level: {
@@ -55,6 +55,12 @@ class CategoryResource < ApplicationRecord
     PhonicsResource.where(blob_id: resource.blob_id)
   end
 
+  def homework_resources
+    return HomeworkResource.none unless lesson_category == 'english_class'
+
+    HomeworkResource.where(blob_id: resource.blob_id)
+  end
+
   private
 
   def check_not_used
@@ -69,11 +75,11 @@ class CategoryResource < ApplicationRecord
     send(:"#{lesson_category}_resource?")
   end
 
-  def homework_resource?
+  def english_class_resource?
     return true if resource_category == 'homework_sheet'
 
-    errors.add(:lesson_category,
-               'requires a homework resource')
+    errors.add(:lesson_category, 'Requires a homework resource')
+    false
   end
 
   def phonics_class_resource?

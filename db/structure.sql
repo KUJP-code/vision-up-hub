@@ -1140,6 +1140,40 @@ ALTER SEQUENCE public.form_templates_id_seq OWNED BY public.form_templates.id;
 
 
 --
+-- Name: homework_resources; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.homework_resources (
+    id bigint NOT NULL,
+    week integer NOT NULL,
+    english_class_id bigint NOT NULL,
+    blob_id bigint NOT NULL,
+    course_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: homework_resources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.homework_resources_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: homework_resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.homework_resources_id_seq OWNED BY public.homework_resources.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2339,6 +2373,13 @@ ALTER TABLE ONLY public.form_templates ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
+-- Name: homework_resources id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homework_resources ALTER COLUMN id SET DEFAULT nextval('public.homework_resources_id_seq'::regclass);
+
+
+--
 -- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2674,6 +2715,14 @@ ALTER TABLE ONLY public.form_submissions
 
 ALTER TABLE ONLY public.form_templates
     ADD CONSTRAINT form_templates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: homework_resources homework_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homework_resources
+    ADD CONSTRAINT homework_resources_pkey PRIMARY KEY (id);
 
 
 --
@@ -3069,6 +3118,27 @@ CREATE INDEX index_form_submissions_on_staff_id ON public.form_submissions USING
 --
 
 CREATE INDEX index_form_templates_on_organisation_id ON public.form_templates USING btree (organisation_id);
+
+
+--
+-- Name: index_homework_resources_on_blob_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_homework_resources_on_blob_id ON public.homework_resources USING btree (blob_id);
+
+
+--
+-- Name: index_homework_resources_on_course_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_homework_resources_on_course_id ON public.homework_resources USING btree (course_id);
+
+
+--
+-- Name: index_homework_resources_on_english_class_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_homework_resources_on_english_class_id ON public.homework_resources USING btree (english_class_id);
 
 
 --
@@ -3662,6 +3732,14 @@ ALTER TABLE ONLY public.solid_queue_blocked_executions
 
 
 --
+-- Name: homework_resources fk_rails_559e23a7b0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homework_resources
+    ADD CONSTRAINT fk_rails_559e23a7b0 FOREIGN KEY (course_id) REFERENCES public.courses(id);
+
+
+--
 -- Name: lessons fk_rails_5e4fbd8e41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3699,6 +3777,14 @@ ALTER TABLE ONLY public.plans
 
 ALTER TABLE ONLY public.schools
     ADD CONSTRAINT fk_rails_75ddd5ca62 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
+-- Name: homework_resources fk_rails_7a95a247ee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homework_resources
+    ADD CONSTRAINT fk_rails_7a95a247ee FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
 
 
 --
@@ -3747,6 +3833,14 @@ ALTER TABLE ONLY public.course_lessons
 
 ALTER TABLE ONLY public.lessons
     ADD CONSTRAINT fk_rails_90bfdbf7c6 FOREIGN KEY (assigned_editor_id) REFERENCES public.users(id);
+
+
+--
+-- Name: homework_resources fk_rails_92a10d0e8b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homework_resources
+    ADD CONSTRAINT fk_rails_92a10d0e8b FOREIGN KEY (english_class_id) REFERENCES public.lessons(id);
 
 
 --
@@ -3951,6 +4045,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250121090135'),
 ('20250121060002'),
 ('20250120054934'),
 ('20250120053344'),

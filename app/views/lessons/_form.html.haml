@@ -7,7 +7,7 @@
                     class: 'form',
                     data: { controller: 'fields' } } do |f|
   -# Add required types for courses
-  - courses_required_types = ['PhonicsClass']
+  - courses_required_types = ['PhonicsClass', 'EnglishClass']
 
   - if courses_required_types.include?(lesson.type)
     - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",

@@ -234,7 +234,7 @@ RSpec.describe CategoryResource do
 
   context 'when resource for homework' do
     before do
-      category_resource.lesson_category = :homework
+      category_resource.lesson_category = :english_class
     end
 
     it 'can have homework_sheet as a resource category' do
