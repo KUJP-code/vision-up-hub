@@ -29,6 +29,10 @@ class StudentPolicy < ApplicationPolicy
     user.is?('Admin') || authorized_student_org_manager?
   end
 
+  def icon_chooser?
+    user.is?('Admin') || authorized_student_org_user? || parent?
+  end
+
   class Scope < Scope
     def resolve
       case user.type

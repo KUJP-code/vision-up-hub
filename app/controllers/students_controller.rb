@@ -60,6 +60,21 @@ class StudentsController < ApplicationController
     end
   end
 
+  def set_icon
+    @student = authorize Student.find(params[:id])
+    if @student.update(icon: params[:icon])
+      redirect_to @student, notice: t('.update_success')
+    else
+      redirect_to student_path(@student), alert: t('.update_failure')
+    end
+  end
+
+  def icon_chooser
+    @student = authorize Student.find(params[:id])
+    @icon_choices = Student.icon_choices
+    render :icon_chooser
+  end
+
   def destroy
     if @student.destroy
       redirect_to students_url,

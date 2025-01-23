@@ -2,21 +2,26 @@
   = stylesheet_link_tag 'print_report_card', media: 'print'
 
 = render 'shared/subtitle', text: redact(@student, @student.name)
+%dialog#icon-chooser-modal
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
   %h3 homework
   = render 'homework_resources/index', homework_resources: @homework_resources
   .flex.items-center.gap-4
-    = image_tag get_icon(@student), width: '96px', height: '96px', id: 'student-icon'
+    = image_tag get_icon(@student), width: '96px', height: '96px'
     %button{ class: 'card flex flex-col items-center gap-2',
              data: { action: 'dialog#open',
                      controller: 'dialog',
-                     'dialog-dialog-value': 'icon-chooser',
+                     'dialog-dialog-value': 'icon-chooser-modal',
                      'dialog-frame-value': "student_#{@student.id}_icon",
-                     'dialog-src-value': student_path(@student, format: :html) },
+                     'dialog-src-value': icon_chooser_student_path(@student, format: :html) },
              type: 'button' }
       %small.btn.btn-secondary Change Icon
-
   - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
     %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
       %h3.w-full.text-center.font-bold.text-secondary.text-xl

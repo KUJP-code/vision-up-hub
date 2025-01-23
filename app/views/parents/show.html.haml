@@ -1,35 +1,46 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
-
+%dialog#student-search-modal
+  .body 
+    %button{ formmethod: :dialog }
+      = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag 'student_search_frame'
 %main.flex.flex-col.gap-3.p-10
   -# - if user org events any? display them in auto
-
   %section.flex.flex-col.gap-3
     %header.flex.justify-start.relative.text-center
       %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
       %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
         = t('.my_children')
+
     - if @children.any?
       .w-full.flex.flex-row.md:flex-row.gap-4.md:gap-6.text-left.md:text-center
         - @children.each do |child|
+          = link_to student_path(child), class: 'flex flex-col items-center gap-2' do
+            = image_tag(get_icon(child), width: '96px', height: '96px')
+            .btn-secondary.rounded-xl.p-0.5.px-4
+              = child.name
           .flex.flex-col.items-center.gap-2
             = image_tag get_icon(child), width: '96px', height: '96px'
             .btn-secondary.rounded-xl.p-0.5.px-4
               = link_to child.name,
                         student_path(child)
-          .flex.flex-col.items-center.gap-2
-            = image_tag get_icon(child), width: '96px', height: '96px'
-            .btn-secondary.rounded-xl.p-0.5.px-4
-              = link_to child.name,
-                        student_path(child)
-
         .w.full
-          .flex.flex-col.items-center.gap-2
+          %button{ 
+            class: 'flex flex-col items-center gap-2',
+            data: { 
+              action: 'dialog#open',
+              controller: 'dialog',
+              'dialog-dialog-value': 'student-search-modal',
+              'dialog-frame-value': 'student_search_frame',
+              'dialog-src-value': student_searches_path(parent_id: @user.id, schools: @schools.pluck(:id), format: :html) 
+            },
+            type: 'button',
+            role: 'button',
+            aria_label: 'Add Child'
+          }
             = image_tag 'id/id-add.svg', width: '96px', height: '96px'
             .btn-secondary.rounded-xl.p-0.5.px-4
               = t('.add_child')
-        = render 'student_searches/parent_form',
-                 parent_id: @user.id,
-                 schools: @schools
     %header.flex.justify-start.relative.text-center
       %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
       %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl

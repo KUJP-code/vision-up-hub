@@ -25,7 +25,7 @@ module StudentHelper
   end
 
   def get_icon(child)
-    child.icon_preference || default_icon(child)
+    icon_path(child.icon_preference) || default_icon(child)
   end
 
   def default_icon(child)

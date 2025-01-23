@@ -40,7 +40,12 @@ Rails.application.routes.draw do
       resources :tutorials
       resources :tutorial_categories
       resources :user_searches, only: %i[index]
-      resources :students, except: %i[destroy]
+      resources :students, except: %i[destroy] do
+        member do
+          get :icon_chooser
+        end
+      end
+
       resources :student_searches, only: %i[index update]
       resources :support_requests do
         resources :support_messages, only: %i[create]

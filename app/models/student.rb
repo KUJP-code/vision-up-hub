@@ -5,7 +5,12 @@ class Student < ApplicationRecord
 
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date organisation_id].freeze
-
+  ICON_CHOICES = %w[
+    id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer
+  ].freeze
+  def self.icon_choices
+    ICON_CHOICES
+  end
   enum sex: { undefined: 0, male: 1, female: 2 }
 
   before_validation :generate_student_id
