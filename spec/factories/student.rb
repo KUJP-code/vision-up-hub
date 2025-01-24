@@ -8,5 +8,6 @@ FactoryBot.define do
     school
     organisation
     sex { 'male' }
+    status { 'active' }
   end
 end
