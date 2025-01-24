@@ -1273,6 +1273,40 @@ ALTER SEQUENCE public.lessons_id_seq OWNED BY public.lessons.id;
 
 
 --
+-- Name: level_changes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.level_changes (
+    id bigint NOT NULL,
+    student_id bigint NOT NULL,
+    test_result_id bigint,
+    new_level character varying NOT NULL,
+    date_changed date NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: level_changes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.level_changes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: level_changes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.level_changes_id_seq OWNED BY public.level_changes.id;
+
+
+--
 -- Name: managements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1978,7 +2012,8 @@ CREATE TABLE public.students (
     log_data jsonb,
     organisation_id bigint NOT NULL,
     icon_preference character varying,
-    sex integer
+    sex integer,
+    status integer
 );
 
 
@@ -2394,6 +2429,13 @@ ALTER TABLE ONLY public.lessons ALTER COLUMN id SET DEFAULT nextval('public.less
 
 
 --
+-- Name: level_changes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.level_changes ALTER COLUMN id SET DEFAULT nextval('public.level_changes_id_seq'::regclass);
+
+
+--
 -- Name: managements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2742,6 +2784,14 @@ ALTER TABLE ONLY public.lessons
 
 
 --
+-- Name: level_changes level_changes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.level_changes
+    ADD CONSTRAINT level_changes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: managements managements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2974,6 +3024,13 @@ ALTER TABLE ONLY public.video_tutorials
 
 
 --
+-- Name: idx_on_student_id_date_changed_new_level_619a03e829; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX idx_on_student_id_date_changed_new_level_619a03e829 ON public.level_changes USING btree (student_id, date_changed, new_level);
+
+
+--
 -- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3167,6 +3224,20 @@ CREATE INDEX index_lessons_on_assigned_editor_id ON public.lessons USING btree (
 --
 
 CREATE INDEX index_lessons_on_creator_id ON public.lessons USING btree (creator_id);
+
+
+--
+-- Name: index_level_changes_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_level_changes_on_student_id ON public.level_changes USING btree (student_id);
+
+
+--
+-- Name: index_level_changes_on_test_result_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_level_changes_on_test_result_id ON public.level_changes USING btree (test_result_id);
 
 
 --
@@ -3796,6 +3867,14 @@ ALTER TABLE ONLY public.phonics_resources
 
 
 --
+-- Name: level_changes fk_rails_812ca252bc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.level_changes
+    ADD CONSTRAINT fk_rails_812ca252bc FOREIGN KEY (test_result_id) REFERENCES public.test_results(id);
+
+
+--
 -- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4012,6 +4091,14 @@ ALTER TABLE ONLY public.students
 
 
 --
+-- Name: level_changes fk_rails_d864370697; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.level_changes
+    ADD CONSTRAINT fk_rails_d864370697 FOREIGN KEY (student_id) REFERENCES public.students(id);
+
+
+--
 -- Name: test_results fk_rails_dfaf0040f7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4045,6 +4132,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250124054108'),
+('20250124034145'),
 ('20250121090135'),
 ('20250121060002'),
 ('20250120054934'),

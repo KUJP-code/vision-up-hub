@@ -8,16 +8,16 @@ class Student < ApplicationRecord
   ICON_CHOICES = %w[
     id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer
   ].freeze
+
   def self.icon_choices
     ICON_CHOICES
   end
   enum sex: { undefined: 0, male: 1, female: 2 }
-
+  enum status: { active: 0, on_break: 1, inactive: 2 }
   before_validation :generate_student_id
 
   has_logidze
-
-  validates :birthday, :level, :name, :sex, presence: true
+  validates :birthday, :status, :level, :name, :sex, presence: true
   validates :student_id, presence: true, uniqueness: { scope: :organisation_id }
   encrypts :en_name, :name
 

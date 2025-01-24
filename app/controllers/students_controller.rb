@@ -110,7 +110,7 @@ class StudentsController < ApplicationController
 
   def student_params
     params.require(:student).permit(
-      :comments, :level, :name, :sex, :school_id, :student_id, :parent_id,
+      :comments, :level, :name, :sex, :status, :school_id, :student_id, :parent_id,
       :en_name, :birthday, :icon_preference, :start_date, :quit_date, :organisation_id,
       student_classes_attributes: %i[id class_id _destroy]
     )

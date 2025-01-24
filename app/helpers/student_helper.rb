@@ -25,6 +25,8 @@ module StudentHelper
   end
 
   def get_icon(child)
+    return default_icon(child) if child.icon_preference.nil?
+
     icon_path(child.icon_preference) || default_icon(child)
   end
 

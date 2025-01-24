@@ -8,8 +8,6 @@
 
   - if student.school_id.nil? || current_user.organisation_id == student.organisation_id
 
-    .form_group 
-      = image_tag get_icon(student), width: '96px', height: '96px'
     .form-group
       = f.label :name, t('.name')
       = f.text_field :name
@@ -20,7 +18,15 @@
 
     .form-group
       = f.label :sex, t('.sex')
+
       = f.select :sex, Student.sexes.keys.map { | key | [key.humanize, key] }, class: "form-control"
+
+    .form-group 
+      = f.label :status, t('.status')
+
+      = f.select :status, Student.statuses.keys.map { |key| [key.humanize, key] },
+                                                    { include_blank: true }, class: "form-control"
+
 
   - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
     .form-group

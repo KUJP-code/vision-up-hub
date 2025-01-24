@@ -19,11 +19,6 @@
             = image_tag(get_icon(child), width: '96px', height: '96px')
             .btn-secondary.rounded-xl.p-0.5.px-4
               = child.name
-          .flex.flex-col.items-center.gap-2
-            = image_tag get_icon(child), width: '96px', height: '96px'
-            .btn-secondary.rounded-xl.p-0.5.px-4
-              = link_to child.name,
-                        student_path(child)
         .w.full
           %button{ 
             class: 'flex flex-col items-center gap-2',
