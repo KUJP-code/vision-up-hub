@@ -18,4 +18,7 @@ module Levels
     specialist: 13,
     specialist_advanced: 14
   }.freeze
+
+  EVENING_COURSES = %w[keep_up_one keep_up_two keep_up_three
+                       specialist specialist_advanced].freeze
 end

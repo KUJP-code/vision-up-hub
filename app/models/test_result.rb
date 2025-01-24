@@ -3,9 +3,6 @@
 class TestResult < ApplicationRecord
   include Levels
 
-  EVENING_COURSES = %w[keep_up_one keep_up_two keep_up_three
-                       specialist specialist_advanced].freeze
-
   store_accessor :answers, :listening
   store_accessor :answers, :reading
   store_accessor :answers, :speaking
