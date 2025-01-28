@@ -60,7 +60,9 @@ Rails.application.routes.draw do
       resources :organisations, except: %i[destroy] do
         resources :form_submissions, shallow: true
         resources :form_templates, shallow: true
-        resources :schools
+        resources :schools do
+          resources :ss_student_uploads, only: %i[create update]
+        end
 
         resources :student_uploads, only: %i[create new show]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update

@@ -18,6 +18,9 @@ class SsStudentUploadsController < ApplicationController
   end
 
   def create
+    Rails.logger.info "Params received: #{params.inspect}"
+    @organisation = Organisation.find(params[:organisation_id])
+    @school = @organisation.schools.find(params[:school_id])
     @student = authorize Student.new(student_upload_params)
     @index = params[:index].to_i
     @status = 'Uploaded'
@@ -27,6 +30,8 @@ class SsStudentUploadsController < ApplicationController
   end
 
   def update
+    @organisation = Organisation.find(params[:organisation_id])
+    @school = @organisation.schools.find(params[:school_id])
     @student = authorize Student.find_by(
       student_id: student_upload_params[:student_id],
       school_id: student_upload_params[:school_id]

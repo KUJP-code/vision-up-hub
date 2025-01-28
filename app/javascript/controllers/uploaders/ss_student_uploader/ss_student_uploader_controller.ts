@@ -12,12 +12,14 @@ export default class extends Controller<HTMLFormElement> {
   static targets = ["fileInput"];
   static values = {
     org: Number,
+    schoolId: Number,
     action: String,
     headers: Array,
   };
 
   declare readonly fileInputTarget: HTMLInputElement;
   declare readonly orgValue: number;
+  declare readonly schoolIdValue: number;
   declare readonly actionValue: "create" | "update";
   declare readonly headersValue: string[];
 
@@ -75,9 +77,32 @@ export default class extends Controller<HTMLFormElement> {
       const delay = new Promise((resolve) => setTimeout(resolve, 100));
       const ss_student = ss_students.pop();
       if (ss_student === undefined) continue;
-      this.actionValue === "create"
-        ? await createSsStudent(ss_student, this.orgValue, index)
-        : await updateSsStudent(ss_student, this.orgValue, index);
+
+      console.log("Uploading student:", {
+        student: ss_student,
+        orgId: this.orgValue,
+        schoolId: this.schoolIdValue,
+        index,
+      });
+
+      try {
+        this.actionValue === "create"
+          ? await createSsStudent(
+              ss_student,
+              this.orgValue,
+              this.schoolIdValue,
+              index
+            )
+          : await updateSsStudent(
+              ss_student,
+              this.orgValue,
+              this.schoolIdValue,
+              index
+            );
+      } catch (error) {
+        console.error("Error during upload:", error);
+      }
+
       await delay;
     }
   }
