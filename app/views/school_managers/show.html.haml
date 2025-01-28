@@ -8,28 +8,32 @@
     %h3.font-bold= t('.customer_information')
     %nav.w-full.grid.grid-cols-3.gap-6
       = link_to students_path, class: 'btn btn-outline btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('students.svg', class: 'w-10 h-10')} Students
-      = link_to students_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('parents.svg', class: 'w-10 h-10')} Parents
+        #{inline_svg_tag('students.svg', class: 'w-10 h-10')}
+        = t('.students')
+      = link_to users_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('parents.svg', class: 'w-10 h-10')}
+        = t('.parents')
       = link_to tests_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('test.svg', class: 'w-10 h-10')} Tests
-
+        #{inline_svg_tag('test.svg', class: 'w-10 h-10')}
+        = t('.tests')
   %section.flex.flex-col.gap-3
     %h3.font-bold= t('.curriculum')
     %nav.w-full.grid.grid-cols-3.gap-6
-
+      = todays_lessons_link
       = link_to lesson_calendars_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('todays_lesson.svg', class: 'w-10 h-10')} Todays Lessons
-      = link_to lesson_calendars_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('calendar.svg', class: 'w-10 h-10')} Curriculum Calendar
+        #{inline_svg_tag('calendar.svg', class: 'w-10 h-10')}
+        = t('.curriculum_calendar')
       = link_to teacher_events_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('events.svg', class: 'w-10 h-10')} Events
+        #{inline_svg_tag('events.svg', class: 'w-10 h-10')}
+        = t('.curriculum_calendar')
       = link_to monthly_materials_path, class: 'btn btn-outline-white w-full flex gap-2' do
-        #{inline_svg_tag('monthly_materials.svg', class: 'w-10 h-10')} Materials
+        #{inline_svg_tag('monthly_materials.svg', class: 'w-10 h-10')}
+        = t('.materials')
 
   %section.flex.flex-col.gap-6
     %h3.font-bold= t('.support_and_settings')
     %nav.w-full.grid.grid-cols-3.gap-3
-      = link_to support_requests_path, class: 'btn-outline-white btn w-full flex gap-2'  do
-        #{inline_svg_tag('support.svg', class: 'w-10 h-10')} Support
+      = link_to support_requests_path, class: 'btn-outline-white btn w-full flex gap-2' do
+        #{inline_svg_tag('support.svg', class: 'w-10 h-10')}
+        = t('.support')
     = render 'organisations/new_parent_link', org_id: @user.organisation_id
