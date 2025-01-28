@@ -7,7 +7,7 @@ class Student < ApplicationRecord
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date organisation_id].freeze
   ICON_CHOICES = %w[
-    id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer
+    id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer id-princess id-unicorn
   ].freeze
 
   def self.icon_choices
