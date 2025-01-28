@@ -1,18 +1,12 @@
 %turbo-frame{ id: "student_#{@student.id}_icon" }
-  %div.card.p-6
-    %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-      =t('.select_icon')
-    .grid.grid-cols-3.gap-0
+  .p-6.flex.flex-col.items-center
+    %h3.w-full.font-semibold.text-lg.sticky.top-0.bg-white.text-center
+      = t('.select_icon')
+    .flex.flex-wrap.justify-center.items-center.justify-items-center.gap-4
       - @icon_choices.each do |icon|
         = button_to student_path(@student),
                     method: :patch,
-                    class: 'card flex flex-col items-center p-2 gap-2',
+                    class: 'flex flex-col items-center p-2 gap-2',
                     params: { student: { icon_preference: icon } },
                     data: { turbo: false } do
-          = image_tag icon_path(icon), width: '96px', height: '96px'
-
-
-    %button{ class: 'btn btn-secondary mt-4', data: { action: 'dialog#close' } } Close
-
-
-    
+          = image_tag icon_path(icon), class: 'w-16 h-16'

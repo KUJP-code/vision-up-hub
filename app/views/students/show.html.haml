@@ -2,7 +2,7 @@
   = stylesheet_link_tag 'print_report_card', media: 'print'
 
 = render 'shared/subtitle', text: redact(@student, @student.name)
-%dialog#icon-chooser-modal
+%dialog#icon-chooser-modal.resources-dialog
   .body
     %form.h-0
       %button{ formmethod: :dialog }
