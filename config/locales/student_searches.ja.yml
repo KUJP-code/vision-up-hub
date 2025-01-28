@@ -18,6 +18,7 @@ ja:
       select_child_level: "子供レベルを選択してください"
       student_id: "学生ID"
       student_not_found: "学生を見つけられませんでした"
+      birthday: "生年月日"
     results:
       child_claimed: "%{parent}が%{child}を割り当てました"
       claim_child: "%{child}を割り当てます"
