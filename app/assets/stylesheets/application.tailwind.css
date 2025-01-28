@@ -157,6 +157,9 @@
       }
     }
   }
+  .btn-outline-white {
+    @apply flex items-center bg-secondary border-2 border-secondary text-secondary bg-white rounded;
+  }
 
   .btn-secondary {
     @apply bg-secondary text-white;

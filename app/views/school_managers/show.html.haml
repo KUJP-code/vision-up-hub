@@ -1,16 +1,27 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
 
-%main.flex.flex-col.gap-3.p-3
+%main.flex.flex-col.gap-12.p-10
   - if @announcements.any?
     = render 'shared/announcement_list', announcements: @announcements
-  %h3= @user.email
-  %h3 You're a school manager
-  = render 'organisations/new_parent_link', org_id: @user.organisation_id
 
-  %h3= t('.managed_schools')
-  - @user.schools.each do |school|
-    %h3= school.name
+  %section.flex.flex-col.gap-3
+    %h3.font-bold= t('.customer_information')
+    %nav.w-full.flex.flex-wrap.gap-3
+      = link_to 'customerinfo', students_path, class: 'btn btn-outline-white'
+      = link_to 'Parents', students_path, class: 'btn btn-outline-white'
+      = link_to 'Test Results', tests_path, class: 'btn btn-outline-white'
 
-  = link_to 'Edit',
-            edit_organisation_school_manager_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'
+  %section.flex.flex-col.gap-3
+    %h3.font-bold= t('.curriculum')
+    %nav.w-full.flex.flex-wrap.gap-3
+
+      = link_to 'Todays Lessons', lesson_calendars_path, class: 'btn btn-outline-white'
+      = link_to 'Curriculum Calendar', lesson_calendars_path, class: 'btn btn-outline-white'
+      = link_to 'Events', teacher_events_path, class: 'btn btn-outline-white'
+      = link_to 'Materials', monthly_materials_path, class: 'btn btn-outline-white'
+
+  %section.flex.flex-col.gap-3
+    %h3.font-bold= t('.curriculum')
+    %nav.w-full.flex.flex-wrap.gap-3
+      = link_to 'Support', support_requests_path, class: 'btn btn-outline-white'
+      = render 'organisations/new_parent_link', org_id: @user.organisation_id
