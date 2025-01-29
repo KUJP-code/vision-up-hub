@@ -17,6 +17,8 @@
         %th.thead.bg-secondary-50= t('.en_name')
         %th.thead.bg-secondary-50= t('.student_id')
         %th.thead.bg-secondary-50= t('.school')
+        %th.thead.bg-secondary-50= t('.grade')
+        %th.thead.bg-secondary-50= t('.gender')
         %th.thead.thead-e.bg-secondary-50= t('.level')
     %tbody
       - students.each do |student|
@@ -29,9 +31,13 @@
             = link_to redact(student, student.en_name),
                       student_path(student),
                       data: { 'turbo-frame': '_top' }
+
           %td.p-2
             = link_to student.student_id || 'なし',
                       student_path(student),
                       data: { 'turbo-frame': '_top' }
+          %td.p-2= student.school.name
+          %td.p-2= student.current_grade
+          %td.p-2= student.sex
           %td.p-2= student.school.name
           %td.p-2= student.level.titleize

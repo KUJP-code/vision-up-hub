@@ -7,6 +7,9 @@
     %tr.text-white.font-bold.whitespace-nowrap
       %th.thead.thead-s.bg-secondary-50= t('.test_name')
       %th.thead.bg-secondary-50= t('.grade')
+      %th.thead.bg-secondary-50= t('.reading')
+      %th.thead.bg-secondary-50= t('.writing')
+      %th.thead.bg-secondary-50= t('.listening')
       %th.thead.bg-secondary-50= t('.score')
       %th.thead.thead-e.bg-secondary-50= t('.recommendation')
   %tbody.text-center
@@ -17,5 +20,8 @@
                     student_path(@student.id, test_id: result.test_id),
                     class: "font-bold underline #{'text-main' if result == active_result}"
         %td.p-2= result.grade
+        %td.p-2= "#{result.read_percent}%"
+        %td.p-2= "#{result.write_percent}%"
+        %td.p-2= "#{result.listen_percent}%"
         %td.p-2 #{result.total_score}/#{result.test.max_score}
         %td.p-2= result.new_level.titleize

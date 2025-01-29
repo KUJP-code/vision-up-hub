@@ -26,7 +26,7 @@ class StudentSearchesController < ApplicationController
   private
 
   def search_params
-    strong_params = params.require(:search).permit(%i[birthday level school_id student_id parent_id])
+    strong_params = params.require(:search).permit(%i[en_name birthday level school_id student_id parent_id])
     strong_params if current_user.is?('Parent')
 
     strong_params.compact_blank

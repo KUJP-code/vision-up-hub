@@ -10,7 +10,6 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
-  %h3 homework
   = render 'homework_resources/index', homework_resources: @homework_resources
   .flex.items-center.gap-4
     = image_tag get_icon(@student), width: '96px', height: '96px'
@@ -38,14 +37,7 @@
                teachers: @teachers
 
       = render 'students/tests_table', results: @results
-
-      = form_with model: @student, class: 'flex flex-col gap-3' do |f|
-        = f.text_area :comments,
-                      placeholder: t('.add_comments'),
-                      class: 'w-full border-2 border-secondary-50 rounded focus:outline-none',
-                      rows: 7
-        = f.submit t('.add_comment'), class: 'btn btn-main w-full'
-
+      = render 'students/student_progress', student: @student, results: @results, levels: @levels
     %div{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8',
           id: 'test_details' }
       = render 'students/test_details',

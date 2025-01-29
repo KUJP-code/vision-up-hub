@@ -25,7 +25,7 @@
         = t('.curriculum_calendar')
       = link_to teacher_events_path, class: 'btn btn-outline-white w-full flex gap-2' do
         #{inline_svg_tag('events.svg', class: 'w-10 h-10')}
-        = t('.curriculum_calendar')
+        = t('.events')
       = link_to monthly_materials_path, class: 'btn btn-outline-white w-full flex gap-2' do
         #{inline_svg_tag('monthly_materials.svg', class: 'w-10 h-10')}
         = t('.materials')
@@ -36,4 +36,3 @@
       = link_to support_requests_path, class: 'btn-outline-white btn w-full flex gap-2' do
         #{inline_svg_tag('support.svg', class: 'w-10 h-10')}
         = t('.support')
-    = render 'organisations/new_parent_link', org_id: @user.organisation_id

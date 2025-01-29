@@ -23,6 +23,7 @@ class StudentsController < ApplicationController
               .where.not(id: @classes.ids)
               .pluck(:name, :id)
     @orgs = policy_scope(Organisation).pluck(:name, :id)
+    @levels = Student.display_levels
 
     set_results
   end

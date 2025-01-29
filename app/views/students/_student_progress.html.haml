@@ -1,0 +1,37 @@
+-# locals: { student: student, levels: levels, results: results }
+
+%table.table-auto.w-full.border-collapse
+  %thead.bg-gray-200
+    %tr
+      - levels.each do |level|
+        %th.thead.bg-secondary-50.px-4.py-2.text-left= t("levels.#{level[:name]}")
+
+  %tbody
+    %tr
+      - levels.each do |level|
+        %td.border.px-4.py-2.text-center
+          -# Get the mapped order for the student's current level
+          - student_order = student.mapped_level_order
+
+          -# Determine if the current level is active
+          - is_active = student_order >= level[:order]
+          
+          -# Find the latest test result that corresponds to this level's order
+          - test_result = student.latest_test_result_for_order(level[:order])
+
+          -# Get the date when the level was achieved, if available
+          - associated_date = test_result&.created_at
+
+
+          -# Assign color based on the state
+          - if student_order == level[:order]
+            - icon_class = 'text-blue-500' # Current level
+          - elsif is_active
+            - icon_class = 'text-green-500' # Achieved levels
+          - else
+            - icon_class = 'text-gray-400' # Pending levels
+
+          = inline_svg_tag('hamburger.svg', class: icon_class, width: 24, height: 24, title: "#{t("levels.#{level[:name]}")} Icon")
+
+          .mt-2.text-sm
+            = associated_date.present? ? associated_date.strftime("%B %d, %Y") : '—'

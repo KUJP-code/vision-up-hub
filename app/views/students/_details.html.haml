@@ -19,25 +19,9 @@
     %li.flex.flex-col
       %span.text-secondary-50= t('.school')
       %span.text-secondary= t("school_names.#{@student.school.name}")
-    - if @teachers.any?
-      %li.flex.flex-col.teachers
-        %span.text-secondary-50= t('.teachers')
-        %span.text-secondary= @teachers.map(&:name).to_sentence
-    - if @classes.any?
-      %li.flex.flex-col.classes
-        %span.text-secondary-50= t('.classes')
-        %span.text-secondary= @classes.map(&:name).to_sentence
+  - if current_user.is?('Admin' 'SchoolManager')
+    = link_to t('edit'),
+            edit_student_path(@student),
+            class: 'btn btn-secondary'
   %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
     = render 'shared/print_button', text: t('.print_report')
-    = link_to t('edit'),
-              edit_student_path(@student),
-              class: 'btn btn-secondary'
-    - unless @potential_classes.empty?
-      = form_with model: @student, html: { class: 'flex flex-col' } do |f|
-        = f.fields_for :student_classes, @student.student_classes.new do |sc_f|
-          .w-full.flex.flex-col.items-center.gap-2
-            = sc_f.select :class_id,
-                          @potential_classes,
-                          {},
-                          class: 'w-full'
-            = f.submit t('.add_to_class'), class: 'btn btn-main w-full'
