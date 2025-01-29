@@ -89,7 +89,7 @@ class Student < ApplicationRecord
     when 15..17
       "hs#{age_at_school_year_start - 14}"
     else
-      'No School'
+      'Kindy'
     end
   end
 
