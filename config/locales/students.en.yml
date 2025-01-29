@@ -25,6 +25,11 @@ en:
       add_comment: "Add comment"
       add_comments: "Add your comments on this student here"
     table:
+      grade: "Grade"
+      gender: "Gender"
+      male: "Male"
+      female: "Female"
+      undefined: "Undefined"
       classes: "Classes"
       edit: "Edit"
       en_name: "English Name"

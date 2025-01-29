@@ -38,5 +38,7 @@
                       data: { 'turbo-frame': '_top' }
           %td.p-2= student.school.name
           %td.p-2= student.current_grade
-          %td.p-2= student.sex
+          %td.p-2
+            - if student.sex?
+              = t(".#{student.sex}")
           %td.p-2= student.level.titleize

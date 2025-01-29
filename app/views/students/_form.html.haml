@@ -45,7 +45,7 @@
       = f.select :school_id,
                 schools.map { |name, id| [t(".school_names.#{name}"), id] }
 
-    .form-group 
+    .form-group
       = f.label :organisation_id, t('.organisation')
       = f.select :organisation_id, organisations
 

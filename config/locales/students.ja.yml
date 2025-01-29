@@ -26,6 +26,11 @@ ja:
       add_comments: "学生にコメントを追加する"
       student_id: "学生ID: %{id}"
     table:
+      grade: "学年"
+      gender: "性別"
+      male: "男性"
+      female: "女性"
+      undefined: "未定義"
       classes: "クラス"
       edit: "編集"
       en_name: "名前（ローマ字表記）"
