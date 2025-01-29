@@ -10,7 +10,7 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
-  = render 'homework_resources/index', homework_resources: @homework_resources
+  
   .flex.items-center.gap-4
     = image_tag get_icon(@student), width: '96px', height: '96px'
     %button{ class: 'card flex flex-col items-center gap-2',
@@ -21,12 +21,12 @@
                      'dialog-src-value': icon_chooser_student_path(@student, format: :html) },
              type: 'button' }
       %small.btn.btn-secondary Change Icon
-  - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
-    %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
-      %h3.w-full.text-center.font-bold.text-secondary.text-xl
-        = t('.add_parent')
-      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
-      = turbo_frame_tag 'user_table'
+  -# - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
+  -#   %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
+  -#     %h3.w-full.text-center.font-bold.text-secondary.text-xl
+  -#       = t('.add_parent')
+  -#     = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+  -#     = turbo_frame_tag 'user_table'
 
   %section.flex.flex-col.md:flex-row.p-3#student
     %div{ class: 'basis-2/5 flex flex-col justify-around gap-12' }
