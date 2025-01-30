@@ -11,8 +11,8 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
-  .flex.flex-col.md:flex-row.p-12.px-6.md:p-20.bg-neutral-light.gap-6
-    %div{ class: "w-full md:w-2/6 flex flex-col gap-6" }
+  .flex.flex-col.md:flex-row.p-12.px-2.md:p-16.bg-neutral-light.gap-6
+    %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
         %button{
           class: 'absolute -top-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10',
@@ -46,15 +46,18 @@
                     teachers: @teachers
 
             = link_to t('.homework'), homework_resources_path, class: 'btn btn-secondary w-4/6'
+
+      .card.shadow-xl.py-8.rounded-t-none.relative.bg-white
+        %div.absolute.top-0.left-0.w-full.h-12.-translate-y-6
+          = inline_svg_tag 'binder_holes.svg', class: 'w-full h-full text-neutral-light pointer-events-none'
         
+        = render 'students/student_progress', student: @student, results: @results, levels: @levels
 
-      = render 'students/student_progress', student: @student, results: @results, levels: @levels
+    %div{ class: "w-full md:w-4/6 flex flex-col" }
 
-    %div{ class: "w-full md:w-4/6 flex flex-col gap-6" }
-
-      %div{ class: 'flex flex-col items-center gap-6 p-8', id: 'test_details' }
+      %div{ class: 'flex flex-col items-center md:max-h-[60vh]', id: 'test_details' }
         = render 'students/test_details',
                  data: @data,
                  results: @results
 
-      = render 'students/tests_table', results: @results
+      = render 'students/tests_table', results: @results, active_result: @active_result

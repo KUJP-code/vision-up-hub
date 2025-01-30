@@ -119,29 +119,41 @@ class StudentsController < ApplicationController
 
   def set_results
     @results = @student.test_results.order(created_at: :desc).includes(:test)
-    @results = @results.where(test_id: params[:test_id]) if params[:test_id]
+    @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
+    @data = radar_data
+  end
+
+  def set_results
+    @results = @student.test_results.order(created_at: :desc).includes(:test)
+    @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
     @data = radar_data
   end
 
   def radar_data
-    radar_colors = ['105, 192, 221', '100, 88, 128', '170, 218, 235',
-                    '178, 170, 191'].cycle
+    radar_colors = ['105, 192, 221', '100, 88, 128', '170, 218, 235', '178, 170, 191'].cycle
 
     {
       labels: %w[Reading Writing Listening],
-      datasets: @results.map do |result|
-        data = result.radar_data
-        color = radar_colors.next
-        {
-          data: data[:data],
-          label: data[:label],
-          backgroundColor: "rgba(#{color}, 0.2)",
-          pointBackgroundColor: "rgb(#{color})",
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: "rgb(#{color})"
-        }
-      end
+      datasets: if @active_result
+                  [prepare_dataset(@active_result, radar_colors.next)]
+                else
+                  @results.map do |result|
+                    prepare_dataset(result,
+                                    radar_colors.next)
+                  end
+                end
+    }
+  end
+
+  def prepare_dataset(result, color)
+    {
+      data: result.radar_data[:data],
+      label: result.radar_data[:label],
+      backgroundColor: "rgba(#{color}, 0.2)",
+      pointBackgroundColor: "rgb(#{color})",
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: "rgb(#{color})"
     }
   end
 

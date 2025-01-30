@@ -2,19 +2,24 @@
 
 %canvas{ data: { controller: 'chart',
                  'chart-data-value': @data.to_json,
-                 'chart-options-value': { elements: { line: { borderWidth: 0, tension: 0.3 } },
-                                          responsive: true,
-                                          scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 12},backdropColor: 'rgba(255,255,255,0)' },
-                                          pointLabels: {
-                                            font: {
-                                              size: 20
-                                            }
-                                          } } } }.to_json,
+                 'chart-options-value': { 
+                   elements: { line: { borderWidth: 0, tension: 0.3 } },
+                   responsive: true,
+                   scales: { 
+                     r: { 
+                       min: 0, 
+                       max: 100, 
+                       ticks: { 
+                         stepSize: 25, 
+                         font: { size: 12 },
+                         backdropColor: 'rgba(255,255,255,0)' 
+                       },
+                       pointLabels: {
+                         font: {
+                           size: 16
+                         }
+                       } 
+                     } 
+                   } 
+                 }.to_json,
                  'chart-type-value': 'radar' } }
-
-- if params[:test_id]
-  - active_result = results.find { |r| r.test_id == params[:test_id].to_i }
-
-  = link_to t('.view_all_results'),
-            student_path(@student.id),
-            class: 'btn btn-secondary'

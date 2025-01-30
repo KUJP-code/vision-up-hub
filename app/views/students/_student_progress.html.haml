@@ -1,37 +1,36 @@
 -# locals: { student: student, levels: levels, results: results }
 
-%table.table-auto.w-full.border-collapse
-  %thead.bg-gray-200
-    %tr
-      - levels.each do |level|
-        %th.thead.bg-secondary-50.px-4.py-2.text-left= t("levels.#{level[:name]}")
+-# Group levels into chunks of 4
+- levels.each_slice(4).with_index do |level_group, table_index|
+  %table.table-fixed.w-full.border-collapse
+    %thead
+      %tr
+        - level_group.each do |level|
+          %th.thead.bg-white.text-secondary.text-xs.px-1.py-0.text-center= t("levels.#{level[:name]}")
 
-  %tbody
-    %tr
-      - levels.each do |level|
-        %td.border.px-4.py-2.text-center
-          -# Get the mapped order for the student's current level
-          - student_order = student.mapped_level_order
+    %tbody
+      %tr
+        - level_group.each do |level|
+          %td.px-2.py-1.text-center
+            .flex.flex-col.items-center.gap-0
+              - student_order = student.mapped_level_order
 
-          -# Determine if the current level is active
-          - is_active = student_order >= level[:order]
-          
-          -# Find the latest test result that corresponds to this level's order
-          - test_result = student.latest_test_result_for_order(level[:order])
+              - is_active = student_order >= level[:order]
 
-          -# Get the date when the level was achieved, if available
-          - associated_date = test_result&.created_at
+              - test_result = student.latest_test_result_for_order(level[:order])
 
+              - associated_date = test_result&.created_at
 
-          -# Assign color based on the state
-          - if student_order == level[:order]
-            - icon_class = 'text-blue-500' # Current level
-          - elsif is_active
-            - icon_class = 'text-green-500' # Achieved levels
-          - else
-            - icon_class = 'text-gray-400' # Pending levels
+              -# Determine the icon class based on activity
+              - if is_active
+                - icon_class = ''
+              - else
+                - icon_class = 'opacity-15'
 
-          = inline_svg_tag('hamburger.svg', class: icon_class, width: 24, height: 24, title: "#{t("levels.#{level[:name]}")} Icon")
+              -# Extract the base name for the SVG
+              - base_name = level[:name].split('_').first
 
-          .mt-2.text-sm
-            = associated_date.present? ? associated_date.strftime("%B %d, %Y") : '—'
+              = inline_svg_tag("levels/#{base_name}_no_text.svg", class: icon_class, width: 64, height: 64, title: "#{t("levels.#{level[:name]}")} Icon")
+
+              .mt-0.text-secondary.text-xs
+                = associated_date.present? ? associated_date.strftime("%b, %Y") : '—'
