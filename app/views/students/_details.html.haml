@@ -1,27 +1,26 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between rounded p-3',
+%div{ class: 'flex justify-between rounded p-6',
       id: 'student_details' }
-  %ul{ class: 'basis-3/5 shrink-0 font-bold' }
-    %li.flex.flex-col
+  %ul{ class: 'basis-4/5 shrink-0 font-bold' }
+    %li.flex
       %span.text-secondary-50= t('.student_id')
       %span.text-secondary= @student.student_id || 'なし'
-    %li.flex.flex-col
+
+    %li.flex
       %span.text-secondary-50= t('.name')
       %span.text-secondary= redact(@student, @student.name)
-    - if @student.en_name.present?
-      %li.flex.flex-col
-        %span.text-secondary-50= t('.en_name')
-        %span.text-secondary= redact(@student, @student.en_name)
-    %li.flex.flex-col
+
+    %li.flex
+      %span.text-secondary-50= t('.birthday')
+      %span.text-secondary= @student.birthday
+
+    %li.flex.flex-row.gap-4
       %span.text-secondary-50= t('.level')
       %span.text-secondary= @student.level.titleize
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.school')
-      %span.text-secondary= t("school_names.#{@student.school.name}")
   - if current_user.is?('Admin' 'SchoolManager')
     = link_to t('edit'),
             edit_student_path(@student),
             class: 'btn btn-secondary'
-  %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
-    = render 'shared/print_button', text: t('.print_report')
+  -# %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
+  -#   = render 'shared/print_button', text: t('.print_report')
