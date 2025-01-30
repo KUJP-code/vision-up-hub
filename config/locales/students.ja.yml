@@ -9,6 +9,7 @@ ja:
       school: "学校: "
       student_id: "学生ID: "
       teachers: "先生: "
+      birthday: "生年月日:"
     form:
       add_class: "追加する"
       classes: "クラス"
@@ -22,6 +23,7 @@ ja:
       create_student: "新しい学生を作成する"
       students: "学生リスト"
     show:
+      homework: "ホームワーク"
       add_comment: "コメントを追加する"
       add_comments: "学生にコメントを追加する"
       student_id: "学生ID: %{id}"

@@ -11,7 +11,7 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
-  .flex.flex-col.md:flex-row.p-12.md:p-20.bg-neutral-light.gap-6
+  .flex.flex-col.md:flex-row.p-12.px-6.md:p-20.bg-neutral-light.gap-6
     %div{ class: "w-full md:w-2/6 flex flex-col gap-6" }
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
         %button{
@@ -37,15 +37,15 @@
             = render 'user_searches/form', orgs: @orgs, student_id: @student.id
             = turbo_frame_tag 'user_table'
       
-        %section.flex.flex-col.p-3#student
-          %div{ class: 'flex flex-col justify-around gap-12' }
+        %section.flex.flex-col.items-center.mt-5#student
+          %div{ class: 'flex flex-col justify-around gap-2 items-center' }
             = render 'students/details',
                     student: @student,
                     classes: @classes,
                     potential_classes: @potential_classes,
                     teachers: @teachers
 
-            = link_to t('.homework'), homework_resources_path, class: 'btn btn-secondary'
+            = link_to t('.homework'), homework_resources_path, class: 'btn btn-secondary w-4/6'
         
 
       = render 'students/student_progress', student: @student, results: @results, levels: @levels

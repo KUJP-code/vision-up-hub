@@ -1,26 +1,24 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between rounded p-6',
-      id: 'student_details' }
-  %ul{ class: 'basis-4/5 shrink-0 font-bold' }
-    %li.flex
-      %span.text-secondary-50= t('.student_id')
-      %span.text-secondary= @student.student_id || 'なし'
+%div.flex.justify-between.rounded.p-6{id: 'student_details'}
+  %ul.font-bold.flex.flex-col.justify-between.gap-4
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.student_id')
+      %span.text-secondary.flex-1= @student.student_id || 'なし'
 
-    %li.flex
-      %span.text-secondary-50= t('.name')
-      %span.text-secondary= redact(@student, @student.name)
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.name')
+      %span.text-secondary.flex-1= redact(@student, @student.name)
 
-    %li.flex
-      %span.text-secondary-50= t('.birthday')
-      %span.text-secondary= @student.birthday
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.birthday')
+      %span.text-secondary.flex-1= @student.birthday
 
-    %li.flex.flex-row.gap-4
-      %span.text-secondary-50= t('.level')
-      %span.text-secondary= @student.level.titleize
-  - if current_user.is?('Admin' 'SchoolManager')
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.level')
+      %span.text-secondary.flex-1= @student.level.titleize
+
+  - if current_user.is?('Admin', 'SchoolManager')
     = link_to t('edit'),
-            edit_student_path(@student),
-            class: 'btn btn-secondary'
-  -# %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
-  -#   = render 'shared/print_button', text: t('.print_report')
+              edit_student_path(@student),
+              class: 'btn btn-secondary'
