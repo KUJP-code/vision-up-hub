@@ -63,7 +63,7 @@ class CategoryResourcesController < ApplicationController
 
   def category_resource_params
     params.require(:category_resource).permit(
-      :lesson_category, :course_id, :level, :resource_category, :resource,
+      :lesson_category, :course_id, :is_answers, :level, :resource_category, :resource,
       course_resources_attributes: %i[id course_id _destroy]
     )
   end

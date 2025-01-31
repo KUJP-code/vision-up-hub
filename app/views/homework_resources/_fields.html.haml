@@ -1,17 +1,27 @@
 -# locals: (f:, courses:, collection:, resource:)
 
 .fields-wrapper.flex.items-center.gap-3{ 'data-new-record' => f.object.new_record?.to_s }
-  = f.number_field :week, min: 1, max: 52, placeholder: 'Week'
+  = f.number_field :week,
+                   min: 1,
+                   max: 52,
+                   placeholder: 'Week'
 
   - if resource.instance_of?(EnglishClass)
-    = f.select :course_id, options_from_collection_for_select(courses, :id, :title),
+    = f.select :course_id,
+               options_from_collection_for_select(courses, :id, :title),
                { prompt: t('.select_course') },
                { required: true }
+
     .form-group
       = f.select :blob_id,
                  collection,
                  prompt: t('.select_resource'),
                  required: true
+
+    .form-group
+      = f.select :is_answers,
+        { t('.is_answers?') => false, t('.yes') => true },
+        { selected: f.object.is_answers? }
 
   - elsif resource.instance_of?(CategoryResource)
     .form-group
@@ -21,8 +31,7 @@
                  required: true
 
   - if f.object.new_record?
-    %button.btn.btn-danger{ 'data-action' => 'fields#remove',
-                            type: 'button' }
+    %button.btn.btn-danger{ 'data-action' => 'fields#remove', type: 'button' }
       = t('.remove')
   - else
     .flex.items-center.gap-1

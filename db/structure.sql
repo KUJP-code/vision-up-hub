@@ -1150,7 +1150,8 @@ CREATE TABLE public.homework_resources (
     blob_id bigint NOT NULL,
     course_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_answers boolean DEFAULT false NOT NULL
 );
 
 
@@ -4132,6 +4133,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250131062822'),
 ('20250124054108'),
 ('20250124034145'),
 ('20250121090135'),
