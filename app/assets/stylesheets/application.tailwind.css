@@ -157,6 +157,19 @@
       }
     }
   }
+  .btn-outline-white {
+    @apply flex items-center bg-secondary border-2 border-secondary py-1 px-3 text-secondary bg-white rounded;
+    svg {
+      @apply fill-secondary;
+    }
+    &:hover {
+      @apply bg-secondary text-white;
+
+      svg {
+        @apply fill-white;
+      }
+    }
+  }
 
   .btn-secondary {
     @apply bg-secondary text-white;

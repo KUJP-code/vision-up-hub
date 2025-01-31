@@ -7,7 +7,7 @@
                  'dialog-frame-value': 'lesson',
                  'dialog-src-value': teacher_event_path(lesson) },
          type: 'button' }
-  = image_tag "levels/#{type.downcase}.svg", class: 'h-full'
+  = image_tag "levels/#{type.downcase}.svg", class: 'w-16 h-16'
   %small.text-secondary= I18n.locale == :ja ? ja_date_weekday(lesson.event_date) : lesson.event_date.strftime('%A, %B %d, %Y')
   %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
   %h3.text-center= lesson.title

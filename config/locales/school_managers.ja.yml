@@ -1,4 +1,17 @@
 ja:
   school_managers:
+    show:
+      students: "生徒"
+      parents: "保護者"
+      todays_lessons: "今日の授業"
+      tests: "試験"
+      events: "イベント"
+      curriculum_calendar: "カリキュラムカレンダー"
+      support: "サポート"
+      materials: "教材"
+      customer_information: "顧客情報"
+      support_and_settings: "サポートと設定"
+      curriculum: "カリキュラム"
+
     nav:
       request_support: "サポート依頼"

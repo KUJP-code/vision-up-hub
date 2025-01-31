@@ -1,19 +1,51 @@
 = render 'shared/subtitle', text: "Welcome, #{@user.name}"
+%dialog#student-search-modal.resources-dialog
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
 
-%main.flex.flex-col.gap-3.p-3
-  %h3= @user.email
-  %h3= t('.extra_emails', emails: @user.extra_emails.to_sentence)
+    = turbo_frame_tag 'student_search_frame', class: 'flex justify-center items-center h-full' do
 
-  - if @children.any?
-    %h3= t('.children')
-    - @children.each do |child|
-      = link_to child.name,
-                student_path(child)
+      = render 'student_searches/parent_form', parent_id: @user.id, schools: @schools, failed: false
+%main.flex.flex-col.gap-3.p-10
+  -# - if user org events any? display them in auto
+  %section.flex.flex-col.gap-3
+    %header.flex.justify-start.relative.text-center
+      %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+      %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+        = t('.my_children')
 
-  = render 'student_searches/parent_form',
-           parent_id: @user.id,
-           schools: @schools
+  
+    .w-full.flex.flex-col.md:flex-row.gap-4.md:gap-6.text-left.md:text-center
+      - @children.each do |child|
+        = link_to student_path(child), class: 'flex flex-col items-center gap-2' do
+          = image_tag(get_icon(child), width: '96px', height: '96px')
+          .btn-secondary.rounded-xl.p-0.5.px-4
+            = child.name
+      .full.flex.flex-col.items-center.gap-2
+        %button{ 
+          class: 'flex flex-col items-center gap-2',
+          data: {
+            action: 'dialog#open',
+            controller: 'dialog',
+            'dialog-dialog-value': 'student-search-modal',
+            'dialog-frame-value': 'student_search_frame',
+            'dialog-src-value': student_searches_path(parent_id: @user.id, schools: @schools.pluck(:id), format: :html)
+          },
+          type: 'button',
+          role: 'button',
+          aria_label: 'Add Child'
+        }
+          = image_tag 'id/id-add.svg', width: '96px', height: '96px'
+          .btn-secondary.rounded-xl.p-0.5.px-4
+            = t('.add_child')
+    %header.flex.justify-start.relative.text-center
+      %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+      %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
+        = t('.school_details')
 
-  = link_to 'Edit',
-            edit_organisation_parent_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'
+    - if @children.any?
+      = school_details_for(@children)
+
+

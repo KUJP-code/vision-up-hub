@@ -3,33 +3,61 @@
 
 = render 'shared/subtitle', text: redact(@student, @student.name)
 
+%dialog#icon-chooser-modal.resources-dialog
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog }
+        = image_tag 'exit.svg', class: 'btn-close'
+    = turbo_frame_tag "student_#{@student.id}_icon"
+
 %main
-  - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
-    %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
-      %h3.w-full.text-center.font-bold.text-secondary.text-xl
-        = t('.add_parent')
-      = render 'user_searches/form', orgs: @orgs, student_id: @student.id
-      = turbo_frame_tag 'user_table'
+  .flex.flex-col.md:flex-row.p-12.px-2.md:p-16.bg-neutral-light.gap-6
+    %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }
+      %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
+        %button{
+          class: 'absolute bg-neutral-light -top-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10',
+          data: { 
+            action: 'dialog#open',
+            controller: 'dialog',
+            'dialog-dialog-value': 'icon-chooser-modal',
+            'dialog-frame-value': "student_#{@student.id}_icon",
+            'dialog-src-value': icon_chooser_student_path(@student, format: :html) 
+          },
+          type: 'button',
+          style: 'left: 50%;'
+        }
+          .relative.w-24.h-24
+            = image_tag get_icon(@student), width: '96px', height: '96px', class: 'w-full h-full max-w-full'
+            = inline_svg_tag 'id/id-edit.svg', width: '96px', height: '96px', class: 'absolute inset-0'
+        
+        - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
+          %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
+            %h3.w-full.text-center.font-bold.text-secondary.text-xl
+              = t('.add_parent')
+            = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+            = turbo_frame_tag 'user_table'
+      
+        %section.flex.flex-col.items-center.mt-5#student
+          %div{ class: 'flex flex-col justify-around gap-2 items-center' }
+            = render 'students/details',
+                    student: @student,
+                    classes: @classes,
+                    potential_classes: @potential_classes,
+                    teachers: @teachers
 
-  %section.flex.flex-col.md:flex-row.p-3#student
-    %div{ class: 'basis-2/5 flex flex-col justify-around gap-12' }
-      = render 'students/details',
-               student: @student,
-               classes: @classes,
-               potential_classes: @potential_classes,
-               teachers: @teachers
+            = link_to t('.homework'), homework_resources_student_path(@student), class: 'btn btn-secondary w-4/6'
 
-      = render 'students/tests_table', results: @results
+      .card.shadow-xl.py-8.rounded-t-none.relative.bg-white
+        %div.absolute.top-0.left-0.w-full.h-12.-translate-y-6
+          = inline_svg_tag 'binder_holes.svg', class: 'w-full h-full text-neutral-light pointer-events-none'
+        
+        = render 'students/student_progress', student: @student, results: @results, levels: @levels
 
-      = form_with model: @student, class: 'flex flex-col gap-3' do |f|
-        = f.text_area :comments,
-                      placeholder: t('.add_comments'),
-                      class: 'w-full border-2 border-secondary-50 rounded focus:outline-none',
-                      rows: 7
-        = f.submit t('.add_comment'), class: 'btn btn-main w-full'
+    %div{ class: "w-full md:w-4/6 flex flex-col" }
 
-    %div{ class: 'basis-3/5 flex flex-col items-center gap-6 p-8',
-          id: 'test_details' }
-      = render 'students/test_details',
-               data: @data,
-               results: @results
+      %div{ class: 'flex flex-col items-center md:max-h-[60vh]', id: 'test_details' }
+        = render 'students/test_details',
+                 data: @data,
+                 results: @results
+
+      = render 'students/tests_table', results: @results, active_result: @active_result

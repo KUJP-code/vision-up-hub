@@ -1,21 +1,22 @@
--# locals: (results:)
-
-- active_result = results.find { |r| r.test_id == params[:test_id].to_i }
-
-%table
+-# locals: { results:, active_result: }
+%table.text-xs.md:text-base
   %thead
     %tr.text-white.font-bold.whitespace-nowrap
-      %th.thead.thead-s.bg-secondary-50= t('.test_name')
-      %th.thead.bg-secondary-50= t('.grade')
-      %th.thead.bg-secondary-50= t('.score')
-      %th.thead.thead-e.bg-secondary-50= t('.recommendation')
+      %th.thead.thead-s.bg-secondary-50.w-8= ('')
+      %th.thead.bg-secondary-50= t('.reading')
+      %th.thead.bg-secondary-50= t('.writing')
+      %th.thead.bg-secondary-50= t('.listening')
+      %th.thead.thead-e.bg-secondary-50= t('.score')
   %tbody.text-center
     - results.each do |result|
-      %tr{ class: result == results.last ? '' : 'border-b-2 border-secondary-50' }
+      %tr
         %td.p-2
-          = link_to result.created_at.strftime('%B %Y'),
-                    student_path(@student.id, test_id: result.test_id),
-                    class: "font-bold underline #{'text-main' if result == active_result}"
-        %td.p-2= result.grade
-        %td.p-2 #{result.total_score}/#{result.test.max_score}
-        %td.p-2= result.new_level.titleize
+          = link_to student_path(@student.id, test_id: result.test_id),
+                    class: "selector-link flex items-center justify-center h-6 w-6 rounded-full border  #{ result == active_result ? 'bg-secondary' : 'bg-white' }",
+                    title: result.created_at.strftime('%b %Y'),
+                    aria: { label: "Select test from #{result.created_at.strftime('%b %Y')}" } do
+            = content_tag(:span, '', class: 'sr-only', text: "Test from #{result.created_at.strftime('%b %Y')}")
+        %td.p-2= "#{result.read_percent}%"
+        %td.p-2= "#{result.write_percent}%"
+        %td.p-2= "#{result.listen_percent}%"
+        %td.p-2= "#{result.total_score}/#{result.test.max_score}"

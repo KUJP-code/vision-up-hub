@@ -5,9 +5,7 @@
     %image{ height: '64px', width: '120px', src: org_favicon(current_user.presence) }
   .flex-grow
   = locale_toggle(classes: 'fill-white')
-  - if controller_name != 'registrations'
-    = link_to t('.sign_up'),
-              new_registration_path(resource_name)
+
   - if controller_name != 'sessions'
     = link_to t('.sign_in'),
               new_session_path(resource_name)

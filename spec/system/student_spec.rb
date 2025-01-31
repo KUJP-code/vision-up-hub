@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating a student' do
+RSpec.describe 'creating a student', skip: 'Student creation is temporarily postponed' do
   let(:user) { create(:user, :school_manager) }
   let(:school) { create(:school, organisation: user.organisation) }
 

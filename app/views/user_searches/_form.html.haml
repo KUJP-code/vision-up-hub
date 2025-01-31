@@ -7,6 +7,9 @@
               html: { class: 'flex flex-col gap-3',
                       id: 'user_search', method: :get } do |f|
     = f.hidden_field :student_id, value: student_id if student_id
+    - if current_user.is?('SchoolManager')
+      .h3.font-bold= t('.invitation_link')
+      = render 'organisations/new_parent_link', org_id: current_user.organisation_id
 
     .flex.gap-3.justify-between
       .form-group

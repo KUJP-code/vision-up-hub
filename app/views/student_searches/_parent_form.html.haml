@@ -1,26 +1,23 @@
 -# locals: (failed: false, parent_id:, schools:)
 
-- field_classes = 'basis-2/5 flex-grow flex justify-center items-center gap-1'
-
-= turbo_frame_tag 'student_search_frame' do
+= turbo_frame_tag 'student_search_frame', class: 'flex justify-center items-center h-full' do
   = form_with url: student_searches_path,
               scope: :search,
-              html: { class: 'w-full flex flex-wrap justify-between items-center gap-1',
+              html: { class: 'w-full max-w-md flex flex-col gap-6 p-6 rounded-lg',
                       id: 'student_search', method: :get } do |f|
-    %h3.w-full.text-center= t('.find_child')
+    %h3.w-full.text-center.font-bold.text-xl= t('.find_child')
     = f.hidden_field :parent_id, value: parent_id
 
-    %div{ class: field_classes }
-      = f.label :student_id, t('.student_id')
-      = f.text_field :student_id,
-                     required: true
+    %div{ class: 'flex flex-col gap-2' }
+      = f.label :student_id, t('.student_id'), class: 'font-medium'
+      = f.text_field :student_id, required: true, class: 'input-field'
 
-    %div{ class: field_classes }
-      = f.label :birthday, t('.birthday')
-      = f.date_field :birthday, required: true
+    %div{ class: 'flex flex-col gap-2' }
+      = f.label :birthday, t('.birthday'), class: 'font-medium'
+      = f.date_field :birthday, required: true, class: 'input-field'
 
-    = f.submit t('.search'), class: 'btn btn-main w-full'
+    = f.submit t('.search'), class: 'btn btn-main px-4 py-2'
 
     - if failed
-      %p.w-full.bg-danger.text-white.text-center.p-2.rounded
+      %p.w-full.bg-red-500.text-white.text-center.p-2.rounded
         = t('.student_not_found')

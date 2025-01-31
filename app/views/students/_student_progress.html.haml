@@ -1,0 +1,36 @@
+-# locals: { student: student, levels: levels, results: results }
+
+-# Group levels into chunks of 4
+- levels.each_slice(4).with_index do |level_group, table_index|
+  %table.table-fixed.w-full.border-collapse
+    %thead
+      %tr
+        - level_group.each do |level|
+          %th.thead.bg-white.text-secondary.text-xs.px-1.py-0.text-center= t("levels.#{level[:name]}")
+
+    %tbody
+      %tr
+        - level_group.each do |level|
+          %td.px-2.py-1.text-center
+            .flex.flex-col.items-center.gap-0
+              - student_order = student.mapped_level_order
+
+              - is_active = student_order >= level[:order]
+
+              - test_result = student.latest_test_result_for_order(level[:order])
+
+              - associated_date = test_result&.created_at
+
+              -# Determine the icon class based on activity
+              - if is_active
+                - icon_class = ''
+              - else
+                - icon_class = 'opacity-15'
+
+              -# Extract the base name for the SVG
+              - base_name = level[:name].split('_').first
+
+              = inline_svg_tag("levels/#{base_name}_no_text.svg", class: icon_class, width: 64, height: 64, title: "#{t("levels.#{level[:name]}")} Icon")
+
+              .mt-0.text-secondary.text-xs
+                = associated_date.present? ? associated_date.strftime("%b, %Y") : '—'

@@ -7,5 +7,7 @@ FactoryBot.define do
     level { 'sky_three' }
     school
     organisation
+    sex { 'male' }
+    status { 'active' }
   end
 end

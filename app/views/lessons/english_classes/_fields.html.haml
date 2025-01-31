@@ -1,5 +1,13 @@
--# locals: (f:, lesson:)
+-# locals: (f:, lesson:, courses:)
 
+:ruby
+  e_resources = if current_user.is?('Admin')
+    lesson.homework_resources
+    p e_resources
+  else
+    lesson.homework_resources.each { |er| er.id = nil }
+  end
+  
 .form-group
   = f.label :guide
   = f.file_field :guide, accept: 'application/pdf'
@@ -19,3 +27,25 @@
 
 - EnglishClass::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', f:, lesson:, attr:)
+
+.flex.flex-col.gap-2{ 'data-controller': 'fields' }
+  = f.fields_for :homework_resources, e_resources do |er_f|
+    = render 'homework_resources/fields',
+            f: er_f,
+            resource: lesson,
+            courses: courses,
+            collection: @homework_resources
+  %template{ 'data-fields-target' => 'template' }
+    = f.fields_for :homework_resources,
+                  lesson.homework_resources.new,
+                  child_index: 'CHILD' do |er_f|
+      = render 'homework_resources/fields',
+              f: er_f,
+              resource: lesson,
+              courses: courses,
+              collection: @homework_resources
+
+  %div{ 'data-fields-target' => 'target' }
+
+  %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
+    = t('.add_homework_resource')

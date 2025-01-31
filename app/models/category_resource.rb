@@ -14,7 +14,8 @@ class CategoryResource < ApplicationRecord
     daily_gathering: 4,
     arrival: 5,
     bus_time: 6,
-    evening_class: 7
+    evening_class: 7,
+    english_class: 8
   }
 
   enum level: {
@@ -33,7 +34,8 @@ class CategoryResource < ApplicationRecord
     sight_words: 2,
     worksheets: 3,
     slides: 4,
-    activities: 5
+    activities: 5,
+    homework_sheet: 6
   }
 
   validates :lesson_category, :resource_category, presence: true
@@ -53,6 +55,12 @@ class CategoryResource < ApplicationRecord
     PhonicsResource.where(blob_id: resource.blob_id)
   end
 
+  def homework_resources
+    return HomeworkResource.none unless lesson_category == 'english_class'
+
+    HomeworkResource.where(blob_id: resource.blob_id)
+  end
+
   private
 
   def check_not_used
@@ -65,6 +73,13 @@ class CategoryResource < ApplicationRecord
 
   def valid_combo
     send(:"#{lesson_category}_resource?")
+  end
+
+  def english_class_resource?
+    return true if resource_category == 'homework_sheet'
+
+    errors.add(:lesson_category, 'Requires a homework resource')
+    false
   end
 
   def phonics_class_resource?

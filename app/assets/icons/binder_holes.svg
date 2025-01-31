@@ -1,0 +1,14 @@
+<!-- binder_holes.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="30" viewBox="0 0 100 30" preserveAspectRatio="none">
+  <!-- Circular Cutouts -->
+  <circle cx="5" cy="15" r="3" fill="currentColor" />
+  <circle cx="15" cy="15" r="3" fill="currentColor" />
+  <circle cx="25" cy="15" r="3" fill="currentColor" />
+  <circle cx="35" cy="15" r="3" fill="currentColor" />
+  <circle cx="45" cy="15" r="3" fill="currentColor" />
+  <circle cx="55" cy="15" r="3" fill="currentColor" />
+  <circle cx="65" cy="15" r="3" fill="currentColor" />
+  <circle cx="75" cy="15" r="3" fill="currentColor" />
+  <circle cx="85" cy="15" r="3" fill="currentColor" />
+  <circle cx="95" cy="15" r="3" fill="currentColor" />
+</svg>

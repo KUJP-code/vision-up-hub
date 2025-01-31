@@ -1,0 +1,62 @@
+= content_for :head do
+  %link{ rel: 'stylesheet',
+         href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
+
+%main.flex.flex-col.gap-12.overflow-y-auto.p-3
+  = render 'shared/subtitle', text: t('.create_students', org: @organisation.name)
+
+  - if current_user.is?('Admin')
+    = render 'organisations/nav',
+             orgs: @orgs, active_org: @organisation,
+             path_func: :new_organisation_student_upload_path
+
+  = render 'ss_student_uploads/format_explainer'
+  = link_to organisation_ss_student_upload_path(current_user.organisation, 1),
+            class: 'btn btn-main w-full flex justify-center gap-2' do
+    %p= t('.download_sample')
+    = inline_svg_tag 'download_icon.svg',
+                     class: 'fill-white'
+
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
+    %h2= t('.create_students', org: @organisation.name)
+    = form_with scope: :student_upload,
+                html: { class: 'form',
+                        data: { controller: 'student-uploader',
+                                action: 'student-uploader#displayStudents',
+                                'student-uploader-org-value': @organisation.id,
+                                'student-uploader-action-value': 'create',
+                                'student-uploader-headers-value': Student::CSV_HEADERS.to_json },
+                        id: 'student_create_form' } do |f|
+      .flex.flex-col.gap-2
+        %label{ for: 'student_upload_school_id' }= t('.select_school')
+        = f.select :school_id,
+                   options_from_collection_for_select(@organisation.schools, :id, :name, selected: nil),
+                   { include_blank: t('.select_school_placeholder') },
+                   { class: 'form-select', id: 'student_upload_school_id', name: 'student_upload[school_id]' }
+      = f.file_field :file,
+                     required: true,
+                     data: { 'student-uploader-target': 'fileInput' }
+      = f.submit t('.create_students', org: @organisation.name),
+                 class: 'btn btn-main'
+
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
+    %h2= t('.update_students', org: @organisation.name)
+    = form_with scope: :student_upload,
+                html: { class: 'form',
+                        data: { action: 'student-uploader#displayStudents',
+                                controller: 'student-uploader',
+                                'student-uploader-org-value': @organisation.id,
+                                'student-uploader-action-value': 'update' },
+                        id: 'student_update_form' } do |f|
+      %div.flex.flex-col.gap-2
+        %label{ for: 'student_upload_school_id' }= t('.select_school')
+        = f.select :school_id,
+                   options_from_collection_for_select(@organisation.schools, :id, :name, selected: nil),
+                   { include_blank: t('.select_school_placeholder') },
+                   { class: 'form-select', id: 'student_upload_school_id', name: 'student_upload[school_id]' }
+      = f.file_field :file,
+                     required: true,
+                     data: { 'student-uploader-target': 'fileInput' }
+      = f.submit t('.update_students', org: @organisation.name),
+                 class: 'btn btn-main'

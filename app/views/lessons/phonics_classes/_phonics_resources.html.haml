@@ -16,7 +16,7 @@
       - if current_user.is?('Admin')
         = link_to phonics_resource_path(resource),
                   data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{filename} from this lessson?" },
+                          turbo_confirm: "Remove #{filename} from this lesson?" },
                   class: 'btn btn-danger flex justify-around' do
           %p= filename
           = inline_svg_tag 'delete_icon.svg',

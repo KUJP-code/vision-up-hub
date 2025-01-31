@@ -1,43 +1,24 @@
 -# locals: (classes:, potential_classes:, student:, teachers:)
 
-%div{ class: 'flex justify-between rounded p-3',
-      id: 'student_details' }
-  %ul{ class: 'basis-3/5 shrink-0 font-bold' }
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.student_id')
-      %span.text-secondary= @student.student_id || 'なし'
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.name')
-      %span.text-secondary= redact(@student, @student.name)
-    - if @student.en_name.present?
-      %li.flex.flex-col
-        %span.text-secondary-50= t('.en_name')
-        %span.text-secondary= redact(@student, @student.en_name)
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.level')
-      %span.text-secondary= @student.level.titleize
-    %li.flex.flex-col
-      %span.text-secondary-50= t('.school')
-      %span.text-secondary= t("school_names.#{@student.school.name}")
-    - if @teachers.any?
-      %li.flex.flex-col.teachers
-        %span.text-secondary-50= t('.teachers')
-        %span.text-secondary= @teachers.map(&:name).to_sentence
-    - if @classes.any?
-      %li.flex.flex-col.classes
-        %span.text-secondary-50= t('.classes')
-        %span.text-secondary= @classes.map(&:name).to_sentence
-  %div{ class: 'w-2/5 flex flex-col justify-between print:hidden' }
-    = render 'shared/print_button', text: t('.print_report')
+%div.flex.justify-between.rounded.p-6{id: 'student_details'}
+  %ul.font-bold.flex.flex-col.justify-between.gap-4
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.student_id')
+      %span.text-secondary.flex-1= @student.student_id || 'なし'
+
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.name')
+      %span.text-secondary.flex-1= redact(@student, @student.name)
+
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.birthday')
+      %span.text-secondary.flex-1= @student.birthday
+
+    %li.flex.items-center
+      %span.text-secondary-50.w-32= t('.level')
+      %span.text-secondary.flex-1= @student.level.titleize
+
+  - if current_user.is?('Admin', 'SchoolManager')
     = link_to t('edit'),
               edit_student_path(@student),
               class: 'btn btn-secondary'
-    - unless @potential_classes.empty?
-      = form_with model: @student, html: { class: 'flex flex-col' } do |f|
-        = f.fields_for :student_classes, @student.student_classes.new do |sc_f|
-          .w-full.flex.flex-col.items-center.gap-2
-            = sc_f.select :class_id,
-                          @potential_classes,
-                          {},
-                          class: 'w-full'
-            = f.submit t('.add_to_class'), class: 'btn btn-main w-full'

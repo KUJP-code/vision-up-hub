@@ -1,0 +1,21 @@
+= render 'shared/subtitle', text: t('.homework')
+%main{ class: "flex flex-col mx-auto w-full md:w-2/3" }
+  .flex.p-6.gap-6
+    %ul.font-bold.flex.justify-center.gap-12.w-full
+      %li.flex.flex-col.items-center
+        - base_name = @student.level.split('_').first
+        = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 96, height: 96)
+        .text
+          = base_name.upcase
+      %li.flex.flex-col.items-center
+        = image_tag get_icon(@student), width: '96px', height: '96px'
+        .text
+          = redact(@student, @student.name)
+
+  %table.text.md:text-base
+    %thead
+      %tr.text-white.font-bold
+        %th.thead.thead-s.bg-secondary-50= t('.date')
+        %th.thead.thead-e.bg-secondary-50= t('.book_pages')
+    %tbody.text-center
+      = render_homework_rows(@homework_resources)

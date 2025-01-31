@@ -1,5 +1,4 @@
 -# locals: (courses:, lesson:, resource_ids:)
-
 = render 'shared/subtitle',
          text: "#{lesson.new_record? ? 'Edit' : 'New'} #{lesson.type.titleize}"
 
@@ -7,9 +6,15 @@
             html: { id: "#{lesson.type.underscore}_form",
                     class: 'form',
                     data: { controller: 'fields' } } do |f|
-  -# need to evaluate it here so priority_fields are available for yield
-  - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
-                         f:, lesson:)
+  -# Add required types for courses
+  - courses_required_types = ['PhonicsClass', 'EnglishClass']
+
+  - if courses_required_types.include?(lesson.type)
+    - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
+                           f: f, lesson: lesson, courses: courses)
+  - else
+    - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
+                           f: f, lesson: lesson)
 
   = render 'shared/form_errors', resource: lesson
   = f.hidden_field :type, value: lesson.type

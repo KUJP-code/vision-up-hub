@@ -3,3 +3,6 @@ en:
     show:
       children: "Children"
       extra_emails: "Extra emails: %{emails}"
+      my_children: "My Children"
+      school_details: "School Details"
+      add_child: "Add Child"

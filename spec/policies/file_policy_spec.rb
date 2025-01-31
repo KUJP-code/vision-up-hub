@@ -106,7 +106,7 @@ RSpec.describe FilePolicy do
   context 'when Parent' do
     let(:user) { build(:user, :parent) }
 
-    it { is_expected.not_to authorize_action(:show) }
+    it { is_expected.to authorize_action(:show) }
     it { is_expected.not_to authorize_action(:destroy) }
 
     it 'scopes to no files' do

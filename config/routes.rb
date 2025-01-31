@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :exercises, only: %i[create index update]
       resources :evening_classes, only: %i[create index update]
       resources :files, only: %i[destroy index show]
+      resources :homework_resources, only: %i[destroy index]
       resources :kindy_phonics, only: %i[create index update]
       resources :lessons
       resources :lesson_calendars, only: %i[index]
@@ -39,7 +40,13 @@ Rails.application.routes.draw do
       resources :tutorials
       resources :tutorial_categories
       resources :user_searches, only: %i[index]
-      resources :students, except: %i[destroy]
+      resources :students, except: %i[destroy] do
+        member do
+          get :icon_chooser
+          get :homework_resources
+        end
+      end
+
       resources :student_searches, only: %i[index update]
       resources :support_requests do
         resources :support_messages, only: %i[create]
@@ -54,7 +61,9 @@ Rails.application.routes.draw do
       resources :organisations, except: %i[destroy] do
         resources :form_submissions, shallow: true
         resources :form_templates, shallow: true
-        resources :schools
+        resources :schools do
+          resources :ss_student_uploads, only: %i[create update]
+        end
 
         resources :student_uploads, only: %i[create new show]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
@@ -62,7 +71,8 @@ Rails.application.routes.draw do
         patch 'teacher_uploads', to: 'teacher_uploads#update', as: :teacher_uploads_update
         resources :parent_uploads, only: %i[create new show]
         patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
-
+        resources :ss_student_uploads, only: %i[create new show]
+        patch 'ss_student_uploads', to: 'ss_student_uploads#update', as: :ss_student_uploads_update
         resources :users, except: %i[destroy]
         resources :admins
         resources :org_admins

@@ -7,6 +7,7 @@
   = render 'shared/form_errors', resource: student
 
   - if student.school_id.nil? || current_user.organisation_id == student.organisation_id
+
     .form-group
       = f.label :name, t('.name')
       = f.text_field :name
@@ -15,63 +16,76 @@
       = f.label :en_name, t('.en_name')
       = f.text_field :en_name
 
-  .form-group
-    = f.label :student_id, t('.student_id')
-    = f.text_field :student_id
+    .form-group
+      = f.label :sex, t('.sex')
 
-  .form-group
-    = f.label :level, t('.level')
-    = f.select :level,
-               Student.levels.keys |
-                      .reject { |l| l == 'all_levels' } |
-                      .map { |l| [l.titleize, l] } |
+      = f.select :sex, Student.sexes.keys.map { | key | [key.humanize, key] }, class: "form-control"
 
-  .form-group
-    = f.label :school_id, t('.school')
-    = f.select :school_id,
-               schools.map { |name, id| [t("school_names.#{name}"), id] }
+    .form-group 
+      = f.label :status, t('.status')
 
-  .form-group 
-    = f.label :organisation_id, t('.organisation')
-    = f.select :organisation_id, organisations
+      = f.select :status, Student.statuses.keys.map { |key| [key.humanize, key] },
+                                                    { include_blank: true }, class: "form-control"
 
-  .form-group
-    = f.label :birthday, t('.birthday')
-    = f.date_field :birthday, required: true
 
-  .form-group
-    = f.label :start_date, t('.start_date')
-    = f.date_field :start_date
+  - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+    .form-group
+      = f.label :level, t('.level')
+      = f.select :level,
+                Student.levels.keys |
+                        .reject { |l| l == 'all_levels' } |
+                        .map { |l| [l.titleize, l] } |
+    .form-group
+      = f.label :comments, t('.comments')
+      = f.text_area :comments
 
-  .form-group
-    = f.label :quit_date, t('.quit_date')
-    = f.date_field :quit_date
 
-  .form-group
-    = f.label :comments, t('.comments')
-    = f.text_area :comments
+    .form-group
+      = f.label :school_id, t('.school')
+      = f.select :school_id,
+                schools.map { |name, id| [t(".school_names.#{name}"), id] }
 
-  %h3= t('.classes')
+    .form-group
+      = f.label :organisation_id, t('.organisation')
+      = f.select :organisation_id, organisations
 
-  .flex.flex-wrap.justify-between.gap-3
-    = f.fields_for :student_classes, student.student_classes do |sc_f|
-      = render('student_classes/fields',
-               collection: classes,
-               f: sc_f,
-               resource: student)
+    .form-group
+      = f.label :student_id, t('.student_id')
+      = f.text_field :student_id
+    
+    .form-group
+      = f.label :birthday, t('.birthday')
+      = f.date_field :birthday, required: true
 
-    %div{ 'data-fields-target' => 'target' }
+    .form-group
+      = f.label :start_date, t('.start_date')
+      = f.date_field :start_date
 
-  %template{ 'data-fields-target' => 'template' }
-    = f.fields_for :student_classes,
-                   student.student_classes.new,
-                   child_index: 'CHILD' do |sc_f|
-      = render('student_classes/fields',
-               collection: classes,
-               f: sc_f,
-               resource: student)
+    .form-group
+      = f.label :quit_date, t('.quit_date')
+      = f.date_field :quit_date
 
-  %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
-    = t('.add_class')
+    %h3= t('.classes')
+
+    .flex.flex-wrap.justify-between.gap-3
+      = f.fields_for :student_classes, student.student_classes do |sc_f|
+        = render('student_classes/fields',
+                collection: classes,
+                f: sc_f,
+                resource: student)
+
+      %div{ 'data-fields-target' => 'target' }
+
+    %template{ 'data-fields-target' => 'template' }
+      = f.fields_for :student_classes,
+                    student.student_classes.new,
+                    child_index: 'CHILD' do |sc_f|
+        = render('student_classes/fields',
+                collection: classes,
+                f: sc_f,
+                resource: student)
+
+    %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+      = t('.add_class')
 
   = f.submit class: 'btn btn-main'

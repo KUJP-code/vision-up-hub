@@ -1,0 +1,32 @@
+-# locals: (homework_resources:)
+
+%h2 this week
+- homework_resources.each do |r|
+
+  = link_to file_path(r.blob),
+            target: '_blank',
+            rel: 'noopener',
+            class: 'btn btn-main resource flex justify-around' do
+    %p= r.blob.filename
+    = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+-# locals: { results:, active_result: }
+%table.text-xs.md:text-base
+  %thead
+    %tr.text-white.font-bold.whitespace-nowrap
+      %th.thead.bg-secondary-50= t('.week')
+      %th.thead.bg-secondary-50= t('.date')
+      %th.thead.bg-secondary-50= t('.book_pages')
+  %tbody.text-center
+    - homework_resources.each do |r|
+      %tr
+        %td.p-2
+          = link_to file_path(r.blob),
+                    target: '_blank',
+                    rel: 'noopener',
+                    class: 'btn btn-main resource flex justify-around' do
+            %p= r.blob.filename
+            = content_tag(:span, '', class: 'sr-only', text: "Test from #{result.created_at.strftime('%b %Y')}")
+        %td.p-2= "#{result.read_percent}%"
+        %td.p-2= "#{result.write_percent}%"
+        %td.p-2= "#{result.listen_percent}%"
+        %td.p-2= "#{result.total_score}/#{result.test.max_score}"

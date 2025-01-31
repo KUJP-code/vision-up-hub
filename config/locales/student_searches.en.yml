@@ -1,6 +1,7 @@
 en:
   student_searches:
     form:
+      en_name: "English Name"
       birthday: "Birthday"
       child_level: "Child Level"
       child_name: "Child Name"

@@ -27,10 +27,14 @@ class LessonsController < ApplicationController
       @writers = User.where(type: %w[Admin Writer])
                      .pluck(:name, :id)
     end
-    return unless @lesson.type == 'PhonicsClass'
-
-    @phonics_resources = @lesson.phonics_resources
-                                .includes(:blob)
+    case @lesson.type
+    when 'PhonicsClass'
+      @phonics_resources = @lesson.phonics_resources
+                                  .includes(:blob)
+    when 'EnglishClass'
+      @homework_resources = @lesson.homework_resources
+                                   .includes(:blob)
+    end
   end
 
   def new
@@ -114,12 +118,25 @@ class LessonsController < ApplicationController
   def set_form_data
     @courses = policy_scope(Course).includes(plans: :organisation)
     @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
-    @phonics_resources = set_phonics_resources if @lesson.type == 'PhonicsClass'
+    case @lesson.type
+    when 'PhonicsClass'
+      @phonics_resources = set_phonics_resources
+    when 'EnglishClass'
+      @homework_resources = set_homework_resources
+    end
   end
 
   def set_phonics_resources
     CategoryResource
       .phonics_class
+      .joins(resource_attachment: :blob)
+      .pluck('active_storage_blobs.filename',
+             'active_storage_attachments.blob_id')
+  end
+
+  def set_homework_resources
+    CategoryResource
+      .english_class
       .joins(resource_attachment: :blob)
       .pluck('active_storage_blobs.filename',
              'active_storage_attachments.blob_id')
