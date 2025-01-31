@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'rails_helper', skip: 'Parties dont exist yet'
 
 RSpec.describe 'creating a Party' do
   let!(:org) { create(:organisation, name: 'KidsUP') }

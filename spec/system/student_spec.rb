@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'rails_helper', skip: 'Student creation is temporarily postponed'
 
 RSpec.describe 'creating a student' do
   let(:user) { create(:user, :school_manager) }

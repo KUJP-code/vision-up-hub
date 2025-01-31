@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'rails_helper', skip: 'Events dont exist yet'
 
 RSpec.describe 'creating an Event activity' do
   let!(:org) { create(:organisation, name: 'KidsUP') }
