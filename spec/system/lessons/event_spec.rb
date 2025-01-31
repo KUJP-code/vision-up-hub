@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper', skip: 'Events dont exist yet'
+require 'rails_helper'
 
-RSpec.describe 'creating an Event activity' do
+RSpec.describe 'creating an Event activity', skip: 'Events dont exist yet' do
   let!(:org) { create(:organisation, name: 'KidsUP') }
   let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
 

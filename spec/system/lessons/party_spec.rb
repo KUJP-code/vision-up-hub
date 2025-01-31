@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper', skip: 'Parties dont exist yet'
+require 'rails_helper'
 
-RSpec.describe 'creating a Party' do
+RSpec.describe 'creating a Party', skip: 'Parties dont exist yet' do
   let!(:org) { create(:organisation, name: 'KidsUP') }
   let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
 
