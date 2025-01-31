@@ -4,7 +4,6 @@
     %ul.font-bold.flex.justify-center.gap-12.w-full
       %li.flex.flex-col.items-center
         - base_name = @student.level.split('_').first
-
         = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 96, height: 96)
         .text
           = base_name.upcase
@@ -13,26 +12,11 @@
         .text
           = redact(@student, @student.name)
 
-
   %table.text.md:text-base
     %thead
       %tr.text-white.font-bold
         %th.thead.thead-s.bg-secondary-50= t('.date')
         %th.thead.thead-e.bg-secondary-50= t('.book_pages')
     %tbody.text-center
-      - @homework_resources&.each do |r|
-        %tr
-          %td
-            - resource_date = r.date_for(@student.organisation)
-            - monday = resource_date.beginning_of_week(:monday)
-            - friday = monday + 4.days
-            = "#{monday.strftime('%b-%d')} - #{friday.strftime('%b-%d')}"
 
-          %td
-            .p-2
-              = link_to file_path(r.blob),
-                        target: '_blank',
-                        rel: 'noopener',
-                        class: 'btn btn-secondary resource flex justify-center' do
-                %p= t('.open')
-                = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+      = render_homework_rows(@homework_resources)
