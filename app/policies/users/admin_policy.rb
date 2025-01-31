@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AdminPolicy < ApplicationPolicy
+  SPECIAL_ADMIN_ID = 28
   def show?
     user.is?('Admin')
   end
@@ -10,7 +11,7 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def edit?
-    self?
+    self? || user.id == SPECIAL_ADMIN_ID
   end
 
   def create?
@@ -22,7 +23,7 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def destroy?
-    self?
+    self? || user.id == SPECIAL_ADMIN_ID
   end
 
   def change_password?
