@@ -1,17 +1,17 @@
-ja:
+en:
   school_managers:
     show:
-      students: "生徒"
-      parents: "保護者"
-      todays_lessons: "今日の授業"
-      tests: "試験"
-      events: "イベント"
-      curriculum_calendar: "カリキュラムカレンダー"
-      support: "サポート"
-      materials: "教材"
-      customer_information: "生徒・保護者情報"
-      support_and_settings: "サポートと設定"
-      curriculum: "カリキュラム"
+      students: "Students"
+      parents: "Parents"
+      todays_lessons: "Today's Lessons"
+      tests: "Tests"
+      events: "Events"
+      curriculum_calendar: "Calendar"
+      support: "Support"
+      materials: "Materials"
+      customer_information: "Customer Information"
+      support_and_settings: "Support"
+      curriculum: "Curriculum"
 
     nav:
-      request_support: "サポート依頼"
+      request_support: "Support"
