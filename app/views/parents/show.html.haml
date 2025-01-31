@@ -16,13 +16,14 @@
       %h2.w-fit.relative.z-10.bg-neutral-light.pe-3.md:p-3.md:ml-6.font-bold.text-2xl
         = t('.my_children')
 
-    .w-full.flex.flex-row.md:flex-row.gap-4.md:gap-6.text-left.md:text-center
+  
+    .w-full.flex.flex-col.md:flex-row.gap-4.md:gap-6.text-left.md:text-center
       - @children.each do |child|
         = link_to student_path(child), class: 'flex flex-col items-center gap-2' do
           = image_tag(get_icon(child), width: '96px', height: '96px')
           .btn-secondary.rounded-xl.p-0.5.px-4
             = child.name
-      .full
+      .full.flex.flex-col.items-center.gap-2
         %button{ 
           class: 'flex flex-col items-center gap-2',
           data: {

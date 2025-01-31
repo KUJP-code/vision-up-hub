@@ -4,7 +4,6 @@ class HomeworkResourcesController < ApplicationController
   after_action :verify_authorized
 
   def index
-    @time_period = params[:period]
   end
 
   def destroy

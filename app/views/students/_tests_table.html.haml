@@ -1,7 +1,4 @@
--# app/views/students/_tests_table.html.haml
-
 -# locals: { results:, active_result: }
-
 %table.text-xs.md:text-base
   %thead
     %tr.text-white.font-bold.whitespace-nowrap
@@ -12,7 +9,7 @@
       %th.thead.thead-e.bg-secondary-50= t('.score')
   %tbody.text-center
     - results.each do |result|
-      %tr{ class: "border-b-2 border-secondary-50" }
+      %tr
         %td.p-2
           = link_to student_path(@student.id, test_id: result.test_id),
                     class: "selector-link flex items-center justify-center h-6 w-6 rounded-full border  #{ result == active_result ? 'bg-secondary' : 'bg-white' }",

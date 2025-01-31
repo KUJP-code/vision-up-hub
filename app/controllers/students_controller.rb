@@ -16,7 +16,6 @@ class StudentsController < ApplicationController
   def show
     @classes = @student.classes
     @teachers = @student.teachers
-    set_homework_resources
     @potential_classes =
       @student.school
               .classes
@@ -86,7 +85,19 @@ class StudentsController < ApplicationController
     end
   end
 
+  def homework_resources
+    @student = authorize Student.find(params[:id])
+    set_homework_resources
+  end
+
   private
+
+  def resource_date(resource)
+    plan = Plan.find_by(course_id: resource.course_id, organisation_id: org.id)
+    return unless plan
+
+    plan.start + (resource.week - 1).weeks
+  end
 
   def set_homework_resources
     # TODO: this is super inefficient, i need to nest it
@@ -101,12 +112,19 @@ class StudentsController < ApplicationController
         Lesson.land.pluck(:id)
       elsif @student.galaxy?
         Lesson.galaxy.pluck(:id)
-
       end
 
-    @homework_resources = HomeworkResource
-                          .where(course_id: course_ids)
-                          .where(english_class_id: lesson_ids)
+    all_resources = HomeworkResource
+                    .where(course_id: course_ids)
+                    .where(english_class_id: lesson_ids)
+
+    @homework_resources = all_resources.select do |res|
+      plan = plans.detect { |p| p.course_id == res.course_id }
+      next false unless plan
+
+      resource_date = plan.start + (res.week - 1).weeks
+      p resource_date
+    end
   end
 
   def student_params

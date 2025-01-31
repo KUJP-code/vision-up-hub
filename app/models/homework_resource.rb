@@ -8,4 +8,11 @@ class HomeworkResource < ApplicationRecord
   validates :week, presence: true
   validates :week, numericality: { only_integer: true }
   validates :week, comparison: { greater_than: 0, less_than: 53 }
+
+  def date_for(org)
+    plan = org.plans.find_by(course_id:)
+    return unless plan
+
+    plan.start + (week - 1).weeks
+  end
 end

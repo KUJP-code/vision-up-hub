@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       resources :students, except: %i[destroy] do
         member do
           get :icon_chooser
+          get :homework_resources
         end
       end
 

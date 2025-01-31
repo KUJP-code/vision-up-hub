@@ -15,7 +15,7 @@
     %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
         %button{
-          class: 'absolute -top-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10',
+          class: 'absolute bg-neutral-light -top-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10',
           data: { 
             action: 'dialog#open',
             controller: 'dialog',
@@ -45,7 +45,7 @@
                     potential_classes: @potential_classes,
                     teachers: @teachers
 
-            = link_to t('.homework'), homework_resources_path, class: 'btn btn-secondary w-4/6'
+            = link_to t('.homework'), homework_resources_student_path(@student), class: 'btn btn-secondary w-4/6'
 
       .card.shadow-xl.py-8.rounded-t-none.relative.bg-white
         %div.absolute.top-0.left-0.w-full.h-12.-translate-y-6
