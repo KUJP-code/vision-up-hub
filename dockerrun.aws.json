@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.4.0-parents-sms"
+    "Name": "kidsup/materials:1.4.1-disable-form"
   },
   "Ports": [
     {

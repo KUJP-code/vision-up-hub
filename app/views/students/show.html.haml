@@ -30,12 +30,12 @@
             = image_tag get_icon(@student), width: '96px', height: '96px', class: 'w-full h-full max-w-full'
             = inline_svg_tag 'id/id-edit.svg', width: '96px', height: '96px', class: 'absolute inset-0'
         
-        - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
-          %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
-            %h3.w-full.text-center.font-bold.text-secondary.text-xl
-              = t('.add_parent')
-            = render 'user_searches/form', orgs: @orgs, student_id: @student.id
-            = turbo_frame_tag 'user_table'
+        -# - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
+        -#   %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
+        -#     %h3.w-full.text-center.font-bold.text-secondary.text-xl
+        -#       = t('.add_parent')
+        -#     = render 'user_searches/form', orgs: @orgs, student_id: @student.id
+        -#     = turbo_frame_tag 'user_table'
       
         %section.flex.flex-col.items-center.mt-5#student
           %div{ class: 'flex flex-col justify-around gap-2 items-center' }
