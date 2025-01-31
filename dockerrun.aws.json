@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.3.4.1-branding"
+    "Name": "kidsup/materials:1.4.0-parents-sms"
   },
   "Ports": [
     {
