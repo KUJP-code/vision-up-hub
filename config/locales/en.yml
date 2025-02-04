@@ -21,7 +21,7 @@ en:
     request_support: "Request Support"
     sign_out: "Sign Out"
   not_approved: "Not Approved"
-  not_in_school: "You can only access this site from your school. Please contact Leroy if you're receiving this message there."
+  not_in_school: "You can only access this site from your school."
   number:
     currency:
       format:

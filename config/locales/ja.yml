@@ -137,7 +137,7 @@ ja:
       submit: 保存する
       update: 更新する
   not_approved: "未承認"
-  not_in_school: "このサイトには自スクールからのみアクセスできます。このメッセージを受け取った場合は、Leroy係長に連絡してください。"
+  not_in_school: "このサイトには自スクールからのみアクセスできます。"
   number:
     currency:
       format:
