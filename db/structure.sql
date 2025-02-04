@@ -1281,7 +1281,7 @@ CREATE TABLE public.level_changes (
     id bigint NOT NULL,
     student_id bigint NOT NULL,
     test_result_id bigint,
-    new_level character varying NOT NULL,
+    new_level integer NOT NULL,
     date_changed date NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -4133,6 +4133,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250204063950'),
 ('20250131062822'),
 ('20250124054108'),
 ('20250124034145'),

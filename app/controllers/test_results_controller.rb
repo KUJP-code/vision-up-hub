@@ -17,6 +17,7 @@ class TestResultsController < ApplicationController
     @test_result = authorize TestResult.new(test_result_params)
 
     if @test_result.save
+      @test_result.student.track_manual_level_change(@test_result.id) if @test_result.new_level_changed?
       notify_parent(@test_result.student)
       redirect_to school_org_test_path,
                   notice: t('create_success')
@@ -28,8 +29,8 @@ class TestResultsController < ApplicationController
 
   def update
     if @test_result.update(test_result_params)
-      redirect_to school_org_test_path,
-                  notice: t('update_success')
+      @test_result.student.track_manual_level_change(@test_result.id) if @test_result.new_level_changed?
+      redirect_to school_org_test_path, notice: t('update_success')
     else
       flash.now[:alert] = @test_result.errors.full_messages.to_sentence
       set_index_vars

@@ -29,6 +29,7 @@ class Student < ApplicationRecord
   enum sex: { undefined: 0, male: 1, female: 2 }
   enum status: { active: 0, on_break: 1, inactive: 2 }
   before_validation :generate_student_id
+  after_update :track_manual_level_change, if: :saved_change_to_level?
 
   has_logidze
   validates :birthday, :status, :level, :name, :sex, presence: true
@@ -50,6 +51,7 @@ class Student < ApplicationRecord
 
   has_many :test_results, dependent: :destroy
   has_many :tests, through: :test_results
+  has_many :level_changes, dependent: :destroy
 
   scope :current, lambda {
                     where('quit_date > ?', Time.zone.today)
@@ -95,6 +97,28 @@ class Student < ApplicationRecord
 
   private
 
+  private
+
+  def track_manual_level_change(test_result = nil)
+    previous_level, new_level = saved_change_to_level
+    return if previous_level == new_level
+
+    existing_level_change = LevelChange.find_by(
+      student_id: id,
+      new_level:,
+      date_changed: Time.zone.today
+    )
+
+    return if existing_level_change
+
+    LevelChange.create!(
+      student_id: id,
+      test_result_id: test_result&.id,
+      new_level:,
+      date_changed: Time.zone.today
+    )
+  end
+
   def generate_student_id
     return unless student_id.nil? || student_id.blank?
 
@@ -104,6 +128,6 @@ class Student < ApplicationRecord
 
   # fetch the mapped order based on test results
   def current_level_order
-    test_results.order(created_at: :desc).pluck(:new_level).first || 0
+    test_results.order(created_at: :desc).pick(:new_level) || 0
   end
 end
