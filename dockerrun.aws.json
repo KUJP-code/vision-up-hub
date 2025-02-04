@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.4.1-disable-form"
+    "Name": "kidsup/materials:1.4.2-multiple-ips"
   },
   "Ports": [
     {
