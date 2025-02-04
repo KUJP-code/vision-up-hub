@@ -1,7 +1,8 @@
 -# locals: ()
 
 %nav.fixed.top-0.w-full.flex.items-center.gap-3.bg-secondary.h-16.text-white.font-bold.px-3.z-10
-  = link_to root_path do
+  -# TODO: have method take from params also since current_user.presence doesnt exist
+  -# = link_to root_path do
     %image{ height: '64px', width: '120px', src: org_favicon(current_user.presence) }
   .flex-grow
   = locale_toggle(classes: 'fill-white')
