@@ -25,8 +25,21 @@ class School < ApplicationRecord
   private
 
   def valid_ip?
-    return true if ip.blank? || ip == '*' || Resolv::AddressRegex.match?(ip)
+    return true if ip.blank? || ip == '*'
 
-    errors.add(:ip, " #{ip} is not a valid IP address")
+    ips = ip.split(',').map(&:strip)
+    invalid_ips = ips.grep_v(Resolv::AddressRegex)
+    if invalid_ips.any?
+      message = if invalid_ips.size == 1
+                  " #{invalid_ips.first} is not a valid IP address"
+                else
+                  "The following IP address(es) are invalid: #{invalid_ips.join(', ')}"
+                end
+
+      errors.add(:ip, message)
+      return false
+    end
+
+    true
   end
 end
