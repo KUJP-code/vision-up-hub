@@ -1,7 +1,7 @@
 = content_for :head do
   = stylesheet_link_tag 'print_report_card', media: 'print'
-
-= render 'shared/subtitle', text: redact(@student, @student.name)
+.print:hidden
+  = render 'shared/subtitle', text: redact(@student, @student.name)
 
 %dialog#icon-chooser-modal.resources-dialog
   .body
@@ -11,6 +11,8 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
+  .flex.justify-center
+    = render 'shared/print_button', text: 'Print Report'
   .flex.flex-col.md:flex-row.p-12.px-2.md:p-16.bg-neutral-light.gap-6
     %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }

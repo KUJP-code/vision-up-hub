@@ -46,7 +46,7 @@ module ApplicationHelper
   def asset_for_domain(type)
     domain_assets = {
       'hub.kids-up.app' => { nav_logo: 'org_1.svg', favicon: 'favicon.svg', landing: 'landing_logo.svg',
-                             splash: 'splash.jpg' }
+                             splash: 'ku-splash.jpg' }
     }
     default_assets = { nav_logo: 'org_1_vision.svg', favicon: 'favicon_vision.svg', landing: 'landing_logo_vision.svg',
                        splash: 'splash.jpg' }

@@ -1,0 +1,13 @@
+- if flash[:notice]
+  .alert.alert-success= flash[:notice]
+- if flash[:alert]
+  .alert.alert-danger= flash[:alert]
+
+%h1 Upload Historical Level Changes
+
+= form_with url: level_changes_path, local: true, multipart: true do |form|
+  .form-group
+    = form.label :file, 'Select CSV File', class: 'form-label'
+    = form.file_field :file, accept: '.csv', class: 'form-control'
+  .form-group.mt-3
+    = form.submit 'Upload', class: 'btn btn-primary'

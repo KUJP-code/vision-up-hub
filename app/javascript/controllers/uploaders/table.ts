@@ -1,4 +1,4 @@
-import type { parent, student, teacher, ss_student } from "./declarations.d.ts";
+import type { parent, student, teacher } from "./declarations.d.ts";
 import type { status } from "./declarations.d.ts";
 
 export const invalidClasses = [
@@ -28,10 +28,10 @@ export function addRow({
   uploadType,
   status = "Pending",
 }: {
-  csvRecord: student | parent | teacher | ss_student;
+  csvRecord: student | parent | teacher;
   index: number;
   headers: string[];
-  uploadType: "student" | "parent" | "teacher" | "ss_student";
+  uploadType: "student" | "parent" | "teacher";
   status?: status;
 }) {
   const table = document.querySelector(`#${uploadType}-table`);
@@ -59,7 +59,7 @@ export function addRow({
 }
 
 export function attributeCellHTML(
-  record: student | parent | teacher | ss_student,
+  record: student | parent | teacher,
   attribute: string,
   headers: string[]
 ) {

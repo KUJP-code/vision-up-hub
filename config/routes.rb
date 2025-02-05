@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       resources :lesson_searches, only: %i[index]
       resources :lesson_uses, only: %i[index]
       resources :lesson_versions, only: %i[show update]
+      resources :level_changes, only: %i[new create]
       resources :missing_lessons, only: %i[index]
       resources :monthly_materials, only: %i[index]
       resources :notifications, except: %i[edit]
