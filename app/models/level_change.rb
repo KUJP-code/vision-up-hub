@@ -4,7 +4,7 @@ class LevelChange < ApplicationRecord
   include Levels
 
   enum :new_level, LEVELS, suffix: true
-  enum :old_level, LEVELS, suffix: true
+  enum :prev_level, LEVELS, suffix: true
   before_validation :prevent_evening
   belongs_to :student
   belongs_to :test_result, optional: true
