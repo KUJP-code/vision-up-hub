@@ -16,23 +16,9 @@ export interface student {
   start_date: string;
   quit_date: string;
   birthday: string;
-  organisation_id: string;
-}
-
-export interface ss_student {
-  name: string;
-  en_name: string;
-  student_id: string;
-  level: string;
-  quit_date: string;
-  birthday: string;
+  sex: string;
   status: string;
-  land_1_date: string;
-  land_2_date: string;
-  sky_1_date: string;
-  sky_2_date: string;
-  galaxy_1_date: string;
-  galaxy_2_date: string;
+  organisation_id: string;
 }
 
 export interface teacher {

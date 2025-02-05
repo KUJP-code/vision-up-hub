@@ -61,9 +61,7 @@ Rails.application.routes.draw do
       resources :organisations, except: %i[destroy] do
         resources :form_submissions, shallow: true
         resources :form_templates, shallow: true
-        resources :schools do
-          resources :ss_student_uploads, only: %i[create update]
-        end
+        resources :schools
 
         resources :student_uploads, only: %i[create new show]
         patch 'student_uploads', to: 'student_uploads#update', as: :student_uploads_update
@@ -71,8 +69,6 @@ Rails.application.routes.draw do
         patch 'teacher_uploads', to: 'teacher_uploads#update', as: :teacher_uploads_update
         resources :parent_uploads, only: %i[create new show]
         patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
-        resources :ss_student_uploads, only: %i[create new show]
-        patch 'ss_student_uploads', to: 'ss_student_uploads#update', as: :ss_student_uploads_update
         resources :users, except: %i[destroy]
         resources :admins
         resources :org_admins

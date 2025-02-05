@@ -5,7 +5,7 @@ class Student < ApplicationRecord
   SS_CSV_HEADERS = %w[school_id name en_name student_id level quit_date birthday
                       status land_1_date land_2_date sky_1_date sky_2_date galaxy_1_date galaxy_2_date].freeze
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
-                   birthday start_date quit_date organisation_id].freeze
+                   birthday start_date quit_date sex status organisation_id].freeze
   ICON_CHOICES = %w[
     id-art id-boy id-cat id-dino id-dog id-girl id-mic id-music id-robot id-soccer id-princess id-unicorn
   ].freeze
@@ -97,8 +97,6 @@ class Student < ApplicationRecord
 
   private
 
-  private
-
   def track_manual_level_change(test_result = nil)
     previous_level, new_level = saved_change_to_level
     return if previous_level == new_level
@@ -115,6 +113,7 @@ class Student < ApplicationRecord
       student_id: id,
       test_result_id: test_result&.id,
       new_level:,
+      prev_level: previous_level,
       date_changed: Time.zone.today
     )
   end

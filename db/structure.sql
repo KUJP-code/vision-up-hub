@@ -1284,7 +1284,8 @@ CREATE TABLE public.level_changes (
     new_level integer NOT NULL,
     date_changed date NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    prev_level integer
 );
 
 
@@ -4133,6 +4134,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250205013816'),
 ('20250204063950'),
 ('20250131062822'),
 ('20250124054108'),

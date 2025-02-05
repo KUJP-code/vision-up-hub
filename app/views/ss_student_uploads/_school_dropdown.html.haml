@@ -1,6 +1,0 @@
-%div.flex.flex-col.gap-2
-  %label{ for: 'student_upload_school_id' }= t('.select_school')
-  = f.select :school_id,
-             options_from_collection_for_select(schools, :id, :name),
-             { include_blank: t('.select_school_placeholder') },
-             { class: 'form-select' }

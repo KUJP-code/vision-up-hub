@@ -1,5 +1,6 @@
 import { patch, post } from "@rails/request.js";
 import type { student } from "../declarations.d.ts";
+import { stringify } from "postcss";
 
 export async function createStudent(
   student: student,
@@ -19,7 +20,9 @@ export async function createStudent(
         start_date: student.start_date,
         quit_date: student.quit_date,
         birthday: student.birthday,
-        organisation_id: student.organisation_id,
+        sex: student.sex,
+        status: student.status,
+        organisation_id: orgId,
       },
     },
     responseKind: "turbo-stream",
@@ -44,6 +47,8 @@ export async function updateStudent(
         start_date: student.start_date,
         quit_date: student.quit_date,
         birthday: student.birthday,
+        sex: student.sex,
+        status: student.status,
       },
     },
     responseKind: "turbo-stream",
