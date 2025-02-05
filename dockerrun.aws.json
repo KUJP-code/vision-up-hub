@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.4.2-multiple-ips"
+    "Name": "kidsup/materials:1.4.3-new-splash"
   },
   "Ports": [
     {
