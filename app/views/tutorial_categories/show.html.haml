@@ -1,8 +1,6 @@
 = turbo_frame_tag 'tutorials-frame' do
   .dialog-content
     %section.h-12.flex.items-center.gap-3
-      .h-full.aspect-square
-        = sanitized_svg(@tutorial_category.svg)
       %h1.text-3xl= @tutorial_category.title
       - if current_user.is?('Admin')
         .grow

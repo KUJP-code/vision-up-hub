@@ -4,6 +4,21 @@
     margin: 0;
     padding: 0;
   }
+  @media print {
+    /* Not ok but its a white box to cover the legend in the spider */
+    .chart-container {
+      position: relative;
+    }
+    .white-overlay {
+      position: absolute;
+      width: 100px;
+      height: 25px;
+      background: white;
+      z-index: 1000;
+      top: 0px;
+      left: 190px;
+    }
+  }
 
   body {
     width: 210mm;

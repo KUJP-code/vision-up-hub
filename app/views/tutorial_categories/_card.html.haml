@@ -1,13 +1,15 @@
 -# locals: (category:)
 
-%button{ class: 'card flex flex-col items-center p-2 gap-2',
-         data: { action: 'dialog#open',
-                 controller: 'dialog',
-                 'dialog-dialog-value': 'tutorial-resources',
-                 'dialog-frame-value': 'tutorials-frame',
-                 'dialog-src-value': tutorial_category_path(category) },
-         type: 'button' }
-  = sanitized_svg(category.svg)
-  .grow
-  %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-  %h3.text-center.truncate= category.title
+= turbo_frame_tag 'tutorials-frame' do
+  %button{ class: 'card flex flex-col items-center p-2 gap-2',
+           data: { action: 'dialog#open',
+                   controller: 'dialog',
+                   'dialog-dialog-value': 'tutorial-resources',
+                   'dialog-frame-value': 'tutorials-frame',
+                   'dialog-src-value': tutorial_category_path(category) },
+           type: 'button' }
+    %div.h-50px.flex.items-center.justify-center
+      = inline_svg_tag('tutorials.svg', class: 'w-1/2 h-1/2 fill-current #645880')
+    .grow
+    %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+    %h3.text-center.truncate= category.title

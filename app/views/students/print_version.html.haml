@@ -2,7 +2,7 @@
   = stylesheet_link_tag 'print_report_card', media: 'print'
 .print:hidden
   = render 'shared/subtitle', text: redact(@student, @student.name)
-
+-# If anone reads this I am not proud of it and it's just to prototype the printables
 %main
 
   .flex#header.border-b-4.border-secondary
@@ -25,62 +25,62 @@
       .text-sm 
         = 'Score'
       .text-4xl.mt-2
-        = @active_result&.total_score
+        = @active_result&.total_score_total
       
-  .flex.justify-center
+  .flex.justify-center.gap-6
     = render 'shared/print_button', text: 'Print Report'
-    .print:hidden
+    .pt-6.print:hidden
+      .h3.font-bold Please select a test to use.
       = render 'students/tests_table', results: @results, active_result: @active_result
 
   .flex.flex-col.w-full.p-12.bg-neutral-light.gap-6.max-w-xl.mx-auto
-    .h3.text-center.font-bold Skill Breakdown
+    .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
             
     %div{ class: "skill-breakdown w-full max-w-lg mx-auto" }
       %table.table-auto.w-full
         %tbody
-          %tr.border-b.border-secondary
+
+          %tr.no-bg.border-b.border-secondary
             %td.flex.items-center.p-2
-              = inline_svg_tag('events.svg', class: 'w-6 h-6 mr-2', title: 'Listening')
+              = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')
               Listening
             %td.text-center.p-2
-              = @active_result&.listening_total
+              = "#{@active_result&.listening&.sum} / #{@active_result&.listening_total}"
             %td.text-right.p-2
               = "#{@active_result&.listen_percent}%"
 
           %tr.no-bg.border-b.border-secondary
             %td.flex.items-center.p-2
-              = inline_svg_tag('lesson_types/reading.svg', class: 'w-6 h-6 mr-2', title: 'Reading')
+              = inline_svg_tag('reading_icon.svg', class: 'w-10 h-10 mr-2', title: 'Reading')
               Reading
             %td.text-center.p-2
-              = @active_result&.reading_total
+              = "#{@active_result&.reading&.sum} / #{@active_result&.reading_total}"
             %td.text-right.p-2
               = "#{@active_result&.read_percent}%"
 
-          %tr
+          %tr.no-bg
             %td.flex.items-center.p-2
-              = inline_svg_tag('events.svg', class: 'w-6 h-6 mr-2', title: 'Writing')
+              = inline_svg_tag('writing_icon.svg', class: 'w-10 h-10 mr-2', title: 'Writing')
               Writing
             %td.text-center.p-2
-              = @active_result&.writing_total
+              = "#{@active_result&.writing&.sum} / #{@active_result&.writing_total}"
             %td.text-right.p-2
               = "#{@active_result&.write_percent}%"
-
-          %tr.border-2.border-secondary.rounded-lg.bg-white
-            %td.flex.items-center.p-4.rounded-l-lg
+          %tr.no-bg.border-2.border-secondary.rounded-l-lg
+            %td.flex.items-center.p-4
               %span.font-bold TOTAL SCORE
             %td.text-center.p-4.font-bold
-              = @active_result&.total_score
-            %td.text-right.p-4.font-bold.rounded-r-lg
-              = "#{@active_result&.total_percent}%"
+              = @active_result&.total_score_total
+            %td.text-right.p-4.font-bold
+              = "#{@active_result&.test_print_percent}%"
 
-
-
-    .flex.flex-col.mt-5
+    .chart-container.flex.flex-col.mt-5
       = render 'students/test_details',
                 data: @data,
                 results: @results
+      .white-overlay
 
   %header#print-footer.flex.justify-start.relative.text-center
     %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
     .w-fit.relative.z-1000.bg-neutral-light.pe-3
-      = inline_svg_tag('landing_logo.svg', class: 'relative z-20 w-40 h-40', id: 'custom-landing-logo')
+      = inline_svg_tag('landing_logo.svg', class: 'relative z-20 w-40 h-20', id: 'custom-landing-logo')

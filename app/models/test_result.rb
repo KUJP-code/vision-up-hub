@@ -51,24 +51,36 @@ class TestResult < ApplicationRecord
 
   def reading_total
     total = reading&.sum || 0
-    max = read_percent&.nonzero? ? (total * 100.0 / read_percent).round : 0
-    "#{total}/#{max}"
+    read_percent&.nonzero? ? (total * 100.0 / read_percent).round : 0
   end
 
   def writing_total
     total = writing&.sum || 0
-    max = write_percent&.nonzero? ? (total * 100.0 / write_percent).round : 0
-    "#{total}/#{max}"
+    write_percent&.nonzero? ? (total * 100.0 / write_percent).round : 0
   end
 
   def listening_total
     total = listening&.sum || 0
-    max = listen_percent&.nonzero? ? (total * 100.0 / listen_percent).round : 0
-    "#{total}/#{max}"
+    listen_percent&.nonzero? ? (total * 100.0 / listen_percent).round : 0
   end
 
   def total_score
     answers.values.flatten.sum + basics
+  end
+
+  def total_score_total
+    max = writing_total + reading_total + listening_total
+    total = (writing&.sum || 0) + (reading&.sum || 0) + (listening&.sum || 0)
+    "#{total} / #{max}"
+  end
+
+  def test_print_percent
+    max = writing_total + reading_total + listening_total
+    total = (writing&.sum || 0) + (reading&.sum || 0) + (listening&.sum || 0)
+    return 0 if max.zero?
+
+    percent = (total.to_f / max) * 100
+    percent.round(0)
   end
 
   private
