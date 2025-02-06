@@ -45,6 +45,7 @@ Rails.application.routes.draw do
         member do
           get :icon_chooser
           get :homework_resources
+          get :print_version
         end
       end
 

@@ -10,12 +10,15 @@
   %tbody.text-center
     - results.each do |result|
       %tr
+        - current_params = request.query_parameters.merge(test_id: result.test_id)
+        - link_url = url_for(params: current_params.merge(only_path: true))
         %td.p-2
-          = link_to student_path(@student.id, test_id: result.test_id),
-                    class: "selector-link flex items-center justify-center h-6 w-6 rounded-full border  #{ result == active_result ? 'bg-secondary' : 'bg-white' }",
+          = link_to link_url,
+                    class: "selector-link flex items-center justify-center h-6 w-6 rounded-full border #{ result == active_result ? 'bg-secondary' : 'bg-white' }",
                     title: result.created_at.strftime('%b %Y'),
                     aria: { label: "Select test from #{result.created_at.strftime('%b %Y')}" } do
             = content_tag(:span, '', class: 'sr-only', text: "Test from #{result.created_at.strftime('%b %Y')}")
+
         %td.p-2= "#{result.read_percent}%"
         %td.p-2= "#{result.write_percent}%"
         %td.p-2= "#{result.listen_percent}%"

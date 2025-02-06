@@ -37,6 +37,10 @@ class StudentPolicy < ApplicationPolicy
     user.is?('Admin') || authorized_student_org_user? || parent?
   end
 
+  def print_version?
+    user.is?('Admin') || authorized_student_org_user? || parent?
+  end
+
   class Scope < Scope
     def resolve
       case user.type

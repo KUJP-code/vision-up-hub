@@ -106,6 +106,9 @@
   table tr:nth-child(2n):not(tr.thead-b) {
     @apply bg-neutral-dark;
   }
+  tr.no-bg {
+    @apply bg-transparent !important;
+  }
 
   .vertical-text {
     writing-mode: vertical-lr;

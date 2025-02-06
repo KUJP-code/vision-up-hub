@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StudentsController < ApplicationController
-  before_action :set_student, only: %i[show edit update destroy]
+  before_action :set_student, only: %i[show edit update destroy print_version]
   before_action :set_form_data, only: %i[edit show]
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -90,6 +90,12 @@ class StudentsController < ApplicationController
     set_homework_resources
   end
 
+  def print_version
+    @student = Student.find(params[:id])
+    set_results
+    @levels = Student.display_levels
+  end
+
   private
 
   def resource_date(resource)
@@ -141,14 +147,8 @@ class StudentsController < ApplicationController
     @data = radar_data
   end
 
-  def set_results
-    @results = @student.test_results.order(created_at: :desc).includes(:test)
-    @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
-    @data = radar_data
-  end
-
   def radar_data
-    radar_colors = ['255, 90, 221', '221, 50, 50 ', '170, 218, 120', '178, 170, 191'].cycle
+    radar_colors = ['49, 44, 180', '221, 50, 50 ', '170, 218, 120', '178, 170, 191'].cycle
 
     {
       labels: %w[Reading Writing Listening],

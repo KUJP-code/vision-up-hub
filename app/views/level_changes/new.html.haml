@@ -7,7 +7,7 @@
 
 = form_with url: level_changes_path, local: true, multipart: true do |form|
   .form-group
-    = form.label :file, 'Select CSV File', class: 'form-label'
-    = form.file_field :file, accept: '.csv', class: 'form-control'
+    = form.label :csv_file, 'Select CSV File', class: 'form-label'
+    = form.file_field :csv_file, accept: '.csv', class: 'form-control'
   .form-group.mt-3
     = form.submit 'Upload', class: 'btn btn-primary'

@@ -11,17 +11,16 @@
     margin: 0;
     padding: 0;
   }
-
+  main {
+    width: 90%;
+  }
   #student {
     flex-direction: row;
     align-items: center;
     padding: 0;
   }
-
-  section {
-    width: 100%;
-    padding: 0;
-    margin: 0;
+  ::-webkit-scrollbar {
+    display: none;
   }
 
   .btn,
@@ -29,42 +28,33 @@
     display: none;
   }
 
-  #student_details {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-items: space-between;
-    margin: 0;
-
-    ul {
-      flex-basis: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin-top: -0.25cm;
-    }
-
-    li {
-      flex-grow: 1;
-    }
-
-    select,
-    .classes,
-    .teachers {
-      display: none;
-    }
+  select,
+  .classes,
+  .teachers {
+    display: none;
   }
+}
 
-  table {
-    margin-top: -1cm;
-  }
+table {
+  margin-top: -1cm;
+}
 
-  #test_details {
-    position: absolute;
-    top: 8cm;
-    width: 150mm;
-    height: 150mm;
-    margin: 0;
-    padding: 0;
-  }
+#test_details {
+  position: absolute;
+  top: 8cm;
+  width: 150mm;
+  height: 150mm;
+  margin: 0;
+  padding: 0;
+}
+#print-footer {
+  position: fixed;
+  bottom: 10px;
+  width: 82%;
+}
+
+#custom-landing-logo .cls-3,
+#custom-landing-logo .cls-4,
+#custom-landing-logo .cls-5 {
+  fill: #645880 !important;
 }
