@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_action :check_ip
 
   def after_sign_in_path_for(resource)
-    session[:login_date] = Date.current
+    session[:login_date] = Date.current.ajd.to_i
     super
   end
 
@@ -49,7 +49,9 @@ class ApplicationController < ActionController::Base
   end
 
   def reset_daily_login
-    return unless current_user && session[:login_date] && session[:login_date] < Date.current
+    return unless current_user && session[:login_date]
+
+    return unless session[:login_date] < Date.current.ajd.to_i
 
     sign_out(current_user)
     redirect_to new_user_session_path, notice: t('not_authorized') and return
