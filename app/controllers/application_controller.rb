@@ -4,11 +4,15 @@ class ApplicationController < ActionController::Base
   default_form_builder CustomFormBuilder
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
-
+  before_action :reset_daily_login
   before_action :check_ip
+
+  def after_sign_in_path_for(resource)
+    session[:login_date] = Date.current
+    super
+  end
 
   private
 
@@ -42,6 +46,13 @@ class ApplicationController < ActionController::Base
 
   def locale_from_accept_language
     http_accept_language.compatible_language_from(I18n.available_locales)
+  end
+
+  def reset_daily_login
+    return unless current_user && session[:login_date] && session[:login_date] < Date.current
+
+    sign_out(current_user)
+    redirect_to new_user_session_path, notice: t('not_authorized') and return
   end
 
   def user_not_authorized
