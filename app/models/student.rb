@@ -124,9 +124,4 @@ class Student < ApplicationRecord
     self.student_id = "#{organisation_id}-#{school_id}-#{SecureRandom.alphanumeric}"
     save
   end
-
-  # fetch the mapped order based on test results
-  def current_level_order
-    test_results.order(created_at: :desc).pick(:new_level) || 0
-  end
 end
