@@ -11,12 +11,12 @@
     }
     .white-overlay {
       position: absolute;
-      width: 100px;
+      width: 200px;
       height: 25px;
       background: white;
       z-index: 1000;
       top: 0px;
-      left: 190px;
+      left: 150px;
     }
   }
 
