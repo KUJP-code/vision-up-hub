@@ -48,8 +48,10 @@ class StudentPolicy < ApplicationPolicy
         scope.all
       when 'OrgAdmin'
         scope.where(organisation_id: user.organisation_id)
-      when 'SchoolManager', 'Teacher'
+      when 'SchoolManager'
         user.students
+      when 'Teacher'
+        user.students.where(status: 'active')
       when 'Parent'
         user.children
       else
