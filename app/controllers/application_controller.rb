@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
-  before_action :reset_daily_login
   before_action :check_ip
 
   def after_sign_in_path_for(resource)

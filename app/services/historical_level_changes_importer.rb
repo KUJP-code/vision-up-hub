@@ -10,7 +10,7 @@ class HistoricalLevelChangesImporter
 
   def import
     # Process the CSV only once.
-    csv = CSV.read(@file.path, headers: true, encoding: 'Shift_JIS:UTF-8')
+    csv = CSV.read(@file.path, headers: true, encoding: 'UTF-8:UTF-8')
 
     # Normalize headers by stripping whitespace.
     csv.headers.map! { |h| h.to_s.strip }
@@ -25,7 +25,7 @@ class HistoricalLevelChangesImporter
 
   def process_row(row)
     # Convert to string before stripping.
-    student_identifier = row['管理ＩＤ']&.to_s&.strip
+    student_identifier = row['生徒コード']&.to_s&.strip
 
     student = Student.find_by(student_id: student_identifier)
     unless student
@@ -44,7 +44,7 @@ class HistoricalLevelChangesImporter
 
     begin
       date_str = row[csv_column].to_s.strip
-      date_cleared = Date.strptime(date_str, '%Y/%m')
+      date_cleared = Date.strptime(date_str, '%Y-%m-%d')
     rescue ArgumentError
       @errors << "Invalid date format in #{csv_column} for student #{student.student_id}."
       return
@@ -80,7 +80,7 @@ class HistoricalLevelChangesImporter
     when 'galaxy_one'
       'galaxy_two'
     else
-      nil # or raise an error if the mapping must exist
+      nil
     end
   end
 end

@@ -5,14 +5,15 @@ class LevelChange < ApplicationRecord
 
   enum :new_level, LEVELS, suffix: true
   enum :prev_level, LEVELS, suffix: true
-  before_validation :prevent_evening
   belongs_to :student
   belongs_to :test_result, optional: true
   validates :new_level, :date_changed, presence: true
 
-  private
+  def leveled_up?
+    return false if prev_level.blank? || new_level.blank?
 
-  def prevent_evening
-    self.new_level = 'galaxy_two' if EVENING_COURSES.include?(new_level)
+    new_level_before_type_cast > prev_level_before_type_cast
   end
+
+  private
 end

@@ -72,7 +72,7 @@ export default class extends Controller<HTMLFormElement> {
   async uploadStudents(students: student[]) {
     while (students.length > 0) {
       const index = students.length - 1;
-      const delay = new Promise((resolve) => setTimeout(resolve, 100));
+      const delay = new Promise((resolve) => setTimeout(resolve, 10));
       const student = students.pop();
       if (student === undefined) continue;
       this.actionValue === "create"

@@ -59,20 +59,24 @@ class Student < ApplicationRecord
                   }
   scope :former, -> { where(quit_date: ...Time.zone.today) }
 
-  # order to map to parents view in the controller
   def mapped_level_order
     LEVEL_ORDER_MAP[level] || 1
   end
 
-  # retrieve the associated date for a given level name
-  def level_associated_date(level_name)
-    date_field = LEVEL_DATE_MAP[level_name]
-    date_field.present? ? send(date_field) : nil
+  def reached_level_change_for_order(order)
+    levels_for_order = LEVEL_ORDER_MAP.select { |_, v| v == order }.keys
+    level_changes.where(new_level: levels_for_order).max_by(&:date_changed)
   end
 
-  def latest_test_result_for_order(order)
-    levels_for_order = LEVEL_ORDER_MAP.select { |_, v| v == order }.keys
-    test_results.where(new_level: levels_for_order).order(created_at: :desc).first
+  def most_recent_valid_level_change_for(level)
+    level_changes
+      .where(prev_level: level)
+      .select(&:leveled_up?)
+      .max_by(&:date_changed)
+  end
+
+  def passed_level?(level)
+    most_recent_valid_level_change_for(level).present?
   end
 
   def current_grade

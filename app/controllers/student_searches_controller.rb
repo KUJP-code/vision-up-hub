@@ -26,7 +26,7 @@ class StudentSearchesController < ApplicationController
   private
 
   def search_params
-    strong_params = params.require(:search).permit(%i[en_name birthday level school_id student_id parent_id])
+    strong_params = params.require(:search).permit(%i[en_name birthday level school_id status student_id parent_id])
     strong_params if current_user.is?('Parent')
 
     strong_params.compact_blank
@@ -63,9 +63,18 @@ class StudentSearchesController < ApplicationController
   end
 
   def staff_search
-    @results = policy_scope(Student).where(search_params)
-                                    .includes(:school)
-    render partial: 'students/table',
-           locals: { students: @results }
+    students = policy_scope(Student).includes(:school)
+    non_encrypted_filters = search_params.except(:en_name)
+    students = students.where(non_encrypted_filters) if non_encrypted_filters.present?
+    students = filter_by_encrypted_name(students, search_params[:en_name]) if search_params[:en_name].present?
+
+    render partial: 'students/table', locals: { students: }
+  end
+
+  private
+
+  def filter_by_encrypted_name(students, name_query)
+    query = name_query.downcase
+    students.to_a.select { |student| student.en_name.downcase.include?(query) }
   end
 end

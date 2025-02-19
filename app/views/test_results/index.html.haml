@@ -15,7 +15,6 @@
       %tr
         %th.thead.thead-s.thead-t.sticky.top-14{ id: 'student-details' }
           = t('.name')
-        %th.thead.bg-secondary.sticky.top-14= t('.level')
         %th.thead.bg-secondary.sticky.top-14= t('.basics')
         - Test::SKILLS.each do |skill|
           - next if @test.send(skill.to_sym).blank?
@@ -45,7 +44,6 @@
 
         %td.thead.thead-b.sticky.top-24
         %td.thead.thead-b.sticky.top-24
-        %td.thead.thead-b.thead-e.sticky.top-24
 
     %tbody
       - @students.sort_by(&:en_name).each do |student|

@@ -5,7 +5,7 @@ en:
     form:
       give_reason: "Please give a reason"
     index:
-      basics: "Name & Date"
+      basics: "Name/Date"
       en_name: "English Name"
       former_lvl: "Former Level"
       level: "Level"
@@ -14,7 +14,7 @@ en:
       name: "Name"
       reading: "Reading"
       read_percent: "Reading %"
-      rec_lvl: "Recommended Level"
+      rec_lvl: "Rec. Level"
       results_for: "%{name} Results"
       speaking: "Speaking"
       speak_percent: "Speaking %"

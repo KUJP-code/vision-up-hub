@@ -35,6 +35,14 @@
   %td.bg-danger= date_field_tag 'student_upload[quit_date]',
                                 @student.quit_date, form:
   %td.bg-danger
+    = select_tag 'student_upload[sex]',
+                 options_for_select(levels, @student.sex),
+                 class: 'bg-white', form:
+  %td.bg-danger
+    = select_tag 'student_upload[status]',
+                 options_for_select(levels, @student.status),
+                 class: 'bg-white', form:
+  %td.bg-danger
     = form_with model: @student, url:, method:, scope: :student_upload,
                 html: { class: 'flex items-center justify-center gap-2 p-2',
                         id: } do |f|
