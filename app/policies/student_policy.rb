@@ -51,7 +51,7 @@ class StudentPolicy < ApplicationPolicy
       when 'SchoolManager'
         scope.where(school_id: user.schools.ids)
       when 'Teacher'
-        scope.where(school_id: user.schools.ids)
+        scope.where(school_id: user.schools.ids, status: Student.statuses[:active])
       when 'Parent'
         user.children
       else
