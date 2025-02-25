@@ -59,6 +59,6 @@ class TestResultPolicy < ApplicationPolicy
   end
 
   def teacher_results?
-    user.is?('Teacher') && user.students.ids.include?(record.student_id)
+    user.is?('Teacher') && user.schools.ids.include?(record.student.school_id)
   end
 end
