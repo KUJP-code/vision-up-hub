@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.6.0-uploads"
+    "Name": "kidsup/materials:1.6.1-status-visibility"
   },
   "Ports": [
     {

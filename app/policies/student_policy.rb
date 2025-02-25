@@ -51,7 +51,7 @@ class StudentPolicy < ApplicationPolicy
       when 'SchoolManager'
         user.students
       when 'Teacher'
-        user.students.where(status: 'active')
+        user.students.where(status: Student.statuses[:active])
       when 'Parent'
         user.children
       else
