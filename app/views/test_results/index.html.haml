@@ -29,7 +29,6 @@
         %th{ rowspan: 2 }
       %tr.thead-b
         %td.thead.thead-s.thead-b.sticky.top-24
-        %td.thead.thead-b.sticky.top-24
 
         %th.thead.thead-b.sticky.top-24
           = "/#{@test.basics}"
@@ -44,6 +43,7 @@
 
         %td.thead.thead-b.sticky.top-24
         %td.thead.thead-b.sticky.top-24
+        %td.thead.thead-b.thead-e.sticky.top-24
 
     %tbody
       - @students.sort_by(&:en_name).each do |student|
