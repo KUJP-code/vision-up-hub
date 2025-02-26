@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.6.2-test-alignment"
+    "Name": "kidsup/materials:1.6.3-studentsshow"
   },
   "Ports": [
     {
