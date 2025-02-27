@@ -89,6 +89,6 @@ class StudentPolicy < ApplicationPolicy
   end
 
   def student_teacher?
-    user.is?('Teacher') && user.students.ids.include?(record.id)
+    user.is?('Teacher') && user.schools.ids.include?(record.school_id)
   end
 end
