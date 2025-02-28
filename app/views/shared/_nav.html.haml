@@ -17,8 +17,8 @@
   %div{ class: 'flex flex-col', id: 'main_nav_links' }
     = render "#{current_user.type.pluralize.underscore}/nav"
   .flex-grow
-  = render 'admins/theme_select' if current_user.is?('Admin')
-  .md:hidden= locale_toggle
+  -# = render 'admins/theme_select' if current_user.is?('Admin')
+  -# .md:hidden= locale_toggle
   = link_to destroy_user_session_path,
             data: { turbo_method: :delete },
             class: main_nav_class('sign_out', '') do

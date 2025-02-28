@@ -104,13 +104,13 @@ RSpec.describe StudentPolicy do
   end
 
   context 'when teacher' do
-    context 'when teaching student class' do
+    context 'when teaching at a school do' do
       let(:user) { create(:user, :teacher, organisation_id: record.organisation_id) }
-      let(:student_class) { create(:school_class) }
+      let(:school) { create(:school) }
 
       before do
-        record.classes << student_class
-        user.classes << record.classes.first
+        record.school = school
+        user.schools << school
       end
 
       it { is_expected.to authorize_action(:show) }
@@ -125,7 +125,7 @@ RSpec.describe StudentPolicy do
       end
     end
 
-    context 'when not teaching student class' do
+    context 'when not teaching at the same school' do
       let(:user) { build(:user, :teacher) }
 
       it_behaves_like 'student creator for StudentPolicy'
