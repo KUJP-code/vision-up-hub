@@ -107,13 +107,13 @@ RSpec.describe TestResultPolicy do
   context 'when teacher' do
     let(:user) { build(:user, :teacher) }
 
-    context 'when teacher of test results student class' do
+    context 'when teacherof test results student class' do
       before do
-        school_class = create(:school_class)
+        school = create(:school)
         student = create(:student)
         student.test_results << test_result
-        student.classes << school_class
-        user.classes << school_class
+        student.school = school
+        user.schools << school
         user.save
       end
 
