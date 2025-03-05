@@ -3,85 +3,86 @@
 .print:hidden
   = render 'shared/subtitle', text: redact(@student, @student.name)
 -# If anone reads this I am not proud of it and it's just to prototype the printables
-%main
+.print-container
+  %main
 
-  .flex#header.border-b-4.border-secondary
-    - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
-    - current_level ||= levels.first
-    .flex.flex-col.items-center.p-2
-      - base_name = current_level[:name].split('_').first
-      = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 110, height: 110, title: t("levels.#{current_level[:name]}"))
-      .-mt-2.text= t(".#{@student.level.titleize}")
-    .flex.flex-col.items-left.gap-1.p-8
-      .text-4xl.mb-2
-        = @student.en_name
-      .text-sm 
-        = "Kids Up #{@student.school.name}"
-      .text-sm 
-        = "Student ID: #{@student.id}"
-    .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
-      .text-sm
-        = @active_result&.created_at&.strftime('%b %Y')
-      .text-sm 
-        = 'Score'
-      .text-4xl.mt-2
-        = @active_result&.total_score_total
-      
-  .flex.justify-center.gap-6.mt-4
-    = render 'shared/print_button', text: 'Print Report'
-    .pt-6.print:hidden
-      .h3.font-bold Please select a test to use.
-      = render 'students/tests_table', results: @results, active_result: @active_result
-  .print:hidden.mt-2.text-sm.text-center.text-gray-600
-    For best results, please set your iPad to portrait mode.
-  .flex.flex-col.w-full.p-12.bg-neutral-light.gap-6.max-w-xl.mx-auto
-    .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
-            
-    %div{ class: "skill-breakdown w-full max-w-lg mx-auto" }
-      %table.table-auto.w-full
-        %tbody
+    .flex#header.border-b-4.border-secondary
+      - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
+      - current_level ||= levels.first
+      .flex.flex-col.items-center.p-2
+        - base_name = current_level[:name].split('_').first
+        = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 110, height: 110, title: t("levels.#{current_level[:name]}"))
+        .-mt-2.text= t(".#{@student.level.titleize}")
+      .flex.flex-col.items-left.gap-1.p-8
+        .text-4xl.mb-2
+          = @student.en_name
+        .text-sm 
+          = "Kids Up #{@student.school.name}"
+        .text-sm 
+          = "Student ID: #{@student.id}"
+      .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
+        .text-sm
+          = @active_result&.created_at&.strftime('%b %Y')
+        .text-sm 
+          = 'Score'
+        .text-4xl.mt-2
+          = @active_result&.total_score_total
+        
+    .flex.justify-center.gap-6.mt-4
+      = render 'shared/print_button', text: 'Print Report'
+      .pt-6.print:hidden
+        .h3.font-bold Please select a test to use.
+        = render 'students/tests_table', results: @results, active_result: @active_result
+    .print:hidden.mt-2.text-sm.text-center.text-gray-600
+      For best results, please set your iPad to portrait mode.
+    .flex.flex-col.w-full.p-12.bg-neutral-light.gap-6.max-w-xl.mx-auto
+      .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
+              
+      %div{ class: "skill-breakdown w-full max-w-lg mx-auto" }
+        %table.table-auto.w-full
+          %tbody
 
-          %tr.no-bg.border-b.border-secondary
-            %td.flex.items-center.p-2
-              = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')
-              Listening
-            %td.text-center.p-2
-              = "#{@active_result&.listening&.sum} / #{@active_result&.listening_total}"
-            %td.text-right.p-2
-              = "#{@active_result&.listen_percent}%"
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')
+                Listening
+              %td.text-center.p-2
+                = "#{@active_result&.listening&.sum} / #{@active_result&.listening_total}"
+              %td.text-right.p-2
+                = "#{@active_result&.listen_percent}%"
 
-          %tr.no-bg.border-b.border-secondary
-            %td.flex.items-center.p-2
-              = inline_svg_tag('reading_icon.svg', class: 'w-10 h-10 mr-2', title: 'Reading')
-              Reading
-            %td.text-center.p-2
-              = "#{@active_result&.reading&.sum} / #{@active_result&.reading_total}"
-            %td.text-right.p-2
-              = "#{@active_result&.read_percent}%"
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('reading_icon.svg', class: 'w-10 h-10 mr-2', title: 'Reading')
+                Reading
+              %td.text-center.p-2
+                = "#{@active_result&.reading&.sum} / #{@active_result&.reading_total}"
+              %td.text-right.p-2
+                = "#{@active_result&.read_percent}%"
 
-          %tr.no-bg
-            %td.flex.items-center.p-2
-              = inline_svg_tag('writing_icon.svg', class: 'w-10 h-10 mr-2', title: 'Writing')
-              Writing
-            %td.text-center.p-2
-              = "#{@active_result&.writing&.sum} / #{@active_result&.writing_total}"
-            %td.text-right.p-2
-              = "#{@active_result&.write_percent}%"
-          %tr.no-bg.border-2.border-secondary.rounded-l-lg
-            %td.flex.items-center.p-4
-              %span.font-bold TOTAL SCORE
-            %td.text-center.p-4.font-bold
-              = @active_result&.total_score_total
-            %td.text-right.p-4.font-bold
-              = "#{@active_result&.test_print_percent}%"
+            %tr.no-bg
+              %td.flex.items-center.p-2
+                = inline_svg_tag('writing_icon.svg', class: 'w-10 h-10 mr-2', title: 'Writing')
+                Writing
+              %td.text-center.p-2
+                = "#{@active_result&.writing&.sum} / #{@active_result&.writing_total}"
+              %td.text-right.p-2
+                = "#{@active_result&.write_percent}%"
+            %tr.no-bg.border-2.border-secondary.rounded-l-lg
+              %td.flex.items-center.p-4
+                %span.font-bold TOTAL SCORE
+              %td.text-center.p-4.font-bold
+                = @active_result&.total_score_total
+              %td.text-right.p-4.font-bold
+                = "#{@active_result&.test_print_percent}%"
 
-    .chart-container.flex.flex-col.mt-5
-      = render 'students/test_details',
-                data: @data,
-                results: @results
-      .white-overlay
+      .chart-container.flex.flex-col.mt-5
+        = render 'students/test_details',
+                  data: @data,
+                  results: @results
+        .white-overlay
 
-  %header#print-footer.flex.justify-start.relative.text-center
-    %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
-    .w-fit.relative.z-1000.bg-neutral-light.pe-3
-      = inline_svg_tag('landing_logo.svg', class: 'relative z-20 w-40 h-20', id: 'custom-landing-logo')
+    %header#print-footer.flex.justify-start.relative.text-center
+      %hr{ class: 'absolute z-0 top-1/2 w-full border-2 border-secondary' }
+      .w-fit.relative.z-1000.bg-neutral-light.pe-3
+        = inline_svg_tag('landing_logo.svg', class: 'relative z-20 w-40 h-20', id: 'custom-landing-logo')

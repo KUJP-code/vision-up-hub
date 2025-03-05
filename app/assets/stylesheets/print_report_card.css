@@ -17,10 +17,10 @@
   top: 0px;
   left: 150px;
 }
-
-body {
+.print-container {
   width: 210mm;
-  height: 297mm;
+  min-height: 297mm;
+  position: relative;
   margin: 0;
   padding: 0;
 }
@@ -60,8 +60,8 @@ table {
   padding: 0;
 }
 #print-footer {
-  position: fixed !important;
-  bottom: 10px !important;
+  position: absolute !important;
+  bottom: 10mm !important;
   width: 82% !important;
 }
 
