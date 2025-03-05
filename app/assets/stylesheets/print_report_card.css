@@ -1,53 +1,49 @@
-@media print {
-  @page {
-    size: a4 portrait;
-    margin: 0;
-    padding: 0;
-  }
-  @media print {
-    /* Not ok but its a white box to cover the legend in the spider */
-    .chart-container {
-      position: relative;
-    }
-    .white-overlay {
-      position: absolute;
-      width: 200px;
-      height: 25px;
-      background: white;
-      z-index: 1000;
-      top: 0px;
-      left: 150px;
-    }
-  }
+@page {
+  size: a4 portrait;
+  margin: 0;
+  padding: 0;
+}
+/* Not ok but its a white box to cover the legend in the spider */
+.chart-container {
+  position: relative;
+}
+.white-overlay {
+  position: absolute;
+  width: 200px;
+  height: 25px;
+  background: white;
+  z-index: 1000;
+  top: 0px;
+  left: 150px;
+}
 
-  body {
-    width: 210mm;
-    height: 297mm;
-    margin: 0;
-    padding: 0;
-  }
-  main {
-    width: 90%;
-  }
-  #student {
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
+body {
+  width: 210mm;
+  height: 297mm;
+  margin: 0;
+  padding: 0;
+}
+main {
+  width: 90%;
+}
+#student {
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+}
+::-webkit-scrollbar {
+  display: none;
+}
 
-  .btn,
-  textarea {
-    display: none;
-  }
+.btn,
+textarea {
+  display: none;
+}
 
-  select,
-  .classes,
-  .teachers {
-    display: none;
-  }
+select,
+.classes,
+.teachers {
+  display: none;
 }
 
 table {
