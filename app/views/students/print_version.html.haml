@@ -32,7 +32,8 @@
     .pt-6.print:hidden
       .h3.font-bold Please select a test to use.
       = render 'students/tests_table', results: @results, active_result: @active_result
-
+  .print:hidden.mt-2.text-sm.text-center.text-gray-600
+    For best results, please set your iPad to portrait mode.
   .flex.flex-col.w-full.p-12.bg-neutral-light.gap-6.max-w-xl.mx-auto
     .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
             

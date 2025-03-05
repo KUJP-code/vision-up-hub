@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
 }
+
 /* Not ok but its a white box to cover the legend in the spider */
 .chart-container {
   position: relative;
@@ -59,9 +60,9 @@ table {
   padding: 0;
 }
 #print-footer {
-  position: fixed;
-  bottom: 10px;
-  width: 82%;
+  position: fixed !important;
+  bottom: 10px !important;
+  width: 82% !important;
 }
 
 #custom-landing-logo .cls-3,
