@@ -5,9 +5,9 @@ ja:
       classes: "クラス"
       create_class: "新しいクラスを作成する"
     show:
-      add_existing_student: "既存の学生を追加する"
-      create_student: "新しい学生を作成する"
-      students: "学生: %{count}"
+      add_existing_student: "既存の生徒を追加する"
+      create_student: "新しい生徒を作成する"
+      students: "生徒: %{count}"
     table:
       class: "クラス"
       name: "クラス"

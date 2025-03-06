@@ -2,9 +2,9 @@ ja:
   school_managers:
     show:
       students: "生徒"
-      parents: "保護者"
-      todays_lessons: "今日の授業"
-      tests: "試験"
+      parents: "保護者とエデュケーター"
+      todays_lessons: "今日のレッスン"
+      tests: "レベルチェック"
       events: "イベント"
       curriculum_calendar: "カリキュラムカレンダー"
       support: "サポート"
