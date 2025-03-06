@@ -14,7 +14,7 @@
   %td.p-2.whitespace-nowrap
     = link_to redact(student, student.en_name.presence || student.name),
               student_path(student)
-
+  %td.p-2.whitespace-nowrap= student.level.titleize
   %td.p-2{ data: { controller: 'validity' } }
     .flex.justify-center.items-center.gap-1
       = select_tag 'test_result[basics]',

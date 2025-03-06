@@ -15,6 +15,7 @@
       %tr
         %th.thead.thead-s.thead-t.sticky.top-14{ id: 'student-details' }
           = t('.name')
+        %th.thead.bg-secondary.sticky.top-14= t('.level')
         %th.thead.bg-secondary.sticky.top-14= t('.basics')
         - Test::SKILLS.each do |skill|
           - next if @test.send(skill.to_sym).blank?
@@ -28,7 +29,8 @@
         %th.thead.thead-e.thead-t.sticky.top-14= t('.rec_lvl')
         %th{ rowspan: 2 }
       %tr.thead-b
-        %td.thead.thead-s.thead-b.sticky.top-24
+        %th.thead.thead-b.thead-s.sticky.top-24
+        %td.thead.thead-b.thead-b.sticky.top-24
 
         %th.thead.thead-b.sticky.top-24
           = "/#{@test.basics}"
