@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.6.4.6-print-ipad"
+    "Name": "kidsup/materials:1.6.5-test-fixes"
   },
   "Ports": [
     {
