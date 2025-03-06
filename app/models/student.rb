@@ -52,11 +52,8 @@ class Student < ApplicationRecord
   has_many :tests, through: :test_results
   has_many :level_changes, dependent: :destroy
 
-  scope :current, lambda {
-                    where('quit_date > ?', Time.zone.today)
-                      .or(where(quit_date: nil))
-                  }
-  scope :former, -> { where(quit_date: ...Time.zone.today) }
+  scope :current, -> { where(status: :active) }
+  scope :former, -> { where(status: %i[on_break inactive]) }
 
   def mapped_level_order
     LEVEL_ORDER_MAP[level] || 1
