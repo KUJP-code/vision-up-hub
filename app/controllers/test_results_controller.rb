@@ -67,15 +67,23 @@ class TestResultsController < ApplicationController
 
   def set_index_vars
     @test = Test.find(params[:test_id])
-    @students = policy_scope(Student)
-                .send(@test.short_level.downcase)
-                .or(
-                  policy_scope(Student)
-                    .where(test_results: { test_id: @test.id })
-                )
-                .current
-                .includes(:school, :test_results)
-    @students = @students.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
+
+    base_scope = policy_scope(Student)
+                 .send(@test.short_level.downcase)
+                 .or(
+                   policy_scope(Student)
+                     .where(test_results: { test_id: @test.id })
+                 )
+                 .current
+                 .includes(:school, :test_results)
+
+    base_scope = base_scope.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
+    # Filter to exclude students that have moved up from the previous test
+    @students = base_scope.where.not(
+      id: TestResult.select(:student_id)
+                   .where('created_at > ?', 2.weeks.ago)
+                   .where.not(test_id: @test.id)
+    )
   end
 
   def set_orgs

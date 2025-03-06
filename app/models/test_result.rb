@@ -107,6 +107,8 @@ class TestResult < ApplicationRecord
   end
 
   def update_student_level
+    return if student && ::Levels::EVENING_COURSES.include?(student.level)
+
     self.new_level = 'galaxy_two' if EVENING_COURSES.include?(new_level)
 
     student.update!(level: new_level)
