@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.6.5.2-test-fixes"
+    "Name": "kidsup/materials:1.6.6-test-fixes-full"
   },
   "Ports": [
     {
