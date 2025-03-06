@@ -57,6 +57,13 @@ module Levelable
       end
     end
 
+    # Include evening courses in galaxy tests
+    def test_short_level
+      return 'Galaxy' if ::Levels::EVENING_COURSES.include?(level)
+
+      short_level
+    end
+
     def calendar_level
       case short_level
       when 'Land', 'Sky', 'Galaxy', 'All Levels'
