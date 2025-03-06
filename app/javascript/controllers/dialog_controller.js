@@ -19,7 +19,7 @@ export default class extends Controller {
   close(e) {
     // hilariously enough, clicking 'outside' the dialog registers
     // as clicking the dialog becuase of the ::backdrop element
-    if (e.target === this.dialog) {
+    if (e.target === this.dialog || e.target.closest(".btn-close")) {
       this.frame.innerHTML = "";
       this.dialog.close();
     }
