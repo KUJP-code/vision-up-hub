@@ -2,8 +2,7 @@
 
 class Student < ApplicationRecord
   include Gradeable, Levelable
-  SS_CSV_HEADERS = %w[school_id name en_name student_id level quit_date birthday
-                      status land_1_date land_2_date sky_1_date sky_2_date galaxy_1_date galaxy_2_date].freeze
+
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date sex status organisation_id].freeze
   ICON_CHOICES = %w[
