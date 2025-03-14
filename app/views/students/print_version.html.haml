@@ -19,7 +19,7 @@
         .text-sm 
           = "Kids Up #{@student.school.name}"
         .text-sm 
-          = "Student ID: #{@student.id}"
+          = "Student ID: #{@student.student_id}"
       .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
         .text-sm
           = @active_result&.created_at&.strftime('%b %Y')
@@ -38,10 +38,17 @@
     .flex.flex-col.w-full.p-12.bg-neutral-light.gap-6.max-w-xl.mx-auto
       .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
               
-      %div{ class: "skill-breakdown w-full max-w-lg mx-auto" }
+      %div{ class: 'skill-breakdown w-full max-w-lg mx-auto' }
         %table.table-auto.w-full
           %tbody
-
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('basics_icon.svg', class: 'w-10 h-10 mr-2', title: 'Name & Date')
+                Name & Date
+              %td.text-center.p-2
+                = "#{@active_result&.basics} / 2"
+              %td.text-right.p-2
+                = "#{@active_result&.basics_percent}%"
             %tr.no-bg.border-b.border-secondary
               %td.flex.items-center.p-2
                 = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')

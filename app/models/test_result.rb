@@ -64,22 +64,28 @@ class TestResult < ApplicationRecord
     listen_percent&.nonzero? ? (total * 100.0 / listen_percent).round : 0
   end
 
+  def basics_percent
+    basics_max = 2
+    (basics.to_f / basics_max * 100).round
+  end
+
   def total_score
     answers.values.flatten.sum + basics
   end
 
   def total_score_total
-    max = writing_total + reading_total + listening_total
+    basics_max = 2
+    max = writing_total + reading_total + listening_total + basics_max
     total = (writing&.sum || 0) + (reading&.sum || 0) + (listening&.sum || 0)
-    "#{total} / #{max}"
+    "#{total_score} / #{max}"
   end
 
   def test_print_percent
-    max = writing_total + reading_total + listening_total
-    total = (writing&.sum || 0) + (reading&.sum || 0) + (listening&.sum || 0)
+    basics_max = 2
+    max = writing_total + reading_total + listening_total + basics_max
     return 0 if max.zero?
 
-    percent = (total.to_f / max) * 100
+    percent = (total_score.to_f / max) * 100
     percent.round(0)
   end
 
