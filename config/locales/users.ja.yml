@@ -9,6 +9,9 @@ ja:
     show:
       greet: "こんにちは、%{name}"
   users:
+    new_user_dropdown:
+      create_new: "新規作成"
+    invitation_link: "招待リンク"
     admin: "管理者"
     org_admin: "組織管理者"
     school_manager: "学校管理者"
@@ -20,4 +23,4 @@ ja:
       add_as_parent: "親に追加する"
       email: "メールアドレス"
       name: "名前"
-      role: "ロール"
+      role: "登録種類"

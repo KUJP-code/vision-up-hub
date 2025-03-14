@@ -9,7 +9,10 @@ en:
     show:
       greet: "Hi, %{name}"
   users:
+    new_user_dropdown:
+      create_new: "Create New"
     admin: "Admin"
+    invitation_link: "Invitation Link"
     org_admin: "Organisation Admin"
     school_manager: "School Manager"
     teacher: "Teacher"

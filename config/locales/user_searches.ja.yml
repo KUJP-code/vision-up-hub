@@ -1,7 +1,10 @@
 ja:
   user_searches:
+    invitation_link: "招待リンク"
     form:
+      invitation_link: "招待リンク"
       email: "メールアドレス"
       name: "名前"
-      role: "ロール"
+      role: "登録種類"
       search: "検索"
+      organisation: "所属組織"
