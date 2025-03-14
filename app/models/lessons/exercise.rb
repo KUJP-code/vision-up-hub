@@ -1,30 +1,26 @@
 # frozen_string_literal: true
 
 class Exercise < Lesson
-  include ExercisePdf, Listable
+  include ExercisePdf, Linkable, Listable, PdfImageValidatable
 
-  alias_attribute :cardio_and_stretching, :intro
-  alias_attribute :form_practice, :vocab
-  alias_attribute :cooldown_and_recap, :outro
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
-  has_one_attached :cardio_image
-  has_one_attached :form_practice_image
-  has_one_attached :activity_image
-  has_one_attached :cooldown_image
+  has_one_attached :pdf_image
+  has_one_attached :image_page
+  PDF_IMAGES = %i[pdf_image image_page].freeze
 
   ATTRIBUTES = %i[
-    goal resources subtype land_lang_goals sky_lang_goals
-    galaxy_lang_goals materials goal warning cardio_and_stretching
-    form_practice instructions cooldown_and_recap cardio_image
-    form_practice_image activity_image cooldown_image guide
+    subtype pdf_image image_page warning land_lang_goals sky_lang_goals
+    galaxy_lang_goals materials intro interesting_fact instructions
+    large_groups outro notes links
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
     land_lang_goals sky_lang_goals galaxy_lang_goals materials
-    cardio_and_stretching form_practice instructions cooldown_and_recap
+    intro instructions large_groups outro notes
   ].freeze
 
+  validates :intro, :instructions, :subtype, presence: true
   enum level: { kindy: 1, elementary: 2 }
 
   enum subtype: {
