@@ -1175,6 +1175,38 @@ ALTER SEQUENCE public.homework_resources_id_seq OWNED BY public.homework_resourc
 
 
 --
+-- Name: homeworks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.homeworks (
+    id bigint NOT NULL,
+    course_id bigint NOT NULL,
+    week integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: homeworks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.homeworks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: homeworks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.homeworks_id_seq OWNED BY public.homeworks.id;
+
+
+--
 -- Name: invoices; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2417,6 +2449,13 @@ ALTER TABLE ONLY public.homework_resources ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: homeworks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homeworks ALTER COLUMN id SET DEFAULT nextval('public.homeworks_id_seq'::regclass);
+
+
+--
 -- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2767,6 +2806,14 @@ ALTER TABLE ONLY public.form_templates
 
 ALTER TABLE ONLY public.homework_resources
     ADD CONSTRAINT homework_resources_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: homeworks homeworks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homeworks
+    ADD CONSTRAINT homeworks_pkey PRIMARY KEY (id);
 
 
 --
@@ -3198,6 +3245,13 @@ CREATE INDEX index_homework_resources_on_course_id ON public.homework_resources 
 --
 
 CREATE INDEX index_homework_resources_on_english_class_id ON public.homework_resources USING btree (english_class_id);
+
+
+--
+-- Name: index_homeworks_on_course_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_homeworks_on_course_id ON public.homeworks USING btree (course_id);
 
 
 --
@@ -4029,6 +4083,14 @@ ALTER TABLE ONLY public.student_classes
 
 
 --
+-- Name: homeworks fk_rails_ba013efaf8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.homeworks
+    ADD CONSTRAINT fk_rails_ba013efaf8 FOREIGN KEY (course_id) REFERENCES public.courses(id) ON DELETE CASCADE;
+
+
+--
 -- Name: course_resources fk_rails_bbab481d12; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4134,6 +4196,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250319011624'),
 ('20250206091625'),
 ('20250205013816'),
 ('20250204063950'),
