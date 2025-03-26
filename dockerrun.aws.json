@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.7.0-exercise"
+    "Name": "kidsup/materials:1.8.0-new-cards"
   },
   "Ports": [
     {
