@@ -143,4 +143,18 @@ class CategoryResource < ApplicationRecord
     errors.add(:lesson_category, 'Story & Reading requires a worksheet or slide resource')
     false
   end
+
+  def sensory_play_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category, 'Sensory Play requires a worksheet or slide resource')
+    false
+  end
+
+  def friendship_time_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category, 'Friendship Time requires a worksheet or slide resource')
+    false
+  end
 end

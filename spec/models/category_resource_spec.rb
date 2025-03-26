@@ -16,6 +16,150 @@ RSpec.describe CategoryResource do
     expect(category_resource.destroy).to be false
   end
 
+  context 'when resource for a Story and Reading class' do
+    before do
+      category_resource.lesson_category = :story_and_reading
+    end
+
+    it 'cannot have phonics set as a resource category' do
+      category_resource.resource_category = :phonics_sets
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have word family as a resource category' do
+      category_resource.resource_category = :word_families
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have sight words as a resource category' do
+      category_resource.resource_category = :sight_words
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'can have a worksheet as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+  end
+
+  context 'when resource for a sensory play' do
+    before do
+      category_resource.lesson_category = :sensory_play
+    end
+
+    it 'cannot have phonics set as a resource category' do
+      category_resource.resource_category = :phonics_sets
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have word family as a resource category' do
+      category_resource.resource_category = :word_families
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have sight words as a resource category' do
+      category_resource.resource_category = :sight_words
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'can have a worksheet as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+  end
+
+  context 'when resource for a get up and go class' do
+    before do
+      category_resource.lesson_category = :get_up_and_go
+    end
+
+    it 'cannot have phonics set as a resource category' do
+      category_resource.resource_category = :phonics_sets
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have word family as a resource category' do
+      category_resource.resource_category = :word_families
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have sight words as a resource category' do
+      category_resource.resource_category = :sight_words
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'can have a worksheet as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+  end
+
+  context 'when resource for a friendship class' do
+    before do
+      category_resource.lesson_category = :friendship_time
+    end
+
+    it 'cannot have phonics set as a resource category' do
+      category_resource.resource_category = :phonics_sets
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have word family as a resource category' do
+      category_resource.resource_category = :word_families
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have sight words as a resource category' do
+      category_resource.resource_category = :sight_words
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+
+    it 'can have a worksheet as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+  end
+
   context 'when resource for phonics class' do
     before do
       category_resource.lesson_category = :phonics_class
