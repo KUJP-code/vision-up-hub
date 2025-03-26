@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class CategoryResource < ApplicationRecord
-  AFTERSCHOOL_EXTRAS = %w[arrival brush_up bus_time daily_gathering
-                          get_up_and_go snack].freeze
+  AFTERSCHOOL_EXTRAS = %w[arrival brush_up bus_time daily_gathering friendship_time
+                          get_up_and_go sensory_play snack story_and_reading].freeze
 
   before_destroy :check_not_used
 
@@ -15,7 +15,10 @@ class CategoryResource < ApplicationRecord
     arrival: 5,
     bus_time: 6,
     evening_class: 7,
-    english_class: 8
+    english_class: 8,
+    story_and_reading: 9,
+    friendship_time: 10,
+    sensory_play: 11
   }
 
   enum level: {
@@ -131,6 +134,13 @@ class CategoryResource < ApplicationRecord
     return true if %w[worksheets slides].include?(resource_category)
 
     errors.add(:lesson_category, 'Daily Gathering requires a worksheet or slide resource')
+    false
+  end
+
+  def story_and_reading_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category, 'Story & Reading requires a worksheet or slide resource')
     false
   end
 end

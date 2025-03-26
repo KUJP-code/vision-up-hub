@@ -16,8 +16,8 @@ module TeacherLessonHelper
 
   def lesson_type_order(level)
     order = {
-      'kindy' => %w[arrival brush_up snack SpecialLesson DailyActivity
-                    Exercise KindyPhonic EnglishClass StandShowSpeak bus_time],
+      'kindy' => %w[arrival sensory_play get_up_and_go snack SpecialLesson DailyActivity
+                    Exercise KindyPhonic story_and_reading friendship_time EnglishClass StandShowSpeak bus_time],
       'elementary' => %w[arrival brush_up snack SpecialLesson DailyActivity
                          Exercise daily_gathering PhonicsClass EnglishClass
                          StandShowSpeak bus_time],
