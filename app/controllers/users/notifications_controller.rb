@@ -13,10 +13,11 @@ class NotificationsController < ApplicationController
     @notified_users = User.where(id: notified_ids)
   end
 
+  # May end up using many domains so this ensures that notifications can be visible between them.
   def show
     @notification = authorize current_user.notifications[params[:id].to_i]
     current_user.mark_notification_read(index: params[:id])
-    redirect_to @notification.link
+    redirect_to @notification.link, allow_other_host: true
   end
 
   def new
