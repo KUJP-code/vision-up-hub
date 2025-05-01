@@ -24,3 +24,4 @@ ja:
       email: "メールアドレス"
       name: "名前"
       role: "登録種類"
+      created: "作成日"
