@@ -52,5 +52,6 @@ module Materials
 
     # logidze needs the schema to be in SQL format
     config.active_record.schema_format = :sql
+
   end
 end
