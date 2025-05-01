@@ -4,3 +4,10 @@ ja:
       no_new: "新着通知なし"
       notifications: "通知"
       view_all: "全ての通知を確認"
+
+    index:
+      notification_list: "お知らせ一覧"
+      text: "タイトル"
+      time_ago: "受信後"
+      read: "未読"
+      delete: "削除"

@@ -12,3 +12,9 @@ ja:
       future_lessons: "次の授業: %{date}"
       past_lessons: "過去の授業: %{date}"
       today_lessons: "本日のクラス"
+    form:
+      schools: "配属スクール"
+      remove: "削除"
+      classes: "クラス"
+      add_school: "配属スクールを追加"
+      add_class: "クラスを追加"

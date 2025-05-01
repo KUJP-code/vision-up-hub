@@ -1,6 +1,6 @@
 - admin = current_user.is?('Admin')
 
-= render 'shared/subtitle', text: 'Tests'
+= render 'shared/subtitle', text: t('.tests')
 
 %main.flex.flex-col.gap-3.p-3
   - if admin

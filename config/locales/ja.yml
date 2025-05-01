@@ -1,6 +1,6 @@
 ---
 ja:
-  actions: "アクション"
+  actions: "結果"
   activerecord:
     errors:
       messages:
@@ -210,4 +210,4 @@ ja:
       short: "%m/%d %H:%M"
     pm: 午後
   update_notes: "更新履歴"
-  update_success: "更新成功"
+  update_success: "更新されました"

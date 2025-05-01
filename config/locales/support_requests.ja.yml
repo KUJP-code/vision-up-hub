@@ -16,7 +16,7 @@ ja:
       send_message: "メッセージを送信する"
       submit_request: "依頼を送信する"
       subject: "件名"
-      typo_report: "タイプレポート"
+      typo_report: "誤字脱字・スペルミス報告"
     index:
       active_requests: "進行中の依頼"
       messages: "メッセージ"
@@ -27,10 +27,15 @@ ja:
       resolved_requests: "解決済みの依頼"
       support_requests: "サポート依頼"
     show:
+      category: "カテゴリー"
       edit: "編集"
       mark_resolved: "解決済"
       messages: "メッセージ"
       send: "送信"
+      user: "ユーザー"
+      reported_at: "受信日時"
     status_badge:
       open: "オープン"
-      resolved: "解決済"
+      resolved: "解決済み"
+    resolved:
+      resolved: "解決済み"

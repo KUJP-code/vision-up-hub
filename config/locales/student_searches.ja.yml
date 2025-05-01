@@ -5,7 +5,7 @@ ja:
       birthday: "誕生日"
       child_level: "レベル"
       child_name: "子供名"
-      find_child: "子供を探す"
+      find_child: "生徒を探す"
       school: "在籍スクール"
       search: "検索"
       select_child_level: "レベルを選択してください"
@@ -14,12 +14,12 @@ ja:
     parent_form:
       child_level: "レベル"
       child_name: "子供名"
-      find_child: "子供を探す"
+      find_child: "生徒を探す"
       search: "検索"
       select_child_level: "レベルを選択してください"
       student_id: "生徒ＩＤ"
       student_not_found: "学生を見つけられませんでした"
       birthday: "生年月日"
     results:
-      child_claimed: "%{parent}が%{child}を割り当てました"
+      child_claimed: "%{parent}が%{child}を追加しました"
       claim_child: "%{child}を割り当てます"

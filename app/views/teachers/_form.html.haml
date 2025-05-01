@@ -8,7 +8,7 @@
   = render 'users/fields', f:
 
   - unless current_user.is?('Teacher')
-    %h3.text-center.font-bold Schools
+    %h3.text-center.font-bold= t('.schools')
     .flex.flex-wrap.gap-3{ 'data-controller': 'fields' }
       - if user.schools.empty?
         = f.fields_for :school_teachers,
@@ -30,9 +30,9 @@
       %div{ 'data-fields-target' => 'target' }
 
       %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
-        Add School
+        = t('.add_school')
 
-    %h3.text-center.font-bold Classes
+    %h3.text-center.font-bold= t('.classes')
     .flex.flex-wrap.gap-3{ 'data-controller': 'fields' }
       = f.fields_for :class_teachers do |ct_f|
         = render 'class_teachers/fields', f: ct_f, collection: classes,
@@ -48,7 +48,7 @@
       %div{ 'data-fields-target' => 'target' }
 
       %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
-        Add Class
+        = t('.add_class')
 
   = f.submit class: 'btn btn-main',
              id: 'submit_teacher'
