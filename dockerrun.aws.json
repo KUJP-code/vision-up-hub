@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:1.8.1-translations"
+    "Name": "kidsup/materials:1.8.2-notifications"
   },
   "Ports": [
     {
