@@ -16,6 +16,7 @@ class NotificationsController < ApplicationController
   def show
     @notification = authorize current_user.notifications[params[:id].to_i]
     current_user.mark_notification_read(index: params[:id])
+    Rails.logger.info "REDIRECTING TO: #{@notification.link.inspect}"
     redirect_to @notification.link
   end
 
