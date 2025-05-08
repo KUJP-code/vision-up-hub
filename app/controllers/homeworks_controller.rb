@@ -1,11 +1,12 @@
 class HomeworksController < ApplicationController
   before_action :set_course
+  before_action :set_courses
   before_action :set_homework, only: %i[show destroy]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :verify_authorized, except: %i[index]
 
   def index
-    @homeworks = @course.homeworks
+    @homeworks = @course.homeworks.index_by(&:week)
   end
 
   def new
@@ -31,6 +32,10 @@ class HomeworksController < ApplicationController
 
   def set_course
     @course = Course.find(params[:course_id])
+  end
+
+  def set_courses
+    @courses = police_scope(Course)
   end
 
   def homework_params

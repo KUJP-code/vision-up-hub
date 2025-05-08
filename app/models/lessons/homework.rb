@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Homework < ApplicationRecord
-  belong_to :course
+  belongs_to :course
   has_one_attached :questions
   has_one_attached :answers
 
