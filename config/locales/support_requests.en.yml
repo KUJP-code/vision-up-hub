@@ -18,6 +18,7 @@ en:
       subject: "Subject"
       typo_report: "Typo Report"
     index:
+      messages: "Messages"
       active_requests: "Active Requests"
       new_message: "New Message"
       new_request: "New Support Request"
@@ -26,10 +27,15 @@ en:
       resolved_requests: "Resolved Requests"
       support_requests: "Support Requests"
     show:
+      category: "Category"
       edit: "Edit"
       mark_resolved: "Mark Resolved"
       messages: "Messages"
       send: "Send"
+      user: "User"
+      reported_at: "Reported at"
     status_badge:
       open: "Open"
+      resolved: "Resolved"
+    resolved:
       resolved: "Resolved"
