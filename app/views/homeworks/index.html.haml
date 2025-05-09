@@ -1,0 +1,43 @@
+= render 'shared/subtitle', text: t('Homework')
+
+%main.flex.flex-col.gap-6.p-3
+  - if current_user.is?('Admin', 'Writer')
+    %nav.tab-nav
+      - @courses.each do |course|
+        - active = course.id == @course&.id ? 'active' : 'inactive'
+        = link_to course.title,
+                  homeworks_path(course_id: course.id),
+                  class: "nav-tab #{active}"
+
+  %table
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary.px-4.py-2 Week
+        %th.thead.bg-secondary.px-4.py-2 Questions
+        %th.thead.bg-secondary.px-4.py-2 Answers
+        %th.thead.thead-e.bg-secondary.px-4.py-2 Actions
+    %tbody
+      - (1..52).each do |week|
+        - hw = @homeworks[week]
+        %tr
+          %td.px-4.py-2= "Week #{week}"
+          
+          %td.px-4.py-2
+            - if hw&.questions&.attached?
+              = link_to hw.questions.filename.to_s, url_for(hw.questions)
+            - else
+              = form_with model: Homework.new(course: @course, week: week), url: homeworks_path(course_id: @course.id), method: :post do |f|
+                = f.file_field :questions
+          %td.px-4.py-2
+            - if hw&.answers&.attached?
+              = link_to hw.answers.filename.to_s, url_for(hw.answers)
+            - else
+              = form_with model: Homework.new(course: @course, week: week), url: homeworks_path(course_id: @course.id), method: :post do |f|
+                = f.file_field :answers
+              
+          %td.px-4.py-2
+            - if hw
+              = link_to 'Update', edit_homework_path(@course, hw), class: 'btn btn-secondary'
+              = link_to 'Delete', homework_path(@course, hw), data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') }, class: 'btn btn-danger'
+            - else
+              = link_to 'Add', new_homework_path(@course, homework: { week: week }), class: 'btn btn-secondary'

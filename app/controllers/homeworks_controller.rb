@@ -1,12 +1,16 @@
 class HomeworksController < ApplicationController
-  before_action :set_course
   before_action :set_courses
-  before_action :set_homework, only: %i[show destroy]
+  before_action :set_course, only: %i[index new create destroy]
+  before_action :set_homework, only: %i[destroy]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :verify_authorized, except: %i[index]
 
   def index
-    @homeworks = @course.homeworks.index_by(&:week)
+    @homeworks = if @course
+                   @course.homeworks.index_by(&:week)
+                 else
+                   {}
+                 end
   end
 
   def new
@@ -15,27 +19,35 @@ class HomeworksController < ApplicationController
 
   def create
     @homework = @course.homeworks.new(homework_params)
+    authorize @homework
 
     if @homework.save
-      redirect_to course_homeworks_path(@course), notice: 'Homework uploaded.'
+      redirect_to homeworks_path(course_id: @course.id), notice: 'Homework uploaded.'
     else
       render :new
     end
   end
 
   def destroy
+    @course = @homework.course
+    authorize @homework
     @homework.destroy
-    redirect_to course_homeworks_path(@course), notice: 'Homework deleted.'
+    redirect_to homeworks_path(course_id: @course.id), notice: 'Homework deleted.'
   end
 
   private
 
   def set_course
-    @course = Course.find(params[:course_id])
+    @course = Course.find_by(id: params[:course_id])
+    Rails.logger.debug { "SET_COURSE: #{params[:course_id]} => #{@course&.title}" }
   end
 
   def set_courses
-    @courses = police_scope(Course)
+    @courses = policy_scope(Course)
+  end
+
+  def set_homework
+    @homework = Homework.find(params[:id])
   end
 
   def homework_params
