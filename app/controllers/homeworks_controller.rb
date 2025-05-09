@@ -7,10 +7,13 @@ class HomeworksController < ApplicationController
 
   def index
     @homeworks = if @course
-                   @course.homeworks.index_by(&:week)
-                 else
-                   {}
-                 end
+      @course.homeworks.includes(:questions_attachment, :answers_attachment, 
+                                  questions_attachment: :blob, answers_attachment: :blob)
+                         .index_by(&:week)
+    else
+      {}
+    end
+
   end
 
   def new
@@ -20,11 +23,11 @@ class HomeworksController < ApplicationController
   def create
     @homework = @course.homeworks.new(homework_params)
     authorize @homework
-
+  
     if @homework.save
       redirect_to homeworks_path(course_id: @course.id), notice: 'Homework uploaded.'
     else
-      render :new
+      redirect_to homeworks_path(course_id: @course.id), alert: t('failure')
     end
   end
 
@@ -39,7 +42,6 @@ class HomeworksController < ApplicationController
 
   def set_course
     @course = Course.find_by(id: params[:course_id])
-    Rails.logger.debug { "SET_COURSE: #{params[:course_id]} => #{@course&.title}" }
   end
 
   def set_courses

@@ -16,24 +16,26 @@ class HomeworkPolicy < ApplicationPolicy
   def destroy?
     user.is?('Admin')
   end
-end
 
-class Scope < scope
-  def resolve
-    user.is?('Admin') ? scope.all : scope.none
-    case user.type
-    when 'Admin'
-      scope.all
-    else filter_by_week_range(scope)
-  end
+  class Scope < Scope
+    def resolve
+      user.is?('Admin') ? scope.all : scope.none
+      case user.type
+      when 'Admin'
+        scope.all
+      else
+        filter_by_week_range(scope)
+      end
+    end
 
-  private
+    private
 
-  def filter_by_week_range
-    current_week = Date.current.cweek
-    min_week = [current_week - 2, 1].max
-    max_week = [current_week + 2, 52].min
+    def filter_by_week_range(scope)
+      current_week = Date.current.cweek
+      min_week = [current_week - 2, 1].max
+      max_week = [current_week + 2, 52].min
 
-    scope.where(week: min_week..max_week)
+      scope.where(week: min_week..max_week)
+    end
   end
 end
