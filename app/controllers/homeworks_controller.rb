@@ -53,6 +53,6 @@ class HomeworksController < ApplicationController
   end
 
   def homework_params
-    params.require(:homework).permit(:week, :questions, :answers)
+    params.require(:homework).permit(:week, :questions, :answers, :level)
   end
 end
