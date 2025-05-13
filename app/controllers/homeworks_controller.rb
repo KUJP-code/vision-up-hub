@@ -10,6 +10,8 @@ class HomeworksController < ApplicationController
       @course.homeworks.includes(:questions_attachment, :answers_attachment, 
                                   questions_attachment: :blob, answers_attachment: :blob)
                          .index_by(&:week)
+    @homeworks_by_week_and_level = @course.homeworks.index_by { |h| [h.week, h.level] }
+
     else
       {}
     end
@@ -21,15 +23,17 @@ class HomeworksController < ApplicationController
   end
 
   def create
-    @homework = @course.homeworks.new(homework_params)
+    @homework = @course.homeworks.find_or_initialize_by(week: homework_params[:week], level: homework_params[:level])
     authorize @homework
+    @homework.assign_attributes(homework_params)
   
     if @homework.save
-      redirect_to homeworks_path(course_id: @course.id), notice: 'Homework uploaded.'
+      redirect_to homeworks_path(course_id: @course.id), notice: 'Homework saved.'
     else
-      redirect_to homeworks_path(course_id: @course.id), alert: t('failure')
+      redirect_to homeworks_path(course_id: @course.id), alert: 'Failed to save homework.'
     end
   end
+  
 
   def destroy
     @course = @homework.course

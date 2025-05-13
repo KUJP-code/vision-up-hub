@@ -1183,7 +1183,8 @@ CREATE TABLE public.homeworks (
     course_id bigint NOT NULL,
     week integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    level integer
 );
 
 
@@ -1450,7 +1451,7 @@ CREATE TABLE public.phonics_resources (
     week integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    course_id bigint DEFAULT 1 NOT NULL
+    course_id bigint DEFAULT 1
 );
 
 
@@ -3255,6 +3256,13 @@ CREATE INDEX index_homeworks_on_course_id ON public.homeworks USING btree (cours
 
 
 --
+-- Name: index_homeworks_on_course_id_and_week_and_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_homeworks_on_course_id_and_week_and_level ON public.homeworks USING btree (course_id, week, level);
+
+
+--
 -- Name: index_invoices_on_deleted_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4196,6 +4204,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250513013436'),
+('20250513011319'),
 ('20250319011624'),
 ('20250206091625'),
 ('20250205013816'),

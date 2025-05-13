@@ -13,36 +13,34 @@
     %table
       %thead
         %tr
-          %th.thead.thead-s.bg-secondary.px-4.py-2 Week
-          %th.thead.bg-secondary.px-4.py-2 Questions
-          %th.thead.bg-secondary.px-4.py-2 Answers
-          %th.thead.thead-e.bg-secondary.px-4.py-2 Actions
+          %th.thead.thead-s.bg-secondary.px-4.py-2 Week #
+          %th.thead.bg-secondary.px-4.py-2 Land
+          %th.thead.bg-secondary.px-4.py-2 Sky
+          %th.thead.thead-e.bg-secondary.px-4.py-2 Galaxy
       %tbody
         - (1..52).each do |week|
-          - hw = @homeworks[week]
-          %tr  
-            = form_with model: Homework.new(course: @course, week: week), url: homeworks_path(course_id: @course.id), method: :post, local: true do |f|
-              = f.hidden_field :week, value: week  
-              %td.px-4.py-2
-                = "Week #{week}"
-              %td.px-4.py-2
-                = f.file_field :questions, id: "homework_questions_#{week}"
-                %span{ id: "homework_questions_#{week}_filename" }
-                  - if hw&.questions&.attached?
-                    = hw.questions.filename.to_s
-                  - else
-                    No questions
-              %td.px-4.py-2
-                = f.file_field :answers, id: "homework_answers_#{week}"
-                %span{ id: "homework_answers_#{week}_filename" }
-                  - if hw&.answers&.attached?
-                    = hw.answers.filename.to_s
-                  - else
-                    No answers
-              %td.px-4.py-2
-                = f.submit 'Add', class: 'btn btn-secondary'
+          %tr
+            %td.px-4.py-2= "Week #{week}"
 
+            - %w[land_one sky_one galaxy_one].each do |level|
+              - hw = @homeworks_by_week_and_level[[week, level]]
               %td.px-4.py-2
-                - if hw
-                  = link_to 'Update', edit_homework_path(@course, hw), class: 'btn btn-secondary'
-                  = link_to 'Delete', homework_path(@course, hw), data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') }, class: 'btn btn-danger'
+                = form_with model: Homework.new(course: @course, week: week, level: level), url: homeworks_path(course_id: @course.id), method: :post, local: true, html: { multipart: true } do |f|
+                  = f.hidden_field :week, value: week
+                  = f.hidden_field :level, value: level
+
+                  - if hw&.questions&.attached?
+                    %p= link_to hw.questions.filename.to_s, url_for(hw.questions)
+                  - else
+                    = f.file_field :questions
+
+                  - if hw&.answers&.attached?
+                    %p= link_to hw.answers.filename.to_s, url_for(hw.answers)
+                  - else
+                    = f.file_field :answers
+
+                  - if hw
+                    = link_to 'Delete', homework_path(hw), data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') }, class: 'btn btn-danger float-right mt-1'
+                  - else
+                    = f.submit 'Add', class: 'btn btn-secondary'
+
