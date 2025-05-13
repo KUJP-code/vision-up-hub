@@ -57,6 +57,17 @@ module Levelable
       end
     end
 
+    # Only used for homework, potentially adding different homework per sky_one sky_two etc in the near future so when that happens this can be removed.
+    def normalized_level
+      case level
+      when 'land_two', 'land_three' then 'land_one'
+      when 'sky_two', 'sky_three' then 'sky_one'
+      when 'galaxy_two', 'galaxy_three' then 'galaxy_one'
+      else level
+      end
+    end
+
+
     def calendar_level
       case short_level
       when 'Land', 'Sky', 'Galaxy', 'All Levels'

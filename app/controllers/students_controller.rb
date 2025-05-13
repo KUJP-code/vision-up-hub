@@ -106,31 +106,24 @@ class StudentsController < ApplicationController
   end
 
   def set_homework_resources
-    # TODO: this is super inefficient, i need to nest it
+    @homework_resources = []
     org = @student.organisation
-    plans = org.plans.where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
-    course_ids = plans.pluck(:course_id)
-
-    lesson_ids =
-      if @student.sky?
-        Lesson.sky.pluck(:id)
-      elsif @student.land?
-        Lesson.land.pluck(:id)
-      elsif @student.galaxy?
-        Lesson.galaxy.pluck(:id)
-      end
-
-    all_resources = HomeworkResource
-                    .where(course_id: course_ids)
-                    .where(english_class_id: lesson_ids)
-
-    @homework_resources = all_resources.select do |res|
-      plan = plans.detect { |p| p.course_id == res.course_id }
-      next false unless plan
-
-      resource_date = plan.start + (res.week - 1).weeks
-      p resource_date
-    end
+  
+    plan = org.plans
+              .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+              .first
+    return unless plan
+  
+    course = Course.find_by(id: plan.course_id)
+    return unless course
+  
+    current_week = ((Time.zone.today - plan.start.to_date).to_i / 7) + 1
+    week_range = (current_week - 2..current_week + 2).to_a.select { |w| w.between?(1, 52) }
+  
+    @homework_resources = Homework
+                          .where(course_id: course.id, level: @student.normalized_level, week: week_range)
+                          .includes(:questions_attachment, :answers_attachment)
+                          .order(:week)
   end
 
   def student_params
