@@ -58,12 +58,6 @@ class CategoryResource < ApplicationRecord
     PhonicsResource.where(blob_id: resource.blob_id)
   end
 
-  def homework_resources
-    return HomeworkResource.none unless lesson_category == 'english_class'
-
-    HomeworkResource.where(blob_id: resource.blob_id)
-  end
-
   private
 
   def check_not_used

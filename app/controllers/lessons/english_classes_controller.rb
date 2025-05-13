@@ -40,8 +40,6 @@ class EnglishClassesController < LessonsController
   private
 
   def type_params
-    params.require(:english_class).permit(lesson_params + EnglishClass::ATTRIBUTES + [{ homework_resources_attributes: %i[
-      id blob_id course_id week _destroy
-    ] }])
+    params.require(:english_class).permit(lesson_params + EnglishClass::ATTRIBUTES)
   end
 end
