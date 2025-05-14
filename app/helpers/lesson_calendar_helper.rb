@@ -57,12 +57,12 @@ module LessonCalendarHelper
           { 'Kindy' => 'row-start-[18]', 'Land' => 'row-start-[19]',
             'Sky' => 'row-start-[20]', 'Galaxy' => 'row-start-[21]' },
       'StandShowSpeak' =>
-          { 'Land' => 'row-start-[23]', 'Sky' => 'row-start-[24]',
-            'Galaxy' => 'row-start-[25]' },
+          { 'Kindy' => 'row-start-[23]', 'Land' => 'row-start-[24]', 'Sky' => 'row-start-[25]',
+            'Galaxy' => 'row-start-[26]' },
       'EveningClass' =>
-          { 'Keep Up' => 'row-start-[27]',
-            'specialist' => 'row-start-[28]',
-            'specialist_advanced' => 'row-start-[29]' }
+          { 'Keep Up' => 'row-start-[28]',
+            'specialist' => 'row-start-[29]',
+            'specialist_advanced' => 'row-start-[30]' }
     }[type][level]
   end
 
@@ -71,7 +71,7 @@ module LessonCalendarHelper
       'PhonicsClass' => 'row-start-12',
       'EnglishClass' => 'row-start-[17]',
       'StandShowSpeak' => 'row-start-[22]',
-      'EveningClass' => 'row-start-[26]' }
+      'EveningClass' => 'row-start-[27]' }
   end
 
   def lesson_type_rows
@@ -79,8 +79,8 @@ module LessonCalendarHelper
       'DailyActivity' => 'row-start-9 row-span-3',
       'PhonicsClass' => 'row-start-13 row-span-4',
       'EnglishClass' => 'row-start-[18] row-span-4',
-      'StandShowSpeak' => 'row-start-[23] row-span-3',
-      'EveningClass' => 'row-start-[27] row-span-3' }
+      'StandShowSpeak' => 'row-start-[23] row-span-4',
+      'EveningClass' => 'row-start-[28] row-span-3' }
   end
 
   def calendar_level_dots(level)
