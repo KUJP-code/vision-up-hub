@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating a Party', skip: 'Parties dont exist yet' do
+RSpec.describe 'creating a Party', :js do
   let!(:org) { create(:organisation, name: 'KidsUP') }
   let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
 
