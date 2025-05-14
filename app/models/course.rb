@@ -25,4 +25,10 @@ class Course < ApplicationRecord
       plans.to_h { |p| [p.organisation.name, { startDate: p.start }] }
     end
   end
+
+  def start_date_for(org_id = nil)
+    plan = org_id ? plans.find_by(organisation_id: org_id) : plans.minimum(:start)
+    plan&.start || Date.current.beginning_of_year
+  end
+
 end

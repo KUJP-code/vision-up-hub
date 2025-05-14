@@ -59,4 +59,11 @@ class HomeworksController < ApplicationController
   def homework_params
     params.require(:homework).permit(:week, :questions, :answers, :level)
   end
+  
+  def week_range_start(org)
+    plan = Plan.find_by(course_id: course_id, organisation_id: org.id)
+    return nil unless plan
+
+    plan.start + (week - 1).weeks
+  end
 end

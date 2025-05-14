@@ -98,26 +98,19 @@ class StudentsController < ApplicationController
 
   private
 
-  def resource_date(resource)
-    plan = Plan.find_by(course_id: resource.course_id, organisation_id: org.id)
-    return unless plan
-
-    plan.start + (resource.week - 1).weeks
-  end
-
   def set_homework_resources
     @homework_resources = []
     org = @student.organisation
   
-    plan = org.plans
+    @plan = org.plans
               .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
               .first
-    return unless plan
+    return unless @plan
   
-    course = Course.find_by(id: plan.course_id)
+    course = Course.find_by(id: @plan.course_id)
     return unless course
   
-    current_week = ((Time.zone.today - plan.start.to_date).to_i / 7) + 1
+    current_week = ((Time.zone.today - @plan.start.to_date).to_i / 7) + 1
     week_range = (current_week - 2..current_week + 2).to_a.select { |w| w.between?(1, 52) }
   
     @homework_resources = Homework
