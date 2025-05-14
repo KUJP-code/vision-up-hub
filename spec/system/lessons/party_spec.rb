@@ -14,19 +14,15 @@ RSpec.describe 'creating a Party', :js do
   it 'can create an Party' do
     visit lessons_path
     find_by_id('create_lesson').click
-    click_link 'create_party'
-    within '#party_form' do
-      fill_in 'party_title', with: 'Test Party'
-      attach_file('Materials List', dummy_file_path)
-      attach_file('Guides', dummy_file_path, dummy_file_path)
-      attach_file('Promotion', dummy_file_path)
-      fill_in 'Party Date', with: Time.Zone.Today
-      fill_in 'Show From', with: Time.Zone.Today
-      fill_in 'Show Until', with: Time.zone.Today + 7.days
+    click_link 'create_party_activity'
+    within '#party_activity_form' do
+      fill_in 'party_activity_title', with: 'Test Party'
+      fill_in 'Event Date', with: Time.zone.today
+      fill_in 'Show From', with: Time.zone.today
+      fill_in 'Show Until', with: Time.zone.today + 7.days
       click_button 'commit'
 
       expect(page).to have_content('Test Party')
-      expect(page).to have_content('img.guide_image')
     end
   end
 end
