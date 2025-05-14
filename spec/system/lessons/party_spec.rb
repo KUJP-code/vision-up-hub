@@ -17,12 +17,12 @@ RSpec.describe 'creating a Party', :js do
     click_link 'create_party_activity'
     within '#party_activity_form' do
       fill_in 'party_activity_title', with: 'Test Party'
-      fill_in 'Event Date', with: Time.zone.today
-      fill_in 'Show From', with: Time.zone.today
-      fill_in 'Show Until', with: Time.zone.today + 7.days
+      fill_in 'Event Date', with: Time.current
+      fill_in 'Show From', with: Time.current
+      fill_in 'Show Until', with: 7.days.from_now
+      fill_in 'party_activity_goal', with: 'Sample goal'
       click_button 'commit'
-
-      expect(page).to have_content('Test Party')
     end
+    expect(page).to have_content('Test Party')
   end
 end
