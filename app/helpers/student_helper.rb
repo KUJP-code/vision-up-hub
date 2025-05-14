@@ -31,8 +31,7 @@ module StudentHelper
   end
 
   def default_icon(child)
-    return 'id/id-girl.svg' unless child.sex == (:male)
-
-    'id/id-boy.svg'
+    child.sex.to_sym == :male ? 'id/id-boy.svg' : 'id/id-girl.svg'
   end
+
 end
