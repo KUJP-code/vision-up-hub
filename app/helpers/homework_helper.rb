@@ -19,12 +19,13 @@ module HomeworkHelper
 
   private
 
-  def week_range_text(week)
+   def week_range_text(week)
     return '' unless defined?(@plan) && @plan.present?
 
-    monday = @plan.start.to_date + (week - 1).weeks
-    sunday = monday.end_of_week(:sunday)
-    "#{monday.strftime('%b %d')} - #{sunday.strftime('%b %d')}"
+    start_date = @plan.start.to_date + (week - 1).weeks
+    end_date = start_date + 6.days
+
+    "#{start_date.strftime('%b %d')} - #{end_date.strftime('%b %d')}"
   end
 
 

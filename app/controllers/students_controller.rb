@@ -101,18 +101,18 @@ class StudentsController < ApplicationController
   def set_homework_resources
     @homework_resources = []
     org = @student.organisation
-  
+
     @plan = org.plans
               .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
               .first
     return unless @plan
-  
+
     course = Course.find_by(id: @plan.course_id)
     return unless course
-  
+
     current_week = ((Time.zone.today - @plan.start.to_date).to_i / 7) + 1
     week_range = (current_week - 2..current_week + 2).to_a.select { |w| w.between?(1, 52) }
-  
+
     @homework_resources = Homework
                           .where(course_id: course.id, level: @student.normalized_level, week: week_range)
                           .includes(:questions_attachment, :answers_attachment)
