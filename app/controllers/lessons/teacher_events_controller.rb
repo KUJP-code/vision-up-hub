@@ -2,7 +2,7 @@
 
 class TeacherEventsController < ApplicationController
   after_action :verify_authorized, only: %i[show]
-  SUPPORTED_TYPES = %w[seasonalactivity parties events].freeze
+  SUPPORTED_TYPES = %w[seasonalactivity partyactivity events].freeze
   def index
     index_vars
   end

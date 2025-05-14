@@ -19,7 +19,7 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def update?
-    self?
+    self? || user.id == SPECIAL_ADMIN_ID
   end
 
   def destroy?

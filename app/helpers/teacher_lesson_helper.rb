@@ -5,7 +5,7 @@ module TeacherLessonHelper
     heading = case lesson.type
               when 'KindyPhonic', 'PhonicsClass'
                 'phonics'
-              when 'SpecialLesson', 'SeasonalActivity', 'Event', 'Party'
+              when 'SpecialLesson', 'SeasonalActivity', 'Event', 'PartyActivity'
                 lesson.title
               else
                 lesson.type.underscore

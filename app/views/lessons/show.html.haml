@@ -36,9 +36,11 @@
 
       %h3 Goal:
       %p= @lesson.goal
-      - if @lesson.type == 'SeasonalActivity'
+      - case @lesson.type
+      - when 'SeasonalActivity'
         = render 'lessons/seasonal_activities/show_fields', lesson: @lesson
-
+      - when 'PartyActivity'
+        = render 'lessons/party_activities/show_fields', lesson: @lesson
       - if @courses.any?
         %h3 Used in the following courses:
         - @courses.each do |c|
