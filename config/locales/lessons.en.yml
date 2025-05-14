@@ -10,9 +10,10 @@ en:
     topic_study: "Topic Study"
     special_lesson: "Special Lesson"
     stand_show_speak: "Stand Show & Speak"
-    seasonalactivity: "Seasonal"
+    seasonalactivity: "Seasonals"
+    partyactivity: "Parties"
     parties: "Party"
-    events: "Event"
+    events: "Events"
     subtypes:
       aerobics: "Aerobics"
       arts_and_crafts: "Arts & Crafts"

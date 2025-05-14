@@ -11,7 +11,8 @@ ja:
     special_lesson: "特別レッスン"
     stand_show_speak: "プレゼンテーション"
     seasonalactivity: "シーズナルスクール"
-    parties: "パーティー"
+    partyactivity: "パーティー"
+    party: "パーティー"
     events: "イベント"
     subtypes:
       aerobics: "エアロバイス"
