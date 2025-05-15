@@ -34,6 +34,6 @@
   = form_with model: [@support_request, @support_request.messages.new],
               html: { class: 'form p-0 items-center',
                       id: 'new_support_message' } do |f|
-    = f.text_area :message, rows: 5, class: 'w-full'
+    = f.text_area :message, rows: 5, class: 'w-full', required: true
     = f.file_field :images, accept: 'image/*', multiple: true, class: 'w-full'
     = f.submit t('.send'), class: 'btn btn-main w-full md:w-1/3'
