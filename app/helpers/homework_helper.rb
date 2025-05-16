@@ -2,9 +2,9 @@ module HomeworkHelper
 
   def render_homework_rows(homeworks)
     return '' if homeworks.blank?
-  
+
     grouped = homeworks.group_by(&:week)
-  
+
     grouped.map do |week, hws|
       content_tag(:tr) do
         concat(content_tag(:td, week_range_text(week), class: 'p-2'))
@@ -19,7 +19,7 @@ module HomeworkHelper
 
   private
 
-   def week_range_text(week)
+  def week_range_text(week)
     return '' unless defined?(@plan) && @plan.present?
 
     start_date = @plan.start.to_date + (week - 1).weeks
@@ -28,14 +28,12 @@ module HomeworkHelper
     "#{start_date.strftime('%b %d')} - #{end_date.strftime('%b %d')}"
   end
 
-
   def homework_buttons(hw)
     buttons = []
     buttons << homework_link(hw.questions, t('.questions'), 'btn btn-secondary') if hw.questions.attached?
     buttons << homework_link(hw.answers, t('.answers'), 'btn btn-danger') if hw.answers.attached?
     buttons.join
   end
-
 
   def homework_link(file, label, btn_class)
     link_to url_for(file), target: '_blank', rel: 'noopener', class: "#{btn_class} resource flex items-center justify-center gap-2 flex-1" do
