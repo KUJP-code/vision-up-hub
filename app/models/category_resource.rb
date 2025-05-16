@@ -37,8 +37,7 @@ class CategoryResource < ApplicationRecord
     sight_words: 2,
     worksheets: 3,
     slides: 4,
-    activities: 5,
-    homework_sheet: 6
+    activities: 5
   }
 
   validates :lesson_category, :resource_category, presence: true
@@ -70,13 +69,6 @@ class CategoryResource < ApplicationRecord
 
   def valid_combo
     send(:"#{lesson_category}_resource?")
-  end
-
-  def english_class_resource?
-    return true if resource_category == 'homework_sheet'
-
-    errors.add(:lesson_category, 'Requires a homework resource')
-    false
   end
 
   def phonics_class_resource?
