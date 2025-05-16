@@ -9,8 +9,9 @@ class HomeworksController < ApplicationController
     @homeworks = if @course
       @course.homeworks.includes(:questions_attachment, :answers_attachment, 
                                   questions_attachment: :blob, answers_attachment: :blob)
-                         .index_by(&:week)
+             .index_by(&:week)
     @homeworks_by_week_and_level = @course.homeworks.index_by { |h| [h.week, h.level] }
+    @homeworks_grouped_by_level = @course&.homeworks&.group_by(&:short_level)
 
     else
       {}
