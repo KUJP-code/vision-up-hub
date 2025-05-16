@@ -1,0 +1,44 @@
+%main.flex.flex-col.gap-6.p-3
+  - if current_user.is?('Admin', 'Writer')
+    %nav.tab-nav
+      - @courses.each do |course|
+        - active = course.id == @course&.id ? 'active' : 'inactive'
+        = link_to course.title,
+                  homeworks_path(course_id: course.id),
+                  class: "nav-tab #{active}"
+
+  - if @course
+    %table
+      %thead
+        %tr
+          %th.thead.thead-s.bg-secondary.px-4.py-2 Week #
+          %th.thead.bg-secondary.px-4.py-2 Land
+          %th.thead.bg-secondary.px-4.py-2 Sky
+          %th.thead.thead-e.bg-secondary.px-4.py-2 Galaxy
+      %tbody
+        - (1..52).each do |week|
+          %tr
+            %td.px-4.py-2= "Week #{week}"
+
+            - %w[land_one sky_one galaxy_one].each do |level|
+              - hw = @homeworks_by_week_and_level[[week, level]]
+              %td.px-4.py-2
+                = form_with model: Homework.new(course: @course, week: week, level: level), url: homeworks_path(course_id: @course.id), method: :post, local: true, html: { multipart: true } do |f|
+                  = f.hidden_field :week, value: week
+                  = f.hidden_field :level, value: level
+
+                  - if hw&.questions&.attached?
+                    %p= link_to hw.questions.filename.to_s, url_for(hw.questions)
+                  - else
+                    = f.file_field :questions
+
+                  - if hw&.answers&.attached?
+                    %p= link_to hw.answers.filename.to_s, url_for(hw.answers)
+                  - else
+                    = f.file_field :answers
+
+                  - if hw
+                    = link_to 'Delete', homework_path(hw), data: { turbo_method: :delete, turbo_confirm: t('confirm_delete') }, class: 'btn btn-danger float-right mt-1'
+                  - else
+                    = f.submit 'Add', class: 'btn btn-secondary'
+

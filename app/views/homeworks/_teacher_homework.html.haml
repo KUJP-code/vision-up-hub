@@ -1,0 +1,11 @@
+%table.text.md:text-base
+  %thead
+    %tr.text-white.font-bold
+      %th.thead.thead-s.bg-secondary-50= t('.week')
+      %th.thead.thead-e.bg-secondary-50= t('.book_pages')
+  %tbody.text-center
+    - @homeworks.keys.sort.each do |week|
+      - hw = @homeworks[week]
+      %tr
+        %td= "Week #{week}"
+        %td= hw.book_pages.presence || '-'
