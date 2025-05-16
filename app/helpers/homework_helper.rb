@@ -25,7 +25,7 @@ module HomeworkHelper
     start_date = @plan.start.to_date + (week - 1).weeks
     end_date = start_date + 6.days
 
-    "#{start_date.strftime('%b %d')} - #{end_date.strftime('%b %d')}"
+    "#{l(start_date, format: :short)} - #{l(end_date, format: :short)}"
   end
 
   def homework_buttons(hw)

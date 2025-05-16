@@ -7,7 +7,7 @@
       - ordered = ['Land', 'Sky', 'Galaxy', 'Keep Up', 'Specialist']
       - @short_levels.sort_by { |lvl| ordered.index(lvl) || 999 }.each do |level|
         - active = (params[:level] == level) ? 'active' : 'inactive'
-        = link_to level.capitalize,
+        = link_to t("levels.#{level.downcase}"),
                   homeworks_path(course_id: @course.id, level: level),
                   class: "nav-tab #{active}"
 
@@ -23,7 +23,7 @@
           - else
             %tr
               %td.p-4.text-center{ colspan: 2 }
-                %em.text-gray-500= t('.no_homework')
+                %em.text= t('.no_homework')
 
   - if current_user.is?('Admin', 'Writer')
     = render 'admin'

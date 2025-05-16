@@ -1,0 +1,8 @@
+en:
+  homeworks:
+    index:
+      homework: "Homework"
+      date: "Date"
+      pages: "Pages"
+      questions: "Questions"
+      answers: "Answers"
