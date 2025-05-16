@@ -85,6 +85,7 @@ Rails.application.routes.draw do
       post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
       get 'admin_password_change', to: 'admins#new_password_change', as: :admin_password_change
       post 'admin_password_change', to: 'admins#change_password', as: :admin_change_password      
+      get 'teacher_homework', to: 'homeworks#teacher_index', as: :teacher_homework
 
       # Index for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
