@@ -7,7 +7,7 @@ module UserHelper
   end
 
   def todays_lessons_link
-    first_teacher = current_user.organisation.teachers.first
+    first_teacher = Teacher.where(school_id: current_user.schools.select(:id)).first
 
     if first_teacher
       link_to organisation_teacher_path(id: first_teacher.id, organisation_id: current_user.organisation.id),
