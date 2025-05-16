@@ -1,4 +1,4 @@
-= render 'shared/subtitle', text: "Welcome, #{@user.name}"
+= render 'shared/subtitle', text: "#{@user.name}"
 
 %main.flex.flex-col.gap-12.p-10
   - if @announcements.any?
@@ -29,6 +29,9 @@
       = link_to monthly_materials_path, class: 'btn btn-outline-white w-full flex gap-2' do
         #{inline_svg_tag('monthly_materials.svg', class: 'w-10 h-10')}
         = t('.materials')
+      = link_to homeworks_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('homework.svg', class: 'w-10 h-10')}
+        = t('.homework')
 
   %section.flex.flex-col.gap-6
     %h3.font-bold= t('.support_and_settings')
