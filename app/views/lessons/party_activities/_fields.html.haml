@@ -2,6 +2,10 @@
 
 = content_for :priority_fields do
 
+  .form-group 
+    = f.label :cover_image, 'Cover Image, 64x64px png only'
+    = f.file_field :cover_image, accept: 'image/png'
+    
   .form-group
     = f.label :event_date, 'Event Date'
     = f.date_field :event_date, min: '1900-01-01', max: '2100-12-31'
