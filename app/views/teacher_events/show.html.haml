@@ -6,12 +6,12 @@
     %header
       %h1{ class: "type #{border}" }
         = lesson_type_heading(@lesson)
-      = image_tag type_icon_path(@lesson), class: 'h-full place-self-end'
+      = lesson_image_tag(@lesson, @lesson.type, class: 'h-full place-self-end rounded')
+
       %h3.details= lesson_details_heading(@lesson)
 
-    - if @lesson.activity_guide.attached?
-      = render 'teacher_events/guide_section',
-               lesson: @lesson
+    - if @lesson.respond_to?(:activity_guide) && @lesson.activity_guide.attached?
+      = render 'teacher_events/guide_section', lesson: @lesson
 
     - if @resources.any?
       = render 'teacher_events/resources_section',
