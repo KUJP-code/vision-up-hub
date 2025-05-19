@@ -110,9 +110,9 @@ class CategoryResource < ApplicationRecord
   end
 
   def get_up_and_go_resource? # rubocop:disable Naming/AccessorMethodName
-    return true if %w[worksheets slides].include?(resource_category)
+    return true if %w[worksheets slides activities].include?(resource_category)
 
-    errors.add(:lesson_category, 'Get Up & Go requires a worksheet or slide resource')
+    errors.add(:lesson_category, 'Get Up & Go requires a worksheet, activity or slide resource')
     false
   end
 
