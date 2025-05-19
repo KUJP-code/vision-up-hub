@@ -6,6 +6,7 @@ class SeasonalActivity < Lesson
   has_one_attached :kindy_english_class
   has_one_attached :scrapbook
   has_one_attached :activity_guide
+  has_one_attached :cover_image
 
   validates :title, :goal, presence: true
   validates :event_date, :show_from, :show_until, presence: true
@@ -21,6 +22,7 @@ class SeasonalActivity < Lesson
     show_from
     show_until
     activity_guide
+    cover_image
   ].freeze
   LISTABLE_ATTRIBUTES = %i[].freeze
 end
