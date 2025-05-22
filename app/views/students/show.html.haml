@@ -47,7 +47,7 @@
                     classes: @classes,
                     potential_classes: @potential_classes,
                     teachers: @teachers
-
+          - unless @student.level == 'kindy'
             = link_to t('.homework'), homework_resources_student_path(@student), class: 'btn btn-secondary w-4/6'
 
       .card.shadow-xl.py-8.rounded-t-none.relative.bg-white
