@@ -4,7 +4,7 @@
   = f.number_field :week, min: 1, max: 52, placeholder: 'Week'
 
   - if resource.instance_of?(PhonicsClass)
-    = f.select :course_id, options_from_collection_for_select(courses, :id, :title),
+    = f.select :course_id, options_from_collection_for_select(courses, :id, :title, f.object.course_id),
                { prompt: t('.select_course') },
                { required: true }
     .form-group
