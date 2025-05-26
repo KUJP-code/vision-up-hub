@@ -13,14 +13,14 @@
   %h3.font-bold= t('.student_count', count: @school.students_count)
 
   %section.w-full.flex.justify-around.gap-3
-    .flex.flex-col.items-center.gap-3
-      .flex.items-center.gap-3
-        %h3.font-bold= t('.classes')
-        - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
-          = link_to t('.create_class'),
-                    new_school_class_path(school_id: @school.id),
-                    class: 'btn btn-secondary'
-      = render 'school_classes/table', classes: @classes
+    -# .flex.flex-col.items-center.gap-3
+    -#   .flex.items-center.gap-3
+    -#     %h3.font-bold= t('.classes')
+    -#     - if current_user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+    -#       = link_to t('.create_class'),
+    -#                 new_school_class_path(school_id: @school.id),
+    -#                 class: 'btn btn-secondary'
+    -#   = render 'school_classes/table', classes: @classes
 
     .flex.flex-col.items-center.gap-3
       .flex.items-center.gap-3
