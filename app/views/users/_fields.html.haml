@@ -1,4 +1,4 @@
--# locals: (f:)
+-# locals: (f:, orgs:)
 
 - temp_pass = SecureRandom.hex(10)
 
@@ -26,3 +26,12 @@
                    value: temp_pass,
                    required: true,
                    minlength: 10
+- if current_user.is?('Admin', 'Sales')
+  .form-group
+    = f.label :organisation_id
+    = f.select :organisation_id,
+               options_from_collection_for_select(orgs, :id, :name, f.object.organisation_id),
+               { prompt: 'Select organisation' },
+               required: true
+- else
+  = f.hidden_field :organisation_id, value: f.object.organisation_id

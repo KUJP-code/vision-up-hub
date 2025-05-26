@@ -1,11 +1,10 @@
--# locals: (user:)
+-# locals: (user:, orgs:)
 
-= form_with model: [user.organisation, user],
-            html: { class: 'form',
-                    id: 'org_admin_form' } do |f|
+= form_with model: user, url: (user.new_record? ? organisation_org_admins_path(params[:organisation_id] || user.organisation_id) : organisation_org_admin_path(user.organisation_id, user)), html: { class: 'form', id: 'org_admin_form' } do |f|
+
   = render 'shared/form_errors', resource: @user
 
-  = render 'users/fields', f:
+  = render 'users/fields', f:, orgs:
 
   %p this is an org admin form
 

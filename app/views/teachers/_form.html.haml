@@ -1,11 +1,11 @@
--# locals: (classes:, schools:, user:)
+-# locals: (classes:, schools:, user:, orgs:)
 
 = form_with model: [user.organisation, user],
             html: { class: 'form',
                     id: 'teacher_form' } do |f|
   = render 'shared/form_errors', resource: user
 
-  = render 'users/fields', f:
+  = render 'users/fields', f:, orgs:
 
   - unless current_user.is?('Teacher')
     %h3.text-center.font-bold= t('.schools')
@@ -32,23 +32,23 @@
       %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
         = t('.add_school')
 
-    %h3.text-center.font-bold= t('.classes')
-    .flex.flex-wrap.gap-3{ 'data-controller': 'fields' }
-      = f.fields_for :class_teachers do |ct_f|
-        = render 'class_teachers/fields', f: ct_f, collection: classes,
-                                          resource: user
+    -# %h3.text-center.font-bold= t('.classes')
+    -# .flex.flex-wrap.gap-3{ 'data-controller': 'fields' }
+    -#   = f.fields_for :class_teachers do |ct_f|
+    -#     = render 'class_teachers/fields', f: ct_f, collection: classes,
+    -#                                       resource: user
 
-      %template{ 'data-fields-target' => 'template' }
-        = f.fields_for :class_teachers,
-                       user.class_teachers.new,
-                       child_index: 'CHILD' do |ct_f|
-          = render 'class_teachers/fields', f: ct_f, collection: classes,
-                                            resource: user
+    -#   %template{ 'data-fields-target' => 'template' }
+    -#     = f.fields_for :class_teachers,
+    -#                    user.class_teachers.new,
+    -#                    child_index: 'CHILD' do |ct_f|
+    -#       = render 'class_teachers/fields', f: ct_f, collection: classes,
+    -#                                         resource: user
 
-      %div{ 'data-fields-target' => 'target' }
+    -#   %div{ 'data-fields-target' => 'target' }
 
-      %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
-        = t('.add_class')
+      -# %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
+      -#   = t('.add_class')
 
   = f.submit class: 'btn btn-main',
              id: 'submit_teacher'

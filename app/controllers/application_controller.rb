@@ -30,6 +30,10 @@ class ApplicationController < ActionController::Base
       current_user&.is?('SchoolManager', 'Teacher')
   end
 
+  def authorized_ku_staff?
+    current_user.is?('Admin', 'Sales')
+  end
+  
   def configure_permitted_params
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name organisation_id])
   end

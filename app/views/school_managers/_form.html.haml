@@ -1,4 +1,4 @@
--# locals: (schools:, user:)
+-# locals: (schools:, user:, orgs:)
 
 = form_with model: [user.organisation, user],
             html: { class: 'form',
@@ -6,7 +6,7 @@
                     id: 'school_manager_form' } do |f|
   = render 'shared/form_errors', resource: user
 
-  = render('users/fields', f:)
+  = render('users/fields', f:, orgs:)
 
   - if user.managements.any?
     = f.fields_for :managements, user.managements do |m_f|

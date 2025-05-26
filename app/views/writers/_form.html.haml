@@ -1,11 +1,11 @@
--# locals: (user:)
+-# locals: (user:, orgs:)
 
 = form_with model: [user.organisation, user],
             html: { class: 'form',
                     id: 'writer_form' } do |f|
   = render 'shared/form_errors', resource: @user
 
-  = render 'users/fields', f:
+  = render 'users/fields', f:, orgs:
 
   %p this is a writer form
 

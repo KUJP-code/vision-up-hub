@@ -14,11 +14,14 @@ class AdminsController < UsersController
   def new
     # KidsUP is org 1
     @user = authorize Admin.new(organisation_id: 1)
+    @orgs = policy_scope(Organisation)
+
   end
 
   def edit; end
 
   def create
+    @orgs = policy_scope(Organisation)
     # KidsUP
     organisation_id = 1
     @user = authorize Admin.new(admin_params.merge(organisation_id:))

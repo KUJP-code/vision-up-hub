@@ -14,9 +14,12 @@ class WritersController < UsersController
 
   def new
     @user = authorize Writer.new(organisation_id: params[:organisation_id])
+    @orgs = policy_scope(Organisation)
+
   end
 
   def create
+    @orgs = policy_scope(Organisation)
     @user = authorize Writer.new(writer_params)
 
     if @user.save

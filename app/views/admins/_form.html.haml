@@ -1,10 +1,10 @@
--# locals: (user:)
+-# locals: (user:, orgs:)
 
 = form_with model: [user.organisation, user],
             html: { class: 'form' } do |f|
   = render 'shared/form_errors', resource: @user
 
-  = render 'users/fields', f:
+  = render 'users/fields', f:, orgs:
 
   .flex.gap-3
     = f.submit class: 'btn btn-main'

@@ -7,6 +7,8 @@ class SalesController < UsersController
 
   def new
     @user = authorize Sales.new(organisation_id: params[:organisation_id])
+    @orgs = policy_scope(Organisation)
+
   end
 
   def create

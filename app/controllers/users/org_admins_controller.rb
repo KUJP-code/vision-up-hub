@@ -8,9 +8,12 @@ class OrgAdminsController < UsersController
 
   def new
     @user = authorize OrgAdmin.new(organisation_id: params[:organisation_id])
+    @orgs = policy_scope(Organisation)
+
   end
 
   def create
+    @orgs = policy_scope(Organisation)
     @user = authorize OrgAdmin.new(org_admins_params)
 
     if @user.save
@@ -37,8 +40,9 @@ class OrgAdminsController < UsersController
   private
 
   def org_admins_params
-    oa_params = %i[]
-    params.require(:org_admin).permit(user_params + oa_params)
+    base = %i[name email password password_confirmation]
+    base << :organisation_id if current_user.is?('Admin', 'Sales')
+    params.require(:org_admin).permit(base)
   end
 
   def scoped_users

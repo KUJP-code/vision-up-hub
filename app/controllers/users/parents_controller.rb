@@ -8,10 +8,14 @@ class ParentsController < UsersController
 
   def new
     @user = authorize Parent.new(organisation_id: current_user.organisation_id)
+    @orgs = policy_scope(Organisation)
+
   end
 
   def create
-    organisation_id = current_user.organisation_id
+    @orgs = policy_scope(Organisation)
+
+    organisation_id = parents_params[:organisation_id].presence || current_user.organisation_id
     @user = authorize Parent.new(parents_params.merge(organisation_id:))
 
     if @user.save
@@ -19,10 +23,11 @@ class ParentsController < UsersController
                   notice: t('create_success')
     else
       render :new,
-             status: :unprocessable_entity,
-             alert: t('create_failure')
+            status: :unprocessable_entity,
+            alert: t('create_failure')
     end
   end
+
 
   def update
     if @user.update(parents_params)
@@ -41,7 +46,7 @@ class ParentsController < UsersController
   end
 
   def parents_params
-    p_params = %i[extra_emails]
+    p_params = %i[extra_emails organisation_id]
     params.require(:parent).permit(user_params + p_params)
   end
 end

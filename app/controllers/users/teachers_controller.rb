@@ -10,12 +10,17 @@ class TeachersController < UsersController
 
   def new
     @user = authorize Teacher.new(organisation_id: params[:organisation_id])
+    @orgs = policy_scope(Organisation)
+
   end
 
   def edit; end
 
   def create
-    @user = authorize Teacher.new(teachers_params)
+    @orgs = policy_scope(Organisation)
+    organisation_id = teachers_params[:organisation_id].presence || current_user.organisation_id
+    @user = authorize Teacher.new(teachers_params.merge(organisation_id:))
+
 
     if @user.save
       redirect_to organisation_teacher_path(@user.organisation, @user),
@@ -48,11 +53,15 @@ class TeachersController < UsersController
   end
 
   def teachers_params
-    t_params = [:school_id,
-                { school_teachers_attributes: %i[id school_id _destroy] },
-                { class_teachers_attributes: %i[id class_id _destroy] }]
+    t_params = [
+      :school_id,
+      :organisation_id,
+      { school_teachers_attributes: %i[id school_id _destroy] },
+      { class_teachers_attributes: %i[id class_id _destroy] }
+    ]
     params.require(:teacher).permit(user_params + t_params)
   end
+
 
   def scoped_users
     super.where(type: 'Teacher')
