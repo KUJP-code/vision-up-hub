@@ -14,7 +14,8 @@ class ParentUploadsController < ApplicationController
   def new
     authorize nil, policy_class: ParentUploadPolicy
     @organisation = authorize(Organisation.find(params[:organisation_id]), :update?)
-    @orgs = policy_scope(Organisation) if current_user.is?('Admin')
+    @orgs = policy_scope(Organisation)
+
   end
 
   def create
