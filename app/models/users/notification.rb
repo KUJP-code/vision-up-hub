@@ -27,7 +27,7 @@ class Notification
   def valid_uri
     return if link.blank? ||
               URI.parse(link).instance_of?(URI::HTTP) ||
-              URI.parse(link).instance_of?(URI::HTTPS)
+              URI.parse(link).instance_of?(URI::HTTPS) || link.start_with?('/')
 
     errors.add(:link, "#{link} is not a valid URL")
   end
