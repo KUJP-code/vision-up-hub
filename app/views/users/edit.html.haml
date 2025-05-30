@@ -2,4 +2,5 @@
 
 %main
   = render "#{@user.type.pluralize.underscore}/form",
-           user: @user
+           user: @user,
+           orgs: @orgs,

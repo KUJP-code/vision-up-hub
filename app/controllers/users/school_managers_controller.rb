@@ -14,6 +14,7 @@ class SchoolManagersController < UsersController
 
   def edit
     @schools = org_schools
+    @orgs = policy_scope(Organisation)
   end
 
   def create
