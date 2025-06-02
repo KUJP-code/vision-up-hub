@@ -11,7 +11,6 @@ class SeasonalActivity < Lesson
   has_one_attached :cover_image
 
   validates :title, :goal, presence: true
-  validates :event_date, :show_from, :show_until, presence: true
 
   ATTRIBUTES = %i[
     title
