@@ -1374,6 +1374,39 @@ ALTER SEQUENCE public.managements_id_seq OWNED BY public.managements.id;
 
 
 --
+-- Name: organisation_lessons; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.organisation_lessons (
+    id bigint NOT NULL,
+    organisation_id bigint NOT NULL,
+    lesson_id bigint NOT NULL,
+    event_date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: organisation_lessons_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.organisation_lessons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: organisation_lessons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.organisation_lessons_id_seq OWNED BY public.organisation_lessons.id;
+
+
+--
 -- Name: organisations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2485,6 +2518,13 @@ ALTER TABLE ONLY public.managements ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: organisation_lessons id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_lessons ALTER COLUMN id SET DEFAULT nextval('public.organisation_lessons_id_seq'::regclass);
+
+
+--
 -- Name: organisations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2847,6 +2887,14 @@ ALTER TABLE ONLY public.level_changes
 
 ALTER TABLE ONLY public.managements
     ADD CONSTRAINT managements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: organisation_lessons organisation_lessons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_lessons
+    ADD CONSTRAINT organisation_lessons_pkey PRIMARY KEY (id);
 
 
 --
@@ -3316,6 +3364,20 @@ CREATE INDEX index_managements_on_school_id ON public.managements USING btree (s
 --
 
 CREATE INDEX index_managements_on_school_manager_id ON public.managements USING btree (school_manager_id);
+
+
+--
+-- Name: index_organisation_lessons_on_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_organisation_lessons_on_lesson_id ON public.organisation_lessons USING btree (lesson_id);
+
+
+--
+-- Name: index_organisation_lessons_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_organisation_lessons_on_organisation_id ON public.organisation_lessons USING btree (organisation_id);
 
 
 --
@@ -3883,6 +3945,14 @@ ALTER TABLE ONLY public.lessons
 
 
 --
+-- Name: organisation_lessons fk_rails_63bee9cdab; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_lessons
+    ADD CONSTRAINT fk_rails_63bee9cdab FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
 -- Name: video_tutorials fk_rails_71cd453c5e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3976,6 +4046,14 @@ ALTER TABLE ONLY public.course_lessons
 
 ALTER TABLE ONLY public.lessons
     ADD CONSTRAINT fk_rails_90bfdbf7c6 FOREIGN KEY (assigned_editor_id) REFERENCES public.users(id);
+
+
+--
+-- Name: organisation_lessons fk_rails_912f3e686d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_lessons
+    ADD CONSTRAINT fk_rails_912f3e686d FOREIGN KEY (lesson_id) REFERENCES public.lessons(id);
 
 
 --
@@ -4204,6 +4282,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250530042958'),
 ('20250513013436'),
 ('20250513011319'),
 ('20250319011624'),
