@@ -9,8 +9,7 @@ class TeacherEventsController < ApplicationController
 
   def show
     set_date_type_teacher
-    @lesson = Lesson.find(params[:id])
-    authorize @lesson
+    @lesson =  authorize Lesson.find(params[:id])
     @resources = set_resources
   end
 
@@ -21,8 +20,15 @@ class TeacherEventsController < ApplicationController
 
     @supported_types = SUPPORTED_TYPES
     @announcements = Pundit.policy_scope!(@teacher, Announcement)
-    @lessons = Lesson.where('show_from <=? AND show_until >= ?', @date, @date).order(:event_date)
-    logger.debug "Fetched Lessons: #{@lessons.pluck(:id, :type, :title)}"
+    @lessons =
+      Lesson
+      .where(type: %w[SeasonalActivity PartyActivity])
+      .for_organisation(@teacher.organisation_id)
+      .within_event_window(@date)
+      .includes(:organisation_lessons)
+      .order('organisation_lessons.event_date ASC')
+      .then { |rel| policy_scope(rel) }
+
   end
 
   def set_date_type_teacher
