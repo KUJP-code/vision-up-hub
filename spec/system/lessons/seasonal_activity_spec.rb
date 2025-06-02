@@ -20,9 +20,6 @@ RSpec.describe 'creating a seasonal activity', :js do
       attach_file('Ele English Class', dummy_file_path)
       attach_file('Kindy English Class', dummy_file_path)
       attach_file('Scrapbook', dummy_file_path)
-      fill_in 'Event Date', with: Time.current
-      fill_in 'Show From', with: Time.current
-      fill_in 'Show Until', with: 7.days.from_now
       fill_in 'seasonal_activity_goal', with: 'test'
       click_button 'commit'
     end
