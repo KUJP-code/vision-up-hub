@@ -16,6 +16,9 @@ class LessonsController < ApplicationController
   end
 
   def show
+    @org_lessons = @lesson
+                    .organisation_lessons
+                    .includes(:organisation)
     @courses = @lesson.courses
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
@@ -72,7 +75,8 @@ class LessonsController < ApplicationController
     default_params = [
       :goal, :level, :title, :type, :curriculum_approval_id,
       :curriculum_approval_name, :internal_notes, { resources: [] },
-      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] }
+      { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] },
+      { organisation_lessons_attributes: %i[id _destroy organisation_id event_date] }
     ]
     return default_params unless current_user.is?('Admin')
 
@@ -113,6 +117,7 @@ class LessonsController < ApplicationController
 
   def set_form_data
     @courses = policy_scope(Course).includes(plans: :organisation)
+    @organisations = policy_scope(Organisation).order(:name)
     @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
     case @lesson.type
     when 'PhonicsClass'
