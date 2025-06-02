@@ -82,16 +82,3 @@
           %p= lesson.scrapbook.filename
           = inline_svg_tag 'delete_icon.svg',
                             class: 'fill-white'
-
-.flex.flex-wrap.justify-start.items-center.gap-3
-  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-    %h3 Event Date
-    %p= lesson.event_date
-
-  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-    %h3 Show From
-    %p= lesson.show_from
-
-  .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-    %h3 Show Until
-    %p= lesson.show_until
