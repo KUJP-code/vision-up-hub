@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'User search', :js do
+RSpec.describe 'User search', skip: 'Functionality temporarily disabled' do
   let(:user) { create(:user, :org_admin) }
   let!(:result) do
     create(:user, :parent, organisation_id: user.organisation_id,
