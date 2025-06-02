@@ -4,14 +4,18 @@ module Eventable
   extend ActiveSupport::Concern
 
   included do
-    has_many :organisation_lessons, dependent: :destroy
+    has_many :organisation_lessons,
+             inverse_of: :lesson,
+             class_name: 'OrganisationLesson',
+             foreign_key: :lesson_id,
+             dependent: :destroy
+
     accepts_nested_attributes_for :organisation_lessons,
-                                  reject_if: :all_blank,
+                                  reject_if:  :all_blank,
                                   allow_destroy: true
   end
 
-  class_methods do
-    # Only rows that have an org-lesson for org_id
+  module ClassMethods
     def for_organisation(org_id)
       joins(:organisation_lessons)
         .where(organisation_lessons: { organisation_id: org_id })

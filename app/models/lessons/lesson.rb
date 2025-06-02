@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lesson < ApplicationRecord
-  include Approvable, Levelable, Pdfable, Proposable
+  include Approvable, Levelable, Pdfable, Proposable, Eventable
 
   TYPES = %w[DailyActivity EnglishClass Exercise EveningClass KindyPhonic
              PhonicsClass SpecialLesson StandShowSpeak SeasonalActivity PartyActivity].freeze
@@ -20,6 +20,9 @@ class Lesson < ApplicationRecord
   belongs_to :creator,
              class_name: 'User',
              optional: true
+
+
+  has_many :course_lessons, dependent: :destroy
 
   accepts_nested_attributes_for :course_lessons,
                                 reject_if: :all_blank,
@@ -52,6 +55,10 @@ class Lesson < ApplicationRecord
   def week(course)
     number = course_lessons.find_by(course_id: course.id).week
     "Week #{number}"
+  end
+
+  def organisation_lessons
+    OrganisationLesson.none
   end
 
   private

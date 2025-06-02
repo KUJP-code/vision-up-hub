@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SeasonalActivity < Lesson
+  include Eventable
+
   before_validation :set_default_level
   has_one_attached :ele_english_class
   has_one_attached :kindy_english_class
@@ -18,9 +20,6 @@ class SeasonalActivity < Lesson
     kindy_english_class
     resources
     scrapbook
-    event_date
-    show_from
-    show_until
     activity_guide
     cover_image
   ].freeze

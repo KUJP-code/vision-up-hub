@@ -2,7 +2,7 @@
 
 class PartyActivity < Lesson
   include Eventable
-  
+
   before_validation :set_default_level
   has_one_attached :cover_image
 
@@ -13,9 +13,6 @@ class PartyActivity < Lesson
     title
     goal
     resources
-    event_date
-    show_from
-    show_until
     cover_image
   ].freeze
   LISTABLE_ATTRIBUTES = %i[].freeze
