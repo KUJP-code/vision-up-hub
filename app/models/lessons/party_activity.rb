@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PartyActivity < Lesson
+  include Eventable
+  
   before_validation :set_default_level
   has_one_attached :cover_image
 
