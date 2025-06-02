@@ -8,6 +8,7 @@
                     data: { controller: 'fields' } } do |f|
   -# Add required types for courses
   - courses_required_types = ['PhonicsClass', 'EnglishClass']
+  - no_course_types = ['seasonal_activity', 'party_activity', 'event']
 
   - if courses_required_types.include?(lesson.type)
     - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
@@ -19,32 +20,51 @@
   = render 'shared/form_errors', resource: lesson
   = f.hidden_field :type, value: lesson.type
 
-  - if current_user.is?('Admin')
-    - plan_data = courses.to_h { |c| [c.id, c.plan_date_data] }.to_json
+  - if no_course_types.include?(lesson.type.underscore)
+    %h3.font-bold.text-center Organisations & Dates
 
-    %h3.font-bold.text-center Courses
+    = f.fields_for :organisation_lessons, lesson.organisation_lessons do |ol_f|
+      = render 'organisation_lessons/fields',
+              f: ol_f,
+              organisations: @organisations
 
-    = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
-      = render 'course_lessons/fields',
-               collection: courses,
-               f: cl_f,
-               plan_data:,
-               resource: lesson
+    %template{ 'data-fields-target': 'template' }
+      = f.fields_for :organisation_lessons,
+                    lesson.organisation_lessons.new,
+                    child_index: 'CHILD' do |ol_f|
+        = render 'organisation_lessons/fields',
+                f: ol_f,
+                organisations: @organisations
+    %div{ 'data-fields-target': 'target' }
+    %button.btn.btn-secondary.self-center{ 'data-action': 'fields#add' }
+      Add Organisation
+  - else
+    - if current_user.is?('Admin')
+      - plan_data = courses.to_h { |c| [c.id, c.plan_date_data] }.to_json
 
-    %template{ 'data-fields-target' => 'template' }
-      = f.fields_for :course_lessons,
-                     lesson.course_lessons.new,
-                     child_index: 'CHILD' do |cl_f|
+      %h3.font-bold.text-center Courses
+
+      = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
         = render 'course_lessons/fields',
                  collection: courses,
                  f: cl_f,
                  plan_data:,
                  resource: lesson
 
-    %div{ 'data-fields-target' => 'target' }
+      %template{ 'data-fields-target' => 'template' }
+        = f.fields_for :course_lessons,
+                       lesson.course_lessons.new,
+                       child_index: 'CHILD' do |cl_f|
+          = render 'course_lessons/fields',
+                   collection: courses,
+                   f: cl_f,
+                   plan_data:,
+                   resource: lesson
 
-    %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
-      Add Course
+      %div{ 'data-fields-target' => 'target' }
+
+      %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
+        Add Course
 
   = yield :priority_fields
 
