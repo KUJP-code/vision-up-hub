@@ -110,14 +110,19 @@ puts 'Creating category resources...'
 
 CategoryResource.lesson_categories.keys.each do |lc|
   CategoryResource.resource_categories.keys.each do |rc|
-    category_resource = CategoryResource.new(lesson_category: lc,
-                                             resource_category: rc,
-                                             resource: test_file)
+    next if rc == 'english_class_resource' # skip deprecated key
+
+    category_resource = CategoryResource.new(
+      lesson_category: lc,
+      resource_category: rc,
+      resource: test_file
+    )
     next unless category_resource.valid?
 
     category_resource.save
   end
 end
+
 
 puts 'Creating courses...'
 
