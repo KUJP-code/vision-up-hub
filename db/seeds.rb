@@ -206,7 +206,7 @@ test_svg = ActiveStorage::Blob.find_by(filename: 'tutorials_test_icon.svg')
 
 ['Extra Resources', 'LMS Functions', 'Lessons'].each do |title|
   category = fb.build(:tutorial_category, title:)
-  category.svg.attach(test_svg)
+  # category.svg.attach(test_svg)
   category.save
 end
 
