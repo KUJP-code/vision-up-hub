@@ -68,10 +68,7 @@ class CategoryResource < ApplicationRecord
   end
 
   def valid_combo
-    method = :"#{lesson_category}_resource?"
-    return true unless respond_to?(method)
-
-    send(method)
+    send(:"#{lesson_category}_resource?")
   end
 
   def phonics_class_resource?
