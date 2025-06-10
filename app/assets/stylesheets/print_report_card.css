@@ -4,19 +4,7 @@
   padding: 0;
 }
 
-/* Not ok but its a white box to cover the legend in the spider */
-.chart-container {
-  position: relative;
-}
-.white-overlay {
-  position: absolute;
-  width: 200px;
-  height: 25px;
-  background: white;
-  z-index: 1000;
-  top: 0px;
-  left: 150px;
-}
+
 .print-container {
   width: 210mm;
   min-height: 297mm;
