@@ -2,7 +2,7 @@
 
 class LessonPolicy < ApplicationPolicy
   def index?
-    authorized_ku_staff?
+    authorized_ku_staff? || user.is?('Teacher')
   end
 
   def show?
