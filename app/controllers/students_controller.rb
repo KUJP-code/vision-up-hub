@@ -94,6 +94,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     set_results
     @levels = Student.display_levels
+
   end
 
   private
@@ -136,17 +137,18 @@ class StudentsController < ApplicationController
   def radar_data
     radar_colors = ['49, 44, 180', '221, 50, 50 ', '170, 218, 120', '178, 170, 191'].cycle
 
-    {
-      labels: %w[Reading Writing Listening],
-      datasets: if @active_result
-                  [prepare_dataset(@active_result, radar_colors.next)]
-                else
-                  @results.map do |result|
-                    prepare_dataset(result,
-                                    radar_colors.next)
-                  end
-                end
-    }
+    datasets =
+      if action_name == 'print_version'        # ← print page: show ALL tests
+        @results.map { |r| prepare_dataset(r, radar_colors.next) }
+
+      elsif @active_result                     # normal page, test chosen
+        [prepare_dataset(@active_result, radar_colors.next)]
+
+      else                                     # normal page, first load
+        @results.map { |r| prepare_dataset(r, radar_colors.next) }
+      end
+
+    { labels: %w[Reading Writing Listening], datasets: datasets }
   end
 
   def prepare_dataset(result, color)
