@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.2.3-config"
+    "Name": "kidsup/materials:2.2.4-seasonalorg"
   },
   "Ports": [
     {
