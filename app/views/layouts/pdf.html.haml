@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    - # In development Propshaft writes to app/assets/builds
+    - dev_css = Rails.root.join('app/assets/builds/print_report_card.css')
+    - prod_css = Dir[Rails.root.join('public/assets/print_report_card*.css')].first
+    - css_path = File.exist?(dev_css) ? dev_css : prod_css
+    - css_file = File.read(css_path) if css_path
+
+    %style{ media: 'all' }
+      = css_file&.html_safe
+    %meta{ charset: 'utf-8' }
+  %body
+    = yield
