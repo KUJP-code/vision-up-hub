@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CsvExportsController < ApplicationController
-  ALLOWED_MODELS = %w[Lesson TestResult].freeze
+  ALLOWED_MODELS = %w[Lesson TestResult Student].freeze
 
   after_action :verify_authorized
   before_action :authorize_admin
@@ -23,6 +23,8 @@ class CsvExportsController < ApplicationController
       export_all_lessons(path)
     elsif params[:model] == 'TestResult'
       export_all_test_results(path)
+    elsif params[:model] == 'Student'
+      export_students_for_current_org(path)
     end
 
     send_file path, type: 'text/csv', disposition: 'attachment'
@@ -75,6 +77,24 @@ class CsvExportsController < ApplicationController
       end
     end
   end
+
+  def export_students_for_current_org(path)
+    students = Student.includes(:school).where(organisation_id: current_user.organisation_id)
+
+    CSV.open(path, 'wb') do |csv|
+      csv << Student::CSV_HEADERS
+      students.find_each do |student|
+        csv << [
+          student.name,
+          student.en_name,
+          student.student_id,
+          student.level,
+          student.status,
+        ]
+      end
+    end
+  end
+
 
   def export_results_for_test(path, test_id)
     headers = test_result_headers(Test.find(test_id))
