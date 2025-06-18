@@ -80,17 +80,12 @@ class CsvExportsController < ApplicationController
 
   def export_students_for_current_org(path)
     students = Student.includes(:school).where(organisation_id: current_user.organisation_id)
+    headers = %i[name en_name student_id level status]
 
     CSV.open(path, 'wb') do |csv|
-      csv << Student::CSV_HEADERS
+      csv << headers.map(&:to_s) # header row
       students.find_each do |student|
-        csv << [
-          student.name,
-          student.en_name,
-          student.student_id,
-          student.level,
-          student.status,
-        ]
+        csv << headers.map { |attr| student.public_send(attr) } # one row per student
       end
     end
   end
