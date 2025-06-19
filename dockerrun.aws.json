@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.2.7-newexport"
+    "Name": "kidsup/materials:2.2.8-update-fix"
   },
   "Ports": [
     {
