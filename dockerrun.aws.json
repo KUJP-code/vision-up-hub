@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.2.6-exportsheaders"
+    "Name": "kidsup/materials:2.2.7-newexport"
   },
   "Ports": [
     {
