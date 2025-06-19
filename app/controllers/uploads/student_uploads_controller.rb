@@ -30,7 +30,9 @@ class StudentUploadsController < ApplicationController
   def update
     @student = authorize Student.find_by(
       student_id: student_upload_params[:student_id],
-      school_id: student_upload_params[:school_id]
+      # This was school here but students won't have old school on spreadsheet so it makes no sense to search by the spreadsheet given, changed 
+      # to organisation_id to prevent other companies being affected.
+      organisation_id: params[:organisation_id]
     )
     @index = params[:index].to_i
     @status = 'Uploaded'
