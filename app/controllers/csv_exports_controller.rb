@@ -80,7 +80,7 @@ class CsvExportsController < ApplicationController
 
   def export_students_for_current_org(path)
     students = Student.includes(:school).where(organisation_id: current_user.organisation_id)
-    headers = %i[name en_name student_id level status]
+    headers = %i[name en_name student_id level school_id birthday start_date quit_date sex status]
 
     CSV.open(path, 'wb') do |csv|
       csv << headers.map(&:to_s) # header row
