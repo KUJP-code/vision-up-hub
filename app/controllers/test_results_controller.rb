@@ -19,9 +19,17 @@ class TestResultsController < ApplicationController
     if @test_result.save
       @test_result.student.track_manual_level_change(@test_result.id) if @test_result.new_level_changed?
       notify_parent(@test_result.student)
-      redirect_to school_org_test_path,
-                  notice: t('create_success')
+      render turbo_stream: turbo_stream.replace(
+        "student#{@test_result.student_id}_result",
+        partial: 'test_results/form',
+        locals: {
+          result: @test_result,
+          student: @test_result.student,
+          test: @test_result.test
+        }
+      )
     else
+      flash.now[:alert] = 'Please check all inputs'
       set_index_vars
       render 'test_results/index', status: :unprocessable_entity
     end
@@ -30,7 +38,15 @@ class TestResultsController < ApplicationController
   def update
     if @test_result.update(test_result_params)
       @test_result.student.track_manual_level_change(@test_result.id) if @test_result.new_level_changed?
-      redirect_to school_org_test_path, notice: t('update_success')
+      render turbo_stream: turbo_stream.replace(
+        "student#{@test_result.student_id}_result",
+        partial: 'test_results/form',
+        locals: {
+          result: @test_result,
+          student: @test_result.student,
+          test: @test_result.test
+        }
+      )
     else
       flash.now[:alert] = @test_result.errors.full_messages.to_sentence
       set_index_vars
@@ -77,7 +93,7 @@ class TestResultsController < ApplicationController
                  .current
                  .includes(:school, :test_results)
 
-    base_scope = base_scope.where(school_id: @school.id) if current_user.is?('Admin', 'OrgAdmin')
+    base_scope = base_scope.where(school_id: @school.id) if @school && current_user.is?('Admin', 'OrgAdmin')
     # Filter to exclude students that have moved up from the previous test
     @students = base_scope.where.not(
       id: TestResult.select(:student_id)
