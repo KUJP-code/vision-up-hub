@@ -1,14 +1,33 @@
-!!!
 %html
   %head
-    - # In development Propshaft writes to app/assets/builds
-    - dev_css = Rails.root.join('app/assets/builds/print_report_card.css')
-    - prod_css = Dir[Rails.root.join('public/assets/print_report_card*.css')].first
-    - css_path = File.exist?(dev_css) ? dev_css : prod_css
-    - css_file = File.read(css_path) if css_path
+    = stylesheet_link_tag 'application',
+                          media: 'all',
+                          host:  request.base_url
+    = stylesheet_link_tag 'print_report_card',
+                          media: 'all',
+                          host:  request.base_url
+    :ruby
+      js_path =
+        if Rails.env.development?
+          Rails.root.join('app/assets/builds/application.js')
+        else
+          Dir.glob(Rails.root.join('public/assets/application-*.js')).first
+        end
+
+    %script{ type: 'module' }
+      != File.read(js_path)
 
     %style{ media: 'all' }
-      = css_file&.html_safe
-    %meta{ charset: 'utf-8' }
-  %body
-    = yield
+      :plain
+        html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .text-4xl { font-size:2.25rem; line-height:2.5rem; font-weight:700; }
+        .text-lg  { font-size:1.125rem; line-height:1.75rem; font-weight:700; }
+        .text-sm  { font-size:.875rem; line-height:1.25rem; }
+        .text-secondary   { color:#645880; }
+        .flex { display:flex; }
+        .items-center { align-items:center; }
+        .justify-center { justify-content:center; }
+
+    %meta{ charset: "utf-8" }
+
+  %body= yield
