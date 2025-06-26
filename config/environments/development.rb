@@ -3,6 +3,7 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
+  config.allow_concurrency = true   # let Puma serve a second request
   config.after_initialize do
     Bullet.enable        = true
     Bullet.rails_logger  = true
@@ -69,6 +70,11 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  config.public_file_server.headers = {
+    "Access-Control-Allow-Origin"   => "*",
+    "Access-Control-Allow-Methods"  => "GET, OPTIONS, HEAD",
+    "Access-Control-Allow-Headers"  => "Origin, Content-Type, Accept"
+  }
   # Use separate queues per environment
   config.active_job.queue_name_prefix = 'materials_production'
 
