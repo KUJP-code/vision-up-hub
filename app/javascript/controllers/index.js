@@ -5,6 +5,12 @@
 
 import { application } from "./application";
 
+import Chart from "chart.js/auto"
+window.Chart = Chart  
+
+import ChartPdfController from "./chart_pdf_controller"
+application.register("chart", ChartPdfController)
+
 import FieldsController from "./fields_controller";
 application.register("fields", FieldsController);
 
