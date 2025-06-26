@@ -96,6 +96,33 @@ class StudentsController < ApplicationController
     @levels = Student.display_levels
   end
 
+
+  def report_card_pdf
+    @student = Student.find(params[:id])
+    authorize @student, :show? 
+    set_results
+    @levels  = Student.display_levels
+
+    html = render_to_string(
+      template: 'students/print_version',
+      layout:   'pdf'
+    )
+
+  pdf = Grover.new(
+          html,
+          format:        'A4',
+          emulate_media: 'print',
+          wait_for:      'window.chartReady === true'
+        ).to_pdf
+
+
+    send_data pdf,
+              filename:    "report_card_#{@student.student_id}.pdf",
+              disposition: 'inline',
+              type:        'application/pdf'
+  end
+
+
   private
 
   def set_homework_resources
@@ -130,6 +157,7 @@ class StudentsController < ApplicationController
   def set_results
     @results = @student.test_results.order(created_at: :desc).includes(:test)
     @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
+    @recent_result = @results.first
     @data = radar_data
   end
 

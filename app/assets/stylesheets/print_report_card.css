@@ -1,49 +1,37 @@
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 @page {
   size: a4 portrait;
   margin: 0;
   padding: 0;
 }
 
-/* Not ok but its a white box to cover the legend in the spider */
+@media print {
+  .print-container main { background: transparent !important; }
+}
+.print-container { color:#645880 !important; }
+.print-container table { color:#645880 !important; }
 .chart-container {
   position: relative;
 }
-.white-overlay {
-  position: absolute;
-  width: 200px;
-  height: 25px;
-  background: white;
-  z-index: 1000;
-  top: 0px;
-  left: 150px;
-}
-.print-container {
-  width: 210mm;
-  min-height: 297mm;
-  position: relative;
-  margin: 0;
+
+body { margin: 0; }
+
+.print-container{
+  width: 180mm;
+  margin: 0 auto;
   padding: 0;
 }
-main {
-  width: 90%;
-}
+
 #student {
   flex-direction: row;
   align-items: center;
   padding: 0;
 }
 ::-webkit-scrollbar {
-  display: none;
-}
-
-.btn,
-textarea {
-  display: none;
-}
-
-select,
-.classes,
-.teachers {
   display: none;
 }
 
@@ -62,11 +50,15 @@ table {
 #print-footer {
   position: absolute !important;
   bottom: 10mm !important;
-  width: 82% !important;
+  width: 100% !important;
 }
 
 #custom-landing-logo .cls-3,
 #custom-landing-logo .cls-4,
 #custom-landing-logo .cls-5 {
   fill: #645880 !important;
+}
+
+#print-footer hr{
+  max-width: 62%;
 }
