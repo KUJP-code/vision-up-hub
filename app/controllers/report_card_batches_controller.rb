@@ -38,8 +38,9 @@ class ReportCardBatchesController < ApplicationController
 
   def find_or_initialize_batch
     ReportCardBatch.find_or_initialize_by(
-      school_id: current_user.school_ids,
-      level:     params[:level]
+        school_id: params[:school_id],
+        level:     params[:level]
     )
   end
+
 end
