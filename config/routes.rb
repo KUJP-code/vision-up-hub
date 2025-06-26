@@ -48,6 +48,7 @@ Rails.application.routes.draw do
           get :icon_chooser
           get :homework_resources
           get :print_version
+          get :report_card_pdf
         end
       end
 
