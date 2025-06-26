@@ -1547,6 +1547,40 @@ ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
 
 
 --
+-- Name: report_card_batches; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_card_batches (
+    id bigint NOT NULL,
+    school_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    level character varying,
+    status character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: report_card_batches_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.report_card_batches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: report_card_batches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.report_card_batches_id_seq OWNED BY public.report_card_batches.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2553,6 +2587,13 @@ ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_
 
 
 --
+-- Name: report_card_batches id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_card_batches ALTER COLUMN id SET DEFAULT nextval('public.report_card_batches_id_seq'::regclass);
+
+
+--
 -- Name: school_classes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2927,6 +2968,14 @@ ALTER TABLE ONLY public.phonics_resources
 
 ALTER TABLE ONLY public.plans
     ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: report_card_batches report_card_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_card_batches
+    ADD CONSTRAINT report_card_batches_pkey PRIMARY KEY (id);
 
 
 --
@@ -3444,6 +3493,20 @@ CREATE INDEX index_plans_on_organisation_id ON public.plans USING btree (organis
 
 
 --
+-- Name: index_report_card_batches_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_card_batches_on_school_id ON public.report_card_batches USING btree (school_id);
+
+
+--
+-- Name: index_report_card_batches_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_card_batches_on_user_id ON public.report_card_batches USING btree (user_id);
+
+
+--
 -- Name: index_school_classes_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3849,6 +3912,14 @@ ALTER TABLE ONLY public.form_submissions
 
 
 --
+-- Name: report_card_batches fk_rails_1d91f8ed12; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_card_batches
+    ADD CONSTRAINT fk_rails_1d91f8ed12 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: students fk_rails_1e6d7cc63d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3910,6 +3981,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 ALTER TABLE ONLY public.invoices
     ADD CONSTRAINT fk_rails_4721119434 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
+-- Name: report_card_batches fk_rails_4a00de2147; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_card_batches
+    ADD CONSTRAINT fk_rails_4a00de2147 FOREIGN KEY (school_id) REFERENCES public.schools(id);
 
 
 --
@@ -4282,6 +4361,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250626025024'),
 ('20250530042958'),
 ('20250513013436'),
 ('20250513011319'),
