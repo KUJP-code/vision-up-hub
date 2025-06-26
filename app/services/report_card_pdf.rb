@@ -8,8 +8,8 @@ class ReportCardPdf
     Grover.new(
       html,
       format:     'A4',
-      emulate_media: 'print',        # use @media print rules
-      wait_until:    'networkidle0', # all assets loaded
+      emulate_media: 'print',
+      wait_until:    'networkidle0',
       evaluate: wait_for_chart_ready
     ).to_pdf
   end
@@ -21,15 +21,15 @@ class ReportCardPdf
     env['warden'].set_user(@user, scope: :user)
 
     ApplicationController.renderer.new(env).render(
-      template: 'students/print_version',   # ← your existing file!
-      layout:   'application',              # same layout parents see
+      template: 'students/print_version',
+      layout:   'application',
       assigns: {
         student:       @student,
         levels:        Student.display_levels,
         results:       @student.test_results.order(created_at: :desc).includes(:test),
         active_result: @student.test_results.first
       },
-      locals: { pdf_mode: true }            # use if you want `.print:hidden` tweaks
+      locals: { pdf_mode: true }
     )
   end
 
