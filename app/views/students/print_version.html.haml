@@ -13,8 +13,6 @@
           = @student.en_name
         .text-sm 
           = "Kids Up #{@student.school.name}"
-        .text-sm 
-          = "Student ID: #{@student.student_id}"
       .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
         .text-sm
           = @recent_result&.created_at&.strftime('%b %Y')

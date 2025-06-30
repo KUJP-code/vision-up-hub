@@ -158,3 +158,5 @@ group :test do
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
 end
+
+gem "combine_pdf", "~> 1.0"

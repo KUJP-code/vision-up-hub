@@ -1,4 +1,4 @@
-class GenerateSchoolLevelPdfService
+class ReportCardBatchService
   RECENT_WINDOW = 4.months
 
   def initialize(batch)
@@ -24,7 +24,6 @@ class GenerateSchoolLevelPdfService
 
   attr_reader :batch, :cutoff
 
-  # pick students of the right bucket with recent results
   def fetch_students
     Student
       .where(school_id: batch.school_id)
@@ -39,22 +38,6 @@ class GenerateSchoolLevelPdfService
     combined.to_pdf
   end
 
-  def render_page(student)
-    html = ApplicationController.render(
-      template: 'students/print_version',
-      layout:   'pdf',
-      assigns:  { student: }
-    )
-
-    Grover
-      .new(html,
-           emulate_media: 'print',
-           wait_for:      'window.chartReady === true',
-           format:        'A4')
-      .to_pdf
-  end
-
-  # overwrite any previous attachment
   def attach_file(pdf_blob)
     batch.file.purge if batch.file.attached?
     batch.file.attach(
@@ -62,5 +45,9 @@ class GenerateSchoolLevelPdfService
       filename: "report_#{batch.level}.pdf",
       content_type: 'application/pdf'
     )
+  end
+
+  def render_page(student)
+    StudentReportPdf.new(student).call
   end
 end

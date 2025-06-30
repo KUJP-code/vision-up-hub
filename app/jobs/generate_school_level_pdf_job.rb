@@ -3,14 +3,18 @@ class GenerateSchoolLevelPdfJob < ApplicationJob
 
   def perform(batch_id)
     batch = ReportCardBatch.find(batch_id)
-    GenerateSchoolLevelPdfService.new(batch).call
+    ReportCardBatchService.new(batch).call
   ensure
+    host = Rails.application.routes.default_url_options[:host] ||
+          ENV.fetch('APP_HOST', 'http://localhost:3000')
+
     NotifyUserJob.perform_later(
       user_id: batch.user_id,
       text:    "Report PDF for #{batch.level.titleize} is #{batch.status}.",
-      link:    (Rails.application.routes.url_helpers.rails_blob_url(
-                  batch.file, disposition: 'attachment', only_path: false
-                ) if batch.complete_status?)
+      link: Rails.application.routes.url_helpers.report_card_batches_url(
+        school_id: batch.school_id,
+        host: host
+      )
     )
   end
 end

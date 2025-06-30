@@ -3,8 +3,16 @@ class ReportCardBatchesController < ApplicationController
   after_action  :verify_authorized
 
   def index
-    @batches = policy_scope(ReportCardBatch).order(:level)
-    authorize @batches
+    authorize ReportCardBatch
+
+    @schools = current_user.schools
+    @school = @schools.find_by(id: params[:school_id]) || @schools.first
+    return redirect_to root_path, alert: t('no_school') unless @school
+
+    @batches = policy_scope(ReportCardBatch)
+               .where(school_id: @school.id)
+               .with_attached_file
+               .order(:level)
   end
 
   def create

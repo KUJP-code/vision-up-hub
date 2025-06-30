@@ -1,8 +1,20 @@
 class ReportCardBatchPolicy < ApplicationPolicy
-  def index?    = can_access_school?
-  def show?     = can_access_school?
-  def create?   = can_access_school?
-  def update?   = can_access_school?
+  def index?
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+  end
+  def show?
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+  end
+  def create?
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+  end
+  def update?
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+  end
+  def regenerate?
+    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+  end
+
   def destroy?  = user.is?('Admin')
 
   class Scope < Scope

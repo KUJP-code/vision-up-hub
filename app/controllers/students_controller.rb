@@ -96,32 +96,16 @@ class StudentsController < ApplicationController
     @levels = Student.display_levels
   end
 
-
   def report_card_pdf
     @student = Student.find(params[:id])
-    authorize @student, :show? 
-    set_results
-    @levels  = Student.display_levels
+    authorize @student, :show?
 
-    html = render_to_string(
-      template: 'students/print_version',
-      layout:   'pdf'
-    )
-
-  pdf = Grover.new(
-          html,
-          format:        'A4',
-          emulate_media: 'print',
-          wait_for:      'window.chartReady === true'
-        ).to_pdf
-
-
+    pdf = StudentReportPdf.new(@student).call
     send_data pdf,
               filename:    "report_card_#{@student.student_id}.pdf",
               disposition: 'inline',
               type:        'application/pdf'
   end
-
 
   private
 

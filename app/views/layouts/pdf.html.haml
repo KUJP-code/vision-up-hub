@@ -1,11 +1,14 @@
 %html
   %head
-    = stylesheet_link_tag 'application',
-                          media: 'all',
-                          host:  request.base_url
-    = stylesheet_link_tag 'print_report_card',
-                          media: 'all',
-                          host:  request.base_url
+    :ruby
+      host_for_pdf =
+        Rails.application.routes.default_url_options[:host] ||
+        ENV.fetch('APP_HOST', 'http://localhost:3000')
+
+
+    = stylesheet_link_tag 'application', media: 'all', host: host_for_pdf
+    = stylesheet_link_tag 'print_report_card', media: 'all', host: host_for_pdf
+
     :ruby
       js_path =
         if Rails.env.development?
