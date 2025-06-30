@@ -45,6 +45,6 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def super_admin?
-    admin? && SPECIAL_ADMIN_IDS.include?(user.id)
+    user.is?('Admin') && SPECIAL_ADMIN_IDS.include?(user.id)
   end
 end
