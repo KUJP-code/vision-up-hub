@@ -1,0 +1,36 @@
+%html
+  %head
+    :ruby
+      host_for_pdf =
+        Rails.application.routes.default_url_options[:host] ||
+        ENV.fetch('APP_HOST', 'http://localhost:3000')
+
+
+    = stylesheet_link_tag 'application', media: 'all', host: host_for_pdf
+    = stylesheet_link_tag 'print_report_card', media: 'all', host: host_for_pdf
+
+    :ruby
+      js_path =
+        if Rails.env.development?
+          Rails.root.join('app/assets/builds/application.js')
+        else
+          Dir.glob(Rails.root.join('public/assets/application-*.js')).first
+        end
+
+    %script{ type: 'module' }
+      != File.read(js_path)
+
+    %style{ media: 'all' }
+      :plain
+        html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .text-4xl { font-size:2.25rem; line-height:2.5rem; font-weight:700; }
+        .text-lg  { font-size:1.125rem; line-height:1.75rem; font-weight:700; }
+        .text-sm  { font-size:.875rem; line-height:1.25rem; }
+        .text-secondary   { color:#645880; }
+        .flex { display:flex; }
+        .items-center { align-items:center; }
+        .justify-center { justify-content:center; }
+
+    %meta{ charset: "utf-8" }
+
+  %body= yield

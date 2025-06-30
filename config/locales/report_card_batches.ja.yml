@@ -1,0 +1,12 @@
+ja:
+  report_card_batches:
+    index:
+      download: "ダウンロード"
+      generate: "作成"
+      regenerate: "再作成"
+      last_generated: "最終作成日"
+      level: "レベル"
+      actions: "操作"
+      report_cards: "成績表"
+      in_progress: "現在作成中です。最大10分ほどかかる場合があります。完了次第通知されます。"
+      failed: "失敗しました。管理者にお問い合わせください。"

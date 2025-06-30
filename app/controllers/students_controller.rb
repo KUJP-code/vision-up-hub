@@ -97,6 +97,17 @@ class StudentsController < ApplicationController
 
   end
 
+  def report_card_pdf
+    @student = Student.find(params[:id])
+    authorize @student, :show?
+
+    pdf = StudentReportPdf.new(@student).call
+    send_data pdf,
+              filename:    "report_card_#{@student.student_id}.pdf",
+              disposition: 'inline',
+              type:        'application/pdf'
+  end
+
   private
 
   def set_homework_resources
@@ -131,6 +142,7 @@ class StudentsController < ApplicationController
   def set_results
     @results = @student.test_results.order(created_at: :desc).includes(:test)
     @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
+    @recent_result = @results.first
     @data = radar_data
   end
 

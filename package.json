@@ -5,7 +5,10 @@
     "build": "bun bun.config.js",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify --postcss"
   },
-  "browserslist": ["defaults", "iOS > 12"],
+  "browserslist": [
+    "defaults",
+    "iOS > 12"
+  ],
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.4",
@@ -16,6 +19,7 @@
     "papaparse": "^5.4.1",
     "postcss": "latest",
     "postcss-preset-env": "^9.5.14",
+    "puppeteer": "^24.10.1",
     "stimulus-textarea-autogrow": "^4.1.0",
     "tailwindcss": "latest",
     "tailwindcss-stimulus-components": "^5.1.1",

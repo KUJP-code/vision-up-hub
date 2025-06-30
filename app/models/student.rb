@@ -56,7 +56,12 @@ class Student < ApplicationRecord
 
   scope :current, -> { where(status: :active) }
   scope :former, -> { where(status: %i[on_break inactive]) }
-
+  scope :with_recent_results, ->(cutoff) {
+    joins(:test_results)
+      .where('test_results.created_at >= ?', cutoff)
+      .distinct
+  }
+  
   def mapped_level_order
     LEVEL_ORDER_MAP[level] || 1
   end

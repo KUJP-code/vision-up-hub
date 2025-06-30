@@ -11,7 +11,9 @@
 %main.flex.flex-col.items-center.p-3.gap-3
   %h3.font-bold= manager
   %h3.font-bold= t('.student_count', count: @school.students_count)
-
+  = link_to t('.edit_school'),
+            edit_organisation_school_path(@school.organisation_id, @school),
+            class: 'btn btn-secondary'
   %section.w-full.flex.justify-around.gap-3
     -# .flex.flex-col.items-center.gap-3
     -#   .flex.items-center.gap-3
@@ -40,6 +42,4 @@
                 class: 'btn btn-secondary'
   = render 'students/table', students: @students
 
-  = link_to t('.edit_school'),
-            edit_organisation_school_path(@school.organisation_id, @school),
-            class: 'btn btn-secondary'
+

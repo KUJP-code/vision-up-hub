@@ -1,4 +1,9 @@
 en:
+  generate: "Create"
+  Kindy: "Kindy"
+  Land: "Land"
+  Sky: "Sky"
+  Galaxy: "Galaxy"
   actions: "Actions"
   activerecord:
     models:

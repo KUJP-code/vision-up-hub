@@ -1,0 +1,38 @@
+= render 'shared/subtitle', text: t('.report_cards')
+
+
+%main.flex.flex-col.gap-5.p-3.text-center
+  - if @schools.many?
+    %nav.flex.flex-wrap.gap-3
+      - @schools.each do |sch|
+        = link_to sch.name,
+                  report_card_batches_path(school_id: sch.id),
+                  class: "btn btn-outline #{'bg-secondary text-white' if sch.id == @school.id}"
+  %table.w-full.text-center
+    %thead.bg-secondary.text-white
+      %tr.text-secondary
+      %th.thead.thead-s.bg-secondary-50= t('.level')
+      %th.thead.bg-secondary-50= t('.last_generated')
+      %th.thead.thead-e.bg-secondary-50= t('.actions')
+    %tbody
+      - ReportCardBatch::BATCH_LEVELS.each do |bucket|
+      - batch = @batches.find { |b| b.level == bucket }
+        %tr.border-b
+          %td.p-2= t("#{bucket.titleize}")
+          %td.p-2
+            - if batch&.complete_status?
+              = l batch.updated_at, format: :short
+            - elsif batch&.generating_status? || batch&.pending_status?
+              %span.text-secondary= t('.in_progress')
+            - elsif batch&.failed_status?
+              %span.text-yellow-600=t('failed')
+          %td.p-2.flex.flex-row.gap-5
+            - if batch&.file&.attached? && batch&.complete_status?
+              = link_to t('.download'),
+                        file_path(batch.file.blob),
+                        class: 'btn btn-secondary w-full',
+                        target: '_blank'
+            - if batch&.generating_status?
+              .text-secondary= t('.generating')
+            - else
+              = button_to (batch ? t('.regenerate') : t('generate')), (batch ? regenerate_report_card_batch_path(batch) : report_card_batches_path(level: bucket, school_id: @school.id)), method: :post, class: 'btn btn-danger whitespace-nowrap text-center'

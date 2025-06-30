@@ -38,8 +38,12 @@ gem 'bootsnap', '1.18.3', require: false
 gem 'devise', '4.9.3'
 gem 'devise-i18n', '1.12.0'
 
+
 # And Pundit for authorization
 gem 'pundit', '2.3.1'
+
+# Grover for rendering HTML to PDF
+gem 'grover', '~>1.0'
 
 # Template views in HAML
 gem 'haml-rails', '2.1.0'
@@ -154,3 +158,5 @@ group :test do
   # pdf-inspector for PDF testing
   gem 'pdf-inspector', require: 'pdf/inspector'
 end
+
+gem "combine_pdf", "~> 1.0"
