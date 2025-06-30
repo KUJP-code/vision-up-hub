@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.3.0-test_styling"
+    "Name": "kidsup/materials:2.3.1-remove_spc"
   },
   "Ports": [
     {
