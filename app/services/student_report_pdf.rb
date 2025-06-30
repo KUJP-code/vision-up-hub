@@ -9,7 +9,7 @@ class StudentReportPdf
     html = ApplicationController.render(
       template: 'students/print_version',
       layout:   'pdf',
-      assigns:  render_assigns    # these keys become @ivars
+      assigns:  render_assigns
     )
 
     Grover.new(
@@ -17,7 +17,7 @@ class StudentReportPdf
       format:        'A4',
       emulate_media: 'print',
       wait_for:      'window.chartReady === true',
-      base_url:      default_host
+      base_url:      Rails.application.routes.default_url_options[:host]
     ).to_pdf
   end
 
@@ -25,11 +25,11 @@ class StudentReportPdf
 
   attr_reader :student
 
-  # --- identical to StudentsController#set_results -------------------------
+
   def render_assigns
     results        = student.test_results.includes(:test)
                            .order(created_at: :desc)
-    active_result  = nil                                 # no “detail” view here
+    active_result  = nil
     recent_result  = results.first
 
     {
@@ -42,7 +42,6 @@ class StudentReportPdf
     }
   end
 
-  # mini-version of controller’s radar_data helper
   def radar_data(results, active_result)
     radar_colors = ['49, 44, 180', '221, 50, 50', '170, 218, 120',
                     '178, 170, 191'].cycle
@@ -67,7 +66,6 @@ class StudentReportPdf
       pointHoverBorderColor:       "rgb(#{color})"
     }
   end
-  # -------------------------------------------------------------------------
 
   def default_host
     Rails.application.routes.default_url_options[:host] ||
