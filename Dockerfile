@@ -71,6 +71,10 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     apt-get install --no-install-recommends -y nodejs chromium fonts-liberation fonts-noto-cjk libpoppler-glib-dev libvips \
 	nginx postgresql-client ruby-foreman poppler-utils
 
+# Expose Chrome’s path for Puppeteer / Grover
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium" \
+    PUPPETEER_SKIP_DOWNLOAD="true"
+    
 # configure nginx
 RUN gem install foreman && \
     sed -i 's/access_log\s.*;/access_log stdout;/' /etc/nginx/nginx.conf && \
