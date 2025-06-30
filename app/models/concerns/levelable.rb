@@ -10,7 +10,7 @@ module Levelable
     scope :kindy, -> { where(level: %i[all_levels kindy]) }
     scope :land, -> { where(level: %i[all_levels land_one land_two land_three]) }
     scope :sky, -> { where(level: %i[all_levels sky_one sky_two sky_three]) }
-    scope :galaxy, -> { where(level: %i[all_levels galaxy_one galaxy_two galaxy_three] + ::Levels::EVENING_COURSES ) }
+    scope :galaxy, -> { where(level: %i[all_levels galaxy_one galaxy_two galaxy_three] + ::Levels::KEEP_UP_COURSES ) }
     scope :elementary, -> { land.or(sky).or(galaxy) }
     scope :keep_up, -> { where(level: %i[keep_up_one keep_up_two]) }
     scope :specialist, -> { where(level: %i[specialist specialist_advanced]) }
@@ -66,7 +66,6 @@ module Levelable
       else level
       end
     end
-
 
     def calendar_level
       case short_level
