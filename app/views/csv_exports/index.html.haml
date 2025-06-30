@@ -9,6 +9,7 @@
   .flex.flex-col.gap-3.p-3.rounded.border.border-secondary
     %h2 Filter for export
     - @allowed_models.each do |model|
+      - next if model == 'Student' # hide student from "Filter" section
       = link_to model.titleize,
                 new_csv_export_path(model:),
                 class: 'btn btn-secondary'

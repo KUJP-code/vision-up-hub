@@ -21,7 +21,6 @@ class Lesson < ApplicationRecord
              class_name: 'User',
              optional: true
 
-
   has_many :course_lessons, dependent: :destroy
 
   accepts_nested_attributes_for :course_lessons,
@@ -55,10 +54,6 @@ class Lesson < ApplicationRecord
   def week(course)
     number = course_lessons.find_by(course_id: course.id).week
     "Week #{number}"
-  end
-
-  def organisation_lessons
-    OrganisationLesson.none
   end
 
   private

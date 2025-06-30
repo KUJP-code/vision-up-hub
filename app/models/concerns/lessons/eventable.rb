@@ -22,7 +22,7 @@ module Eventable
     end
 
     # event_date on the join table is within the window
-    def within_event_window(date, past: 1.month, future: 2.months)
+    def within_event_window(date, past: 1.month, future: 3.months)
       joins(:organisation_lessons)
         .where(organisation_lessons: {
                  event_date: (date - past)..(date + future)

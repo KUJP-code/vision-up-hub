@@ -20,14 +20,14 @@ class TeacherEventsController < ApplicationController
 
     @supported_types = SUPPORTED_TYPES
     @announcements = Pundit.policy_scope!(@teacher, Announcement)
+    #  Need to clean this and separate it in the future, i jsut put released here because the policy scope is annoying with lessons and separating it was a LOT of code
     @lessons =
       Lesson
-      .where(type: %w[SeasonalActivity PartyActivity])
+      .where(type: %w[SeasonalActivity PartyActivity], released: true)
       .for_organisation(@teacher.organisation_id)
       .within_event_window(@date)
       .includes(:organisation_lessons)
       .order('organisation_lessons.event_date ASC')
-      .then { |rel| policy_scope(rel) }
 
   end
 

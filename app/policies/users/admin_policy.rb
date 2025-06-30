@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminPolicy < ApplicationPolicy
-  SPECIAL_ADMIN_ID = 28
+  SPECIAL_ADMIN_IDS = [28, 5].freeze
   def show?
     user.is?('Admin')
   end
@@ -11,7 +11,7 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def edit?
-    self? || user.id == SPECIAL_ADMIN_ID
+    self? || super_admin?
   end
 
   def create?
@@ -19,11 +19,11 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def update?
-    self? || user.id == SPECIAL_ADMIN_ID
+    self? || super_admin?
   end
 
   def destroy?
-    self? || user.id == SPECIAL_ADMIN_ID
+    self? || super_admin?
   end
 
   def change_password?
@@ -42,5 +42,9 @@ class AdminPolicy < ApplicationPolicy
 
   def self?
     user.is?('Admin') && user.id == record.id
+  end
+
+  def super_admin?
+    admin? && SPECIAL_ADMIN_IDS.include?(user.id)
   end
 end

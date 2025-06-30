@@ -53,4 +53,6 @@ module Levels
 
   EVENING_COURSES = %w[keep_up_one keep_up_two keep_up_three
                        specialist specialist_advanced].freeze
+
+  KEEP_UP_COURSES = %w[keep_up_one keep_up_two keep_up_three].freeze
 end

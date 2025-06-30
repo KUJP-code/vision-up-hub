@@ -199,6 +199,10 @@
     padding: 1rem;
   }
 
+  .form-done {
+    background-color: #e7f6ec !important;
+  }
+  
   .form-group,
   .field_with_errors {
     @apply w-full flex flex-col items-stretch gap-2;

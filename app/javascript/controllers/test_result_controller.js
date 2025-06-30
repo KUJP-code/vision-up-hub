@@ -176,4 +176,10 @@ export default class extends Controller {
 			);
 		}
 	}
+
+	markDone(event) {
+	if (event.detail.success) {
+		this.element.classList.add("form-done");
+	}
+	}
 }

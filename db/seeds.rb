@@ -110,14 +110,19 @@ puts 'Creating category resources...'
 
 CategoryResource.lesson_categories.keys.each do |lc|
   CategoryResource.resource_categories.keys.each do |rc|
-    category_resource = CategoryResource.new(lesson_category: lc,
-                                             resource_category: rc,
-                                             resource: test_file)
+    next if rc == 'english_class_resource' # skip deprecated key
+
+    category_resource = CategoryResource.new(
+      lesson_category: lc,
+      resource_category: rc,
+      resource: test_file
+    )
     next unless category_resource.valid?
 
     category_resource.save
   end
 end
+
 
 puts 'Creating courses...'
 
@@ -201,7 +206,7 @@ test_svg = ActiveStorage::Blob.find_by(filename: 'tutorials_test_icon.svg')
 
 ['Extra Resources', 'LMS Functions', 'Lessons'].each do |title|
   category = fb.build(:tutorial_category, title:)
-  category.svg.attach(test_svg)
+  # category.svg.attach(test_svg)
   category.save
 end
 
