@@ -24,7 +24,7 @@ FROM base AS build
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl libcairo2-dev \
+    apt-get install --no-install-recommends -y nodejs build-essential curl libcairo2-dev \
 		        libglib2.0-dev libgirepository1.0-dev libpoppler-glib-dev libpq-dev \
 				libvips libyaml-dev unzip
 
@@ -67,7 +67,8 @@ FROM base
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y libpoppler-glib-dev libvips \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install --no-install-recommends -y nodejs libpoppler-glib-dev libvips \
 	nginx postgresql-client ruby-foreman poppler-utils
 
 # configure nginx
