@@ -5,6 +5,7 @@ en:
   Sky: "Sky"
   Galaxy: "Galaxy"
   actions: "Actions"
+  failed: "Failed, please contact an admin."
   activerecord:
     models:
       school_class: "Class"

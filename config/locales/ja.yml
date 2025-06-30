@@ -1,5 +1,11 @@
 ---
 ja:
+  generate: "作成"
+  Kindy: "キンディ"
+  Land: "ランド"
+  Sky: "スカイ"
+  Galaxy: "ギャラクシー"
+  failed: "失敗しました。管理者にお問い合わせください。"
   actions: "結果"
   activerecord:
     errors:
