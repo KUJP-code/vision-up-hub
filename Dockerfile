@@ -68,7 +68,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install --no-install-recommends -y nodejs libpoppler-glib-dev libvips \
+    apt-get install --no-install-recommends -y nodejs chromium fonts-liberation fonts-noto-cjk libpoppler-glib-dev libvips \
 	nginx postgresql-client ruby-foreman poppler-utils
 
 # configure nginx
