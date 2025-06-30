@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.4.1-reports"
+    "Name": "kidsup/materials:2.4.2-reports"
   },
   "Ports": [
     {
