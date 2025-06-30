@@ -16,6 +16,9 @@
       = link_to tests_path, class: 'btn btn-outline-white w-full flex gap-2' do
         #{inline_svg_tag('test.svg', class: 'w-10 h-10')}
         = t('.tests')
+      = link_to report_card_batches_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('test.svg', class: 'w-10 h-10')}
+        = t('.report_cards')
   %section.flex.flex-col.gap-3
     %h3.font-bold= t('.curriculum')
     %nav.w-full.grid.grid-cols-3.gap-6
