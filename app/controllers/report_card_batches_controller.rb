@@ -1,12 +1,11 @@
 class ReportCardBatchesController < ApplicationController
   before_action :set_batch, only: :regenerate
+  before_action :set_context
   after_action  :verify_authorized
 
   def index
     authorize ReportCardBatch
 
-    @schools = current_user.schools
-    @school = @schools.find_by(id: params[:school_id]) || @schools.first
     return redirect_to root_path, alert: t('no_school') unless @school
 
     @batches = policy_scope(ReportCardBatch)
@@ -50,5 +49,17 @@ class ReportCardBatchesController < ApplicationController
         level:     params[:level]
     )
   end
+  def set_context
+    if current_user.is?('OrgAdmin')
+      @org = current_user.organisation
+    elsif params[:org_id]
+      @org = authorize Organisation.find(params[:org_id]), :show?
+    end
 
+    @schools = policy_scope(School)
+    @schools = @schools.where(organisation_id: @org.id) if @org.present?
+
+    @school = @schools.find_by(id: params[:school_id]) || @schools.first
+    authorize @school, :show?
+  end
 end

@@ -1,0 +1,12 @@
+en:
+  report_card_batches:
+    index:
+      download: "Download"
+      generate: "Create"
+      regenerate: "Re-create"
+      last_generated: "Last Created"
+      level: "Level"
+      actions: "Actions"
+      report_cards: "Report Cards"
+      in_progress: "Currently in progress, this can take up to 10 minutes and you will get a notification when it's finished"
+      failed: "Failed, please contact an admin"
