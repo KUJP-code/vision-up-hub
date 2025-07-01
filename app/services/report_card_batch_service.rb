@@ -1,5 +1,5 @@
 class ReportCardBatchService
-  RECENT_WINDOW = 5.months
+  RECENT_WINDOW = 4.months
 
   def initialize(batch)
     @batch = batch
