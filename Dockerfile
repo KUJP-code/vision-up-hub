@@ -68,8 +68,13 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install --no-install-recommends -y nodejs chromium fonts-liberation fonts-noto-cjk libpoppler-glib-dev libvips \
-	nginx postgresql-client ruby-foreman poppler-utils
+    apt-get install --no-install-recommends -y \
+      nodejs chromium fonts-liberation fonts-noto-cjk libpoppler-glib-dev \
+      libvips nginx postgresql-client ruby-foreman poppler-utils \
+      libcairo2 libglib2.0-0 libgirepository-1.0-1 libgdk-pixbuf-2.0-0 \
+      libpango-1.0-0 libatk1.0-0 libnss3 libx11-6 libxext6 libxrender1 \
+      libxcomposite1 libxcursor1 libxdamage1 libxrandr2 libxfixes3 libasound2 \
+      libxshmfence1 libxkbcommon0 libxcb1 libxss1 libgtk-3-0
 
 # Expose Chrome’s path for Puppeteer / Grover
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium" \
