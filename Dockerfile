@@ -63,6 +63,13 @@ RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 # Final stage for app image
 FROM base
 
+RUN apt-get update -qq \
+ && apt-get install -y --no-install-recommends dumb-init \
+ && rm -rf /var/lib/apt/lists/*
+
+# ⬇️  NEW: single ENTRYPOINT that routes through dumb-init
+ENTRYPOINT ["dumb-init", "--", "/rails/bin/docker-entrypoint"]
+
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
@@ -121,7 +128,7 @@ ENV PORT="3001" \
 	RUBY_YJIT_ENABLE="1"
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod
