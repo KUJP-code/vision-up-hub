@@ -127,6 +127,7 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"
 rails: bundle exec rails server -p 3001
+worker: bundle exec rake solid_queue:start
 EOF
 
 # Start the server by default, this can be overwritten at runtime
