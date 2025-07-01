@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.4-4-reporties"
+    "Name": "kidsup/materials:2.4.6-reports-groverinit"
   },
   "Ports": [
     {
