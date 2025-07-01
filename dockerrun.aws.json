@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.4.7.4-puma"
+    "Name": "kidsup/materials:2.4.7.5-compose-bump"
   },
   "Ports": [
     {
