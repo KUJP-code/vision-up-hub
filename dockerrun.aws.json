@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.4.6.1-launch_args"
+    "Name": "kidsup/materials:2.4.6.2-worker"
   },
   "Ports": [
     {
