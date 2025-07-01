@@ -123,11 +123,10 @@ ENV PORT="3001" \
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Build a Procfile for production use, solid queue work for no job exits
+# Build a Procfile for production use
 COPY <<-"EOF" /rails/Procfile.prod
 nginx: /usr/sbin/nginx -g "daemon off;"
 rails: bundle exec rails server -p 3001
-worker: bundle exec solid_queue work
 EOF
 
 # Start the server by default, this can be overwritten at runtime
