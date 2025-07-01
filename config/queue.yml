@@ -7,7 +7,6 @@ default: &default
       threads: 3
       processes: 1
       polling_interval: 1
-      terminate_when_idle: false
 
 development:
   <<: *default
