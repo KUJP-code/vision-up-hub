@@ -2,6 +2,8 @@ version: "3"
 
 services:
   web:
+    environment:
+      - PUPPETEER_DISABLE_SHUTDOWN_HANDLERS=1
     platform: linux/amd64
     build: .
     ports:
