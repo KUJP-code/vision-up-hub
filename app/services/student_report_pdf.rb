@@ -17,10 +17,7 @@ class StudentReportPdf
       format:        'A4',
       emulate_media: 'print',
       wait_for:      'window.chartReady === true',
-      base_url:      Rails.application.routes.default_url_options[:host],
-      options: {
-        args: ['--no-sandbox']
-      }
+      base_url:      Rails.application.routes.default_url_options[:host]
     ).to_pdf
   end
 
