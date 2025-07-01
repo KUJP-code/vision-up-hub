@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.4.7.5-compose-bump"
+    "Name": "kidsup/materials:2.4.7.6-tiniinit"
   },
   "Ports": [
     {
