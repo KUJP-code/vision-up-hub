@@ -29,7 +29,7 @@ class TestResult < ApplicationRecord
   acts_as_copy_target
 
   def radar_data
-    { label: test.name,
+    { label: "#{test.name} – #{test.short_level.titleize}",
       data: [read_percent || 0,
              write_percent || 0,
              listen_percent || 0] }

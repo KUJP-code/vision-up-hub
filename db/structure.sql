@@ -1554,8 +1554,8 @@ CREATE TABLE public.report_card_batches (
     id bigint NOT NULL,
     school_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    level character varying,
-    status character varying,
+    level character varying NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3497,6 +3497,13 @@ CREATE INDEX index_plans_on_organisation_id ON public.plans USING btree (organis
 --
 
 CREATE INDEX index_report_card_batches_on_school_id ON public.report_card_batches USING btree (school_id);
+
+
+--
+-- Name: index_report_card_batches_on_school_id_and_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_report_card_batches_on_school_id_and_level ON public.report_card_batches USING btree (school_id, level);
 
 
 --
