@@ -23,7 +23,9 @@
     "stimulus-textarea-autogrow": "^4.1.0",
     "tailwindcss": "latest",
     "tailwindcss-stimulus-components": "^5.1.1",
-    "tailwindcss-theme-swapper": "^0.11.5"
+    "tailwindcss-theme-swapper": "^0.11.5",
+    "@tailwindcss/typography": "^0.5.16"
+
   },
   "devDependencies": {
     "@types/papaparse": "^5.3.14",
