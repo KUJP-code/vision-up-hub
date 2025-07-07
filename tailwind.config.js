@@ -1,4 +1,5 @@
 const themeSwapper = require("tailwindcss-theme-swapper");
+const typography   = require("@tailwindcss/typography");
 
 export default {
   content: [
@@ -7,6 +8,8 @@ export default {
     "./app/assets/stylesheets/**/*.css",
     "./app/javascript/**/*.{ts,js}",
   ],
+
+
   plugins: [
     themeSwapper({
       themes: [
@@ -59,5 +62,7 @@ export default {
         },
       ],
     }),
+
+    typography,
   ],
 };
