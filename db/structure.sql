@@ -1547,6 +1547,71 @@ ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
 
 
 --
+-- Name: privacy_policies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.privacy_policies (
+    id bigint NOT NULL,
+    version character varying,
+    content text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: privacy_policies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.privacy_policies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: privacy_policies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.privacy_policies_id_seq OWNED BY public.privacy_policies.id;
+
+
+--
+-- Name: privacy_policy_acceptances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.privacy_policy_acceptances (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    privacy_policy_id bigint NOT NULL,
+    accepted_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: privacy_policy_acceptances_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.privacy_policy_acceptances_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: privacy_policy_acceptances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.privacy_policy_acceptances_id_seq OWNED BY public.privacy_policy_acceptances.id;
+
+
+--
 -- Name: report_card_batches; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2587,6 +2652,20 @@ ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_
 
 
 --
+-- Name: privacy_policies id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policies ALTER COLUMN id SET DEFAULT nextval('public.privacy_policies_id_seq'::regclass);
+
+
+--
+-- Name: privacy_policy_acceptances id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances ALTER COLUMN id SET DEFAULT nextval('public.privacy_policy_acceptances_id_seq'::regclass);
+
+
+--
 -- Name: report_card_batches id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2968,6 +3047,22 @@ ALTER TABLE ONLY public.phonics_resources
 
 ALTER TABLE ONLY public.plans
     ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: privacy_policies privacy_policies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policies
+    ADD CONSTRAINT privacy_policies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: privacy_policy_acceptances privacy_policy_acceptances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT privacy_policy_acceptances_pkey PRIMARY KEY (id);
 
 
 --
@@ -3490,6 +3585,27 @@ CREATE INDEX index_plans_on_course_id ON public.plans USING btree (course_id);
 --
 
 CREATE INDEX index_plans_on_organisation_id ON public.plans USING btree (organisation_id);
+
+
+--
+-- Name: index_privacy_acceptances_on_user_and_policy; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_privacy_acceptances_on_user_and_policy ON public.privacy_policy_acceptances USING btree (user_id, privacy_policy_id);
+
+
+--
+-- Name: index_privacy_policy_acceptances_on_privacy_policy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_privacy_policy_acceptances_on_privacy_policy_id ON public.privacy_policy_acceptances USING btree (privacy_policy_id);
+
+
+--
+-- Name: index_privacy_policy_acceptances_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_privacy_policy_acceptances_on_user_id ON public.privacy_policy_acceptances USING btree (user_id);
 
 
 --
@@ -4144,6 +4260,14 @@ ALTER TABLE ONLY public.homework_resources
 
 
 --
+-- Name: privacy_policy_acceptances fk_rails_9303f387dc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT fk_rails_9303f387dc FOREIGN KEY (privacy_policy_id) REFERENCES public.privacy_policies(id);
+
+
+--
 -- Name: active_storage_variant_records fk_rails_993965df05; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4352,6 +4476,14 @@ ALTER TABLE ONLY public.pdf_tutorials
 
 
 --
+-- Name: privacy_policy_acceptances fk_rails_f6bdce05cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT fk_rails_f6bdce05cb FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -4361,6 +4493,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250703015039'),
+('20250703015006'),
 ('20250626025024'),
 ('20250530042958'),
 ('20250513013436'),
