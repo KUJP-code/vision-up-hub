@@ -86,7 +86,11 @@
       @apply hidden font-bold;
     }
   }
-
+  .override-headings :is(h1, h2, h3, h4) {
+    color: theme('colors.secondary');
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+  }
   #main-nav.open {
     @apply w-48;
 
