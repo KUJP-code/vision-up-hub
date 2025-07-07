@@ -216,4 +216,6 @@ TutorialCategory.all.each do |category|
   fb.create_list(:faq_tutorial, 2, tutorial_category_id: category.id)
 end
 
+PrivacyPolicy.create!(version: "2025-07-03", content: "Initial privacy policy…")
+
 puts 'Done!'
