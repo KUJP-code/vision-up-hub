@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
+  before_action :ensure_privacy_policy_accepted
   before_action :check_ip
 
   def after_sign_in_path_for(resource)
@@ -25,6 +26,19 @@ class ApplicationController < ActionController::Base
                 alert: I18n.t('not_in_school')
   end
 
+  def ensure_privacy_policy_accepted
+    return unless user_signed_in?
+
+    latest_id = PrivacyPolicy.latest_id
+    accepted = current_user.privacy_policy_acceptances
+                           .exists?(privacy_policy_id: latest_id)
+    return if accepted
+
+    store_location_for(:user, request.fullpath)
+
+    redirect_to new_privacy_policy_acceptance_path
+  end
+  
   def needs_ip_check?
     current_user&.ku? &&
       current_user&.is?('SchoolManager', 'Teacher')
