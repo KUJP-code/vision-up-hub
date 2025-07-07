@@ -3,8 +3,9 @@
 Rails.application.routes.draw do
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users
-
+    resources :privacy_policy_acceptances, only: %i[new create]
     authenticate :user do
+
       resources :announcements
       resources :invoices, only: %i[index new create update destroy] do
         member do
