@@ -10,7 +10,6 @@
               local: true do |f|
     .form-check.mb-3
       = f.check_box :accepted
-      = f.label :accepted, t('privacy.i_agree',
-                             default: 'I have read and agree to the Privacy Policy.')
-    = f.submit t('privacy.agree_button', default: 'Accept and Continue'),
+      = f.label :accepted, t('privacy_policy_acceptances.i_agree')
+    = f.submit t('privacy_policy_acceptances.agree_button'),
                class: 'btn btn-secondary mb-24'

@@ -23,10 +23,10 @@ class PrivacyPolicyAcceptancesController < ApplicationController
 
     if acceptance.save
       redirect_to stored_location_for(:user) || root_path,
-                  notice: t('privacy.accepted', default: 'Thanks for accepting!')
+                  notice: t('privacy_policy_acceptances.accepted')
     else
       @policy = PrivacyPolicy.find(PrivacyPolicy.latest_id)
-      flash.now[:alert] = t('privacy.accept_failed',
+      flash.now[:alert] = t('privacy_policy_acceptances.accept_failed',
                             default: 'Please tick the box.')
       render :new, status: :unprocessable_entity
     end
