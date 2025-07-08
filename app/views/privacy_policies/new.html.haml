@@ -1,0 +1,24 @@
+= render 'shared/subtitle', text: 'Add New Privacy Policy'
+
+.main.flex.flex-col.gap-5.p-3.text-center.my-6
+  .my-12
+    = link_to 'View Current Policy',
+              privacy_policy_path(PrivacyPolicy.latest_id),
+              class: 'btn btn-secondary mb-4',
+              target: '_blank'
+
+  = form_with model: @policy, url: privacy_policies_path, local: true do |f|
+    .mb-4
+      = f.label :version
+      .text-sm
+        date is best, eg: "2025-07-07"
+
+      = f.text_field :version, class: 'w-full'
+
+    .mb-4
+      = f.label :content
+      .text-sm
+        Markdown format, paste your policy into chatgpt and ask for a markdown formatted version and have it preview to you what that looks like.
+      = f.text_area :content, rows: 18, class: 'w-full'
+
+    = f.submit 'Publish Policy', class: 'btn btn-secondary'

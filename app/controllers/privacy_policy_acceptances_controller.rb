@@ -1,5 +1,12 @@
 class PrivacyPolicyAcceptancesController < ApplicationController
   skip_before_action :ensure_privacy_policy_accepted
+  before_action :authorize_admin!, only: :index
+
+  def index
+    @acceptances = PrivacyPolicyAcceptance
+                   .includes(:user, :privacy_policy)
+                   .order(accepted_at: :desc)
+  end
 
   def new
     @policy = PrivacyPolicy.find(PrivacyPolicy.latest_id)
@@ -23,5 +30,11 @@ class PrivacyPolicyAcceptancesController < ApplicationController
                             default: 'Please tick the box.')
       render :new, status: :unprocessable_entity
     end
+  end
+
+  private
+
+  def authorize_admin!
+    redirect_to root_path, alert: 'Not authorized' unless current_user.is?('Admin')
   end
 end
