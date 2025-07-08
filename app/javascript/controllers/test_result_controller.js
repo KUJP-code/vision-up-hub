@@ -93,7 +93,7 @@ export default class extends Controller {
 			speakingScore +
 			writingScore +
 			basicsScore;
-		const totalPercent = Math.ceil((totalScore / this.maxScore) * 100);
+		const totalPercent = Math.round((totalScore / this.maxScore) * 100);
 
 		this.setTotalPercent(totalPercent);
 		this.setNewLevel(totalPercent);
@@ -104,7 +104,7 @@ export default class extends Controller {
 			(total, target) => total + (Number.parseInt(target.value) || 0),
 			0,
 		);
-		const percentage = Math.ceil((total / maxScore) * 100);
+		const percentage = Math.round((total / maxScore) * 100);
 		for (const target of outputs) {
 			if (target.nodeName === "INPUT") {
 				target.value = percentage;
