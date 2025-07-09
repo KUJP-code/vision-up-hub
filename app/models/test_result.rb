@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TestResult < ApplicationRecord
+  # Basics max is hardcoded due to how tests were initially set up, when there's time to refactor the entire thing we can do that
+  BASICS_MAX = 2
   include Levels
 
   store_accessor :answers, :listening
@@ -69,24 +71,28 @@ class TestResult < ApplicationRecord
     (basics.to_f / basics_max * 100).round
   end
 
-  def total_score
+  def max_score
+    (test.questions['reading']   || []).sum +
+    (test.questions['writing']   || []).sum +
+    (test.questions['listening'] || []).sum +
+    BASICS_MAX
+  end
+
+  def total_score 
     answers.values.flatten.sum + basics
   end
 
+  def total_score_ratio
+    return 0 if max_score.zero?
+    total_score.to_f / max_score
+  end
+
   def total_score_total
-    basics_max = 2
-    max = writing_total + reading_total + listening_total + basics_max
-    total = (writing&.sum || 0) + (reading&.sum || 0) + (listening&.sum || 0)
-    "#{total_score} / #{max}"
+    "#{total_score} / #{max_score}"
   end
 
   def test_print_percent
-    basics_max = 2
-    max = writing_total + reading_total + listening_total + basics_max
-    return 0 if max.zero?
-
-    percent = (total_score.to_f / max) * 100
-    percent.round(0)
+    (total_score_ratio * 100).round
   end
 
   private
