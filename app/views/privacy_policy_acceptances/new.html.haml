@@ -1,6 +1,6 @@
 = render 'shared/subtitle', text: t('.privacy_policy')
-%main.flex.flex-col.gap-3.text-center
-  %h1 Privacy Policy (v#{@policy.version})
+%main.flex.flex-col.gap-3
+  %h1.text-center Privacy Policy (v#{@policy.version})
 
   .policy-content.my-6.prose.mx-auto.text-secondary.override-headings
     = markdown(@policy.content)
@@ -8,8 +8,9 @@
   = form_with model: PrivacyPolicyAcceptance.new,
               url:   privacy_policy_acceptances_path,
               local: true do |f|
-    .form-check.mb-3
+    .form-check.mb-3.text-center
       = f.check_box :accepted
       = f.label :accepted, t('privacy_policy_acceptances.i_agree')
-    = f.submit t('privacy_policy_acceptances.agree_button'),
-               class: 'btn btn-secondary mb-24'
+    .text-center.pb-24
+      = f.submit t('privacy_policy_acceptances.agree_button'),
+                class: 'btn btn-secondary'
