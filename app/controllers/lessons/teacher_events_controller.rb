@@ -2,7 +2,7 @@
 
 class TeacherEventsController < ApplicationController
   after_action :verify_authorized, only: %i[show]
-  SUPPORTED_TYPES = %w[seasonalactivity partyactivity events].freeze
+  SUPPORTED_TYPES = %w[seasonalactivity partyactivity eventactivity].freeze
   def index
     index_vars
   end
@@ -23,7 +23,7 @@ class TeacherEventsController < ApplicationController
     #  Need to clean this and separate it in the future, i jsut put released here because the policy scope is annoying with lessons and separating it was a LOT of code
     @lessons =
       Lesson
-      .where(type: %w[SeasonalActivity PartyActivity], released: true)
+      .where(type: %w[SeasonalActivity PartyActivity EventActivity], released: true)
       .for_organisation(@teacher.organisation_id)
       .within_event_window(@date)
       .includes(:organisation_lessons)

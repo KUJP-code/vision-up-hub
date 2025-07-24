@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class PartyActivitiesController < LessonsController
+class EventActivitiesController < LessonsController
   skip_after_action :generate_guide
 
   def index
-    @lessons = policy_scope(PartyActivity.order(title: :desc))
+    @lessons = policy_scope(EventActivity.order(title: :desc))
   end
 
   def create
@@ -13,13 +13,12 @@ class PartyActivitiesController < LessonsController
 
     if @lesson.save
       redirect_to lesson_url(@lesson),
-                  notice: 'party activity successfully created'
+                  notice: 'event activity successfully created'
     else
       set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,
-             alert: 'party activity could not be created'
-
+             alert: 'event activity could not be created'
     end
   end
 
@@ -29,20 +28,21 @@ class PartyActivitiesController < LessonsController
     attrs = super
     if @lesson.update(attrs)
       redirect_to after_update_url,
-                  notice: 'party activity successfully updated'
+                  notice: 'Event activity successfully updated'
     else
       set_form_data
       render 'lessons/edit',
              status: :unprocessable_entity,
-             alert: 'party activity could not be updated'
+             alert: 'event activity could not be updated'
     end
   end
 
   private
 
   def type_params
-    params.require(:party_activity).permit(
-      lesson_params + PartyActivity::ATTRIBUTES
+    params.require(:event_activity).permit(
+      lesson_params + EventActivity::ATTRIBUTES
     )
+
   end
 end
