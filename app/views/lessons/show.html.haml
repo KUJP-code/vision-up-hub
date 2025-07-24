@@ -41,6 +41,8 @@
         = render 'lessons/seasonal_activities/show_fields', lesson: @lesson
       - when 'PartyActivity'
         = render 'lessons/party_activities/show_fields', lesson: @lesson
+      - when 'EventActivity'
+        = render 'lessons/event_activities/show_fields', lesson: @lesson
       - if @courses.any?
         %h3 Used in the following courses:
         - @courses.each do |c|

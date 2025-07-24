@@ -1,0 +1,12 @@
+-# locals: (f:, lesson:)
+
+= content_for :priority_fields do
+
+  .form-group 
+    = f.label :cover_image, 'Cover Image'
+    %small best with 64x64px pngs but any image works, just check it after creation.
+    = f.file_field :cover_image, accept: 'image/png'
+    
+  .form-group
+    = f.label :activity_guide, 'Guide'
+    = f.file_field :activity_guide
