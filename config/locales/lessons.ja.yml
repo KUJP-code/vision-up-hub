@@ -14,6 +14,7 @@ ja:
     partyactivity: "パーティー"
     party: "パーティー"
     events: "イベント"
+    eventactivity: "イベント"
     subtypes:
       aerobics: "エアロバイス"
       arts_and_crafts: "アート&クリエイティング"
