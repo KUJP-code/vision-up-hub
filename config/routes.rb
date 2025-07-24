@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :seasonal_activities, only: %i[create index update]
       resources :party_activities, only: %i[create index update]
+      resources :event_activities, only: %i[create index update]
       resources :report_card_batches, only: %i[index create] do
         post :regenerate, on: :member
       end
