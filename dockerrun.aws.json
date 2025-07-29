@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6-event_activities"
+    "Name": "kidsup/materials:2.6.1-security"
   },
   "Ports": [
     {
