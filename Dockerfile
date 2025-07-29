@@ -97,6 +97,9 @@ COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
+
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains" always; 
+  add_header X-Content-Type-Options nosniff;
   access_log stdout;
 
   root /rails/public;
