@@ -973,6 +973,42 @@ ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
 
 
 --
+-- Name: devices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.devices (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    token character varying,
+    user_agent character varying,
+    platform character varying,
+    ip_address character varying,
+    status integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: devices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.devices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: devices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.devices_id_seq OWNED BY public.devices.id;
+
+
+--
 -- Name: faq_tutorials; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1547,6 +1583,71 @@ ALTER SEQUENCE public.plans_id_seq OWNED BY public.plans.id;
 
 
 --
+-- Name: privacy_policies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.privacy_policies (
+    id bigint NOT NULL,
+    version character varying,
+    content text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: privacy_policies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.privacy_policies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: privacy_policies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.privacy_policies_id_seq OWNED BY public.privacy_policies.id;
+
+
+--
+-- Name: privacy_policy_acceptances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.privacy_policy_acceptances (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    privacy_policy_id bigint NOT NULL,
+    accepted_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: privacy_policy_acceptances_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.privacy_policy_acceptances_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: privacy_policy_acceptances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.privacy_policy_acceptances_id_seq OWNED BY public.privacy_policy_acceptances.id;
+
+
+--
 -- Name: report_card_batches; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1554,8 +1655,8 @@ CREATE TABLE public.report_card_batches (
     id bigint NOT NULL,
     school_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    level character varying NOT NULL,
-    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    level character varying,
+    status character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2475,6 +2576,13 @@ ALTER TABLE ONLY public.courses ALTER COLUMN id SET DEFAULT nextval('public.cour
 
 
 --
+-- Name: devices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices ALTER COLUMN id SET DEFAULT nextval('public.devices_id_seq'::regclass);
+
+
+--
 -- Name: faq_tutorials id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2584,6 +2692,20 @@ ALTER TABLE ONLY public.phonics_resources ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.plans ALTER COLUMN id SET DEFAULT nextval('public.plans_id_seq'::regclass);
+
+
+--
+-- Name: privacy_policies id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policies ALTER COLUMN id SET DEFAULT nextval('public.privacy_policies_id_seq'::regclass);
+
+
+--
+-- Name: privacy_policy_acceptances id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances ALTER COLUMN id SET DEFAULT nextval('public.privacy_policy_acceptances_id_seq'::regclass);
 
 
 --
@@ -2843,6 +2965,14 @@ ALTER TABLE ONLY public.courses
 
 
 --
+-- Name: devices devices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: faq_tutorials faq_tutorials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2968,6 +3098,22 @@ ALTER TABLE ONLY public.phonics_resources
 
 ALTER TABLE ONLY public.plans
     ADD CONSTRAINT plans_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: privacy_policies privacy_policies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policies
+    ADD CONSTRAINT privacy_policies_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: privacy_policy_acceptances privacy_policy_acceptances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT privacy_policy_acceptances_pkey PRIMARY KEY (id);
 
 
 --
@@ -3269,6 +3415,13 @@ CREATE INDEX index_course_tests_on_test_id ON public.course_tests USING btree (t
 
 
 --
+-- Name: index_devices_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_devices_on_user_id ON public.devices USING btree (user_id);
+
+
+--
 -- Name: index_faq_tutorials_on_tutorial_category_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3493,17 +3646,31 @@ CREATE INDEX index_plans_on_organisation_id ON public.plans USING btree (organis
 
 
 --
+-- Name: index_privacy_acceptances_on_user_and_policy; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_privacy_acceptances_on_user_and_policy ON public.privacy_policy_acceptances USING btree (user_id, privacy_policy_id);
+
+
+--
+-- Name: index_privacy_policy_acceptances_on_privacy_policy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_privacy_policy_acceptances_on_privacy_policy_id ON public.privacy_policy_acceptances USING btree (privacy_policy_id);
+
+
+--
+-- Name: index_privacy_policy_acceptances_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_privacy_policy_acceptances_on_user_id ON public.privacy_policy_acceptances USING btree (user_id);
+
+
+--
 -- Name: index_report_card_batches_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_report_card_batches_on_school_id ON public.report_card_batches USING btree (school_id);
-
-
---
--- Name: index_report_card_batches_on_school_id_and_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_report_card_batches_on_school_id_and_level ON public.report_card_batches USING btree (school_id, level);
 
 
 --
@@ -3983,6 +4150,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: devices fk_rails_410b63ef65; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT fk_rails_410b63ef65 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: invoices fk_rails_4721119434; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4148,6 +4323,14 @@ ALTER TABLE ONLY public.organisation_lessons
 
 ALTER TABLE ONLY public.homework_resources
     ADD CONSTRAINT fk_rails_92a10d0e8b FOREIGN KEY (english_class_id) REFERENCES public.lessons(id);
+
+
+--
+-- Name: privacy_policy_acceptances fk_rails_9303f387dc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT fk_rails_9303f387dc FOREIGN KEY (privacy_policy_id) REFERENCES public.privacy_policies(id);
 
 
 --
@@ -4359,6 +4542,14 @@ ALTER TABLE ONLY public.pdf_tutorials
 
 
 --
+-- Name: privacy_policy_acceptances fk_rails_f6bdce05cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.privacy_policy_acceptances
+    ADD CONSTRAINT fk_rails_f6bdce05cb FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -4368,6 +4559,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250725013946'),
+('20250703015039'),
+('20250703015006'),
 ('20250626025024'),
 ('20250530042958'),
 ('20250513013436'),
