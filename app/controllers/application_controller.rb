@@ -6,7 +6,9 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
-  before_action :check_device_approval
+  before_action :check_device_approval, unless: -> {
+    !Rails.configuration.x.device_lock_enforced || logging_out?
+  }
   before_action :check_ip
 
   def after_sign_in_path_for(resource)
@@ -49,7 +51,7 @@ class ApplicationController < ActionController::Base
     token.presence || "unknown"
     end
   end
-  
+
   def needs_ip_check?
     current_user&.ku? &&
       current_user&.is?('SchoolManager', 'Teacher')
@@ -83,6 +85,10 @@ class ApplicationController < ActionController::Base
 
     sign_out(current_user)
     redirect_to new_user_session_path, notice: t('not_authorized') and return
+  end
+
+  def logging_out?
+    devise_controller? && action_name == 'destroy'
   end
 
   def user_not_authorized
