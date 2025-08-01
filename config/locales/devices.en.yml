@@ -1,0 +1,6 @@
+en:
+  devices:
+    pending:
+      your_device_is_not_authenticated: "This device is not yet approved"
+      please_wait: "Please wait until an administrator approves it"
+      device_authenticating: "Device Authenticating"
