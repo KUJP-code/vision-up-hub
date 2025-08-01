@@ -17,6 +17,7 @@ class User < ApplicationRecord
            inverse_of: :user,
            dependent: :nullify
 
+  has_many :devices, dependent: :destroy
   # This is the JSONB column, managed by StoreModel
   attribute :notifications, Notification.to_array_type
   validates :notifications, store_model: true
@@ -26,6 +27,10 @@ class User < ApplicationRecord
 
   def is?(*types)
     types.include?(type)
+  end
+
+  def roles_needing_device_approval?
+    is?('Teacher', 'SchoolManager', 'Sales', 'Writer', 'Admin')
   end
 
   def ku?
