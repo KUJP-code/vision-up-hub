@@ -30,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def roles_needing_device_approval?
-    is?('Teacher', 'SchoolManager', 'Sales', 'Writer', 'Admin')
+    is?('Teacher', 'SchoolManager', 'Sales', 'Writer')
   end
 
   def ku?
