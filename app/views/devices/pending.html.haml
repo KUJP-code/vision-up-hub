@@ -2,3 +2,4 @@
   このデバイスはまだ承認されていません
 %p
   管理者が承認するまでお待ちください。
+= button_to t('logout'), destroy_user_session_path, method: :delete, class: 'btn btn-secondary'
