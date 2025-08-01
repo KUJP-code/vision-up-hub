@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
+  before_action :check_device_approval
   before_action :check_ip
 
   def after_sign_in_path_for(resource)
@@ -14,6 +15,23 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def check_device_approval
+    return unless user_signed_in?
+    return unless current_user.roles_needing_device_approval?
+    return if current_user.devices.approved.exists?(token: device_token)
+
+    current_user.devices.find_or_create_by!(token: device_token) do |d|
+      d.user_agent = request.user_agent
+      d.platform = request.env["HTTP_SEC_CH_UA_PLATFORM"]
+      d.ip_address = request.remote_ip
+      d.status = :pending
+    end
+
+    if Rails.configuration.x.device_lock_enforced
+      redirect_to pending_device_path
+    end
+  end
 
   def check_ip
     return unless needs_ip_check?
@@ -25,6 +43,13 @@ class ApplicationController < ActionController::Base
                 alert: I18n.t('not_in_school')
   end
 
+  def device_token
+    @device_token ||= begin
+    token = params[:device_token] || cookies[:device_token]
+    token.presence || "unknown"
+    end
+  end
+  
   def needs_ip_check?
     current_user&.ku? &&
       current_user&.is?('SchoolManager', 'Teacher')
