@@ -9,6 +9,9 @@ class CreateDevices < ActiveRecord::Migration[7.1]
       t.integer :status, default: 0, null: false
 
       t.timestamps
+
+      add_index :devices, [:user_id, :token], unique: true
+
     end
   end
 end
