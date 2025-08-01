@@ -1,5 +1,8 @@
-%h1.text-xl.font-bold.mb-4
-  このデバイスはまだ承認されていません
-%p
-  管理者が承認するまでお待ちください。
-= button_to t('logout'), destroy_user_session_path, method: :delete, class: 'btn btn-secondary'
+= render 'shared/subtitle', text: t('.device_authenticating')
+%main.flex-col.p-12.items-center.justify-center.text-center
+
+  %subtitle.p-6
+    = t('.your_device_is_not_authenticated')
+  .text.text-secondary.p-6
+    = t('.please_wait')
+  = button_to t('logout'), destroy_user_session_path, method: :delete, class: 'btn btn-secondary'

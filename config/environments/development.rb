@@ -3,7 +3,7 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
-  config.x.device_lock_enforced = false # unlock devices for dev
+  config.x.device_lock_enforced = true # unlock devices for dev
   config.allow_concurrency = true   # let Puma serve a second request
   config.after_initialize do
     Bullet.enable        = true
