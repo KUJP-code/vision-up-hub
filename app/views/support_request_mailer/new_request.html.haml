@@ -4,6 +4,16 @@
   %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }
 %body
   = '------------------------------'
+  - if @request.user
+    %p
+      Sent from:
+      = @request.user.name
+      ( 
+      = @request.user.email
+      )
+  - else
+    %p Sent from: [No associated user]
+  = '------------------------------'
   %h2 Details
   = '------------------------------'
   %p Subject: #{@request.subject}

@@ -1,6 +1,12 @@
 A new support request has been received through 'vision-up.app'.
 
 ------------------------------
+<% if @request.user %>
+Sent from: <%= @request.user.name %> (<%= @request.user.email %>)
+<% else %>
+Sent from: [No associated user]
+<% end %>
+------------------------------
 Details
 ------------------------------
 Subject: <%= @request.subject %>
@@ -11,5 +17,6 @@ Issue Description
 ------------------------------
 
 <%= @request.description %>
-
 ------------------------------
+View the request here:
+<%= support_request_url(id: @request.id) %>
