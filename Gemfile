@@ -82,7 +82,7 @@ gem 'http_accept_language', '2.1.1'
 gem 'rdoc', '6.6.3.1'
 
 # Lock nokogiri for CVE-2024-34459
-gem 'nokogiri', '1.16.5'
+gem 'nokogiri', '1.18.9'
 
 # Bump rexml for CVE-2024-41123
 gem 'rexml', '~> 3.3.6'
