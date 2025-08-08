@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.3-support_names"
+    "Name": "kidsup/materials:2.6.4-sessions"
   },
   "Ports": [
     {
