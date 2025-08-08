@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.2-security"
+    "Name": "kidsup/materials:2.6.3-support_names"
   },
   "Ports": [
     {
