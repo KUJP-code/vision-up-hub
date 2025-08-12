@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.5-nokogiri_bump"
+    "Name": "kidsup/materials:2.6.6-DA_redesign"
   },
   "Ports": [
     {
