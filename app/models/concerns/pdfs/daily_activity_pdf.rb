@@ -49,11 +49,9 @@ module DailyActivityPdf
     factory = PdfBodyItemFactory.new(pdf)
 
     draw_materials(pdf, factory: factory)
-    intro_items = Array(intro).compact
-    if interesting_fact.present?
-      intro_items << "Did you know? #{interesting_fact}"
-    end
 
+    intro_items = Array(intro).compact
+    intro_items << "Did you know? #{interesting_fact}" if interesting_fact.present?
     intro_height = interesting_fact.present? ? 29.mm : 20.mm
     factory.draw(
       text: array_to_list(intro_items, :dot),
@@ -61,12 +59,28 @@ module DailyActivityPdf
       height: intro_height
     )
 
-    factory.draw(text: array_to_list(instructions, :number),
-                 y_pos: 110.mm, height: 40.mm)
-    factory.draw(text: array_to_list(large_groups, :dot),
-                 y_pos: 70.mm, height: 10.mm)
-    factory.draw(text: array_to_list(outro, :dot),
-                 y_pos: 52.mm, height: 30.mm)
+    instr_text = array_to_list(instructions, :number)
+
+    tips = Array(large_groups).compact
+    tips_text = ""
+    if tips.any?
+      thin_space = "\u2002"
+      tips_block = array_to_list(tips, :dot).gsub(/^/, thin_space)
+
+      tips_text = "\nLarge group tips:\n" + tips_block
+    end
+
+    factory.draw(
+      text: instr_text + tips_text,
+      y_pos: 110.mm,
+      height: 50.mm
+    )
+
+    factory.draw(
+      text: array_to_list(outro, :dot),
+      y_pos: 52.mm,
+      height: 30.mm
+    )
   end
 
   def draw_materials(pdf, factory:)
