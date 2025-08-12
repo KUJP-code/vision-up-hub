@@ -53,6 +53,7 @@ module DailyActivityPdf
     intro_items = Array(intro).compact
     intro_items << "Did you know? #{interesting_fact}" if interesting_fact.present?
     intro_height = interesting_fact.present? ? 29.mm : 20.mm
+
     factory.draw(
       text: array_to_list(intro_items, :dot),
       y_pos: 149.mm,
@@ -60,18 +61,12 @@ module DailyActivityPdf
     )
 
     instr_text = array_to_list(instructions, :number)
+    tips_text  = tips_block_text(Array(large_groups).compact)
 
-    tips = Array(large_groups).compact
-    tips_text = ""
-    if tips.any?
-      thin_space = "\u2002"
-      tips_block = array_to_list(tips, :dot).gsub(/^/, thin_space)
-
-      tips_text = "\nLarge group tips:\n" + tips_block
-    end
+    body_text = [instr_text, tips_text.presence].compact.join("\n")
 
     factory.draw(
-      text: instr_text + tips_text,
+      text: body_text,
       y_pos: 110.mm,
       height: 50.mm
     )
@@ -109,6 +104,14 @@ module DailyActivityPdf
   end
 
   private
+
+  def tips_block_text(tips)
+  return "" if tips.blank?
+
+  indent = "\u2002"
+  tips_block = array_to_list(tips, :dot).gsub(/^/, indent)
+  "Large group tips:\n" + tips_block
+  end
 
   def renumber(numbered_text, start_at:)
     numbered_text
