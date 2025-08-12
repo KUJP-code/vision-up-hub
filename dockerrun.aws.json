@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.4-sessions"
+    "Name": "kidsup/materials:2.6.5-nokogiri_bump"
   },
   "Ports": [
     {
