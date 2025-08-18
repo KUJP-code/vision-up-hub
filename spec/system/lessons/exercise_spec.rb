@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'creating an Exercise lesson', :js do
+RSpec.describe 'creating an Exercise lesson' do
   let!(:org) { create(:organisation, name: 'KidsUP') }
 
   before do
