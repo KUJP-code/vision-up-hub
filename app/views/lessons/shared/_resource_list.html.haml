@@ -10,12 +10,12 @@
         %p= resource.filename
         = inline_svg_tag 'download_icon.svg',
                          class: 'fill-white'
-      - if current_user.is?('Admin')
+      - if can_remove_resource?(current_user, lesson, resource.blob)
         = link_to file_path(id: resource.blob.id,
                             record_id: lesson.id,
                             record_type: 'Lesson'),
                   data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{resource.filename} from this lessson?" },
+                          turbo_confirm: "Remove #{resource.filename} from this lesson?" },
                   class: 'btn btn-danger flex justify-around' do
           %p= resource.filename
           = inline_svg_tag 'delete_icon.svg',
