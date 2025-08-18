@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.6-DA_redesign"
+    "Name": "kidsup/materials:2.6.7-writer-resource-deletion"
   },
   "Ports": [
     {
