@@ -11,7 +11,7 @@ class Lesson < ApplicationRecord
   acts_as_copy_target
   has_logidze
 
-  validates :goal, :level, :title, :type, presence: true
+  validates :level, :title, :type, presence: true
   validates :type, inclusion: { in: TYPES }
 
   belongs_to :assigned_editor,
