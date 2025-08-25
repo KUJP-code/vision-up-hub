@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.7-writer-resource-deletion"
+    "Name": "kidsup/materials:2.6.8-required_fields"
   },
   "Ports": [
     {
