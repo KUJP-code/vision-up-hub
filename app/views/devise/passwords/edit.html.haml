@@ -1,0 +1,36 @@
+- content_for :title, t('.title', default: 'Change your password')
+
+%main.flex.flex-col.gap-3.p-3
+  .max-w-xl.w-full.mx-auto
+    = form_with model: resource,
+                as: resource_name,
+                url: password_path(resource_name),
+                html: { method: :put, class: 'flex flex-col gap-3' } do |f|
+
+      = render 'devise/shared/error_messages', resource: resource
+      = f.hidden_field :reset_password_token
+
+      .flex.flex-col.gap-1
+        = f.label :password, t('.new_password', default: 'New password'), class: 'font-medium'
+        = f.password_field :password,
+                           autocomplete: 'new-password',
+                           class: 'w-full',
+                           required: true,
+                           placeholder: '••••••••••'
+        %p.text-xs.text-muted
+          = t('.password_hint', default: "Must be at least %{n} characters.", n: Devise.password_length.begin)
+
+      .flex.flex-col.gap-1
+        = f.label :password_confirmation, t('.confirm_password', default: 'Confirm new password'), class: 'font-medium'
+        = f.password_field :password_confirmation,
+                           autocomplete: 'new-password',
+                           class: 'w-full',
+                           required: true,
+                           placeholder: '••••••••••'
+
+      .flex.gap-2.mt-1
+        = f.submit t('.update_password', default: 'Update password'),
+                   class: 'btn btn-primary'
+
+  .max-w-xl.w-full.mx-auto.mt-2
+    = render 'devise/shared/links'
