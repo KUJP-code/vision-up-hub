@@ -8,7 +8,10 @@
                 html: { method: :put, class: 'flex flex-col gap-3', data: { turbo: false } } do |f|
 
       = render 'devise/shared/error_messages', resource: resource
-      = f.hidden_field :reset_password_token, value: (resource.reset_password_token.presence || params[:reset_password_token])
+      = hidden_field_tag "#{resource_name}[reset_password_token]",
+                        (resource.reset_password_token.presence ||
+                          params[:reset_password_token] ||
+                          request.query_parameters[:reset_password_token])
 
       .flex.flex-col.gap-1
         = f.label :password, t('.new_password', default: 'New password'), class: 'font-medium'
