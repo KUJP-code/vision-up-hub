@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.9-password_reset"
+    "Name": "kidsup/materials:2.7.0-password_token"
   },
   "Ports": [
     {
