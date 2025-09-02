@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.7.2-confirm_pages"
+    "Name": "kidsup/materials:2.7.3-devise_mailers"
   },
   "Ports": [
     {
