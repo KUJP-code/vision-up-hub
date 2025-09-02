@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:22.7.1-pw_token"
+    "Name": "kidsup/materials:2.7.2-confirm_pages"
   },
   "Ports": [
     {
