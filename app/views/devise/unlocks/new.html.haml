@@ -2,8 +2,7 @@
 
 %main.flex.flex-col.gap-3.p-3
   .max-w-xl.w-full.mx-auto
-    = form_with model: resource,
-                as: resource_name,
+    = form_with scope: resource_name,
                 url: unlock_path(resource_name),
                 html: { method: :post, class: 'flex flex-col gap-3', data: { turbo: false } } do |f|
 
@@ -19,7 +18,7 @@
                         placeholder: 'you@example.com'
 
       .flex.gap-2.mt-1
-        = f.submit t('.resend_unlock_instructions'),
+        = f.submit t('.resend_unlock_instructions', default: 'Resend unlock instructions'),
                    class: 'btn btn-danger'
 
   .max-w-xl.w-full.mx-auto.mt-2
