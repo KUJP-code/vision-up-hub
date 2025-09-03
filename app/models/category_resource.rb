@@ -90,6 +90,13 @@ class CategoryResource < ApplicationRecord
   def arrival_resource?
     true
   end
+  # TODO: remove later once homework resource migration has been run to remove it
+  def english_class_resource?
+  return true if resource_category == 'homework_sheet'
+
+  errors.add(:lesson_category, 'Requires a homework resource')
+  false
+  end
 
   def brush_up_resource?
     return true if resource_category == 'worksheets'
