@@ -1,0 +1,6 @@
+ja:
+  devices:
+    pending:
+      your_device_is_not_authenticated: "このデバイスはまだ承認されていません"
+      please_wait: "管理者が承認するまでお待ちください"
+      device_authenticating: "デバイスを認証中"

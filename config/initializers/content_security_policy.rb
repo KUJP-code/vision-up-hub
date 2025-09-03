@@ -11,6 +11,7 @@ Rails.application.configure do
     policy.img_src     :self, :https, :data
     policy.object_src  :none
     policy.script_src  :self, :https
+
     policy.style_src :self, :https, :unsafe_inline
     policy.frame_src   :self, :https, "https://www.youtube.com", "https://player.vimeo.com"
     policy.media_src   :self, :https, "https://www.youtube.com", "https://player.vimeo.com"
@@ -21,7 +22,7 @@ Rails.application.configure do
   # Generate session nonces for permitted importmap, inline scripts, and inline styles.
   config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
   config.content_security_policy_nonce_directives = %w(script-src)
-  
+ 
 
   # Report violations without enforcing the policy.
   # config.content_security_policy_report_only = true

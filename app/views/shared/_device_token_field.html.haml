@@ -1,0 +1,14 @@
+:javascript
+  document.addEventListener("DOMContentLoaded", () => {
+    let token = localStorage.getItem("device_token");
+    if (!token) {
+      token = crypto.randomUUID();
+      localStorage.setItem("device_token", token);
+    }
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "device_token";
+    input.value = token;
+    const form = document.querySelector("form");
+    if (form) form.appendChild(input);
+  });
