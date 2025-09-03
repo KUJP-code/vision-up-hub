@@ -77,7 +77,7 @@
     = f.text_area :goal
     %small.-mt-1 More than 3 lines will work but be ridiculously small
 
-  - unless ['KindyPhonic', 'EventActivity', 'SeasonalActivity', 'PartyActivity'].include?(lesson.type)
+  - unless ['KindyPhonic', 'EventActivity', 'SeasonalActivity', 'PartyActivity', 'ParentsReport'].include?(lesson.type)
 
     .form-group
       = f.label :level
