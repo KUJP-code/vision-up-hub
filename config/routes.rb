@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       resources :missing_lessons, only: %i[index]
       resources :monthly_materials, only: %i[index]
       resources :notifications, except: %i[edit]
+      resources :parents_reports, only: %i[create index update]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]
       resources :phonics_resources, only: %i[destroy]
