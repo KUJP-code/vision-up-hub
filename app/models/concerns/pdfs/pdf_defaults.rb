@@ -12,7 +12,10 @@ module PdfDefaults
   HEADING_SIZE = 0.75.cm
   RED = 'f27875'
   SUBHEADING_SIZE = 0.4.cm
-
+  MATERIALS_Y      = 191.mm
+  MATERIALS_H      = 30.mm
+  MATERIALS_LEFT_X = 48.mm
+  MATERIALS_TOTAL_W= 140.mm 
   def apply_defaults(pdf)
     pdf.font_families.update(
       'Shingo' => {

@@ -48,17 +48,34 @@ module ExercisePdf
     factory = PdfBodyItemFactory.new(pdf)
 
     factory.draw(text: array_to_list(materials, :number),
-                 y_pos: 191.mm, height: 30.mm)
-    factory.draw(text: array_to_list(intro, :dot),
-                 y_pos: 149.mm, height: 20.mm)
-    factory.draw(text: "Did you know? #{interesting_fact}",
-                 y_pos: 127.mm, height: 9.mm,
-                 indent: 50.mm, width: 138.mm)
-    factory.draw(text: array_to_list(instructions, :number),
-                 y_pos: 110.mm, height: 40.mm)
-    factory.draw(text: array_to_list(large_groups, :dot),
-                 y_pos: 70.mm, height: 10.mm)
+                y_pos: 191.mm, height: 30.mm)
+
+    intro_items = Array(intro).compact
+    if interesting_fact.present?
+      intro_items << "Did you know? #{interesting_fact}"
+    end
+    intro_height = interesting_fact.present? ? 29.mm : 20.mm
+
+    factory.draw(text: array_to_list(intro_items, :dot),
+                y_pos: 149.mm, height: intro_height)
+
+    instr_text = array_to_list(instructions, :number)
+
+    tips      = Array(large_groups).compact
+    tips_text = ""
+    if tips.any?
+      indent = "\u2002" # thin space ~1mm-ish
+      tips_block = array_to_list(tips, :dot).gsub(/^/, indent)
+      tips_text = "Large group tips:\n" + tips_block
+    end
+
+    body_text = [instr_text, tips_text.presence].compact.join("\n")
+
+    factory.draw(text: body_text,
+                y_pos: 110.mm, height: 50.mm)
+
+    # Outro (unchanged)
     factory.draw(text: array_to_list(outro, :dot),
-                 y_pos: 52.mm, height: 30.mm)
+                y_pos: 52.mm, height: 30.mm)
   end
 end

@@ -70,6 +70,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.action_view.annotate_rendered_view_with_filenames = true
 
   config.public_file_server.headers = {
     "Access-Control-Allow-Origin"   => "*",

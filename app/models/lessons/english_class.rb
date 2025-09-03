@@ -8,5 +8,4 @@ class EnglishClass < Lesson
 
   LISTABLE_ATTRIBUTES = %i[example_sentences notes vocab].freeze
 
-  validates :example_sentences, :vocab, presence: true
 end
