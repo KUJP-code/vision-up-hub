@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
         token = SecureRandom.uuid
         cookies.signed[:device_token] = {
           value: token,
-          expires: 3.years.from_now,
+          expires: 10.years.from_now,
           httponly: true,
           same_site: :lax
         }
