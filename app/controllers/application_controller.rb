@@ -47,8 +47,17 @@ class ApplicationController < ActionController::Base
 
   def device_token
     @device_token ||= begin
-    token = params[:device_token] || cookies[:device_token]
-    token.presence || "unknown"
+      token = params[:device_token].presence || cookies.signed[:device_token]
+      if token.blank?
+        token = SecureRandom.uuid
+        cookies.signed[:device_token] = {
+          value: token,
+          expires: 3.years.from_now,
+          httponly: true,
+          same_site: :lax
+        }
+      end
+      token
     end
   end
 
