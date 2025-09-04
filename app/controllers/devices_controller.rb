@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DevicesController < ApplicationController
-  skip_before_action :check_device_approval, only: [:pending]
+  skip_before_action :enforce_device_approval, only: [:pending]
   before_action :authenticate_user!
   before_action :require_admin!, only: %i[index update destroy]
 

@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
-  before_action :check_device_approval, unless: -> {
-    !Rails.configuration.x.device_lock_enforced || logging_out?
-  }
+  before_action :ensure_device_record, unless: -> { logging_out? }
+  before_action :enforce_device_approval, if: -> { Rails.configuration.x.device_lock_enforced },
+                                          unless: -> { logging_out? || on_pending_device_page? }
   before_action :check_ip
 
   def after_sign_in_path_for(resource)
@@ -18,21 +18,31 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def check_device_approval
+  def ensure_device_record
     return unless user_signed_in?
     return unless current_user.roles_needing_device_approval?
-    return if current_user.devices.approved.exists?(token: device_token)
 
-    current_user.devices.find_or_create_by!(token: device_token) do |d|
-      d.user_agent = request.user_agent
-      d.platform = request.env["HTTP_SEC_CH_UA_PLATFORM"]
-      d.ip_address = request.remote_ip
-      d.status = :pending
-    end
+    tok = device_token
+    device = current_user.devices.find_or_initialize_by(token: tok)
+    device.user_agent ||= request.user_agent
+    device.platform   ||= request.env['HTTP_SEC_CH_UA_PLATFORM']
+    device.ip_address = request.remote_ip if device.ip_address.blank?
+    device.status   ||= :pending
+    device.save! if device.changed?
+  end
 
-    if Rails.configuration.x.device_lock_enforced
-      redirect_to pending_device_path
-    end
+  def enforce_device_approval
+    return unless user_signed_in?
+    return unless current_user.roles_needing_device_approval?
+
+    device = current_user.devices.find_by(token: device_token)
+    return if device&.approved?
+
+    redirect_to pending_device_path
+  end
+
+  def on_pending_device_page?
+    request.path == pending_device_path
   end
 
   def check_ip
@@ -54,7 +64,8 @@ class ApplicationController < ActionController::Base
           value: token,
           expires: 10.years.from_now,
           httponly: true,
-          same_site: :lax
+          same_site: :lax,
+          secure: Rails.env.production?
         }
       end
       token
@@ -69,7 +80,7 @@ class ApplicationController < ActionController::Base
   def authorized_ku_staff?
     current_user.is?('Admin', 'Sales')
   end
-  
+
   def configure_permitted_params
     devise_parameter_sanitizer.permit(:sign_up, keys: %i[name organisation_id])
   end
