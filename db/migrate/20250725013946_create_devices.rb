@@ -14,6 +14,5 @@ class CreateDevices < ActiveRecord::Migration[7.1]
     add_index :devices, [:user_id, :token], unique: true
     add_index :devices, :status
     add_index :devices, :token
-    add_index :devices, :user_id
   end
 end
