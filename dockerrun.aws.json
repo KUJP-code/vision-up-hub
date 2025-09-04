@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.8-device_auth_PR"
+    "Name": "kidsup/materials:2.7.5-devices"
   },
   "Ports": [
     {
