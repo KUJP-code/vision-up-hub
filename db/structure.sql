@@ -973,6 +973,42 @@ ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
 
 
 --
+-- Name: devices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.devices (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    token character varying NOT NULL,
+    user_agent character varying,
+    platform character varying,
+    ip_address character varying,
+    status integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: devices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.devices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: devices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.devices_id_seq OWNED BY public.devices.id;
+
+
+--
 -- Name: faq_tutorials; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2540,6 +2576,13 @@ ALTER TABLE ONLY public.courses ALTER COLUMN id SET DEFAULT nextval('public.cour
 
 
 --
+-- Name: devices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices ALTER COLUMN id SET DEFAULT nextval('public.devices_id_seq'::regclass);
+
+
+--
 -- Name: faq_tutorials id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2919,6 +2962,14 @@ ALTER TABLE ONLY public.course_tests
 
 ALTER TABLE ONLY public.courses
     ADD CONSTRAINT courses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: devices devices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT devices_pkey PRIMARY KEY (id);
 
 
 --
@@ -3361,6 +3412,34 @@ CREATE INDEX index_course_tests_on_course_id ON public.course_tests USING btree 
 --
 
 CREATE INDEX index_course_tests_on_test_id ON public.course_tests USING btree (test_id);
+
+
+--
+-- Name: index_devices_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_devices_on_status ON public.devices USING btree (status);
+
+
+--
+-- Name: index_devices_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_devices_on_token ON public.devices USING btree (token);
+
+
+--
+-- Name: index_devices_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_devices_on_user_id ON public.devices USING btree (user_id);
+
+
+--
+-- Name: index_devices_on_user_id_and_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_devices_on_user_id_and_token ON public.devices USING btree (user_id, token);
 
 
 --
@@ -4099,6 +4178,14 @@ ALTER TABLE ONLY public.solid_queue_failed_executions
 
 
 --
+-- Name: devices fk_rails_410b63ef65; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.devices
+    ADD CONSTRAINT fk_rails_410b63ef65 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: invoices fk_rails_4721119434; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4502,6 +4589,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('3'),
 ('20250703015039'),
 ('20250703015006'),
+('20250725013946'),
 ('20250626025024'),
 ('20250530042958'),
 ('20250513013436'),

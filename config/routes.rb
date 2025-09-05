@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users
     resources :privacy_policy_acceptances, only: %i[new create index]
+    get 'pending_device', to: 'devices#pending', as: :pending_device
+    
     authenticate :user do
-
       resources :announcements
       resources :invoices, only: %i[index new create update destroy] do
         member do
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
       resources :monthly_materials, only: %i[index]
       resources :notifications, except: %i[edit]
       resources :privacy_policies, only: %i[new create show]
+      resources :parents_reports, only: %i[create index update]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]
       resources :phonics_resources, only: %i[destroy]
@@ -40,6 +42,7 @@ Rails.application.routes.draw do
       resources :school_classes
       resources :seasonal_activities, only: %i[create index update]
       resources :party_activities, only: %i[create index update]
+      resources :event_activities, only: %i[create index update]
       resources :report_card_batches, only: %i[index create] do
         post :regenerate, on: :member
       end
@@ -101,7 +104,7 @@ Rails.application.routes.draw do
       mount Flipper::UI.app(Flipper) => '/flipper', as: :flipper
       mount MissionControl::Jobs::Engine, at: '/jobs'
       mount PgHero::Engine, at: '/pghero'
-
+      resources :devices, only: [:index, :update, :destroy]
       resources :triggerable_jobs, only: %i[index create]
     end
 

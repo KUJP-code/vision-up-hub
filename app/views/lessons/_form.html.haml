@@ -8,7 +8,7 @@
                     data: { controller: 'fields' } } do |f|
   -# Add required types for courses
   - courses_required_types = ['PhonicsClass', 'EnglishClass']
-  - no_course_types = ['seasonal_activity', 'party_activity', 'event']
+  - no_course_types = ['seasonal_activity', 'party_activity', 'event_activity']
 
   - if courses_required_types.include?(lesson.type)
     - type_fields = render("lessons/#{lesson.type.pluralize.underscore}/fields",
@@ -74,10 +74,10 @@
 
   .form-group
     = f.label :goal
-    = f.text_area :goal, required: true
+    = f.text_area :goal
     %small.-mt-1 More than 3 lines will work but be ridiculously small
 
-  - unless ['KindyPhonic', 'Event', 'SeasonalActivity', 'PartyActivity'].include?(lesson.type)
+  - unless ['KindyPhonic', 'EventActivity', 'SeasonalActivity', 'PartyActivity', 'ParentsReport'].include?(lesson.type)
 
     .form-group
       = f.label :level

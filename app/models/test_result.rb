@@ -52,18 +52,15 @@ class TestResult < ApplicationRecord
   end
 
   def reading_total
-    total = reading&.sum || 0
-    read_percent&.nonzero? ? (total * 100.0 / read_percent).round : 0
+    (test.questions['reading'] || []).sum
   end
 
   def writing_total
-    total = writing&.sum || 0
-    write_percent&.nonzero? ? (total * 100.0 / write_percent).round : 0
+    (test.questions['writing'] || []).sum
   end
 
   def listening_total
-    total = listening&.sum || 0
-    listen_percent&.nonzero? ? (total * 100.0 / listen_percent).round : 0
+    (test.questions['listening'] || []).sum
   end
 
   def basics_percent

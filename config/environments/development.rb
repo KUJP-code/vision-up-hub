@@ -3,6 +3,7 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
+  config.x.device_lock_enforced = true # unlock devices for dev
   config.allow_concurrency = true   # let Puma serve a second request
   config.after_initialize do
     Bullet.enable        = true
@@ -69,6 +70,7 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+  config.action_view.annotate_rendered_view_with_filenames = true
 
   config.public_file_server.headers = {
     "Access-Control-Allow-Origin"   => "*",

@@ -2,7 +2,8 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList, PdfDefaults
+  attr_reader :body_width, :body_indent
 
   included do
     private
@@ -47,18 +48,75 @@ module DailyActivityPdf
   def draw_body(pdf)
     factory = PdfBodyItemFactory.new(pdf)
 
-    factory.draw(text: array_to_list(materials, :number),
-                 y_pos: 191.mm, height: 30.mm)
-    factory.draw(text: array_to_list(intro, :dot),
-                 y_pos: 149.mm, height: 20.mm)
-    factory.draw(text: "Did you know? #{interesting_fact}",
-                 y_pos: 127.mm, height: 9.mm,
-                 indent: 50.mm, width: 138.mm)
-    factory.draw(text: array_to_list(instructions, :number),
-                 y_pos: 110.mm, height: 40.mm)
-    factory.draw(text: array_to_list(large_groups, :dot),
-                 y_pos: 70.mm, height: 10.mm)
-    factory.draw(text: array_to_list(outro, :dot),
-                 y_pos: 52.mm, height: 30.mm)
+    draw_materials(pdf, factory: factory)
+
+    intro_items = Array(intro).compact
+    intro_items << "Did you know? #{interesting_fact}" if interesting_fact.present?
+    intro_height = interesting_fact.present? ? 29.mm : 20.mm
+
+    factory.draw(
+      text: array_to_list(intro_items, :dot),
+      y_pos: 149.mm,
+      height: intro_height
+    )
+
+    instr_text = array_to_list(instructions, :number)
+    tips_text  = tips_block_text(Array(large_groups).compact)
+
+    body_text = [instr_text, tips_text.presence].compact.join("\n")
+
+    factory.draw(
+      text: body_text,
+      y_pos: 110.mm,
+      height: 50.mm
+    )
+
+    factory.draw(
+      text: array_to_list(outro, :dot),
+      y_pos: 52.mm,
+      height: 30.mm
+    )
+  end
+
+  def draw_materials(pdf, factory:)
+    items = Array(materials).compact
+    return if items.empty?
+
+    y  = MATERIALS_Y
+    h  = MATERIALS_H
+    lx = MATERIALS_LEFT_X
+    w  = MATERIALS_TOTAL_W / 2.0
+    rx = lx + w
+
+    cutoff = (items.size / 2.0).ceil
+    left   = items.first(cutoff)
+    right  = items.drop(cutoff)
+
+    factory.draw(
+      text: array_to_list(left, :number),
+      y_pos: y, height: h, indent: lx, width: w
+    )
+
+    factory.draw(
+      text: renumber(array_to_list(right, :number), start_at: cutoff + 1),
+      y_pos: y, height: h, indent: rx, width: w
+    )
+  end
+
+  private
+
+  def tips_block_text(tips)
+  return "" if tips.blank?
+
+  indent = "\u2002"
+  tips_block = array_to_list(tips, :dot).gsub(/^/, indent)
+  "Large group tips:\n" + tips_block
+  end
+
+  def renumber(numbered_text, start_at:)
+    numbered_text
+      .lines
+      .map.with_index(start_at) { |t, i| t.sub(/^\d+/, i.to_s) }
+      .join
   end
 end

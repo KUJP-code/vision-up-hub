@@ -14,6 +14,7 @@ en:
     partyactivity: "Parties"
     parties: "Party"
     events: "Events"
+    eventactivity: "Events"
     subtypes:
       aerobics: "Aerobics"
       arts_and_crafts: "Arts & Crafts"

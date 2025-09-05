@@ -1,0 +1,90 @@
+= render 'shared/subtitle', text: t('.device_authorization')
+
+%main.p-3.flex.flex-col.gap-3
+  %h1.text-xl.text-center
+    Pending Devices:
+  %table.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.user')
+        %th.thead.bg-secondary-50= t('.user_role')
+        %th.thead.bg-secondary-50= t('.device')
+        %th.thead.bg-secondary-50= t('.ip_address')
+        %th.thead.bg-secondary-50= t('.browser')
+        %th.thead.bg-secondary-50= t('.applied_at')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+    %tbody
+      - @pending.each do |d|
+        %tr
+          %td.p-3= "#{d.user.name}"
+          %td.p-3= d.user.type
+          %td.p-3= truncate(d.platform, length: 28)
+          %td.p-3= d.ip_address.presence || "-"
+          %td.p-3= truncate(d.user_agent.to_s, length: 40)
+          %td.p-3= l(d.updated_at, format: :short)
+          %td.p-3.flex.gap-2.justify-center
+            = button_to t('.approve'),
+                        device_path(d),
+                        method: :patch,
+                        params: { device: { status: :approved } },
+                        class: "btn btn-success"
+            = button_to t('.decline'),
+                        device_path(d),
+                        method: :patch,
+                        params: { device: { status: :rejected } },
+                        data: { turbo_method: :delete, turbo_confirm: 'Decline this device?'},
+                        class: "btn btn-danger"
+  %h1.text-xl.text-center
+    Approved Devices:
+  %table.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.user')
+        %th.thead.bg-secondary-50= t('.user_role')
+        %th.thead.bg-secondary-50= t('.device')
+        %th.thead.bg-secondary-50= t('.ip_address')
+        %th.thead.bg-secondary-50= t('.browser')
+        %th.thead.bg-secondary-50= t('.approved_at')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+    %tbody
+      - @approved.each do |d|
+        %tr
+          %td.p-3= "#{d.user.name}"
+          %td.p-3= d.user.type
+          %td.p-3= truncate(d.platform, length: 28)
+          %td.p-3= d.ip_address.presence || "-"
+          %td.p-3= truncate(d.user_agent.to_s, length: 40)
+          %td.p-3= l(d.updated_at, format: :short)
+          %td.p-3= button_to t('.decline'),
+          device_path(d),
+          method: :patch,
+          params: { device: {status: :rejected } },
+          data: { turbo_method: :delete, turbo_confirm: 'Decline this device?'},
+          class: "btn btn-danger"
+
+  %h1.text-xl.text-center
+    Declined devices:
+  %table.text-center
+    %thead
+      %tr
+        %th.thead.thead-s.bg-secondary-50= t('.user')
+        %th.thead.bg-secondary-50= t('.user_role')
+        %th.thead.bg-secondary-50= t('.device')
+        %th.thead.bg-secondary-50= t('.ip_address')
+        %th.thead.bg-secondary-50= t('.browser')
+        %th.thead.bg-secondary-50= t('.declined_at')
+        %th.thead.thead-e.bg-secondary-50= t('actions')
+    %tbody
+      - @rejected.each do |d|
+        %tr
+          %td.p-3= "#{d.user.name}"
+          %td.p-3= d.user.type
+          %td.p-3= truncate(d.platform, length: 28)
+          %td.p-3= d.ip_address.presence || "-"
+          %td= truncate(d.user_agent.to_s, length: 60)
+          %td.p-3= l(d.updated_at, format: :short)
+          %td.p-3= button_to t('.approve'),
+          device_path(d),
+          method: :patch,
+          params: { device: {status: :approved } },
+          class: "btn btn-success"

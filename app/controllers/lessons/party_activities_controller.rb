@@ -15,7 +15,6 @@ class PartyActivitiesController < LessonsController
       redirect_to lesson_url(@lesson),
                   notice: 'party activity successfully created'
     else
-      p @lesson.errors
       set_form_data
       render 'lessons/new',
              status: :unprocessable_entity,

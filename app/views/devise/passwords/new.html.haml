@@ -1,0 +1,31 @@
+- content_for :title, t('.title', default: 'Forgot your password?')
+
+%main.flex.flex-col.gap-3.p-3
+  .max-w-xl.w-full.mx-auto
+    .text-muted.py-3
+      = t('.help', default: "Enter your email and we’ll send you reset instructions.")
+
+    = form_with scope: :user,
+                url: password_path(:user),
+                method: :post,
+                local: true,
+                data: { turbo: false },
+                html: { class: 'flex flex-col gap-3', id: 'new_user' } do |f|
+
+      = render 'devise/shared/error_messages', resource: resource
+
+      .flex.flex-col.gap-1
+        = f.label :email, class: 'sr-only'
+        = f.email_field :email,
+                        autofocus: true,
+                        autocomplete: 'email',
+                        class: 'w-full',
+                        required: true,
+                        placeholder: t('.email_placeholder', default: 'you@example.com')
+
+      .flex.gap-2
+        = f.submit t('.send_instructions', default: 'Send reset instructions'),
+                   class: 'btn btn-danger'
+
+  .max-w-xl.w-full.mx-auto.mt-2
+    = render 'devise/shared/links'

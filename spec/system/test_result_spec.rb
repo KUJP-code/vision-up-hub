@@ -63,7 +63,7 @@ RSpec.describe 'creating a test result', :js do
           .to eq('100')
 
         expect(find_by_id('test_result_total_percent', visible: false).value)
-          .to eq('77')
+          .to eq('76')
         expect(find_field('test_result_new_level').value).to eq('sky_two')
       end
       click_button I18n.t('helpers.submit.create')

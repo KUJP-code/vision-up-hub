@@ -1,0 +1,26 @@
+- content_for :title, t('.title', default: 'Change your password')
+
+%main.flex.flex-col.gap-3.p-3
+  .max-w-xl.w-full.mx-auto
+    = form_for resource, as: resource_name, url: password_path(resource_name),
+      html: { method: :put, class: 'flex flex-col gap-3' } do |f|
+
+      = render 'devise/shared/error_messages', resource: resource
+
+      - token = params.dig(resource_name, :reset_password_token).presence || request.query_parameters[:reset_password_token].presence || resource.try(:reset_password_token).presence
+      - token = token.tr(' ', '+') if token.present?
+
+      = f.hidden_field :reset_password_token, value: token
+
+      .flex.flex-col.gap-1
+        = f.label :password, t('.new_password', default: 'New password'), class: 'font-medium'
+        = f.password_field :password, autocomplete: 'new-password', class: 'w-full', required: true, placeholder: '••••••••••'
+      .flex.flex-col.gap-1
+        = f.label :password_confirmation, t('.confirm_password', default: 'Confirm new password'), class: 'font-medium'
+        = f.password_field :password_confirmation, autocomplete: 'new-password', class: 'w-full', required: true, placeholder: '••••••••••'
+
+      .flex.gap-2.mt-1
+        = f.submit t('.update_password', default: 'Update password'), class: 'btn btn-danger'
+
+  .max-w-xl.w-full.mx-auto.mt-2
+    = render 'devise/shared/links'

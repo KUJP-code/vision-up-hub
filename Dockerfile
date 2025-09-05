@@ -85,7 +85,9 @@ ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium" \
 # configure nginx
 RUN gem install foreman && \
     sed -i 's/access_log\s.*;/access_log stdout;/' /etc/nginx/nginx.conf && \
-    sed -i 's/error_log\s.*;/error_log stderr info;/' /etc/nginx/nginx.conf
+    sed -i 's/error_log\s.*;/error_log stderr info;/' /etc/nginx/nginx.conf && \
+    sed -i '/http {/a \    server_tokens off;' /etc/nginx/nginx.conf
+
 
 # configure client_max_body_size
 COPY <<-EOF /etc/nginx/conf.d/client_max_body_size.conf
@@ -96,6 +98,9 @@ COPY <<-"EOF" /etc/nginx/sites-available/default
 server {
   listen 80 default_server;
   listen [::]:80 default_server;
+
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains" always; 
+  add_header X-Content-Type-Options nosniff;
   access_log stdout;
 
   root /rails/public;
