@@ -2,10 +2,11 @@
 
 .main.flex.flex-col.gap-5.p-3.text-center.my-6
   .my-12
-    = link_to 'View Current Policy',
-              privacy_policy_path(PrivacyPolicy.latest_id),
-              class: 'btn btn-secondary mb-4',
-              target: '_blank'
+    -if PrivacyPolicy.any?
+      = link_to 'View Current Policy',
+                privacy_policy_path(PrivacyPolicy.latest_id),
+                class: 'btn btn-secondary mb-4',
+                target: '_blank'
 
   = form_with model: @policy, url: privacy_policies_path, local: true do |f|
     .mb-4
