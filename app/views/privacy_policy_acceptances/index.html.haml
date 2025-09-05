@@ -1,0 +1,15 @@
+= render 'shared/subtitle', text: 'Privacy Policy Acceptances'
+
+%main.flex.flex-col.gap-3.p-3
+  %table.table-auto.w-full.text-left
+    %thead
+      %tr.border-b
+        %th.py-2.pl-2 User
+        %th.py-2 Version
+        %th.py-2 Accepted at
+    %tbody
+      - @acceptances.each do |a|
+        %tr.border-b
+          %td.py-1.pl-2= a.user.email
+          %td.py-1= a.privacy_policy.version
+          %td.py-1= l(a.accepted_at, format: :long)

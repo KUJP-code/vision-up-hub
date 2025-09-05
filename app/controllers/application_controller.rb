@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
+  before_action :ensure_privacy_policy_accepted
   before_action :ensure_device_record, unless: -> { logging_out? }
   before_action :enforce_device_approval, if: -> { Rails.configuration.x.device_lock_enforced },
                                           unless: -> { logging_out? || on_pending_device_page? }
@@ -53,6 +54,19 @@ class ApplicationController < ActionController::Base
     sign_out
     redirect_to after_sign_out_path_for(rejected_user),
                 alert: I18n.t('not_in_school')
+  end
+
+  def ensure_privacy_policy_accepted
+    return unless user_signed_in?
+
+    latest_id = PrivacyPolicy.latest_id
+    accepted = current_user.privacy_policy_acceptances
+                           .exists?(privacy_policy_id: latest_id)
+    return if accepted
+
+    store_location_for(:user, request.fullpath)
+
+    redirect_to new_privacy_policy_acceptance_path
   end
 
   def device_token

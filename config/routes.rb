@@ -3,7 +3,9 @@
 Rails.application.routes.draw do
   scope '(/:locale)', locale: /ja|en/ do
     devise_for :users
+    resources :privacy_policy_acceptances, only: %i[new create index]
     get 'pending_device', to: 'devices#pending', as: :pending_device
+    
     authenticate :user do
       resources :announcements
       resources :invoices, only: %i[index new create update destroy] do
@@ -31,6 +33,7 @@ Rails.application.routes.draw do
       resources :missing_lessons, only: %i[index]
       resources :monthly_materials, only: %i[index]
       resources :notifications, except: %i[edit]
+      resources :privacy_policies, only: %i[new create show]
       resources :parents_reports, only: %i[create index update]
       resources :proposals, only: %i[show update]
       resources :phonics_classes, only: %i[create index update]

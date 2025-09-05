@@ -108,6 +108,9 @@ gem 'store_model', '~> 3.0'
 # Allow form submissions from .biz site
 gem 'rack-cors'
 
+# Add Markdown renderer for policy
+gem "redcarpet", "~> 3.6"
+
 # Add SVG helpers
 gem 'inline_svg'
 

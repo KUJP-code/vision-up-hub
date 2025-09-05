@@ -41,6 +41,12 @@
               organisation_form_submissions_path(@user.organisation_id),
               class: 'btn btn-secondary'
 
+    = link_to 'New Privacy Policy',
+              new_privacy_policy_path,
+              class: 'btn btn-secondary'
+    = link_to 'Policy Acceptances', privacy_policy_acceptances_path, 
+              class: 'btn btn-secondary'
+
     = link_to 'Jobs',
               mission_control_jobs_path,
               class: 'btn btn-secondary'

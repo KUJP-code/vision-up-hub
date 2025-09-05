@@ -1,0 +1,9 @@
+en:
+  privacy_policy_acceptances:
+    i_agree: "I have read and agree to the Privacy Policy."
+    agree_button: "Accept and Continue"
+    accepted: "Thank you for accepting the Privacy Policy."
+    accept_failed: "You must agree to the Privacy Policy before continuing."
+    new:
+      privacy_policy: "Privacy Policy"
+      i_agree: "I have read and agree to the Privacy Policy."

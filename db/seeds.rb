@@ -109,17 +109,15 @@ end
 puts 'Creating category resources...'
 
 CategoryResource.lesson_categories.keys.each do |lc|
-  CategoryResource.resource_categories.keys.each do |rc|
-    next if rc == 'english_class_resource' # skip deprecated key
+  next if lc == 'english_class'
 
+  CategoryResource.resource_categories.keys.each do |rc|
     category_resource = CategoryResource.new(
       lesson_category: lc,
       resource_category: rc,
       resource: test_file
     )
-    next unless category_resource.valid?
-
-    category_resource.save
+    category_resource.save if category_resource.valid?
   end
 end
 
@@ -215,5 +213,7 @@ TutorialCategory.all.each do |category|
   fb.create_list(:video_tutorial, 2, tutorial_category_id: category.id)
   fb.create_list(:faq_tutorial, 2, tutorial_category_id: category.id)
 end
+
+PrivacyPolicy.create!(version: "2025-07-03", content: "Initial privacy policy…")
 
 puts 'Done!'

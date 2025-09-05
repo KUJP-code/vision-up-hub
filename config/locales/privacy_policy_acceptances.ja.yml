@@ -1,0 +1,9 @@
+ja:
+  privacy_policy_acceptances:
+    i_agree: "プライバシーポリシーに同意します。"
+    agree_button: "同意して続行"
+    accepted: "プライバシーポリシーへの同意ありがとうございます。"
+    accept_failed: "続行するにはプライバシーポリシーへの同意が必要です。"
+    new:
+      privacy_policy: "プライバシーポリシー"
+      i_agree: "プライバシーポリシーを読み、同意しました。"
