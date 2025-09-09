@@ -8,6 +8,7 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   config.x.device_lock_enforced = false # unlock devices in test
+  config.x.require_privacy_policy = false # disable privacy policy in test
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
 

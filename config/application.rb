@@ -27,7 +27,7 @@ module Materials
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
-
+    
     config.autoload_paths += Dir[Rails.root.join('app/assets/**/')]
     # Allow nesting models and controllers in subfolders
     config.autoload_paths += Dir[Rails.root.join('app/controllers/**/')]
@@ -46,7 +46,8 @@ module Materials
 
     # Use SolidQueue for ActiveJob
     config.active_job.queue_adapter = :solid_queue
-
+    #  Set privacy policy requirement as true globally
+    config.x.require_privacy_policy = true
     # Lazyload images by default
     config.action_view.image_loading = 'lazy'
 

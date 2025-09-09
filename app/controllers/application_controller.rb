@@ -58,6 +58,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_privacy_policy_accepted
     return unless user_signed_in?
+    return unless Rails.configuration.x.require_privacy_policy
 
     latest_id = PrivacyPolicy.latest_id
     accepted = current_user.privacy_policy_acceptances
