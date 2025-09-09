@@ -2,6 +2,7 @@
 
 class DevicesController < ApplicationController
   skip_before_action :enforce_device_approval, only: [:pending]
+  skip_before_action :ensure_privacy_policy_accepted
   before_action :authenticate_user!
   before_action :require_admin!, only: %i[index update destroy]
 

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
   before_action :configure_permitted_params, if: :devise_controller?
-  before_action :ensure_privacy_policy_accepted
+  before_action :ensure_privacy_policy_accepted, unless: -> { logging_out? }
   before_action :ensure_device_record, unless: -> { logging_out? }
   before_action :enforce_device_approval, if: -> { Rails.configuration.x.device_lock_enforced },
                                           unless: -> { logging_out? || on_pending_device_page? }

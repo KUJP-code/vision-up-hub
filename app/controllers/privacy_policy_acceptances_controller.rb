@@ -1,5 +1,5 @@
 class PrivacyPolicyAcceptancesController < ApplicationController
-  # skip_before_action :ensure_privacy_policy_accepted
+  skip_before_action :ensure_privacy_policy_accepted
   before_action :authorize_admin!, only: :index
 
   def index
