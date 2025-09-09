@@ -1,5 +1,5 @@
 = render 'shared/subtitle', text: "Privacy Policy (v#{@policy.version || 'preview'})"
 
-%main.flex.flex-col.gap-3.text-center
+%main.flex.flex-col.gap-3
   .policy-content.my-6.prose.mx-auto.text-secondary.override-headings
     = markdown(@policy.content)
