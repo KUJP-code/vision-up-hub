@@ -42,48 +42,48 @@ module LessonCalendarHelper
             end
 
     {
-      'ParentsReport' =>
-      { 'All Levels' => 'row-start-3' },
       'SpecialLesson' =>
-      { 'All Levels' => 'row-start-4', 'Kindy' => 'row-start-5',
-        'Land' => 'row-start-6', 'Sky' => 'row-start-7',
-        'Galaxy' => 'row-start-8' },
+      { 'All Levels' => 'row-start-3', 'Kindy' => 'row-start-4',
+        'Land' => 'row-start-5', 'Sky' => 'row-start-6',
+        'Galaxy' => 'row-start-7' },
       'DailyActivity' =>
-          { 'Kindy' => 'row-start-10', 'Elementary' => 'row-start-12' },
+          { 'Kindy' => 'row-start-9', 'Elementary' => 'row-start-11' },
       'Exercise' =>
-          { 'Kindy' => 'row-start-10', 'Elementary' => 'row-start-11' },
+          { 'Kindy' => 'row-start-9', 'Elementary' => 'row-start-10' },
       'PhonicsClass' =>
-          { 'Kindy' => 'row-start-[14]', 'Land' => 'row-start-[15]',
-            'Sky' => 'row-start-[16]', 'Galaxy' => 'row-start-[17]' },
+          { 'Kindy' => 'row-start-13', 'Land' => 'row-start-[14]',
+            'Sky' => 'row-start-[15]', 'Galaxy' => 'row-start-[16]' },
       'EnglishClass' =>
-          { 'Kindy' => 'row-start-[19]', 'Land' => 'row-start-[20]',
-            'Sky' => 'row-start-[21]', 'Galaxy' => 'row-start-[22]' },
+          { 'Kindy' => 'row-start-[18]', 'Land' => 'row-start-[19]',
+            'Sky' => 'row-start-[20]', 'Galaxy' => 'row-start-[21]' },
       'StandShowSpeak' =>
-          { 'Kindy' => 'row-start-[24]', 'Land' => 'row-start-[25]', 'Sky' => 'row-start-[26]',
-            'Galaxy' => 'row-start-[27]' },
+          { 'Kindy' => 'row-start-[23]', 'Land' => 'row-start-[24]', 'Sky' => 'row-start-[25]',
+            'Galaxy' => 'row-start-[26]' },
       'EveningClass' =>
-          { 'Keep Up' => 'row-start-[29]',
-            'specialist' => 'row-start-[30]',
-            'specialist_advanced' => 'row-start-[31]' }
+          { 'Keep Up' => 'row-start-[28]',
+            'specialist' => 'row-start-[29]',
+            'specialist_advanced' => 'row-start-[30]' },
+      'ParentsReport' => { 'All Levels' => 'row-start-[32]' }
     }[type][level]
   end
 
   def lesson_separator_rows
-    { 'DailyActivity' => 'row-start-7',
-      'PhonicsClass' => 'row-start-13',
-      'EnglishClass' => 'row-start-[18]',
-      'StandShowSpeak' => 'row-start-[23]',
-      'EveningClass' => 'row-start-[28]' }
+    { 'DailyActivity' => 'row-start-6',
+      'PhonicsClass' => 'row-start-12',
+      'EnglishClass' => 'row-start-[17]',
+      'StandShowSpeak' => 'row-start-[22]',
+      'EveningClass' => 'row-start-[27]',
+      'ParentsReport' => 'row-start-[31]' }
   end
 
   def lesson_type_rows
-    { 'ParentsReport' => 'row-start-3 row-span-1',
-      'SpecialLesson' => 'row-start-4 row-span-3',
-      'DailyActivity' => 'row-start-10 row-span-3',
-      'PhonicsClass' => 'row-start-[14] row-span-4',
-      'EnglishClass' => 'row-start-[19] row-span-4',
-      'StandShowSpeak' => 'row-start-[24] row-span-4',
-      'EveningClass' => 'row-start-[29] row-span-3' }
+    { 'SpecialLesson' => 'row-start-3 row-span-3',
+      'DailyActivity' => 'row-start-9 row-span-3',
+      'PhonicsClass' => 'row-start-13 row-span-4',
+      'EnglishClass' => 'row-start-[18] row-span-4',
+      'StandShowSpeak' => 'row-start-[23] row-span-4',
+      'EveningClass' => 'row-start-[28] row-span-3',
+      'ParentsReport' => 'row-start-[32] row-span-2' }
   end
 
   def calendar_level_dots(level)
