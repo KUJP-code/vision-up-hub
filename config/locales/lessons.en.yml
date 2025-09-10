@@ -15,6 +15,7 @@ en:
     parties: "Party"
     events: "Events"
     eventactivity: "Events"
+    parents_report: "Parents Report"
     subtypes:
       aerobics: "Aerobics"
       arts_and_crafts: "Arts & Crafts"
