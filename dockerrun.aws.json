@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.8.2-privacy_on"
+    "Name": "kidsup/materials:3.8.3-pr_calendar"
   },
   "Ports": [
     {
