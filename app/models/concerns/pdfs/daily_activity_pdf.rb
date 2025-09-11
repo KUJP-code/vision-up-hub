@@ -2,7 +2,8 @@
 
 module DailyActivityPdf
   extend ActiveSupport::Concern
-  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList, PdfDefaults
+  include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfImagePage, PdfLanguageGoals, PdfList,
+          PdfDefaults
   attr_reader :body_width, :body_indent
 
   included do
@@ -30,13 +31,13 @@ module DailyActivityPdf
     factory = PdfHeaderItemFactory.new(pdf)
     factory.draw_default_header(text:
                                 { pre: subtype.titleize,
-                                  main: title, sub: goal })
+                                  main: sa(title), sub: sa(goal) })
     return if warning.blank?
 
     pdf.bounding_box([HEADER_INDENT, 240.mm],
                      width: 90.mm, height: 10.mm) do
-      pdf.text warning, color: RED, overflow: :shrink_to_fit,
-                        min_font_size: 0
+      pdf.text sa(warning), color: RED, overflow: :shrink_to_fit,
+                            min_font_size: 0
     end
   end
 
@@ -48,20 +49,20 @@ module DailyActivityPdf
   def draw_body(pdf)
     factory = PdfBodyItemFactory.new(pdf)
 
-    draw_materials(pdf, factory: factory)
+    draw_materials(pdf, factory:)
 
     intro_items = Array(intro).compact
-    intro_items << "Did you know? #{interesting_fact}" if interesting_fact.present?
+    intro_items << "Did you know? #{sa(interesting_fact)}" if interesting_fact.present?
     intro_height = interesting_fact.present? ? 29.mm : 20.mm
 
     factory.draw(
-      text: array_to_list(intro_items, :dot),
+      text: array_to_list(sa(intro_items), :dot),
       y_pos: 149.mm,
       height: intro_height
     )
 
-    instr_text = array_to_list(instructions, :number)
-    tips_text  = tips_block_text(Array(large_groups).compact)
+    instr_text = array_to_list(sa(instructions), :number)
+    tips_text  = tips_block_text(Array(sa(large_groups)).compact)
 
     body_text = [instr_text, tips_text.presence].compact.join("\n")
 
@@ -72,7 +73,7 @@ module DailyActivityPdf
     )
 
     factory.draw(
-      text: array_to_list(outro, :dot),
+      text: array_to_list(sa(outro), :dot),
       y_pos: 52.mm,
       height: 30.mm
     )
@@ -93,7 +94,7 @@ module DailyActivityPdf
     right  = items.drop(cutoff)
 
     factory.draw(
-      text: array_to_list(left, :number),
+      text: sa(array_to_list(left, :number)),
       y_pos: y, height: h, indent: lx, width: w
     )
 
@@ -106,11 +107,11 @@ module DailyActivityPdf
   private
 
   def tips_block_text(tips)
-  return "" if tips.blank?
+    return '' if tips.blank?
 
-  indent = "\u2002"
-  tips_block = array_to_list(tips, :dot).gsub(/^/, indent)
-  "Large group tips:\n" + tips_block
+    indent = "\u2002"
+    tips_block = array_to_list(tips, :dot).gsub(/^/, indent)
+    "Large group tips:\n" + tips_block
   end
 
   def renumber(numbered_text, start_at:)

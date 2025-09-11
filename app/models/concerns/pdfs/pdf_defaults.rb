@@ -15,7 +15,7 @@ module PdfDefaults
   MATERIALS_Y      = 191.mm
   MATERIALS_H      = 30.mm
   MATERIALS_LEFT_X = 48.mm
-  MATERIALS_TOTAL_W= 140.mm 
+  MATERIALS_TOTAL_W = 140.mm
   def apply_defaults(pdf)
     pdf.font_families.update(
       'Shingo' => {
@@ -24,5 +24,14 @@ module PdfDefaults
     )
     pdf.font 'Shingo'
     pdf.fill_color SECONDARY_COLOR
+  end
+
+  def sa(obj)
+    case obj
+    when String then obj.tr('‘’', "'")
+    when Array  then obj.map { |e| sa(e) }
+    when Hash   then obj.transform_values { |v| sa(v) }
+    else obj
+    end
   end
 end
