@@ -23,7 +23,7 @@ module PhonicsClassPdf
       factory = PdfHeaderItemFactory.new(pdf)
       factory.draw_default_header(text:
         { pre: "#{short_level.upcase} Phonics",
-          main: title, sub: goal })
+          main: sa(title), sub: sa(goal) })
     end
 
     def add_header_image(pdf)
