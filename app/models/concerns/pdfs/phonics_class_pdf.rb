@@ -34,15 +34,15 @@ module PhonicsClassPdf
     def draw_body(pdf)
       factory = PdfBodyItemFactory.new(pdf)
 
-      factory.draw(text: array_to_list(materials, :number),
+      factory.draw(text: array_to_list(sa(materials), :number),
                    y_pos: 222.mm, height: 25.mm)
-      factory.draw(text: array_to_list(instructions, :number),
+      factory.draw(text: array_to_list(sa(instructions), :number),
                    y_pos: 180.mm, height: 35.mm)
-      factory.draw(text: array_to_list(add_difficulty, :dot),
+      factory.draw(text: array_to_list(sa(add_difficulty), :dot),
                    y_pos: 133.mm, height: 20.mm)
-      factory.draw(text: array_to_list(extra_fun, :dot),
+      factory.draw(text: array_to_list(sa(extra_fun), :dot),
                    y_pos: 103.mm, height: 23.mm)
-      factory.draw(text: array_to_list(notes, :dot),
+      factory.draw(text: array_to_list(sa(notes), :dot),
                    y_pos: 70.mm, height: 20.mm)
       factory.draw(text: links_from_hash(links),
                    y_pos: 40.mm, height: 20.mm)
