@@ -1,5 +1,14 @@
-= render 'shared/subtitle', text: "Privacy Policy (v#{@policy.version || 'preview'})"
+= render 'shared/subtitle', text: "Privacy Policy (#{l(@policy.created_at.to_date, format: (I18n.locale == :ja ? :long_no_wday : :long))})"
+
 
 %main.flex.flex-col.gap-3
-  .policy-content.my-6.prose.mx-auto.text-secondary.override-headings
-    = markdown(@policy.content)
+
+  .my-6.prose.max-w-4xl.mx-auto.text-secondary.override-headings
+    %h1.text-3xl
+      = t('.privacy_policy_updated')
+    .text-xl.mt-6
+      = t('.effective_date', date: l(@policy.created_at.to_date, format: (I18n.locale == :ja ? :long_no_wday : :long)))
+    .text.mt-6
+      = t('.policy_info')
+    .policy-content.mx-auto.my-6.text-secondary.override-headings.bg-white.p-6.rounded-lg.shadow.border.border-black
+      = markdown(@policy.content)
