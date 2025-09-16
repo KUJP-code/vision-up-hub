@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.3-pr_calendar"
+    "Name": "kidsup/materials:3.8.4-pr_translations"
   },
   "Ports": [
     {
