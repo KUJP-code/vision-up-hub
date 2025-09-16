@@ -1,0 +1,11 @@
+en:
+  privacy_policies:
+    show: 
+      privacy_policy_updated: "Privacy Policy Updated - Please Review."
+      effective_date: "Effective Date: %{date}"
+      policy_info: "Our Privacy Policy has been updated. Before continuing to use our services, you are required to review the updated terms. By proceeding, you agree to abide by the revised policy."
+  privacy_policy_acceptances:
+    new:
+      privacy_policy_updated: "Privacy Policy Updated - Please Review."
+      effective_date: "Effective Date: %{date}"
+      policy_info: "Our Privacy Policy has been updated. Before continuing to use our services, you are required to review the updated terms. By proceeding, you agree to abide by the revised policy."
