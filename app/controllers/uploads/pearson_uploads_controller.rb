@@ -29,7 +29,7 @@ class PearsonUploadsController < ApplicationController
     authorize :pearson_upload
     file = params.require(:file)
 
-    result = PearsonResultsImporter.new(file.tempfile).import
+    result = PearsonResultsImporter.new(file.tempfile, organisation: @organisation).import
 
     if result.errors.any?
       flash.now[:alert] = "Imported with errors. Inserted: #{result.inserted} · Updated: #{result.updated}"

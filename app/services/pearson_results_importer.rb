@@ -4,7 +4,8 @@ require 'csv'
 
 class PearsonResultsImporter
   attr_reader :errors, :inserted, :updated,
-              :skipped_unscored, :skipped_unknown_student, :skipped_invalid_date
+              :skipped_unscored, :skipped_unknown_student, :skipped_invalid_date,
+              :unknown_samples
 
   DATE_FORMATS = ['%d/%m/%Y %H:%M:%S', '%m/%d/%Y %H:%M:%S'].freeze
 
@@ -13,7 +14,7 @@ class PearsonResultsImporter
     form: 'Form',
     test_id: 'Test id',
     student_name: 'First name', # vendor puts full name here
-    ssid: 'Last name', # this column actually contains SSID
+    external_student_id: 'Last name', # this column actually contains the SSID/external id
     yl_group: 'YL group',
     test_assigned_utc: 'Test assigned (UTC)',
     test_taken_utc: 'Test taken (UTC)',
@@ -25,30 +26,74 @@ class PearsonResultsImporter
     speaking: 'Speaking'
   }.freeze
 
-  def initialize(file)
+  def initialize(file, organisation: nil)
     @file = file
+    @organisation = organisation
     @errors = []
     @inserted = 0
     @updated  = 0
     @skipped_unscored        = 0
     @skipped_unknown_student = 0
     @skipped_invalid_date    = 0
+    @unknown_samples         = []
   end
 
   def import
     csv = CSV.read(@file.path, headers: true, encoding: 'UTF-8:UTF-8')
     csv.headers.map! { |h| h.to_s.strip }
 
-    normalized = csv.each_with_index.map { |row, _idx| normalize_row(row) }
+    rows = csv.map { |row| normalize_row(row) }
 
-    # Build map: external SSID → Student.id
-    ext_ids = normalized.filter_map { |h| h[:ssid].presence }.uniq
-    student_by_ext = Student.where(student_id: ext_ids).pluck(:student_id, :id).to_h
+    # ---- scope students to org (if given) + normalize ids ----
+    scope = @organisation ? Student.where(organisation_id: @organisation.id) : Student.all
+    student_map = scope.pluck(:student_id, :id).each_with_object({}) do |(ext_id, sid), h|
+      key = normalize_external_id(ext_id)
+      h[key] = sid if key.present?
+    end
 
     staged = []
-    normalized.each do |row_hash|
-      attrs = process_row(row_hash, student_by_ext)
-      staged << attrs if attrs
+    rows.each do |r|
+      # skip unless scored
+      status = r[:test_status].to_s.strip.downcase
+      if status.present? && status != 'scored'
+        @skipped_unscored += 1
+        next
+      end
+
+      # match by normalized external id
+      key = normalize_external_id(r[:external_student_id])
+      sid = student_map[key]
+      unless sid
+        @skipped_unknown_student += 1
+        @unknown_samples << r[:external_student_id] if @unknown_samples.size < 25
+        next
+      end
+
+      taken_at = parse_datetime(r[:test_taken_utc]) || parse_datetime(r[:test_assigned_utc])
+      unless taken_at
+        @skipped_invalid_date += 1
+        next
+      end
+
+      listening_score, listening_code = parse_score(r[:listening])
+      reading_score,   reading_code   = parse_score(r[:reading])
+      writing_score,   writing_code   = parse_score(r[:writing])
+      speaking_score,  speaking_code  = parse_score(r[:speaking])
+
+      staged << {
+        student_id: sid,
+        test_name: r[:test_name].to_s.strip,
+        form: r[:form].to_s.strip.presence,
+        external_test_id: r[:test_id].to_s.strip.presence&.to_i,
+        test_taken_at: taken_at,
+
+        listening_score:, listening_code:,
+        reading_score:,   reading_code:,
+        writing_score:,   writing_code:,
+        speaking_score:,  speaking_code:,
+
+        raw: r[:raw]
+      }
     end
 
     return self if staged.empty?
@@ -74,51 +119,17 @@ class PearsonResultsImporter
 
   private
 
-  def process_row(r, student_by_ext)
-    status = r[:test_status].to_s.strip.downcase
-    if status.present? && status != 'scored'
-      @skipped_unscored += 1
-      return nil
-    end
-
-    sid = student_by_ext[r[:ssid]]
-    unless sid
-      @skipped_unknown_student += 1
-      return nil
-    end
-
-    taken_at = parse_datetime(r[:test_taken_utc]) || parse_datetime(r[:test_assigned_utc])
-    unless taken_at
-      @skipped_invalid_date += 1
-      return nil
-    end
-
-    listening_score, listening_code = parse_score(r[:listening])
-    reading_score,   reading_code   = parse_score(r[:reading])
-    writing_score,   writing_code   = parse_score(r[:writing])
-    speaking_score,  speaking_code  = parse_score(r[:speaking])
-
-    {
-      student_id: sid,
-      test_name: r[:test_name].to_s.strip,
-      form: r[:form].to_s.strip.presence,
-      external_test_id: r[:test_id].to_s.strip.presence&.to_i,
-      test_taken_at: taken_at,
-
-      listening_score:, listening_code:,
-      reading_score:,   reading_code:,
-      writing_score:,   writing_code:,
-      speaking_score:,  speaking_code:,
-
-      raw: r[:raw] # audit
-    }
-  end
-
   def normalize_row(row)
     h = {}
     HEADER_MAP.each { |k, header| h[k] = row[header]&.to_s&.strip }
     h[:raw] = row.to_h
     h
+  end
+
+  def normalize_external_id(val)
+    # Normalize unicode (full-width digits/letters), trim, drop internal spaces, and upcase.
+    # Drop `.upcase` if your student_id is case-sensitive.
+    val.to_s.unicode_normalize(:nfkc).strip.gsub(/[[:space:]]+/, '').upcase
   end
 
   def parse_datetime(str)
