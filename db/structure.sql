@@ -979,7 +979,7 @@ ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
 CREATE TABLE public.devices (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    token character varying NOT NULL,
+    token character varying,
     user_agent character varying,
     platform character varying,
     ip_address character varying,
@@ -1510,6 +1510,50 @@ ALTER SEQUENCE public.pdf_tutorials_id_seq OWNED BY public.pdf_tutorials.id;
 
 
 --
+-- Name: pearson_results; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pearson_results (
+    id bigint NOT NULL,
+    student_id bigint NOT NULL,
+    test_name character varying NOT NULL,
+    form character varying,
+    external_test_id bigint,
+    test_taken_at timestamp(6) without time zone NOT NULL,
+    listening_score integer,
+    listening_code character varying DEFAULT 'ok'::character varying NOT NULL,
+    reading_score integer,
+    reading_code character varying DEFAULT 'ok'::character varying NOT NULL,
+    writing_score integer,
+    writing_code character varying DEFAULT 'ok'::character varying NOT NULL,
+    speaking_score integer,
+    speaking_code character varying DEFAULT 'ok'::character varying NOT NULL,
+    raw jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pearson_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pearson_results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pearson_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pearson_results_id_seq OWNED BY public.pearson_results.id;
+
+
+--
 -- Name: phonics_resources; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1655,8 +1699,8 @@ CREATE TABLE public.report_card_batches (
     id bigint NOT NULL,
     school_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    level character varying NOT NULL,
-    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    level character varying,
+    status character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2681,6 +2725,13 @@ ALTER TABLE ONLY public.pdf_tutorials ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: pearson_results id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_results ALTER COLUMN id SET DEFAULT nextval('public.pearson_results_id_seq'::regclass);
+
+
+--
 -- Name: phonics_resources id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3085,6 +3136,14 @@ ALTER TABLE ONLY public.pdf_tutorials
 
 
 --
+-- Name: pearson_results pearson_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_results
+    ADD CONSTRAINT pearson_results_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: phonics_resources phonics_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3415,31 +3474,10 @@ CREATE INDEX index_course_tests_on_test_id ON public.course_tests USING btree (t
 
 
 --
--- Name: index_devices_on_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_devices_on_status ON public.devices USING btree (status);
-
-
---
--- Name: index_devices_on_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_devices_on_token ON public.devices USING btree (token);
-
-
---
 -- Name: index_devices_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_devices_on_user_id ON public.devices USING btree (user_id);
-
-
---
--- Name: index_devices_on_user_id_and_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_devices_on_user_id_and_token ON public.devices USING btree (user_id, token);
 
 
 --
@@ -3632,6 +3670,20 @@ CREATE INDEX index_pdf_tutorials_on_tutorial_category_id ON public.pdf_tutorials
 
 
 --
+-- Name: index_pearson_results_on_external_test_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pearson_results_on_external_test_id ON public.pearson_results USING btree (external_test_id);
+
+
+--
+-- Name: index_pearson_results_on_student_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pearson_results_on_student_id ON public.pearson_results USING btree (student_id);
+
+
+--
 -- Name: index_phonics_resources_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3692,13 +3744,6 @@ CREATE INDEX index_privacy_policy_acceptances_on_user_id ON public.privacy_polic
 --
 
 CREATE INDEX index_report_card_batches_on_school_id ON public.report_card_batches USING btree (school_id);
-
-
---
--- Name: index_report_card_batches_on_school_id_and_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_report_card_batches_on_school_id_and_level ON public.report_card_batches USING btree (school_id, level);
 
 
 --
@@ -4052,6 +4097,13 @@ CREATE INDEX index_video_tutorials_on_tutorial_category_id ON public.video_tutor
 
 
 --
+-- Name: uniq_pearson_test_sitting; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uniq_pearson_test_sitting ON public.pearson_results USING btree (student_id, test_name, form, test_taken_at);
+
+
+--
 -- Name: lessons logidze_on_lessons; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4095,6 +4147,14 @@ ALTER TABLE ONLY public.students
 
 ALTER TABLE ONLY public.phonics_resources
     ADD CONSTRAINT fk_rails_0b53c57831 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: pearson_results fk_rails_102c4d6859; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_results
+    ADD CONSTRAINT fk_rails_102c4d6859 FOREIGN KEY (student_id) REFERENCES public.students(id);
 
 
 --
@@ -4587,9 +4647,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250916034909'),
+('20250725013946'),
 ('20250703015039'),
 ('20250703015006'),
-('20250725013946'),
 ('20250626025024'),
 ('20250530042958'),
 ('20250513013436'),
