@@ -5,7 +5,6 @@ class PearsonUploadsController < ApplicationController
   before_action :set_organisation
   after_action  :verify_authorized
 
-  # Optional 'show' to serve a sample CSV (id = :sample)
   def show
     authorize :pearson_upload
     if params[:id].to_s == 'sample'
