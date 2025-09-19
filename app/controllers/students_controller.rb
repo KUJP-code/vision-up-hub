@@ -94,7 +94,6 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     set_results
     @levels = Student.display_levels
-
   end
 
   def report_card_pdf
@@ -103,20 +102,24 @@ class StudentsController < ApplicationController
 
     pdf = StudentReportPdf.new(@student).call
     send_data pdf,
-              filename:    "report_card_#{@student.student_id}.pdf",
+              filename: "report_card_#{@student.student_id}.pdf",
               disposition: 'inline',
-              type:        'application/pdf'
+              type: 'application/pdf'
   end
 
   private
+
+  def current_view
+    @current_view ||= params[:view].presence || 'internal'
+  end
 
   def set_homework_resources
     @homework_resources = []
     org = @student.organisation
 
     @plan = org.plans
-              .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
-              .first
+               .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+               .first
     return unless @plan
 
     course = Course.find_by(id: @plan.course_id)
@@ -141,32 +144,91 @@ class StudentsController < ApplicationController
 
   def set_results
     @results = @student.test_results.order(created_at: :desc).includes(:test)
-    @active_result = @results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?
+    @active_result = (@results.find { |r| r.test_id == params[:test_id].to_i } if params[:test_id].present?)
     @recent_result = @results.first
-    @data = radar_data
+    @pearson_results = @student.pearson_results.latest_per_test
+    @active_pearson_result = (@pearson_results.find { |pr| pr.id == params[:pr_id].to_i } if params[:pr_id].present?)
+    @data =
+      if action_name == 'print_version'
+        radar_data
+      else
+        current_view == 'pearson' ? pearson_radar_data : radar_data
+      end
   end
 
   def radar_data
     radar_colors = ['49, 44, 180', '221, 50, 50 ', '170, 218, 120', '178, 170, 191'].cycle
 
     datasets =
-      if action_name == 'print_version'        # ← print page: show ALL tests
+      if action_name == 'print_version'
         @results.map { |r| prepare_dataset(r, radar_colors.next) }
 
-      elsif @active_result                     # normal page, test chosen
+      elsif @active_result
         [prepare_dataset(@active_result, radar_colors.next)]
 
-      else                                     # normal page, first load
+      else # normal page, first load
         @results.map { |r| prepare_dataset(r, radar_colors.next) }
       end
 
-    { labels: %w[Reading Writing Listening], datasets: datasets }
+    { labels: %w[Reading Writing Listening], datasets: }
   end
 
   def prepare_dataset(result, color)
     {
       data: result.radar_data[:data],
       label: result.radar_data[:label],
+      backgroundColor: "rgba(#{color}, 0.2)",
+      pointBackgroundColor: '#645880',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: "rgb(#{color})"
+    }
+  end
+
+  def pearson_radar_data
+    radar_colors = ['49, 44, 180', '221, 50, 50 ', '170, 218, 120', '178, 170, 191'].cycle
+
+    rows =
+      if @active_pearson_result
+        [@active_pearson_result]
+      else
+        @pearson_results.first(4)
+      end
+
+    ok_scores = rows.flat_map do |pr|
+      [pr.listening_score, pr.reading_score, pr.writing_score, pr.speaking_score].compact
+    end
+
+    raw_max   = ok_scores.max || 0
+    padded    = raw_max + 10
+    rounded   = (padded / 10.0).ceil * 10
+    chart_max = [[rounded, 40].max, 90].min
+
+    datasets = rows.map { |pr| prepare_pearson_dataset(pr, radar_colors.next) }
+
+    {
+      labels: %w[Listening Reading Writing Speaking],
+      datasets:,
+      chart_max:,
+      tick_step: 10
+    }
+  end
+
+  def prepare_pearson_dataset(pr, color)
+    vals = [
+      pr.listening_score || 0,
+      pr.reading_score   || 0,
+      pr.writing_score   || 0,
+      pr.speaking_score  || 0
+    ]
+
+    label_date = pr.test_taken_at&.strftime('%Y-%m-%d')
+    label_form = pr.form.present? ? " (#{pr.form})" : ''
+    label = "#{pr.test_name} #{label_date}#{label_form}"
+
+    {
+      data: vals,
+      label:,
       backgroundColor: "rgba(#{color}, 0.2)",
       pointBackgroundColor: '#645880',
       pointBorderColor: '#fff',
