@@ -19,6 +19,6 @@
       %span.text-secondary.flex-1= @student.level.titleize
 
     - if current_user.is?('Admin', 'SchoolManager')
-      = link_to t('edit'),
+      = link_to t('.edit'),
                 edit_student_path(@student),
                 class: 'btn btn-secondary'

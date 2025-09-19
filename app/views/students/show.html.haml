@@ -1,6 +1,5 @@
 = content_for :head do
   = stylesheet_link_tag 'print_report_card', media: 'print'
-.print:hidden
   = render 'shared/subtitle', text: redact(@student, @student.name)
 
 %dialog#icon-chooser-modal.resources-dialog
@@ -23,12 +22,12 @@
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
         %button{
           class: 'absolute bg-neutral-light -top-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 z-10',
-          data: { 
+          data: {
             action: 'dialog#open',
             controller: 'dialog',
             'dialog-dialog-value': 'icon-chooser-modal',
             'dialog-frame-value': "student_#{@student.id}_icon",
-            'dialog-src-value': icon_chooser_student_path(@student, format: :html) 
+            'dialog-src-value': icon_chooser_student_path(@student, format: :html)
           },
           type: 'button',
           style: 'left: 50%;'
@@ -36,14 +35,14 @@
           .relative.w-24.h-24
             = image_tag get_icon(@student), width: '96px', height: '96px', class: 'w-full h-full max-w-full'
             = inline_svg_tag 'id/id-edit.svg', width: '96px', height: '96px', class: 'absolute inset-0'
-        
+
         -# - if @student.parent_id.nil? && current_user.is?('Admin', 'SchoolManager', 'OrgAdmin')
         -#   %section.w-full.flex.flex-col.gap-3.p-3.print:hidden
         -#     %h3.w-full.text-center.font-bold.text-secondary.text-xl
         -#       = t('.add_parent')
         -#     = render 'user_searches/form', orgs: @orgs, student_id: @student.id
         -#     = turbo_frame_tag 'user_table'
-      
+
         %section.flex.flex-col.items-center.mt-5#student
           %div{ class: 'flex flex-col justify-around gap-2 items-center' }
             = render 'students/details',
@@ -57,14 +56,26 @@
       .card.shadow-xl.py-8.rounded-t-none.relative.bg-white
         %div.absolute.top-0.left-0.w-full.h-12.-translate-y-6
           = inline_svg_tag 'binder_holes.svg', class: 'w-full h-full text-neutral-light pointer-events-none'
-        
+
         = render 'students/student_progress', student: @student, results: @results, levels: @levels
 
     %div{ class: "w-full md:w-4/6 flex flex-col" }
+      = turbo_frame_tag "student_results_panel", class: "block w-full flex flex-col gap-4" do
+        - current_view = params[:view].presence || 'internal'
 
-      %div{ class: 'flex flex-col items-center md:max-h-[60vh]', id: 'test_details' }
-        = render 'students/test_details',
-                 data: @data,
-                 results: @results
+        %div{ class: 'flex flex-col items-center md:max-h-[50vh]' }
+          - if current_view == 'pearson'
+            -# swap to pearson_test_details later
+            = render 'students/test_details', data: @data, results: @results
+          - else
+            = render 'students/test_details', data: @data, results: @results
 
-      = render 'students/tests_table', results: @results, active_result: @active_result
+        %nav{ class: 'flex items-end gap-4 border-b', role: 'tablist', 'aria-label': 'Result source' }
+          = link_to('Internal',student_path(@student, request.query_parameters.merge(view: 'internal')),role: 'tab','aria-selected': (current_view == 'internal'),data: { turbo_frame: 'student_results_panel' },class: (current_view == 'internal' ?'pb-2 border-b-2 border-secondary text-secondary font-semibold' :'pb-2 border-b-2 border-transparent text-neutral-500 hover:text-secondary-50'))
+          = link_to('Pearson',student_path(@student, request.query_parameters.merge(view: 'pearson')),role: 'tab','aria-selected': (current_view == 'pearson'),data: { turbo_frame: 'student_results_panel' },class: (current_view == 'pearson' ?'pb-2 border-b-2 border-secondary text-secondary font-semibold' :'pb-2 border-b-2 border-transparent text-neutral-500 hover:text-secondary-50'))
+
+
+        - if current_view == 'pearson'
+          = render 'students/tests_table', results: @results, active_result: @active_result
+        - else
+          = render 'students/tests_table', results: @results, active_result: @active_result
