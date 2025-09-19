@@ -1,0 +1,30 @@
+-# locals: { results:, active_result: }
+%table{ class: 'w-full min-w-full md:table-fixed text-xs md:text-base' }
+  %thead
+    %tr.text-white.font-bold.whitespace-nowrap
+      %th.thead.thead-s.bg-secondary-50.w-8= ''
+      %th.thead.bg-secondary-50= t('.date')
+      %th.thead.bg-secondary-50.hidden.md:table-cell= t('.test')
+      %th.thead.bg-secondary-50= t('.listening')
+      %th.thead.bg-secondary-50= t('.reading')
+      %th.thead.bg-secondary-50= t('.writing')
+      %th.thead.bg-secondary-50= t('.speaking')
+      %th.thead.thead-e.bg-secondary-50= t('.average')
+  %tbody.text-center
+    - results.each do |pr|
+      - current_params = request.query_parameters.merge(view: 'pearson', pr_id: pr.id)
+      - link_url = url_for(params: current_params.merge(only_path: true))
+      %tr
+        %td.p-2
+          = link_to link_url,
+                    class: "selector-link flex items-center justify-center h-6 w-6 rounded-full border #{ pr == active_result ? 'bg-secondary' : 'bg-white' }",
+                    title: pr.test_taken_at&.strftime('%b %Y'),
+                    data: { turbo_frame: 'student_results_panel' } do
+            %span.sr-only= "Select Pearson test from #{pr.test_taken_at&.strftime('%b %Y')}"
+        %td.p-2= pr.test_taken_at&.strftime('%Y-%m-%d')
+        %td.p-2.hidden.md:table-cell= pr.test_name
+        %td.p-2= pr_cell(pr.listening_score, pr.listening_code)
+        %td.p-2= pr_cell(pr.reading_score,   pr.reading_code)
+        %td.p-2= pr_cell(pr.writing_score,   pr.writing_code)
+        %td.p-2= pr_cell(pr.speaking_score,  pr.speaking_code)
+        %td.p-2= pr.average_score || '-'
