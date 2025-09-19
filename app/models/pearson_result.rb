@@ -21,8 +21,8 @@ class PearsonResult < ApplicationRecord
   scope :for_form, ->(f)    { where(form: f) if f.present? }
 
   scope :latest_per_test, lambda {
-    select('DISTINCT ON (student_id, test_name) *')
-      .order(:student_id, :test_name, test_taken_at: :desc)
+    select('DISTINCT ON (pearson_results.student_id, pearson_results.test_name) pearson_results.*')
+      .reorder('pearson_results.student_id, pearson_results.test_name, pearson_results.test_taken_at DESC, pearson_results.id DESC')
   }
 
   def self.for_student(student_id)
