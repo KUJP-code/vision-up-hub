@@ -16,7 +16,6 @@
       class: "btn btn-secondary",
       target: "_blank"
 
-
   .flex.flex-col.md:flex-row.p-12.px-2.md:p-16.bg-neutral-light.gap-6
     %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }
       %profile{ class: 'relative text-secondary-50 border-secondary-50 border-[3px] rounded p-3' }
@@ -65,17 +64,15 @@
 
         %div{ class: 'flex flex-col items-center md:max-h-[50vh]' }
           - if current_view == 'pearson'
-            -# swap to pearson_test_details later
-            = render 'students/test_details', data: @data, results: @results
+            = render 'students/pearson_test_details', data: @data, results: @pearson_results
           - else
             = render 'students/test_details', data: @data, results: @results
 
         %nav{ class: 'flex items-end gap-4 border-b', role: 'tablist', 'aria-label': 'Result source' }
           = link_to('Internal',student_path(@student, request.query_parameters.merge(view: 'internal')),role: 'tab','aria-selected': (current_view == 'internal'),data: { turbo_frame: 'student_results_panel' },class: (current_view == 'internal' ?'pb-2 border-b-2 border-secondary text-secondary font-semibold' :'pb-2 border-b-2 border-transparent text-neutral-500 hover:text-secondary-50'))
           = link_to('Pearson',student_path(@student, request.query_parameters.merge(view: 'pearson')),role: 'tab','aria-selected': (current_view == 'pearson'),data: { turbo_frame: 'student_results_panel' },class: (current_view == 'pearson' ?'pb-2 border-b-2 border-secondary text-secondary font-semibold' :'pb-2 border-b-2 border-transparent text-neutral-500 hover:text-secondary-50'))
-
-
-        - if current_view == 'pearson'
-          = render 'students/tests_table', results: @results, active_result: @active_result
-        - else
-          = render 'students/tests_table', results: @results, active_result: @active_result
+        %div{ class: 'flex-1 min-w-0 overflow-x-auto overscroll-x-contain' }
+          - if current_view == 'pearson'
+            = render 'students/pearson_tests_table', results: @pearson_results, active_result: @active_pearson_result
+          - else
+            = render 'students/tests_table', results: @results, active_result: @active_result
