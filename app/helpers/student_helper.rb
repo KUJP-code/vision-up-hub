@@ -16,6 +16,10 @@ module StudentHelper
     "id/#{icon_name}.svg"
   end
 
+  def pr_cell(score, code)
+    code == 'ok' ? score.to_s : code.to_s.upcase
+  end
+
   def school_details_for(children)
     return 'No School Currently' unless children.any?
 
@@ -33,5 +37,4 @@ module StudentHelper
   def default_icon(child)
     child.sex.to_sym == :male ? 'id/id-boy.svg' : 'id/id-girl.svg'
   end
-
 end
