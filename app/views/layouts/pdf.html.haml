@@ -2,9 +2,12 @@
   %head
     :ruby
       host_for_pdf =
-        Rails.application.routes.default_url_options[:host] ||
-        ENV.fetch('APP_HOST', 'http://localhost:3000')
-
+        if Rails.env.development?
+          'http://localhost:3000'
+        else
+          Rails.application.routes.default_url_options[:host] ||
+          ENV.fetch('APP_HOST', 'https://hub.kids-up.app')
+        end
 
     = stylesheet_link_tag 'application', media: 'all', host: host_for_pdf
     = stylesheet_link_tag 'print_report_card', media: 'all', host: host_for_pdf
