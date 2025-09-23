@@ -9,5 +9,6 @@ FactoryBot.define do
     organisation
     sex { 'male' }
     status { 'active' }
+    student_id { '1234567890' }
   end
 end

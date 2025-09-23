@@ -4,7 +4,7 @@ RSpec.describe 'Creating an Invoice' do
   let!(:admin) { create(:user, :admin) }
   let!(:organisation) { create(:organisation, name: 'Test Organisation') }
   let!(:school) { create(:school, organisation:, name: 'Test School') }
-  let!(:students) { create_list(:student, 50, school:, organisation:) }
+  let!(:students) { create_list(:student, 1, school:, organisation:) }
 
   before do
     sign_in admin

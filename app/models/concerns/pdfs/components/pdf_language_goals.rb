@@ -6,7 +6,7 @@ module PdfLanguageGoals
   def draw_lang_goals(pdf:)
     x_position = HEADER_INDENT + 2.mm
 
-    [land_lang_goals, sky_lang_goals, galaxy_lang_goals].each do |goals|
+    [sa(land_lang_goals), sa(sky_lang_goals), sa(galaxy_lang_goals)].each do |goals|
       pdf.bounding_box([x_position, 220.mm], width: 51.mm, height: 11.mm) do
         pdf.text array_to_list(goals),
                  size: FONT_SIZE,

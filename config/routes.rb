@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     devise_for :users
     resources :privacy_policy_acceptances, only: %i[new create index]
     get 'pending_device', to: 'devices#pending', as: :pending_device
-    
+
     authenticate :user do
       resources :announcements
       resources :invoices, only: %i[index new create update destroy] do
@@ -82,6 +82,7 @@ Rails.application.routes.draw do
         patch 'teacher_uploads', to: 'teacher_uploads#update', as: :teacher_uploads_update
         resources :parent_uploads, only: %i[create new show]
         patch 'parent_uploads', to: 'parent_uploads#update', as: :parent_uploads_update
+        resources :pearson_uploads, only: %i[create new show]
         resources :users, except: %i[destroy]
         resources :admins
         resources :org_admins
@@ -93,7 +94,7 @@ Rails.application.routes.draw do
       end
       post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
       get 'admin_password_change', to: 'admins#new_password_change', as: :admin_password_change
-      post 'admin_password_change', to: 'admins#change_password', as: :admin_change_password      
+      post 'admin_password_change', to: 'admins#change_password', as: :admin_change_password
       get 'teacher_homework', to: 'homeworks#teacher_index', as: :teacher_homework
 
       # Index for KU staff who can see everything

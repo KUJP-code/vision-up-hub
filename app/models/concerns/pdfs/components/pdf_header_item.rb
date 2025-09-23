@@ -20,11 +20,11 @@ module PdfHeaderItem
     end
 
     def draw_default_header(text:)
-      draw(text: text[:pre], y_pos: 280.mm,
+      draw(text: sa(text)[:pre], y_pos: 280.mm,
            height: 4.mm, size: SUBHEADING_SIZE)
-      draw(text: text[:main], y_pos: 275.mm - PADDING,
+      draw(text: sa(text)[:main], y_pos: 275.mm - PADDING,
            height: 10.mm, size: HEADING_SIZE)
-      draw(text: text[:sub], y_pos: 265.mm - (PADDING * 2),
+      draw(text: sa(text)[:sub], y_pos: 265.mm - (PADDING * 2),
            height: 20.mm, size: FONT_SIZE)
     end
   end

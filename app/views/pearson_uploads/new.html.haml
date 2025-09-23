@@ -1,0 +1,36 @@
+-# app/views/pearson_uploads/new.html.haml
+- content_for :head do
+  %link{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
+%main.flex.flex-col.gap-12.overflow-y-auto.p-3
+  = render 'shared/subtitle', text: t('.upload_pearson_results', org: @organisation.name)
+
+  - if current_user.is?('Admin')
+    = render 'organisations/nav',
+             orgs: @orgs,
+             active_org: @organisation,
+             path_func: :new_organisation_pearson_upload_path
+
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
+    %h2= t('.import_results', org: @organisation.name)
+    = form_with url: organisation_pearson_uploads_path(@organisation),
+                method: :post,
+                multipart: true,
+                html: { class: 'form',
+                        data: { controller: 'csv-uploader',
+                                'csv-uploader-org-value': @organisation.id } },
+                id: 'pearson_upload_form' do |f|
+      .flex.flex-col.gap-3
+        = f.file_field :file, required: true,
+                      accept: '.csv',
+                      data: { 'csv-uploader-target': 'fileInput' }
+        = f.submit 'Import', class: 'btn btn-main'
+
+  - if @errors.present?
+    %section.flex.flex-col.gap-3.border-2.border-red-500.rounded.p-3
+      %h2.text-red-600= t('.row_errors')
+      %ul.list-disc.ml-6
+        - @errors.each do |e|
+          %li= e
+      - if @errors_overflow.to_i > 0
+        %p.text-sm.text-gray-600= t('.more_errors', count: @errors_overflow)

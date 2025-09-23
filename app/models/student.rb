@@ -4,7 +4,7 @@ class Student < ApplicationRecord
   include Gradeable, Levelable
 
   acts_as_copy_target
-  
+
   CSV_HEADERS = %w[name en_name student_id level school_id parent_id
                    birthday start_date quit_date sex status organisation_id].freeze
   ICON_CHOICES = %w[
@@ -49,19 +49,19 @@ class Student < ApplicationRecord
                                 reject_if: :all_blank
   has_many :classes, through: :student_classes,
                      source: :school_class
-
+  has_many :pearson_results, dependent: :destroy
   has_many :test_results, dependent: :destroy
   has_many :tests, through: :test_results
   has_many :level_changes, dependent: :destroy
 
   scope :current, -> { where(status: :active) }
   scope :former, -> { where(status: %i[on_break inactive]) }
-  scope :with_recent_results, ->(cutoff) {
+  scope :with_recent_results, lambda { |cutoff|
     joins(:test_results)
-      .where('test_results.created_at >= ?', cutoff)
+      .where(test_results: { created_at: cutoff.. })
       .distinct
   }
-  
+
   def mapped_level_order
     LEVEL_ORDER_MAP[level] || 1
   end
