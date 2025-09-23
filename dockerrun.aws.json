@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.4-pr_translations"
+    "Name": "kidsup/materials:3.8.5-pearson_importer"
   },
   "Ports": [
     {
