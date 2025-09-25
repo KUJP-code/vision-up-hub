@@ -31,6 +31,6 @@
       %span Add New Category
       = inline_svg_tag 'next.svg', class: 'fill-white h-8 w-8'
 
-  %section.grid.grid-cols-2.md:grid-cols-4.gap-3.py-6
+  %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
     - @categories.each do |category|
       = render 'tutorial_categories/card', category:

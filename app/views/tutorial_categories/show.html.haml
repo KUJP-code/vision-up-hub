@@ -6,7 +6,8 @@
         .grow
         = link_to 'Edit',
                   edit_tutorial_category_path(@tutorial_category),
-                  class: 'btn btn-secondary'
+                  class: 'btn btn-secondary',
+                  data: { turbo_frame: '_top' }
         = link_to 'Delete',
                   tutorial_category_path(@tutorial_category),
                   data: { turbo_method: 'delete',
