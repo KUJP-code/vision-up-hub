@@ -36,6 +36,11 @@ module TeacherLessonHelper
     image_tag(src, **)
   end
 
+  def tutorial_image_tag(category, **)
+    src = category.cover_image.attached? ? url_for(category.cover_image) : asset_path('tutorials.svg')
+    image_tag(src, **)
+  end
+
   def lesson_level_heading(lesson)
     if %w[DailyActivity Exercise].include?(lesson.type)
       t("lessons.subtypes.#{lesson.subtype}")

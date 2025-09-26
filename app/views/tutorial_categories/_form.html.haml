@@ -9,4 +9,9 @@
     = f.text_field :title,
                    required: true
 
+  .form-group
+    = f.label :cover_image, 'Cover Image'
+    %small best with 64x64px pngs but any image works, just check it after creation.
+    = f.file_field :cover_image, accept: 'image/png'
+
   = f.submit class: 'btn btn-main'
