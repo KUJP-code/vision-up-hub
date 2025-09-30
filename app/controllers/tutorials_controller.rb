@@ -7,7 +7,7 @@ class TutorialsController < ApplicationController
   after_action :verify_authorized, except: %i[index show]
 
   def index
-    @categories = TutorialCategory.order(:title)
+    @categories = policy_scope(TutorialCategory).order(:title)
     @tutorials = {
       pdf: PdfTutorial.includes(file_attachment: :blob),
       video: VideoTutorial.all,
