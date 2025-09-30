@@ -1443,6 +1443,38 @@ ALTER SEQUENCE public.organisation_lessons_id_seq OWNED BY public.organisation_l
 
 
 --
+-- Name: organisation_tutorial_categories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.organisation_tutorial_categories (
+    id bigint NOT NULL,
+    organisation_id bigint NOT NULL,
+    tutorial_category_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: organisation_tutorial_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.organisation_tutorial_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: organisation_tutorial_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.organisation_tutorial_categories_id_seq OWNED BY public.organisation_tutorial_categories.id;
+
+
+--
 -- Name: organisations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2711,6 +2743,13 @@ ALTER TABLE ONLY public.organisation_lessons ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: organisation_tutorial_categories id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_tutorial_categories ALTER COLUMN id SET DEFAULT nextval('public.organisation_tutorial_categories_id_seq'::regclass);
+
+
+--
 -- Name: organisations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3117,6 +3156,14 @@ ALTER TABLE ONLY public.managements
 
 ALTER TABLE ONLY public.organisation_lessons
     ADD CONSTRAINT organisation_lessons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: organisation_tutorial_categories organisation_tutorial_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_tutorial_categories
+    ADD CONSTRAINT organisation_tutorial_categories_pkey PRIMARY KEY (id);
 
 
 --
@@ -3628,6 +3675,13 @@ CREATE INDEX index_managements_on_school_manager_id ON public.managements USING 
 
 
 --
+-- Name: index_org_tutorial_categories_on_org_and_category; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_org_tutorial_categories_on_org_and_category ON public.organisation_tutorial_categories USING btree (organisation_id, tutorial_category_id);
+
+
+--
 -- Name: index_organisation_lessons_on_lesson_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3639,6 +3693,20 @@ CREATE INDEX index_organisation_lessons_on_lesson_id ON public.organisation_less
 --
 
 CREATE INDEX index_organisation_lessons_on_organisation_id ON public.organisation_lessons USING btree (organisation_id);
+
+
+--
+-- Name: index_organisation_tutorial_categories_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_organisation_tutorial_categories_on_organisation_id ON public.organisation_tutorial_categories USING btree (organisation_id);
+
+
+--
+-- Name: index_organisation_tutorial_categories_on_tutorial_category_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_organisation_tutorial_categories_on_tutorial_category_id ON public.organisation_tutorial_categories USING btree (tutorial_category_id);
 
 
 --
@@ -4206,6 +4274,14 @@ ALTER TABLE ONLY public.managements
 
 
 --
+-- Name: organisation_tutorial_categories fk_rails_2b2c38d3b4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_tutorial_categories
+    ADD CONSTRAINT fk_rails_2b2c38d3b4 FOREIGN KEY (tutorial_category_id) REFERENCES public.tutorial_categories(id) ON DELETE CASCADE;
+
+
+--
 -- Name: form_submissions fk_rails_2d41d61f87; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4510,6 +4586,14 @@ ALTER TABLE ONLY public.phonics_resources
 
 
 --
+-- Name: organisation_tutorial_categories fk_rails_b2f4124c1f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisation_tutorial_categories
+    ADD CONSTRAINT fk_rails_b2f4124c1f FOREIGN KEY (organisation_id) REFERENCES public.organisations(id) ON DELETE CASCADE;
+
+
+--
 -- Name: test_results fk_rails_b56923d317; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4647,6 +4731,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20250930012236'),
 ('20250916034909'),
 ('20250725013946'),
 ('20250703015039'),
