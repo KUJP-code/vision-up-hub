@@ -1,12 +1,46 @@
-= render 'shared/subtitle', text: "Welcome, #{@user.name}"
+= render 'shared/subtitle', text: "#{@user.name}"
 
-%main.flex.flex-col.items-start.gap-3.p-3
+%main.flex.flex-col.gap-12.p-10
   - if @announcements.any?
     = render 'shared/announcement_list', announcements: @announcements
-  %h3 Organisation Admin for #{@organisation.name}
-  %h3= @user.email
-  = render 'organisations/new_parent_link', org_id: @organisation.id
 
-  = link_to 'Edit',
-            edit_organisation_org_admin_path(@user.organisation_id, @user),
-            class: 'btn btn-secondary'
+  %section.flex.flex-col.gap-3
+    %h3.font-bold= t('.customer_information')
+    %nav.w-full.grid.grid-cols-3.gap-6
+      = link_to students_path, class: 'btn btn-outline btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('students.svg', class: 'w-10 h-10')}
+        = t('.students')
+      = link_to users_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('parents.svg', class: 'w-10 h-10')}
+        = t('.parents')
+      = link_to tests_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('test.svg', class: 'w-10 h-10')}
+        = t('.tests')
+      = link_to report_card_batches_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('test.svg', class: 'w-10 h-10')}
+        = t('.report_cards')
+  %section.flex.flex-col.gap-3
+    %h3.font-bold= t('.curriculum')
+    %nav.w-full.grid.grid-cols-3.gap-6
+      = todays_lessons_link
+      = link_to lesson_calendars_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('calendar.svg', class: 'w-10 h-10')}
+        = t('.curriculum_calendar')
+      = link_to teacher_events_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('events.svg', class: 'w-10 h-10')}
+        = t('.events')
+      = link_to monthly_materials_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('monthly_materials.svg', class: 'w-10 h-10')}
+        = t('.materials')
+      = link_to homeworks_path, class: 'btn btn-outline-white w-full flex gap-2' do
+        #{inline_svg_tag('homework.svg', class: 'w-10 h-10')}
+        = t('.homework')
+
+  %section.flex.flex-col.gap-6
+    %h3.font-bold= t('.support_and_settings')
+    %nav.w-full.grid.grid-cols-3.gap-3
+      = link_to support_requests_path, class: 'btn-outline-white btn w-full flex gap-2' do
+        #{inline_svg_tag('support.svg', class: 'w-10 h-10')}
+        = t('.support')
+
+  / = render 'organisations/new_parent_link', org_id: @organisation.id
