@@ -6,13 +6,19 @@
         .grow
         = link_to 'Edit',
                   edit_tutorial_category_path(@tutorial_category),
-                  class: 'btn btn-secondary'
+                  class: 'btn btn-secondary',
+                  data: { turbo_frame: '_top' }
         = link_to 'Delete',
                   tutorial_category_path(@tutorial_category),
                   data: { turbo_method: 'delete',
                           turbo_confirm: 'Check there are no attached tutorials' },
                   class: 'btn btn-danger'
-
+        .text-sm.text-secondary.mt-2
+          %strong Current orgs:
+          - if @tutorial_category.organisations.any?
+            = @tutorial_category.organisations.pluck(:name).join(', ')
+          - else
+            None assigned
     - TutorialCategory::TUTORIAL_TYPES.each do |type|
       = render "tutorials/#{type.to_s.underscore}",
                tutorials: @tutorials[type]

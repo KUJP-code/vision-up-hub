@@ -47,7 +47,8 @@ class TutorialCategoriesController < ApplicationController
   private
 
   def tutorial_category_params
-    params.require(:tutorial_category).permit(:title)
+    params.require(:tutorial_category).permit(:title, :cover_image,
+                                              organisation_tutorial_categories_attributes: %i[id organisation_id _destroy])
   end
 
   def set_tutorial_category

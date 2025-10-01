@@ -18,6 +18,8 @@
 
 %main.flex.flex-col.p-3.gap-3
   - if admin
+    - orgs_for_spy = Organisation.joins(:organisation_tutorial_categories).distinct.order(:name)
+    = render 'tutorials/org_spy', org_tutorials: orgs_for_spy
     %details.dropdown.bg-secondary.text-white
       %summary.p-2.font-semibold Create a Tutorial
       %nav.dropdown-nav
@@ -31,6 +33,6 @@
       %span Add New Category
       = inline_svg_tag 'next.svg', class: 'fill-white h-8 w-8'
 
-  %section.grid.grid-cols-2.md:grid-cols-4.gap-3.py-6
+  %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
     - @categories.each do |category|
       = render 'tutorial_categories/card', category:

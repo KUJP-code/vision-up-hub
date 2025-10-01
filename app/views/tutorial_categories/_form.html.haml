@@ -1,12 +1,38 @@
 -# locals: (category:)
 
 = form_with model: category,
-            html: { class: 'form', id: 'tutorial_category_form' } do |f|
+            html: { id: 'tutorial_category_form',
+                    class: 'form',
+                    data: { controller: 'fields' } } do |f|
   = render 'shared/form_errors', resource: category
 
   .form-group
     = f.label :title
-    = f.text_field :title,
-                   required: true
+    = f.text_field :title, required: true
+
+  .form-group
+    = f.label :cover_image, 'Cover Image'
+    %small best with 64x64px pngs but any image works, just check it after creation.
+    = f.file_field :cover_image, accept: 'image/png'
+
+  %h3.font-bold.text-center.mt-6 Organisations
+
+  = f.fields_for :organisation_tutorial_categories, category.organisation_tutorial_categories do |otc_f|
+    = render 'organisation_tutorial_categories/fields',
+             f: otc_f,
+             organisations: Organisation.order(:name)
+
+  %template{ 'data-fields-target': 'template' }
+    = f.fields_for :organisation_tutorial_categories,
+                   category.organisation_tutorial_categories.new,
+                   child_index: 'CHILD' do |otc_f|
+      = render 'organisation_tutorial_categories/fields',
+               f: otc_f,
+               organisations: Organisation.order(:name)
+
+  %div{ 'data-fields-target': 'target' }
+
+  %button.btn.btn-secondary.self-center{ type: 'button', 'data-action': 'fields#add' }
+    Add Organisation
 
   = f.submit class: 'btn btn-main'

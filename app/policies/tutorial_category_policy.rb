@@ -1,8 +1,23 @@
 # frozen_string_literal: true
 
 class TutorialCategoryPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      return scope.all if user.is?('Admin', 'Sales')
+
+      return scope.none if user.organisation_id.blank?
+
+      scope
+        .joins(:organisation_tutorial_categories)
+        .where(organisation_tutorial_categories: { organisation_id: user.organisation_id })
+    end
+  end
+
   def show?
-    true
+    return true if user.is?('Admin', 'Sales')
+    return false if user.organisation_id.blank?
+
+    record.organisations.exists?(id: user.organisation_id)
   end
 
   def new?

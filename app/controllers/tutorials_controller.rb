@@ -7,11 +7,21 @@ class TutorialsController < ApplicationController
   after_action :verify_authorized, except: %i[index show]
 
   def index
-    @categories = TutorialCategory.order(:title)
+    base = policy_scope(TutorialCategory)
+
+    if current_user.is?('Admin') && params[:organisation_id].present?
+      base = base.joins(:organisation_tutorial_categories)
+                 .where(organisation_tutorial_categories: { organisation_id: params[:organisation_id] })
+    end
+
+    @categories = base.reorder(:title)
+
+    visible_ids = @categories.pluck(:id)
+
     @tutorials = {
-      pdf: PdfTutorial.includes(file_attachment: :blob),
-      video: VideoTutorial.all,
-      faq: FaqTutorial.all
+      pdf: PdfTutorial.where(tutorial_category_id: visible_ids).includes(file_attachment: :blob),
+      video: VideoTutorial.where(tutorial_category_id: visible_ids),
+      faq: FaqTutorial.where(tutorial_category_id: visible_ids)
     }
   end
 

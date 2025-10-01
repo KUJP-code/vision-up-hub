@@ -17,6 +17,8 @@ class Organisation < ApplicationRecord
   has_many :support_requests, through: :users
   has_many :teachers, dependent: :destroy
   has_many :organisation_lessons, dependent: :destroy
+  has_many :organisation_tutorial_categories, dependent: :destroy
+  has_many :tutorial_categories, through: :organisation_tutorial_categories
   has_many :seasonal_lessons, through: :organisation_lessons, source: :lesson
 
   def students_count
