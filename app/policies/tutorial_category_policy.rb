@@ -3,7 +3,7 @@
 class TutorialCategoryPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      user.is?('Admin', 'Sales')
+      return scope.all if user.is?('Admin', 'Sales')
 
       return scope.none if user.organisation_id.blank?
 
