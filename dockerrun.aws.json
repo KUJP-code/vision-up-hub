@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.5-pearson_importer"
+    "Name": "kidsup/materials:3.8.6-tutorials_orgscoped"
   },
   "Ports": [
     {
