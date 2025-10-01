@@ -1,0 +1,13 @@
+-# locals: (org_tutorials:)
+%details.dropdown.bg-secondary.text-white
+  %summary.font-semibold.p-2 Organisation specific checker (spy)
+  %nav.dropdown-nav
+    = link_to 'All organisations',
+              tutorials_path,
+              class: "dropdown-item #{'active' if params[:organisation_id].blank?}"
+
+    - org_tutorials.each do |org|
+      - active = params[:organisation_id].to_s == org.id.to_s
+      = link_to org.name,
+                tutorials_path(organisation_id: org.id),
+                class: "dropdown-item #{'active' if active}"
