@@ -10,7 +10,6 @@ class TutorialCategoryPolicy < ApplicationPolicy
       scope
         .joins(:organisation_tutorial_categories)
         .where(organisation_tutorial_categories: { organisation_id: user.organisation_id })
-        .distinct
     end
   end
 
