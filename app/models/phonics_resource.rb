@@ -9,4 +9,8 @@ class PhonicsResource < ApplicationRecord
   validates :week, presence: true
   validates :week, numericality: { only_integer: true }
   validates :week, comparison: { greater_than: 0, less_than: 53 }
+
+  scope :for_course_week, lambda { |course_id, week|
+    where(course_id:, week:)
+  }
 end

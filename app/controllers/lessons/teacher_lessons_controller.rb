@@ -39,11 +39,17 @@ class TeacherLessonsController < ApplicationController
   end
 
   def phonics_resources
-    # TODO: Must be a better way to do this
     course_lesson = @teacher.course_lessons.find_by(lesson_id: @lesson.id)
+    return PhonicsResource.none unless course_lesson
+
     plan = @teacher.plans.find_by(course_id: course_lesson.course_id)
+    return PhonicsResource.none unless plan
+
     week = @teacher.course_week(plan, @date)
-    @lesson.phonics_resources.where(week:).includes(:blob)
+
+    @lesson.phonics_resources
+           .for_course_week(course_lesson.course_id, week)
+           .includes(:blob)
   end
 
   def validated_level(level_param, teacher)
