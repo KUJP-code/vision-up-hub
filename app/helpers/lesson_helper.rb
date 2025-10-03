@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 module LessonHelper
-  def events_visible_range_for(event_date, past: 1.month, future: 3.months)
-    return nil unless event_date
-
-    start  = (event_date - future).to_date
-    finish = (event_date + past).to_date
-    "#{I18n.l(start)} – #{I18n.l(finish)}"
-  end
-
   def level_icon_path(lesson)
     level = lesson.short_level.downcase.tr(' ', '_')
     "levels/#{level}.svg"

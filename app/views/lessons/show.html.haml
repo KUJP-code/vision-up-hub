@@ -52,13 +52,8 @@
       - if @org_lessons.any?
         %h3 Used in the following organisations
         - @org_lessons.each do |ol|
-          %div
-            = link_to "#{ol.organisation.name} on #{ol.event_date.strftime('%-d %b %Y')}",
-                      organisation_path(ol.organisation)
-            - if ol.event_date.present?
-              %small.text-muted.ml-2
-                (Visibility: #{events_visible_range_for(ol.event_date)})
-
+          = link_to "#{ol.organisation.name} on #{ol.event_date.strftime('%-d %b %Y')}",
+                    organisation_path(ol.organisation)
 
       = render 'lessons/shared/approval', lesson: @lesson
 
