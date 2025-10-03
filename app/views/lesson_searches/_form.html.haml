@@ -4,7 +4,8 @@
   field_classes = 'basis-1/5 flex-grow flex justify-center items-center gap-1'
   levels = [%w[DAElementary 2]] + Lesson.levels.map { |k, v| [k.titleize, v] }
   subtypes = DailyActivity.subtypes.merge(Exercise.subtypes).map { |k, v| [k.titleize, v] }
-
+  admin_bucket = ['Any Admin', LessonSearchesController::ADMINS_BUCKET]
+  creator_options = current_user.is?('Admin') ? writers : [admin_bucket] + writers
 = turbo_frame_tag 'lesson_search_frame',
                   target: 'lesson_table' do
   = form_with url: lesson_searches_path,
@@ -40,7 +41,7 @@
     %div{ class: field_classes }
       = f.label :creator_id, t('.creator')
       = f.select :creator_id,
-                 writers,
+                 creator_options,
                  { prompt: t('.select_creator') }
 
     %div{ class: field_classes }
