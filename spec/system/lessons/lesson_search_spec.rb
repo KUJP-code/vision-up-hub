@@ -17,16 +17,12 @@ RSpec.describe 'Lesson search', :js do
            status: :accepted)
   end
   let(:course) { create(:course, title: 'Test Course') }
-  let(:course_lesson) do
-    create(:course_lesson,
-           lesson: result,
-           course:,
-           week: 3)
-  end
+  let(:course_lesson) { create(:course_lesson, lesson: result, course:, week: 3) }
   let!(:extra) { create(:exercise) }
 
   before do
     sign_in user
+    course_lesson
   end
 
   it 'can search lessons with partial matching and by week' do
