@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.6-tutorials_orgscoped"
+    "Name": "kidsup/materials:3.8.7-event_visibility"
   },
   "Ports": [
     {
