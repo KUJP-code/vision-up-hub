@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Student search', :js, skip: 'Temporarily disabled until I work out targetting here finalised' do
+RSpec.describe 'Student search' do
   let(:school) { create(:school, organisation_id: user.organisation_id) }
   let!(:student) do
     create(:student, student_id: 's12345678', level: :sky_one,
@@ -14,7 +14,7 @@ RSpec.describe 'Student search', :js, skip: 'Temporarily disabled until I work o
     sign_in user
   end
 
-  context 'when parent' do
+  context 'when parent', skip: 'Functionality temporarily disabled' do
     let(:user) { create(:user, :parent) }
 
     it 'can search and claim their student by student id and birthday' do

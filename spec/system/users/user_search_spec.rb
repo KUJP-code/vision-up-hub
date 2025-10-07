@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'User search', skip: 'Functionality temporarily disabled' do
+RSpec.describe 'User search' do
   let(:user) { create(:user, :org_admin) }
   let!(:result) do
     create(:user, :parent, organisation_id: user.organisation_id,
@@ -31,7 +31,7 @@ RSpec.describe 'User search', skip: 'Functionality temporarily disabled' do
     end
   end
 
-  context 'when adding a parent to orphan' do
+  context 'when adding a parent to orphan', skip: 'Functionality temporarily disabled' do
     let(:school) { create(:school, organisation_id: user.organisation_id) }
     let!(:orphan) { create(:student, parent_id: nil, school_id: school.id) }
 
