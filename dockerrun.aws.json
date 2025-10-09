@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.8-lesson_searches"
+    "Name": "kidsup/materials:3.8.9-calendar_fixes"
   },
   "Ports": [
     {
