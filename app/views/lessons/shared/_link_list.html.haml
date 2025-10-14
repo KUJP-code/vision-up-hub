@@ -1,0 +1,31 @@
+-# locals: (lesson_links:)
+
+%h3.text-left Links
+
+.flex.flex-wrap.justify-start.items-center.gap-3.mt-2
+  - lesson_links.each do |link|
+    - title = link.title.presence || (URI.parse(link.url).host rescue 'Link')
+
+    - if link.video?
+      %details.flex.flex-col.gap-1.p-1
+        %summary.cursor-pointer.btn.btn-main.flex.items-center.gap-2.py-1.px-3
+          = inline_svg_tag 'download_icon.svg', class: 'fill-white w-4 h-4'
+          %span= title
+          %span.text-xs.text-gray-300.ml-1 (Video)
+        .mt-2
+          .aspect-video
+            %iframe{
+              src: (link.embed_url.presence || link.url),
+              width: 560,
+              height: 315,
+              frameborder: 0,
+              allowfullscreen: true,
+              allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            }
+    - else
+      = link_to link.url,
+                target: "_blank",
+                rel: "noopener",
+                class: "btn btn-main flex items-center gap-2 py-1 px-3" do
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white w-4 h-4'
+        %span= title

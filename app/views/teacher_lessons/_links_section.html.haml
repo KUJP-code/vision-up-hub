@@ -1,0 +1,27 @@
+-# locals: (lesson_links:)
+
+%h3.font-bold.text-left Links
+
+.flex.flex-wrap.justify-start.items-center.gap-3.mt-2
+  - lesson_links.each do |link|
+    - title = link.title.presence || (URI.parse(link.url).host rescue 'Link')
+    - preview_url = link.video? ? (link.embed_url.presence || link.url) : link.url
+
+    - if link.video?
+      %a.btn.btn-main.flex.items-center.gap-2.py-1.px-3{
+        href: "#",
+        data: {
+          controller: "dialog",
+          action: "click->dialog#open",
+          "dialog-dialog-value" => "lesson-video",
+          "dialog-frame-value"  => "lesson-video-frame",
+          "dialog-src-value"    => preview_url
+        }
+      }
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white w-4 h-4'
+        %span= title
+    - else
+      = link_to preview_url, target: "_blank", rel: "noopener",
+                class: "btn btn-main flex items-center gap-2 py-1 px-3" do
+        = inline_svg_tag 'download_icon.svg', class: 'fill-white w-4 h-4'
+        %span= title

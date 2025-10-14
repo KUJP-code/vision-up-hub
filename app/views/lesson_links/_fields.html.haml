@@ -1,0 +1,18 @@
+%div{ class: 'fields-wrapper flex flex-wrap items-center justify-center gap-5',
+      data: { controller: 'fields', 'new-record': f.object.new_record?.to_s } }
+
+  %div{ class: 'form-group basis-1/3' }
+    = f.label :title
+    = f.text_field :title, placeholder: 'Title to show'
+
+  %div{ class: 'form-group basis-1/3' }
+    = f.label :url
+    = f.url_field :url, required: true, placeholder: 'Paste URL'
+
+  - if f.object.new_record?
+    %button{ class: 'btn btn-danger basis-1/4 self-center', 'data-action': 'fields#remove' }
+      Remove
+  - else
+    .w-full.form-check.text-center
+      = f.check_box :_destroy
+      = f.label :_destroy, 'Remove'
