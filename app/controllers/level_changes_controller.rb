@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class LevelChangesController < ApplicationController
-  def new
-  end
+  def new; end
 
   def create
     if params[:csv_file].present?
