@@ -17,14 +17,15 @@ class LessonsController < ApplicationController
 
   def show
     @org_lessons = @lesson
-                    .organisation_lessons
-                    .includes(:organisation)
+                   .organisation_lessons
+                   .includes(:organisation)
     @courses = @lesson.courses
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
                         .includes(:creator)
     @resources = @lesson.resources.includes(:blob)
                         .order('active_storage_blobs.filename ASC')
+    @lesson_links = @lesson.lesson_links.order(created_at: :asc)
 
     if current_user.is?('Admin')
       @writers = User.where(type: %w[Admin Writer])
@@ -76,7 +77,8 @@ class LessonsController < ApplicationController
       :goal, :level, :title, :type, :curriculum_approval_id,
       :curriculum_approval_name, :internal_notes, { resources: [] },
       { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] },
-      { organisation_lessons_attributes: %i[id _destroy organisation_id event_date] }
+      { organisation_lessons_attributes: %i[id _destroy organisation_id event_date] },
+      { lesson_links_attributes: %i[id url title _destroy] }
     ]
     return default_params unless current_user.is?('Admin')
 

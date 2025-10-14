@@ -14,6 +14,7 @@ class TeacherLessonsController < ApplicationController
     @type = validated_type(params[:type])
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
     @resources = set_resources
+    @lesson_links = set_links
   end
 
   private
@@ -36,6 +37,10 @@ class TeacherLessonsController < ApplicationController
     resources += phonics_resources if @type == 'PhonicsClass'
 
     resources.sort_by { |r| r.blob.filename }
+  end
+
+  def set_links
+    @lesson.lesson_links
   end
 
   def phonics_resources
