@@ -1281,6 +1281,42 @@ ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
 
 
 --
+-- Name: lesson_links; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lesson_links (
+    id bigint NOT NULL,
+    lesson_id bigint NOT NULL,
+    kind integer DEFAULT 0 NOT NULL,
+    url text NOT NULL,
+    embed_url text,
+    provider character varying,
+    title character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: lesson_links_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.lesson_links_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: lesson_links_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.lesson_links_id_seq OWNED BY public.lesson_links.id;
+
+
+--
 -- Name: lessons; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2715,6 +2751,13 @@ ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.inv
 
 
 --
+-- Name: lesson_links id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lesson_links ALTER COLUMN id SET DEFAULT nextval('public.lesson_links_id_seq'::regclass);
+
+
+--
 -- Name: lessons id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3124,6 +3167,14 @@ ALTER TABLE ONLY public.homeworks
 
 ALTER TABLE ONLY public.invoices
     ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: lesson_links lesson_links_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lesson_links
+    ADD CONSTRAINT lesson_links_pkey PRIMARY KEY (id);
 
 
 --
@@ -3630,6 +3681,20 @@ CREATE INDEX index_invoices_on_deleted_at ON public.invoices USING btree (delete
 --
 
 CREATE INDEX index_invoices_on_organisation_id ON public.invoices USING btree (organisation_id);
+
+
+--
+-- Name: index_lesson_links_on_kind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lesson_links_on_kind ON public.lesson_links USING btree (kind);
+
+
+--
+-- Name: index_lesson_links_on_lesson_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lesson_links_on_lesson_id ON public.lesson_links USING btree (lesson_id);
 
 
 --
@@ -4698,6 +4763,14 @@ ALTER TABLE ONLY public.test_results
 
 
 --
+-- Name: lesson_links fk_rails_e0a8676ea2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lesson_links
+    ADD CONSTRAINT fk_rails_e0a8676ea2 FOREIGN KEY (lesson_id) REFERENCES public.lessons(id);
+
+
+--
 -- Name: class_teachers fk_rails_e133600f79; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4731,6 +4804,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20251010034430'),
 ('20250930012236'),
 ('20250916034909'),
 ('20250725013946'),

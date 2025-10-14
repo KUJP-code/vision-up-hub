@@ -7,6 +7,20 @@
            lessons: @type_lessons, active_lesson: @lesson, level: @level,
            teacher_id: @teacher.id, type: @type, date: @date
 
+  %dialog.resources-dialog#lesson-video.video-dialog
+    .body.p-4.flex.justify-center.items-center
+      %form.h-0
+        %button{ formmethod: :dialog }
+          = image_tag 'exit.svg', class: 'btn-close'
+
+      %iframe#lesson-video-frame{
+        src: "",
+        frameborder: 0,
+        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+        allowfullscreen: true,
+        class: "w-full h-full"
+      }
+
   .dialog-content
     %header
       %h1{ class: "type #{border}" }
@@ -23,3 +37,7 @@
     - if @resources.any?
       = render 'teacher_lessons/resources_section',
                resources: @resources
+
+    - if @lesson_links.any?
+      = render 'teacher_lessons/links_section',
+               lesson_links: @lesson_links

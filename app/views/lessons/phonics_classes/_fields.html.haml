@@ -18,7 +18,7 @@
 
 .flex.flex-col.gap-2{ 'data-controller': 'fields' }
   = f.fields_for :phonics_resources, p_resources do |pr_f|
-  
+
     = render 'phonics_resources/fields',
             f: pr_f,
             resource: lesson,
@@ -39,4 +39,4 @@
   %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
     = t('.add_phonics_resource')
 
-= render('lessons/shared/link_fields', f:, lesson:)
+-# = render('lessons/shared/link_fields', f:, lesson:)
