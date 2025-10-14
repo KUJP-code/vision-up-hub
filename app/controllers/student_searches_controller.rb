@@ -71,8 +71,6 @@ class StudentSearchesController < ApplicationController
     render partial: 'students/table', locals: { students: }
   end
 
-  private
-
   def filter_by_encrypted_name(students, name_query)
     query = name_query.downcase
     students.to_a.select { |student| student.en_name.downcase.include?(query) }
