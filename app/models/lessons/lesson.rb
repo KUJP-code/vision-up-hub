@@ -23,7 +23,8 @@ class Lesson < ApplicationRecord
              optional: true
 
   has_many :course_lessons, dependent: :destroy
-
+  has_many :lesson_links, dependent: :destroy
+  accepts_nested_attributes_for :lesson_links, allow_destroy: true
   accepts_nested_attributes_for :course_lessons,
                                 reject_if: :all_blank,
                                 allow_destroy: true
@@ -37,7 +38,10 @@ class Lesson < ApplicationRecord
                    }
   scope :released, -> { where(released: true) }
   scope :unlevelled,
-        -> { where(type: %w[DailyActivity Exercise SpecialLesson SeasonalActivity EventActivity PartyActivity ParentsReport]) }
+        lambda {
+          where(type: %w[DailyActivity Exercise SpecialLesson SeasonalActivity EventActivity PartyActivity
+                         ParentsReport])
+        }
 
   def self.reassign_editor(old_editor_id, new_editor_id)
     Lesson.where(assigned_editor_id: old_editor_id)
