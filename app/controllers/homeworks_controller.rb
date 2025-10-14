@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeworksController < ApplicationController
   before_action :set_courses
   before_action :set_course, only: %i[index new create destroy]
@@ -54,7 +56,7 @@ class HomeworksController < ApplicationController
 
   def setup_admin_homeworks
     @homeworks = @course.homeworks
-                        .includes(:questions_attachment, :answers_attachment, 
+                        .includes(:questions_attachment, :answers_attachment,
                                   questions_attachment: :blob, answers_attachment: :blob)
                         .index_by(&:week)
 
@@ -73,7 +75,6 @@ class HomeworksController < ApplicationController
     if params[:level].blank? && @short_levels.present?
       redirect_to homeworks_path(course_id: @course.id, level: @short_levels.first) and return
     end
-
 
     selected_level = params[:level]
     @homework_resources = filter_and_sort_homework(@homeworks_grouped_by_level[selected_level], week_range)
