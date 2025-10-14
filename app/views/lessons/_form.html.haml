@@ -20,7 +20,7 @@
   = f.hidden_field :type, value: lesson.type
 
   - if no_course_types.include?(lesson.type.underscore)
-    %h3.font-bold.text-center Organisations & Dates
+    %h3.text-xl.font-bold Organisations & Dates
 
     = f.fields_for :organisation_lessons, lesson.organisation_lessons do |ol_f|
       = render 'organisation_lessons/fields',
@@ -96,4 +96,21 @@
                          multiple: true,
                          value: id
 
+  %h3.text-xl.font-bold Links
+
+  %div{ data: { controller: 'fields' } }
+    = f.fields_for :lesson_links, lesson.lesson_links do |ll_f|
+      = render 'lesson_links/fields', f: ll_f
+
+    %template{ 'data-fields-target': 'template' }
+      = f.fields_for :lesson_links,
+                    lesson.lesson_links.new,
+                    child_index: 'CHILD' do |ll_f|
+        = render 'lesson_links/fields', f: ll_f
+
+    %div{ 'data-fields-target': 'target' }
+
+    %div.flex.justify-center.mt-4
+      %button.btn.btn-secondary{ 'data-action': 'fields#add' }
+        Add Link
   = f.submit class: 'btn btn-main'
