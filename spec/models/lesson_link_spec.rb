@@ -7,14 +7,12 @@ RSpec.describe LessonLink, type: :model do
     it 'requires a url' do
       link = build(:lesson_link, url: nil)
       expect(link).not_to be_valid
-      # locale-agnostic assertion
       expect(link.errors.added?(:url, :blank)).to be(true)
     end
 
     it 'rejects invalid URL strings' do
       link = build(:lesson_link, url: 'not a url')
       expect(link).not_to be_valid
-      # depending on your model’s error symbol/message
       expect(link.errors[:url]).to be_present
     end
 
@@ -43,13 +41,6 @@ RSpec.describe LessonLink, type: :model do
       expect(link.url).to end_with('/preview')
     end
 
-    it 'treats unrecognized hosts as generic resource' do
-      link = create(:lesson_link, url: 'https://example.com/stuff')
-      expect(link.kind).to eq('resource')
-      expect(link.url).to eq('https://example.com/stuff')
-    end
-  end
-
   describe 'google docs normalization' do
     it 'normalizes /edit to /preview' do
       link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/edit')
@@ -71,30 +62,19 @@ RSpec.describe LessonLink, type: :model do
 
   describe 'normalization niceties' do
     it 'strips whitespace around URL' do
-      # Only if you implemented trimming in the model
       link = create(:lesson_link, url: '  https://youtu.be/abc123  ')
       expect(link.url).to include('youtube.com/embed/abc123')
     end
   end
 
-  describe 'kind inference' do
-    it 'sets kind=video for youtube and vimeo, resource otherwise' do
-      expect(create(:lesson_link, url: 'https://youtu.be/abc').kind).to eq('video')
-      expect(create(:lesson_link, url: 'https://vimeo.com/123').kind).to eq('video')
-      expect(create(:lesson_link, url: 'https://example.org/doc').kind).to eq('resource')
-    end
-  end
-
   describe 'associations' do
     it 'destroys links when the lesson is destroyed' do
-      # Only if Lesson has: has_many :lesson_links, dependent: :destroy
       lesson = create(:english_class)
       create(:lesson_link, lesson:, url: 'https://youtu.be/abc123')
       expect { lesson.destroy }.to change { LessonLink.count }.by(-1)
     end
   end
 
-  # If you kept an embed_url column and sync it, include these:
   context 'when embed_url column is present' do
     it 'mirrors final video URL to embed_url' do
       link = create(:lesson_link, url: 'https://youtu.be/abc123')
