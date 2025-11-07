@@ -41,44 +41,45 @@ RSpec.describe LessonLink, type: :model do
       expect(link.url).to end_with('/preview')
     end
 
-  describe 'google docs normalization' do
-    it 'normalizes /edit to /preview' do
-      link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/edit')
-      expect(link.kind).to eq('resource')
-      expect(link.url).to end_with('/preview')
+    describe 'google docs normalization' do
+      it 'normalizes /edit to /preview' do
+        link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/edit')
+        expect(link.kind).to eq('resource')
+        expect(link.url).to end_with('/preview')
+      end
+
+      it 'normalizes /view to /preview' do
+        link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/view')
+        expect(link.url).to end_with('/preview')
+      end
+
+      it 'does not change drive links' do
+        link = create(:lesson_link, url: 'https://drive.google.com/file/d/abc/view')
+        expect(link.kind).to eq('resource')
+        expect(link.url).to eq('https://drive.google.com/file/d/abc/view')
+      end
     end
 
-    it 'normalizes /view to /preview' do
-      link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/view')
-      expect(link.url).to end_with('/preview')
+    describe 'normalization niceties' do
+      it 'strips whitespace around URL' do
+        link = create(:lesson_link, url: '  https://youtu.be/abc123  ')
+        expect(link.url).to include('youtube.com/embed/abc123')
+      end
     end
 
-    it 'does not change drive links' do
-      link = create(:lesson_link, url: 'https://drive.google.com/file/d/abc/view')
-      expect(link.kind).to eq('resource')
-      expect(link.url).to eq('https://drive.google.com/file/d/abc/view')
+    describe 'associations' do
+      it 'destroys links when the lesson is destroyed' do
+        lesson = create(:english_class)
+        create(:lesson_link, lesson:, url: 'https://youtu.be/abc123')
+        expect { lesson.destroy }.to change { LessonLink.count }.by(-1)
+      end
     end
-  end
 
-  describe 'normalization niceties' do
-    it 'strips whitespace around URL' do
-      link = create(:lesson_link, url: '  https://youtu.be/abc123  ')
-      expect(link.url).to include('youtube.com/embed/abc123')
-    end
-  end
-
-  describe 'associations' do
-    it 'destroys links when the lesson is destroyed' do
-      lesson = create(:english_class)
-      create(:lesson_link, lesson:, url: 'https://youtu.be/abc123')
-      expect { lesson.destroy }.to change { LessonLink.count }.by(-1)
-    end
-  end
-
-  context 'when embed_url column is present' do
-    it 'mirrors final video URL to embed_url' do
-      link = create(:lesson_link, url: 'https://youtu.be/abc123')
-      expect(link.embed_url).to eq(link.url) if link.respond_to?(:embed_url)
+    context 'when embed_url column is present' do
+      it 'mirrors final video URL to embed_url' do
+        link = create(:lesson_link, url: 'https://youtu.be/abc123')
+        expect(link.embed_url).to eq(link.url) if link.respond_to?(:embed_url)
+      end
     end
   end
 end
