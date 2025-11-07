@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.8.9-calendar_fixes"
+    "Name": "kidsup/materials:3.9.0-links"
   },
   "Ports": [
     {
