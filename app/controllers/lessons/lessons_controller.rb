@@ -25,7 +25,7 @@ class LessonsController < ApplicationController
                         .includes(:creator)
     @resources = @lesson.resources.includes(:blob)
                         .order('active_storage_blobs.filename ASC')
-    @lesson_links = @lesson.lesson_links.order(created_at: :asc)
+    @lesson_links = @lesson.lesson_links.order(created_at: :asc).to_a
 
     if current_user.is?('Admin')
       @writers = User.where(type: %w[Admin Writer])

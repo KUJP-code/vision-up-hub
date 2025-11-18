@@ -11,6 +11,7 @@ class TeacherEventsController < ApplicationController
     set_date_type_teacher
     @lesson =  authorize Lesson.find(params[:id])
     @resources = set_resources
+    @lesson_links = @lesson.lesson_links
   end
 
   private
@@ -28,7 +29,6 @@ class TeacherEventsController < ApplicationController
       .within_event_window(@date)
       .includes(:organisation_lessons)
       .order('organisation_lessons.event_date ASC')
-
   end
 
   def set_date_type_teacher
