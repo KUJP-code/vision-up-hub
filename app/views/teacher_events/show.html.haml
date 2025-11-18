@@ -16,3 +16,7 @@
     - if @resources.any?
       = render 'teacher_events/resources_section',
                resources: @lesson.resources
+
+    - if @lesson_links.any?
+      = render 'teacher_lessons/links_section',
+               lesson_links: @lesson_links
