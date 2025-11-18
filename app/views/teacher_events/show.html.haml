@@ -2,6 +2,19 @@
   border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
 
 = turbo_frame_tag 'lesson' do
+  %dialog.resources-dialog#lesson-video.video-dialog
+    .body.p-4.flex.justify-center.items-center
+      %form.h-0
+        %button{ formmethod: :dialog }
+          = image_tag 'exit.svg', class: 'btn-close'
+
+      %iframe#lesson-video-frame{
+        src: "",
+        frameborder: 0,
+        allow: "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture",
+        allowfullscreen: true,
+        class: "w-full h-full"
+      }
   .dialog-content
     %header
       %h1{ class: "type #{border}" }
