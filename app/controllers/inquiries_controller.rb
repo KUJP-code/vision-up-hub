@@ -7,9 +7,9 @@ class InquiriesController < ApplicationController
     InquiryForwardingJob.perform_later(inquiry_params)
 
     if inquiry_params[:category] == 'join'
-      redirect_to 'https://www.vision-up.biz/join-confirmed'
+      redirect_to 'https://www.vision-up.biz/join-confirmed', allow_other_host: true
     else
-      redirect_to 'https://www.vision-up.biz/confirmed'
+      redirect_to 'https://www.vision-up.biz/confirmed', allow_other_host: true
     end
   end
 
