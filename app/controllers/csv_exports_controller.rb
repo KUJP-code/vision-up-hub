@@ -90,7 +90,6 @@ class CsvExportsController < ApplicationController
     end
   end
 
-
   def export_results_for_test(path, test_id)
     headers = test_result_headers(Test.find(test_id))
 
@@ -98,7 +97,7 @@ class CsvExportsController < ApplicationController
       csv << headers
       TestResult.includes(student: :school)
                 .where(test_id:).find_each do |result|
-        csv << [result.student.name, result.student.en_name,
+        csv << [result.student.name, result.student.en_name, result.student.student_id,
                 result.student.grade, result.student.school.name, result.prev_level.titleize,
                 result.basics, *result.listening, *result.reading,
                 *result.writing, result.new_level.titleize, result.reason]
@@ -107,7 +106,7 @@ class CsvExportsController < ApplicationController
   end
 
   def test_result_headers(test)
-    headers = %w[name en_name grade school current_level name_date]
+    headers = %w[name en_name student_id grade school current_level name_date]
     test.listening.size.times { |i| headers << "listening_#{(i + 97).chr}" }
     test.reading.size.times { |i| headers << "reading_#{(i + 97).chr}" }
     test.writing.size.times { |i| headers << "writing_#{(i + 97).chr}" }
