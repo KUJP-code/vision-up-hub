@@ -17,7 +17,7 @@
         = link_to teacher_events_path(category: type),
                   class: card,
                   data: { turbo_frame: 'event-lessons' } do
-          = image_tag "levels/#{type.downcase}.svg"
+          = image_tag "events/#{type.downcase}.svg"
           %h1.text-center.text-3xl= t("lessons.#{type}")
     - else
       %nav.tab-nav.flex.flex-col.md:flex-row.gap-3.p-0.w-full
