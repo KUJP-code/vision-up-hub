@@ -27,16 +27,22 @@
   :ruby
     evening_types = %w[homework_check break_&_quiz four_skills project
                        conversation_time book_activity lesson_review]
+
     category = if evening_types.include?(type)
       'evening_class'
     else
       type.underscore
     end
 
-  = link_to teacher_resources_path(category:),
-            class: 'card flex flex-col items-center p-2 gap-2',
-            data: { turbo_frame: '_top' } do
-    = image_tag "lesson_types/#{category}.svg",
-                class: 'h-full'
-    %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    %h3.text-center= t("category_resources.#{type}")
+    # only show the card if there are resources for this category
+    scope = policy_scope(CategoryResource)
+    has_resources = scope.public_send(category).exists?
+
+  - if has_resources
+    = link_to teacher_resources_path(category:),
+              class: 'card flex flex-col items-center p-2 gap-2',
+              data: { turbo_frame: '_top' } do
+      = image_tag "lesson_types/#{category}.svg",
+                  class: 'h-full'
+      %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+      %h3.text-center= t("category_resources.#{type}")
