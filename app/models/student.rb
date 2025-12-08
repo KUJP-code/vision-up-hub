@@ -102,6 +102,10 @@ class Student < ApplicationRecord
     end
   end
 
+  def pearson_results?
+    pearson_results.exists?
+  end
+
   private
 
   def track_manual_level_change(test_result = nil)
