@@ -10,11 +10,16 @@
     = turbo_frame_tag "student_#{@student.id}_icon"
 
 %main
-  .flex.justify-center.p-3
+  .flex.justify-center.p-3.gap-3
     = link_to t(".report_card"),
       report_card_pdf_student_path(@student),
       class: "btn btn-secondary",
       target: "_blank"
+    - if @student.pearson_results? && respond_to?(:pearson_report_student_path)
+      = link_to t('.pearson_report'),
+        pearson_report_student_path(@student),
+        class: "btn btn-secondary",
+        target: "_blank"
 
   .flex.flex-col.md:flex-row.p-12.px-2.md:p-16.bg-neutral-light.gap-6
     %div{ class: "w-full md:w-2/6 flex flex-col gap-14" }

@@ -57,6 +57,7 @@ Rails.application.routes.draw do
           get :homework_resources
           get :print_version
           get :report_card_pdf
+          get :pearson_report, defaults: { format: :pdf }
         end
       end
 

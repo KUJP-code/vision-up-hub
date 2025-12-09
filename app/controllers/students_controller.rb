@@ -90,6 +90,17 @@ class StudentsController < ApplicationController
     set_homework_resources
   end
 
+  def pearson_report
+    @student = Student.find(params[:id])
+    authorize @student, :show?
+
+    pdf = StudentReportPdf.new(@student, pearson: true).call
+    send_data pdf,
+              filename: "pearson_report_#{@student.student_id}.pdf",
+              disposition: 'inline',
+              type: 'application/pdf'
+  end
+
   def print_version
     @student = Student.find(params[:id])
     set_results
@@ -166,7 +177,7 @@ class StudentsController < ApplicationController
       elsif @active_result
         [prepare_dataset(@active_result, radar_colors.next)]
 
-      else # normal page, first load
+      else
         @results.map { |r| prepare_dataset(r, radar_colors.next) }
       end
 

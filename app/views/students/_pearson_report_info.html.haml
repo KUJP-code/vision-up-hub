@@ -1,0 +1,29 @@
+-# locals: (pearson_data:)
+- return if pearson_data.blank?
+- result = pearson_data[:recent_result]
+- return unless result
+
+%section.flex.flex-col.gap-2
+  %h3.text-lg.font-bold.text-secondary Pearson Test Snapshot
+  %p.text-sm.text-neutral-700
+    Latest Pearson English test details for this student.
+  %ul.list-disc.pl-6.text-sm.text-neutral-800
+    %li
+      %strong Test:
+      = result.test_name
+    - if result.test_taken_at.present?
+      %li
+        %strong Date:
+        = result.test_taken_at.strftime('%Y-%m-%d')
+    - if result.form.present?
+      %li
+        %strong Form:
+        = result.form
+    %li
+      %strong Scores:
+      = [
+        "Listening #{result.listening_score}",
+        "Reading #{result.reading_score}",
+        "Writing #{result.writing_score}",
+        "Speaking #{result.speaking_score}"
+      ].compact.join(' | ')
