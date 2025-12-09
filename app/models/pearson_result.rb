@@ -29,6 +29,19 @@ class PearsonResult < ApplicationRecord
     where(student_id:)
   end
 
+  def display_score_for(skill)
+    score = public_send(:"#{skill}_score")
+    code  = public_send(:"#{skill}_code")
+
+    return score if score.present?
+
+    case code
+    when 'bl' then 'BL'
+    when 'ns' then 'NS'
+    else '--'
+    end
+  end
+
   def average_score(precision: 0)
     scores = [listening_score, reading_score, writing_score, speaking_score].compact
     return nil if scores.empty?

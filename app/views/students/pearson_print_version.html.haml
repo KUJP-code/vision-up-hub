@@ -17,7 +17,7 @@
         - if pearson_result&.test_name.present?
           .text-sm
             = "#{pearson_result.test_name} Results"
-      .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
+      .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-center
         .text-sm
           = pearson_result&.test_taken_at&.strftime('%b %Y')
         .text-sm
@@ -36,28 +36,28 @@
                 = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')
                 Listening GSE Score
               %td.text-right.p-2{ colspan: 2 }
-                = pearson_result&.listening_score || '--'
+                = pearson_result ? pearson_result.display_score_for(:listening) : '--'
 
             %tr.no-bg.border-b.border-secondary
               %td.flex.items-center.p-2
                 = inline_svg_tag('reading_icon.svg', class: 'w-10 h-10 mr-2', title: 'Reading')
                 Reading GSE Score
               %td.text-right.p-2{ colspan: 2 }
-                = pearson_result&.reading_score || '--'
+                = pearson_result ? pearson_result.display_score_for(:reading) : '--'
 
             %tr.no-bg.border-b.border-secondary
               %td.flex.items-center.p-2
                 = inline_svg_tag('writing_icon.svg', class: 'w-10 h-10 mr-2', title: 'Writing')
                 Writing GSE Score
               %td.text-right.p-2{ colspan: 2 }
-                = pearson_result&.writing_score || '--'
+                = pearson_result ? pearson_result.display_score_for(:writing) : '--'
 
             %tr.no-bg
               %td.flex.items-center.p-2
                 = inline_svg_tag('speaking_icon.svg', class: 'w-10 h-10 mr-2', title: 'Speaking')
                 Speaking GSE Score
               %td.text-right.p-2{ colspan: 2 }
-                = pearson_result&.speaking_score || '--'
+                = pearson_result ? pearson_result.display_score_for(:speaking) : '--'
             %tr.no-bg.border-2.border-secondary.rounded-l-lg
               %td.flex.items-center.p-4
                 %span.font-bold Overall GSE Score
@@ -65,12 +65,13 @@
                 = pearson_result&.average_score || '--'
       - if defined?(@pearson_data) && @pearson_data[:results].present?
         .flex.flex-col.gap-4.mt-8
-          .h3.text-center.font-bold.pb-2.text-lg Pearson Performance Snapshot
           = render 'students/pearson_test_details', data: @data, results: @results
           = render 'students/pearson_report_info', pearson_data: @pearson_data
-    %header#print-footer.flex.items-center
+    %header#print-footer.flex.items-center.gap-3.pr-24
       = inline_svg_tag 'landing_logo.svg',
         class: 'w-40 h-20 shrink-0',
         id:    'custom-landing-logo'
-      %hr.flex-1.border-2.border-secondary.mt-0
-      %span.ml-4.text-sm.font-semibold Pearson English Test
+
+      %div.flex.items-center.flex-grow.gap-2
+        %hr.flex-grow.border-2.border-secondary.mt-0
+        %span.text.font-bold.whitespace-nowrap Pearson English Test

@@ -5,8 +5,7 @@ class StudentReportPdf
     @student = student
 
     raw_flag = options.key?(:pearson) ? options[:pearson] : pearson
-    @pearson_flag = cast_boolean(raw_flag)
-    @pearson_mode = resolve_pearson_mode
+    @pearson_mode = cast_boolean(raw_flag)
   end
 
   def call
@@ -101,12 +100,6 @@ class StudentReportPdf
 
   def template_name
     pearson_mode? ? 'students/pearson_print_version' : 'students/print_version'
-  end
-
-  def resolve_pearson_mode
-    return true if @pearson_flag
-
-    cast_boolean(student.pearson_results.exists?)
   end
 
   def cast_boolean(val)
