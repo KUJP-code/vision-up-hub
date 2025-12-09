@@ -206,14 +206,11 @@ class StudentsController < ApplicationController
         @pearson_results.first(4)
       end
 
-    ok_scores = rows.flat_map do |pr|
-      [pr.listening_score, pr.reading_score, pr.writing_score, pr.speaking_score].compact
-    end
+    return { labels: [], datasets: [], chart_max: 0, chart_min: 0, tick_step: 5 } if rows.blank?
 
-    raw_max   = ok_scores.max || 0
-    padded    = raw_max + 10
-    rounded   = (padded / 10.0).ceil * 10
-    chart_max = [[rounded, 40].max, 90].min
+    chart_max = rows.map { |pr| pr.gse_range.max }.compact.max
+    chart_min = 0
+    tick_step = 5
 
     datasets = rows.map { |pr| prepare_pearson_dataset(pr, radar_colors.next) }
 
@@ -221,30 +218,33 @@ class StudentsController < ApplicationController
       labels: %w[Listening Reading Writing Speaking],
       datasets:,
       chart_max:,
-      tick_step: 10
+      chart_min:,
+      tick_step:
     }
   end
 
   def prepare_pearson_dataset(pr, color)
-    vals = [
-      pr.listening_score || 0,
-      pr.reading_score   || 0,
-      pr.writing_score   || 0,
-      pr.speaking_score  || 0
-    ]
+    vals = pr.radar_scores
 
     label_date = pr.test_taken_at&.strftime('%Y-%m-%d')
     label_form = pr.form.present? ? " (#{pr.form})" : ''
     label = "#{pr.test_name} #{label_date}#{label_form}"
 
+    below_level = pr.contains_below_level_score?
+    opacity = below_level ? 0.1 : 0.2
+
     {
       data: vals,
       label:,
-      backgroundColor: "rgba(#{color}, 0.2)",
+      below_level_indices: pr.below_level_indices,
+      backgroundColor: "rgba(#{color}, #{opacity})",
       pointBackgroundColor: '#645880',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: "rgb(#{color})"
+      pointHoverBorderColor: "rgb(#{color})",
+      borderColor: "rgb(#{color})",
+      borderWidth: below_level ? 2 : 0,
+      borderDash: below_level ? [6, 4] : []
     }
   end
 

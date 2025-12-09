@@ -1,6 +1,7 @@
 -# locals: (data:, results:)
-- max = data[:chart_max] || 60
-- step = data[:tick_step] || 10
+- max = data[:charge_max] || 60
+- min = data[:chart_min] || 0
+- step = data[:tick_step] || 5
 
 %canvas{ data: {
   controller: 'chart',
@@ -10,7 +11,7 @@
     responsive: true,
     scales: {
       r: {
-        min: 0,
+        min: min,
         max: max,
         ticks: {
           stepSize: step,
