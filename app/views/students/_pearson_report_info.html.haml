@@ -21,9 +21,10 @@
         = result.form
     %li
       %strong Scores:
-      = [
+      - scores = [
         "Listening #{result.listening_score}",
         "Reading #{result.reading_score}",
         "Writing #{result.writing_score}",
         "Speaking #{result.speaking_score}"
-      ].compact.join(' | ')
+      ].compact
+      = scores.join(' | ')
