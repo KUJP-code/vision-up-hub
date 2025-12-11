@@ -73,7 +73,6 @@ class PearsonResult < ApplicationRecord
     GSE_RANGES.each do |matcher, range|
       return range if matcher.match?(test_name.to_s)
     end
-
     DEFAULT_GSE_RANGE
   end
 
@@ -91,7 +90,7 @@ class PearsonResult < ApplicationRecord
     return score if score.present?
 
     case public_send(:"#{skill}_code")
-    when 'bl' then gse_range.begin
+    when 'bl' then gse_range.begin - 1
     when 'ns' then 0
     else 0
     end

@@ -208,8 +208,10 @@ class StudentsController < ApplicationController
 
     return { labels: [], datasets: [], chart_max: 0, chart_min: 0, tick_step: 5 } if rows.blank?
 
+    min_range_value = rows.map { |pr| pr.gse_range.min - 1 }.compact.min
+
     chart_max = rows.map { |pr| pr.gse_range.max }.compact.max
-    chart_min = 0
+    chart_min = [min_range_value, 0].min
     tick_step = 5
 
     datasets = rows.map { |pr| prepare_pearson_dataset(pr, radar_colors.next) }
@@ -243,8 +245,8 @@ class StudentsController < ApplicationController
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: "rgb(#{color})",
       borderColor: "rgb(#{color})",
-      borderWidth: below_level ? 2 : 0,
-      borderDash: below_level ? [6, 4] : []
+      borderWidth: 0,
+      borderDash: []
     }
   end
 

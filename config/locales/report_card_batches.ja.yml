@@ -3,6 +3,12 @@ ja:
     index:
       download: "ダウンロード"
       generate: "作成"
+      generating: "作成中"
+      tab_label: "レポート種別"
+      school_tests_tab: "校内テスト"
+      pearson_tests_tab: "ピアソンテスト"
+      report_type: "種類"
+      pearson_tests: "ピアソンテスト"
       regenerate: "再作成"
       last_generated: "最終作成日"
       level: "レベル"
