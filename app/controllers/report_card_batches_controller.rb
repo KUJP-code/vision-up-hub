@@ -96,16 +96,14 @@ class ReportCardBatchesController < ApplicationController
   end
 
   def load_batches
-    if pearson_view?
-      @pearson_batches = policy_scope(PearsonReportBatch)
-                         .where(school_id: @school.id)
-                         .with_attached_file
-                         .to_a
-    else
-      @batches = policy_scope(ReportCardBatch)
-                 .where(school_id: @school.id)
-                 .with_attached_file
-                 .order(:level)
-    end
+    @pearson_batches = policy_scope(PearsonReportBatch)
+                       .where(school_id: @school.id)
+                       .with_attached_file
+                       .to_a
+
+    @batches = policy_scope(ReportCardBatch)
+               .where(school_id: @school.id)
+               .with_attached_file
+               .order(:level)
   end
 end
