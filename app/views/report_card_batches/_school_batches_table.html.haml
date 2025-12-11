@@ -1,9 +1,9 @@
 %table.w-full.text-center
   %thead.bg-secondary.text-white
     %tr.text-secondary
-    %th.thead.thead-s.bg-secondary-50= t('report_card_batches.index.level')
-    %th.thead.bg-secondary-50= t('report_card_batches.index.last_generated')
-    %th.thead.thead-e.bg-secondary-50= t('report_card_batches.index.actions')
+      %th.thead.thead-s.bg-secondary-50= t('report_card_batches.index.level')
+      %th.thead.bg-secondary-50= t('report_card_batches.index.last_generated')
+      %th.thead.thead-e.bg-secondary-50= t('report_card_batches.index.actions')
   %tbody
     - ReportCardBatch::BATCH_LEVELS.each do |bucket|
       - batch = batches.find { |b| b.level == bucket }
