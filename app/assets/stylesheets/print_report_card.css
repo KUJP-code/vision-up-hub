@@ -1,64 +1,77 @@
-
-html, body {
-  height: 100%;
-  overflow: hidden;
+html,
+body {
+    height: 100%;
 }
 @page {
-  size: a4 portrait;
-  margin: 0;
-  padding: 0;
+    size: a4 portrait;
+    margin: 0;
+    padding: 0;
 }
 
 @media print {
-  .print-container main { background: transparent !important; }
+    .print-container main {
+        background: transparent !important;
+    }
 }
-.print-container { color:#645880 !important; }
-.print-container table { color:#645880 !important; }
+.print-container {
+    color: #645880 !important;
+}
+.print-container table {
+    color: #645880 !important;
+}
 .chart-container {
-  position: relative;
+    position: relative;
 }
 
-body { margin: 0; }
+body {
+    margin: 0;
+}
 
-.print-container{
-  width: 180mm;
-  margin: 0 auto;
-  padding: 0;
+.print-container {
+    width: 180mm;
+    margin: 0 auto;
+    padding: 0;
 }
 
 #student {
-  flex-direction: row;
-  align-items: center;
-  padding: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
 }
 ::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 table {
-  margin-top: -1cm;
+    margin-top: -1cm;
 }
 
 #test_details {
-  position: absolute;
-  top: 8cm;
-  width: 150mm;
-  height: 150mm;
-  margin: 0;
-  padding: 0;
+    position: absolute;
+    top: 8cm;
+    width: 150mm;
+    height: 150mm;
+    margin: 0;
+    padding: 0;
 }
-#print-footer {
-  position: absolute !important;
-  bottom: 10mm !important;
-  width: 100% !important;
-}
-
-#custom-landing-logo .cls-3,
-#custom-landing-logo .cls-4,
-#custom-landing-logo .cls-5 {
-  fill: #645880 !important;
+.print-footer {
+    position: absolute !important;
+    bottom: 10mm !important;
+    width: 100% !important;
 }
 
-#print-footer hr{
-  max-width: 62%;
+.custom-landing-logo .cls-3,
+.custom-landing-logo .cls-4,
+.custom-landing-logo .cls-5 {
+    fill: #645880 !important;
+}
+
+.print-footer hr {
+    max-width: 62%;
+}
+.print-page {
+    position: relative;
+    height: 297mm;
+    page-break-after: always;
+    break-after: page;
 }

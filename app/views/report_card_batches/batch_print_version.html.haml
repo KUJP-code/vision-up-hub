@@ -1,10 +1,7 @@
 - @students.each_with_index do |student, index|
-  - puts "NEW ONE"
-  - report_pdf = StudentReportPdf.new(student)
+  %section.print-page
+    - report_pdf = StudentReportPdf.new(student)
 
-  - html = ApplicationController.render( template: report_pdf.template, layout: false, assigns: report_pdf.assigns )
+    - html = ApplicationController.render( template: report_pdf.template, layout: false, assigns: report_pdf.assigns )
 
-  = raw(html)
-
-  - unless index == @students.size - 1
-    %div{ style: "page-break-after: always;" }
+    = raw(html)
