@@ -8,7 +8,7 @@ class StudentReportPdf
     @pearson_mode = cast_boolean(raw_flag)
   end
 
-  def call(browser: nil)
+  def call
     html = ApplicationController.render(
       template: template_name,
       layout: 'pdf',
