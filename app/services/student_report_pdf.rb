@@ -8,20 +8,14 @@ class StudentReportPdf
     @pearson_mode = cast_boolean(raw_flag)
   end
 
-  def call
+  def call(browser: nil)
     html = ApplicationController.render(
       template: template_name,
       layout: 'pdf',
       assigns: render_assigns
     )
 
-    Grover.new(
-      html,
-      format: 'A4',
-      emulate_media: 'print',
-      wait_for: 'window.chartReady === true',
-      base_url: Rails.application.routes.default_url_options[:host]
-    ).to_pdf
+    render_pdf(html, browser:)
   end
 
   private
@@ -162,5 +156,23 @@ class StudentReportPdf
   def default_host
     Rails.application.routes.default_url_options[:host] ||
       ENV.fetch('APP_HOST', 'http://localhost:3000')
+  end
+
+  def render_pdf(html, browser:)
+    options = {
+      format: 'A4',
+      emulate_media: 'print',
+      wait_for: 'window.chartReady === true',
+      base_url: Rails.application.routes.default_url_options[:host]
+    }
+
+    if browser
+      Grover::HTML.new(html, options.merge(browser:)).to_pdf
+    else
+      Grover.new(html, options).to_pdf
+    end
+  rescue ArgumentError
+    Rails.logger.warn('StudentReportPdf browser reuse failed, falling back to default Grover instance')
+    Grover.new(html, options).to_pdf
   end
 end

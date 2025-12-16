@@ -14,7 +14,7 @@ class ReportCardBatchService
 
     attach_file(pdf_blob)
     batch.complete_status!
-  rescue => e
+  rescue StandardError => e
     batch.failed_status!
     Rails.logger.error "Batch #{batch.id} failed: #{e.message}"
     raise
@@ -34,8 +34,15 @@ class ReportCardBatchService
 
   def merge_pdfs(students)
     combined = CombinePDF.new
-    students.each { |student| combined << CombinePDF.parse(render_page(student)) }
+    browser = build_browser
+
+    students.each do |student|
+      combined << CombinePDF.parse(render_page(student, browser:))
+    end
+
     combined.to_pdf
+  ensure
+    browser&.close
   end
 
   def attach_file(pdf_blob)
@@ -47,7 +54,14 @@ class ReportCardBatchService
     )
   end
 
-  def render_page(student)
-    StudentReportPdf.new(student).call
+  def render_page(student, browser: nil)
+    StudentReportPdf.new(student).call(browser:)
+  end
+
+  def build_browser
+    Grover::Browser.new
+  rescue StandardError => e
+    Rails.logger.warn("ReportCardBatchService fell back to per-student browser instances: #{e.message}")
+    nil
   end
 end
