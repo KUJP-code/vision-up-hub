@@ -15,7 +15,7 @@ class StudentReportPdf
       assigns: render_assigns
     )
 
-    render_pdf(html)
+    render_pdf(html, browser:)
   end
 
   private
@@ -166,6 +166,9 @@ class StudentReportPdf
       base_url: Rails.application.routes.default_url_options[:host]
     }
 
-    Grover.new(html, **options).to_pdf
+    grover_options = options.dup
+    grover_options[:browser] = browser if browser
+
+    Grover.new(html, **grover_options).to_pdf
   end
 end
