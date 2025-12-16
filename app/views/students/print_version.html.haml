@@ -68,7 +68,7 @@
                 = @recent_result&.total_score_total
               %td.text-right.p-4.font-bold
                 = "#{@recent_result&.test_print_percent}%"
-      .chart-container.flex.flex-col.mt-5
+      .chart-container.student-chart.flex.flex-col.mt-5
         = render 'students/test_details',
                   data: @data,
                   results: @results

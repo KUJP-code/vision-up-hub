@@ -1,7 +1,7 @@
 .print-container
   %main
 
-    .flex#header.border-b-4.border-secondary
+    .flex.header.border-b-4.border-secondary
       - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
       - current_level ||= levels.first
       .flex.flex-col.items-center.p-2
@@ -64,13 +64,13 @@
               %td.text-right.p-4.font-bold{ colspan: 2 }
                 = pearson_result&.average_score || '--'
       - if defined?(@pearson_data) && @pearson_data[:results].present?
-        .flex.flex-col.gap-4.mt-8
-          = render 'students/pearson_test_details', data: @data, results: @results
+        .flex.flex-col.gap-2.mt-8
+          .pearson-chart
+            = render 'students/pearson_test_details', data: @data, results: @results
           = render 'students/pearson_report_info', pearson_data: @pearson_data
-    %header#print-footer.flex.items-center.gap-3.pr-24
+    .header.print-footer.flex.items-center.gap-3.pr-24
       = inline_svg_tag 'landing_logo.svg',
-        class: 'w-40 h-20 shrink-0',
-        id:    'custom-landing-logo'
+        class: 'w-40 h-20 shrink-0 custom-landing-logo'
 
       %div.flex.items-center.flex-grow.gap-2
         %hr.flex-grow.border-2.border-secondary.mt-0

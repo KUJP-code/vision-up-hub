@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'grover'
+
 class PearsonReportBatchService
   LEVEL_MAP = {
     'kindy' => %w[kindy],
@@ -16,7 +20,7 @@ class PearsonReportBatchService
     batch.generating_status!
 
     students = fetch_students
-    pdf_blob = merge_pdfs(students)
+    pdf_blob = render_batch_pdf(students)
 
     attach_file(pdf_blob)
     batch.complete_status!
@@ -39,10 +43,13 @@ class PearsonReportBatchService
       .sort_by { |student| [level_order(student), student.en_name] }
   end
 
-  def merge_pdfs(students)
-    combined = CombinePDF.new
-    students.each { |student| combined << CombinePDF.parse(render_page(student)) }
-    combined.to_pdf
+  def render_batch_pdf(students)
+    html = ApplicationController.render(
+      template: 'report_card_batches/pearson_batch_print_version',
+      layout: 'pdf',
+      assigns: { students: }
+    )
+    Grover.new(html, **StudentReportPdf.pdf_options).to_pdf
   end
 
   def attach_file(pdf_blob)
@@ -52,10 +59,6 @@ class PearsonReportBatchService
       filename: 'pearson_report.pdf',
       content_type: 'application/pdf'
     )
-  end
-
-  def render_page(student)
-    StudentReportPdf.new(student, pearson: true).call
   end
 
   def levels_for_batch
