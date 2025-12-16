@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'grover/browser'
+
 class ReportCardBatchService
   RECENT_WINDOW = 3.months
 
