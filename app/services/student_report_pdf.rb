@@ -15,7 +15,7 @@ class StudentReportPdf
       assigns: render_assigns
     )
 
-    render_pdf(html, browser:)
+    render_pdf(html)
   end
 
   private
@@ -158,7 +158,7 @@ class StudentReportPdf
       ENV.fetch('APP_HOST', 'http://localhost:3000')
   end
 
-  def render_pdf(html, browser: nil)
+  def render_pdf(html)
     options = {
       format: 'A4',
       emulate_media: 'print',
@@ -166,9 +166,6 @@ class StudentReportPdf
       base_url: Rails.application.routes.default_url_options[:host]
     }
 
-    grover_options = options.dup
-    grover_options[:browser] = browser if browser
-
-    Grover.new(html, **grover_options).to_pdf
+    Grover.new(html, **options).to_pdf
   end
 end

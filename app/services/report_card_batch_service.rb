@@ -38,15 +38,14 @@ class ReportCardBatchService
 
   def merge_pdfs(students)
     combined = CombinePDF.new
-    browser = grover_browser
 
     students.each do |student|
-      combined << CombinePDF.parse(render_page(student, browser:))
+      combined << CombinePDF.parse(render_page(student))
     end
 
     combined.to_pdf
   ensure
-    grover_browser&.close
+    browser&.close
   end
 
   def attach_file(pdf_blob)
@@ -58,11 +57,7 @@ class ReportCardBatchService
     )
   end
 
-  def render_page(student, browser: nil)
-    StudentReportPdf.new(student).call(browser:)
-  end
-
-  def grover_browser
-    @grover_browser ||= Grover::Browser.new
+  def render_page(student)
+    StudentReportPdf.new(student).call
   end
 end
