@@ -22,6 +22,25 @@ class StudentReportPdf
 
   attr_reader :student
 
+  def self.pdf_options
+    {
+      format: 'A4',
+      emulate_media: 'print',
+      wait_for: 'window.chartReady === true',
+      base_url: Rails.application.routes.default_url_options[:host]
+    }
+  end
+
+  public
+
+  def assigns
+    render_assigns
+  end
+
+  def template
+    template_name
+  end
+
   def render_assigns
     pearson_mode? ? pearson_assigns : standard_assigns
   end

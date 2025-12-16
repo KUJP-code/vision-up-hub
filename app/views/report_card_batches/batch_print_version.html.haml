@@ -1,0 +1,5 @@
+- students.each_with_index do |student, index|
+  - report_pdf = StudentReportPdf.new(student)
+  = render template: report_pdf.template, layout: false, assigns: report_pdf.assigns
+  - unless index == students.size - 1
+    %div{ style: 'page-break-after: always;' }

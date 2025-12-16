@@ -14,7 +14,7 @@ class ReportCardBatchService
     batch.generating_status!
 
     students = fetch_students
-    pdf_blob = merge_pdfs(students)
+    pdf_blob = render_batch_pdf(students)
 
     attach_file(pdf_blob)
     batch.complete_status!
@@ -36,16 +36,13 @@ class ReportCardBatchService
       .sort_by { |s| s.en_name }
   end
 
-  def merge_pdfs(students)
-    combined = CombinePDF.new
-
-    students.each do |student|
-      combined << CombinePDF.parse(render_page(student))
-    end
-
-    combined.to_pdf
-  ensure
-    browser&.close
+  def render_batch_pdf(students)
+    html = ApplicationController.render(
+      template: 'report_card_batches/batch_print_version',
+      layout: 'pdf',
+      assigns: { students: }
+    )
+    Grover.new(html, **StudentReportPdf.pdf_options).to_pdf
   end
 
   def attach_file(pdf_blob)
@@ -55,9 +52,5 @@ class ReportCardBatchService
       filename: "report_#{batch.level}.pdf",
       content_type: 'application/pdf'
     )
-  end
-
-  def render_page(student)
-    StudentReportPdf.new(student).call
   end
 end
