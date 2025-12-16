@@ -15,7 +15,7 @@ class StudentReportPdf
       assigns: render_assigns
     )
 
-    render_pdf(html, browser:)
+    render_pdf(html)
   end
 
   private
@@ -158,7 +158,7 @@ class StudentReportPdf
       ENV.fetch('APP_HOST', 'http://localhost:3000')
   end
 
-  def render_pdf(html, browser:)
+  def render_pdf(html, browser: nil)
     options = {
       format: 'A4',
       emulate_media: 'print',
@@ -166,13 +166,6 @@ class StudentReportPdf
       base_url: Rails.application.routes.default_url_options[:host]
     }
 
-    if browser
-      Grover::HTML.new(html, options.merge(browser:)).to_pdf
-    else
-      Grover.new(html, options).to_pdf
-    end
-  rescue ArgumentError
-    Rails.logger.warn('StudentReportPdf browser reuse failed, falling back to default Grover instance')
-    Grover.new(html, options).to_pdf
+    Grover.new(html, **options).to_pdf
   end
 end

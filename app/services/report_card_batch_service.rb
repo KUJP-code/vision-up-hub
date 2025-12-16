@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'grover/browser'
+require 'grover'
 
 class ReportCardBatchService
   RECENT_WINDOW = 3.months
@@ -38,10 +38,9 @@ class ReportCardBatchService
 
   def merge_pdfs(students)
     combined = CombinePDF.new
-    browser = build_browser
 
     students.each do |student|
-      combined << CombinePDF.parse(render_page(student, browser:))
+      combined << CombinePDF.parse(render_page(student))
     end
 
     combined.to_pdf
@@ -58,14 +57,7 @@ class ReportCardBatchService
     )
   end
 
-  def render_page(student, browser: nil)
-    StudentReportPdf.new(student).call(browser:)
-  end
-
-  def build_browser
-    Grover::Browser.new
-  rescue StandardError => e
-    Rails.logger.warn("ReportCardBatchService fell back to per-student browser instances: #{e.message}")
-    nil
+  def render_page(student)
+    StudentReportPdf.new(student).call
   end
 end
