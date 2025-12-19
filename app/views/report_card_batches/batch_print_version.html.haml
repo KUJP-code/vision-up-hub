@@ -1,0 +1,7 @@
+- @students.each_with_index do |student, index|
+  %section.print-page
+    - report_pdf = StudentReportPdf.new(student)
+
+    - html = ApplicationController.render( template: report_pdf.template, layout: false, assigns: report_pdf.assigns )
+
+    = raw(html)

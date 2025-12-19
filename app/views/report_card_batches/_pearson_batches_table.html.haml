@@ -1,0 +1,31 @@
+%table.w-full.text-center
+  %thead.bg-secondary.text-white
+    %tr.text-secondary
+      %th.thead.thead-s.bg-secondary-50= t('report_card_batches.index.level')
+      %th.thead.bg-secondary-50= t('report_card_batches.index.last_generated')
+      %th.thead.thead-e.bg-secondary-50= t('report_card_batches.index.actions')
+  %tbody
+    - PearsonReportBatch::DISPLAY_LEVELS.each do |bucket|
+      - batch = batches.find { |b| b.level == bucket }
+      %tr.border-b
+        %td.p-2= bucket.titleize
+        %td.p-2
+          - if batch&.complete_status?
+            = l batch.updated_at, format: :short
+          - elsif batch&.generating_status? || batch&.pending_status?
+            %span.text-secondary= t('report_card_batches.index.in_progress')
+          - elsif batch&.failed_status?
+            %span.text-yellow-600= t('report_card_batches.index.failed')
+        %td.p-2.flex.flex-row.gap-5
+          - if batch&.file&.attached? && batch&.complete_status?
+            = link_to t('report_card_batches.index.download'),
+                      file_path(batch.file.blob),
+                      class: 'btn btn-secondary w-full',
+                      target: '_blank'
+          - if batch&.generating_status?
+            .text-secondary= t('report_card_batches.index.generating', default: t('report_card_batches.index.in_progress'))
+          - else
+            = button_to (batch ? t('report_card_batches.index.regenerate') : t('report_card_batches.index.generate')),
+                        (batch ? regenerate_report_card_batch_path(batch, view: 'pearson', school_id: school.id) : report_card_batches_path(level: bucket, school_id: school.id, view: 'pearson')),
+                        method: :post,
+                        class: 'btn btn-danger whitespace-nowrap text-center'

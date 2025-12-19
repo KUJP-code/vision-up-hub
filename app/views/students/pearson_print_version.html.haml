@@ -1,0 +1,77 @@
+.print-container
+  %main
+
+    .flex.header.border-b-4.border-secondary
+      - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
+      - current_level ||= levels.first
+      .flex.flex-col.items-center.p-2
+        - base_name = current_level[:name].split('_').first
+        = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 110, height: 110, title: t("levels.#{current_level[:name]}"))
+        .-mt-2.text= t(".#{@student.level.titleize}")
+      - pearson_result = @pearson_data[:recent_result]
+      .flex.flex-col.items-left.gap-1.p-8
+        .text-4xl.mb-2
+          = @student.en_name
+        .text-sm
+          = "Kids Up #{@student.school.name}"
+        - if pearson_result&.test_name.present?
+          .text-sm
+            = "#{pearson_result.test_name} Results"
+      .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-center
+        .text-sm
+          = pearson_result&.test_taken_at&.strftime('%b %Y')
+        .text-sm
+          = 'Overall GSE Score'
+        .text-4xl.mt-2
+          = pearson_result&.average_score || '--'
+
+    .flex.flex-col.w-full.p-12.gap-6.max-w-xl.mx-auto
+      .h3.text-center.font-bold.pb-9.text-lg GSE Score Breakdown
+
+      %div{ class: 'skill-breakdown w-full max-w-lg mx-auto' }
+        %table.table-auto.w-full
+          %tbody
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('listening_icon.svg', class: 'w-10 h-10 mr-2', title: 'Listening')
+                Listening GSE Score
+              %td.text-right.p-2{ colspan: 2 }
+                = pearson_result ? pearson_result.display_score_for(:listening) : '--'
+
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('reading_icon.svg', class: 'w-10 h-10 mr-2', title: 'Reading')
+                Reading GSE Score
+              %td.text-right.p-2{ colspan: 2 }
+                = pearson_result ? pearson_result.display_score_for(:reading) : '--'
+
+            %tr.no-bg.border-b.border-secondary
+              %td.flex.items-center.p-2
+                = inline_svg_tag('writing_icon.svg', class: 'w-10 h-10 mr-2', title: 'Writing')
+                Writing GSE Score
+              %td.text-right.p-2{ colspan: 2 }
+                = pearson_result ? pearson_result.display_score_for(:writing) : '--'
+
+            %tr.no-bg
+              %td.flex.items-center.p-2
+                = inline_svg_tag('speaking_icon.svg', class: 'w-10 h-10 mr-2', title: 'Speaking')
+                Speaking GSE Score
+              %td.text-right.p-2{ colspan: 2 }
+                = pearson_result ? pearson_result.display_score_for(:speaking) : '--'
+            %tr.no-bg.border-2.border-secondary.rounded-l-lg
+              %td.flex.items-center.p-4
+                %span.font-bold Overall GSE Score
+              %td.text-right.p-4.font-bold{ colspan: 2 }
+                = pearson_result&.average_score || '--'
+      - if defined?(@pearson_data) && @pearson_data[:results].present?
+        .flex.flex-col.gap-2.mt-8
+          .pearson-chart
+            = render 'students/pearson_test_details', data: @data, results: @results
+          = render 'students/pearson_report_info', pearson_data: @pearson_data
+    .header.print-footer.flex.items-center.gap-3.pr-24
+      = inline_svg_tag 'landing_logo.svg',
+        class: 'w-40 h-20 shrink-0 custom-landing-logo'
+
+      %div.flex.items-center.flex-grow.gap-2
+        %hr.flex-grow.border-2.border-secondary.mt-0
+        %span.text.font-bold.whitespace-nowrap Pearson English Test

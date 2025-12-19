@@ -1578,6 +1578,40 @@ ALTER SEQUENCE public.pdf_tutorials_id_seq OWNED BY public.pdf_tutorials.id;
 
 
 --
+-- Name: pearson_report_batches; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pearson_report_batches (
+    id bigint NOT NULL,
+    school_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    level character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: pearson_report_batches_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.pearson_report_batches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pearson_report_batches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.pearson_report_batches_id_seq OWNED BY public.pearson_report_batches.id;
+
+
+--
 -- Name: pearson_results; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2807,6 +2841,13 @@ ALTER TABLE ONLY public.pdf_tutorials ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: pearson_report_batches id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_report_batches ALTER COLUMN id SET DEFAULT nextval('public.pearson_report_batches_id_seq'::regclass);
+
+
+--
 -- Name: pearson_results id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3231,6 +3272,14 @@ ALTER TABLE ONLY public.organisations
 
 ALTER TABLE ONLY public.pdf_tutorials
     ADD CONSTRAINT pdf_tutorials_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pearson_report_batches pearson_report_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_report_batches
+    ADD CONSTRAINT pearson_report_batches_pkey PRIMARY KEY (id);
 
 
 --
@@ -3800,6 +3849,27 @@ CREATE UNIQUE INDEX index_organisations_on_phone ON public.organisations USING b
 --
 
 CREATE INDEX index_pdf_tutorials_on_tutorial_category_id ON public.pdf_tutorials USING btree (tutorial_category_id);
+
+
+--
+-- Name: index_pearson_report_batches_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pearson_report_batches_on_school_id ON public.pearson_report_batches USING btree (school_id);
+
+
+--
+-- Name: index_pearson_report_batches_on_school_id_and_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_pearson_report_batches_on_school_id_and_level ON public.pearson_report_batches USING btree (school_id, level);
+
+
+--
+-- Name: index_pearson_report_batches_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_pearson_report_batches_on_user_id ON public.pearson_report_batches USING btree (user_id);
 
 
 --
@@ -4659,6 +4729,14 @@ ALTER TABLE ONLY public.organisation_tutorial_categories
 
 
 --
+-- Name: pearson_report_batches fk_rails_b4d52b4a60; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_report_batches
+    ADD CONSTRAINT fk_rails_b4d52b4a60 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: test_results fk_rails_b56923d317; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4739,6 +4817,14 @@ ALTER TABLE ONLY public.course_tests
 
 
 --
+-- Name: pearson_report_batches fk_rails_d18bc4ca85; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pearson_report_batches
+    ADD CONSTRAINT fk_rails_d18bc4ca85 FOREIGN KEY (school_id) REFERENCES public.schools(id);
+
+
+--
 -- Name: students fk_rails_d3631a714a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4804,6 +4890,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20251210011748'),
 ('20251010034430'),
 ('20250930012236'),
 ('20250916034909'),

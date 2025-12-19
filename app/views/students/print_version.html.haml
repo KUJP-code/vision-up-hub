@@ -1,7 +1,7 @@
 .print-container
   %main
 
-    .flex#header.border-b-4.border-secondary
+    .flex.header.border-b-4.border-secondary
       - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
       - current_level ||= levels.first
       .flex.flex-col.items-center.p-2
@@ -11,19 +11,19 @@
       .flex.flex-col.items-left.gap-1.p-8
         .text-4xl.mb-2
           = @student.en_name
-        .text-sm 
+        .text-sm
           = "Kids Up #{@student.school.name}"
       .flex.flex-col.items-left.gap-1.p-8.ml-auto.text-right
         .text-sm
           = @recent_result&.created_at&.strftime('%b %Y')
-        .text-sm 
+        .text-sm
           = 'Score'
         .text-4xl.mt-2
           = @recent_result&.total_score_total
-        
+
     .flex.flex-col.w-full.p-12.gap-6.max-w-xl.mx-auto
       .h3.text-center.font-bold.pb-9.text-lg Skill Breakdown
-              
+
       %div{ class: 'skill-breakdown w-full max-w-lg mx-auto' }
         %table.table-auto.w-full
           %tbody
@@ -68,12 +68,16 @@
                 = @recent_result&.total_score_total
               %td.text-right.p-4.font-bold
                 = "#{@recent_result&.test_print_percent}%"
-      .chart-container.flex.flex-col.mt-5
+      .chart-container.student-chart.flex.flex-col.mt-5
         = render 'students/test_details',
                   data: @data,
                   results: @results
-    %header#print-footer.flex.items-center
+      - if defined?(@pearson_data) && @pearson_data[:results].present?
+        .flex.flex-col.gap-4.mt-8
+          .h3.text-center.font-bold.pb-2.text-lg Pearson Performance Snapshot
+          = render 'students/pearson_test_details', data: @pearson_data[:data], results: @pearson_data[:results]
+          = render 'students/pearson_report_info', pearson_data: @pearson_data
+    %header.print-footer.flex.items-center
       = inline_svg_tag 'landing_logo.svg',
-        class: 'w-40 h-20 shrink-0',
-        id:    'custom-landing-logo'
+        class: 'w-40 h-20 shrink-0 custom-landing-logo'
       %hr.flex-1.border-2.border-secondary.mt-0

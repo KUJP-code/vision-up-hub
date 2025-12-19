@@ -1,16 +1,17 @@
 -# locals: (data:, results:)
-- max = @data[:chart_max] || 60
-- step = @data[:tick_step] || 10
+- max = data[:chart_max] || 60
+- min = data[:chart_min] || 0
+- step = data[:tick_step] || 5
 
 %canvas{ data: {
   controller: 'chart',
-  'chart-data-value': @data.slice(:labels, :datasets).to_json,
+  'chart-data-value': data.slice(:labels, :datasets).to_json,
   'chart-options-value': {
     elements: { line: { borderWidth: 0, tension: 0.3 } },
     responsive: true,
     scales: {
       r: {
-        min: 0,
+        min: min,
         max: max,
         ticks: {
           stepSize: step,
@@ -20,7 +21,7 @@
         },
         pointLabels: {
           padding: -5,
-          font: { size: 16 },
+          font: { size: 14 },
           color: '#645880'
         }
       }
