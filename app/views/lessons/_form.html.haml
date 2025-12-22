@@ -41,29 +41,39 @@
     - if current_user.is?('Admin')
       - plan_data = courses.to_h { |c| [c.id, c.plan_date_data] }.to_json
 
-      %h3.font-bold.text-center Courses
+      %details{ class: 'w-full', open: lesson.course_lessons.none? }
+        %summary{ class: 'cursor-pointer text-center font-bold text-lg' }
+          Courses
+          - if lesson.course_lessons.any?
+            %span.text-sm.text-gray-500.ml-2
+              = "(#{lesson.course_lessons.size}) click to expand"
+          - else
+            %span.text-sm.text-gray-500.ml-2
+              (none yet)
 
-      = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
-        = render 'course_lessons/fields',
-                 collection: courses,
-                 f: cl_f,
-                 plan_data:,
-                 resource: lesson
+        .mt-4
+          = f.fields_for :course_lessons, lesson.course_lessons do |cl_f|
+            = render 'course_lessons/fields',
+                     collection: courses,
+                     f: cl_f,
+                     plan_data:,
+                     resource: lesson
 
-      %template{ 'data-fields-target' => 'template' }
-        = f.fields_for :course_lessons,
-                       lesson.course_lessons.new,
-                       child_index: 'CHILD' do |cl_f|
-          = render 'course_lessons/fields',
-                   collection: courses,
-                   f: cl_f,
-                   plan_data:,
-                   resource: lesson
+          %template{ 'data-fields-target' => 'template' }
+            = f.fields_for :course_lessons,
+                           lesson.course_lessons.new,
+                           child_index: 'CHILD' do |cl_f|
+              = render 'course_lessons/fields',
+                       collection: courses,
+                       f: cl_f,
+                       plan_data:,
+                       resource: lesson
 
-      %div{ 'data-fields-target' => 'target' }
+          %div{ 'data-fields-target' => 'target' }
 
-      %button.btn.btn-secondary.self-center{ 'data-action' => 'fields#add' }
-        Add Course
+          %div.flex.justify-center.mt-4
+            %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
+              Add Course
 
   = yield :priority_fields
 
