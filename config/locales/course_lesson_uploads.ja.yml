@@ -1,0 +1,5 @@
+ja:
+  course_lesson_uploads:
+    new:
+      create_course_lessons: "%{course}のコースレッスンを作成"
+      download_sample: "サンプルをダウンロード"

@@ -1,0 +1,5 @@
+en:
+  course_lesson_uploads:
+    new:
+      create_course_lessons: "Create Course Lessons for %{course}"
+      download_sample: "Download Sample"

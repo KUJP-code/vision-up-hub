@@ -5,6 +5,7 @@ en:
     nav:
       home: "Home"
     upload_selector:
+      course_lessons: "Course Lessons"
       parents: "Parents"
       students: "Students"
       teachers: "Teachers"

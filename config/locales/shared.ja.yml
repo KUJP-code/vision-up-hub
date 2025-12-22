@@ -5,6 +5,7 @@ ja:
     nav:
       home: "ホーム"
     upload_selector:
+      course_lessons: "コースレッスン"
       parents: "親"
       students: "生徒"
       teachers: "先生"
