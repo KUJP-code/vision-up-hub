@@ -14,7 +14,9 @@ Rails.application.routes.draw do
         end
       end
       resources :category_resources, except: %i[show]
-      resources :courses, except: %i[destroy]
+      resources :courses, except: %i[destroy] do
+        resources :course_lesson_uploads, only: %i[create new show]
+      end
       resources :homeworks, only: %i[index new create destroy edit update]
       resources :csv_exports, only: %i[index new show]
       resources :daily_activities, only: %i[create index update]
