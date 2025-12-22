@@ -26,3 +26,9 @@ export interface teacher {
   email: string;
   password: string;
 }
+
+export interface course_lesson {
+  lesson_id: string;
+  week: string;
+  day: string;
+}

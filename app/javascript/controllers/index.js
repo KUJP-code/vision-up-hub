@@ -5,11 +5,11 @@
 
 import { application } from "./application";
 
-import Chart from "chart.js/auto"
-window.Chart = Chart  
+import Chart from "chart.js/auto";
+window.Chart = Chart;
 
-import ChartPdfController from "./chart_pdf_controller"
-application.register("chart", ChartPdfController)
+import ChartPdfController from "./chart_pdf_controller";
+application.register("chart", ChartPdfController);
 
 import FieldsController from "./fields_controller";
 application.register("fields", FieldsController);
@@ -52,6 +52,9 @@ application.register("student-uploader", StudentUploaderController);
 
 import TeacherUploaderController from "./uploaders/teacher_uploader/teacher_uploader_controller";
 application.register("teacher-uploader", TeacherUploaderController);
+
+import CourseLessonUploaderController from "./uploaders/course_lesson_uploader/course_lesson_uploader_controller";
+application.register("course-lesson-uploader", CourseLessonUploaderController);
 
 import ValidityController from "./validity_controller";
 application.register("validity", ValidityController);

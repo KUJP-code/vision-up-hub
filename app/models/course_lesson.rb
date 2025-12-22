@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CourseLesson < ApplicationRecord
+  CSV_HEADERS = %w[lesson_id week day].freeze
+
   validates :week, :day, presence: true
   validates :week, numericality: { only_integer: true }
   validates :week, comparison: { greater_than: 0, less_than: 53 }

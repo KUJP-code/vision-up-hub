@@ -1,4 +1,9 @@
-import type { parent, student, teacher } from "./declarations.d.ts";
+import type {
+  course_lesson,
+  parent,
+  student,
+  teacher,
+} from "./declarations.d.ts";
 import type { status } from "./declarations.d.ts";
 
 export const invalidClasses = [
@@ -28,7 +33,7 @@ export function addRow({
   uploadType,
   status = "Pending",
 }: {
-  csvRecord: student | parent | teacher;
+  csvRecord: course_lesson | student | parent | teacher;
   index: number;
   headers: string[];
   uploadType: "student" | "parent" | "teacher";
@@ -61,7 +66,7 @@ export function addRow({
 export function attributeCellHTML(
   record: student | parent | teacher,
   attribute: string,
-  headers: string[]
+  headers: string[],
 ) {
   if (headers.includes(attribute)) {
     return `<td>${record[attribute] || "なし"}</td>`;

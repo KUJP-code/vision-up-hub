@@ -35,3 +35,9 @@
       = link_to t('.pearson'),
                 new_organisation_pearson_upload_path(organisation_id: org_id),
                 data: { 'dropdown-target': 'menuItem' }
+    - if current_user.is?('Admin')
+      - if (first_course = Course.order(:title).first)
+        %li
+          = link_to t('.course_lessons'),
+                    new_course_course_lesson_upload_path(first_course),
+                    data: { 'dropdown-target': 'menuItem' }
