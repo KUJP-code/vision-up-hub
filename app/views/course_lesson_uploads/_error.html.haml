@@ -1,0 +1,27 @@
+:ruby
+  form = "course-lesson-#{@index}"
+  url = course_course_lesson_uploads_path(params[:course_id])
+  days = CourseLesson.days.keys.map { |day| [day.titleize, day] }
+
+%tr.error{ data: { controller: 'upload-summary',
+                   'upload-summary-status-value': 'Error' },
+           id: "course-lesson-row-#{@index}" }
+  %td.bg-danger= number_field_tag 'course_lesson_upload[lesson_id]',
+                                  @course_lesson.lesson_id, form:
+  %td.bg-danger= number_field_tag 'course_lesson_upload[week]',
+                                  @course_lesson.week, form:
+  %td.bg-danger
+    = select_tag 'course_lesson_upload[day]',
+                 options_for_select(days, @course_lesson.day),
+                 class: 'bg-white', form:
+  %td.bg-danger
+    = form_with model: @course_lesson, url:, scope: :course_lesson_upload,
+                html: { class: 'flex items-center justify-center gap-2 p-2',
+                        id: form } do |f|
+      %p Error
+      %span.material-symbols-outlined.animate-pulse error
+
+      = hidden_field_tag(:index, @index, form:)
+      = f.submit class: 'btn btn-main'
+%tr{ id: "course-lesson-errors-#{@index}" }
+  %td.bg-danger{ colspan: CourseLesson::CSV_HEADERS.size + 1 }= @errors

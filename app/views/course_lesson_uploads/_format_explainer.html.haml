@@ -1,0 +1,26 @@
+- headers = CourseLesson::CSV_HEADERS
+
+%section.w-full.text-center.flex.flex-col.gap-3
+  %h3 CSVs should be formatted as follows:
+  %table.w-full
+    %thead
+      %tr
+        - headers.each do |header|
+          :ruby
+            classes = 'thead bg-secondary-50'
+            classes = "#{classes} thead-s" if header == CourseLesson::CSV_HEADERS.first
+            classes = "#{classes} thead-e" if header == CourseLesson::CSV_HEADERS.last
+
+          %th{ class: classes }= header
+    %tbody
+      %tr
+        %td 101
+        %td 1
+        %td monday
+      %tr
+        - headers.each do |_header|
+          %td ...
+      %tr
+        %td Numeric lesson ID
+        %td Week number (1-52)
+        %td Day of week (monday-sunday)

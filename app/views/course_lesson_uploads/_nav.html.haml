@@ -1,0 +1,8 @@
+-# locals: (active_course:, courses:, path_args: {}, path_func:)
+
+%nav.tab-nav
+  - courses.each do |course|
+    - active_class = active_course == course ? 'active' : 'inactive'
+    = link_to course.title,
+              send(path_func, path_args.merge(course_id: course.id)),
+              class: "nav-tab #{active_class}"

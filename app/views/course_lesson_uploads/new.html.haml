@@ -1,0 +1,32 @@
+= content_for :head do
+  %link{ rel: 'stylesheet',
+         href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
+
+%main.flex.flex-col.gap-12.overflow-y-auto.p-3
+  = render 'shared/subtitle', text: t('.create_course_lessons', course: @course.title)
+
+  = render 'courses/nav',
+           courses: @courses, active_course: @course,
+           path_func: :new_course_course_lesson_upload_path
+
+  = render 'course_lesson_uploads/format_explainer'
+  = link_to course_course_lesson_upload_path(@course, 1),
+            class: 'btn btn-main w-full flex justify-center gap-2' do
+    %p= t('.download_sample')
+    = inline_svg_tag 'download_icon.svg',
+                     class: 'fill-white'
+
+  %section.flex.flex-col.gap-3.border-2.border-main.rounded.p-3
+    %h2= t('.create_course_lessons', course: @course.title)
+    = form_with scope: :course_lesson_upload,
+                html: { class: 'form',
+                        data: { controller: 'course-lesson-uploader',
+                                action: 'course-lesson-uploader#displayCourseLessons',
+                                'course-lesson-uploader-course-value': @course.id,
+                                'course-lesson-uploader-headers-value': CourseLesson::CSV_HEADERS.to_json },
+                        id: 'course_lesson_create_form' } do |f|
+      = f.file_field :file,
+                     required: true,
+                     data: { 'course-lesson-uploader-target': 'fileInput' }
+      = f.submit t('.create_course_lessons', course: @course.title),
+                 class: 'btn btn-main'

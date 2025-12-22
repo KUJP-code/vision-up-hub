@@ -1,0 +1,7 @@
+= turbo_stream.replace "course-lesson-row-#{@index}" do
+  - if @errors
+    = render 'course_lesson_uploads/error', course_lesson: @course_lesson
+  - else
+    = render 'course_lesson_uploads/success', course_lesson: @course_lesson
+
+= turbo_stream.remove "course-lesson-errors-#{@index}" unless @errors
