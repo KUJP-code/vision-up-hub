@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.9.6-pdf_rework"
+    "Name": "kidsup/materials:3.10-lesson_uploads"
   },
   "Ports": [
     {
