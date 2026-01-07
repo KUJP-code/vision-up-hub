@@ -5,6 +5,8 @@ module PhonicsClassPdf
   include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
 
   PHONICS_BODY_INDENT = 42.mm
+  PHONICS_MATERIALS_Y = 225.mm
+  PHONICS_MATERIALS_H = 18.mm
   included do
     private
 
@@ -37,9 +39,9 @@ module PhonicsClassPdf
 
       draw_materials(pdf, factory:)
       factory.draw(text: array_to_list(sa(intro), :dot),
-                   y_pos: 196.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 199.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(instructions), :number),
-                   y_pos: 170.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 160.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(review), :dot),
                    y_pos: 130.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(add_difficulty), :dot),
@@ -54,9 +56,9 @@ module PhonicsClassPdf
       items = Array(materials).compact
       return if items.empty?
 
-      y  = MATERIALS_Y
-      h  = MATERIALS_H
-      lx = MATERIALS_LEFT_X
+      y  = PHONICS_MATERIALS_Y
+      h  = PHONICS_MATERIALS_H
+      lx = PHONICS_BODY_INDENT
       w  = MATERIALS_TOTAL_W / 2.0
       rx = lx + w
 
