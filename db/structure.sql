@@ -1,8 +1,3 @@
-\restrict 517Sla8fM774MWlKsdrbwAwyri1cNTV6ftEXwbA9kjmQub6nYLmlqB8U1gw4Cq6
-
--- Dumped from database version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -984,7 +979,7 @@ ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
 CREATE TABLE public.devices (
     id bigint NOT NULL,
     user_id bigint NOT NULL,
-    token character varying NOT NULL,
+    token character varying,
     user_agent character varying,
     platform character varying,
     ip_address character varying,
@@ -1295,6 +1290,7 @@ CREATE TABLE public.lesson_links (
     kind integer DEFAULT 0 NOT NULL,
     url text NOT NULL,
     embed_url text,
+    provider character varying,
     title character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
@@ -1359,7 +1355,8 @@ CREATE TABLE public.lessons (
     log_data jsonb,
     event_date date,
     show_from date,
-    show_until date
+    show_until date,
+    review jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -1805,8 +1802,8 @@ CREATE TABLE public.report_card_batches (
     id bigint NOT NULL,
     school_id bigint NOT NULL,
     user_id bigint NOT NULL,
-    level character varying NOT NULL,
-    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    level character varying,
+    status character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3625,31 +3622,10 @@ CREATE INDEX index_course_tests_on_test_id ON public.course_tests USING btree (t
 
 
 --
--- Name: index_devices_on_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_devices_on_status ON public.devices USING btree (status);
-
-
---
--- Name: index_devices_on_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_devices_on_token ON public.devices USING btree (token);
-
-
---
 -- Name: index_devices_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_devices_on_user_id ON public.devices USING btree (user_id);
-
-
---
--- Name: index_devices_on_user_id_and_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_devices_on_user_id_and_token ON public.devices USING btree (user_id, token);
 
 
 --
@@ -3972,13 +3948,6 @@ CREATE INDEX index_privacy_policy_acceptances_on_user_id ON public.privacy_polic
 --
 
 CREATE INDEX index_report_card_batches_on_school_id ON public.report_card_batches USING btree (school_id);
-
-
---
--- Name: index_report_card_batches_on_school_id_and_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_report_card_batches_on_school_id_and_level ON public.report_card_batches USING btree (school_id, level);
 
 
 --
@@ -4916,14 +4885,13 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 517Sla8fM774MWlKsdrbwAwyri1cNTV6ftEXwbA9kjmQub6nYLmlqB8U1gw4Cq6
-
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260107043215'),
 ('20251210011748'),
 ('20251010034430'),
 ('20250930012236'),
