@@ -1,8 +1,9 @@
 = render 'shared/subtitle', text: @org ? t('.org_users', org: @org.name) : t('.users')
 
 %main.flex.flex-col.gap-3.p-3
-  = render 'users/new_user_dropdown',
-           org: @org || current_user.organisation_id
+  - if current_user.is?('Admin', 'OrgAdmin')
+    = render 'users/new_user_dropdown',
+            org: @org || current_user.organisation_id
   = render 'user_searches/form',
            orgs: @orgs
   = render 'users/table', users: @users
