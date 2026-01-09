@@ -14,5 +14,12 @@ ja:
       curriculum: "カリキュラム"
       homework: "ホームワーク"
       report_cards: "成績表"
+      tutorials: "インフォメーション"
     nav:
       request_support: "サポート依頼"
+      tutorials: "インフォメーション"
+      users: "ユーザー"
+      test: "レベルチェック"
+      support: "サポート"
+      students: "生徒"
+      monthly_materials: "教材"
