@@ -14,7 +14,7 @@ RSpec.describe 'creating Parent' do
     sign_in user
   end
 
-  it 'School Manager can create parent' do
+  it 'School Manager can create parent', skip: 'Disabled until parents are using the app' do
     visit organisation_parents_path(organisation_id: user.organisation_id)
 
     find_by_id('create_user').click

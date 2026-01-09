@@ -5,14 +5,15 @@ require 'rails_helper'
 RSpec.describe 'creating Teacher' do
   let!(:organisation) { create(:organisation) }
   let!(:school) { organisation.schools.create!(attributes_for(:school, ip: '*')) }
+  let!(:user) { create(:user, :org_admin, organisation:) }
 
   before do
-    sign_in create(:user, :school_manager, organisation:, schools: [school])
+    sign_in user
     course = create(:course)
     create(:plan, course:, organisation:)
   end
 
-  it 'School Manager can create teacher at their schools' do
+  it 'OrgAdmin can create teacher at their org’s schools' do
     visit organisation_teachers_path(organisation_id: organisation.id)
     find_by_id('create_user').click
     click_link 'create_teacher'
