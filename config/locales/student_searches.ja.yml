@@ -9,8 +9,12 @@ ja:
       school: "在籍スクール"
       search: "検索"
       select_child_level: "レベルを選択してください"
+      active: "在籍中"
+      on_break: "休会中"
+      inactive: "非在籍"
       select_school: "スクール選択"
       student_id: "生徒ＩＤ"
+      status: "ステータス"
     parent_form:
       child_level: "レベル"
       child_name: "子供名"
@@ -22,4 +26,4 @@ ja:
       birthday: "生年月日"
     results:
       child_claimed: "%{parent}が%{child}を追加しました"
-      claim_child: "%{child}を割り当てます"
+      claim_child: "%{child}さんの情報を紐づける"
