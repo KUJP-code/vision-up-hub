@@ -5,7 +5,7 @@ module PhonicsClassPdf
   include PdfBackground, PdfBodyItem, PdfFooter, PdfHeaderItem, PdfImage, PdfLinks, PdfList
 
   PHONICS_BODY_INDENT = 42.mm
-  PHONICS_MATERIALS_Y = 225.mm
+  PHONICS_MATERIALS_Y = 224.mm
   PHONICS_MATERIALS_H = 18.mm
   included do
     private
@@ -43,13 +43,11 @@ module PhonicsClassPdf
       factory.draw(text: array_to_list(sa(instructions), :number),
                    y_pos: 160.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(review), :dot),
-                   y_pos: 130.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 93.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(add_difficulty), :dot),
-                   y_pos: 105.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 60.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(extra_fun), :dot),
-                   y_pos: 80.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
-      factory.draw(text: links_from_hash(links),
-                   y_pos: 40.mm, height: 20.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 31.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
     end
 
     def draw_materials(pdf, factory:)
