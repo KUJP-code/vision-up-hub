@@ -40,7 +40,7 @@ puts 'Creating users...'
 admin = Admin.create!(fb.attributes_for(
                         :user,
                         :admin,
-                        name: 'Brett',
+                        name: 'Jayson',
                         email: 'admin@gmail.com',
                         password: 'adminadminadmin',
                         organisation_id: kids_up.id

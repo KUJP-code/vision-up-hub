@@ -9,19 +9,22 @@ class PhonicsClass < Lesson
   ATTRIBUTES = %i[
     add_difficulty
     extra_fun
+    intro
     instructions
     links
     materials
-    notes
     pdf_image
+    review
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
+    materials
+    intro
+    instructions
+    review
     add_difficulty
     extra_fun
-    instructions
-    materials
-    notes
+
   ].freeze
 
   validates :instructions, presence: true

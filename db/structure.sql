@@ -1,4 +1,4 @@
-\restrict 517Sla8fM774MWlKsdrbwAwyri1cNTV6ftEXwbA9kjmQub6nYLmlqB8U1gw4Cq6
+\restrict tdYmmcbEQgDWEuhLADppbK1Dvud94Ato1EgLb1ii77AEpKEIYUc2BG3fCLqeEPd
 
 -- Dumped from database version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
 -- Dumped by pg_dump version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
@@ -1359,7 +1359,8 @@ CREATE TABLE public.lessons (
     log_data jsonb,
     event_date date,
     show_from date,
-    show_until date
+    show_until date,
+    review jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -4916,7 +4917,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 517Sla8fM774MWlKsdrbwAwyri1cNTV6ftEXwbA9kjmQub6nYLmlqB8U1gw4Cq6
+\unrestrict tdYmmcbEQgDWEuhLADppbK1Dvud94Ato1EgLb1ii77AEpKEIYUc2BG3fCLqeEPd
 
 SET search_path TO "$user", public;
 
@@ -4924,6 +4925,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260107043215'),
 ('20251210011748'),
 ('20251010034430'),
 ('20250930012236'),

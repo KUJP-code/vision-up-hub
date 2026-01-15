@@ -27,8 +27,9 @@
       .form-group
         = f.label :status, t('.status')
         = f.select :status,
-                  Student.statuses.keys.map { |k| [k.titleize, k] },
-                  { prompt: t('.select_status'), selected: 'active' }
+                   Student.statuses.keys.map { |k| [t(".#{k}"), k] },
+                   { prompt: t('.select_status'), selected: 'active' }
+
     .w-full.flex.justify-end
       = f.submit t('.search'),
                  class: 'btn btn-main w-1/3'

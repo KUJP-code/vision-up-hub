@@ -10,6 +10,7 @@ ja:
       student_id: "生徒ID: "
       teachers: "先生: "
       birthday: "生年月日:"
+      edit: "編集"
     form:
       active: "有効"
       birthday: "誕生日"
@@ -45,6 +46,8 @@ ja:
       add_comment: "コメントを追加する"
       add_comments: "生徒にコメントを追加する"
       student_id: "生徒ＩＤ: %{id}"
+      report_card: "レポートカード"
+      edit: "編集"
     table:
       grade: "学年"
       gender: "性別"
