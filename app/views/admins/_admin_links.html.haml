@@ -1,9 +1,38 @@
 %section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
-  %h3.text-center Admin Links
+  %h3.text-center School Management Links
   %nav.w-full.flex.flex-wrap.justify-center.gap-3
     = link_to 'Announcements',
               announcements_path,
               class: 'btn btn-secondary'
+
+    - if @user.id == current_user.id
+      = link_to 'My Account',
+                edit_organisation_admin_path(@user.organisation_id, @user),
+                class: 'btn btn-secondary'
+
+    = link_to 'New Notification',
+              new_notification_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Organisations',
+              organisations_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Password Change',
+              admin_change_password_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Plans',
+              plans_path,
+              class: 'btn btn-secondary'
+
+    = link_to 'Schools',
+              organisation_schools_path(@user.organisation_id),
+              class: 'btn btn-secondary'
+
+%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
+  %h3.text-center Admin Links
+  %nav.w-full.flex.flex-wrap.justify-center.gap-3
 
     = link_to 'Device Authorization',
               devices_path,
@@ -51,27 +80,3 @@
               mission_control_jobs_path,
               class: 'btn btn-secondary'
 
-    - if @user.id == current_user.id
-      = link_to 'My Account',
-                edit_organisation_admin_path(@user.organisation_id, @user),
-                class: 'btn btn-secondary'
-
-    = link_to 'New Notification',
-              new_notification_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Organisations',
-              organisations_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Password Change',
-              admin_change_password_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Plans',
-              plans_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Schools',
-              organisation_schools_path(@user.organisation_id),
-              class: 'btn btn-secondary'
