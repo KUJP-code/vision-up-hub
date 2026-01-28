@@ -2,31 +2,31 @@
 
 class LessonPolicy < ApplicationPolicy
   def index?
-    authorized_ku_staff? || user.is?('Teacher')
+    view_lessons?
   end
 
   def show?
-    authorized_ku_staff? || user.is?('Teacher')
+    view_lessons?
   end
 
   def new?
-    authorized_ku_staff?
+    manage_lessons?
   end
 
   def edit?
-    authorized_ku_staff?
+    manage_lessons?
   end
 
   def update?
-    authorized_ku_staff?
+    manage_lessons?
   end
 
   def create?
-    authorized_ku_staff?
+    manage_lessons?
   end
 
   def destroy?
-    authorized_ku_staff?
+    manage_lessons?
   end
 
   class Scope < Scope
@@ -40,15 +40,15 @@ class LessonPolicy < ApplicationPolicy
         scope.none
       end
     end
-
-    def authorized_ku_staff?
-      user.is?('Admin', 'Writer', 'SchoolManager')
-    end
   end
 
   private
 
-  def authorized_ku_staff?
-    user.is?('Admin', 'Writer', 'SchoolManager')
+  def manage_lessons?
+    user.is?('Admin', 'Writer')
+  end
+
+  def view_lessons?
+    manage_lessons? || user.is?('OrgAdmin', 'SchoolManager', 'Teacher')
   end
 end
