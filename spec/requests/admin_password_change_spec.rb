@@ -44,12 +44,12 @@ RSpec.describe 'Admin password change', type: :request do
       sign_out admin
     end
 
-    it 'can change another admin password' do
+    it 'cannot change another admin password' do
       target = create(:user, :admin, organisation: ku_organisation)
 
       change_password_for(target)
 
-      expect(flash[:notice]).to eq('Password successfully changed')
+      expect(flash[:alert]).to eq('Not authorized to change this password')
     end
 
     it 'can change a teacher password' do

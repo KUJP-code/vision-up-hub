@@ -100,12 +100,12 @@ class AdminsController < UsersController
   def allowed_password_reset_target?(user)
     return true if super_admin?
 
-    return user.is?('Admin') if current_user.is?('Admin')
+    return !user.is?('Admin') if current_user.is?('Admin')
 
     return false unless current_user.is?('OrgAdmin')
 
     user.organisation_id == current_user.organisation_id &&
-      user.is?('OrgAdmin', 'SchoolManager', 'Teacher', 'Parent')
+      !user.is?('Admin', 'OrgAdmin')
   end
 
   def super_admin?
