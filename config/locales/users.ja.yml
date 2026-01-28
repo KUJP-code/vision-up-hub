@@ -5,6 +5,18 @@ ja:
   org_admins:
     show:
       greet: "こんにちは、%{name}"
+      customer_information: "顧客情報"
+      students: "生徒"
+      todays_lessons: "本日のレッスン"
+      teachers: "先生"
+      parents: "保護者"
+      tests: "テスト"
+      report_cards: "成績表"
+      curriculum: "カリキュラム"
+      curriculum_calendar: "カリキュラムカレンダー"
+      events: "イベント"
+      materials: "教材"
+      homework: "宿題"
       support_and_settings: "サポートと設定"
       support: "サポート"
       reset_password: "パスワードをリセット"
