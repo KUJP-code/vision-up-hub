@@ -5,6 +5,9 @@ ja:
   org_admins:
     show:
       greet: "こんにちは、%{name}"
+      support_and_settings: "サポートと設定"
+      support: "サポート"
+      reset_password: "パスワードをリセット"
   school_managers:
     show:
       greet: "こんにちは、%{name}"

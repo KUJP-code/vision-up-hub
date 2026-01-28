@@ -8,6 +8,9 @@ en:
   school_managers:
     show:
       greet: "Hi, %{name}"
+      support_and_settings: "Support & Settings"
+      support: "Support"
+      reset_password: "Reset Password"
   users:
     new_user_dropdown:
       create_new: "Create New"
