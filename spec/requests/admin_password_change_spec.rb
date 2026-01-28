@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Admin password change', type: :request do
   let(:new_password) { 'newpassword12' }
+  let(:ku_organisation) { create(:organisation, name: 'KidsUP') }
 
   def change_password_for(target)
     post admin_change_password_path,
@@ -13,7 +14,7 @@ RSpec.describe 'Admin password change', type: :request do
   end
 
   context 'when super admin' do
-    let(:admin) { create(:user, :admin, id: 3) }
+    let(:admin) { create(:user, :admin, id: 3, organisation: ku_organisation) }
     let(:target) { create(:user, :teacher) }
 
     before do
@@ -32,8 +33,8 @@ RSpec.describe 'Admin password change', type: :request do
   end
 
   context 'when admin' do
-    let(:admin) { create(:user, :admin) }
-    let(:super_admin) { create(:user, :admin, id: 3) }
+    let(:admin) { create(:user, :admin, organisation: ku_organisation) }
+    let(:super_admin) { create(:user, :admin, id: 3, organisation: ku_organisation) }
 
     before do
       sign_in admin
@@ -44,7 +45,7 @@ RSpec.describe 'Admin password change', type: :request do
     end
 
     it 'can change another admin password' do
-      target = create(:user, :admin)
+      target = create(:user, :admin, organisation: ku_organisation)
 
       change_password_for(target)
 
