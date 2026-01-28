@@ -33,6 +33,7 @@ RSpec.describe 'Admin password change', type: :request do
 
   context 'when admin' do
     let(:admin) { create(:user, :admin) }
+    let(:super_admin) { create(:user, :admin, id: 3) }
 
     before do
       sign_in admin
@@ -50,8 +51,16 @@ RSpec.describe 'Admin password change', type: :request do
       expect(flash[:notice]).to eq('Password successfully changed')
     end
 
-    it 'cannot change an org admin password' do
-      target = create(:user, :org_admin)
+    it 'can change a teacher password' do
+      target = create(:user, :teacher)
+
+      change_password_for(target)
+
+      expect(flash[:notice]).to eq('Password successfully changed')
+    end
+
+    it 'cannot change a super admin password' do
+      target = super_admin
 
       change_password_for(target)
 
