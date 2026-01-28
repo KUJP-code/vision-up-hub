@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminPolicy < ApplicationPolicy
-  SPECIAL_ADMIN_IDS = [28, 5].freeze
+  SPECIAL_ADMIN_IDS = [28, 5, 3].freeze
   def show?
     user.is?('Admin')
   end
@@ -27,11 +27,11 @@ class AdminPolicy < ApplicationPolicy
   end
 
   def change_password?
-    user.is?('Admin')
+    user.is?('Admin', 'OrgAdmin')
   end
 
   def new_password_change?
-    user.is?('Admin')
+    user.is?('Admin', 'OrgAdmin')
   end
 
   def reassign_editor?
