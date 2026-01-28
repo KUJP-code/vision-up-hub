@@ -15,7 +15,6 @@ class AdminsController < UsersController
     # KidsUP is org 1
     @user = authorize Admin.new(organisation_id: 1)
     @orgs = policy_scope(Organisation)
-
   end
 
   def create
@@ -61,6 +60,10 @@ class AdminsController < UsersController
       redirect_to root_url, alert: 'No user found'
       return
     end
+    unless allowed_password_reset_target?(user)
+      redirect_to root_url, alert: 'Not authorized to change this password'
+      return
+    end
     if change_password_params[:new_password] != change_password_params[:confirm_new_password]
       redirect_to root_url,
                   alert: 'Passwords did not match'
@@ -92,6 +95,21 @@ class AdminsController < UsersController
 
   def change_password_params
     params.permit(:email, :new_password, :confirm_new_password)
+  end
+
+  def allowed_password_reset_target?(user)
+    return true if super_admin?
+
+    return user.is?('Admin') if current_user.is?('Admin')
+
+    return false unless current_user.is?('OrgAdmin')
+
+    user.organisation_id == current_user.organisation_id &&
+      user.is?('OrgAdmin', 'SchoolManager', 'Teacher', 'Parent')
+  end
+
+  def super_admin?
+    current_user.is?('Admin') && AdminPolicy::SPECIAL_ADMIN_IDS.include?(current_user.id)
   end
 
   def admin_params
