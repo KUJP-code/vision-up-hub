@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class AdminsController < UsersController
-  before_action :set_user, only: %i[destroy]
-
   def show
     @assigned_lessons = @user.assigned_lessons
     @announcements = policy_scope(Announcement)
@@ -46,6 +44,8 @@ class AdminsController < UsersController
   end
 
   def destroy
+    @user = Admin.find(params[:id])
+    authorize @user, :destroy?
     return redirect_to users_path, alert: 'Must have 1 admin' if Admin.count <= 1
 
     if @user.destroy
@@ -100,6 +100,7 @@ class AdminsController < UsersController
   end
 
   def allowed_password_reset_target?(user)
+    return true if user.id == current_user.id
     return true if super_admin?
 
     return !user.is?('Admin') if current_user.is?('Admin')
