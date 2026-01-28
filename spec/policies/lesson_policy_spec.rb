@@ -38,7 +38,7 @@ RSpec.describe LessonPolicy do
   context 'when org admin' do
     let(:user) { build(:user, :org_admin) }
 
-    it_behaves_like 'unauthorized user'
+    it_behaves_like 'authorized user for viewing'
 
     it 'scopes to plan lessons' do
       course = create(:course)
@@ -68,7 +68,7 @@ RSpec.describe LessonPolicy do
   context 'when school manager' do
     let(:user) { build(:user, :school_manager) }
 
-    it_behaves_like 'authorized user'
+    it_behaves_like 'authorized user for viewing'
 
     it 'scopes to plan lessons' do
       course = create(:course)
