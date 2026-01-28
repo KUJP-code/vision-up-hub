@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AdminsController < UsersController
+  before_action :set_user, only: %i[destroy]
+
   def show
     @assigned_lessons = @user.assigned_lessons
     @announcements = policy_scope(Announcement)
