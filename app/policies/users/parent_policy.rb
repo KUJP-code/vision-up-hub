@@ -6,7 +6,7 @@ class ParentPolicy < ApplicationPolicy
   end
 
   def new?
-    user.is?('Admin', 'OrgAdmin', 'SchoolManager')
+    user.is?('Admin', 'SchoolManager') || valid_org_admin?
   end
 
   def edit?
