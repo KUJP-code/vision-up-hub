@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.12-org_admins"
+    "Name": "kidsup/materials:3.13-sm_orgadmins_delete"
   },
   "Ports": [
     {
