@@ -36,16 +36,32 @@ class TeacherPolicy < ApplicationPolicy
   end
 
   def org_staff?
-    (user.is?('OrgAdmin') && record.organisation_id == user.organisation_id) ||
-      managed_school?
+    return true if user.is?('OrgAdmin') && record.organisation_id == user.organisation_id
+    return false unless user.is?('SchoolManager')
+
+    managed_organisation? && managed_school?
   end
 
   def managed_school?
     return false unless user.is?('SchoolManager')
+    return true if record_school_ids.empty?
 
-    teacher_school_ids = record.schools.ids
-    return false if teacher_school_ids.empty?
+    user_school_ids.intersect?(record_school_ids)
+  end
 
-    user.schools.ids.intersect?(teacher_school_ids)
+  def managed_organisation?
+    return user.schools.any? { |school| school.organisation_id == record.organisation_id } if user.new_record?
+
+    user.schools.where(organisation_id: record.organisation_id).exists?
+  end
+
+  def user_school_ids
+    return user.schools.map(&:id) if user.new_record?
+
+    user.school_ids
+  end
+
+  def record_school_ids
+    record.school_ids.presence || record.school_teachers.map(&:school_id).compact
   end
 end
