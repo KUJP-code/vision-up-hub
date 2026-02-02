@@ -4,11 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'User deletion permissions' do
   let(:organisation) { create(:organisation) }
+  let(:kidsup_org) { create(:organisation, name: 'KidsUP') }
   let(:admin) { build(:user, :admin) }
   let(:super_admin) { build(:user, :admin, id: AdminPolicy::SPECIAL_ADMIN_IDS.first) }
 
-  let(:other_admin) { create(:user, :admin, organisation:) }
-  let(:writer) { create(:user, :writer, organisation:) }
+  let(:other_admin) { create(:user, :admin, organisation: kidsup_org) }
+  let(:writer) { create(:user, :writer, organisation: kidsup_org) }
   let(:school_manager) { create(:user, :school_manager, organisation:) }
   let(:org_admin) { create(:user, :org_admin, organisation:) }
   let(:teacher) { create(:user, :teacher, organisation:) }
@@ -33,6 +34,12 @@ RSpec.describe 'User deletion permissions' do
 
     expect(TeacherPolicy.new(scoped_org_admin, teacher)).to authorize_action(:destroy)
     expect(TeacherPolicy.new(scoped_school_manager, teacher)).to authorize_action(:destroy)
+  end
+
+  it 'allows org admins to delete school managers in their organisation' do
+    scoped_org_admin = build(:user, :org_admin, organisation:)
+
+    expect(SchoolManagerPolicy.new(scoped_org_admin, school_manager)).to authorize_action(:destroy)
   end
 
   it 'prevents non-admins from deleting users' do

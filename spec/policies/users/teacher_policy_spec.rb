@@ -51,6 +51,13 @@ RSpec.describe TeacherPolicy do
       it_behaves_like 'authorized user'
     end
 
+    context 'when teacher has no schools' do
+      let(:school) { create(:school) }
+      let(:user) { build(:user, :school_manager, schools: [school]) }
+
+      it_behaves_like 'unauthorized user'
+    end
+
     context 'when manager of different school' do
       let(:user) { build(:user, :school_manager) }
 

@@ -37,11 +37,15 @@ class TeacherPolicy < ApplicationPolicy
 
   def org_staff?
     (user.is?('OrgAdmin') && record.organisation_id == user.organisation_id) ||
-      managed_school_or_nil?
+      managed_school?
   end
 
-  def managed_school_or_nil?
-    user.is?('SchoolManager') &&
-      (record.schools.empty? || user.schools.ids.intersect?(record.schools.ids))
+  def managed_school?
+    return false unless user.is?('SchoolManager')
+
+    teacher_school_ids = record.schools.ids
+    return false if teacher_school_ids.empty?
+
+    user.schools.ids.intersect?(teacher_school_ids)
   end
 end

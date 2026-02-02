@@ -22,7 +22,7 @@ class SchoolManagerPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.is?('Admin')
+    user.is?('Admin') || admin_of_org?
   end
 
   private

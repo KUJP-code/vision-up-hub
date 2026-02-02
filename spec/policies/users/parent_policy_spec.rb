@@ -10,7 +10,7 @@ RSpec.describe ParentPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'authorized user except destroy'
+    it_behaves_like 'unauthorized user'
   end
 
   context 'when writer' do
