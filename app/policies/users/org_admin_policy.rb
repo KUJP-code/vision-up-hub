@@ -22,7 +22,7 @@ class OrgAdminPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.is?('Admin', 'Sales')
+    user.is?('Admin')
   end
 
   private

@@ -23,7 +23,7 @@ class ParentPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.is?('Admin') || authorized_org_user?
+    false
   end
 
   private
