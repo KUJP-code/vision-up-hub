@@ -39,7 +39,9 @@ class TeacherPolicy < ApplicationPolicy
     return true if user.is?('OrgAdmin') && record.organisation_id == user.organisation_id
     return false unless user.is?('SchoolManager')
 
-    managed_organisation? && managed_school?
+    return managed_school? unless record_school_ids.empty?
+
+    managed_organisation?
   end
 
   def managed_school?
