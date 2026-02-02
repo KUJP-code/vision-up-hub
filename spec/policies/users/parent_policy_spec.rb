@@ -10,7 +10,7 @@ RSpec.describe ParentPolicy do
   context 'when admin' do
     let(:user) { build(:user, :admin) }
 
-    it_behaves_like 'authorized user'
+    it_behaves_like 'authorized user except destroy'
   end
 
   context 'when writer' do
@@ -29,13 +29,13 @@ RSpec.describe ParentPolicy do
     context 'when admin of parent org' do
       let(:user) { build(:user, :org_admin, organisation: record.organisation) }
 
-      it_behaves_like 'authorized user'
+      it_behaves_like 'authorized user except destroy'
     end
 
     context 'when admin of different org' do
       let(:user) { build(:user, :org_admin) }
 
-      it_behaves_like 'unauthorized user except new'
+      it_behaves_like 'authorized user except destroy'
     end
   end
 

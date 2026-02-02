@@ -22,7 +22,7 @@ RSpec.describe TeacherPolicy do
   context 'when sales' do
     let(:user) { build(:user, :sales) }
 
-    it_behaves_like 'authorized user'
+    it_behaves_like 'authorized user except destroy'
   end
 
   context 'when org admin' do

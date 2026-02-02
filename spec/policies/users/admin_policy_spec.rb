@@ -23,7 +23,14 @@ RSpec.describe AdminPolicy do
       it { is_expected.not_to authorize_action(:edit) }
       it { is_expected.to authorize_action(:create) }
       it { is_expected.not_to authorize_action(:update) }
+      it { is_expected.not_to authorize_action(:destroy) }
       it { is_expected.to authorize_action(:reassign_editor) }
+    end
+
+    context 'when super admin interacting with other admin' do
+      let(:user) { build(:user, :admin, id: described_class::SPECIAL_ADMIN_IDS.first) }
+
+      it { is_expected.to authorize_action(:destroy) }
     end
   end
 
