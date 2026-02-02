@@ -35,5 +35,12 @@
   %button.btn.btn-secondary{ 'data-action' => 'fields#add' }
     Add school
 
-  = f.submit class: 'btn btn-main',
-             id: 'submit_school_manager'
+  .flex.gap-3
+    = f.submit class: 'btn btn-main',
+               id: 'submit_school_manager'
+    - if policy(user).destroy? && !user.new_record?
+      = link_to 'Delete',
+                organisation_school_manager_path(user.organisation, user),
+                data: { turbo_method: :delete,
+                        turbo_confirm: 'Are you sure you want to delete this school manager?' },
+                class: 'btn btn-danger'

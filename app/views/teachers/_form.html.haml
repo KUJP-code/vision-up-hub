@@ -50,5 +50,12 @@
       -# %button.btn.btn-secondary.w-full{ 'data-action' => 'fields#add' }
       -#   = t('.add_class')
 
-  = f.submit class: 'btn btn-main',
-             id: 'submit_teacher'
+  .flex.gap-3
+    = f.submit class: 'btn btn-main',
+               id: 'submit_teacher'
+    - if policy(user).destroy? && !user.new_record?
+      = link_to 'Delete',
+                organisation_teacher_path(user.organisation, user),
+                data: { turbo_method: :delete,
+                        turbo_confirm: 'Are you sure you want to delete this teacher?' },
+                class: 'btn btn-danger'

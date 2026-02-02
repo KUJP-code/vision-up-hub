@@ -8,5 +8,12 @@
 
   %p this is an org admin form
 
-  = f.submit class: 'btn btn-main',
-             id: 'submit_org_admin'
+  .flex.gap-3
+    = f.submit class: 'btn btn-main',
+               id: 'submit_org_admin'
+    - if policy(user).destroy? && !user.new_record?
+      = link_to 'Delete',
+                organisation_org_admin_path(user.organisation_id, user),
+                data: { turbo_method: :delete,
+                        turbo_confirm: 'Are you sure you want to delete this org admin?' },
+                class: 'btn btn-danger'
