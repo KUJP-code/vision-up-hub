@@ -1,10 +1,9 @@
 -# locals: (f:, lesson:)
 
 :ruby
-  topic = lesson.topic
-  term = topic ? topic.scan(/\d+/).first : 1
-  unit = topic ? lesson.topic.scan(/\d+/).last : 1
-  lesson_topic = topic ? topic.scan(/(?<=- ).+/).first : ''
+  term = lesson.term.presence || 1
+  unit = lesson.unit.presence || 1
+  lesson_topic = lesson.lesson_topic.presence || ''
 
 .form-group
   = f.label :guide
