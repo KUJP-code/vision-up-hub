@@ -30,6 +30,7 @@ module Proposable
         send(:"#{key}=", value)
       end
 
+      replace_single_attachments(proposal)
       replace_resources(proposal)
       replace_phonics_resources(proposal) if type == 'PhonicsClass'
       save
@@ -43,6 +44,21 @@ module Proposable
   end
 
   private
+
+  def replace_single_attachments(proposal)
+    proposal.attachment_reflections.each do |name, reflection|
+      next unless reflection.macro == :has_one_attached
+
+      attachment = proposal.public_send(name)
+      next unless attachment.attached?
+
+      attachment.open do |file|
+        public_send(name).attach(io: file,
+                                 filename: attachment.filename,
+                                 content_type: attachment.content_type)
+      end
+    end
+  end
 
   def replace_resources(proposal)
     proposal.resources.each do |resource|
