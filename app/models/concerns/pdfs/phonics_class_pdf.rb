@@ -7,6 +7,15 @@ module PhonicsClassPdf
   PHONICS_BODY_INDENT = 42.mm
   PHONICS_MATERIALS_Y = 224.mm
   PHONICS_MATERIALS_H = 18.mm
+  GALAXY_RECEPTIVE_Y = 171.mm
+  GALAXY_RECEPTIVE_H = 14.mm
+  GALAXY_PRODUCTIVE_Y = 129.mm
+  GALAXY_PRODUCTIVE_H = 17.mm
+  GALAXY_REVIEW_Y = 91.mm
+  GALAXY_EXTRA_FUN_Y = 33.mm
+  PHONICS_REVIEW_Y = 93.mm
+  PHONICS_ADD_DIFFICULTY_Y = 60.mm
+  PHONICS_EXTRA_FUN_Y = 31.mm
   included do
     private
 
@@ -14,7 +23,7 @@ module PhonicsClassPdf
       Prawn::Document.new(margin: 0, page_size: 'A4',
                           page_layout: :portrait) do |pdf|
         apply_defaults(pdf)
-        add_background(pdf, 'phonics')
+        add_background(pdf, background_name)
         draw_header(pdf)
         add_header_image(pdf)
         draw_body(pdf)
@@ -40,14 +49,26 @@ module PhonicsClassPdf
       draw_materials(pdf, factory:)
       factory.draw(text: array_to_list(sa(intro), :dot),
                    y_pos: 199.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
-      factory.draw(text: array_to_list(sa(instructions), :number),
-                   y_pos: 160.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
+      if galaxy?
+        factory.draw(text: array_to_list(sa(receptive_activity), :number),
+                     y_pos: GALAXY_RECEPTIVE_Y,
+                     height: GALAXY_RECEPTIVE_H,
+                     indent: PHONICS_BODY_INDENT)
+        factory.draw(text: array_to_list(sa(productive_activity), :number),
+                     y_pos: GALAXY_PRODUCTIVE_Y,
+                     height: GALAXY_PRODUCTIVE_H,
+                     indent: PHONICS_BODY_INDENT)
+      else
+        factory.draw(text: array_to_list(sa(instructions), :number),
+                     y_pos: 160.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
+      end
       factory.draw(text: array_to_list(sa(review), :dot),
-                   y_pos: 93.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: review_y_pos, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(add_difficulty), :dot),
-                   y_pos: 60.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: PHONICS_ADD_DIFFICULTY_Y,
+                   height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(extra_fun), :dot),
-                   y_pos: 31.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: extra_fun_y_pos, height: 18.mm, indent: PHONICS_BODY_INDENT)
     end
 
     def draw_materials(pdf, factory:)
@@ -80,6 +101,18 @@ module PhonicsClassPdf
         .lines
         .map.with_index(start_at) { |t, i| t.sub(/^\d+/, i.to_s) }
         .join
+    end
+
+    def background_name
+      galaxy? ? 'phonics-galaxy' : 'phonics'
+    end
+
+    def review_y_pos
+      galaxy? ? GALAXY_REVIEW_Y : PHONICS_REVIEW_Y
+    end
+
+    def extra_fun_y_pos
+      galaxy? ? GALAXY_EXTRA_FUN_Y : PHONICS_EXTRA_FUN_Y
     end
   end
 end

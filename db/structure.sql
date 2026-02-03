@@ -1,7 +1,7 @@
-\restrict 7jnrO6OsM9RghHlPeIPTohvdGgqHKLmnQrFybn2AUeY3gfMzHfr7ICdQgo3bE6P
+\restrict 1P8Zhesdry3KM49ybOPFOZs2R6ScTvW4mb7uuEdG6aYEhNSyQDk3QmkERmWgJOD
 
--- Dumped from database version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
+-- Dumped from database version 16.11
+-- Dumped by pg_dump version 16.11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1360,7 +1360,9 @@ CREATE TABLE public.lessons (
     event_date date,
     show_from date,
     show_until date,
-    review jsonb DEFAULT '[]'::jsonb NOT NULL
+    review jsonb DEFAULT '[]'::jsonb NOT NULL,
+    receptive_activity jsonb DEFAULT '[]'::jsonb,
+    productive_activity jsonb DEFAULT '[]'::jsonb
 );
 
 
@@ -4917,7 +4919,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 7jnrO6OsM9RghHlPeIPTohvdGgqHKLmnQrFybn2AUeY3gfMzHfr7ICdQgo3bE6P
+\unrestrict 1P8Zhesdry3KM49ybOPFOZs2R6ScTvW4mb7uuEdG6aYEhNSyQDk3QmkERmWgJOD
 
 SET search_path TO "$user", public;
 
@@ -4925,6 +4927,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260203120000'),
 ('20260107043215'),
 ('20251210011748'),
 ('20251010034430'),

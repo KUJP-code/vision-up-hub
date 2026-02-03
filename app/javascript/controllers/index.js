@@ -29,6 +29,9 @@ application.register("dialog", DialogController);
 import NavController from "./nav_controller";
 application.register("nav", NavController);
 
+import PhonicsLevelController from "./phonics_level_controller";
+application.register("phonics-level", PhonicsLevelController);
+
 import PrintController from "./print_controller";
 application.register("print", PrintController);
 

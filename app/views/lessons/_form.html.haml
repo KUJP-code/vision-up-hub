@@ -2,10 +2,12 @@
 = render 'shared/subtitle',
          text: "#{lesson.new_record? ? 'Edit' : 'New'} #{lesson.type.titleize}"
 
+- form_controllers = ['fields']
+- form_controllers << 'phonics-level' if lesson.type == 'PhonicsClass'
 = form_with model: lesson,
             html: { id: "#{lesson.type.underscore}_form",
                     class: 'form',
-                    data: { controller: 'fields' } } do |f|
+                    data: { controller: form_controllers.join(' ') } } do |f|
   - courses_required_types = ['PhonicsClass', 'EnglishClass']
   - no_course_types = ['seasonal_activity', 'party_activity', 'event_activity']
 
@@ -89,11 +91,12 @@
   - unless ['KindyPhonic', 'EventActivity', 'SeasonalActivity', 'PartyActivity', 'ParentsReport'].include?(lesson.type)
 
     .form-group
+      - level_data = lesson.type == 'PhonicsClass' ? { action: 'phonics-level#levelChanged', phonics_level_target: 'levelSelect' } : {}
       = f.label :level
       = f.select :level,
                  lesson.class.levels.to_h { |k, _v| [k.titleize, k] },
-                 required: true,
-                 prompt: 'Select a level'
+                 { prompt: 'Select a level' },
+                 { required: true, data: level_data }
 
   = type_fields
 

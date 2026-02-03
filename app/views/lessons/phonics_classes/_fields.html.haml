@@ -13,8 +13,23 @@
            lesson:,
            attr: :pdf_image
 
-- PhonicsClass::LISTABLE_ATTRIBUTES.each do |attr|
-  = render('lessons/shared/list_fields', f:, lesson:, attr:)
+= render('lessons/shared/list_fields', f:, lesson:, attr: :materials)
+= render('lessons/shared/list_fields', f:, lesson:, attr: :intro)
+
+%div{ class: (lesson.galaxy? ? 'hidden' : nil),
+      data: { phonics_level_target: 'nonGalaxyField' } }
+  = render('lessons/shared/list_fields', f:, lesson:, attr: :instructions)
+
+%div{ class: (lesson.galaxy? ? nil : 'hidden'),
+      data: { phonics_level_target: 'galaxyField' } }
+  = render('lessons/shared/list_fields', f:, lesson:, attr: :receptive_activity)
+%div{ class: (lesson.galaxy? ? nil : 'hidden'),
+      data: { phonics_level_target: 'galaxyField' } }
+  = render('lessons/shared/list_fields', f:, lesson:, attr: :productive_activity)
+
+= render('lessons/shared/list_fields', f:, lesson:, attr: :review)
+= render('lessons/shared/list_fields', f:, lesson:, attr: :add_difficulty)
+= render('lessons/shared/list_fields', f:, lesson:, attr: :extra_fun)
 
 .flex.flex-col.gap-2{ 'data-controller': 'fields' }
   = f.fields_for :phonics_resources, p_resources do |pr_f|
