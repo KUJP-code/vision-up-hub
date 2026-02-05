@@ -143,6 +143,7 @@ ja:
       create: 登録する
       submit: 保存する
       update: 更新する
+  not_authorized: "この操作を行う権限がありません。"
   not_approved: "未承認"
   not_in_school: "このサイトには自スクールからのみアクセスできます。"
   number:

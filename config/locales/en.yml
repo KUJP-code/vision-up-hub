@@ -26,6 +26,7 @@ en:
   nav:
     request_support: "Request Support"
     sign_out: "Sign Out"
+  not_authorized: "You are not authorized to perform this action."
   not_approved: "Not Approved"
   not_in_school: "You can only access this site from your school."
   number:
