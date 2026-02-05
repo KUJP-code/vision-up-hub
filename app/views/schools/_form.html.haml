@@ -1,9 +1,17 @@
--# locals: (managers:, school:, teachers:)
+-# locals: (managers:, organisations:, school:, teachers:)
 
 = form_with model: [school.organisation, school],
             html: { class: 'form',
                     id: 'school_form' } do |f|
   = render 'shared/form_errors', resource: school
+
+  - if current_user.is?('Admin', 'Sales')
+    .form-group
+      = f.label :organisation_id
+      = f.select :organisation_id,
+                 options_for_select(organisations, school.organisation_id),
+                 { prompt: 'Select organisation' },
+                 required: true
 
   .form-group
     = f.label :name

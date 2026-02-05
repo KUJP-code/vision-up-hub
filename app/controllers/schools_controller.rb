@@ -24,9 +24,8 @@ class SchoolsController < ApplicationController
   def edit; end
 
   def create
-    @school = authorize School.new(
-      school_params.merge(organisation_id: params[:organisation_id])
-    )
+    org_id = school_params[:organisation_id].presence || params[:organisation_id]
+    @school = authorize School.new(school_params.merge(organisation_id: org_id))
 
     if @school.save
       redirect_to organisation_school_url(@school.organisation, @school),
@@ -64,11 +63,15 @@ class SchoolsController < ApplicationController
   private
 
   def school_params
-    params.require(:school).permit(
+    base_params = [
       :name, :ip, :email, :website, :phone_number, :address,
       managements_attributes: %i[id school_id school_manager_id _destroy],
       school_teachers_attributes: %i[id school_id teacher_id _destroy]
-    )
+    ]
+
+    base_params << :organisation_id if current_user.is?('Admin', 'Sales')
+
+    params.require(:school).permit(*base_params)
   end
 
   def set_school
@@ -82,5 +85,6 @@ class SchoolsController < ApplicationController
     @teachers = policy_scope(User)
                 .where(type: 'Teacher')
                 .pluck(:name, :id)
+    @organisations = policy_scope(Organisation).pluck(:name, :id)
   end
 end
