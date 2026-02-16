@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.14-school_orgs"
+    "Name": "kidsup/materials:3.15-phonics_revert"
   },
   "Ports": [
     {
