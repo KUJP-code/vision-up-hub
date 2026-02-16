@@ -1,7 +1,7 @@
 -# locals: (lesson:)
 
 .flex.flex-wrap.justify-start.items-center.gap-3
-  - lesson.listable_attributes.each do |attr|
+  - lesson.class::LISTABLE_ATTRIBUTES.each do |attr|
     - value = lesson.send(attr)
     - next if value.blank?
 

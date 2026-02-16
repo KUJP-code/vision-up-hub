@@ -6,8 +6,7 @@
   = f.label attr
   = f.text_area attr,
                 value:,
-                rows: 4,
-                style: 'min-height: 6rem'
+                rows: attr == 4
   - if attr.to_s.include?('notes')
     %small.-mt-1 These are curriculum team notes, teachers will not see them.
   %small.-mt-1 Separate items with new lines

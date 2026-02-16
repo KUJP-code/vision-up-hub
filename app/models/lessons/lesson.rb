@@ -61,10 +61,6 @@ class Lesson < ApplicationRecord
     "Week #{number}"
   end
 
-  def listable_attributes
-    self.class::LISTABLE_ATTRIBUTES
-  end
-
   private
 
   def check_not_used
