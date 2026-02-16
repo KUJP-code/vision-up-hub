@@ -3,6 +3,8 @@
 class TeacherEventsController < ApplicationController
   after_action :verify_authorized, only: %i[show]
   SUPPORTED_TYPES = %w[seasonalactivity partyactivity eventactivity].freeze
+  EVENT_TYPES = %w[SeasonalActivity PartyActivity EventActivity].freeze
+
   def index
     index_vars
   end
@@ -22,18 +24,29 @@ class TeacherEventsController < ApplicationController
     @supported_types = SUPPORTED_TYPES
     @announcements = Pundit.policy_scope!(@teacher, Announcement)
     #  Need to clean this and separate it in the future, i jsut put released here because the policy scope is annoying with lessons and separating it was a LOT of code
-    @lessons =
-      Lesson
-      .where(type: %w[SeasonalActivity PartyActivity EventActivity], released: true)
-      .for_organisation(@teacher.organisation_id)
-      .within_event_window(@date)
-      .includes(:organisation_lessons)
-      .order('organisation_lessons.event_date ASC')
+    @lessons = event_lessons_scope
   end
 
   def set_date_type_teacher
     @teacher = current_user
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.today
+  end
+
+  def event_lessons_scope
+    scope = Lesson
+            .where(type: EVENT_TYPES, released: true)
+            .within_event_window(@date)
+            .includes(:organisation_lessons)
+
+    if current_user.is?('Admin')
+      @orgs_for_spy = Organisation.order(:name)
+
+      scope = scope.for_organisation(params[:organisation_id]) if params[:organisation_id].present?
+    else
+      scope = scope.for_organisation(@teacher.organisation_id)
+    end
+
+    scope.order('organisation_lessons.event_date ASC')
   end
 
   def set_resources

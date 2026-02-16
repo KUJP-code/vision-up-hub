@@ -3,6 +3,8 @@
   card = 'card basis-1/3 max-w-full p-3 flex flex-col gap-3'
   mobile = 'flex-col justify-start items-stretch'
   desktop = params[:category].blank? ? 'md:flex-row md:items-center md:justify-center' : 'md:flex-col'
+  admin = current_user.is?('Admin')
+  category_path_params = ->(type) { { category: type, organisation_id: params[:organisation_id].presence }.compact }
 
 = render 'shared/subtitle', text: t('events')
 
@@ -14,16 +16,18 @@
         = render 'shared/announcement_list', announcements: @announcements
     - if params[:category].blank?
       - @supported_types.each do |type|
-        = link_to teacher_events_path(category: type),
+        = link_to teacher_events_path(category_path_params.call(type)),
                   class: card,
                   data: { turbo_frame: 'event-lessons' } do
           = image_tag "events/#{type.downcase}.svg"
           %h1.text-center.text-3xl= t("lessons.#{type}")
     - else
+      - if admin
+        = render 'teacher_events/org_spy', organisations: @orgs_for_spy
       %nav.tab-nav.flex.flex-col.md:flex-row.gap-3.p-0.w-full
         - @supported_types.each do |type|
           - active = type == params[:category]
-          = link_to teacher_events_path(category: type),
+          = link_to teacher_events_path(category_path_params.call(type)),
                     class: "nav-tab #{active ? 'active' : 'inactive'}",
                     data: { turbo_frame: 'event-lessons' } do
             %span= t("lessons.#{type.downcase}")
