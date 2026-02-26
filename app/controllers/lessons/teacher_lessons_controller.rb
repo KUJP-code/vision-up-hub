@@ -33,7 +33,7 @@ class TeacherLessonsController < ApplicationController
   end
 
   def set_resources
-    resources = @lesson.resources.includes(:blob)
+    resources = @lesson.resources_attachments.includes(:blob)
     resources += phonics_resources if @type == 'PhonicsClass'
 
     resources.sort_by { |r| r.blob.filename }

@@ -23,7 +23,7 @@ class LessonsController < ApplicationController
     @proposals = @lesson.proposals
                         .order(created_at: :desc)
                         .includes(:creator)
-    @resources = @lesson.resources.includes(:blob)
+    @resources = @lesson.resources_attachments.includes(:blob)
                         .order('active_storage_blobs.filename ASC')
     @lesson_links = @lesson.lesson_links.order(created_at: :asc).to_a
 
@@ -120,7 +120,12 @@ class LessonsController < ApplicationController
   def set_form_data
     @courses = policy_scope(Course).includes(plans: :organisation)
     @organisations = policy_scope(Organisation).order(:name)
-    @resource_ids = @lesson ? @lesson.resources.includes(:blob).map(&:signed_id) : []
+    @resource_ids = if @lesson
+                      @lesson.resources_attachments.includes(:blob)
+                            .map { |attachment| attachment.blob.signed_id }
+                    else
+                      []
+                    end
     case @lesson.type
     when 'PhonicsClass'
       @phonics_resources = set_phonics_resources

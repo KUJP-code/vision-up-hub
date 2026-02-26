@@ -50,7 +50,7 @@ class TeacherEventsController < ApplicationController
   end
 
   def set_resources
-    resources = @lesson.resources.includes(:blob)
+    resources = @lesson.resources_attachments.includes(:blob)
     resources.sort_by { |r| r.blob.filename }
   end
 
