@@ -199,6 +199,7 @@ RSpec.describe CategoryResource do
   context 'when resource for brush up' do
     before do
       category_resource.lesson_category = :brush_up
+      category_resource.level = :kindy
     end
 
     it 'cannnot have phonics set as a resource category' do
@@ -219,6 +220,12 @@ RSpec.describe CategoryResource do
     it 'can have worksheets as a resource category' do
       category_resource.resource_category = :worksheets
       expect(category_resource).to be_valid
+    end
+
+    it 'cannot have all levels as a level' do
+      category_resource.resource_category = :worksheets
+      category_resource.level = :all_levels
+      expect(category_resource).not_to be_valid
     end
 
     it 'cannot have slides as a resource category' do

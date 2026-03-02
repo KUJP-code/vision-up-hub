@@ -42,6 +42,7 @@ class CategoryResource < ApplicationRecord
 
   validates :lesson_category, :resource_category, presence: true
   validate :valid_combo
+  validate :brush_up_level
 
   has_many :course_resources, dependent: :destroy
   accepts_nested_attributes_for :course_resources,
@@ -149,5 +150,11 @@ class CategoryResource < ApplicationRecord
 
     errors.add(:lesson_category, 'Friendship Time requires a worksheet or slide resource')
     false
+  end
+
+  def brush_up_level
+    return unless brush_up? && all_levels?
+
+    errors.add(:level, 'Brush Up cannot be all levels')
   end
 end
