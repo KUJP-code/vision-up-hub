@@ -6,7 +6,8 @@ module PhonicsClassPdf
 
   PHONICS_BODY_INDENT = 42.mm
   PHONICS_MATERIALS_Y = 224.mm
-  PHONICS_MATERIALS_H = 18.mm
+  PHONICS_MATERIALS_H = 15.mm
+  PHONICS_INSTRUCTIONS_H = 58.mm
   included do
     private
 
@@ -41,7 +42,7 @@ module PhonicsClassPdf
       factory.draw(text: array_to_list(sa(intro), :dot),
                    y_pos: 199.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(instructions), :number),
-                   y_pos: 160.mm, height: 30.mm, indent: PHONICS_BODY_INDENT)
+                   y_pos: 160.mm, height: PHONICS_INSTRUCTIONS_H, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(review), :dot),
                    y_pos: 93.mm, height: 18.mm, indent: PHONICS_BODY_INDENT)
       factory.draw(text: array_to_list(sa(add_difficulty), :dot),
