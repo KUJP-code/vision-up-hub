@@ -22,7 +22,8 @@
 
   .form-group
     = f.label :tutorial_category_id, 'Category'
-    = f.select :tutorial_category_id, options_for_select(@categories), {}
+    = f.select :tutorial_category_id,
+               options_for_select(@categories, tutorial.tutorial_category_id), {}
 
   .form-group
     = f.submit class: 'btn btn-main'
