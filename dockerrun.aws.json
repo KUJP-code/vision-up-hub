@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.17-bug_parse"
+    "Name": "kidsup/materials:3.18-sm_views"
   },
   "Ports": [
     {
