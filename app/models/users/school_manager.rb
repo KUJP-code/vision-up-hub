@@ -26,7 +26,7 @@ class SchoolManager < User
   has_many :teachers, through: :schools
 
   def available_tests(date = Time.zone.today)
-    scoped_test_ids = super(date).select(:id)
+    scoped_test_ids = organisation.available_tests(date).select(:id)
     override_test_ids = test_visibility_overrides.select(:test_id)
 
     Test.where(id: scoped_test_ids)
