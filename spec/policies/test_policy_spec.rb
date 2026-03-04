@@ -67,6 +67,15 @@ RSpec.describe TestPolicy do
 
     it_behaves_like 'unauthorized user'
     it_behaves_like 'school staff for tests'
+
+    it 'includes explicit visibility overrides outside active courses' do
+      manager = create(:user, :school_manager)
+      visible_test = create(:test, name: 'Override Test')
+      create(:test_visibility_override, user: manager, test: visible_test)
+      create(:test, name: 'Hidden Test')
+
+      expect(Pundit.policy_scope!(manager, Test)).to contain_exactly(visible_test)
+    end
   end
 
   context 'when teacher' do

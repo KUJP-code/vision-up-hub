@@ -1,4 +1,4 @@
-\restrict ARQNzdBPiCUmG6pRavM9EqcPOfBP1fD5eQ3AiMZZORQj6ZSwfUsYzL64kCGP2G2
+\restrict crIzG3YUWgcB9r1h5byZ39so6kRuQEeLCaRunJ5mLfZafxqMClexk7PhoJcvaoB
 
 -- Dumped from database version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
 -- Dumped by pg_dump version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
@@ -2508,6 +2508,38 @@ ALTER SEQUENCE public.test_results_id_seq OWNED BY public.test_results.id;
 
 
 --
+-- Name: test_visibility_overrides; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.test_visibility_overrides (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    test_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: test_visibility_overrides_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.test_visibility_overrides_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_visibility_overrides_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.test_visibility_overrides_id_seq OWNED BY public.test_visibility_overrides.id;
+
+
+--
 -- Name: tests; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3030,6 +3062,13 @@ ALTER TABLE ONLY public.test_results ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: test_visibility_overrides id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_visibility_overrides ALTER COLUMN id SET DEFAULT nextval('public.test_visibility_overrides_id_seq'::regclass);
+
+
+--
 -- Name: tests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3495,6 +3534,14 @@ ALTER TABLE ONLY public.support_requests
 
 ALTER TABLE ONLY public.test_results
     ADD CONSTRAINT test_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test_visibility_overrides test_visibility_overrides_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_visibility_overrides
+    ADD CONSTRAINT test_visibility_overrides_pkey PRIMARY KEY (id);
 
 
 --
@@ -4286,6 +4333,27 @@ CREATE INDEX index_test_results_on_test_id ON public.test_results USING btree (t
 
 
 --
+-- Name: index_test_visibility_overrides_on_test_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_test_visibility_overrides_on_test_id ON public.test_visibility_overrides USING btree (test_id);
+
+
+--
+-- Name: index_test_visibility_overrides_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_test_visibility_overrides_on_user_id ON public.test_visibility_overrides USING btree (user_id);
+
+
+--
+-- Name: index_test_visibility_overrides_on_user_id_and_test_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_test_visibility_overrides_on_user_id_and_test_id ON public.test_visibility_overrides USING btree (user_id, test_id);
+
+
+--
 -- Name: index_tutorial_categories_on_title; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4812,6 +4880,14 @@ ALTER TABLE ONLY public.form_submissions
 
 
 --
+-- Name: test_visibility_overrides fk_rails_bd3554fb47; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_visibility_overrides
+    ADD CONSTRAINT fk_rails_bd3554fb47 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: course_resources fk_rails_c039fa8431; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4908,6 +4984,14 @@ ALTER TABLE ONLY public.pdf_tutorials
 
 
 --
+-- Name: test_visibility_overrides fk_rails_f66e143411; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_visibility_overrides
+    ADD CONSTRAINT fk_rails_f66e143411 FOREIGN KEY (test_id) REFERENCES public.tests(id);
+
+
+--
 -- Name: privacy_policy_acceptances fk_rails_f6bdce05cb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4919,7 +5003,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict ARQNzdBPiCUmG6pRavM9EqcPOfBP1fD5eQ3AiMZZORQj6ZSwfUsYzL64kCGP2G2
+\unrestrict crIzG3YUWgcB9r1h5byZ39so6kRuQEeLCaRunJ5mLfZafxqMClexk7PhoJcvaoB
 
 SET search_path TO "$user", public;
 
@@ -4927,6 +5011,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260304090000'),
 ('20260203120000'),
 ('20260107043215'),
 ('20251210011748'),

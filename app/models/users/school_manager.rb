@@ -5,6 +5,11 @@ class SchoolManager < User
 
   VISIBLE_TYPES = %w[Parent Teacher].freeze
 
+  has_many :test_visibility_overrides, dependent: :destroy,
+                                       foreign_key: :user_id,
+                                       inverse_of: :user
+  has_many :override_tests, through: :test_visibility_overrides,
+                            source: :test
   has_many :form_submissions, dependent: :restrict_with_error,
                               foreign_key: :staff_id,
                               inverse_of: :staff
@@ -19,4 +24,13 @@ class SchoolManager < User
   has_many :parents, through: :students
   has_many :test_results, through: :students
   has_many :teachers, through: :schools
+
+  def available_tests(date = Time.zone.today)
+    scoped_test_ids = super(date).select(:id)
+    override_test_ids = test_visibility_overrides.select(:test_id)
+
+    Test.where(id: scoped_test_ids)
+        .or(Test.where(id: override_test_ids))
+        .distinct
+  end
 end
