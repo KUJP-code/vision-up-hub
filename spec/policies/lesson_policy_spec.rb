@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.shared_examples 'writer for LessonPolicy' do
   it_behaves_like 'authorized user'
+  it { is_expected.to authorize_action(:homework_index) }
 
   it 'scopes to all lessons' do
     expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.all)
@@ -39,6 +40,7 @@ RSpec.describe LessonPolicy do
     let(:user) { build(:user, :org_admin) }
 
     it_behaves_like 'authorized user for viewing'
+    it { is_expected.to authorize_action(:homework_index) }
 
     it 'scopes to plan lessons' do
       course = create(:course)
@@ -59,6 +61,7 @@ RSpec.describe LessonPolicy do
     let(:user) { build(:user, :sales) }
 
     it_behaves_like 'unauthorized user'
+    it { is_expected.not_to authorize_action(:homework_index) }
 
     it 'scopes to nothing' do
       expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.none)
@@ -69,6 +72,7 @@ RSpec.describe LessonPolicy do
     let(:user) { build(:user, :school_manager) }
 
     it_behaves_like 'authorized user for viewing'
+    it { is_expected.to authorize_action(:homework_index) }
 
     it 'scopes to plan lessons' do
       course = create(:course)
@@ -89,6 +93,7 @@ RSpec.describe LessonPolicy do
     let(:user) { build(:user, :teacher) }
 
     it_behaves_like 'authorized user for viewing'
+    it { is_expected.to authorize_action(:homework_index) }
 
     it 'scopes to plan lessons' do
       course = create(:course)
@@ -109,6 +114,7 @@ RSpec.describe LessonPolicy do
     let(:user) { build(:user, :parent) }
 
     it_behaves_like 'unauthorized user'
+    it { is_expected.not_to authorize_action(:homework_index) }
 
     it 'scopes to nothing' do
       expect(Pundit.policy_scope!(user, Lesson)).to eq(Lesson.none)

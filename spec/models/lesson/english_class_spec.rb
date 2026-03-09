@@ -48,4 +48,21 @@ RSpec.describe EnglishClass do
       expect(pdf).to be_nil
     end
   end
+
+  context 'when attaching homework files' do
+    let(:english_class) { create(:english_class) }
+    let(:pdf) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
+
+    it 'attaches homework sheet and answers' do
+      english_class.homework_sheet.attach(
+        Rack::Test::UploadedFile.new(pdf, 'application/pdf')
+      )
+      english_class.homework_answers.attach(
+        Rack::Test::UploadedFile.new(pdf, 'application/pdf')
+      )
+
+      expect(english_class.homework_sheet).to be_attached
+      expect(english_class.homework_answers).to be_attached
+    end
+  end
 end
