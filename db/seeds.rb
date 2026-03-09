@@ -106,6 +106,15 @@ Lesson.where(type: %w[EnglishClass StandShowSpeak KindyPhonic]).each do |lesson|
   lesson.guide.attach(test_file)
 end
 
+puts 'Adding homework files to English classes...'
+
+Lesson.where(type: 'EnglishClass')
+      .where.not(level: Lesson.levels[:kindy])
+      .find_each do |lesson|
+  lesson.homework_sheet.attach(test_file) unless lesson.homework_sheet.attached?
+  lesson.homework_answers.attach(test_file) unless lesson.homework_answers.attached?
+end
+
 puts 'Creating category resources...'
 
 CategoryResource.lesson_categories.keys.each do |lc|

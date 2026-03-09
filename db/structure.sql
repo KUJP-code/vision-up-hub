@@ -1,7 +1,7 @@
-\restrict crIzG3YUWgcB9r1h5byZ39so6kRuQEeLCaRunJ5mLfZafxqMClexk7PhoJcvaoB
+\restrict gS5MGf0b0ICql5C9r1APCY7c6SDL9pyhCnfalMg4rYHTO6eUvpq7y4UhtdI9PMK
 
--- Dumped from database version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.20 (Ubuntu 14.20-0ubuntu0.22.04.1)
+-- Dumped from database version 16.11
+-- Dumped by pg_dump version 16.11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1178,74 +1178,6 @@ CREATE SEQUENCE public.form_templates_id_seq
 --
 
 ALTER SEQUENCE public.form_templates_id_seq OWNED BY public.form_templates.id;
-
-
---
--- Name: homework_resources; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.homework_resources (
-    id bigint NOT NULL,
-    week integer NOT NULL,
-    english_class_id bigint NOT NULL,
-    blob_id bigint NOT NULL,
-    course_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    is_answers boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: homework_resources_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.homework_resources_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: homework_resources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.homework_resources_id_seq OWNED BY public.homework_resources.id;
-
-
---
--- Name: homeworks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.homeworks (
-    id bigint NOT NULL,
-    course_id bigint NOT NULL,
-    week integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    level integer
-);
-
-
---
--- Name: homeworks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.homeworks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: homeworks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.homeworks_id_seq OWNED BY public.homeworks.id;
 
 
 --
@@ -2803,20 +2735,6 @@ ALTER TABLE ONLY public.form_templates ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: homework_resources id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homework_resources ALTER COLUMN id SET DEFAULT nextval('public.homework_resources_id_seq'::regclass);
-
-
---
--- Name: homeworks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homeworks ALTER COLUMN id SET DEFAULT nextval('public.homeworks_id_seq'::regclass);
-
-
---
 -- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3230,22 +3148,6 @@ ALTER TABLE ONLY public.form_submissions
 
 ALTER TABLE ONLY public.form_templates
     ADD CONSTRAINT form_templates_pkey PRIMARY KEY (id);
-
-
---
--- Name: homework_resources homework_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homework_resources
-    ADD CONSTRAINT homework_resources_pkey PRIMARY KEY (id);
-
-
---
--- Name: homeworks homeworks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homeworks
-    ADD CONSTRAINT homeworks_pkey PRIMARY KEY (id);
 
 
 --
@@ -3756,41 +3658,6 @@ CREATE INDEX index_form_submissions_on_staff_id ON public.form_submissions USING
 --
 
 CREATE INDEX index_form_templates_on_organisation_id ON public.form_templates USING btree (organisation_id);
-
-
---
--- Name: index_homework_resources_on_blob_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_homework_resources_on_blob_id ON public.homework_resources USING btree (blob_id);
-
-
---
--- Name: index_homework_resources_on_course_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_homework_resources_on_course_id ON public.homework_resources USING btree (course_id);
-
-
---
--- Name: index_homework_resources_on_english_class_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_homework_resources_on_english_class_id ON public.homework_resources USING btree (english_class_id);
-
-
---
--- Name: index_homeworks_on_course_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_homeworks_on_course_id ON public.homeworks USING btree (course_id);
-
-
---
--- Name: index_homeworks_on_course_id_and_week_and_level; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_homeworks_on_course_id_and_week_and_level ON public.homeworks USING btree (course_id, week, level);
 
 
 --
@@ -4592,14 +4459,6 @@ ALTER TABLE ONLY public.solid_queue_blocked_executions
 
 
 --
--- Name: homework_resources fk_rails_559e23a7b0; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homework_resources
-    ADD CONSTRAINT fk_rails_559e23a7b0 FOREIGN KEY (course_id) REFERENCES public.courses(id);
-
-
---
 -- Name: lessons fk_rails_5e4fbd8e41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4645,14 +4504,6 @@ ALTER TABLE ONLY public.plans
 
 ALTER TABLE ONLY public.schools
     ADD CONSTRAINT fk_rails_75ddd5ca62 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
-
-
---
--- Name: homework_resources fk_rails_7a95a247ee; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homework_resources
-    ADD CONSTRAINT fk_rails_7a95a247ee FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
 
 
 --
@@ -4717,14 +4568,6 @@ ALTER TABLE ONLY public.lessons
 
 ALTER TABLE ONLY public.organisation_lessons
     ADD CONSTRAINT fk_rails_912f3e686d FOREIGN KEY (lesson_id) REFERENCES public.lessons(id);
-
-
---
--- Name: homework_resources fk_rails_92a10d0e8b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homework_resources
-    ADD CONSTRAINT fk_rails_92a10d0e8b FOREIGN KEY (english_class_id) REFERENCES public.lessons(id);
 
 
 --
@@ -4853,14 +4696,6 @@ ALTER TABLE ONLY public.test_results
 
 ALTER TABLE ONLY public.student_classes
     ADD CONSTRAINT fk_rails_b71b91fc1a FOREIGN KEY (student_id) REFERENCES public.students(id);
-
-
---
--- Name: homeworks fk_rails_ba013efaf8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.homeworks
-    ADD CONSTRAINT fk_rails_ba013efaf8 FOREIGN KEY (course_id) REFERENCES public.courses(id) ON DELETE CASCADE;
 
 
 --
@@ -5003,7 +4838,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict crIzG3YUWgcB9r1h5byZ39so6kRuQEeLCaRunJ5mLfZafxqMClexk7PhoJcvaoB
+\unrestrict gS5MGf0b0ICql5C9r1APCY7c6SDL9pyhCnfalMg4rYHTO6eUvpq7y4UhtdI9PMK
 
 SET search_path TO "$user", public;
 
@@ -5012,6 +4847,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('4'),
 ('3'),
 ('20260304090000'),
+('20260303010000'),
 ('20260203120000'),
 ('20260107043215'),
 ('20251210011748'),
