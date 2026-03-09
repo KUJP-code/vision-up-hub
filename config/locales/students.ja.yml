@@ -36,6 +36,8 @@ ja:
       homework: "宿題"
       date: "日付"
       book_pages: "ページ"
+      questions: "問題"
+      answers: "解答"
     index:
       create_student: "生徒を追加する"
       students: "生徒一覧"

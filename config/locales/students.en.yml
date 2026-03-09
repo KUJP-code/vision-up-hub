@@ -30,6 +30,8 @@ en:
       homework: "Homework"
       date: "Date"
       book_pages: "Pages"
+      questions: "Questions"
+      answers: "Answers"
     index:
       create_student: "Create new student"
       students: "Student List"
