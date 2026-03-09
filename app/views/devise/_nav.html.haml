@@ -1,12 +1,8 @@
--# locals: ()
+-# locals: (show_sign_in: true)
 
-%nav.fixed.top-0.w-full.flex.items-center.gap-3.bg-secondary.h-16.text-white.font-bold.px-3.z-10
-  -# TODO: have method take from params also since current_user.presence doesnt exist
-  -# = link_to root_path do
-    %image{ height: '64px', width: '120px', src: org_favicon(current_user.presence) }
-  .flex-grow
-  = locale_toggle(classes: 'fill-white')
+%nav.fixed.top-0.left-0.right-0.h-14.bg-white.text-secondary.font-extrabold.flex.items-center.justify-end.px-3.z-10
+  = locale_toggle(classes: 'fill-secondary', link_classes: 'inline-flex items-center')
 
-  - if controller_name != 'sessions'
+  - if show_sign_in && controller_name != 'sessions'
     = link_to t('.sign_in'),
               new_session_path(resource_name)

@@ -23,8 +23,8 @@ class User < ApplicationRecord
   attribute :notifications, Notification.to_array_type
   validates :notifications, store_model: true
 
-  devise :confirmable, :database_authenticatable, :lockable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :confirmable, :database_authenticatable, :lockable, :password_expirable,
+         :registerable, :recoverable, :rememberable, :trackable, :validatable
 
   def is?(*types)
     types.include?(type)
@@ -38,6 +38,12 @@ class User < ApplicationRecord
     return false if organisation_id.nil?
 
     organisation_id == 1 || organisation.name == 'KidsUP'
+  end
+
+  def need_change_password?
+    return false unless is?('Admin')
+
+    super
   end
 
   protected

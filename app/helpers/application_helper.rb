@@ -106,10 +106,10 @@ module ApplicationHelper
     safe_join(list)
   end
 
-  def locale_toggle(classes: '', turbo_stream: false)
+  def locale_toggle(classes: '', turbo_stream: false, link_classes: nil)
     new_locale = I18n.locale == :en ? :ja : :en
     link_to url_for(request.query_parameters.merge(locale: new_locale)),
-            class: main_nav_class('locale', ''),
+            class: link_classes || main_nav_class('locale', ''),
             id: 'locale_toggle',
             title: "Switch to #{new_locale.to_s.upcase}",
             data: { turbo_stream: } do

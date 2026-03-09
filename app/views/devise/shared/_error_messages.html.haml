@@ -1,6 +1,7 @@
--# locals: (resource:)
+-# locals: (resource: nil)
+- resource ||= (respond_to?(:resource, true) ? self.resource : @resource)
 
-- if resource.errors.any?
+- if resource&.errors&.any?
   %div{ id: 'error_explanation', data: { turbo_cache: false } }
     %h2
       = t('errors.messages.not_saved',
