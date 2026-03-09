@@ -97,6 +97,13 @@ ja:
       send_paranoid_instructions: メールアドレスが登録済みの場合、パスワード再設定用のメールが数分以内に送信されます。
       updated: パスワードが正しく変更されました。
       updated_not_active: パスワードが正しく変更されました。
+    password_expired:
+      show:
+        title: パスワードを変更
+        current_password: 現在のパスワード
+        new_password: 新しいパスワード
+        new_password_confirmation: 新しいパスワード（確認用）
+        change_my_password: パスワードを変更する
     registrations:
       destroyed: アカウントを削除しました。またのご利用をお待ちしております。
       edit:
