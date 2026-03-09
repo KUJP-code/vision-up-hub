@@ -139,10 +139,24 @@ class StudentsController < ApplicationController
     current_week = ((Time.zone.today - @plan.start.to_date).to_i / 7) + 1
     week_range = (current_week - 2..current_week + 2).to_a.select { |w| w.between?(1, 52) }
 
-    @homework_resources = Homework
-                          .where(course_id: course.id, level: @student.normalized_level, week: week_range)
-                          .includes(:questions_attachment, :answers_attachment)
+    @homework_resources = course
+                          .course_lessons
+                          .joins(:lesson)
+                          .where(
+                            week: week_range,
+                            lessons: {
+                              type: 'EnglishClass',
+                              level: @student.normalized_level
+                            }
+                          )
+                          .includes(lesson: [
+                                      { homework_sheet_attachment: :blob },
+                                      { homework_answers_attachment: :blob }
+                                    ])
                           .order(:week)
+                          .select do |course_lesson|
+      course_lesson.lesson.homework_sheet.attached? || course_lesson.lesson.homework_answers.attached?
+    end
   end
 
   def student_params

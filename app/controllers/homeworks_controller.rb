@@ -2,74 +2,37 @@
 
 class HomeworksController < ApplicationController
   before_action :set_courses
-  before_action :set_course, only: %i[index new create destroy]
-  before_action :set_homework, only: %i[destroy]
-  after_action :verify_policy_scoped, only: %i[index]
-  after_action :verify_authorized, except: %i[index]
+  before_action :set_course
+  after_action :verify_authorized
 
   def index
+    authorize Lesson, :homework_index?
     return unless @course
 
-    if current_user.is?('Admin', 'Writer')
-      setup_admin_homeworks
-    else
-      setup_level_grouped_homeworks
-    end
-  end
-
-  def new
-    @homework = @course.homeworks.new
-  end
-
-  def create
-    @homework = @course.homeworks.find_or_initialize_by(week: homework_params[:week], level: homework_params[:level])
-    authorize @homework
-    @homework.assign_attributes(homework_params)
-
-    if @homework.save
-      redirect_to homeworks_path(course_id: @course.id), notice: 'Homework saved.'
-    else
-      redirect_to homeworks_path(course_id: @course.id), alert: 'Failed to save homework.'
-    end
-  end
-
-  def destroy
-    @course = @homework.course
-    authorize @homework
-    @homework.destroy
-    redirect_to homeworks_path(course_id: @course.id), notice: 'Homework deleted.'
+    setup_level_grouped_homeworks
   end
 
   private
 
-  def set_homework
-    @homework = Homework.find(params[:id])
-  end
-
   def set_course
-    @course = Course.find_by(id: params[:course_id]) || @courses.first
+    @course = @courses.find_by(id: params[:course_id]) || @courses.first
   end
 
   def set_courses
-    @courses = policy_scope(Course)
-  end
-
-  def setup_admin_homeworks
-    @homeworks = @course.homeworks
-                        .includes(:questions_attachment, :answers_attachment,
-                                  questions_attachment: :blob, answers_attachment: :blob)
-                        .index_by(&:week)
-
-    @homeworks_by_week_and_level = @course.homeworks.index_by { |h| [h.week, h.level] }
+    @courses = if current_user.is?('Admin', 'Writer')
+                 Course.order(:title)
+               else
+                 policy_scope(Course).order(:title)
+               end
   end
 
   def setup_level_grouped_homeworks
     return unless load_plan
 
     week_range = current_week_range(@plan)
-    homework_scope = load_homework_for_weeks(week_range)
+    course_lessons = load_homework_for_weeks(week_range)
 
-    @homeworks_grouped_by_level = homework_scope.group_by(&:short_level)
+    @homeworks_grouped_by_level = course_lessons.group_by { |course_lesson| course_lesson.lesson.short_level }
     @short_levels = @homeworks_grouped_by_level.keys.sort_by { |lvl| level_sort_index(lvl) }
 
     if params[:level].blank? && @short_levels.present?
@@ -77,16 +40,12 @@ class HomeworksController < ApplicationController
     end
 
     selected_level = params[:level]
-    @homework_resources = filter_and_sort_homework(@homeworks_grouped_by_level[selected_level], week_range)
+    @homework_resources = filter_and_sort_homework(@homeworks_grouped_by_level[selected_level])
   end
 
   def level_sort_index(level)
     ordered = ['Land', 'Sky', 'Galaxy', 'Keep Up', 'Specialist']
     ordered.index(level) || 999
-  end
-
-  def homework_params
-    params.require(:homework).permit(:week, :questions, :answers, :level)
   end
 
   def load_plan
@@ -102,14 +61,21 @@ class HomeworksController < ApplicationController
   end
 
   def load_homework_for_weeks(week_range)
-    @course.homeworks
-           .where(week: week_range)
-           .includes(:questions_attachment, :answers_attachment)
+    @course.course_lessons
+           .joins(:lesson)
+           .where(week: week_range, lessons: { type: 'EnglishClass' })
+           .includes(lesson: [
+                       { homework_sheet_attachment: :blob },
+                       { homework_answers_attachment: :blob }
+                     ])
+           .select do |course_lesson|
+      course_lesson.lesson.homework_sheet.attached? || course_lesson.lesson.homework_answers.attached?
+    end
   end
 
-  def filter_and_sort_homework(homeworks, week_range)
+  def filter_and_sort_homework(homeworks)
     return [] unless homeworks
 
-    homeworks.select { |hw| week_range.include?(hw.week) }.sort_by(&:week)
+    homeworks.sort_by(&:week)
   end
 end

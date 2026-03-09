@@ -24,10 +24,17 @@ RSpec.describe 'creating an EnglishClass lesson' do
       fill_in 'english_class_unit', with: '2'
       fill_in 'english_class_lesson_topic', with: 'Topic'
       fill_in 'english_class_vocab', with: "Vocab 1\nVocab 2"
+      attach_file 'english_class_homework_sheet', Rails.root.join('spec/Brett_Tanner_Resume.pdf')
+      attach_file 'english_class_homework_answers', Rails.root.join('spec/Brett_Tanner_Resume.pdf')
 
       click_button I18n.t('helpers.submit.create')
     end
+
+    english_class = EnglishClass.find_by(title: 'Test English Class')
+
     expect(page).to have_content('Test English Class')
     expect(page).to have_content('Term 1 Unit 2 - Topic')
+    expect(english_class.homework_sheet).to be_attached
+    expect(english_class.homework_answers).to be_attached
   end
 end

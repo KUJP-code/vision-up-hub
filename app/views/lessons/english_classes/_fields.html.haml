@@ -4,6 +4,26 @@
   = f.label :guide
   = f.file_field :guide, accept: 'application/pdf'
 
+.space-y-4{ data: { fields_target: 'englishHomework' },
+            style: lesson.kindy? ? 'display: none;' : nil }
+  .form-group
+    = f.label :homework_sheet
+    = f.file_field :homework_sheet, accept: 'application/pdf'
+    - if lesson.homework_sheet.attached?
+      = link_to lesson.homework_sheet.filename.to_s,
+                url_for(lesson.homework_sheet),
+                target: '_blank',
+                rel: 'noopener'
+
+  .form-group
+    = f.label :homework_answers
+    = f.file_field :homework_answers, accept: 'application/pdf'
+    - if lesson.homework_answers.attached?
+      = link_to lesson.homework_answers.filename.to_s,
+                url_for(lesson.homework_answers),
+                target: '_blank',
+                rel: 'noopener'
+
 .flex.gap-2.w-full
   .form-group
     = f.label :term

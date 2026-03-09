@@ -1,0 +1,20 @@
+-# locals: (lesson:)
+
+- if !lesson.kindy? && (lesson.homework_sheet.attached? || lesson.homework_answers.attached?)
+  .flex.flex-col.gap-3
+    %h3.font-bold Homework
+    .flex.flex-wrap.gap-3
+      - if lesson.homework_sheet.attached?
+        = link_to url_for(lesson.homework_sheet),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn btn-secondary resource flex items-center justify-center gap-2' do
+          %span Homework Sheet
+          = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+      - if lesson.homework_answers.attached?
+        = link_to url_for(lesson.homework_answers),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn btn-danger resource flex items-center justify-center gap-2' do
+          %span Homework Answers
+          = inline_svg_tag 'download_icon.svg', class: 'fill-white'

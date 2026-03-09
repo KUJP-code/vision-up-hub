@@ -74,9 +74,9 @@
     - if @phonics_resources
       = render 'lessons/phonics_classes/phonics_resources',
                resources: @phonics_resources
-    - if @homework_resources
+    - if @lesson.is_a?(EnglishClass)
       = render 'lessons/english_classes/homework_resources',
-               resources: @homework_resources
+               lesson: @lesson
   .flex.justify-center.gap-3
     = link_to 'Delete',
               lesson_path(@lesson),

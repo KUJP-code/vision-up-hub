@@ -9,6 +9,10 @@ class LessonPolicy < ApplicationPolicy
     view_lessons?
   end
 
+  def homework_index?
+    view_lessons?
+  end
+
   def new?
     manage_lessons?
   end
