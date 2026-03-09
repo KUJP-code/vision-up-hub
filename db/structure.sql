@@ -1,4 +1,4 @@
-\restrict gS5MGf0b0ICql5C9r1APCY7c6SDL9pyhCnfalMg4rYHTO6eUvpq7y4UhtdI9PMK
+\restrict q5og6SeLfgEP2WLdzGPyK1dojykuem8S26IIFs34BK8z6PX2ePgPHfPuThdgBJb
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -2565,7 +2565,8 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     extra_emails jsonb DEFAULT '[]'::jsonb,
-    notifications jsonb DEFAULT '[]'::jsonb
+    notifications jsonb DEFAULT '[]'::jsonb,
+    password_changed_at timestamp(6) without time zone
 );
 
 
@@ -4838,7 +4839,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict gS5MGf0b0ICql5C9r1APCY7c6SDL9pyhCnfalMg4rYHTO6eUvpq7y4UhtdI9PMK
+\unrestrict q5og6SeLfgEP2WLdzGPyK1dojykuem8S26IIFs34BK8z6PX2ePgPHfPuThdgBJb
 
 SET search_path TO "$user", public;
 
@@ -4846,6 +4847,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260309170000'),
 ('20260304090000'),
 ('20260303010000'),
 ('20260203120000'),
