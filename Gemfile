@@ -37,6 +37,7 @@ gem 'bootsnap', '1.18.3', require: false
 # Use Devise for authentication
 gem 'devise', '4.9.3'
 gem 'devise-i18n', '1.12.0'
+gem 'devise-security', '0.17.0'
 
 
 # And Pundit for authorization
