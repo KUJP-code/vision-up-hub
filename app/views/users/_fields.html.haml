@@ -1,6 +1,6 @@
 -# locals: (f:, orgs:)
 
-- temp_pass = SecureRandom.hex(10)
+- temp_pass = "Temp#{SecureRandom.hex(4)}9a"
 
 = f.hidden_field :organisation_id
 
@@ -19,6 +19,7 @@
                    value: temp_pass,
                    required: true,
                    minlength: 10
+    %small At least 10 characters, with uppercase, lowercase, and a number
 
   .form-group
     = f.label :password_confirmation

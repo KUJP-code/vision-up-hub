@@ -122,8 +122,20 @@ class ApplicationController < ActionController::Base
     redirect_to new_user_session_path, notice: t('not_authorized') and return
   end
 
+  def ignore_password_expire?
+    return false unless user_signed_in?
+    return false unless current_user.is?('Admin')
+
+    password_reset_blocked_during_business_hours?
+  end
+
   def logging_out?
     devise_controller? && action_name == 'destroy'
+  end
+
+  def password_reset_blocked_during_business_hours?
+    current_hour = Time.zone.now.hour
+    current_hour >= 13 && current_hour <= 19
   end
 
   def user_not_authorized

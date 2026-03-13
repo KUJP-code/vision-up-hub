@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class AdminsController < UsersController
+  BATCH_PASSWORD_GROUPS = {
+    'ku_teachers' => 'Teacher',
+    'ku_managers' => 'SchoolManager'
+  }.freeze
+
   def show
     @assigned_lessons = @user.assigned_lessons
     @announcements = policy_scope(Announcement)
@@ -57,7 +62,12 @@ class AdminsController < UsersController
 
   def change_password
     authorize :admin
-    user = User.find_by(email: change_password_params[:email])
+    if change_password_params[:target_group].present?
+      batch_change_password
+      return
+    end
+
+    user = User.find_for_authentication(email: change_password_params[:email])
     if user.nil?
       redirect_to root_url, alert: 'No user found'
       return
@@ -71,12 +81,17 @@ class AdminsController < UsersController
                   alert: 'Passwords did not match'
       return
     end
-    user.reset_password(change_password_params[:new_password], change_password_params[:confirm_new_password])
-    redirect_to root_url, notice: 'Password successfully changed'
+    if user.reset_password(change_password_params[:new_password], change_password_params[:confirm_new_password])
+      redirect_to root_url, notice: 'Password successfully changed'
+    else
+      redirect_to root_url, alert: user.errors.full_messages.to_sentence
+    end
   end
 
   def new_password_change
     authorize :admin
+    @ku_teacher_count = batch_password_targets('ku_teachers').count
+    @ku_manager_count = batch_password_targets('ku_managers').count
   end
 
   def reassign_editor
@@ -96,7 +111,67 @@ class AdminsController < UsersController
   private
 
   def change_password_params
-    params.permit(:email, :new_password, :confirm_new_password)
+    params.permit(:email, :new_password, :confirm_new_password, :target_group)
+  end
+
+  def batch_change_password
+    unless current_user.is?('Admin')
+      redirect_to root_url, alert: 'Not authorized to batch change these passwords'
+      return
+    end
+
+    users = batch_password_targets(change_password_params[:target_group])
+    if users.none?
+      redirect_to root_url, alert: 'No matching users found'
+      return
+    end
+
+    if change_password_params[:new_password] != change_password_params[:confirm_new_password]
+      redirect_to root_url, alert: 'Passwords did not match'
+      return
+    end
+
+    error_message = nil
+    updated_count = 0
+
+    User.transaction do
+      users.find_each do |user|
+        unless user.reset_password(change_password_params[:new_password], change_password_params[:confirm_new_password])
+          error_message = "#{user.email}: #{user.errors.full_messages.to_sentence}"
+          raise ActiveRecord::Rollback
+        end
+
+        updated_count += 1
+      end
+    end
+
+    if error_message.present?
+      redirect_to root_url, alert: error_message
+    else
+      redirect_to root_url, notice: "#{updated_count} #{batch_group_label(change_password_params[:target_group])} password(s) successfully changed"
+    end
+  end
+
+  def batch_password_targets(target_group)
+    role = BATCH_PASSWORD_GROUPS[target_group]
+    return User.none if role.nil?
+
+    User.where(type: role, organisation_id: kidsup_organisation_ids)
+  end
+
+  def kidsup_organisation_ids
+    Organisation.where(name: 'KidsUP').or(Organisation.where(id: 1)).distinct.select(:id)
+  end
+
+  def batch_group_label(target_group)
+    case target_group
+    when 'ku_teachers'
+      'KidsUP teacher'
+    when 'ku_managers'
+      'KidsUP manager'
+    else
+      'user'
+    end
   end
 
   def allowed_password_reset_target?(user)

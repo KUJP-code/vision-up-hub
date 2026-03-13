@@ -6,7 +6,7 @@ FactoryBot.define do
     organisation
     sequence(:name) { |n| "Test User #{n}" }
     sequence(:email) { |n| "test_user#{n}@example.com" }
-    password { 'passwordpassword' }
+    password { 'Password123' }
     type { 'OrgAdmin' }
 
     trait :admin do

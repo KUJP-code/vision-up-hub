@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Change passwords for users', :js do
   let(:admin) { create(:user, :admin) }
   let(:email) { 'testemail@gmail.com' }
-  let(:password) { 'testpassword' }
+  let(:password) { 'Testpassword1' }
 
   before do
     sign_in admin
@@ -15,10 +15,13 @@ RSpec.describe 'Change passwords for users', :js do
     create(:user, :teacher, email:)
 
     visit admin_password_change_path
-    fill_in 'email', with: email
-    fill_in 'new_password', with: password
-    fill_in 'confirm_new_password', with: password
-    click_on 'commit'
+    within('form.form', match: :first) do
+      fill_in 'email', with: email
+      fill_in 'new_password', with: password
+      fill_in 'confirm_new_password', with: password
+      click_on 'commit'
+    end
+
     expect(page).to have_content('Password successfully changed')
   end
 end

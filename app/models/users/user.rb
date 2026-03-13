@@ -5,9 +5,16 @@ class User < ApplicationRecord
 
   KU_TYPES = %w[Admin Sales Writer].freeze
   TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
+  PASSWORD_COMPLEXITY_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+\z/.freeze
 
   validates :name, presence: true
   validates :type, inclusion: { in: TYPES }
+  validates :password,
+            format: {
+              with: PASSWORD_COMPLEXITY_REGEX,
+              message: 'must include at least one uppercase letter, one lowercase letter, and one number'
+            },
+            allow_blank: true
 
   belongs_to :organisation
   has_many :privacy_policy_acceptances, dependent: :destroy

@@ -64,3 +64,6 @@ application.register("turbo-modal", TurboModalController);
 
 import PopoverController from "./popover_controller";
 application.register("popover", PopoverController);
+
+import PasswordChangeModeController from "./password_change_mode_controller";
+application.register("password-change-mode", PasswordChangeModeController);
