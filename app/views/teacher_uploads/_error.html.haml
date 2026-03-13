@@ -19,10 +19,16 @@
                       @teacher.email, form:
   %td.bg-danger
     = password_field_tag 'teacher_upload[password]',
-                         '', form:
+                         '',
+                         minlength: 10,
+                         title: 'Password must be at least 10 characters and include uppercase, lowercase, and a number',
+                         form:
   %td.bg-danger
     = password_field_tag 'teacher_upload[password_confirmation]',
-                         '', form:
+                         '',
+                         minlength: 10,
+                         title: 'Password must be at least 10 characters and include uppercase, lowercase, and a number',
+                         form:
   %td.bg-danger
     = form_with model: @teacher, url:, method:,
                 html: { class: 'flex items-center justify-center gap-2 p-2',

@@ -27,8 +27,8 @@ RSpec.describe 'creating teacher records from a CSV', :js do
     within '#teacher-row-2' do
       fill_in 'teacher_upload[name]', with: 'Jane Doe'
       fill_in 'teacher_upload[email]', with: 'jane@doe.com'
-      fill_in 'teacher_upload[password]', with: 'testpassword'
-      fill_in 'teacher_upload[password_confirmation]', with: 'testpassword'
+      fill_in 'teacher_upload[password]', with: 'TeacherPass123'
+      fill_in 'teacher_upload[password_confirmation]', with: 'TeacherPass123'
       click_button 'Create User'
     end
     expect(page).to have_css('.uploaded', count: 3)
@@ -48,8 +48,8 @@ end
 
 def create_teachers
   teachers = build_list(:user, 2, :teacher,
-                        password: 'testpassword',
-                        password_confirmation: 'testpassword')
+                        password: 'TeacherPass123',
+                        password_confirmation: 'TeacherPass123')
   invalid_teacher = build(:user, :teacher, email: '')
   teachers << invalid_teacher
   teachers.map { |t| Teacher::CSV_HEADERS.map { |h| t.send(h.to_sym) } }

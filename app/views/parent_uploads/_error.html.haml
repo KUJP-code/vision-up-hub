@@ -16,9 +16,17 @@
   %td.bg-danger
     = email_field_tag 'parent_upload[email]', @parent.email, form:
   %td.bg-danger
-    = password_field_tag 'parent_upload[password]', '', form:
+    = password_field_tag 'parent_upload[password]',
+                         '',
+                         minlength: 10,
+                         title: 'Password must be at least 10 characters and include uppercase, lowercase, and a number',
+                         form:
   %td.bg-danger
-    = password_field_tag 'parent_upload[password_confirmation]', '', form:
+    = password_field_tag 'parent_upload[password_confirmation]',
+                         '',
+                         minlength: 10,
+                         title: 'Password must be at least 10 characters and include uppercase, lowercase, and a number',
+                         form:
   %td.bg-danger
     = form_with model: @parent, url:, method:,
                 html: { class: 'flex items-center justify-center gap-2 p-2',

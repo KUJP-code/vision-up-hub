@@ -27,8 +27,8 @@ RSpec.describe 'creating parent records from a CSV', :js do
     within '#parent-row-2' do
       fill_in 'parent_upload[name]', with: 'Jane Doe'
       fill_in 'parent_upload[email]', with: 'jane@doe.com'
-      fill_in 'parent_upload[password]', with: 'testpassword'
-      fill_in 'parent_upload[password_confirmation]', with: 'testpassword'
+      fill_in 'parent_upload[password]', with: 'ParentPass123'
+      fill_in 'parent_upload[password_confirmation]', with: 'ParentPass123'
       click_button 'Create User'
     end
     expect(page).to have_css('.uploaded', count: 3)
@@ -48,8 +48,8 @@ end
 
 def create_parents
   parents = build_list(:user, 2, :parent,
-                       password: 'testpassword',
-                       password_confirmation: 'testpassword')
+                       password: 'ParentPass123',
+                       password_confirmation: 'ParentPass123')
   invalid_parent = build(:user, :parent, email: '')
   parents << invalid_parent
   parents.map { |p| Parent::CSV_HEADERS.map { |h| p.send(h.to_sym) } }
