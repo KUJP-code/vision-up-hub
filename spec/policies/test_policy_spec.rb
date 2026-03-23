@@ -13,7 +13,7 @@ RSpec.shared_examples 'school staff for tests' do
     create(:test, name: 'Future Test',
                   course_tests: [create(:course_test, course_id: course.id, week: 3)])
     create(:test, name: 'Spare Test')
-    expect(Pundit.policy_scope!(user, Test)).to eq([past_test, current_test])
+    expect(Pundit.policy_scope!(user, Test)).to match_array([past_test, current_test])
   end
 end
 

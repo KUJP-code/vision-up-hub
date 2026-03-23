@@ -42,9 +42,10 @@ RSpec.describe TeacherPolicy do
   context 'when school manager' do
     context "when manager of teacher's school" do
       let(:school) { create(:school) }
-      let(:user) { build(:user, :school_manager, schools: [school]) }
+      let(:user) { build(:user, :school_manager, organisation: school.organisation, schools: [school]) }
 
       before do
+        record.organisation = school.organisation
         school.teachers << record
       end
 
@@ -53,7 +54,7 @@ RSpec.describe TeacherPolicy do
 
     context 'when teacher has no schools' do
       let(:school) { create(:school) }
-      let(:user) { build(:user, :school_manager, schools: [school]) }
+      let(:user) { build(:user, :school_manager, organisation: school.organisation, schools: [school]) }
 
       it_behaves_like 'unauthorized user'
     end
@@ -62,7 +63,8 @@ RSpec.describe TeacherPolicy do
       let(:user) { build(:user, :school_manager) }
 
       before do
-        record.schools << create(:school)
+        school = create(:school, organisation: record.organisation)
+        record.schools << school
         record.save
       end
 
@@ -78,7 +80,7 @@ RSpec.describe TeacherPolicy do
     end
 
     context 'when interacting with another teacher' do
-      let(:user) { create(:user, :teacher) }
+      let(:user) { create(:user, :teacher, organisation: record.organisation) }
 
       it_behaves_like 'unauthorized user'
     end

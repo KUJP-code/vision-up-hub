@@ -71,7 +71,7 @@ RSpec.describe SchoolPolicy do
 
   context 'when school manager' do
     context 'when manager of school' do
-      let(:user) { create(:user, :school_manager, schools: [record]) }
+      let(:user) { create(:user, :school_manager, organisation: record.organisation, schools: [record]) }
 
       it_behaves_like 'authorized user for editing'
 
@@ -92,7 +92,11 @@ RSpec.describe SchoolPolicy do
   end
 
   context 'when teacher' do
-    let(:user) { create(:user, :teacher) }
+    let(:user) { create(:user, :teacher, organisation: record.organisation) }
+
+    before do
+      user.schools << record
+    end
 
     it_behaves_like 'unauthorized user'
 

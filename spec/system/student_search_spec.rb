@@ -49,8 +49,8 @@ RSpec.describe 'Student search' do
 
   context 'when school manager' do
     let(:school) { create(:school) }
-    let(:user) { create(:user, :school_manager, schools: [school]) }
-    let!(:extra) { create(:student, school:) }
+    let(:user) { create(:user, :school_manager, organisation: school.organisation, schools: [school]) }
+    let!(:extra) { create(:student, school:, name: 'Extra Student') }
 
     before do
       school.students << student

@@ -106,9 +106,10 @@ RSpec.describe SupportRequestPolicy do
     end
 
     context 'when manager of requester school' do
-      let(:user) { create(:user, :school_manager, schools: [create(:school)]) }
+      let(:school) { create(:school) }
+      let(:user) { create(:user, :school_manager, organisation: school.organisation, schools: [school]) }
       let(:requester) do
-        create(:user, :teacher, schools: [user.schools.first])
+        create(:user, :teacher, organisation: school.organisation, schools: [school])
       end
 
       before do
@@ -130,11 +131,12 @@ RSpec.describe SupportRequestPolicy do
     end
 
     it 'scopes to all support requests from their school' do
-      user = create(:user, :school_manager, schools: [create(:school)])
+      school = create(:school)
+      user = create(:user, :school_manager, organisation: school.organisation, schools: [school])
       create(:user, :org_admin).support_requests << support_request
       school_requests = create_list(
         :support_request, 2,
-        user: create(:user, :teacher, schools: [user.schools.first])
+        user: create(:user, :teacher, organisation: school.organisation, schools: [school])
       )
       expect(Pundit.policy_scope!(user, SupportRequest)).to eq(school_requests)
     end

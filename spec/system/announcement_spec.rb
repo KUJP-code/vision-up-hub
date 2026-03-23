@@ -9,7 +9,7 @@ RSpec.describe 'Creating and viewing an announcement', :js do
 
   before do
     sign_in admin
-    school = create(:school, ip: '*')
+    school = create(:school, organisation: admin.organisation, ip: '*')
     school.teachers << teacher
   end
 

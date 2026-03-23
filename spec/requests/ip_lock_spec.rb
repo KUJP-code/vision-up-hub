@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'School IP Lock' do
-  let(:school) { create(:school, ip: '89.207.132.170') }
+  let(:school) { create(:school, organisation: user.organisation, ip: '89.207.132.170') }
   let(:non_school_ip) { '127.0.0.1' }
   let(:kids_up) { create(:organisation, name: 'KidsUP') }
 
@@ -31,7 +31,7 @@ RSpec.describe 'School IP Lock' do
     end
 
     it 'allows external access if wildcard is part of allowed IPs' do
-      wildcard_school = create(:school, ip: '*')
+      wildcard_school = create(:school, organisation: user.organisation, ip: '*')
       user.schools << wildcard_school
       get students_path, env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to have_http_status(:success)
@@ -85,7 +85,7 @@ RSpec.describe 'School IP Lock' do
     end
 
     it 'allows external access if wildcard is part of allowed IPs' do
-      user.schools << create(:school, ip: '*')
+      user.schools << create(:school, organisation: user.organisation, ip: '*')
       get organisation_school_manager_path(kids_up, user),
           env: { 'REMOTE_ADDR' => non_school_ip }
       expect(response).to have_http_status(:success)

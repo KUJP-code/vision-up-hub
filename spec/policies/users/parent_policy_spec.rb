@@ -42,7 +42,7 @@ RSpec.describe ParentPolicy do
   context 'when school manager' do
     context 'when manager of parent school' do
       let(:school) { create(:school) }
-      let(:user) { create(:user, :school_manager, schools: [school]) }
+      let(:user) { create(:user, :school_manager, organisation: school.organisation, schools: [school]) }
 
       before do
         record.children << create(:student, school:)

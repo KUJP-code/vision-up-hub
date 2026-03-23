@@ -77,7 +77,7 @@ RSpec.describe TestResultPolicy do
   end
 
   context 'when school manager' do
-    let(:user) { build(:user, :school_manager) }
+    let(:user) { create(:user, :school_manager) }
 
     context 'when manager of test result school' do
       before do
@@ -105,16 +105,14 @@ RSpec.describe TestResultPolicy do
   end
 
   context 'when teacher' do
-    let(:user) { build(:user, :teacher) }
+    let(:user) { create(:user, :teacher) }
 
     context 'when teacherof test results student class' do
       before do
-        school = create(:school)
-        student = create(:student)
+        school = create(:school, organisation: user.organisation)
+        student = create(:student, school:)
         student.test_results << test_result
-        student.school = school
         user.schools << school
-        user.save
       end
 
       it_behaves_like 'fully authorized user for TestResult'
