@@ -48,4 +48,22 @@ RSpec.describe 'Proposals' do
       expect(proposal.reload.status).to eq 'proposed'
     end
   end
+
+  context 'when accepting a proposal' do
+    let(:user) { create(:user, :admin) }
+    let(:lesson) { create(:daily_activity, creator: user, assigned_editor: user) }
+    let(:proposal) do
+      create(:daily_activity, :proposal, changed_lesson: lesson, creator: user, assigned_editor: user)
+    end
+
+    it 'regenerates the accepted lesson guide' do
+      expect(lesson.guide).not_to be_attached
+
+      patch proposal_path(id: proposal.id),
+            params: { proposal: { status: 'accepted' } }
+
+      expect(response).to redirect_to(lesson_url(id: lesson.id))
+      expect(lesson.reload.guide).to be_attached
+    end
+  end
 end

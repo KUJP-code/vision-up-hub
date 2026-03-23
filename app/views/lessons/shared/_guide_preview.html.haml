@@ -5,8 +5,16 @@
             target: '_blank',
             rel: 'noopener',
             class: 'guide_link h-fit flex flex-col gap-1' do
-    = image_tag lesson.guide.preview(:thumb).processed,
-                class: 'guide_image w-full'
+    - if lesson.guide.previewable?
+      - begin
+        = image_tag lesson.guide.preview(:thumb).processed,
+                    class: 'guide_image w-full'
+      - rescue ActiveStorage::FileNotFoundError, ActiveStorage::UnpreviewableError, Errno::ENOENT
+        .guide_image.w-full.flex.items-center.justify-center.border.rounded.bg-slate-50.py-8
+          %span.text-sm.text-slate-500 Preview unavailable
+    - else
+      .guide_image.w-full.flex.items-center.justify-center.border.rounded.bg-slate-50.py-8
+        %span.text-sm.text-slate-500 Preview unavailable
     %h3.flex.items-center.justify-center.gap-2.btn.btn-main
       Lesson Plan
       = inline_svg_tag 'download_icon.svg',

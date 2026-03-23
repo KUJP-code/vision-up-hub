@@ -30,6 +30,7 @@ class ProposalsController < ApplicationController
   def replace_lesson
     @lesson = authorize @proposal.changed_lesson
     if @lesson.replace_with(@proposal)
+      @lesson.attach_guide
       redirect_to lesson_url(id: @lesson.id),
                   notice: t('update_success')
     else

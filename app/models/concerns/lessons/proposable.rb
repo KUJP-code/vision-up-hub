@@ -52,11 +52,7 @@ module Proposable
       attachment = proposal.public_send(name)
       next unless attachment.attached?
 
-      attachment.open do |file|
-        public_send(name).attach(io: file,
-                                 filename: attachment.filename,
-                                 content_type: attachment.content_type)
-      end
+      public_send(name).attach(attachment.blob)
     end
   end
 
@@ -64,10 +60,7 @@ module Proposable
     proposal.resources.each do |resource|
       next if resources.any? { |r| r.filename == resource.filename }
 
-      resource.open do |f|
-        resources.attach(io: f, filename: resource.filename,
-                         content_type: resource.content_type)
-      end
+      resources.attach(resource.blob)
     end
   end
 

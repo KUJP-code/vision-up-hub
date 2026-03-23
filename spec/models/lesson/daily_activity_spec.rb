@@ -29,4 +29,25 @@ RSpec.describe DailyActivity do
         )
     end
   end
+
+  context 'when accepting a proposal with images' do
+    let(:lesson) { create(:daily_activity) }
+    let(:proposal) { create(:daily_activity, :proposal, changed_lesson: lesson) }
+
+    before do
+      proposal.pdf_image.attach(
+        io: StringIO.new('fake image data'),
+        filename: 'proposal-image.png',
+        content_type: 'image/png'
+      )
+    end
+
+    it 'copies the attached blob without reopening the source file' do
+      allow(proposal.pdf_image).to receive(:open).and_raise(StandardError, 'should not reopen')
+
+      expect(lesson.replace_with(proposal)).to be(true)
+      expect(lesson.reload.pdf_image).to be_attached
+      expect(lesson.pdf_image.blob).to eq(proposal.pdf_image.blob)
+    end
+  end
 end
