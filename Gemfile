@@ -71,7 +71,7 @@ gem 'pghero', '3.4.1'
 gem 'aws-sdk-s3', '1.143.0', require: false
 
 # Lock rack to avoid vulnerabilities
-gem 'rack', '3.0.9.1'
+gem 'rack', '3.1.20'
 
 # Lock webrick version CVE-2024-27420
 gem 'webrick', '1.8.2'
