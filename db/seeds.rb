@@ -42,7 +42,7 @@ admin = Admin.create!(fb.attributes_for(
                         :admin,
                         name: 'Jayson',
                         email: 'admin@gmail.com',
-                        password: 'adminadminadmin',
+                        password: 'Adminadminadmin1',
                         organisation_id: kids_up.id
                       ))
 
@@ -53,7 +53,7 @@ User::TYPES.each do |type|
                  type.underscore.to_sym,
                  name: "Test #{type}",
                  email: "#{underscored}@example.com",
-                 password: "#{underscored}password",
+                 password: "#{type}Password1",
                  organisation_id: kids_up.id
                ))
 end
@@ -136,7 +136,7 @@ puts 'Creating courses...'
 full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course'))
 full_course.category_resources << CategoryResource.all
 
-lesson_days = (Date::DAYNAMES - %w[Sunday Saturday]).map(&:downcase)
+lesson_days = CourseLesson::DAY_SHORTCUTS['all_week']
 course_lessons = Lesson.all.map do |lesson|
   lesson.update(creator_id: 1, assigned_editor_id: writer.id)
   lesson_days.map do |day|
