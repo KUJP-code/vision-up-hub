@@ -3,6 +3,7 @@
 class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[destroy edit show update]
   before_action :set_form_data, only: %i[edit]
+  before_action :expand_course_lesson_shortcuts, only: %i[create update]
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :generate_guide, only: %i[create update]
@@ -122,7 +123,7 @@ class LessonsController < ApplicationController
     @organisations = policy_scope(Organisation).order(:name)
     @resource_ids = if @lesson
                       @lesson.resources_attachments.includes(:blob)
-                            .map { |attachment| attachment.blob.signed_id }
+                             .map { |attachment| attachment.blob.signed_id }
                     else
                       []
                     end
@@ -148,6 +149,20 @@ class LessonsController < ApplicationController
     return unless @lesson.persisted?
 
     @proposal ? @proposal.attach_guide : @lesson.attach_guide
+  end
+
+  def expand_course_lesson_shortcuts
+    lesson_attrs = params[resource_param_key]
+    return if lesson_attrs.blank? || lesson_attrs[:course_lessons_attributes].blank?
+
+    lesson_attrs[:course_lessons_attributes] =
+      CourseLessonShortcutExpander.new(
+        course_lesson_attributes: lesson_attrs[:course_lessons_attributes]
+      ).call
+  end
+
+  def resource_param_key
+    controller_name.singularize.to_sym
   end
 
   def proposing_changes?

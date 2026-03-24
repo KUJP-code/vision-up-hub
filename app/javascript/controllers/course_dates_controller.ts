@@ -29,18 +29,17 @@ export default class extends Controller {
 
 	calculateDate() {
 		this.dateTarget.innerHTML = "";
-		const { id, week, day } = this.selectValues();
+		const { id, week, days } = this.selectValues();
 		for (const courseId in this.plansValue) {
 			if (id !== courseId) continue;
 
 			for (const orgName in this.plansValue[courseId]) {
 				const plan = this.plansValue[courseId][orgName];
 				const startDate = new Date(Date.parse(plan.startDate));
+				const dates = days.map((day) => this.lessonDate(new Date(startDate), week, day));
+				const label = dates.join(", ");
 
-				this.dateTarget.insertAdjacentHTML(
-					"beforeend",
-					`<li>${orgName}: ${this.lessonDate(startDate, week, day)}</li>`,
-				);
+				this.dateTarget.insertAdjacentHTML("beforeend", `<li>${orgName}: ${label}</li>`);
 			}
 		}
 	}
@@ -56,13 +55,19 @@ export default class extends Controller {
 			saturday: 6,
 		};
 
+		const shortcutMap = {
+			all_weekdays: [1, 2, 3, 4, 5],
+			all_week: [0, 1, 2, 3, 4, 5, 6],
+		};
+
 		const id = this.courseTarget.value;
 		const week = Number.parseInt(this.weekTarget.value) - 1 || 0;
-		const day = this.hasDayTarget
-			? Number.parseInt(dayMap[this.dayTarget.value])
-			: 0;
+		const days = this.hasDayTarget
+			? shortcutMap[this.dayTarget.value] ||
+				[Number.parseInt(dayMap[this.dayTarget.value])]
+			: [0];
 
-		return { id, week, day };
+		return { id, week, days };
 	}
 
 	lessonDate(startDate: Date, week: number, day: number) {
