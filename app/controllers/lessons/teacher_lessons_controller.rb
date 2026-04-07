@@ -11,8 +11,15 @@ class TeacherLessonsController < ApplicationController
 
   def show
     set_date_level_teacher
+    return if performed?
+
     @type = validated_type(params[:type])
-    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type)
+    return if performed?
+
+    @subtype = validated_subtype(params[:subtype], @type, @level)
+    return if performed?
+
+    @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type, @subtype)
     @resources = set_resources
     @lesson_links = set_links
   end
@@ -21,8 +28,7 @@ class TeacherLessonsController < ApplicationController
 
   def index_vars
     set_date_level_teacher
-    @types = @teacher.day_lessons(@date)
-                     .send(@level).pluck(:type).uniq
+    @day_lessons = @teacher.day_lessons(@date).send(@level)
     @announcements = Pundit.policy_scope!(@teacher, Announcement)
   end
 
@@ -77,10 +83,29 @@ class TeacherLessonsController < ApplicationController
     type_param
   end
 
-  def lessons_for_type(teacher, date, level, type)
-    type_lessons = teacher.day_lessons(date)
-                          .send(level).where(type:)
-                          .order(level: :asc)
+  def validated_subtype(subtype_param, type, level)
+    return if subtype_param.blank? || type != 'EveningClass'
+
+    if EveningClass.subtypes_for(level).exclude?(subtype_param)
+      return redirect_back fallback_location: root_path,
+                           alert: "Invalid subtype: #{subtype_param}"
+    end
+
+    subtype_param
+  end
+
+  def lessons_for_type(teacher, date, level, type, subtype = nil)
+    type_lessons = teacher.day_lessons(date).send(level).where(type:)
+    type_lessons = type_lessons.where(subtype: EveningClass.subtypes.fetch(subtype)) if subtype.present?
+    type_lessons = type_lessons.order(level: :asc)
+
+    if keep_up_evening_class?(level, type)
+      first_lesson = type_lessons.first
+      return [type_lessons.none, nil] unless first_lesson
+
+      return [type_lessons.where(id: first_lesson.id), authorize(first_lesson)]
+    end
+
     lesson = if params[:id].to_i.zero?
                authorize type_lessons.first
              else
@@ -88,5 +113,9 @@ class TeacherLessonsController < ApplicationController
              end
 
     [type_lessons, lesson]
+  end
+
+  def keep_up_evening_class?(level, type)
+    level == 'keep_up' && type == 'EveningClass'
   end
 end

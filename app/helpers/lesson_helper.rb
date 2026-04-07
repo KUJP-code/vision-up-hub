@@ -14,6 +14,13 @@ module LessonHelper
     "levels/#{level}.svg"
   end
 
+  def tab_icon_path(lesson)
+    return "levels/#{lesson.level}.svg" if lesson.type == 'EveningClass' && exact_level_icon_exists?(lesson.level)
+    return type_icon_path(lesson) if lesson.class::ATTRIBUTES.include?(:subtype) && lesson.subtype.present?
+
+    level_icon_path(lesson)
+  end
+
   def status_color(lesson)
     case lesson.status
     when 'proposed', 'changes_needed'
@@ -34,8 +41,8 @@ module LessonHelper
   end
 
   def type_icon_path(lesson)
-    type = case lesson.type
-           when 'DailyActivity', 'Exercise'
+    type = if lesson.class::ATTRIBUTES.include?(:subtype) && lesson.subtype.present? &&
+              %w[DailyActivity Exercise EveningClass].include?(lesson.type)
              lesson.subtype
            else
              lesson.type.underscore
@@ -61,5 +68,11 @@ module LessonHelper
     uploaded_by = blob.metadata['uploaded_by_id'] == user.id
 
     owner_match || uploaded_by
+  end
+
+  private
+
+  def exact_level_icon_exists?(level)
+    Rails.root.join("app/assets/icons/levels/#{level}.svg").exist?
   end
 end
