@@ -42,11 +42,31 @@ RSpec.describe LessonHelper do
       expect(type_icon_path(lesson)).to eq("lesson_types/#{subtype}.svg")
     end
 
+    it "returns 'lesson_types/{subtype}.svg' for evening class" do
+      subtype = EveningClass.subtypes.keys.sample
+      lesson = build(:evening_class, subtype:)
+      expect(type_icon_path(lesson)).to eq("lesson_types/#{subtype}.svg")
+    end
+
     it "returns 'lesson_types/{type}.svg' for any other type" do
-      excluded_types = %w[Exercise DailyActivity]
+      excluded_types = %w[Exercise DailyActivity EveningClass]
       type = Lesson::TYPES.reject { |t| excluded_types.include?(t) }.sample.underscore
       lesson = build(type.to_sym)
       expect(type_icon_path(lesson)).to eq("lesson_types/#{type}.svg")
+    end
+  end
+
+  context 'when getting filepath for tab icon' do
+    it 'returns the exact level icon for evening class specialist advanced tabs' do
+      lesson = build(:evening_class, level: :specialist_advanced, subtype: :discussion)
+
+      expect(tab_icon_path(lesson)).to eq('levels/specialist_advanced.svg')
+    end
+
+    it 'returns the subtype icon for exercise tabs' do
+      lesson = build(:exercise, subtype: :jumping)
+
+      expect(tab_icon_path(lesson)).to eq('lesson_types/jumping.svg')
     end
   end
 end
