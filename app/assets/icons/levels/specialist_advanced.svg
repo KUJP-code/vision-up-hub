@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 55 55">
+  <circle cx="27.5" cy="24" r="16" fill="#8B95E3"/>
+
+  <path d="M27.5 12.5l.605 1.865h1.962l-1.587 1.153.606 1.866-1.586-1.153-1.587 1.153.606-1.866-1.587-1.153h1.962z" fill="#fff"/>
+  <path d="M19.5 15.5l.552 1.698h1.786l-1.445 1.05.552 1.698-1.445-1.05-1.445 1.05.552-1.698-1.445-1.05h1.786z" fill="#fff" transform="rotate(-15 19.5 17.5)"/>
+  <path d="M35.5 15.5l.552 1.698h1.786l-1.445 1.05.552 1.698-1.445-1.05-1.445 1.05.552-1.698-1.445-1.05h1.786z" fill="#fff" transform="rotate(15 35.5 17.5)"/>
+  <path d="M27.5 21.5L15.5 25.75 27.5 30 39.5 25.75z" fill="#fff"/>
+  <path d="M19 28.25v3.55c0 3.529 17 3.529 17 0v-3.55l-8.5 3.011z" fill="#fff"/>
+  <path d="M37.4 26.45v5.3l-.9 1.8h1.8z" fill="#fff"/>
+
+  <text x="27.5" y="48.25" fill="#8B95E3" font-family="'Montserrat', 'Arial', sans-serif" font-size="5.4" font-weight="900" letter-spacing=".45" text-anchor="middle">ADVANCED</text>
+</svg>
