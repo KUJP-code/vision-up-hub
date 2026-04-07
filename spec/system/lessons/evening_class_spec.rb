@@ -18,11 +18,13 @@ RSpec.describe 'creating an Evening class' do
       fill_in 'evening_class_title', with: 'Test Evening Lesson'
       fill_in 'evening_class_goal', with: 'Test Goal'
       select 'Specialist Advanced', from: 'evening_class_level'
+      select 'Project Session 2', from: 'evening_class_subtype'
       attach_file 'evening_class_resources',
                   Rails.root.join('spec/Brett_Tanner_Resume.pdf')
       click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Evening Lesson')
+    expect(page).to have_content('Project Session 2')
     expect(page).to have_css('a.resource', count: 1)
   end
 end
