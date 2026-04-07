@@ -94,8 +94,35 @@ end
 
 PhonicsClass.find_by(level: :kindy).destroy
 
-%i[keep_up_one specialist].each do |level|
-  fb.create(:evening_class, level:, **released_attrs)
+evening_class_seeds = {
+  keep_up_one: [
+    { subtype: :conversation_time, title: 'Keep Up Conversation Time', goal: 'Build confidence through guided speaking prompts.' },
+    { subtype: :topic_study, title: 'Keep Up Topic Study', goal: 'Practice key vocabulary and expressions around the weekly theme.' },
+    { subtype: :special_lesson, title: 'Keep Up Special Lesson', goal: 'Apply the weekly language focus in a mixed review lesson.' }
+  ],
+  keep_up_two: [
+    { subtype: :conversation_time, title: 'Keep Up 2 Conversation Time', goal: 'Extend speaking turns and peer interaction.' },
+    { subtype: :topic_study, title: 'Keep Up 2 Topic Study', goal: 'Deepen comprehension of the current topic through reading and discussion.' }
+  ],
+  specialist: [
+    { subtype: :literacy, title: 'Specialist Literacy', goal: 'Develop close reading and response writing skills.' },
+    { subtype: :discussion, title: 'Specialist Discussion', goal: 'Support structured opinions and follow-up questioning.' },
+    { subtype: :project_session_1, title: 'Specialist Project Session 1', goal: 'Launch the project and organize research tasks.' },
+    { subtype: :project_session_2, title: 'Specialist Project Session 2', goal: 'Refine ideas and prepare a project outcome.' },
+    { subtype: :special_lesson, title: 'Specialist Special Lesson', goal: 'Blend review, challenge work, and presentation practice.' }
+  ],
+  specialist_advanced: [
+    { subtype: :literacy, title: 'Specialist Advanced Literacy', goal: 'Analyze longer texts and justify responses with evidence.' },
+    { subtype: :discussion, title: 'Specialist Advanced Discussion', goal: 'Practice extended discussion with rebuttal and support.' },
+    { subtype: :project_session_1, title: 'Specialist Advanced Project Session 1', goal: 'Plan a research-driven project with clear roles.' },
+    { subtype: :project_session_2, title: 'Specialist Advanced Project Session 2', goal: 'Finalize and present the project with polished output.' }
+  ]
+}
+
+evening_class_seeds.each do |level, lessons|
+  lessons.each do |attrs|
+    fb.create(:evening_class, level:, **attrs, **released_attrs)
+  end
 end
 
 Lesson.all.each do |lesson|
