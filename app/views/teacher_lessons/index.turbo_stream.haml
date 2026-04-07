@@ -16,9 +16,7 @@
                   data: { turbo_stream: true }
 
     %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
-      - lesson_type_order(@level).each do |type|
-        - next if Lesson::TYPES.include?(type) && @types.exclude?(type)
-
+      - teacher_lesson_cards(@level, @day_lessons).each do |card|
         = render partial: 'teacher_lessons/card',
-                 locals: { date: @date, level: @level,
-                           teacher_id: @teacher.id, type: }
+                 locals: { date: @date, level: @level, teacher_id: @teacher.id,
+                           type: card.type, subtype: card.subtype, kind: card.kind }

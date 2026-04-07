@@ -3,14 +3,9 @@
 :ruby
   return if lessons.size <= 1
 
-  subtype_lessons = %w[DailyActivity Exercise]
-
 - lessons.each do |l|
   - active = l == active_lesson
 
-  = link_to teacher_lesson_path(l, teacher_id:, type:, level:, date:),
+  = link_to teacher_lesson_path(l, teacher_id:, type:, level:, date:, subtype: params[:subtype]),
             class: "tab #{active ? 'active' : 'inactive'}" do
-    - if subtype_lessons.include?(l.type)
-      = image_tag type_icon_path(l)
-    - else
-      = image_tag level_icon_path(l)
+    = image_tag tab_icon_path(l)

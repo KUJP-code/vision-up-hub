@@ -1,1 +1,17 @@
 -# locals: (f:, lesson:)
+
+:ruby
+  subtype_options = EveningClass.subtypes.keys.map do |key|
+    [
+      t("lessons.subtypes.#{key}"),
+      key,
+      { data: { levels: EveningClass.levels_for_subtype(key).join(',') } }
+    ]
+  end
+
+.form-group
+  = f.label :subtype
+  = f.select :subtype,
+             subtype_options,
+             { prompt: 'Select a subtype' },
+             { data: { fields_target: 'subtypeSelect' } }

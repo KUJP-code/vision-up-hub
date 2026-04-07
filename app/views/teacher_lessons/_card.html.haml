@@ -1,15 +1,10 @@
--# locals: (date:, level:, teacher_id:, type:)
+-# locals: (date:, kind:, level:, teacher_id:, type:, subtype: nil)
 
-- if Lesson::TYPES.include?(type)
+- if kind == :lesson
   :ruby
-    src = teacher_lesson_path(0, date:, level:, type:, teacher_id:)
-    title = if type == 'EveningClass'
-      level == 'specialist' ? 'research_study' : 'topic_study'
-    elsif type.include?('Phonic')
-      'phonics'
-    else
-      type.underscore
-    end
+    src = teacher_lesson_path(0, date:, level:, type:, teacher_id:, subtype:)
+    title = teacher_lesson_card_title(type, level:, subtype:)
+    icon = type == 'EveningClass' && subtype.present? ? subtype : type.underscore
 
   %button{ class: 'card flex flex-col items-center p-2 gap-2',
            data: { action: 'dialog#open',
@@ -18,21 +13,18 @@
                    'dialog-frame-value': 'lesson',
                    'dialog-src-value': src },
            type: 'button' }
-    = image_tag "lesson_types/#{type.underscore}.svg",
+    = image_tag "lesson_types/#{icon}.svg",
                 class: 'h-full'
     %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-    %h3.text-center= t("lessons.#{title}")
+    %h3.text-center= title
 
 - else
   :ruby
-    evening_types = %w[homework_check break_&_quiz four_skills project
-                       conversation_time book_activity lesson_review]
-
-    category = if evening_types.include?(type)
-      'evening_class'
-    else
-      type.underscore
-    end
+    category = CategoryResource::AFTERSCHOOL_EXTRAS.include?(type) || %w[
+      homework_check break_&_quiz four_skills project conversation_time
+      book_activity lesson_review
+    ].include?(type) ? 'evening_class' : type.underscore
+    icon = type.underscore
 
     # only show the card if there are resources for this category
     scope = policy_scope(CategoryResource)
@@ -42,7 +34,7 @@
     = link_to teacher_resources_path(category:),
               class: 'card flex flex-col items-center p-2 gap-2',
               data: { turbo_frame: '_top' } do
-      = image_tag "lesson_types/#{category}.svg",
+      = image_tag "lesson_types/#{icon}.svg",
                   class: 'h-full'
       %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-      %h3.text-center= t("category_resources.#{type}")
+      %h3.text-center= teacher_lesson_card_title(type, level:)
