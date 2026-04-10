@@ -47,6 +47,42 @@ RSpec.describe 'Proposals' do
             params: { stand_show_speak: { title: 'Fixed Title' } }
       expect(proposal.reload.status).to eq 'proposed'
     end
+
+    it 'does not change phonics resources when proposing phonics lesson edits' do
+      course = create(:course)
+      phonics_class = create(:phonics_class, status: :accepted)
+      blob = ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new('phonics resource'),
+        filename: 'phonics-resource.pdf',
+        content_type: 'application/pdf'
+      )
+      phonics_class.phonics_resources.create!(blob:, course:, week: 3)
+      allow_any_instance_of(Lesson).to receive(:attach_guide).and_return(nil)
+
+      patch phonics_class_path(id: phonics_class.id),
+            params: {
+              phonics_class: {
+                title: 'Updated Title',
+                goal: phonics_class.goal,
+                level: phonics_class.level,
+                add_difficulty: phonics_class.add_difficulty,
+                extra_fun: phonics_class.extra_fun,
+                instructions: phonics_class.instructions,
+                intro: phonics_class.intro,
+                review: phonics_class.review,
+                materials: phonics_class.materials,
+                phonics_resources_attributes: {
+                  '0' => {
+                    blob_id: blob.id,
+                    course_id: course.id,
+                    week: 8
+                  }
+                }
+              }
+            }
+
+      expect(phonics_class.reload.phonics_resources.pluck(:week)).to eq([3])
+    end
   end
 
   context 'when accepting a proposal' do
