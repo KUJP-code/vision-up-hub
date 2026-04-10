@@ -49,6 +49,8 @@ module TeacherLessonHelper
     return cards if Flipper.enabled?(:afterschool_extras, current_user)
 
     cards.reject do |card|
+      next false if level == 'keep_up' && card.kind == :resource && card.type == 'snack'
+
       card.kind == :resource && CategoryResource::AFTERSCHOOL_EXTRAS.include?(card.type)
     end
   end

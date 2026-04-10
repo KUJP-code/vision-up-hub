@@ -20,10 +20,16 @@
 
 - else
   :ruby
-    category = CategoryResource::AFTERSCHOOL_EXTRAS.include?(type) || %w[
+    category = if type == 'snack'
+                 'snack'
+               elsif CategoryResource::AFTERSCHOOL_EXTRAS.include?(type) || %w[
       homework_check break_&_quiz four_skills project conversation_time
       book_activity lesson_review
-    ].include?(type) ? 'evening_class' : type.underscore
+    ].include?(type)
+                 'evening_class'
+               else
+                 type.underscore
+               end
     icon = type.underscore
 
     # only show the card if there are resources for this category

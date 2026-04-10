@@ -40,6 +40,16 @@ RSpec.describe TeacherLessonHelper do
       expect(resource_types).not_to include('conversation_time')
       expect(cards.select { |card| card.type == 'EveningClass' }.map(&:subtype)).to include('conversation_time')
     end
+
+    it 'keeps snack as the first keep up resource before book activity when afterschool extras are off' do
+      allow(Flipper).to receive(:enabled?).with(:afterschool_extras, user).and_return(false)
+      conversation_time = create(:evening_class, level: :keep_up_one, subtype: :conversation_time)
+
+      keep_up_scope = Lesson.where(id: conversation_time.id).keep_up
+      cards = helper.teacher_lesson_cards('keep_up', keep_up_scope)
+
+      expect(cards.select { |card| card.kind == :resource }.map(&:type)).to eq(%w[snack book_activity lesson_review])
+    end
   end
 
   describe '#teacher_lesson_card_title' do
