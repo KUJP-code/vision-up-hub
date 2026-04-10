@@ -4,7 +4,8 @@
             scope: :proposal,
             method: :patch,
             html: { class: 'w-full flex flex-wrap gap-3 p-3 justify-center',
-                    id: 'proposal_status_form' } do |f|
+                    id: "proposal_status_form_#{proposal.id}",
+                    autocomplete: 'off' } do |f|
   - if table
     %td
       = link_to proposal.title,
@@ -15,8 +16,10 @@
           = f.text_area :internal_notes,
                         class: 'w-full'
         %td
-          = f.select :status,
-                     opts_from(Lesson, :statuses)
+          = select_tag 'proposal[status]',
+                       options_for_select(opts_from(Lesson, :statuses), proposal.status),
+                       id: "proposal_status_#{proposal.id}",
+                       autocomplete: 'off'
           = f.submit 'Update', class: 'btn btn-main'
 
   - else
@@ -26,9 +29,11 @@
                   placeholder: 'Comment on this proposal here',
                   rows: '4',
                   class: 'w-full'
-    = f.select :status,
-               opts_from(Lesson, :statuses),
-               class: 'basis-2/5'
+    = select_tag 'proposal[status]',
+                 options_for_select(opts_from(Lesson, :statuses), proposal.status),
+                 id: "proposal_status_#{proposal.id}",
+                 class: 'basis-2/5',
+                 autocomplete: 'off'
 
     = f.submit class: 'btn btn-main basis-2/5',
-               id: 'proposal_status_form_submit'
+               id: "proposal_status_form_submit_#{proposal.id}"
