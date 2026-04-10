@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .bg { fill: #f5eee3; }
+      .ink { fill: #645880; }
+      .paper { fill: #fffdf9; stroke: #645880; stroke-width: 4; }
+      .accent { fill: #f4a261; }
+      .label {
+        fill: #645880;
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+    </style>
+  </defs>
+  <rect class="bg" x="10" y="8" width="100" height="104" rx="22"/>
+  <rect class="paper" x="32" y="18" width="56" height="58" rx="10"/>
+  <path class="accent" d="M74 18v16h14z"/>
+  <rect class="ink" x="42" y="36" width="32" height="5" rx="2.5"/>
+  <rect class="ink" x="42" y="48" width="28" height="5" rx="2.5"/>
+  <rect class="ink" x="42" y="60" width="22" height="5" rx="2.5"/>
+  <text class="label" x="60" y="99" text-anchor="middle">WORKSHEETS</text>
+</svg>

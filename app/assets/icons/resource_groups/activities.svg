@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <style>
+      .bg { fill: #edf6e6; }
+      .ink { fill: #645880; }
+      .mint { fill: #b0d07a; }
+      .peach { fill: #f6b38b; }
+      .sky { fill: #8eccda; }
+      .label {
+        fill: #645880;
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+    </style>
+  </defs>
+  <rect class="bg" x="10" y="8" width="100" height="104" rx="22"/>
+  <circle class="peach" cx="60" cy="32" r="11"/>
+  <rect class="ink" x="54" y="44" width="12" height="18" rx="5"/>
+  <circle class="sky" cx="42" cy="56" r="8"/>
+  <circle class="sky" cx="78" cy="56" r="8"/>
+  <circle class="mint" cx="60" cy="66" r="16"/>
+  <text class="label" x="60" y="99" text-anchor="middle">ACTIVITIES</text>
+</svg>
