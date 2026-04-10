@@ -2,6 +2,7 @@ en:
   teacher_resources:
     index:
       arrival: "Arrival"
+      files: "Files"
       brush_up: "Brush Up"
       bus_time: "Bus Time"
       daily_gathering: "Daily Gathering"
@@ -9,6 +10,7 @@ en:
       evening_class: "Evening Class"
       friendship_time: "Friendship Time"
       get_up_and_go: "Get Up & Go"
+      no_resources: "No resources available for this tab yet."
       phonics_class: "Phonics"
       sensory_play: "Sensory Play"
       snack: "Snack"

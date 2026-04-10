@@ -2,6 +2,7 @@ ja:
   teacher_resources:
     index:
       arrival: "アライバル"
+      files: "ファイル"
       brush_up: "ブラッシュアップ"
       bus_time: "バスタイム"
       daily_gathering: "デイリーギャザリング"
@@ -9,6 +10,7 @@ ja:
       evening_class: "イブニングクラス"
       friendship_time: "フレンドシップタイム"
       get_up_and_go: "ゲットアップ＆ゴー"
+      no_resources: "このタブにはまだリソースがありません。"
       phonics_class: "フォニックス"
       sensory_play: "センソリープレイ"
       snack: "スナック"
