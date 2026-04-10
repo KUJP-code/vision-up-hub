@@ -36,6 +36,7 @@ class Lesson < ApplicationRecord
                      where(type: %w[EnglishClass EveningClass KindyPhonic
                                     PhonicsClass StandShowSpeak])
                    }
+  scope :canonical, -> { where(changed_lesson_id: nil) }
   scope :released, -> { where(released: true) }
   scope :unlevelled,
         lambda {
