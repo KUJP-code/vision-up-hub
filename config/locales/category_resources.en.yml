@@ -1,5 +1,23 @@
 en:
   category_resources:
+    index:
+      category_resources: "Category Resources"
+    search_form:
+      category: "Category"
+      filename: "Filename"
+      level: "Level"
+      resource_category: "Resource Category"
+      search: "Search"
+      select_category: "Select category"
+      select_level: "Select level"
+      select_resource_category: "Select resource category"
+      used_by: "Used By"
+    table:
+      filename: "Filename"
+      lesson_category: "Lesson Category"
+      level: "Level"
+      resource_category: "Resource Category"
+      used_by: "Used By"
     arrival: "Arrival"
     book_activity: "Book Activity"
     break_&_quiz: "Break & Quiz"

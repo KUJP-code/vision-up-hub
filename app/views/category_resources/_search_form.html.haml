@@ -1,0 +1,39 @@
+= turbo_frame_tag 'category_resource_search_frame',
+                  target: 'category_resource_table' do
+  = form_with url: category_resources_path,
+              scope: :search,
+              html: { class: 'flex flex-wrap justify-center items-center gap-3',
+                      id: 'category_resource_search', method: :get } do |f|
+    .w-full.flex.justify-around.gap-3
+      .form-group
+        = f.label :lesson_category, t('.category')
+        = f.select :lesson_category,
+                   CategoryResource.lesson_categories.keys.map { |key| [key.titleize, key] },
+                   { prompt: t('.select_category'),
+                     selected: params.dig(:search, :lesson_category) }
+
+      .form-group
+        = f.label :level, t('.level')
+        = f.select :level,
+                   CategoryResource.levels.keys.map { |key| [key.titleize, key] },
+                   { prompt: t('.select_level'),
+                     selected: params.dig(:search, :level) }
+
+      .form-group
+        = f.label :resource_category, t('.resource_category')
+        = f.select :resource_category,
+                   CategoryResource.resource_categories.keys.map { |key| [key.titleize, key] },
+                   { prompt: t('.select_resource_category'),
+                     selected: params.dig(:search, :resource_category) }
+
+      .form-group
+        = f.label :used_by, t('.used_by')
+        = f.text_field :used_by, value: params.dig(:search, :used_by)
+
+      .form-group
+        = f.label :filename, t('.filename')
+        = f.text_field :filename, value: params.dig(:search, :filename)
+
+    .w-full.flex.justify-end
+      = f.submit t('.search'),
+                 class: 'btn btn-main w-1/3'

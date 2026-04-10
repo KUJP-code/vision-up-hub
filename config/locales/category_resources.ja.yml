@@ -1,5 +1,23 @@
 ja:
   category_resources:
+    index:
+      category_resources: "カテゴリリソース"
+    search_form:
+      category: "カテゴリー"
+      filename: "ファイル名"
+      level: "レベル"
+      resource_category: "リソースカテゴリー"
+      search: "検索"
+      select_category: "カテゴリーを選択してください"
+      select_level: "レベルを選択してください"
+      select_resource_category: "リソースカテゴリーを選択してください"
+      used_by: "使用コース"
+    table:
+      filename: "ファイル名"
+      lesson_category: "レッスンカテゴリー"
+      level: "レベル"
+      resource_category: "リソースカテゴリー"
+      used_by: "使用コース"
     arrival: "アライバル"
     book_activity: "ブックアクティビティ"
     break_&_quiz: "ブレーク&クイズ"

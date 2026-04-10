@@ -7,15 +7,7 @@ class CategoryResourcesController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    @category_resources = policy_scope(CategoryResource)
-                          .with_attached_resource
-                          .includes(:courses)
-                          .order(
-                            lesson_category: :asc,
-                            level: :asc,
-                            resource_category: :asc,
-                            'active_storage_blobs.filename': :asc
-                          )
+    @category_resources = category_resources_scope
   end
 
   def new
@@ -60,6 +52,40 @@ class CategoryResourcesController < ApplicationController
   end
 
   private
+
+  def category_resources_scope
+    resources = policy_scope(CategoryResource)
+                .left_joins(resource_attachment: :blob)
+                .includes(:courses, resource_attachment: :blob)
+    resources = resources.where(lesson_category: search_params[:lesson_category]) if search_params[:lesson_category].present?
+    resources = resources.where(level: search_params[:level]) if search_params[:level].present?
+    resources = resources.where(resource_category: search_params[:resource_category]) if search_params[:resource_category].present?
+    resources = resources.where('active_storage_blobs.filename ILIKE ?', "%#{search_params[:filename]}%") if search_params[:filename].present?
+    if search_params[:used_by].present?
+      resources = resources.where(
+        id: CategoryResource.joins(:courses)
+                            .where('courses.title ILIKE ?', "%#{search_params[:used_by]}%")
+                            .select(:id)
+      )
+    end
+
+    resources.order(
+      lesson_category: :asc,
+      level: :asc,
+      resource_category: :asc,
+      'active_storage_blobs.filename': :asc
+    )
+  end
+
+  def search_params
+    params.fetch(:search, {}).permit(
+      :filename,
+      :lesson_category,
+      :level,
+      :resource_category,
+      :used_by
+    ).compact_blank
+  end
 
   def category_resource_params
     params.require(:category_resource).permit(
