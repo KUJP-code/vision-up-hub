@@ -2,11 +2,11 @@
 
 class CoursePolicy < ApplicationPolicy
   def index?
-    user.is?('Admin')
+    user.is?('Admin', 'Writer')
   end
 
   def show?
-    user.is?('Admin')
+    user.is?('Admin', 'Writer')
   end
 
   def new?
@@ -33,6 +33,8 @@ class CoursePolicy < ApplicationPolicy
     def resolve
       case user.type
       when 'Admin'
+        scope.all
+      when 'Writer'
         scope.all
       when 'OrgAdmin', 'SchoolManager', 'Teacher'
         user.courses
