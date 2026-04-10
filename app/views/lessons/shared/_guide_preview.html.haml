@@ -1,4 +1,4 @@
--# locals: (lesson:)
+-# locals: (lesson:, large_preview: false)
 
 - if lesson.guide.present?
   = link_to file_path(lesson.guide.blob),
@@ -7,7 +7,8 @@
             class: 'guide_link h-fit flex flex-col gap-1' do
     - if lesson.guide.previewable?
       - begin
-        = image_tag lesson.guide.preview(:thumb).processed,
+        - preview_variant = large_preview ? :preview_large : :thumb
+        = image_tag lesson.guide.preview(preview_variant).processed,
                     class: 'guide_image w-full'
       - rescue ActiveStorage::FileNotFoundError, ActiveStorage::UnpreviewableError, Errno::ENOENT
         .guide_image.w-full.flex.items-center.justify-center.border.rounded.bg-slate-50.py-8
