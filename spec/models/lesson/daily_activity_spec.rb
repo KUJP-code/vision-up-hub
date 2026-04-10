@@ -50,4 +50,15 @@ RSpec.describe DailyActivity do
       expect(lesson.pdf_image.blob).to eq(proposal.pdf_image.blob)
     end
   end
+
+  context 'when approving a writer-created lesson' do
+    let(:writer) { create(:user, :writer) }
+    let(:lesson) { create(:daily_activity, status: :proposed, creator: writer, assigned_editor: writer) }
+
+    it 'updates the lesson status to accepted' do
+      lesson.update(admin_approval_id: 1, admin_approval_name: 'Admin')
+
+      expect(lesson.reload.status).to eq('accepted')
+    end
+  end
 end
