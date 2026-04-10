@@ -1,0 +1,13 @@
+-# locals: (resources:)
+
+%section.resource-section
+  - resources.each do |cr|
+    - next unless cr.resource.attached?
+    - blob = cr.resource.blob
+    = link_to file_path(blob.id),
+              target: '_blank',
+              rel: 'noopener',
+              class: 'btn-outline w-full' do
+      %span{ class: 'basis-5/6 truncate' }= blob.filename
+      = inline_svg_tag 'download_icon.svg',
+                       class: 'fill-secondary basis-1/6'

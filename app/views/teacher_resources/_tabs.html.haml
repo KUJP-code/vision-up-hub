@@ -1,0 +1,14 @@
+- @group_options.each_with_index do |group, index|
+  - active = @active_group == group
+  - label = @grouping == :level ? t("levels.#{group}") : t("teacher_resources.index.#{group}")
+  = link_to teacher_resources_path(category: params[:category] || @lesson_category,
+                                   card: @requested_card,
+                                   group: group,
+                                   level: params[:level]),
+            class: "tab #{active ? 'active' : 'inactive'}",
+            style: resource_group_tab_style(index),
+            title: label,
+            data: (request.headers['Turbo-Frame'].present? ? { turbo_frame: 'lesson' } : {}) do
+    = image_tag resource_group_icon_path(group),
+                alt: label,
+                class: 'w-full h-full p-2'

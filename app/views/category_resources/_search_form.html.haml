@@ -8,21 +8,21 @@
       .form-group
         = f.label :lesson_category, t('.category')
         = f.select :lesson_category,
-                   CategoryResource.lesson_categories.keys.map { |key| [key.titleize, key] },
+                   CategoryResource.lesson_categories.keys.map { |key| [t("category_resources.#{key}"), key] },
                    { prompt: t('.select_category'),
                      selected: params.dig(:search, :lesson_category) }
 
       .form-group
         = f.label :level, t('.level')
         = f.select :level,
-                   CategoryResource.levels.keys.map { |key| [key.titleize, key] },
+                   CategoryResource.levels.keys.map { |key| [t("levels.#{key}"), key] },
                    { prompt: t('.select_level'),
                      selected: params.dig(:search, :level) }
 
       .form-group
         = f.label :resource_category, t('.resource_category')
         = f.select :resource_category,
-                   CategoryResource.resource_categories.keys.map { |key| [key.titleize, key] },
+                   CategoryResource.resource_categories.keys.map { |key| [t("teacher_resources.index.#{key}"), key] },
                    { prompt: t('.select_resource_category'),
                      selected: params.dig(:search, :resource_category) }
 

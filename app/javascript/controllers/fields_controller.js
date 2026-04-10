@@ -7,6 +7,8 @@ export default class extends Controller {
 		"englishHomework",
 		"levelSelect",
 		"subtypeSelect",
+		"lessonCategorySelect",
+		"resourceCategorySelect",
 	];
 	static values = {
 		wrapperSelector: {
@@ -18,6 +20,7 @@ export default class extends Controller {
 	connect() {
 		this.toggleEnglishHomework();
 		this.toggleSubtypeOptions();
+		this.toggleResourceCategoryOptions();
 	}
 
 	add(e) {
@@ -76,5 +79,39 @@ export default class extends Controller {
 		});
 
 		if (!selectedVisible) this.subtypeSelectTarget.value = "";
+	}
+
+	toggleResourceCategoryOptions() {
+		if (!this.hasLessonCategorySelectTarget || !this.hasResourceCategorySelectTarget)
+			return;
+
+		const lessonCategory = this.lessonCategorySelectTarget.value;
+		let selectedVisible = false;
+
+		Array.from(this.resourceCategorySelectTarget.options).forEach((option) => {
+			if (option.value === "") {
+				option.disabled = false;
+				option.hidden = false;
+				return;
+			}
+
+			const lessonCategories = option.dataset.lessonCategories?.split(",") || [];
+			const visible =
+				lessonCategory === "" || lessonCategories.includes(lessonCategory);
+
+			option.disabled = !visible;
+			option.hidden = !visible;
+
+			if (visible && option.selected) selectedVisible = true;
+			if (!visible && option.selected) option.selected = false;
+		});
+
+		if (!selectedVisible) {
+			const firstVisibleOption = Array.from(
+				this.resourceCategorySelectTarget.options,
+			).find((option) => option.value !== "" && !option.disabled);
+
+			if (firstVisibleOption) this.resourceCategorySelectTarget.value = firstVisibleOption.value;
+		}
 	}
 }

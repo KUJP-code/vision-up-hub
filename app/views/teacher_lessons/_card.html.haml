@@ -22,9 +22,12 @@
   :ruby
     category = if type == 'snack'
                  'snack'
-               elsif CategoryResource::AFTERSCHOOL_EXTRAS.include?(type) || %w[
+               elsif type == 'book_activity'
+                 'ku_book_activity'
+               elsif type == 'lesson_review'
+                 'ku_lesson_review'
+               elsif %w[
       homework_check break_&_quiz four_skills project conversation_time
-      book_activity lesson_review
     ].include?(type)
                  'evening_class'
                else
@@ -34,12 +37,18 @@
 
     # only show the card if there are resources for this category
     scope = policy_scope(CategoryResource)
-    has_resources = scope.public_send(category).exists?
+    resource_scope = scope.public_send(category)
+    has_resources = resource_scope.exists?
+    src = teacher_resources_path(category:, card: type, level:)
 
   - if has_resources
-    = link_to teacher_resources_path(category:),
-              class: 'card flex flex-col items-center p-2 gap-2',
-              data: { turbo_frame: '_top' } do
+    %button{ class: 'card flex flex-col items-center p-2 gap-2',
+             data: { action: 'dialog#open',
+                     controller: 'dialog',
+                     'dialog-dialog-value': 'lesson-resources',
+                     'dialog-frame-value': 'lesson',
+                     'dialog-src-value': src },
+             type: 'button' }
       = image_tag "lesson_types/#{icon}.svg",
                   class: 'h-full'
       %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }

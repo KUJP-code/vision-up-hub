@@ -22,9 +22,9 @@
                         class: 'p-1'
             - else
               No file attached
-          %td.p-3= cr.lesson_category.titleize
-          %td.p-3= cr.level.titleize
-          %td.p-3= cr.resource_category.titleize
+          %td.p-3= t("category_resources.#{cr.lesson_category}")
+          %td.p-3= t("levels.#{cr.level}")
+          %td.p-3= t("teacher_resources.index.#{cr.resource_category}")
           %td.p-3= cr.courses.map(&:title).to_sentence
           %td.p-3
             = link_to 'Edit',

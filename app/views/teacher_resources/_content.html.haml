@@ -1,0 +1,13 @@
+- if @group_options.many?
+  = render 'teacher_resources/tabs'
+
+.dialog-content
+  %header
+    %h1.type.border-b-2.border-secondary= @resource_title
+    - if @group_options.many?
+      %h1.level.border-b-2.border-secondary.text-end= @grouping == :level ? t("levels.#{@active_group}") : t("teacher_resources.index.#{@active_group}")
+
+  - if @active_resources.any?
+    = render 'teacher_resources/resource_list', resources: @active_resources
+  - else
+    %p.text-center.text-secondary= t('teacher_resources.index.no_resources')

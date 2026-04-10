@@ -18,7 +18,9 @@ class CategoryResource < ApplicationRecord
     english_class: 8,
     story_and_reading: 9,
     friendship_time: 10,
-    sensory_play: 11
+    sensory_play: 11,
+    ku_book_activity: 12,
+    ku_lesson_review: 13
   }
 
   enum level: {
@@ -40,6 +42,22 @@ class CategoryResource < ApplicationRecord
     activities: 5
   }
 
+  VALID_RESOURCE_CATEGORIES = {
+    'phonics_class' => %w[phonics_sets word_families sight_words],
+    'brush_up' => %w[worksheets],
+    'snack' => %w[worksheets slides],
+    'get_up_and_go' => %w[worksheets slides activities],
+    'daily_gathering' => %w[worksheets slides],
+    'arrival' => resource_categories.keys,
+    'bus_time' => resource_categories.keys,
+    'evening_class' => %w[worksheets activities],
+    'story_and_reading' => %w[worksheets slides],
+    'friendship_time' => %w[worksheets slides],
+    'sensory_play' => %w[worksheets slides],
+    'ku_book_activity' => %w[worksheets slides],
+    'ku_lesson_review' => %w[worksheets slides]
+  }.freeze
+
   validates :lesson_category, :resource_category, presence: true
   validate :valid_combo
   validate :brush_up_level
@@ -51,6 +69,16 @@ class CategoryResource < ApplicationRecord
   has_many :courses, through: :course_resources
 
   has_one_attached :resource
+
+  def self.valid_resource_categories_for(lesson_category)
+    VALID_RESOURCE_CATEGORIES.fetch(lesson_category.to_s, [])
+  end
+
+  def self.valid_lesson_categories_for(resource_category)
+    VALID_RESOURCE_CATEGORIES.filter_map do |lesson_category, resource_categories|
+      lesson_category if resource_categories.include?(resource_category.to_s)
+    end
+  end
 
   def phonics_resources
     return PhonicsResource.none unless lesson_category == 'phonics_class'
@@ -85,6 +113,22 @@ class CategoryResource < ApplicationRecord
 
     errors.add(:lesson_category,
                'Evening class requires a activity or worksheet resource')
+    false
+  end
+
+  def ku_book_activity_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category,
+               'KU Book Activity requires a worksheet or slide resource')
+    false
+  end
+
+  def ku_lesson_review_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category,
+               'KU Lesson Review requires a worksheet or slide resource')
     false
   end
 
