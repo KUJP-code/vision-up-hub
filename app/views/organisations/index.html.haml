@@ -1,9 +1,10 @@
 = render 'shared/subtitle', text: t('.organisations')
 
 %main.flex.flex-wrap.items-start.justify-between.gap-3.p-3
-  = link_to t('.add_organisation'),
-            new_organisation_path,
-            class: 'btn btn-main w-full'
+  - if policy(Organisation).new?
+    = link_to t('.add_organisation'),
+              new_organisation_path,
+              class: 'btn btn-main w-full'
   = render partial: 'organisations/card',
            collection: @organisations,
            as: :organisation

@@ -1,24 +1,46 @@
 = render 'shared/subtitle', text: @organisation.name
 
 %main.flex.flex-col.gap-3.p-3
-  %h2.text-start= t('.plans')
-  - @plans.each do |plan|
-    = link_to plan.name,
-              plan_path(plan)
+  %p= @organisation.email
+  %p= @organisation.phone
+  - if @organisation.notes.present?
+    %p= @organisation.notes
 
-  = link_to t('.create_plan'),
-            new_plan_path(organisation_id: @organisation.id),
-            class: 'btn btn-secondary'
+  - if current_user.is?('Writer')
+    %nav.flex.flex-wrap.gap-3
+      = link_to t('.lesson_calendar'),
+                lesson_calendars_path(org: @organisation.id),
+                class: 'btn btn-secondary'
+      = link_to t('.events'),
+                teacher_events_path(organisation_id: @organisation.id),
+                class: 'btn btn-secondary'
+      = link_to t('.missing_lessons'),
+                missing_lessons_path(org: @organisation.id),
+                class: 'btn btn-secondary'
 
-  = link_to t('.add_school'),
-            new_organisation_school_path(@organisation),
-            class: 'btn btn-secondary'
+    - if @plans.any?
+      %h2.text-start= t('.plans')
+      - @plans.each do |plan|
+        %p= plan.name
+  - else
+    %h2.text-start= t('.plans')
+    - @plans.each do |plan|
+      = link_to plan.name,
+                plan_path(plan)
 
-  - if @admins.any?
-    %h2.text-start Admins: #{@admins.to_sentence}
-  = render 'organisations/new_parent_link', org_id: @organisation.id
+    = link_to t('.create_plan'),
+              new_plan_path(organisation_id: @organisation.id),
+              class: 'btn btn-secondary'
 
-  - if @schools.any?
-    %h2.text-start Total Students: #{@organisation.students_count}
-    %h2= link_to t('.schools'), organisation_schools_path(@organisation)
-    = render 'schools/table', schools: @schools
+    = link_to t('.add_school'),
+              new_organisation_school_path(@organisation),
+              class: 'btn btn-secondary'
+
+    - if @admins.any?
+      %h2.text-start Admins: #{@admins.to_sentence}
+    = render 'organisations/new_parent_link', org_id: @organisation.id
+
+    - if @schools.any?
+      %h2.text-start Total Students: #{@organisation.students_count}
+      %h2= link_to t('.schools'), organisation_schools_path(@organisation)
+      = render 'schools/table', schools: @schools

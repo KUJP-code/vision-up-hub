@@ -10,19 +10,19 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def new?
-    authorized_ku_staff?
+    managing_ku_staff?
   end
 
   def edit?
-    authorized_ku_staff? || admin_of_org?
+    managing_ku_staff? || admin_of_org?
   end
 
   def create?
-    authorized_ku_staff?
+    managing_ku_staff?
   end
 
   def update?
-    authorized_ku_staff? || admin_of_org?
+    managing_ku_staff? || admin_of_org?
   end
 
   class Scope < Scope
@@ -35,7 +35,7 @@ class OrganisationPolicy < ApplicationPolicy
     end
 
     def authorized_ku_staff?
-      user.is?('Admin', 'Sales')
+      user.is?('Admin', 'Sales', 'Writer')
     end
   end
 
@@ -46,6 +46,10 @@ class OrganisationPolicy < ApplicationPolicy
   end
 
   def authorized_ku_staff?
+    user.is?('Admin', 'Sales', 'Writer')
+  end
+
+  def managing_ku_staff?
     user.is?('Admin', 'Sales')
   end
 end

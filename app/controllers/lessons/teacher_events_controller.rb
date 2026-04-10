@@ -38,7 +38,7 @@ class TeacherEventsController < ApplicationController
             .within_event_window(@date)
             .includes(:organisation_lessons)
 
-    if current_user.is?('Admin')
+    if current_user.is?('Admin', 'Writer')
       @orgs_for_spy = Organisation.order(:name)
 
       scope = scope.for_organisation(params[:organisation_id]) if params[:organisation_id].present?

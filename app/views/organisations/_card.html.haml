@@ -8,6 +8,7 @@
     %h3= organisation.email
     %h3= organisation.phone
   %p= organisation.notes
-  = link_to t('.edit_organisation'),
-            edit_organisation_path(organisation),
-            class: 'btn btn-main'
+  - if policy(organisation).edit?
+    = link_to t('.edit_organisation'),
+              edit_organisation_path(organisation),
+              class: 'btn btn-main'

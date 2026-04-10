@@ -45,7 +45,7 @@ RSpec.describe TeacherLessonHelper do
   describe '#teacher_lesson_card_title' do
     it 'uses the subtype label for evening class subtype cards' do
       expect(helper.teacher_lesson_card_title('EveningClass', level: 'specialist', subtype: 'discussion'))
-        .to eq('Discussion')
+        .to eq(I18n.t('lessons.subtypes.discussion'))
     end
   end
 end

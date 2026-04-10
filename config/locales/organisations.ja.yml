@@ -1,5 +1,14 @@
 ---
 ja:
   organisations:
+    card:
+      edit_organisation: "組織を編集"
     index:
       add_organisation: "新しい組織を追加する"
+      organisations: "組織一覧"
+    show:
+      events: "イベント"
+      lesson_calendar: "レッスンカレンダー"
+      missing_lessons: "不足レッスン"
+      plans: "プラン"
+      schools: "スクール"

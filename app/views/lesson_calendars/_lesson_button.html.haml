@@ -1,16 +1,27 @@
 -# locals: (date:, lesson:, level:, teacher_id:)
 
 :ruby
-  src = teacher_lesson_path(lesson.id, date:, level:, type: lesson.type,
-                                       teacher_id:)
+  src = if teacher_id.present?
+          teacher_lesson_path(lesson.id, date:, level:, type: lesson.type,
+                                           teacher_id:)
+        end
+  button_classes = 'flex items-center w-full aspect-video py-10 rounded ' \
+                   'border-secondary border-2 font-bold relative'
+  button_classes += ' opacity-60 cursor-not-allowed' if teacher_id.blank?
+  data = if teacher_id.present?
+           { action: 'dialog#open',
+             controller: 'dialog',
+             'dialog-dialog-value': 'lesson-resources',
+             'dialog-frame-value': 'lesson',
+             'dialog-src-value': src }
+         else
+           {}
+         end
 
-%button{ class: 'flex items-center w-full aspect-video py-10 rounded ' \
-                'border-secondary border-2 font-bold relative',
-         data: { action: 'dialog#open',
-                 controller: 'dialog',
-                 'dialog-dialog-value': 'lesson-resources',
-                 'dialog-frame-value': 'lesson',
-                 'dialog-src-value': src },
+%button{ class: button_classes,
+         data: data,
+         disabled: teacher_id.blank?,
+         title: ('No teacher assigned to this organisation' if teacher_id.blank?),
          type: 'button' }
   = calendar_level_dots(lesson.short_level)
   %h3.w-full.text-center= calendar_lesson_title(lesson).html_safe

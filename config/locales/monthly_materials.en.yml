@@ -4,6 +4,7 @@ en:
       course: "Course"
       from_date: "Week starting on:"
       from_week: "From week"
+      organisation: "Organisation"
       search: "Search"
       weeks_forward: "Weeks forward"
     index:

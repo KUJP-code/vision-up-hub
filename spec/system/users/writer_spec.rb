@@ -13,7 +13,7 @@ RSpec.describe 'creating a Writer' do
     visit organisation_writers_path(organisation_id: organisation.id)
     find_by_id('create_user').click
     click_link 'create_writer'
-    expect(page).to have_content 'form'
+    expect(page).to have_css('#writer_form')
     within '#writer_form' do
       fill_in 'writer_name', with: 'John'
       fill_in 'writer_email', with: 'xjpjv@example.com'

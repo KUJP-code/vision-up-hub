@@ -1,4 +1,4 @@
--# locals: (courses:, plan_data:, from_week: nil)
+-# locals: (courses:, orgs: nil, organisation: nil, plan_data:, from_week: nil)
 
 - week = from_week || params.dig(:q, :from_week)
 
@@ -8,6 +8,13 @@
             html: { class: 'w-full flex flex-wrap justify-center gap-3',
                     data: { controller: 'course-dates',
                             'course-dates-plans-value': plan_data } } do |f|
+  - if orgs.present?
+    .flex-row.items-center
+      = label_tag :org, t('.organisation')
+      = select_tag :org,
+                   options_for_select(orgs.pluck(:name, :id), organisation&.id || params[:org]),
+                   onchange: 'this.form.requestSubmit()'
+
   - if courses.size > 1
     .flex-row.items-center
       = f.label :course, t('.course')
@@ -17,7 +24,7 @@
                          action: 'course-dates#calculateDate' }
   - else
     = f.hidden_field :course,
-                     value: courses.first[1],
+                     value: courses.first&.[](1),
                      data: { 'course-dates-target': 'course' }
 
   .flex-row.items-center

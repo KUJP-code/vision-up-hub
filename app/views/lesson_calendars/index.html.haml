@@ -1,4 +1,4 @@
-- teacher_id = current_user.is?('Teacher') ? current_user.id : @organisation.teachers.first.id
+- teacher_id = current_user.is?('Teacher') ? current_user.id : @organisation.teachers.first&.id
 
 = render 'shared/subtitle', text: t('.calendar')
 
@@ -12,6 +12,10 @@
 %main.flex.flex-col.gap-6.p-3
   - if @announcements.any?
     = render 'shared/announcement_list', announcements: @announcements
+
+  - if teacher_id.nil?
+    %p.text-danger.font-bold
+      No teacher account is assigned to this organisation, so lesson details can't be opened from the calendar yet.
 
   - if current_user.is?('Admin', 'Writer')
     %nav.tab-nav

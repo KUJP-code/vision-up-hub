@@ -1,5 +1,14 @@
 ---
 en:
   organisations:
+    card:
+      edit_organisation: "Edit Organisation"
     index:
       add_organisation: "Add new organisation"
+      organisations: "Organisations"
+    show:
+      events: "Events"
+      lesson_calendar: "Lesson Calendar"
+      missing_lessons: "Missing Lessons"
+      plans: "Plans"
+      schools: "Schools"
