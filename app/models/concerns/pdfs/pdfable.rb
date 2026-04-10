@@ -13,6 +13,8 @@ module Pdfable
     has_one_attached :guide do |g|
       g.variant :thumb, resize_to_limit: [300, 300],
                         convert: :avif, preprocessed: true
+      g.variant :preview_large, resize_to_limit: [1400, 1800],
+                                convert: :avif, preprocessed: true
     end
 
     def attach_guide
