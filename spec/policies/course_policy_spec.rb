@@ -20,10 +20,24 @@ RSpec.describe CoursePolicy do
   context 'when writer' do
     let(:user) { build(:user, :writer) }
 
-    it_behaves_like 'unauthorized user'
+    it 'allows index' do
+      expect(policy.index?).to be true
+    end
 
-    it 'scopes to nothing' do
-      expect(Pundit.policy_scope!(user, Course)).to eq(Course.none)
+    it 'allows show' do
+      expect(policy.show?).to be true
+    end
+
+    it 'does not allow create' do
+      expect(policy.create?).to be false
+    end
+
+    it 'does not allow edit' do
+      expect(policy.edit?).to be false
+    end
+
+    it 'scopes to all courses' do
+      expect(Pundit.policy_scope!(user, Course)).to eq(Course.all)
     end
   end
 

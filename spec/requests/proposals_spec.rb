@@ -65,5 +65,13 @@ RSpec.describe 'Proposals' do
       expect(response).to redirect_to(lesson_url(id: lesson.id))
       expect(lesson.reload.guide).to be_attached
     end
+
+    it 'does not make the accepted proposal show up as a normal lesson' do
+      patch proposal_path(id: proposal.id),
+            params: { proposal: { status: 'accepted' } }
+
+      expect(Lesson.canonical.accepted).to include(lesson)
+      expect(Lesson.canonical.accepted).not_to include(proposal.reload)
+    end
   end
 end
