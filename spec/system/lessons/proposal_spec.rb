@@ -61,9 +61,9 @@ RSpec.describe 'changing a lesson' do
       visit proposal_path(id: proposal.id)
       expect(page).to have_content(lesson.title)
       expect(page).to have_content('New Title')
-      within '#proposal_status_form' do
-        select 'Accepted', from: 'proposal_status'
-        click_button 'proposal_status_form_submit'
+      within "#proposal_status_form_#{proposal.id}" do
+        select 'Accepted', from: "proposal_status_#{proposal.id}"
+        click_button "proposal_status_form_submit_#{proposal.id}"
       end
       expect(page).to have_content('New Title')
       expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
