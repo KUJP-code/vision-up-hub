@@ -34,6 +34,7 @@ module Approvable
       time: Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     }
     admin_approval << new_approval
+    self.status = :accepted if respond_to?(:status) && proposed? && changed_lesson_id.nil?
   end
 
   def set_curriculum_approval

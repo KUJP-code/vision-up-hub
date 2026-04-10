@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
   def index
     raise Pundit::NotAuthorizedError unless current_user.is?('Admin', 'Writer')
 
-    @lessons = policy_scope(Lesson).accepted.order(updated_at: :desc).limit(10)
+    @lessons = policy_scope(Lesson).canonical.accepted.order(updated_at: :desc).limit(10)
     @writers = policy_scope(User)
                .where(type: %w[Admin Writer]).pluck(:name, :id)
   end

@@ -7,7 +7,7 @@ class LessonSearchesController < ApplicationController
   ADMINS_BUCKET   = '__ADMINS__'
 
   def index
-    @results = policy_scope(Lesson)
+    @results = policy_scope(Lesson).canonical
 
     sp         = search_params
     week       = sp[:week]

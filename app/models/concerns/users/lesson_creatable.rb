@@ -5,13 +5,13 @@ module LessonCreatable
 
   included do
     has_many :assigned_lessons,
-             -> { where(status: :accepted) },
+             -> { where(status: :accepted, changed_lesson_id: nil) },
              class_name: 'Lesson',
              dependent: :restrict_with_error,
              foreign_key: :assigned_editor_id,
              inverse_of: :assigned_editor
     has_many :created_lessons,
-             -> { where(status: :accepted) },
+             -> { where(status: :accepted, changed_lesson_id: nil) },
              class_name: 'Lesson',
              dependent: :restrict_with_error,
              foreign_key: :creator_id,
