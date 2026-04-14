@@ -25,6 +25,18 @@ class CategoryResourcePolicy < ApplicationPolicy
     user.is?('Admin', 'Writer')
   end
 
+  def batch_copy?
+    user.is?('Admin')
+  end
+
+  def batch_copy_preview?
+    user.is?('Admin')
+  end
+
+  def batch_copy_create?
+    user.is?('Admin')
+  end
+
   def destroy?
     user.is?('Admin')
   end

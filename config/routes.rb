@@ -13,7 +13,13 @@ Rails.application.routes.draw do
           get :pdf, defaults: { format: :pdf }
         end
       end
-      resources :category_resources, except: %i[show]
+      resources :category_resources, except: %i[show] do
+        collection do
+          get :batch_copy
+          post :batch_copy_preview
+          post :batch_copy_create
+        end
+      end
       resources :courses, except: %i[destroy] do
         resources :course_lesson_uploads, only: %i[create new show]
       end

@@ -1,0 +1,93 @@
+= render 'shared/subtitle', text: 'Batch Copy Course Resources'
+
+%main.p-3.flex.flex-col.gap-4
+  - if flash[:alert]
+    .rounded.border-2.border-danger.bg-white.p-4.text-danger.font-semibold
+      = flash[:alert]
+
+  .bg-white.rounded.border-2.border-secondary.p-4.flex.flex-col.gap-4
+    %p
+      Copy one lesson category of resources from one course into another course.
+      Existing destination resources will be skipped automatically.
+
+    = form_with url: batch_copy_preview_category_resources_path,
+                scope: :batch_copy,
+                local: true,
+                data: { turbo: false },
+                class: 'flex flex-col gap-4' do |f|
+      .grid.grid-cols-1.md:grid-cols-3.gap-4
+        .form-group
+          = f.label :source_course_id, 'Source course'
+          = f.select :source_course_id,
+                     @courses.pluck(:title, :id),
+                     { prompt: 'Select source course',
+                       selected: @batch_copy[:source_course_id] }
+
+        .form-group
+          = f.label :lesson_category, 'Lesson category'
+          = f.select :lesson_category,
+                     CategoryResource.lesson_categories.keys.map { |key| [t("category_resources.#{key}"), key] },
+                     { prompt: 'Select lesson category',
+                       selected: @batch_copy[:lesson_category] }
+
+        .form-group
+          = f.label :destination_course_id, 'Destination course'
+          = f.select :destination_course_id,
+                     @courses.pluck(:title, :id),
+                     { prompt: 'Select destination course',
+                       selected: @batch_copy[:destination_course_id] }
+
+      .flex.gap-3
+        = f.submit 'Preview Copy', class: 'btn btn-main'
+        = link_to 'Back to Category Resources',
+                  category_resources_path,
+                  class: 'btn btn-secondary'
+
+  - if @batch_copy_summary.present?
+    .bg-white.rounded.border-2.border-secondary.p-4.flex.flex-col.gap-4
+      %h2.font-semibold.text-lg Copy Summary
+      %p
+        Source:
+        %strong= @source_course.title
+      %p
+        Lesson category:
+        %strong= @lesson_category_label
+      %p
+        Destination:
+        %strong= @destination_course.title
+
+      %table.w-full.text-center
+        %thead
+          %tr
+            %th.thead.thead-s.bg-secondary-50 Source Resources
+            %th.thead.bg-secondary-50 Already in Destination
+            %th.thead.thead-e.bg-secondary-50 Will Be Copied
+        %tbody
+          %tr
+            %td.p-3= @batch_copy_summary[:total_source_resources]
+            %td.p-3= @batch_copy_summary[:already_attached_count]
+            %td.p-3= @batch_copy_summary[:copyable_count]
+
+      - if @already_attached_resources.any?
+        .flex.flex-col.gap-2
+          %h3.font-semibold.text-danger Warning: already attached to destination
+          %ul.list-disc.pl-6
+            - @already_attached_resources.each do |resource|
+              %li
+                = resource.resource&.blob&.filename || 'No file attached'
+                = " (#{t("category_resources.#{resource.lesson_category}")} / #{t("teacher_resources.index.#{resource.resource_category}")})"
+
+      - if @batch_copy_summary[:copyable_count].positive?
+        = form_with url: batch_copy_create_category_resources_path,
+                    scope: :batch_copy,
+                    local: true,
+                    data: { turbo: false },
+                    class: 'flex gap-3' do |f|
+          = f.hidden_field :source_course_id, value: @batch_copy[:source_course_id]
+          = f.hidden_field :lesson_category, value: @batch_copy[:lesson_category]
+          = f.hidden_field :destination_course_id, value: @batch_copy[:destination_course_id]
+          = f.submit 'Confirm Copy',
+                     class: 'btn btn-main',
+                     data: { turbo_confirm: 'Copy these category resources into the destination course?' }
+      - else
+        %p.font-semibold.text-secondary Nothing new to copy for this course pair.

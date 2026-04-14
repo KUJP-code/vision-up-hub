@@ -1,9 +1,14 @@
 = render 'shared/subtitle', text: t('.category_resources')
 
 %main.p-3.flex.flex-col.gap-3
-  = link_to 'New Category Resource',
-            new_category_resource_path,
-            class: 'btn btn-secondary w-full'
+  .flex.flex-col.md:flex-row.gap-3
+    = link_to 'New Category Resource',
+              new_category_resource_path,
+              class: 'btn btn-secondary w-full md:w-auto'
+    - if current_user.is?('Admin')
+      = link_to 'Batch Copy Course Resources',
+                batch_copy_category_resources_path,
+                class: 'btn btn-main w-full md:w-auto'
 
   = render 'category_resources/search_form'
 
