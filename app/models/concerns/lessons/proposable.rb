@@ -33,6 +33,7 @@ module Proposable
       replace_single_attachments(proposal)
       replace_resources(proposal)
       replace_phonics_resources(proposal) if type == 'PhonicsClass'
+      replace_specialist_resources(proposal) if type == 'EveningClass'
       save
     rescue StandardError => e
       Rails.logger.error(e.message)
@@ -74,5 +75,16 @@ module Proposable
 
   def phonics_resource_duplicated?(resource)
     phonics_resources.find_by(blob_id: resource.blob_id, week: resource.week)
+  end
+
+  def replace_specialist_resources(proposal)
+    return unless respond_to?(:specialist_structured?) && specialist_structured?
+
+    self.class.specialist_resource_attachment_names.each do |attachment_name|
+      public_send(attachment_name).purge
+      proposal.public_send(attachment_name).each do |resource|
+        public_send(attachment_name).attach(resource.blob)
+      end
+    end
   end
 end

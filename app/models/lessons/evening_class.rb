@@ -5,6 +5,13 @@ class EveningClass < Lesson
   SPECIALIST_SUBTYPES = %w[
     literacy discussion project_session_1 project_session_2 special_lesson
   ].freeze
+  SPECIALIST_GOAL_ATTRIBUTES = %i[
+    literacy_goal
+    discussion_goal
+    project_session_1_goal
+    project_session_2_goal
+    special_lesson_goal
+  ].freeze
   LEVEL_SUBTYPE_MAP = {
     'keep_up' => KEEP_UP_SUBTYPES,
     'keep_up_one' => KEEP_UP_SUBTYPES,
@@ -13,10 +20,17 @@ class EveningClass < Lesson
     'specialist_advanced' => SPECIALIST_SUBTYPES
   }.freeze
 
-  ATTRIBUTES = %i[subtype].freeze
+  ATTRIBUTES = %i[
+    subtype
+    literacy_goal
+    discussion_goal
+    project_session_1_goal
+    project_session_2_goal
+    special_lesson_goal
+  ].freeze
   LISTABLE_ATTRIBUTES = %i[].freeze
 
-  validates :subtype, presence: true
+  validates :subtype, presence: true, unless: :specialist?
   validate :subtype_matches_level
 
   enum level: {
@@ -37,12 +51,42 @@ class EveningClass < Lesson
     topic_study: 6
   }
 
+  has_many_attached :literacy_resources
+  has_many_attached :discussion_resources
+  has_many_attached :project_session_1_resources
+  has_many_attached :project_session_2_resources
+  has_many_attached :special_lesson_resources
+
   def self.subtypes_for(level)
     LEVEL_SUBTYPE_MAP.fetch(level.to_s, [])
   end
 
   def self.levels_for_subtype(subtype)
     LEVEL_SUBTYPE_MAP.select { |_level, subtypes| subtypes.include?(subtype.to_s) }.keys
+  end
+
+  def specialist_structured?
+    specialist? && subtype.blank?
+  end
+
+  def specialist_goal_for(subtype_key)
+    public_send("#{subtype_key}_goal")
+  end
+
+  def specialist_resources_for(subtype_key)
+    public_send("#{subtype_key}_resources_attachments")
+  end
+
+  def specialist_subtype_present?(subtype_key)
+    specialist_goal_for(subtype_key).present? || specialist_resources_for(subtype_key).any?
+  end
+
+  def specialist_subtypes_with_content
+    SPECIALIST_SUBTYPES.select { |subtype_key| specialist_subtype_present?(subtype_key) }
+  end
+
+  def self.specialist_resource_attachment_names
+    SPECIALIST_SUBTYPES.map { |subtype_key| "#{subtype_key}_resources" }
   end
 
   private

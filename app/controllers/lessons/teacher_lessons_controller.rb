@@ -20,6 +20,7 @@ class TeacherLessonsController < ApplicationController
     return if performed?
 
     @type_lessons, @lesson = lessons_for_type(@teacher, @date, @level, @type, @subtype)
+    @specialist_subtype = specialist_structured_subtype
     @resources = set_resources
     @lesson_links = set_links
   end
@@ -39,13 +40,19 @@ class TeacherLessonsController < ApplicationController
   end
 
   def set_resources
-    resources = @lesson.resources_attachments.includes(:blob)
+    resources = if @specialist_subtype.present?
+                  @lesson.specialist_resources_for(@specialist_subtype).includes(:blob)
+                else
+                  @lesson.resources_attachments.includes(:blob)
+                end
     resources += phonics_resources if @type == 'PhonicsClass'
 
     resources.sort_by { |r| r.blob.filename }
   end
 
   def set_links
+    return [] if @specialist_subtype.present?
+
     @lesson.lesson_links
   end
 
@@ -96,7 +103,9 @@ class TeacherLessonsController < ApplicationController
 
   def lessons_for_type(teacher, date, level, type, subtype = nil)
     type_lessons = teacher.day_lessons(date).send(level).where(type:)
-    type_lessons = type_lessons.where(subtype: EveningClass.subtypes.fetch(subtype)) if subtype.present?
+    if subtype.present? && !(type == 'EveningClass' && level == 'specialist' && type_lessons.detect(&:specialist_structured?))
+      type_lessons = type_lessons.where(subtype: EveningClass.subtypes.fetch(subtype))
+    end
     type_lessons = type_lessons.order(level: :asc)
 
     if keep_up_evening_class?(level, type)
@@ -113,6 +122,12 @@ class TeacherLessonsController < ApplicationController
              end
 
     [type_lessons, lesson]
+  end
+
+  def specialist_structured_subtype
+    return unless @type == 'EveningClass' && @lesson&.specialist_structured?
+
+    @subtype
   end
 
   def keep_up_evening_class?(level, type)

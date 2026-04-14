@@ -120,6 +120,11 @@ module TeacherLessonHelper
   private
 
   def evening_class_cards(level, day_lessons)
+    if level == 'specialist'
+      structured_lesson = day_lessons.where(type: 'EveningClass').detect(&:specialist_structured?)
+      return specialist_evening_class_cards(structured_lesson) if structured_lesson.present?
+    end
+
     subtypes = day_lessons.where(type: 'EveningClass')
                           .where.not(subtype: nil)
                           .map(&:subtype)
@@ -127,6 +132,14 @@ module TeacherLessonHelper
 
     EveningClass.subtypes_for(level).filter_map do |subtype|
       next unless subtypes.include?(subtype)
+
+      Card.new(kind: :lesson, type: 'EveningClass', subtype:)
+    end
+  end
+
+  def specialist_evening_class_cards(lesson)
+    EveningClass::SPECIALIST_SUBTYPES.filter_map do |subtype|
+      next unless lesson.specialist_subtype_present?(subtype)
 
       Card.new(kind: :lesson, type: 'EveningClass', subtype:)
     end

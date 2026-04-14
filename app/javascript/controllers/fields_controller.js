@@ -9,6 +9,10 @@ export default class extends Controller {
 		"subtypeSelect",
 		"lessonCategorySelect",
 		"resourceCategorySelect",
+		"sharedGoalField",
+		"eveningSubtypeField",
+		"specialistSubtypeFields",
+		"genericResourcesField",
 	];
 	static values = {
 		wrapperSelector: {
@@ -21,6 +25,7 @@ export default class extends Controller {
 		this.toggleEnglishHomework();
 		this.toggleSubtypeOptions();
 		this.toggleResourceCategoryOptions();
+		this.toggleSpecialistEveningFields();
 	}
 
 	add(e) {
@@ -112,6 +117,27 @@ export default class extends Controller {
 			).find((option) => option.value !== "" && !option.disabled);
 
 			if (firstVisibleOption) this.resourceCategorySelectTarget.value = firstVisibleOption.value;
+		}
+	}
+
+	toggleSpecialistEveningFields() {
+		if (
+			!this.hasLevelSelectTarget ||
+			!this.hasSharedGoalFieldTarget ||
+			!this.hasEveningSubtypeFieldTarget ||
+			!this.hasSpecialistSubtypeFieldsTarget
+		)
+			return;
+
+		const specialistLevel = ["specialist", "specialist_advanced"].includes(
+			this.levelSelectTarget.value,
+		);
+
+		this.sharedGoalFieldTarget.style.display = specialistLevel ? "none" : "";
+		this.eveningSubtypeFieldTarget.style.display = specialistLevel ? "none" : "";
+		this.specialistSubtypeFieldsTarget.style.display = specialistLevel ? "" : "none";
+		if (this.hasGenericResourcesFieldTarget) {
+			this.genericResourcesFieldTarget.style.display = specialistLevel ? "none" : "";
 		}
 	}
 }

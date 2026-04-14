@@ -9,9 +9,33 @@
     ]
   end
 
-.form-group
+.form-group{ data: { fields_target: 'eveningSubtypeField' } }
   = f.label :subtype
   = f.select :subtype,
              subtype_options,
              { prompt: 'Select a subtype' },
              { data: { fields_target: 'subtypeSelect' } }
+
+.flex.flex-col.gap-4{ data: { fields_target: 'specialistSubtypeFields' }, style: (lesson.specialist_structured? ? nil : 'display:none;') }
+  - EveningClass::SPECIALIST_SUBTYPES.each do |subtype|
+    .border.border-secondary-50.rounded.p-4.flex.flex-col.gap-3
+      %h3.text-lg.font-semibold= t("lessons.subtypes.#{subtype}")
+      .form-group
+        = f.label :"#{subtype}_goal", t('goal')
+        = f.text_area :"#{subtype}_goal", rows: 1, style: 'min-height: 2.75rem;'
+
+      .form-group
+        = f.label :"#{subtype}_resources", t('resources')
+        = f.file_field :"#{subtype}_resources", multiple: true
+        - lesson.public_send("#{subtype}_resources_attachments").each do |attachment|
+          = f.hidden_field :"#{subtype}_resources",
+                           multiple: true,
+                           value: attachment.blob.signed_id
+        - if lesson.public_send("#{subtype}_resources_attachments").any?
+          .flex.flex-wrap.gap-2.mt-2
+            - lesson.public_send("#{subtype}_resources_attachments").each do |attachment|
+              = link_to attachment.blob.filename,
+                        file_path(attachment.blob),
+                        target: '_blank',
+                        rel: 'noopener',
+                        class: 'btn btn-secondary'

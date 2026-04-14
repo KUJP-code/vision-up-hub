@@ -1,6 +1,10 @@
 :ruby
   border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
   text = lvl_text_class(@lesson.short_level)
+  display_type = @specialist_subtype.present? ? t("lessons.subtypes.#{@specialist_subtype}") : lesson_type_heading(@lesson)
+  display_level = @specialist_subtype.present? ? t("lessons.subtypes.#{@specialist_subtype}") : lesson_level_heading(@lesson)
+  display_icon = @specialist_subtype.present? ? "lesson_types/#{@specialist_subtype}.svg" : type_icon_path(@lesson)
+  display_details = @specialist_subtype.present? ? @lesson.specialist_goal_for(@specialist_subtype) : lesson_details_heading(@lesson)
 
 = turbo_frame_tag 'lesson' do
   = render 'teacher_lessons/tabs',
@@ -24,11 +28,11 @@
   .dialog-content
     %header
       %h1{ class: "type #{border}" }
-        = lesson_type_heading(@lesson)
+        = display_type
       %h1{ class: "level #{text} #{border}" }
-        = lesson_level_heading(@lesson)
-      = image_tag type_icon_path(@lesson), class: 'h-full place-self-end'
-      %h3.details= lesson_details_heading(@lesson)
+        = display_level
+      = image_tag display_icon, class: 'h-full place-self-end'
+      %h3.details= display_details
 
     - if @lesson.guide.attached?
       = render 'teacher_lessons/guide_section',

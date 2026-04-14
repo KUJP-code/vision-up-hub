@@ -1,7 +1,7 @@
-\restrict t79qVU4clQLi9r0U29U1arm3Ej2ifgRvZI7fiFHbl18FnO2WGenzUgAqtDmanXa
+\restrict TeK0kDJbphphYmgBmyYhLxqG1c58wJcVJ3WnVTMHjqksdfD9VS3KtI56XGfrPju
 
--- Dumped from database version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
+-- Dumped from database version 16.13
+-- Dumped by pg_dump version 16.13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1294,7 +1294,12 @@ CREATE TABLE public.lessons (
     show_until date,
     review jsonb DEFAULT '[]'::jsonb NOT NULL,
     receptive_activity jsonb DEFAULT '[]'::jsonb,
-    productive_activity jsonb DEFAULT '[]'::jsonb
+    productive_activity jsonb DEFAULT '[]'::jsonb,
+    literacy_goal text,
+    discussion_goal text,
+    project_session_1_goal text,
+    project_session_2_goal text,
+    special_lesson_goal text
 );
 
 
@@ -4839,7 +4844,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict t79qVU4clQLi9r0U29U1arm3Ej2ifgRvZI7fiFHbl18FnO2WGenzUgAqtDmanXa
+\unrestrict TeK0kDJbphphYmgBmyYhLxqG1c58wJcVJ3WnVTMHjqksdfD9VS3KtI56XGfrPju
 
 SET search_path TO "$user", public;
 
@@ -4847,6 +4852,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260410013000'),
+('20260410010000'),
 ('20260309170000'),
 ('20260304090000'),
 ('20260303010000'),

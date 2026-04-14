@@ -40,6 +40,16 @@ class EveningClassesController < LessonsController
   private
 
   def type_params
-    params.require(:evening_class).permit(lesson_params + EveningClass::ATTRIBUTES)
+    params.require(:evening_class).permit(
+      lesson_params +
+      EveningClass::ATTRIBUTES +
+      [
+        { literacy_resources: [] },
+        { discussion_resources: [] },
+        { project_session_1_resources: [] },
+        { project_session_2_resources: [] },
+        { special_lesson_resources: [] }
+      ]
+    )
   end
 end

@@ -1,6 +1,8 @@
 -# locals: (lesson:)
 
 .flex.flex-wrap.justify-start.items-center.gap-3
+  - if lesson.instance_of?(EveningClass) && lesson.specialist_structured?
+    = render 'lessons/evening_classes/specialist_subtypes', lesson:
   - lesson.class::LISTABLE_ATTRIBUTES.each do |attr|
     - value = lesson.send(attr)
     - next if value.blank?

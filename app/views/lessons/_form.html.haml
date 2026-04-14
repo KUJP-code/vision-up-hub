@@ -81,7 +81,7 @@
     = f.label :title
     = f.text_field :title, required: true
 
-  .form-group
+  .form-group{ data: { fields_target: 'sharedGoalField' } }
     = f.label :goal
     = f.text_area :goal
     %small.-mt-1 More than 3 lines will work but be ridiculously small
@@ -95,18 +95,20 @@
                  { prompt: 'Select a level' },
                  { required: true,
                    data: { fields_target: 'levelSelect',
-                           action: 'change->fields#toggleEnglishHomework change->fields#toggleSubtypeOptions' } }
+                           action: 'change->fields#toggleEnglishHomework change->fields#toggleSubtypeOptions change->fields#toggleSpecialistEveningFields' } }
 
   = type_fields
 
-  .form-group
-    = f.label :resources
-    = f.file_field :resources, multiple: true
-    - if resource_ids
-      - resource_ids.each do |id|
-        = f.hidden_field :resources,
-                         multiple: true,
-                         value: id
+  - generic_resources_hidden = lesson.instance_of?(EveningClass) && lesson.specialist?
+  .form-group{ data: { fields_target: 'genericResourcesField' }, style: (generic_resources_hidden ? 'display:none;' : nil) }
+    - unless generic_resources_hidden
+      = f.label :resources
+      = f.file_field :resources, multiple: true
+      - if resource_ids
+        - resource_ids.each do |id|
+          = f.hidden_field :resources,
+                           multiple: true,
+                           value: id
 
   %h3.text-xl.font-bold Links
 

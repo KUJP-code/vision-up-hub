@@ -1,22 +1,45 @@
 -# locals: (lesson:, resources:)
 
 .flex.flex-wrap.justify-start.items-center.gap-3
-  - resources.each do |resource|
-    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-      = link_to file_path(resource.blob),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn btn-main resource flex justify-around' do
-        %p= resource.filename
-        = inline_svg_tag 'download_icon.svg',
-                         class: 'fill-white'
-      - if can_remove_resource?(current_user, lesson, resource.blob)
-        = link_to file_path(id: resource.blob.id,
-                            record_id: lesson.id,
-                            record_type: 'Lesson'),
-                  data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{resource.filename} from this lesson?" },
-                  class: 'btn btn-danger flex justify-around' do
+  - if lesson.instance_of?(EveningClass) && lesson.specialist_structured?
+    - specialist_resources = EveningClass::SPECIALIST_SUBTYPES.any? { |subtype| lesson.specialist_resources_for(subtype).any? }
+    - unless specialist_resources
+      - resources.each do |resource|
+        .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+          = link_to file_path(resource.blob),
+                    target: '_blank',
+                    rel: 'noopener',
+                    class: 'btn btn-main resource flex justify-around' do
+            %p= resource.filename
+            = inline_svg_tag 'download_icon.svg',
+                             class: 'fill-white'
+          - if can_remove_resource?(current_user, lesson, resource.blob)
+            = link_to file_path(id: resource.blob.id,
+                                record_id: lesson.id,
+                                record_type: 'Lesson'),
+                      data: { turbo_method: 'delete',
+                              turbo_confirm: "Remove #{resource.filename} from this lesson?" },
+                      class: 'btn btn-danger flex justify-around' do
+              %p= resource.filename
+              = inline_svg_tag 'delete_icon.svg',
+                               class: 'fill-white'
+  - else
+    - resources.each do |resource|
+      .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
+        = link_to file_path(resource.blob),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn btn-main resource flex justify-around' do
           %p= resource.filename
-          = inline_svg_tag 'delete_icon.svg',
+          = inline_svg_tag 'download_icon.svg',
                            class: 'fill-white'
+        - if can_remove_resource?(current_user, lesson, resource.blob)
+          = link_to file_path(id: resource.blob.id,
+                              record_id: lesson.id,
+                              record_type: 'Lesson'),
+                    data: { turbo_method: 'delete',
+                            turbo_confirm: "Remove #{resource.filename} from this lesson?" },
+                    class: 'btn btn-danger flex justify-around' do
+            %p= resource.filename
+            = inline_svg_tag 'delete_icon.svg',
+                             class: 'fill-white'
