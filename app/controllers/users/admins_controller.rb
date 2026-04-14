@@ -7,9 +7,15 @@ class AdminsController < UsersController
   }.freeze
 
   def show
-    @assigned_lessons = @user.assigned_lessons
+    @assigned_lessons = @user.assigned_lessons.order(updated_at: :desc)
     @announcements = policy_scope(Announcement)
-    @created_lessons = @user.created_lessons
+    @created_lessons = @user.created_lessons.order(updated_at: :desc)
+    lessons_scope = policy_scope(Lesson).includes(:creator, :changed_lesson)
+    @new_proposed_changes = lessons_scope.where(status: :proposed)
+                                         .where.not(changed_lesson_id: nil)
+                                         .order(created_at: :desc)
+    @new_proposed_lessons = lessons_scope.where(status: :proposed, changed_lesson_id: nil)
+                                         .order(created_at: :desc)
     @writers = User.where(type: %w[Admin Writer]).pluck(:name, :id)
     @org_teachers = Organisation.all
                                 .map { |org| { org:, teacher: org.teachers.first } }

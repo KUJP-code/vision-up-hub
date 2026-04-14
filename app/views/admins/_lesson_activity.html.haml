@@ -1,0 +1,127 @@
+-# locals: (assigned_lessons:, created_lessons:, new_proposed_changes:, new_proposed_lessons:)
+
+- section_classes = 'rounded border-2 border-secondary bg-white p-3 shadow'
+- summary_classes = 'cursor-pointer font-semibold text-lg text-secondary'
+- table_classes = 'w-full text-center mt-3'
+
+.flex.flex-col.gap-4.p-3
+  - if current_user.is?('Admin') && assigned_lessons.any?
+    = form_with url: reassign_editor_path, class: 'flex flex-col gap-3 w-full' do |f|
+      %h3.font-semibold Reassign accepted assigned lessons
+      = f.hidden_field :old_editor_id, value: @user.id
+
+      .form-group
+        = f.select :new_editor_id, @writers
+
+      = f.submit 'Reassign', class: 'btn btn-main w-fit'
+
+  .grid.grid-cols-1.md:grid-cols-2.gap-4
+    %details{ class: section_classes, open: true }
+      %summary{ class: summary_classes }
+        New Proposed Changes
+        = " (#{new_proposed_changes.size})"
+      - if new_proposed_changes.any?
+        %table{ class: table_classes }
+          %thead
+            %tr
+              %th
+                %p.thead.thead-s.bg-secondary-50 Proposed
+              %th
+                %p.thead.bg-secondary-50 Proposal
+              %th
+                %p.thead.bg-secondary-50 Current Lesson
+              %th
+                %p.thead.bg-secondary-50 Proposed By
+              %th
+                %p.thead.thead-e.bg-secondary-50 Notes
+          %tbody
+            - new_proposed_changes.each do |proposal|
+              %tr
+                %td= l(proposal.created_at, format: :short)
+                %td= link_to proposal.title, proposal_path(proposal)
+                %td= link_to proposal.changed_lesson.title, lesson_path(proposal.changed_lesson)
+                %td= proposal.creator&.name || 'Unknown'
+                %td= proposal.internal_notes.presence || '—'
+      - else
+        %p.mt-3.text-gray-600 No new proposed changes.
+
+    %details{ class: section_classes, open: true }
+      %summary{ class: summary_classes }
+        New Proposed Lessons
+        = " (#{new_proposed_lessons.size})"
+      - if new_proposed_lessons.any?
+        %table{ class: table_classes }
+          %thead
+            %tr
+              %th
+                %p.thead.thead-s.bg-secondary-50 Proposed
+              %th
+                %p.thead.bg-secondary-50 Lesson
+              %th
+                %p.thead.bg-secondary-50 Type
+              %th
+                %p.thead.bg-secondary-50 Proposed By
+              %th
+                %p.thead.thead-e.bg-secondary-50 Notes
+          %tbody
+            - new_proposed_lessons.each do |proposal|
+              %tr
+                %td= l(proposal.created_at, format: :short)
+                %td= link_to proposal.title, lesson_path(proposal)
+                %td= proposal.subtype.present? ? proposal.subtype.humanize : split_on_capitals(proposal.type)
+                %td= proposal.creator&.name || 'Unknown'
+                %td= proposal.internal_notes.presence || '—'
+      - else
+        %p.mt-3.text-gray-600 No new proposed lessons.
+
+    %details{ class: section_classes, open: false }
+      %summary{ class: summary_classes }
+        Created Lessons
+        = " (#{created_lessons.size})"
+      - if created_lessons.any?
+        %table{ class: table_classes }
+          %thead
+            %tr
+              %th
+                %p.thead.thead-s.bg-secondary-50 Date
+              %th
+                %p.thead.bg-secondary-50 Lesson
+              %th
+                %p.thead.bg-secondary-50 Type
+              %th
+                %p.thead.thead-e.bg-secondary-50 Updated
+          %tbody
+            - created_lessons.each do |lesson|
+              %tr
+                %td= l(lesson.created_at, format: :short)
+                %td= link_to lesson.title, lesson_path(lesson)
+                %td= lesson.subtype.present? ? lesson.subtype.humanize : split_on_capitals(lesson.type)
+                %td= l(lesson.updated_at, format: :short)
+      - else
+        %p.mt-3.text-gray-600 No created lessons yet.
+
+    %details{ class: section_classes, open: false }
+      %summary{ class: summary_classes }
+        Assigned Lessons
+        = " (#{assigned_lessons.size})"
+      - if assigned_lessons.any?
+        %table{ class: table_classes }
+          %thead
+            %tr
+              %th
+                %p.thead.thead-s.bg-secondary-50 Date
+              %th
+                %p.thead.bg-secondary-50 Lesson
+              %th
+                %p.thead.bg-secondary-50 Type
+              %th
+                %p.thead.thead-e.bg-secondary-50 Updated
+          %tbody
+            - assigned_lessons.each do |lesson|
+              %tr
+                %td= l(lesson.created_at, format: :short)
+                %td= link_to lesson.title, lesson_path(lesson)
+                %td= lesson.subtype.present? ? lesson.subtype.humanize : split_on_capitals(lesson.type)
+                %td= l(lesson.updated_at, format: :short)
+      - else
+        %p.mt-3.text-gray-600 No assigned lessons.

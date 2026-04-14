@@ -9,6 +9,8 @@
 
   = render 'users/teacher_spy', org_teachers: @org_teachers
 
-  = render 'users/user_lessons',
-           assigned: @assigned_lessons,
-           created: @created_lessons
+  = render 'admins/lesson_activity',
+           assigned_lessons: @assigned_lessons,
+           created_lessons: @created_lessons,
+           new_proposed_changes: @new_proposed_changes,
+           new_proposed_lessons: @new_proposed_lessons
