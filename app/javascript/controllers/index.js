@@ -67,3 +67,6 @@ application.register("popover", PopoverController);
 
 import PasswordChangeModeController from "./password_change_mode_controller";
 application.register("password-change-mode", PasswordChangeModeController);
+
+import CategoryResourceSearchController from "./category_resource_search_controller";
+application.register("category-resource-search", CategoryResourceSearchController);

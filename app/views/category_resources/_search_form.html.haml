@@ -1,7 +1,25 @@
 = turbo_frame_tag 'category_resource_search_frame',
                   target: 'category_resource_table' do
+  :ruby
+    selected_lesson_category = params.dig(:search, :lesson_category)
+    selected_resource_category = params.dig(:search, :resource_category)
+    resource_category_labels = CategoryResource.resource_categories.keys.index_with do |key|
+      t("teacher_resources.index.#{key}")
+    end
+    resource_category_options_by_lesson_category = CategoryResource.lesson_categories.keys.index_with do |lesson_category|
+      CategoryResource.valid_resource_categories_for(lesson_category)
+    end
+    resource_category_options = if selected_lesson_category.present?
+      CategoryResource.valid_resource_categories_for(selected_lesson_category)
+    else
+      CategoryResource.resource_categories.keys
+    end
   = form_with url: category_resources_path,
               scope: :search,
+              data: { controller: 'category-resource-search',
+                      'category-resource-search-options-by-lesson-category-value': resource_category_options_by_lesson_category.to_json,
+                      'category-resource-search-labels-value': resource_category_labels.to_json,
+                      'category-resource-search-prompt-value': t('.select_resource_category') },
               html: { class: 'flex flex-wrap justify-center items-center gap-3',
                       id: 'category_resource_search', method: :get } do |f|
     .w-full.flex.justify-around.gap-3
@@ -10,7 +28,9 @@
         = f.select :lesson_category,
                    CategoryResource.lesson_categories.keys.map { |key| [t("category_resources.#{key}"), key] },
                    { prompt: t('.select_category'),
-                     selected: params.dig(:search, :lesson_category) }
+                     selected: selected_lesson_category },
+                   data: { 'category-resource-search-target': 'lessonCategory',
+                           action: 'change->category-resource-search#updateResourceCategories' }
 
       .form-group
         = f.label :level, t('.level')
@@ -22,9 +42,10 @@
       .form-group
         = f.label :resource_category, t('.resource_category')
         = f.select :resource_category,
-                   CategoryResource.resource_categories.keys.map { |key| [t("teacher_resources.index.#{key}"), key] },
+                   resource_category_options.map { |key| [t("teacher_resources.index.#{key}"), key] },
                    { prompt: t('.select_resource_category'),
-                     selected: params.dig(:search, :resource_category) }
+                     selected: selected_resource_category },
+                   data: { 'category-resource-search-target': 'resourceCategory' }
 
       .form-group
         = f.label :used_by, t('.used_by')
