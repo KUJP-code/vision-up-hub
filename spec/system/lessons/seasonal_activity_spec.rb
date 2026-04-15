@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'creating a seasonal activity', :js do
   let!(:org) { create(:organisation, name: 'KidsUP') }
-  let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
+  let(:dummy_file_path) { Rails.root.join('spec/example_lesson.pdf') }
 
   before do
     user = org.users.create(attributes_for(:user, :writer))

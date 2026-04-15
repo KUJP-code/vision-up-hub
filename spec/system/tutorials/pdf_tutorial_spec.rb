@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Creating a PDF tutorial', :js do
   let(:admin_user) { create(:user, :admin) }
-  let(:dummy_file_path) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
+  let(:dummy_file_path) { Rails.root.join('spec/example_lesson.pdf') }
   let!(:category) { create(:tutorial_category, title: 'Pizza') }
 
   before do

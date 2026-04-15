@@ -20,7 +20,7 @@ RSpec.describe 'creating an Evening class' do
       select 'Specialist Advanced', from: 'evening_class_level'
       select I18n.t('lessons.subtypes.project_session_2'), from: 'evening_class_subtype'
       attach_file 'evening_class_resources',
-                  Rails.root.join('spec/Brett_Tanner_Resume.pdf')
+                  Rails.root.join('spec/example_lesson.pdf')
       click_button I18n.t('helpers.submit.create')
     end
     expect(page).to have_content('Test Evening Lesson')

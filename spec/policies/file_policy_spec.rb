@@ -15,7 +15,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to all files' do
       test_file = ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -31,7 +31,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to all files' do
       test_file = ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -47,7 +47,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to no files' do
       ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -63,7 +63,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to no files' do
       ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -79,7 +79,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to no files' do
       ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -95,7 +95,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to no files' do
       ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)
@@ -111,7 +111,7 @@ RSpec.describe FilePolicy do
 
     it 'scopes to no files' do
       ActiveStorage::Blob.create_and_upload!(
-        io: Rails.root.join('spec/Brett_Tanner_Resume.pdf').open,
+        io: Rails.root.join('spec/example_lesson.pdf').open,
         filename: 'file.pdf'
       )
       expect(described_class::Scope.new(user, ActiveStorage::Blob).resolve)

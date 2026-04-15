@@ -3,14 +3,14 @@ fb = FactoryBot
 
 puts 'Adding test files...'
 
-File.open(Rails.root.join('spec/Brett_Tanner_Resume.pdf')) do |f|
+File.open(Rails.root.join('spec/example_lesson.pdf')) do |f|
   ActiveStorage::Blob.create_and_upload!(
     io: f,
-    filename: 'Brett_Tanner_Resume.pdf',
+    filename: 'example_lesson.pdf',
     content_type: 'application/pdf'
   )
 end
-test_file = ActiveStorage::Blob.find_by(filename: 'Brett_Tanner_Resume.pdf')
+test_file = ActiveStorage::Blob.find_by(filename: 'example_lesson.pdf')
 
 puts 'Creating features...'
 
@@ -103,19 +103,6 @@ evening_class_seeds = {
   keep_up_two: [
     { subtype: :conversation_time, title: 'Keep Up 2 Conversation Time', goal: 'Extend speaking turns and peer interaction.' },
     { subtype: :topic_study, title: 'Keep Up 2 Topic Study', goal: 'Deepen comprehension of the current topic through reading and discussion.' }
-  ],
-  specialist: [
-    { subtype: :literacy, title: 'Specialist Literacy', goal: 'Develop close reading and response writing skills.' },
-    { subtype: :discussion, title: 'Specialist Discussion', goal: 'Support structured opinions and follow-up questioning.' },
-    { subtype: :project_session_1, title: 'Specialist Project Session 1', goal: 'Launch the project and organize research tasks.' },
-    { subtype: :project_session_2, title: 'Specialist Project Session 2', goal: 'Refine ideas and prepare a project outcome.' },
-    { subtype: :special_lesson, title: 'Specialist Special Lesson', goal: 'Blend review, challenge work, and presentation practice.' }
-  ],
-  specialist_advanced: [
-    { subtype: :literacy, title: 'Specialist Advanced Literacy', goal: 'Analyze longer texts and justify responses with evidence.' },
-    { subtype: :discussion, title: 'Specialist Advanced Discussion', goal: 'Practice extended discussion with rebuttal and support.' },
-    { subtype: :project_session_1, title: 'Specialist Advanced Project Session 1', goal: 'Plan a research-driven project with clear roles.' },
-    { subtype: :project_session_2, title: 'Specialist Advanced Project Session 2', goal: 'Finalize and present the project with polished output.' }
   ]
 }
 
@@ -123,6 +110,30 @@ evening_class_seeds.each do |level, lessons|
   lessons.each do |attrs|
     fb.create(:evening_class, level:, **attrs, **released_attrs)
   end
+end
+
+specialist_evening_class_seeds = {
+  specialist: {
+    title: 'Specialist Evening Class',
+    literacy_goal: 'Develop close reading and response writing skills.',
+    discussion_goal: 'Support structured opinions and follow-up questioning.',
+    project_session_1_goal: 'Launch the project and organize research tasks.',
+    project_session_2_goal: 'Refine ideas and prepare a project outcome.',
+    special_lesson_goal: 'Blend review, challenge work, and presentation practice.'
+  },
+  specialist_advanced: {
+    title: 'Specialist Advanced Evening Class',
+    literacy_goal: 'Analyze longer texts and justify responses with evidence.',
+    discussion_goal: 'Practice extended discussion with rebuttal and support.',
+    project_session_1_goal: 'Plan a research-driven project with clear roles.',
+    project_session_2_goal: 'Finalize and present the project with polished output.',
+    special_lesson_goal: 'Stretch review work into a polished challenge lesson.'
+  }
+}
+
+specialist_evening_class_seeds.each do |level, attrs|
+  lesson = EveningClass.new(level:, subtype: nil, type: 'EveningClass', goal: attrs[:title], **attrs, **released_attrs)
+  lesson.save!(validate: false)
 end
 
 Lesson.all.each do |lesson|
@@ -164,10 +175,56 @@ full_course = Course.create!(fb.attributes_for(:course, title: 'Full Course'))
 full_course.category_resources << CategoryResource.all
 
 lesson_days = CourseLesson::DAY_SHORTCUTS['all_week']
+weekday_evening_schedule = {
+  keep_up_one: {
+    monday: %w[conversation_time topic_study special_lesson],
+    tuesday: %w[conversation_time],
+    wednesday: %w[topic_study],
+    thursday: %w[special_lesson],
+    friday: %w[conversation_time topic_study]
+  },
+  keep_up_two: {
+    monday: %w[conversation_time topic_study],
+    tuesday: %w[topic_study],
+    wednesday: %w[conversation_time],
+    thursday: %w[topic_study],
+    friday: %w[conversation_time]
+  },
+  specialist: {
+    monday: %w[literacy discussion project_session_1 project_session_2 special_lesson],
+    tuesday: %w[literacy discussion],
+    wednesday: %w[project_session_1],
+    thursday: %w[project_session_2],
+    friday: %w[special_lesson discussion]
+  },
+  specialist_advanced: {
+    monday: %w[literacy discussion project_session_1 project_session_2 special_lesson],
+    tuesday: %w[discussion],
+    wednesday: %w[literacy project_session_1],
+    thursday: %w[project_session_2],
+    friday: %w[special_lesson]
+  }
+}.freeze
+
 course_lessons = Lesson.all.map do |lesson|
   lesson.update(creator_id: 1, assigned_editor_id: writer.id)
-  lesson_days.map do |day|
-    fb.create(:course_lesson, lesson:, course: full_course, week: 1, day:)
+  if lesson.type == 'EveningClass'
+    lesson_days.filter_map do |day|
+      day_key = day.to_sym
+      if lesson.specialist_structured?
+        next unless weekday_evening_schedule.fetch(lesson.level.to_sym).fetch(day_key, [])
+                                              .any? { |subtype| lesson.specialist_subtype_present?(subtype) }
+      else
+        next unless weekday_evening_schedule.fetch(lesson.level.to_sym).fetch(day_key, [])
+                                              .include?(lesson.subtype)
+      end
+
+      fb.create(:course_lesson, lesson:, course: full_course, week: 1, day:)
+    end
+  else
+    lesson_days.map do |day|
+      fb.create(:course_lesson, lesson:, course: full_course, week: 1, day:)
+    end
   end
 end
 

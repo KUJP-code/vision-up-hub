@@ -15,7 +15,7 @@ RSpec.describe 'Homework access by role' do
     )
   end
   let(:english_class) { create(:english_class, level: :sky_one) }
-  let(:pdf) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
+  let(:pdf) { Rails.root.join('spec/example_lesson.pdf') }
 
   before do
     plan

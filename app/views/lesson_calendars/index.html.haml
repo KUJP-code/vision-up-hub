@@ -1,4 +1,5 @@
 - teacher_id = current_user.is?('Teacher') ? current_user.id : @organisation.teachers.first&.id
+- calendar_entries = calendar_entries(@course_lessons)
 
 = render 'shared/subtitle', text: t('.calendar')
 
@@ -48,7 +49,7 @@
     %hr.row-start-10.calendar-separator
 
     - lesson_type_rows.each do |type, rows|
-      - next if @course_lessons.count { |cl| cl.lesson.type == type }.zero?
+      - next if calendar_entries.count { |entry| entry.lesson.type == type }.zero?
 
       %h2{ class: 'col-start-1 vertical-text font-bold text-xl ' \
                   'border-secondary flex items-end justify-center p-3 ' \
@@ -60,9 +61,10 @@
 
       %hr{ class: "#{lesson_separator_rows[type]} calendar-separator" }
 
-    - @course_lessons.each do |cl|
-      %div{ class: "#{day_column(cl.day)} #{lesson_row(cl.lesson)} py-3 px-2" }
+    - calendar_entries.each do |entry|
+      - cl = entry.course_lesson
+      %div{ class: "#{day_column(cl.day)} #{lesson_row(entry.lesson, subtype: entry.subtype)} py-3 px-2" }
         = render 'lesson_calendars/lesson_button',
                  date: calendar_date(@date, cl),
                  level: cl.lesson.calendar_level,
-                 teacher_id:, lesson: cl.lesson
+                 teacher_id:, lesson: cl.lesson, subtype: entry.subtype

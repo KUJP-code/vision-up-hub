@@ -8,7 +8,7 @@ FactoryBot.define do
   factory :pdf_tutorial do
     title { 'sample PDF tutorial' }
     tutorial_category
-    file { Rack::Test::UploadedFile.new(Rails.root.join('spec/Brett_Tanner_Resume.pdf'), 'application/pdf') }
+    file { Rack::Test::UploadedFile.new(Rails.root.join('spec/example_lesson.pdf'), 'application/pdf') }
   end
 
   factory :faq_tutorial do

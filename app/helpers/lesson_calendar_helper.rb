@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
 module LessonCalendarHelper
+  CalendarEntry = Struct.new(:course_lesson, :lesson, :subtype, keyword_init: true)
+
   def calendar_date(date, course_lesson)
     date + (CourseLesson.days[course_lesson.day] - 2).days
   end
 
-  def calendar_lesson_title(lesson)
+  def calendar_entries(course_lessons)
+    course_lessons.flat_map { |course_lesson| calendar_entries_for(course_lesson) }
+  end
+
+  def calendar_lesson_title(lesson, subtype: nil)
+    return t("lessons.subtypes.#{subtype}") if lesson.type == 'EveningClass' && subtype.present?
+
     case lesson.type
     when 'DailyActivity', 'Exercise'
       lesson.subtype.titleize
@@ -25,7 +33,11 @@ module LessonCalendarHelper
     %w[monday wednesday friday].include?(day) ? "#{col} bg-neutral-dark" : col
   end
 
-  def lesson_row(lesson)
+  def lesson_row(lesson, subtype: nil)
+    if lesson&.type == 'EveningClass' && subtype.present?
+      return evening_class_row(lesson, subtype)
+    end
+
     type_key =
       case lesson&.type
       when 'KindyPhonic' then 'PhonicsClass'
@@ -73,13 +85,8 @@ module LessonCalendarHelper
         'Sky' => 'row-start-[25]',
         'Galaxy' => 'row-start-[26]'
       },
-      'EveningClass' => {
-        'Keep Up' => 'row-start-[28]',
-        'specialist' => 'row-start-[29]',
-        'specialist_advanced' => 'row-start-[30]'
-      },
       'ParentsReport' => {
-        'All Levels' => 'row-start-[32]'
+        'All Levels' => 'row-start-[37]'
       }
     }
 
@@ -90,7 +97,7 @@ module LessonCalendarHelper
         "lesson_row: missing map for type=#{type_key.inspect} level=#{level_key.inspect} " \
         "(lesson_id=#{lesson&.id}, title=#{lesson&.try(:title)})"
       )
-      row = 'row-start-[33]'
+      row = 'row-start-[38]'
     end
 
     row
@@ -103,7 +110,7 @@ module LessonCalendarHelper
       'EnglishClass' => 'row-start-[17]',
       'StandShowSpeak' => 'row-start-[22]',
       'EveningClass' => 'row-start-[27]',
-      'ParentsReport' => 'row-start-[31]'
+      'ParentsReport' => 'row-start-[36]'
     }
   end
 
@@ -114,8 +121,8 @@ module LessonCalendarHelper
       'PhonicsClass' => 'row-start-13 row-span-4',
       'EnglishClass' => 'row-start-[18] row-span-4',
       'StandShowSpeak' => 'row-start-[23] row-span-4',
-      'EveningClass' => 'row-start-[28] row-span-3',
-      'ParentsReport' => 'row-start-[32] row-span-2'
+      'EveningClass' => 'row-start-[28] row-span-8',
+      'ParentsReport' => 'row-start-[37] row-span-2'
     }
   end
 
@@ -136,5 +143,38 @@ module LessonCalendarHelper
     content_tag(:div, '', class: "#{base_classes} right-2 bg-land") +
       content_tag(:div, '', class: "#{base_classes} right-4 bg-sky") +
       content_tag(:div, '', class: "#{base_classes} right-6 bg-galaxy")
+  end
+
+  private
+
+  def calendar_entries_for(course_lesson)
+    lesson = course_lesson.lesson
+    return [CalendarEntry.new(course_lesson:, lesson:, subtype: nil)] unless lesson.type == 'EveningClass'
+
+    if lesson.specialist_structured?
+      lesson.specialist_subtypes_with_content.map do |subtype|
+        CalendarEntry.new(course_lesson:, lesson:, subtype:)
+      end
+    else
+      [CalendarEntry.new(course_lesson:, lesson:, subtype: lesson.subtype)]
+    end
+  end
+
+  def evening_class_row(lesson, subtype)
+    if lesson.keep_up?
+      {
+        'conversation_time' => 'row-start-[28]',
+        'topic_study' => 'row-start-[29]',
+        'special_lesson' => 'row-start-[30]'
+      }.fetch(subtype.to_s, 'row-start-[38]')
+    else
+      {
+        'literacy' => 'row-start-[31]',
+        'discussion' => 'row-start-[32]',
+        'project_session_1' => 'row-start-[33]',
+        'project_session_2' => 'row-start-[34]',
+        'special_lesson' => 'row-start-[35]'
+      }.fetch(subtype.to_s, 'row-start-[38]')
+    end
   end
 end

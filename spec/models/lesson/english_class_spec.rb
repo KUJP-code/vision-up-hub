@@ -51,7 +51,7 @@ RSpec.describe EnglishClass do
 
   context 'when attaching homework files' do
     let(:english_class) { create(:english_class) }
-    let(:pdf) { Rails.root.join('spec/Brett_Tanner_Resume.pdf') }
+    let(:pdf) { Rails.root.join('spec/example_lesson.pdf') }
 
     it 'attaches homework sheet and answers' do
       english_class.homework_sheet.attach(
