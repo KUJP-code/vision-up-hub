@@ -1,7 +1,7 @@
-\restrict TeK0kDJbphphYmgBmyYhLxqG1c58wJcVJ3WnVTMHjqksdfD9VS3KtI56XGfrPju
+\restrict Yu0eaMFRcFkyjd8ac8IUnoAq7BATM7F7DUggU6jCr1QCDigjEX35gEs4O21onQV
 
--- Dumped from database version 16.13
--- Dumped by pg_dump version 16.13
+-- Dumped from database version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -4844,7 +4844,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict TeK0kDJbphphYmgBmyYhLxqG1c58wJcVJ3WnVTMHjqksdfD9VS3KtI56XGfrPju
+\unrestrict Yu0eaMFRcFkyjd8ac8IUnoAq7BATM7F7DUggU6jCr1QCDigjEX35gEs4O21onQV
 
 SET search_path TO "$user", public;
 

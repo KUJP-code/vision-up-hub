@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.3-school_managers"
+    "Name": "kidsup/materials:3.4-resource_overhaul"
   },
   "Ports": [
     {
