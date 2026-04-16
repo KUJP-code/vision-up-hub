@@ -1,0 +1,9 @@
+= turbo_frame_tag 'lesson' do
+  %section.flex.items-center.justify-center.h-full.w-full.p-4
+    %iframe{
+      src: @tool.embed_url,
+      frameborder: 0,
+      allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture',
+      allowfullscreen: true,
+      class: 'w-full h-full'
+    }

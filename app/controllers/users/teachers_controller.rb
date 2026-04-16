@@ -6,6 +6,7 @@ class TeachersController < UsersController
   def show
     @levels = %w[kindy elementary keep_up specialist]
               .select { |level| Flipper.enabled?(:"#{level}", @user) }
+    @teacher_tools = resolved_teacher_tools
   end
 
   def new
@@ -67,5 +68,11 @@ class TeachersController < UsersController
 
   def scoped_users
     super.where(type: 'Teacher')
+  end
+
+  def resolved_teacher_tools
+    return [] unless Flipper.enabled?(:teacher_tools, @user)
+
+    TeacherTools::Resolver.call(organisation: @user.organisation)
   end
 end
