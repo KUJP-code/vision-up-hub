@@ -57,7 +57,7 @@ class LessonSearchesController < ApplicationController
 
   def query_string(strong_params)
     strong_params.keys
-                 .map { |k| PARTIAL_MATCHES.include?(k) ? "#{k} LIKE :#{k}" : "#{k} = :#{k}" }
+                 .map { |k| PARTIAL_MATCHES.include?(k) ? "#{k} ILIKE :#{k}" : "#{k} = :#{k}" }
                  .join(' AND ')
   end
 
