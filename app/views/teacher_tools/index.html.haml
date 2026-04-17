@@ -2,7 +2,7 @@
 
 %main.flex.flex-col.gap-4.p-4
   - if @orgs.any?
-    %nav.tab-nav
+    %nav.tab-nav-scroll
       - @orgs.each do |org|
         - active = @organisation == org ? 'active' : 'inactive'
         = link_to org.name,
@@ -31,8 +31,6 @@
           %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
           %h3.text-center.truncate.w-full= tool.title
           %p.text-xs.text-secondary= tool.video? ? 'Video' : 'Other'
-          - if tool.duration_label.present?
-            %p.text-xs.text-secondary= tool.duration_label
           .w-full.flex.flex-col.gap-2.pt-2
             = link_to 'Edit',
                       edit_teacher_tool_path(tool, organisation_id: @organisation.id),

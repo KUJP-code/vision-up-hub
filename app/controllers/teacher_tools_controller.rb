@@ -47,6 +47,7 @@ class TeacherToolsController < ApplicationController
           kind: tool.kind,
           url: tool.url,
           embed_url: tool.embed_url,
+          video_paths: tool.video_paths,
           duration_label: tool.duration_label,
           position: next_destination_position
         )
@@ -110,7 +111,7 @@ class TeacherToolsController < ApplicationController
   end
 
   def teacher_tool_params
-    params.require(:teacher_tool).permit(
+    permitted = params.require(:teacher_tool).permit(
       :title,
       :description,
       :kind,
@@ -119,8 +120,15 @@ class TeacherToolsController < ApplicationController
       :url,
       :duration_label,
       :position,
-      :active
+      :active,
+      video_paths: []
     )
+
+    video_paths = Array(permitted.delete(:video_paths)).compact_blank
+    legacy_video_path = permitted.delete(:video_path).presence
+    video_paths = [legacy_video_path] if video_paths.empty? && legacy_video_path.present?
+    permitted[:video_paths] = video_paths
+    permitted
   end
 
   def selected_organisation(default_id = nil)
