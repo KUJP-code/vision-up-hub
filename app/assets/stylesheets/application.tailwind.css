@@ -239,7 +239,7 @@
   }
 
   .nav-tab {
-    @apply w-full md:w-auto md:min-w-fit md:shrink-0 text-center rounded md:rounded-t md:rounded-b-none border-t-2 border-x-2 border-b-2 md:border-b-0 border-secondary;
+    @apply basis-1/6 text-center rounded md:rounded-t md:rounded-b-none border-t-2 border-x-2 border-b-2 md:border-b-0 border-secondary;
 
     &.active {
       @apply md:relative p-1 md:p-2 md:after:h-2 md:after:w-full md:after:absolute md:after:-bottom-1 md:after:left-0 md:after:bg-neutral-light;
@@ -341,8 +341,16 @@
   }
 
   .tab-nav {
+    @apply w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
+  }
+
+  .tab-nav-scroll {
     @apply w-full flex flex-col md:flex-row md:flex-nowrap gap-2 md:justify-start md:overflow-x-auto md:overscroll-x-contain md:pb-2 md:border-b-2 md:border-secondary text-nowrap;
     scrollbar-gutter: stable;
+
+    .nav-tab {
+      @apply w-full md:w-auto md:min-w-fit md:shrink-0;
+    }
   }
 
   .testresult-input {
