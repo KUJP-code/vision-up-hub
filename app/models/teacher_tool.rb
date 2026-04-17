@@ -56,6 +56,7 @@ class TeacherTool < ApplicationRecord
     return if video_paths_list.any? || embed_url.present?
 
     errors.add(:video_paths, "can't be blank")
+    errors.add(:embed_url, "can't be blank")
   end
 
   def normalize_video_url(value)

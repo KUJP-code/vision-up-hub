@@ -1,12 +1,26 @@
 -# locals: (lessons:)
 
 = turbo_frame_tag 'lesson_table' do
+  - current_sort = params[:sort]
+  - current_direction = params[:direction]
+  - title_direction = current_sort == 'title' && current_direction != 'desc' ? 'desc' : 'asc'
+  - status_direction = current_sort == 'status' && current_direction != 'desc' ? 'desc' : 'asc'
+  - approved_by_direction = current_sort == 'approved_by' && current_direction != 'desc' ? 'desc' : 'asc'
+  - title_params = request.query_parameters.merge(sort: 'title', direction: title_direction)
+  - status_params = request.query_parameters.merge(sort: 'status', direction: status_direction)
+  - approved_by_params = request.query_parameters.merge(sort: 'approved_by', direction: approved_by_direction)
   %table.w-full.text-center
     %thead
       %tr.text-white.font-bold
-        %th.thead.thead-s.bg-secondary-50 Title
-        %th.thead.bg-secondary-50 Status
-        %th.thead.thead-e.bg-secondary-50 Approved by
+        %th.thead.thead-s.bg-secondary-50
+          = link_to lesson_searches_path(title_params), class: 'block w-full h-full p-2' do
+            Title
+        %th.thead.bg-secondary-50
+          = link_to lesson_searches_path(status_params), class: 'block w-full h-full p-2' do
+            Status
+        %th.thead.thead-e.bg-secondary-50
+          = link_to lesson_searches_path(approved_by_params), class: 'block w-full h-full p-2' do
+            Approved by
     %tbody
       - lessons.each do |lesson|
         %tr
