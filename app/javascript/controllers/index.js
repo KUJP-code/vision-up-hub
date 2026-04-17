@@ -73,3 +73,6 @@ application.register("category-resource-search", CategoryResourceSearchControlle
 
 import TeacherToolFormController from "./teacher_tool_form_controller";
 application.register("teacher-tool-form", TeacherToolFormController);
+
+import TeacherToolsPanelController from "./teacher_tools_panel_controller";
+application.register("teacher-tools-panel", TeacherToolsPanelController);

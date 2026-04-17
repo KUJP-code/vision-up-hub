@@ -1,4 +1,4 @@
-\restrict oCLZIko87qgYJwNTmBCx1irHcQpp0qiBjMRfJTgHSB7BT0N33XqBBigl9QHbnpl
+\restrict 1fnB5e18ECeeiZVxmb2rY1P3OqCvhMA9yxjuxX5xQlWXaQf5LVMLSuJ3rulnlb9
 
 -- Dumped from database version 16.13
 -- Dumped by pg_dump version 16.13
@@ -2417,7 +2417,8 @@ CREATE TABLE public.teacher_tools (
     active boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    organisation_id bigint NOT NULL
+    organisation_id bigint NOT NULL,
+    video_paths jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -4913,7 +4914,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict oCLZIko87qgYJwNTmBCx1irHcQpp0qiBjMRfJTgHSB7BT0N33XqBBigl9QHbnpl
+\unrestrict 1fnB5e18ECeeiZVxmb2rY1P3OqCvhMA9yxjuxX5xQlWXaQf5LVMLSuJ3rulnlb9
 
 SET search_path TO "$user", public;
 
@@ -4921,6 +4922,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260417093000'),
 ('20260416120000'),
 ('20260416090000'),
 ('20260410013000'),
