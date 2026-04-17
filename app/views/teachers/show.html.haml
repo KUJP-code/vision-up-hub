@@ -1,8 +1,8 @@
 :ruby
-  base = 'flex gap-4 p-4'
+  base = 'flex gap-6 p-6'
   mobile = 'flex-col justify-start items-stretch'
   desktop = 'md:flex-row md:items-center md:justify-center'
-  card = 'card basis-1/3 max-w-full p-2 flex flex-col gap-2 min-h-40'
+  card = 'card basis-1/3 max-w-full p-3 flex flex-col gap-3'
 
 = render 'teachers/subtitle',
          date: Time.zone.today, level: @levels.first, teacher: @user
@@ -15,13 +15,21 @@
 
     = turbo_frame_tag 'lesson'
 
-%main.p-4.flex.flex-col.gap-3
-  - if @teacher_tools.any?
-    = render 'teacher_tools', teacher: @user, teacher_tools: @teacher_tools
+- if @teacher_tools.any?
+  #teacher-tools-panel
+    .md:hidden
+      = render 'teacher_tools', teacher: @user, teacher_tools: @teacher_tools
 
-  #teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
-    - @levels.each do |level|
-      = link_to teacher_lessons_path(level:, teacher_id: @user.id),
-                class: card, id: level, data: { turbo_stream: true } do
-        = image_tag "levels/#{level}.svg"
-        %h1.text-center.text-2xl= t("levels.#{level}")
+    .hidden.md:block.absolute.top-14.left-16.right-0.z-10
+      = render 'teacher_tools', teacher: @user, teacher_tools: @teacher_tools
+
+%main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}",
+                       data: { controller: 'teacher-tools-panel' } }
+  - @levels.each do |level|
+    = link_to teacher_lessons_path(level:, teacher_id: @user.id),
+              class: card,
+              id: level,
+              data: { turbo_stream: true,
+                      action: 'click->teacher-tools-panel#hide' } do
+      = image_tag "levels/#{level}.svg"
+      %h1.text-center.text-3xl= t("levels.#{level}")
