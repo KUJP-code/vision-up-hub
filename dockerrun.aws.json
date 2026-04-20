@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6-evening_resources"
+    "Name": "kidsup/materials:2.6.1-homework_rollback"
   },
   "Ports": [
     {
