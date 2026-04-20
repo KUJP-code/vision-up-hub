@@ -3,6 +3,7 @@ en:
     index:
       homework: "Homework"
       date: "Date"
+      level: "Level"
       pages: "Pages"
       questions: "Questions"
       answers: "Answers"

@@ -20,7 +20,34 @@ module HomeworkHelper
     end.join.html_safe
   end
 
+  def render_teacher_homework_rows(homeworks)
+    return '' if homeworks.blank?
+
+    homeworks.map do |homework|
+      content_tag(:tr) do
+        concat(content_tag(:td, teacher_homework_date_text(homework), class: 'p-2'))
+        concat(content_tag(:td, class: 'p-2') do
+          content_tag(:div, class: 'flex flex-col sm:flex-row gap-2 w-full') do
+            homework_buttons(homework.lesson.homework_sheet, homework.lesson.homework_answers).html_safe
+          end
+        end)
+      end
+    end.join.html_safe
+  end
+
   private
+
+  def teacher_homework_date_text(homework)
+    plan = current_user.organisation.plans
+                       .where(course_id: homework.course_id)
+                       .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+                       .first
+    return '' unless plan
+
+    week_start = plan.start.to_date + (homework.week - 1).weeks
+    lesson_date = week_start + (CourseLesson.days.fetch(homework.day) - 2).days
+    "#{l(lesson_date, format: :short)} (#{t("levels.#{homework.lesson.short_level.downcase.tr(' ', '_')}")})"
+  end
 
   def week_range_text(week)
     return '' unless defined?(@plan) && @plan.present?

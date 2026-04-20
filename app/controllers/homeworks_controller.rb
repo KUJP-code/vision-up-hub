@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class HomeworksController < ApplicationController
-  before_action :set_courses
-  before_action :set_course
+  before_action :set_courses, unless: :teacher_homework_view?
+  before_action :set_course, unless: :teacher_homework_view?
   after_action :verify_authorized
 
   def index
     authorize Lesson, :homework_index?
+    if teacher_homework_view?
+      setup_teacher_homeworks
+      return
+    end
+
     return unless @course
 
     setup_level_grouped_homeworks
@@ -22,7 +27,12 @@ class HomeworksController < ApplicationController
     @courses = if current_user.is?('Admin', 'Writer')
                  Course.order(:title)
                else
-                 policy_scope(Course).order(:title)
+                 policy_scope(Course)
+                   .joins(:plans)
+                   .where(plans: { organisation_id: current_user.organisation_id })
+                   .where('plans.start <= ? AND plans.finish_date >= ?', Time.zone.today, Time.zone.today)
+                   .distinct
+                   .order(:title)
                end
   end
 
@@ -41,6 +51,22 @@ class HomeworksController < ApplicationController
 
     selected_level = params[:level]
     @homework_resources = filter_and_sort_homework(@homeworks_grouped_by_level[selected_level])
+  end
+
+  def setup_teacher_homeworks
+    @homework_resources = current_user.week_course_lessons(Time.zone.today)
+                                      .joins(:lesson)
+                                      .where(lessons: { type: 'EnglishClass' })
+                                      .includes(:course, lesson: [
+                                                  { homework_sheet_attachment: :blob },
+                                                  { homework_answers_attachment: :blob }
+                                                ])
+                                      .select do |course_lesson|
+      course_lesson.lesson.homework_sheet.attached? || course_lesson.lesson.homework_answers.attached?
+    end
+                                      .sort_by do |course_lesson|
+      [CourseLesson.days.fetch(course_lesson.day), level_sort_index(course_lesson.lesson.short_level)]
+    end
   end
 
   def level_sort_index(level)
@@ -77,5 +103,9 @@ class HomeworksController < ApplicationController
     return [] unless homeworks
 
     homeworks.sort_by(&:week)
+  end
+
+  def teacher_homework_view?
+    current_user.is?('Teacher')
   end
 end

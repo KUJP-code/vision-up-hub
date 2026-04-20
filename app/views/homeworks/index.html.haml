@@ -1,7 +1,7 @@
 = render 'shared/subtitle', text: t('.homework')
 
 %main.flex.flex-col.gap-6.p-3
-  - if @courses.any?
+  - if !current_user.is?('Teacher') && @courses.any?
     %nav.tab-nav.flex.gap-3.mb-2.flex-wrap
       - @courses.each do |course|
         - active = course.id == @course&.id ? 'active' : 'inactive'
@@ -9,7 +9,7 @@
                   homeworks_path(course_id: course.id, level: params[:level]),
                   class: "nav-tab #{active}"
 
-  - if @short_levels.present?
+  - if !current_user.is?('Teacher') && @short_levels.present?
     %nav.tab-nav.flex.gap-3.mb-4
       - ordered = ['Land', 'Sky', 'Galaxy', 'Keep Up', 'Specialist']
       - @short_levels.sort_by { |lvl| ordered.index(lvl) || 999 }.each do |level|
@@ -26,7 +26,10 @@
           %th.thead.thead-e.bg-secondary-50= t('.pages')
       %tbody.text-center
         - if @homework_resources.present?
-          = render_homework_rows(@homework_resources)
+          - if current_user.is?('Teacher')
+            = render_teacher_homework_rows(@homework_resources)
+          - else
+            = render_homework_rows(@homework_resources)
         - else
           %tr
             %td.p-4.text-center{ colspan: 2 }

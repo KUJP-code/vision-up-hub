@@ -3,6 +3,7 @@ ja:
     index:
       homework: "ホームワーク"
       date: "日付"
+      level: "レベル"
       pages: "ページ"
       questions: "問題"
       answers: "解答"
