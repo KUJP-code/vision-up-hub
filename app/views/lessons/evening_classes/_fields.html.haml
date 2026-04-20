@@ -1,7 +1,7 @@
 -# locals: (f:, lesson:)
 
 :ruby
-  subtype_options = EveningClass.subtypes.keys.map do |key|
+  subtype_options = (EveningClass::KEEP_UP_SUBTYPES + EveningClass::SPECIALIST_SUBTYPES).map do |key|
     [
       t("lessons.subtypes.#{key}"),
       key,

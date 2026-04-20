@@ -27,7 +27,7 @@ module TeacherLessonHelper
                          StandShowSpeak bus_time],
       'keep_up' => %w[snack book_activity EveningClass
                       lesson_review],
-      'specialist' => %w[EveningClass]
+      'specialist' => %w[sp_literacy EveningClass sp_discussion]
     }[level]
   end
 
@@ -64,7 +64,8 @@ module TeacherLessonHelper
       key = type.include?('Phonic') ? 'phonics' : type.underscore
       t("lessons.#{key}")
     else
-      t("category_resources.#{type}")
+      t("teacher_resources.index.#{type}",
+        default: t("category_resources.#{type}"))
     end
   end
 

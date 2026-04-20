@@ -2,9 +2,11 @@
 
 class EveningClass < Lesson
   KEEP_UP_SUBTYPES = %w[conversation_time topic_study special_lesson].freeze
+  LEGACY_SPECIALIST_SUBTYPES = %w[literacy discussion].freeze
   SPECIALIST_SUBTYPES = %w[
-    literacy discussion project_session_1 project_session_2 special_lesson
+    project_session_1 project_session_2 special_lesson
   ].freeze
+  VALID_SPECIALIST_SUBTYPES = (LEGACY_SPECIALIST_SUBTYPES + SPECIALIST_SUBTYPES).freeze
   SPECIALIST_GOAL_ATTRIBUTES = %i[
     literacy_goal
     discussion_goal
@@ -19,6 +21,10 @@ class EveningClass < Lesson
     'specialist' => SPECIALIST_SUBTYPES,
     'specialist_advanced' => SPECIALIST_SUBTYPES
   }.freeze
+  VALID_LEVEL_SUBTYPE_MAP = LEVEL_SUBTYPE_MAP.merge(
+    'specialist' => VALID_SPECIALIST_SUBTYPES,
+    'specialist_advanced' => VALID_SPECIALIST_SUBTYPES
+  ).freeze
 
   ATTRIBUTES = %i[
     subtype
@@ -62,7 +68,7 @@ class EveningClass < Lesson
   end
 
   def self.levels_for_subtype(subtype)
-    LEVEL_SUBTYPE_MAP.select { |_level, subtypes| subtypes.include?(subtype.to_s) }.keys
+    VALID_LEVEL_SUBTYPE_MAP.select { |_level, subtypes| subtypes.include?(subtype.to_s) }.keys
   end
 
   def specialist_structured?
@@ -93,7 +99,7 @@ class EveningClass < Lesson
 
   def subtype_matches_level
     return if subtype.blank?
-    return if self.class.subtypes_for(level).include?(subtype)
+    return if VALID_LEVEL_SUBTYPE_MAP.fetch(level.to_s, []).include?(subtype)
 
     errors.add(:subtype, 'is not valid for this level')
   end

@@ -155,6 +155,8 @@ module LessonCalendarHelper
       lesson.specialist_subtypes_with_content.map do |subtype|
         CalendarEntry.new(course_lesson:, lesson:, subtype:)
       end
+    elsif lesson.specialist? && EveningClass::LEGACY_SPECIALIST_SUBTYPES.include?(lesson.subtype)
+      []
     else
       [CalendarEntry.new(course_lesson:, lesson:, subtype: lesson.subtype)]
     end

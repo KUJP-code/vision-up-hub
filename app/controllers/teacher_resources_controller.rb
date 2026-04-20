@@ -33,10 +33,12 @@ class TeacherResourcesController < ApplicationController
 
     categories -= CategoryResource::AFTERSCHOOL_EXTRAS unless Flipper.enabled?(:afterschool_extras, user)
     categories << 'snack' if level == 'keep_up'
+    categories -= %w[ku_book_activity ku_lesson_review] unless Flipper.enabled?(:keep_up, user)
+    categories -= %w[sp_literacy sp_discussion] unless Flipper.enabled?(:specialist, user)
 
     unless Flipper.enabled?(:keep_up, user) ||
            Flipper.enabled?(:specialist, user)
-      categories -= %w[evening_class ku_book_activity ku_lesson_review]
+      categories -= %w[evening_class]
     end
 
     # 🔑 Only keep categories that actually have records in the scoped data
@@ -58,7 +60,9 @@ class TeacherResourcesController < ApplicationController
 
   def requested_category
     { 'book_activity' => 'ku_book_activity',
-      'lesson_review' => 'ku_lesson_review' }.fetch(params[:category].to_s, params[:category].to_s)
+      'lesson_review' => 'ku_lesson_review',
+      'sp_literacy' => 'sp_literacy',
+      'sp_discussion' => 'sp_discussion' }.fetch(params[:category].to_s, params[:category].to_s)
   end
 
   def ordered_groups(groups)
@@ -79,7 +83,9 @@ class TeacherResourcesController < ApplicationController
   end
 
   def default_group_for(card)
-    { 'book_activity' => 'worksheets' }[card]
+    { 'book_activity' => 'worksheets',
+      'sp_literacy' => 'worksheets',
+      'sp_discussion' => 'worksheets' }[card]
   end
 
   def resource_title

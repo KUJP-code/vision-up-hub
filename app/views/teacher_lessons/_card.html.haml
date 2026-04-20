@@ -26,6 +26,8 @@
                  'ku_book_activity'
                elsif type == 'lesson_review'
                  'ku_lesson_review'
+               elsif %w[sp_literacy sp_discussion].include?(type)
+                 type
                elsif %w[
       homework_check break_&_quiz four_skills project conversation_time
     ].include?(type)
@@ -33,7 +35,8 @@
                else
                  type.underscore
                end
-    icon = type.underscore
+    icon = { 'sp_literacy' => 'literacy',
+             'sp_discussion' => 'discussion' }.fetch(type, type.underscore)
 
     # only show the card if there are resources for this category
     scope = policy_scope(CategoryResource)

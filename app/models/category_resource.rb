@@ -20,7 +20,9 @@ class CategoryResource < ApplicationRecord
     friendship_time: 10,
     sensory_play: 11,
     ku_book_activity: 12,
-    ku_lesson_review: 13
+    ku_lesson_review: 13,
+    sp_literacy: 14,
+    sp_discussion: 15
   }
 
   enum level: {
@@ -55,7 +57,9 @@ class CategoryResource < ApplicationRecord
     'friendship_time' => %w[worksheets slides],
     'sensory_play' => %w[worksheets slides],
     'ku_book_activity' => %w[worksheets slides],
-    'ku_lesson_review' => %w[worksheets slides]
+    'ku_lesson_review' => %w[worksheets slides],
+    'sp_literacy' => %w[worksheets slides],
+    'sp_discussion' => %w[worksheets slides]
   }.freeze
 
   validates :lesson_category, :resource_category, presence: true
@@ -129,6 +133,22 @@ class CategoryResource < ApplicationRecord
 
     errors.add(:lesson_category,
                'KU Lesson Review requires a worksheet or slide resource')
+    false
+  end
+
+  def sp_literacy_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category,
+               'Specialist Literacy requires a worksheet or slide resource')
+    false
+  end
+
+  def sp_discussion_resource?
+    return true if %w[worksheets slides].include?(resource_category)
+
+    errors.add(:lesson_category,
+               'Specialist Discussion requires a worksheet or slide resource')
     false
   end
 
