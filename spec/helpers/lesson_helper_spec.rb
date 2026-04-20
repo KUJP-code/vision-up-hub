@@ -69,4 +69,18 @@ RSpec.describe LessonHelper do
       expect(tab_icon_path(lesson)).to eq('lesson_types/jumping.svg')
     end
   end
+
+  context 'when formatting a lesson title with subtype' do
+    it 'includes the subtype when present' do
+      lesson = build(:evening_class, title: 'Research Study', subtype: :topic_study)
+
+      expect(with_subtype(lesson)).to eq('Research Study (Topic study)')
+    end
+
+    it 'falls back to the title when subtype is blank' do
+      lesson = build(:evening_class, level: :specialist, title: 'Research Study', subtype: nil)
+
+      expect(with_subtype(lesson)).to eq('Research Study')
+    end
+  end
 end

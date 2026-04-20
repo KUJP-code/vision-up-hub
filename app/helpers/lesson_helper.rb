@@ -52,7 +52,7 @@ module LessonHelper
   end
 
   def with_subtype(lesson)
-    return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype)
+    return lesson.title unless lesson.class::ATTRIBUTES.include?(:subtype) && lesson.subtype.present?
 
     "#{lesson.title} (#{lesson.subtype.humanize})"
   end
