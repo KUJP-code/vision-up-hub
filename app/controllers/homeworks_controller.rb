@@ -75,10 +75,10 @@ class HomeworksController < ApplicationController
   end
 
   def load_plan
-    @plan = @course.plans
-                   .where(organisation_id: current_user.organisation_id)
-                   .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
-                   .first
+    plans = @course.plans.where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+    plans = plans.where(organisation_id: current_user.organisation_id) unless current_user.is?('Admin', 'Writer')
+
+    @plan = plans.first
   end
 
   def current_week_range(plan)

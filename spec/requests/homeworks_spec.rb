@@ -67,5 +67,19 @@ RSpec.describe 'Homeworks' do
       expect(response.body).not_to include(expired_course.title)
       expect(response.body).not_to include(future_course.title)
     end
+
+    it 'allows admins to view homework for courses with active plans outside their organisation' do
+      admin = create(:user, :admin)
+
+      sign_out teacher
+      sign_in admin
+
+      get homeworks_path(course_id: current_course.id, level: 'Sky')
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include(I18n.t('homeworks.index.questions'))
+      expect(response.body).to include(I18n.t('homeworks.index.answers'))
+      expect(response.body).to include(current_course.title)
+    end
   end
 end
