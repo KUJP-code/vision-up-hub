@@ -23,6 +23,12 @@ RSpec.describe EveningClass do
     expect(lesson.errors[:subtype]).to include('is not valid for this level')
   end
 
+  it 'allows legacy specialist subtypes for compatibility' do
+    lesson = build(:evening_class, level: :specialist, subtype: :literacy)
+
+    expect(lesson).to be_valid
+  end
+
   context 'when generating PDF guide' do
     it 'does not generate a PDF' do
       pdf = build(:evening_class).attach_guide

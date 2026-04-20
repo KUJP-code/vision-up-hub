@@ -424,4 +424,46 @@ RSpec.describe CategoryResource do
       expect(category_resource).not_to be_valid
     end
   end
+
+  context 'when resource for specialist literacy' do
+    before do
+      category_resource.lesson_category = :sp_literacy
+    end
+
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+  end
+
+  context 'when resource for specialist discussion' do
+    before do
+      category_resource.lesson_category = :sp_discussion
+    end
+
+    it 'can have worksheets as a resource category' do
+      category_resource.resource_category = :worksheets
+      expect(category_resource).to be_valid
+    end
+
+    it 'can have slides as a resource category' do
+      category_resource.resource_category = :slides
+      expect(category_resource).to be_valid
+    end
+
+    it 'cannot have activities as a resource category' do
+      category_resource.resource_category = :activities
+      expect(category_resource).not_to be_valid
+    end
+  end
 end

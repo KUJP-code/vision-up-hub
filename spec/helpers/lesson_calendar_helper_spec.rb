@@ -9,15 +9,22 @@ RSpec.describe LessonCalendarHelper do
         :evening_class,
         level: :specialist,
         subtype: nil,
-        literacy_goal: 'Read together',
-        discussion_goal: 'Talk together'
+        project_session_1_goal: 'Build the project',
+        project_session_2_goal: 'Share the project'
       )
       course_lesson = create(:course_lesson, lesson:, week: 1, day: :monday)
 
       entries = helper.calendar_entries([course_lesson])
 
-      expect(entries.map(&:subtype)).to eq(%w[literacy discussion])
+      expect(entries.map(&:subtype)).to eq(%w[project_session_1 project_session_2])
       expect(entries.map(&:lesson).uniq).to eq([lesson])
+    end
+
+    it 'ignores legacy specialist subtype lessons' do
+      lesson = create(:evening_class, level: :specialist, subtype: :discussion)
+      course_lesson = create(:course_lesson, lesson:, week: 1, day: :monday)
+
+      expect(helper.calendar_entries([course_lesson])).to eq([])
     end
   end
 
@@ -28,10 +35,10 @@ RSpec.describe LessonCalendarHelper do
       expect(helper.lesson_row(lesson, subtype: 'conversation_time')).to eq('row-start-[28]')
     end
 
-    it 'uses a dedicated row for specialist discussion' do
+    it 'uses a dedicated row for specialist project session 2' do
       lesson = build(:evening_class, level: :specialist, subtype: nil)
 
-      expect(helper.lesson_row(lesson, subtype: 'discussion')).to eq('row-start-[32]')
+      expect(helper.lesson_row(lesson, subtype: 'project_session_2')).to eq('row-start-[34]')
     end
   end
 
