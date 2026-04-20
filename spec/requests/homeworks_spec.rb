@@ -56,11 +56,16 @@ RSpec.describe 'Homeworks' do
       teacher.schools << school
     end
 
-    it 'shows only current-week homework for teachers without course tabs' do
+    it 'shows teacher homework with level tabs but without course tabs' do
       get homeworks_path, env: { 'REMOTE_ADDR' => '127.0.0.1' }
 
+      expect(response).to redirect_to(homeworks_path(level: 'Sky'))
+    end
+
+    it 'shows only the selected teacher homework level without course tabs' do
+      get homeworks_path(level: 'Sky'), env: { 'REMOTE_ADDR' => '127.0.0.1' }
+
       expect(response).to have_http_status(:success)
-      expect(response.body).to include(I18n.t('homeworks.index.date'))
       expect(response.body).to include(I18n.t('levels.sky'))
       expect(response.body).not_to include(I18n.t('levels.galaxy'))
       expect(response.body).not_to include(current_course.title)

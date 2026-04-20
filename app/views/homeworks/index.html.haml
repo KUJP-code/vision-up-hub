@@ -9,13 +9,13 @@
                   homeworks_path(course_id: course.id, level: params[:level]),
                   class: "nav-tab #{active}"
 
-  - if !current_user.is?('Teacher') && @short_levels.present?
+  - if @short_levels.present?
     %nav.tab-nav.flex.gap-3.mb-4
       - ordered = ['Land', 'Sky', 'Galaxy', 'Keep Up', 'Specialist']
       - @short_levels.sort_by { |lvl| ordered.index(lvl) || 999 }.each do |level|
         - active = (params[:level] == level) ? 'active' : 'inactive'
         = link_to t("levels.#{level.downcase.tr(' ', '_')}"),
-                  homeworks_path(course_id: @course.id, level: level),
+                  homeworks_path(course_id: @course&.id, level: level),
                   class: "nav-tab #{active}"
 
   %div.max-w-screen-md.mx-auto.w-full
@@ -26,10 +26,7 @@
           %th.thead.thead-e.bg-secondary-50= t('.pages')
       %tbody.text-center
         - if @homework_resources.present?
-          - if current_user.is?('Teacher')
-            = render_teacher_homework_rows(@homework_resources)
-          - else
-            = render_homework_rows(@homework_resources)
+          = render_homework_rows(@homework_resources)
         - else
           %tr
             %td.p-4.text-center{ colspan: 2 }

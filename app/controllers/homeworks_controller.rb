@@ -54,19 +54,30 @@ class HomeworksController < ApplicationController
   end
 
   def setup_teacher_homeworks
-    @homework_resources = current_user.week_course_lessons(Time.zone.today)
-                                      .joins(:lesson)
-                                      .where(lessons: { type: 'EnglishClass' })
-                                      .includes(:course, lesson: [
-                                                  { homework_sheet_attachment: :blob },
-                                                  { homework_answers_attachment: :blob }
-                                                ])
-                                      .select do |course_lesson|
+    @plan = current_user.organisation.plans
+                        .where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+                        .first
+
+    course_lessons = current_user.week_course_lessons(Time.zone.today)
+                                 .joins(:lesson)
+                                 .where(lessons: { type: 'EnglishClass' })
+                                 .includes(:course, lesson: [
+                                             { homework_sheet_attachment: :blob },
+                                             { homework_answers_attachment: :blob }
+                                           ])
+                                 .select do |course_lesson|
       course_lesson.lesson.homework_sheet.attached? || course_lesson.lesson.homework_answers.attached?
     end
-                                      .sort_by do |course_lesson|
-      [CourseLesson.days.fetch(course_lesson.day), level_sort_index(course_lesson.lesson.short_level)]
+
+    @homeworks_grouped_by_level = course_lessons.group_by { |course_lesson| course_lesson.lesson.short_level }
+    @short_levels = @homeworks_grouped_by_level.keys.sort_by { |lvl| level_sort_index(lvl) }
+
+    if params[:level].blank? && @short_levels.present?
+      redirect_to homeworks_path(level: @short_levels.first) and return
     end
+
+    selected_level = params[:level]
+    @homework_resources = filter_and_sort_homework(@homeworks_grouped_by_level[selected_level])
   end
 
   def level_sort_index(level)
