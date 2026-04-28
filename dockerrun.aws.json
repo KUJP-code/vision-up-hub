@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.2-recaptcha"
+    "Name": "kidsup/materials:2.6.3-recaptcha_v3"
   },
   "Ports": [
     {
