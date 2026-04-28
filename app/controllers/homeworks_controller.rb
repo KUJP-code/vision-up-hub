@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HomeworksController < ApplicationController
+  HOMEWORK_VISIBILITY_WEEKS = 2
+
   before_action :set_courses, unless: :teacher_homework_view?
   before_action :set_course, unless: :teacher_homework_view?
   after_action :verify_authorized
@@ -30,7 +32,7 @@ class HomeworksController < ApplicationController
                  policy_scope(Course)
                    .joins(:plans)
                    .where(plans: { organisation_id: current_user.organisation_id })
-                   .where('plans.start <= ? AND plans.finish_date >= ?', Time.zone.today, Time.zone.today)
+                   .where('plans.start <= ? AND plans.finish_date >= ?', homework_visibility_end, homework_visibility_start)
                    .distinct
                    .order(:title)
                end
@@ -86,15 +88,23 @@ class HomeworksController < ApplicationController
   end
 
   def load_plan
-    plans = @course.plans.where('start <= ? AND finish_date >= ?', Time.zone.today, Time.zone.today)
+    plans = @course.plans.where('start <= ? AND finish_date >= ?', homework_visibility_end, homework_visibility_start)
     plans = plans.where(organisation_id: current_user.organisation_id) unless current_user.is?('Admin', 'Writer')
 
-    @plan = plans.first
+    @plan = plans.min_by { |plan| (plan.start.to_date - Time.zone.today).abs }
   end
 
   def current_week_range(plan)
     current_week = ((Time.zone.today - plan.start.to_date).to_i / 7) + 1
     (current_week - 2..current_week + 2).to_a.select { |w| w.between?(1, 52) }
+  end
+
+  def homework_visibility_start
+    @homework_visibility_start ||= Time.zone.today.beginning_of_week - HOMEWORK_VISIBILITY_WEEKS.weeks
+  end
+
+  def homework_visibility_end
+    @homework_visibility_end ||= Time.zone.today.end_of_week + HOMEWORK_VISIBILITY_WEEKS.weeks
   end
 
   def load_homework_for_weeks(week_range)

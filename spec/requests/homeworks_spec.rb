@@ -86,5 +86,36 @@ RSpec.describe 'Homeworks' do
       expect(response.body).to include(I18n.t('homeworks.index.answers'))
       expect(response.body).to include(current_course.title)
     end
+
+    it 'shows nearby past and future courses for organisation users within the homework visibility window' do
+      org_admin = create(:user, :org_admin, organisation:)
+      previous_course = create(:course, title: 'Previous Course')
+      upcoming_course = create(:course, title: 'Upcoming Course')
+
+      create(
+        :plan,
+        organisation:,
+        course: previous_course,
+        start: 3.weeks.ago.beginning_of_week,
+        finish_date: 1.week.ago.end_of_week
+      )
+      create(
+        :plan,
+        organisation:,
+        course: upcoming_course,
+        start: 1.week.from_now.beginning_of_week,
+        finish_date: 2.months.from_now
+      )
+
+      sign_out teacher
+      sign_in org_admin
+
+      get homeworks_path(course_id: current_course.id, level: 'Sky'), env: { 'REMOTE_ADDR' => '127.0.0.1' }
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include(current_course.title)
+      expect(response.body).to include(previous_course.title)
+      expect(response.body).to include(upcoming_course.title)
+    end
   end
 end
