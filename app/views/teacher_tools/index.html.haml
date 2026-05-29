@@ -1,0 +1,45 @@
+= render 'shared/subtitle', text: 'Teacher Tools'
+
+%main.flex.flex-col.gap-4.p-4
+  - if @orgs.any?
+    %nav.tab-nav-scroll
+      - @orgs.each do |org|
+        - active = @organisation == org ? 'active' : 'inactive'
+        = link_to org.name,
+                  teacher_tools_path(organisation_id: org.id),
+                  class: "nav-tab #{active}"
+
+  .flex.flex-col.md:flex-row.gap-3
+    = link_to 'New Teacher Tool',
+              new_teacher_tool_path(organisation_id: @organisation.id),
+              class: 'btn btn-secondary w-full md:w-auto'
+
+    = link_to 'Batch Copy Teacher Tools',
+              batch_copy_teacher_tools_path,
+              class: 'btn btn-main w-full md:w-auto'
+
+  - if @teacher_tools.any?
+    %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-2
+      - @teacher_tools.each do |tool|
+        .card.flex.flex-col.items-center.p-2.gap-2.h-full.min-w-0
+          %div.flex.items-center.justify-center
+            - if tool.cover_image.attached?
+              = image_tag url_for(tool.cover_image), class: 'w-16 h-16 rounded object-cover', alt: tool.title
+            - else
+              = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880]')
+          .grow
+          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+          %h3.text-center.truncate.w-full= tool.title
+          %p.text-xs.text-secondary= tool.video? ? 'Video' : 'Other'
+          .w-full.flex.flex-col.gap-2.pt-2
+            = link_to 'Edit',
+                      edit_teacher_tool_path(tool, organisation_id: @organisation.id),
+                      class: 'btn btn-secondary py-1 px-2 text-center'
+            = link_to 'Delete',
+                      teacher_tool_path(tool, organisation_id: @organisation.id),
+                      data: { turbo_method: :delete,
+                              turbo_confirm: 'Delete this teacher tool?' },
+                      class: 'btn btn-danger py-1 px-2 text-center'
+  - else
+    %section.card.p-4
+      %p.text-secondary No teacher tools yet for #{@organisation.name}.

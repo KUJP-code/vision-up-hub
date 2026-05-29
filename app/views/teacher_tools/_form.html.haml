@@ -1,0 +1,76 @@
+-# locals: (teacher_tool:)
+
+- video_paths = teacher_tool.video_paths_list
+- video_paths = [teacher_tool.embed_url].compact if video_paths.empty? && teacher_tool.embed_url.present?
+- video_paths = [''] if video_paths.empty?
+
+= form_with model: teacher_tool,
+            html: { class: 'form',
+                    data: { controller: 'teacher-tool-form' } } do |f|
+  = render 'shared/form_errors', resource: teacher_tool
+
+  = hidden_field_tag :organisation_id, params[:organisation_id]
+
+  .form-group
+    = f.label :title
+    = f.text_field :title, required: true
+
+  .form-group
+    = f.label :cover_image, 'Picture'
+    %small Best with a square image, like tutorial cards.
+    = f.file_field :cover_image, accept: 'image/png,image/jpeg,image/webp'
+
+  .form-group
+    = f.label :kind, 'Type'
+    = f.select :kind,
+               TeacherTool.kinds.keys.map { |kind| [kind == 'video' ? 'Video' : 'Other', kind] },
+               {},
+               { required: true,
+                 data: { 'teacher-tool-form-target': 'kindSelect',
+                         action: 'change->teacher-tool-form#toggle' } }
+
+  .form-group{ data: { 'teacher-tool-form-target': 'videoField' } }
+    = f.label :video_paths, 'Video Links'
+    %small Paste YouTube or Vimeo links. One random link will be chosen each time the tool is opened.
+    .flex.flex-col.gap-2{ data: { 'teacher-tool-form-target': 'videoLinks' } }
+      - video_paths.each_with_index do |video_path, index|
+        .teacher-tool-video-link.flex.items-end.gap-2
+          .form-group.grow.mb-0
+            = url_field_tag 'teacher_tool[video_paths][]',
+                            video_path,
+                            placeholder: 'Paste video link',
+                            data: { 'teacher-tool-form-target': 'videoLinkInput' }
+          - if index.zero?
+            %button.btn.btn-secondary{ type: 'button',
+                                       data: { action: 'teacher-tool-form#addVideoLink' } }
+              Add Another Link
+          - else
+            %button.btn.btn-danger{ type: 'button',
+                                    data: { action: 'teacher-tool-form#removeVideoLink' } }
+              Remove
+    %template{ data: { 'teacher-tool-form-target': 'videoLinkTemplate' } }
+      .teacher-tool-video-link.flex.items-end.gap-2
+        .form-group.grow.mb-0
+          = url_field_tag 'teacher_tool[video_paths][]',
+                          nil,
+                          placeholder: 'Paste video link',
+                          data: { 'teacher-tool-form-target': 'videoLinkInput' }
+        %button.btn.btn-danger{ type: 'button',
+                                data: { action: 'teacher-tool-form#removeVideoLink' } }
+          Remove
+
+  .form-group{ data: { 'teacher-tool-form-target': 'externalField' } }
+    = f.label :url, 'Link'
+    %small Use this for normal links that should open in a new tab.
+    = f.url_field :url, data: { 'teacher-tool-form-target': 'externalInput' }
+
+  .grid.grid-cols-1.md:grid-cols-2.gap-3
+    .form-group
+      = f.label :position
+      = f.number_field :position, min: 0
+
+    .form-check.self-end
+      = f.check_box :active
+      = f.label :active
+
+  = f.submit class: 'btn btn-main self-center'

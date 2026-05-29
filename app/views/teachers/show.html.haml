@@ -1,7 +1,7 @@
 :ruby
-  base = 'flex gap-6 p-6'
-  mobile = 'flex-col justify-start items-stretch'
-  desktop = 'md:flex-row md:items-center md:justify-center'
+  base = 'flex flex-col gap-6 p-6'
+  mobile = 'justify-start items-stretch'
+  desktop = 'md:items-center'
   card = 'card basis-1/3 max-w-full p-3 flex flex-col gap-3'
 
 = render 'teachers/subtitle',
@@ -15,9 +15,18 @@
 
     = turbo_frame_tag 'lesson'
 
-%main#teacher-lessons{ class: "#{base} #{mobile} #{desktop}" }
-  - @levels.each do |level|
-    = link_to teacher_lessons_path(level:, teacher_id: @user.id),
-              class: card, id: level, data: { turbo_stream: true } do
-      = image_tag "levels/#{level}.svg"
-      %h1.text-center.text-3xl= t("levels.#{level}")
+%main#teacher-lessons{ class: "#{base} #{mobile} #{desktop} md:min-h-[calc(100vh-14rem)]" }
+  .flex.flex-col.w-full.md:flex-1
+    .flex.flex-col.md:flex-1.md:items-center.md:justify-center.w-full
+      .flex.flex-col.md:flex-row.md:items-center.md:justify-center.gap-6.w-full
+        - @levels.each do |level|
+          = link_to teacher_lessons_path(level:, teacher_id: @user.id),
+                    class: card,
+                    id: level,
+                    data: { turbo_stream: true } do
+            = image_tag "levels/#{level}.svg"
+            %h1.text-center.text-3xl= t("levels.#{level}")
+
+    - if @teacher_tools.any?
+      .w-full.md:mt-auto
+        = render 'teacher_tools', teacher: @user, teacher_tools: @teacher_tools

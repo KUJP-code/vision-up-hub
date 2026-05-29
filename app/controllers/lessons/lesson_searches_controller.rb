@@ -5,6 +5,7 @@ class LessonSearchesController < ApplicationController
   ENUM_VALUES     = %w[level status subtype].freeze
   PARTIAL_MATCHES = %w[goal title].freeze
   ADMINS_BUCKET   = '__ADMINS__'
+  SORT_COLUMNS    = %w[title status approved_by].freeze
 
   def index
     @results = policy_scope(Lesson).canonical
@@ -16,10 +17,10 @@ class LessonSearchesController < ApplicationController
 
     # Course / week filters
     if week.present? || course_id.present?
-      @results = @results.joins(:course_lessons)
-      @results = @results.where(course_lessons: { week: week.to_i }) if week.present?
-      @results = @results.where(course_lessons: { course_id: }) if course_id.present?
-      @results = @results.distinct
+      matching_ids = @results.joins(:course_lessons)
+      matching_ids = matching_ids.where(course_lessons: { week: week.to_i }) if week.present?
+      matching_ids = matching_ids.where(course_lessons: { course_id: }) if course_id.present?
+      @results = @results.where(id: matching_ids.select(:id))
     end
 
     # Creator filter (admins bucket or specific user)
@@ -35,7 +36,7 @@ class LessonSearchesController < ApplicationController
     generic_params = sp.except(:week, :course_id, :creator_id)
     @results = @results.where(query(generic_params)) if generic_params.present?
 
-    @results = @results.order(created_at: :desc)
+    @results = @results.order(Arel.sql(sort_order_sql))
     render partial: 'lessons/status_table', locals: { lessons: @results }
   end
 
@@ -48,16 +49,41 @@ class LessonSearchesController < ApplicationController
   end
 
   def search_params
-    params.require(:search)
+    params.fetch(:search, ActionController::Parameters.new)
           .permit(:assigned_editor_id, :creator_id, :goal, :level,
                   :released, :status, :subtype, :title, :type,
                   :course_id, :week)
           .compact_blank
   end
 
+  def sort_order_sql
+    direction = params[:direction] == 'desc' ? 'DESC' : 'ASC'
+
+    case params[:sort]
+    when 'status'
+      "status #{direction}, LOWER(title) ASC"
+    when 'approved_by'
+      "#{approved_by_sort_sql} #{direction}, LOWER(title) ASC"
+    else
+      "LOWER(title) #{direction}"
+    end
+  end
+
+  def approved_by_sort_sql
+    <<~SQL.squish
+      LOWER(
+        CONCAT_WS(
+          ' ',
+          curriculum_approval #>> '{0,name}',
+          admin_approval #>> '{0,name}'
+        )
+      )
+    SQL
+  end
+
   def query_string(strong_params)
     strong_params.keys
-                 .map { |k| PARTIAL_MATCHES.include?(k) ? "#{k} LIKE :#{k}" : "#{k} = :#{k}" }
+                 .map { |k| PARTIAL_MATCHES.include?(k) ? "#{k} ILIKE :#{k}" : "#{k} = :#{k}" }
                  .join(' AND ')
   end
 

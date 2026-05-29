@@ -25,7 +25,7 @@
       %p Next Week
       = inline_svg_tag 'next.svg', class: 'fill-white'
 
-  %nav.tab-nav
+  %nav.tab-nav-scroll
     - @orgs.each do |org|
       - active = org == @org
 

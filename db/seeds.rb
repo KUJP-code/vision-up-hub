@@ -14,7 +14,7 @@ test_file = ActiveStorage::Blob.find_by(filename: 'example_lesson.pdf')
 
 puts 'Creating features...'
 
-features = %i[elementary keep_up kindy specialist]
+features = %i[elementary keep_up kindy specialist teacher_tools]
 
 features.each do |feature|
   Flipper.enable(feature)

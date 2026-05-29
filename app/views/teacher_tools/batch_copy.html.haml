@@ -1,0 +1,80 @@
+= render 'shared/subtitle', text: 'Batch Copy Teacher Tools'
+
+%main.p-3.flex.flex-col.gap-4
+  - if flash[:alert]
+    .rounded.border-2.border-danger.bg-white.p-4.text-danger.font-semibold
+      = flash[:alert]
+
+  .bg-white.rounded.border-2.border-secondary.p-4.flex.flex-col.gap-4
+    %p
+      Copy teacher tools from one organisation to another.
+      Existing destination tools with the same title and type will be skipped automatically.
+
+    = form_with url: batch_copy_preview_teacher_tools_path,
+                scope: :batch_copy,
+                local: true,
+                data: { turbo: false },
+                class: 'flex flex-col gap-4' do |f|
+      .grid.grid-cols-1.md:grid-cols-2.gap-4
+        .form-group
+          = f.label :source_organisation_id, 'Source organisation'
+          = f.select :source_organisation_id,
+                     @organisations.pluck(:name, :id),
+                     { prompt: 'Select source organisation',
+                       selected: @batch_copy[:source_organisation_id] }
+
+        .form-group
+          = f.label :destination_organisation_id, 'Destination organisation'
+          = f.select :destination_organisation_id,
+                     @organisations.pluck(:name, :id),
+                     { prompt: 'Select destination organisation',
+                       selected: @batch_copy[:destination_organisation_id] }
+
+      .flex.gap-3
+        = f.submit 'Preview Copy', class: 'btn btn-main'
+        = link_to 'Back to Teacher Tools',
+                  teacher_tools_path,
+                  class: 'btn btn-secondary'
+
+  - if @batch_copy_summary.present?
+    .bg-white.rounded.border-2.border-secondary.p-4.flex.flex-col.gap-4
+      %h2.font-semibold.text-lg Copy Summary
+      %p
+        Source:
+        %strong= @source_org.name
+      %p
+        Destination:
+        %strong= @destination_org.name
+
+      %table.w-full.text-center
+        %thead
+          %tr
+            %th.thead.thead-s.bg-secondary-50 Source Tools
+            %th.thead.bg-secondary-50 Already in Destination
+            %th.thead.thead-e.bg-secondary-50 Will Be Copied
+        %tbody
+          %tr
+            %td.p-3= @batch_copy_summary[:total_source_tools]
+            %td.p-3= @batch_copy_summary[:already_attached_count]
+            %td.p-3= @batch_copy_summary[:copyable_count]
+
+      - if @already_attached_tools.any?
+        .flex.flex-col.gap-2
+          %h3.font-semibold.text-danger Warning: already attached to destination
+          %ul.list-disc.pl-6
+            - @already_attached_tools.each do |tool|
+              %li= "#{tool.title} (#{tool.video? ? 'Video' : 'Other'})"
+
+      - if @batch_copy_summary[:copyable_count].positive?
+        = form_with url: batch_copy_create_teacher_tools_path,
+                    scope: :batch_copy,
+                    local: true,
+                    data: { turbo: false },
+                    class: 'flex gap-3' do |f|
+          = f.hidden_field :source_organisation_id, value: @batch_copy[:source_organisation_id]
+          = f.hidden_field :destination_organisation_id, value: @batch_copy[:destination_organisation_id]
+          = f.submit 'Confirm Copy',
+                     class: 'btn btn-main',
+                     data: { turbo_confirm: 'Copy these teacher tools into the destination organisation?' }
+      - else
+        %p.font-semibold.text-secondary Nothing new to copy for this organisation pair.

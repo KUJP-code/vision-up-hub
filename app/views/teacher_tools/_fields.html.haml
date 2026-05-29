@@ -1,0 +1,36 @@
+-# locals: (f:)
+
+%div{ class: 'fields-wrapper card p-4 flex flex-col gap-3',
+      data: { 'new-record': f.object.new_record?.to_s } }
+  .form-group
+    = f.label :title
+    = f.text_field :title, required: true
+
+  .form-group
+    = f.label :kind
+    = f.select :kind, TeacherTool.kinds.keys.map { |kind| [kind.titleize, kind] }, {}, required: true
+
+  .form-group
+    = f.label :url
+    = f.url_field :url, required: true
+
+  .form-group
+    = f.label :embed_url
+    = f.url_field :embed_url
+
+  .grid.grid-cols-1.md:grid-cols-2.gap-3
+    .form-group
+      = f.label :position
+      = f.number_field :position, min: 0
+
+    .form-check.self-end
+      = f.check_box :active
+      = f.label :active
+
+  - if f.object.new_record?
+    %button.btn.btn-danger.self-center{ type: 'button', 'data-action': 'fields#remove' }
+      Remove Tool
+  - else
+    .form-check.text-center
+      = f.check_box :_destroy
+      = f.label :_destroy, 'Remove Tool'

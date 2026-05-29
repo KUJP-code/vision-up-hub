@@ -73,6 +73,14 @@ Rails.application.routes.draw do
         resources :support_messages, only: %i[create]
       end
       resources :teacher_lessons, only: %i[index show]
+      resources :teacher_tool_previews, only: :show
+      resources :teacher_tools, except: :show do
+        collection do
+          get :batch_copy
+          post :batch_copy_preview
+          post :batch_copy_create
+        end
+      end
       resources :teacher_events, only: %i[index show]
       resources :teacher_resources, only: %i[index]
       resources :tests, except: %i[show] do

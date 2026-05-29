@@ -19,7 +19,7 @@
       No teacher account is assigned to this organisation, so lesson details can't be opened from the calendar yet.
 
   - if current_user.is?('Admin', 'Writer')
-    %nav.tab-nav
+    %nav.tab-nav-scroll
       - @orgs.each do |org|
         - active = @organisation == org ? 'active' : 'inactive'
         = link_to org.name,

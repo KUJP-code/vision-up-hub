@@ -1,0 +1,35 @@
+-# locals: (teacher:, teacher_tools:)
+
+%section.flex.flex-col.items-center.gap-2.p-4.md:px-6
+  %h2.text-lg.font-bold.text-center Teacher Tools
+
+  .grid.grid-cols-2.md:flex.md:flex-wrap.justify-center.gap-3.w-full
+    - teacher_tools.each do |tool|
+      - if tool.kind == 'video'
+        %button{ class: 'card flex flex-col items-center p-2 gap-1 h-full min-w-0 w-full md:basis-1/5 md:max-w-44',
+          data: { action: 'dialog#open',
+                  controller: 'dialog',
+                  'dialog-dialog-value': 'lesson-resources',
+                  'dialog-frame-value': 'lesson',
+                  'dialog-src-value': teacher_tool_preview_path(tool.id, teacher_id: teacher.id) } }
+          .w-full.flex.items-center.justify-center
+            - if tool.record&.cover_image&.attached?
+              = image_tag url_for(tool.record.cover_image), class: 'w-16 h-16 rounded object-cover', alt: tool.title
+            - else
+              = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880]')
+          .grow
+          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+          %h3.text-center.truncate.w-full= tool.title
+      - else
+        = link_to tool.url,
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'card flex flex-col items-center p-2 gap-1 h-full min-w-0 w-full md:basis-1/5 md:max-w-44' do
+          .w-full.flex.items-center.justify-center
+            - if tool.record&.cover_image&.attached?
+              = image_tag url_for(tool.record.cover_image), class: 'w-16 h-16 rounded object-cover', alt: tool.title
+            - else
+              = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880]')
+          .grow
+          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+          %h3.text-center.truncate.w-full= tool.title

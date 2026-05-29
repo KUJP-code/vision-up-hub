@@ -1,7 +1,7 @@
-\restrict Yu0eaMFRcFkyjd8ac8IUnoAq7BATM7F7DUggU6jCr1QCDigjEX35gEs4O21onQV
+\restrict 1fnB5e18ECeeiZVxmb2rY1P3OqCvhMA9yxjuxX5xQlWXaQf5LVMLSuJ3rulnlb9
 
--- Dumped from database version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.22 (Ubuntu 14.22-0ubuntu0.22.04.1)
+-- Dumped from database version 16.13
+-- Dumped by pg_dump version 16.13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2402,6 +2402,46 @@ ALTER SEQUENCE public.support_requests_id_seq OWNED BY public.support_requests.i
 
 
 --
+-- Name: teacher_tools; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.teacher_tools (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    description text,
+    kind integer DEFAULT 0 NOT NULL,
+    url character varying NOT NULL,
+    embed_url character varying,
+    duration_label character varying,
+    "position" integer DEFAULT 0 NOT NULL,
+    active boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    organisation_id bigint NOT NULL,
+    video_paths jsonb DEFAULT '[]'::jsonb NOT NULL
+);
+
+
+--
+-- Name: teacher_tools_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.teacher_tools_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: teacher_tools_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.teacher_tools_id_seq OWNED BY public.teacher_tools.id;
+
+
+--
 -- Name: test_results; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2979,6 +3019,13 @@ ALTER TABLE ONLY public.support_requests ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: teacher_tools id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teacher_tools ALTER COLUMN id SET DEFAULT nextval('public.teacher_tools_id_seq'::regclass);
+
+
+--
 -- Name: test_results id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3434,6 +3481,14 @@ ALTER TABLE ONLY public.support_messages
 
 ALTER TABLE ONLY public.support_requests
     ADD CONSTRAINT support_requests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: teacher_tools teacher_tools_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teacher_tools
+    ADD CONSTRAINT teacher_tools_pkey PRIMARY KEY (id);
 
 
 --
@@ -4192,6 +4247,13 @@ CREATE INDEX index_support_requests_on_user_id ON public.support_requests USING 
 
 
 --
+-- Name: index_teacher_tools_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_teacher_tools_on_organisation_id ON public.teacher_tools USING btree (organisation_id);
+
+
+--
 -- Name: index_test_results_on_student_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4350,6 +4412,14 @@ ALTER TABLE ONLY public.faq_tutorials
 
 ALTER TABLE ONLY public.form_submissions
     ADD CONSTRAINT fk_rails_119b838eb0 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
+-- Name: teacher_tools fk_rails_1ac26e7d79; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teacher_tools
+    ADD CONSTRAINT fk_rails_1ac26e7d79 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
 
 
 --
@@ -4844,7 +4914,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Yu0eaMFRcFkyjd8ac8IUnoAq7BATM7F7DUggU6jCr1QCDigjEX35gEs4O21onQV
+\unrestrict 1fnB5e18ECeeiZVxmb2rY1P3OqCvhMA9yxjuxX5xQlWXaQf5LVMLSuJ3rulnlb9
 
 SET search_path TO "$user", public;
 
@@ -4852,6 +4922,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260417093000'),
+('20260416120000'),
+('20260416090000'),
 ('20260410013000'),
 ('20260410010000'),
 ('20260309170000'),

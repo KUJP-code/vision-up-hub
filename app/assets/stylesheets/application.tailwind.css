@@ -344,6 +344,15 @@
     @apply w-full flex flex-col md:flex-row justify-center gap-2 md:border-b-2 md:border-secondary text-nowrap;
   }
 
+  .tab-nav-scroll {
+    @apply w-full flex flex-col md:flex-row md:flex-nowrap gap-2 md:justify-start md:overflow-x-auto md:overscroll-x-contain md:pb-2 md:border-b-2 md:border-secondary text-nowrap;
+    scrollbar-gutter: stable;
+
+    .nav-tab {
+      @apply w-full md:w-auto md:min-w-fit md:shrink-0;
+    }
+  }
+
   .testresult-input {
     @apply outline-none outline-offset-0 focus:outline-main border w-14 text-center;
   }
