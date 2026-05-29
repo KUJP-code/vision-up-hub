@@ -71,7 +71,7 @@ class TeachersController < UsersController
   end
 
   def resolved_teacher_tools
-    return [] unless Flipper.enabled?(:teacher_tools, @user)
+    return [] unless current_user.is?('Admin') && Flipper.enabled?(:teacher_tools, @user)
 
     TeacherTools::Resolver.call(organisation: @user.organisation)
   end

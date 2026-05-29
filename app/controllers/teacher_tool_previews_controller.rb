@@ -5,6 +5,8 @@ class TeacherToolPreviewsController < ApplicationController
   after_action :verify_authorized
 
   def show
+    return head :not_found unless current_user.is?('Admin')
+
     @tool = TeacherTools::Resolver.call(organisation: @teacher.organisation)
                                   .find { |tool| tool.id == params[:id].to_i }
 
