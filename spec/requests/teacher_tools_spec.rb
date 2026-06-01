@@ -6,6 +6,7 @@ RSpec.describe 'Teacher tools', type: :request do
   let(:organisation) { create(:organisation, name: 'KidsUP') }
   let(:admin) { create(:user, :admin, organisation:) }
   let(:teacher) { create(:user, :teacher, organisation:) }
+  let!(:school) { create(:school, organisation:) }
   let!(:video_tool) do
     create(:teacher_tool,
            organisation:,
@@ -24,6 +25,7 @@ RSpec.describe 'Teacher tools', type: :request do
   end
 
   before do
+    teacher.schools << school
     sign_in admin
     allow(Flipper).to receive(:enabled?).and_return(false)
     allow(Flipper).to receive(:enabled?).with(:kindy, teacher).and_return(true)
