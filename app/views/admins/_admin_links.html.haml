@@ -46,10 +46,6 @@
               csv_exports_path,
               class: 'btn btn-secondary'
 
-    = link_to 'Invoicing',
-              invoices_path,
-              class: 'btn btn-secondary'
-
     = link_to 'DB',
               pg_hero_path,
               class: 'btn btn-secondary'
@@ -60,14 +56,6 @@
 
     = link_to 'Triggerable Jobs',
               triggerable_jobs_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Form Templates',
-              organisation_form_templates_path(@user.organisation_id),
-              class: 'btn btn-secondary'
-
-    = link_to 'Form Submissions',
-              organisation_form_submissions_path(@user.organisation_id),
               class: 'btn btn-secondary'
 
     = link_to 'Teacher Tools',

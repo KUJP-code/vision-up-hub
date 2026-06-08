@@ -8,11 +8,6 @@ Rails.application.routes.draw do
 
     authenticate :user do
       resources :announcements
-      resources :invoices, only: %i[index new create update destroy] do
-        member do
-          get :pdf, defaults: { format: :pdf }
-        end
-      end
       resources :category_resources, except: %i[show] do
         collection do
           get :batch_copy
