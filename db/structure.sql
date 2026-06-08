@@ -1,7 +1,7 @@
-\restrict MQ7BAfqqbi0eB5EjYbYC865dcx0i6C1tl6XdkFqJzFnBbKIgiYyRgKbZxS49nqO
+\restrict Q4zdtV0JRndXPjKF4GGkK6mEcovLmqPunMHd05qF8zKrgbeL8fTROQlvTlRpajE
 
--- Dumped from database version 14.23 (Ubuntu 14.23-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.23 (Ubuntu 14.23-0ubuntu0.22.04.1)
+-- Dumped from database version 16.13
+-- Dumped by pg_dump version 16.13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1178,43 +1178,6 @@ CREATE SEQUENCE public.form_templates_id_seq
 --
 
 ALTER SEQUENCE public.form_templates_id_seq OWNED BY public.form_templates.id;
-
-
---
--- Name: invoices; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.invoices (
-    id bigint NOT NULL,
-    organisation_id bigint NOT NULL,
-    total_cost integer NOT NULL,
-    tax integer NOT NULL,
-    subtotal integer NOT NULL,
-    number_of_kids integer NOT NULL,
-    payment_option character varying NOT NULL,
-    deleted_at timestamp(6) without time zone,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.invoices_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.invoices_id_seq OWNED BY public.invoices.id;
 
 
 --
@@ -2781,13 +2744,6 @@ ALTER TABLE ONLY public.form_templates ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- Name: invoices id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.invoices ALTER COLUMN id SET DEFAULT nextval('public.invoices_id_seq'::regclass);
-
-
---
 -- Name: lesson_links id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3201,14 +3157,6 @@ ALTER TABLE ONLY public.form_submissions
 
 ALTER TABLE ONLY public.form_templates
     ADD CONSTRAINT form_templates_pkey PRIMARY KEY (id);
-
-
---
--- Name: invoices invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.invoices
-    ADD CONSTRAINT invoices_pkey PRIMARY KEY (id);
 
 
 --
@@ -3719,20 +3667,6 @@ CREATE INDEX index_form_submissions_on_staff_id ON public.form_submissions USING
 --
 
 CREATE INDEX index_form_templates_on_organisation_id ON public.form_templates USING btree (organisation_id);
-
-
---
--- Name: index_invoices_on_deleted_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_invoices_on_deleted_at ON public.invoices USING btree (deleted_at);
-
-
---
--- Name: index_invoices_on_organisation_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_invoices_on_organisation_id ON public.invoices USING btree (organisation_id);
 
 
 --
@@ -4503,14 +4437,6 @@ ALTER TABLE ONLY public.devices
 
 
 --
--- Name: invoices fk_rails_4721119434; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.invoices
-    ADD CONSTRAINT fk_rails_4721119434 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
-
-
---
 -- Name: report_card_batches fk_rails_4a00de2147; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4914,7 +4840,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict MQ7BAfqqbi0eB5EjYbYC865dcx0i6C1tl6XdkFqJzFnBbKIgiYyRgKbZxS49nqO
+\unrestrict Q4zdtV0JRndXPjKF4GGkK6mEcovLmqPunMHd05qF8zKrgbeL8fTROQlvTlRpajE
 
 SET search_path TO "$user", public;
 
@@ -4922,6 +4848,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260608000000'),
 ('20260417093000'),
 ('20260416120000'),
 ('20260416090000'),

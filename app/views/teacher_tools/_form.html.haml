@@ -64,13 +64,8 @@
     %small Use this for normal links that should open in a new tab.
     = f.url_field :url, data: { 'teacher-tool-form-target': 'externalInput' }
 
-  .grid.grid-cols-1.md:grid-cols-2.gap-3
-    .form-group
-      = f.label :position
-      = f.number_field :position, min: 0
-
-    .form-check.self-end
-      = f.check_box :active
-      = f.label :active
+  .form-check
+    = f.check_box :active
+    = f.label :active
 
   = f.submit class: 'btn btn-main self-center'

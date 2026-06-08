@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TeacherToolsController < ApplicationController
-  before_action :set_form_data, only: %i[index new create edit update batch_copy batch_copy_preview batch_copy_create]
+  before_action :set_form_data, only: %i[index new create edit update reorder batch_copy batch_copy_preview batch_copy_create]
   before_action :set_teacher_tool, only: %i[edit update destroy]
   after_action :verify_authorized
   after_action :verify_policy_scoped, only: :index
@@ -68,7 +68,7 @@ class TeacherToolsController < ApplicationController
 
   def create
     @organisation = selected_organisation
-    @teacher_tool = authorize @organisation.teacher_tools.new(teacher_tool_params)
+    @teacher_tool = authorize @organisation.teacher_tools.new(teacher_tool_params.merge(position: next_position))
 
     if @teacher_tool.save
       redirect_to teacher_tools_path(organisation_id: @organisation.id),
@@ -99,6 +99,22 @@ class TeacherToolsController < ApplicationController
     end
   end
 
+  def reorder
+    authorize TeacherTool
+    @organisation = selected_organisation
+    ordered_ids = Array(params[:teacher_tool_ids]).map(&:to_i)
+    tools_by_id = policy_scope(TeacherTool).where(organisation: @organisation, id: ordered_ids).index_by(&:id)
+
+    TeacherTool.transaction do
+      ordered_ids.each_with_index do |id, position|
+        tools_by_id[id]&.update!(position:)
+      end
+    end
+
+    redirect_to teacher_tools_path(organisation_id: @organisation.id),
+                notice: 'Teacher tools order was successfully updated.'
+  end
+
   private
 
   def set_form_data
@@ -119,7 +135,6 @@ class TeacherToolsController < ApplicationController
       :video_path,
       :url,
       :duration_label,
-      :position,
       :active,
       video_paths: []
     )

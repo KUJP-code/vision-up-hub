@@ -19,27 +19,50 @@
               class: 'btn btn-main w-full md:w-auto'
 
   - if @teacher_tools.any?
-    %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-2
-      - @teacher_tools.each do |tool|
-        .card.flex.flex-col.items-center.p-2.gap-2.h-full.min-w-0
-          %div.flex.items-center.justify-center
-            - if tool.cover_image.attached?
-              = image_tag url_for(tool.cover_image), class: 'w-16 h-16 rounded object-cover', alt: tool.title
-            - else
-              = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880]')
-          .grow
-          %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
-          %h3.text-center.truncate.w-full= tool.title
-          %p.text-xs.text-secondary= tool.video? ? 'Video' : 'Other'
-          .w-full.flex.flex-col.gap-2.pt-2
-            = link_to 'Edit',
-                      edit_teacher_tool_path(tool, organisation_id: @organisation.id),
-                      class: 'btn btn-secondary py-1 px-2 text-center'
-            = link_to 'Delete',
-                      teacher_tool_path(tool, organisation_id: @organisation.id),
-                      data: { turbo_method: :delete,
-                              turbo_confirm: 'Delete this teacher tool?' },
-                      class: 'btn btn-danger py-1 px-2 text-center'
+    = form_with url: reorder_teacher_tools_path(organisation_id: @organisation.id),
+                method: :patch,
+                local: true,
+                data: { controller: 'teacher-tool-reorder',
+                        turbo: false },
+                class: 'flex flex-col gap-3' do
+      .flex.justify-end
+        = submit_tag 'Save Order',
+                     class: 'btn btn-main w-full md:w-auto',
+                     data: { 'teacher-tool-reorder-target': 'submit' }
+
+      %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-2{ data: { 'teacher-tool-reorder-target': 'list' } }
+        - @teacher_tools.each do |tool|
+          .card.flex.flex-col.items-center.p-2.gap-2.h-full.min-w-0.cursor-grab{ draggable: 'true',
+                                                                                  data: { 'teacher-tool-reorder-target': 'item',
+                                                                                          action: 'dragstart->teacher-tool-reorder#dragStart dragover->teacher-tool-reorder#dragOver dragend->teacher-tool-reorder#dragEnd drop->teacher-tool-reorder#drop' } }
+            = hidden_field_tag 'teacher_tool_ids[]', tool.id
+            .w-full.flex.justify-between.gap-2
+              %button.btn.btn-secondary.py-1.px-3{ type: 'button',
+                                                   data: { action: 'teacher-tool-reorder#moveLeft' },
+                                                   aria: { label: "Move #{tool.title} left" } }
+                &larr;
+              %button.btn.btn-secondary.py-1.px-3{ type: 'button',
+                                                   data: { action: 'teacher-tool-reorder#moveRight' },
+                                                   aria: { label: "Move #{tool.title} right" } }
+                &rarr;
+            %div.flex.items-center.justify-center
+              - if tool.cover_image.attached?
+                = image_tag url_for(tool.cover_image), class: 'w-16 h-16 rounded object-cover pointer-events-none', alt: tool.title
+              - else
+                = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880] pointer-events-none')
+            .grow
+            %hr{ class: 'w-4/5 border border-secondary rounded -mb-1' }
+            %h3.text-center.truncate.w-full= tool.title
+            %p.text-xs.text-secondary= tool.video? ? 'Video' : 'Other'
+            .w-full.flex.flex-col.gap-2.pt-2
+              = link_to 'Edit',
+                        edit_teacher_tool_path(tool, organisation_id: @organisation.id),
+                        class: 'btn btn-secondary py-1 px-2 text-center'
+              = link_to 'Delete',
+                        teacher_tool_path(tool, organisation_id: @organisation.id),
+                        data: { turbo_method: :delete,
+                                turbo_confirm: 'Delete this teacher tool?' },
+                        class: 'btn btn-danger py-1 px-2 text-center'
   - else
     %section.card.p-4
       %p.text-secondary No teacher tools yet for #{@organisation.name}.

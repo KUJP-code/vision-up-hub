@@ -83,4 +83,25 @@ RSpec.describe 'Teacher tools', type: :request do
 
     expect(response).to have_http_status(:not_found)
   end
+
+  it 'renders reorder controls on the admin teacher tools index' do
+    get teacher_tools_path(organisation_id: organisation.id)
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(reorder_teacher_tools_path)
+    expect(response.body).to include('Save Order')
+    expect(response.body).not_to include('teacher_tool_position')
+  end
+
+  it 'reorders teacher tools for an organisation' do
+    patch reorder_teacher_tools_path,
+          params: {
+            organisation_id: organisation.id,
+            teacher_tool_ids: [external_tool.id, video_tool.id]
+          }
+
+    expect(response).to redirect_to(teacher_tools_path(organisation_id: organisation.id))
+    expect(video_tool.reload.position).to eq(1)
+    expect(external_tool.reload.position).to eq(0)
+  end
 end

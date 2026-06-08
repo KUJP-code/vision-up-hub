@@ -33,6 +33,10 @@ class TeacherToolPolicy < ApplicationPolicy
     user.is?('Admin')
   end
 
+  def reorder?
+    user.is?('Admin')
+  end
+
   def batch_copy?
     user.is?('Admin')
   end

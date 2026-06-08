@@ -74,6 +74,7 @@ Rails.application.routes.draw do
           get :batch_copy
           post :batch_copy_preview
           post :batch_copy_create
+          patch :reorder
         end
       end
       resources :teacher_events, only: %i[index show]
