@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.4-teacher_tools"
+    "Name": "kidsup/materials:2.6.5-tools_positioning"
   },
   "Ports": [
     {
