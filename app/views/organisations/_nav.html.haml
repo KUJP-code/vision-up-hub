@@ -1,8 +1,9 @@
--# locals: (active_org:, orgs:, path_args: {}, path_func:)
+-# locals: (active_org:, orgs:, path_args: {}, path_func:, param_name: :organisation_id)
+- param_name = local_assigns.fetch(:param_name, :organisation_id)
 
 %nav.tab-nav-scroll.px-1.pt-4
   - orgs.each do |org|
     - active_class = active_org == org ? 'active' : 'inactive'
     = link_to org.name,
-              send(path_func, path_args.merge(organisation_id: org.id)),
+              send(path_func, path_args.merge(param_name => org.id)),
               class: "nav-tab #{active_class}"
