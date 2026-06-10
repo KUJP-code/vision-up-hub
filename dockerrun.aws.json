@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.5-tools_positioning"
+    "Name": "kidsup/materials:2.6.6-org_fix"
   },
   "Ports": [
     {
