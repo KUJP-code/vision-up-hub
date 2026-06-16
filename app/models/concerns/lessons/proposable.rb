@@ -24,23 +24,24 @@ module Proposable
     }
 
     def replace_with(proposal)
-      proposal.attributes.each do |key, value|
-        next if NOT_PROPOSABLE.include?(key)
+      self.class.transaction do
+        proposal.attributes.each do |key, value|
+          next if NOT_PROPOSABLE.include?(key)
 
-        send(:"#{key}=", value)
+          send(:"#{key}=", value)
+        end
+
+        replace_single_attachments(proposal)
+        replace_lesson_links(proposal)
+        replace_resources(proposal)
+        replace_phonics_resources(proposal) if type == 'PhonicsClass'
+        replace_specialist_resources(proposal) if type == 'EveningClass'
+        save!
+        proposal.update!(status: :accepted)
       end
-
-      replace_single_attachments(proposal)
-      replace_resources(proposal)
-      replace_phonics_resources(proposal) if type == 'PhonicsClass'
-      replace_specialist_resources(proposal) if type == 'EveningClass'
-      save
     rescue StandardError => e
       Rails.logger.error(e.message)
       false
-    else
-      proposal.update(status: :accepted)
-      true
     end
   end
 
@@ -54,6 +55,14 @@ module Proposable
       next unless attachment.attached?
 
       public_send(name).attach(attachment.blob)
+    end
+  end
+
+  def replace_lesson_links(proposal)
+    lesson_links.destroy_all
+
+    proposal.lesson_links.each do |link|
+      lesson_links.build(title: link.title, url: link.url)
     end
   end
 

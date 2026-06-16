@@ -101,8 +101,9 @@ class LessonsController < ApplicationController
   end
 
   def propose_changes(strong_params)
+    proposal_params = proposal_lesson_params(strong_params)
     @proposal = @lesson.proposals.new(
-      strong_params.merge(
+      proposal_params.merge(
         status: :proposed,
         creator_id: current_user.id,
         assigned_editor_id: current_user.id
@@ -115,6 +116,15 @@ class LessonsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity,
                     alert: 'Changes could not be proposed.'
+    end
+  end
+
+  def proposal_lesson_params(strong_params)
+    strong_params.deep_dup.tap do |attrs|
+      attrs[:lesson_links_attributes]&.each_value do |link_attrs|
+        link_attrs.delete(:id)
+        link_attrs.delete('id')
+      end
     end
   end
 

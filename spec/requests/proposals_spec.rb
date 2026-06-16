@@ -48,6 +48,37 @@ RSpec.describe 'Proposals' do
       expect(proposal.reload.status).to eq 'proposed'
     end
 
+    it 'can propose changes to a lesson that already has a link' do
+      link = create(:lesson_link, :google_doc, lesson:)
+
+      patch stand_show_speak_path(lesson),
+            params: {
+              stand_show_speak: {
+                title: 'New Title',
+                type: lesson.type,
+                goal: lesson.goal,
+                level: lesson.level,
+                lesson_links_attributes: {
+                  '0' => {
+                    id: link.id,
+                    title: link.title,
+                    url: link.url
+                  }
+                }
+              }
+            }
+
+      proposal = lesson.proposals.last
+      expect(response).to redirect_to(lesson_path(lesson))
+      expect(lesson.reload.title).not_to eq 'New Title'
+      expect(proposal.title).to eq 'New Title'
+      expect(proposal.lesson_links.count).to eq 1
+      expect(proposal.lesson_links.first).to have_attributes(
+        title: link.title,
+        url: link.url
+      )
+    end
+
     it 'does not change phonics resources when proposing phonics lesson edits' do
       course = create(:course)
       phonics_class = create(:phonics_class, status: :accepted)
@@ -108,6 +139,21 @@ RSpec.describe 'Proposals' do
 
       expect(Lesson.canonical.accepted).to include(lesson)
       expect(Lesson.canonical.accepted).not_to include(proposal.reload)
+    end
+
+    it 'replaces lesson links with the accepted proposal links' do
+      original_link = create(:lesson_link, :google_doc, lesson:, title: 'Original')
+      proposal_link = create(:lesson_link, :youtube, lesson: proposal, title: 'Approved')
+
+      patch proposal_path(id: proposal.id),
+            params: { proposal: { status: 'accepted' } }
+
+      expect(lesson.reload.lesson_links.pluck(:id)).not_to include(original_link.id)
+      expect(lesson.lesson_links.count).to eq 1
+      expect(lesson.lesson_links.first).to have_attributes(
+        title: 'Approved',
+        url: proposal_link.url
+      )
     end
   end
 end
