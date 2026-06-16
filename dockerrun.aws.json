@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.7-org_fixes"
+    "Name": "kidsup/materials:2.6.8-proposal_fix"
   },
   "Ports": [
     {
