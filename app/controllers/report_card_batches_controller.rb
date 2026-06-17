@@ -60,11 +60,16 @@ class ReportCardBatchesController < ApplicationController
       @org = authorize Organisation.find(params[:org_id]), :show?
     end
 
-    @schools = policy_scope(School)
-    @schools = @schools.where(organisation_id: @org.id) if @org.present?
-
+    @schools = report_card_schools
     @school = @schools.find_by(id: params[:school_id]) || @schools.first
-    authorize @school, :show?
+    authorize @school, :show? if @school
+  end
+
+  def report_card_schools
+    schools = policy_scope(School)
+    schools = schools.where(organisation_id: @org.id) if @org.present?
+    schools = schools.where(organisation_id: current_user.organisation_id) if current_user.is?('Admin')
+    schools
   end
 
   def set_view

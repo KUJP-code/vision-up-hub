@@ -21,6 +21,21 @@ RSpec.describe StudentPolicy do
 
     it_behaves_like 'authorized user'
 
+    context 'when the student belongs to the admin organisation' do
+      let(:user) { create(:user, :admin) }
+      let(:school) { create(:school, organisation: user.organisation) }
+      let(:record) { create(:student, organisation: user.organisation, school:) }
+
+      it { is_expected.to authorize_action(:report_card_pdf) }
+      it { is_expected.to authorize_action(:pearson_report) }
+    end
+
+    context 'when the student belongs to another organisation' do
+      it { is_expected.to authorize_action(:show) }
+      it { is_expected.not_to authorize_action(:report_card_pdf) }
+      it { is_expected.not_to authorize_action(:pearson_report) }
+    end
+
     it 'scopes to all students' do
       expect(Pundit.policy_scope!(user, Student)).to eq(Student.all)
     end

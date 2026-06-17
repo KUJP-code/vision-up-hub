@@ -38,7 +38,15 @@ class StudentPolicy < ApplicationPolicy
   end
 
   def print_version?
-    user.is?('Admin') || authorized_student_org_user? || parent?
+    report_card_pdf?
+  end
+
+  def report_card_pdf?
+    same_org? && (user.is?('Admin') || authorized_student_org_user? || parent?)
+  end
+
+  def pearson_report?
+    report_card_pdf?
   end
 
   class Scope < Scope
@@ -75,7 +83,11 @@ class StudentPolicy < ApplicationPolicy
   end
 
   def different_org?
-    user.organisation_id != record.organisation_id
+    !same_org?
+  end
+
+  def same_org?
+    user.organisation_id == record.organisation_id
   end
 
   def parent?

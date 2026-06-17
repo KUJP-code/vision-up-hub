@@ -118,4 +118,26 @@ RSpec.describe FilePolicy do
         .to be_empty
     end
   end
+
+  context 'when the file is attached to a report card batch' do
+    let(:user) { create(:user, :admin) }
+    let(:school) { create(:school, organisation: user.organisation) }
+    let(:batch) { create(:report_card_batch, school:, user:) }
+    let(:record) do
+      batch.file.attach(
+        io: Rails.root.join('spec/example_lesson.pdf').open,
+        filename: 'report.pdf',
+        content_type: 'application/pdf'
+      )
+      batch.file.blob
+    end
+
+    it { is_expected.to authorize_action(:show) }
+
+    context 'when the batch belongs to another organisation' do
+      let(:school) { create(:school) }
+
+      it { is_expected.not_to authorize_action(:show) }
+    end
+  end
 end

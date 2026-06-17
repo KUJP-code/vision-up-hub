@@ -11,11 +11,12 @@
 
 %main
   .flex.justify-center.p-3.gap-3
-    = link_to t(".report_card"),
-      report_card_pdf_student_path(@student),
-      class: "btn btn-secondary",
-      target: "_blank"
-    - if @student.pearson_results? && respond_to?(:pearson_report_student_path)
+    - if policy(@student).report_card_pdf?
+      = link_to t(".report_card"),
+        report_card_pdf_student_path(@student),
+        class: "btn btn-secondary",
+        target: "_blank"
+    - if @student.pearson_results? && respond_to?(:pearson_report_student_path) && policy(@student).pearson_report?
       = link_to t('.pearson_report'),
         pearson_report_student_path(@student),
         class: "btn btn-secondary",

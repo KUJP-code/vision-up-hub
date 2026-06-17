@@ -68,4 +68,42 @@ RSpec.describe 'Student search' do
       expect(page).not_to have_content(extra.name)
     end
   end
+
+  # rubocop:disable RSpec/MultipleMemoizedHelpers
+  context 'when admin searching by name' do
+    let(:user) { create(:user, :admin) }
+    let(:own_school) { create(:school, organisation: user.organisation) }
+    let(:other_school) { create(:school) }
+    let!(:own_student) do
+      create(:student, school: own_school, organisation: own_school.organisation,
+                       student_id: 'own-yuki', en_name: 'Yuki Own')
+    end
+    let!(:other_student) do
+      create(:student, school: other_school, organisation: other_school.organisation,
+                       student_id: 'other-yuki', en_name: 'Yuki Other')
+    end
+
+    it 'does not return redacted cross-org students for name matches' do
+      visit students_path
+      within '#student_search' do
+        fill_in 'search_en_name', with: 'Yuki'
+        click_button 'commit'
+      end
+
+      expect(page).to have_content(own_student.student_id)
+      expect(page).not_to have_content(other_student.student_id)
+    end
+
+    it 'still returns cross-org students for non-name filters' do
+      visit students_path
+      within '#student_search' do
+        select other_school.name, from: 'search_school_id'
+        select other_student.level.titleize, from: 'search_level'
+        click_button 'commit'
+      end
+
+      expect(page).to have_content(other_student.student_id)
+    end
+  end
+  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

@@ -92,7 +92,7 @@ class StudentsController < ApplicationController
 
   def pearson_report
     @student = Student.find(params[:id])
-    authorize @student, :show?
+    authorize @student
 
     pdf = StudentReportPdf.new(@student, pearson: true).call
     send_data pdf,
@@ -109,7 +109,7 @@ class StudentsController < ApplicationController
 
   def report_card_pdf
     @student = Student.find(params[:id])
-    authorize @student, :show?
+    authorize @student
 
     pdf = StudentReportPdf.new(@student).call
     send_data pdf,
