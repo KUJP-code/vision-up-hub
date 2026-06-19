@@ -1,0 +1,57 @@
+%p #{@inquiry.name} 様
+
+%p
+  この度はVisionUPへお問い合わせいただき、誠にありがとうございます。
+  以下の内容でお問い合わせを受け付けました。
+
+%p
+  担当者より順次ご連絡いたしますので、今しばらくお待ちください。
+
+= '------------------------------'
+%h2 お問い合わせ内容
+= '------------------------------'
+
+%p お名前: #{@inquiry.name}
+%p メールアドレス: #{@inquiry.email}
+%p 受付日時: #{@received_at.strftime('%Y年%m月%d日 %H:%M')}
+
+- if @inquiry.org.present?
+  %p 法人名: #{@inquiry.org}
+
+- if @inquiry.phone.present?
+  %p 電話番号: #{@inquiry.phone}
+
+- if @inquiry.postal_code.present?
+  %p 郵便番号: #{@inquiry.postal_code}
+
+- if @inquiry.address_pref.present? || @inquiry.address_city.present? || @inquiry.address_line.present?
+  %p 住所:
+  %p
+    = @inquiry.address_pref.to_s
+    = @inquiry.address_city.to_s
+    = @inquiry.address_line.to_s
+
+- if @inquiry.gender.present?
+  %p 性別: #{@inquiry.gender}
+
+- if @inquiry.age.present?
+  %p 年齢: #{@inquiry.age}歳
+
+- if @inquiry.date_1.present? || @inquiry.time_1.present? || @inquiry.date_2.present? || @inquiry.time_2.present?
+  = '------------------------------'
+  %h2 説明会希望日時
+  - if @inquiry.date_1.present? || @inquiry.time_1.present?
+    %p 第1希望: #{@inquiry.date_1} #{@inquiry.time_1}
+  - if @inquiry.date_2.present? || @inquiry.time_2.present?
+    %p 第2希望: #{@inquiry.date_2} #{@inquiry.time_2}
+
+= '------------------------------'
+%h2 メッセージ
+= simple_format(@inquiry.message) if @inquiry.message.present?
+= '------------------------------'
+
+%p
+  ※本メールは自動送信です。
+  お心当たりのない場合は、お手数ですがこのメールを破棄してください。
+
+%p VisionUP

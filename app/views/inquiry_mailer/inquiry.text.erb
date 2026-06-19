@@ -5,6 +5,18 @@ Details
 ------------------------------
 お名前: <%= @inquiry.name %>
 メールアドレス: <%= @inquiry.email %>
+受付日時: <%= @received_at.strftime('%Y年%m月%d日 %H:%M') %>
+<% if @inquiry.date_1.present? || @inquiry.time_1.present? || @inquiry.date_2.present? || @inquiry.time_2.present? %>
+------------------------------
+説明会希望日時
+------------------------------
+<% if @inquiry.date_1.present? || @inquiry.time_1.present? %>
+第1希望: <%= @inquiry.date_1 %> <%= @inquiry.time_1 %>
+<% end %>
+<% if @inquiry.date_2.present? || @inquiry.time_2.present? %>
+第2希望: <%= @inquiry.date_2 %> <%= @inquiry.time_2 %>
+<% end %>
+<% end %>
 ------------------------------
 お問い合わせ内容
 ------------------------------

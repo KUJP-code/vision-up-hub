@@ -8,4 +8,8 @@ class InquiryMailerPreview < ActionMailer::Preview
   def inquiry
     InquiryMailer.inquiry(build(:inquiry))
   end
+
+  def confirmation
+    InquiryMailer.confirmation(build(:inquiry))
+  end
 end

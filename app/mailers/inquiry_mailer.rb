@@ -6,6 +6,17 @@ class InquiryMailer < ApplicationMailer
 
   def inquiry(inquiry)
     @inquiry = inquiry
-    mail(to: ['t-nakagawa@kids-up.jp', 'p-jayson@kids-up.jp'], subject: 'New VisionUP Inquiry')
+    @received_at = Time.zone.now
+    mail(
+      to: ['t-nakagawa@kids-up.jp', 'p-jayson@kids-up.jp', 'r-callan@p-up.jp'],
+      reply_to: inquiry.email,
+      subject: 'New VisionUP Inquiry'
+    )
+  end
+
+  def confirmation(inquiry)
+    @inquiry = inquiry
+    @received_at = Time.zone.now
+    mail(to: inquiry.email, subject: '【VisionUP】お問い合わせありがとうございます')
   end
 end

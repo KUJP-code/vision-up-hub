@@ -8,5 +8,6 @@ class InquiryForwardingJob < ApplicationJob
     raise(ActiveModel::ValidationError, inquiry) unless inquiry.valid?
 
     InquiryMailer.inquiry(inquiry).deliver_now
+    InquiryMailer.confirmation(inquiry).deliver_now
   end
 end
