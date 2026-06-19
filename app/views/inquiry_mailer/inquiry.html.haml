@@ -34,5 +34,5 @@
 
     = '------------------------------'
     %h2 メッセージ
-    %p= @inquiry.message if @inquiry.message.present?
+    = simple_format(@inquiry.message) if @inquiry.message.present?
     = '------------------------------'
