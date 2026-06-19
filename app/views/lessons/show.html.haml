@@ -45,9 +45,16 @@
         = render 'lessons/event_activities/show_fields', lesson: @lesson
       - if @courses.any?
         %h3 Used in the following courses:
-        - @courses.each do |c|
-          = link_to "#{c.title} on #{@lesson.week(c)} #{@lesson.day(c)}",
-                    course_path(c)
+        - if @courses.size > 5
+          %details
+            %summary Show #{@courses.size} courses
+            %ul
+              - @courses.each do |c|
+                %li= "#{c.title} on #{@lesson.week(c)} #{@lesson.day(c)}"
+        - else
+          %ul
+            - @courses.each do |c|
+              %li= "#{c.title} on #{@lesson.week(c)} #{@lesson.day(c)}"
 
       - if @org_lessons.any?
         %h3 Used in the following organisations
