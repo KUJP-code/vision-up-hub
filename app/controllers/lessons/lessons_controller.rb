@@ -7,6 +7,7 @@ class LessonsController < ApplicationController
   after_action :verify_authorized, except: %i[index]
   after_action :verify_policy_scoped, only: %i[index]
   after_action :generate_guide, only: %i[create update]
+  after_action :apply_resource_deletions, only: :update
 
   def index
     raise Pundit::NotAuthorizedError unless current_user.is?('Admin', 'Writer')
@@ -77,6 +78,7 @@ class LessonsController < ApplicationController
     default_params = [
       :goal, :level, :title, :type, :curriculum_approval_id,
       :curriculum_approval_name, :internal_notes, { resources: [] },
+      { resource_deletions: resource_deletion_params },
       { course_lessons_attributes: %i[id _destroy course_id day lesson_id week] },
       { organisation_lessons_attributes: %i[id _destroy organisation_id event_date] },
       { lesson_links_attributes: %i[id url title _destroy] }
@@ -131,16 +133,17 @@ class LessonsController < ApplicationController
   def set_form_data
     @courses = policy_scope(Course).includes(plans: :organisation)
     @organisations = policy_scope(Organisation).order(:name)
-    @resource_ids = if @lesson
-                      @lesson.resources_attachments.includes(:blob)
-                             .map { |attachment| attachment.blob.signed_id }
-                    else
-                      []
-                    end
     case @lesson.type
     when 'PhonicsClass'
       @phonics_resources = set_phonics_resources
     end
+  end
+
+  def resource_deletion_params
+    attachment_names = ['resources']
+    attachment_names += EveningClass.specialist_resource_attachment_names if defined?(EveningClass)
+
+    attachment_names.index_with { [] }
   end
 
   def set_phonics_resources
@@ -159,6 +162,14 @@ class LessonsController < ApplicationController
     return unless @lesson.persisted?
 
     @proposal ? @proposal.attach_guide : @lesson.attach_guide
+  end
+
+  def apply_resource_deletions
+    return unless response.redirect?
+    return if @proposal
+    return unless @lesson&.persisted?
+
+    @lesson.apply_resource_deletions!
   end
 
   def expand_course_lesson_shortcuts

@@ -32,6 +32,27 @@ class Lesson < ApplicationRecord
 
   has_many_attached :resources
 
+  def resource_deletion_blob_ids(attachment_name)
+    Array(resource_deletions.to_h[attachment_name.to_s]).filter_map(&:presence).map(&:to_i)
+  end
+
+  def resource_deleted?(attachment_name, blob_or_id)
+    blob_id = blob_or_id.respond_to?(:id) ? blob_or_id.id : blob_or_id
+
+    resource_deletion_blob_ids(attachment_name).include?(blob_id.to_i)
+  end
+
+  def apply_resource_deletions!
+    resource_deletions.to_h.each do |attachment_name, blob_ids|
+      next unless attachment_reflections.key?(attachment_name)
+
+      ids = Array(blob_ids).filter_map(&:presence).map(&:to_i)
+      public_send(:"#{attachment_name}_attachments").where(blob_id: ids).find_each(&:purge)
+    end
+
+    update!(resource_deletions: {}) if persisted? && resource_deletions.present?
+  end
+
   scope :levelled, lambda {
                      where(type: %w[EnglishClass EveningClass KindyPhonic
                                     PhonicsClass StandShowSpeak])
