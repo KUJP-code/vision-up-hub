@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.6.9-studeny_privacy"
+    "Name": "kidsup/materials:2.7.0-resources"
   },
   "Ports": [
     {
