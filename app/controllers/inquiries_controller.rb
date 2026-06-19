@@ -29,7 +29,11 @@ class InquiriesController < ApplicationController
       :address_city,
       :address_line,
       :gender,
-      :age
+      :age,
+      :date_1,
+      :time_1,
+      :date_2,
+      :time_2
     )
   end
 

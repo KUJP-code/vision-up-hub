@@ -6,7 +6,8 @@ class Inquiry
 
   attr_accessor :email, :phone, :message, :name, :org,
                 :category, :postal_code, :address_pref,
-                :address_city, :address_line, :gender, :age
+                :address_city, :address_line, :gender, :age,
+                :date_1, :time_1, :date_2, :time_2
 
   validates :email, :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }

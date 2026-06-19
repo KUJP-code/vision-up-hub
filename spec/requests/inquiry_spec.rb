@@ -43,10 +43,23 @@ RSpec.describe 'Receiving & forwarding inquiry from contact form' do
                address_city: '千代田区',
                address_line: '1-1-1',
                gender: 'male',
-               age: 40
+               age: 40,
+               date_1: '2026-07-01',
+               time_1: '10:00～',
+               date_2: '2026-07-02',
+               time_2: '14:00～'
              }
            }
     end.to change { inquiry_jobs_count }.by(1)
+
+    job = ActiveJob::Base.queue_adapter.enqueued_jobs.last
+    inquiry_params = job['arguments'].first
+    expect(inquiry_params).to include(
+      'date_1' => '2026-07-01',
+      'time_1' => '10:00～',
+      'date_2' => '2026-07-02',
+      'time_2' => '14:00～'
+    )
   end
 
   it 'rejects the inquiry when reCAPTCHA verification fails' do
