@@ -1,4 +1,4 @@
--# locals: (courses:, lesson:, resource_ids:)
+-# locals: (courses:, lesson:)
 = render 'shared/subtitle',
          text: "#{lesson.new_record? ? 'Edit' : 'New'} #{lesson.type.titleize}"
 
@@ -104,11 +104,10 @@
     - unless generic_resources_hidden
       = f.label :resources
       = f.file_field :resources, multiple: true
-      - if resource_ids
-        - resource_ids.each do |id|
-          = f.hidden_field :resources,
-                           multiple: true,
-                           value: id
+      = render 'lessons/shared/editable_resource_list',
+               f:,
+               resources: lesson.resources_attachments.includes(:blob),
+               attachment_name: :resources
 
   %h3.text-xl.font-bold Links
 

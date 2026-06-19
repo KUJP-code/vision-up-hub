@@ -1,0 +1,23 @@
+-# locals: (f:, resources:, attachment_name:)
+
+- attachments = resources.to_a
+- if attachments.any?
+  .flex.flex-wrap.justify-start.items-center.gap-3.mt-2
+    - attachments.each do |resource|
+      - blob = resource.respond_to?(:blob) ? resource.blob : resource
+      .flex.flex-col.gap-2.p-1.border-2.border-secondary-50.rounded
+        = f.hidden_field attachment_name,
+                         multiple: true,
+                         value: blob.signed_id
+        = link_to file_path(blob),
+                  target: '_blank',
+                  rel: 'noopener',
+                  class: 'btn btn-main resource flex justify-around' do
+          %p= blob.filename
+          = inline_svg_tag 'download_icon.svg',
+                           class: 'fill-white'
+        %label.flex.items-center.justify-center.gap-2.text-sm.text-danger
+          = check_box_tag "#{f.object_name}[resource_deletions][#{attachment_name}][]",
+                          blob.id,
+                          f.object.resource_deleted?(attachment_name, blob.id)
+          Remove

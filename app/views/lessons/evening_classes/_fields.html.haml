@@ -27,15 +27,7 @@
       .form-group
         = f.label :"#{subtype}_resources", t('resources')
         = f.file_field :"#{subtype}_resources", multiple: true
-        - lesson.public_send("#{subtype}_resources_attachments").each do |attachment|
-          = f.hidden_field :"#{subtype}_resources",
-                           multiple: true,
-                           value: attachment.blob.signed_id
-        - if lesson.public_send("#{subtype}_resources_attachments").any?
-          .flex.flex-wrap.gap-2.mt-2
-            - lesson.public_send("#{subtype}_resources_attachments").each do |attachment|
-              = link_to attachment.blob.filename,
-                        file_path(attachment.blob),
-                        target: '_blank',
-                        rel: 'noopener',
-                        class: 'btn btn-secondary'
+        = render 'lessons/shared/editable_resource_list',
+                 f:,
+                 resources: lesson.public_send("#{subtype}_resources_attachments").includes(:blob),
+                 attachment_name: :"#{subtype}_resources"

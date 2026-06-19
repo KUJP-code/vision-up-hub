@@ -57,19 +57,6 @@ module LessonHelper
     "#{lesson.title} (#{lesson.subtype.humanize})"
   end
 
-  def can_remove_resource?(user, lesson, blob)
-    return true if user.is?('Admin')
-    return false unless user.is?('Writer')
-
-    # either assigned editor or creator
-    owner_match = [lesson.assigned_editor_id, lesson.creator_id].compact.include?(user.id)
-
-    # or if they uploaded the blob
-    uploaded_by = blob.metadata['uploaded_by_id'] == user.id
-
-    owner_match || uploaded_by
-  end
-
   private
 
   def exact_level_icon_exists?(level)
