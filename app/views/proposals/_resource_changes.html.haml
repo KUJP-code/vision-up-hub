@@ -1,0 +1,36 @@
+-# locals: (proposal:, current_lesson:, attachment_name:, label:)
+
+- current_attachments = current_lesson.public_send("#{attachment_name}_attachments").includes(:blob)
+- proposal_attachments = proposal.public_send("#{attachment_name}_attachments").includes(:blob)
+- current_blob_ids = current_attachments.map(&:blob_id)
+- deleted_blob_ids = proposal.resource_deletion_blob_ids(attachment_name)
+- added_attachments = proposal_attachments.reject { |attachment| current_blob_ids.include?(attachment.blob_id) || deleted_blob_ids.include?(attachment.blob_id) }
+- deleted_attachments = current_attachments.select { |attachment| deleted_blob_ids.include?(attachment.blob_id) }
+
+- if added_attachments.any? || deleted_attachments.any?
+  .border.border-secondary-50.rounded.p-3.flex.flex-col.gap-2
+    %h3.font-semibold= "#{label} changes"
+    - if added_attachments.any?
+      .flex.flex-col.gap-1
+        %h4.text-success.font-semibold Added
+        .flex.flex-wrap.gap-2
+          - added_attachments.each do |attachment|
+            = link_to file_path(attachment.blob),
+                      target: '_blank',
+                      rel: 'noopener',
+                      class: 'btn btn-main resource flex justify-around' do
+              %p= attachment.blob.filename
+              = inline_svg_tag 'download_icon.svg',
+                               class: 'fill-white'
+    - if deleted_attachments.any?
+      .flex.flex-col.gap-1
+        %h4.text-danger.font-semibold Deleted
+        .flex.flex-wrap.gap-2
+          - deleted_attachments.each do |attachment|
+            = link_to file_path(attachment.blob),
+                      target: '_blank',
+                      rel: 'noopener',
+                      class: 'btn btn-danger resource flex justify-around' do
+              %p= attachment.blob.filename
+              = inline_svg_tag 'download_icon.svg',
+                               class: 'fill-white'

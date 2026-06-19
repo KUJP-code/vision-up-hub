@@ -24,6 +24,24 @@ RSpec.describe 'changing a lesson' do
       expect(page).to have_content('New Instructions 1', count: 1)
       expect(page).not_to have_content('Proposed Changes')
     end
+
+    it 'shows existing resources in edit and removes checked resources on submit' do
+      lesson.resources.attach(
+        io: Rails.root.join('spec/example_lesson.pdf').open,
+        filename: 'existing_resource.pdf',
+        content_type: 'application/pdf'
+      )
+
+      visit edit_lesson_path(id: lesson.id)
+      expect(page).to have_css('a.resource', text: 'existing_resource.pdf')
+
+      within '#daily_activity_form' do
+        check 'Remove'
+        click_button I18n.t('helpers.submit.update')
+      end
+
+      expect(lesson.reload.resources).not_to be_attached
+    end
   end
 
   context 'when writer' do
@@ -38,6 +56,24 @@ RSpec.describe 'changing a lesson' do
       end
       proposed_change_list = page.find_by_id('proposals')
       expect(proposed_change_list).to have_content("Proposed by: #{user.name}")
+    end
+
+    it 'can propose deleting an existing resource' do
+      lesson.resources.attach(
+        io: Rails.root.join('spec/example_lesson.pdf').open,
+        filename: 'existing_resource.pdf',
+        content_type: 'application/pdf'
+      )
+      blob = lesson.resources.blobs.first
+
+      visit edit_lesson_path(id: lesson.id)
+      within '#daily_activity_form' do
+        check 'Remove'
+        click_button I18n.t('helpers.submit.update')
+      end
+
+      proposal = lesson.proposals.order(created_at: :desc).first
+      expect(proposal.resource_deletion_blob_ids(:resources)).to include(blob.id)
     end
   end
 
@@ -68,6 +104,28 @@ RSpec.describe 'changing a lesson' do
       expect(page).to have_content('New Title')
       expect(page).to have_content(I18n.t('shared.visibility_toggles.accepted'))
       expect(page).to have_content(course.title)
+    end
+
+    it 'shows deleted resources and removes them when accepted' do
+      lesson.resources.attach(
+        io: Rails.root.join('spec/example_lesson.pdf').open,
+        filename: 'removed_resource.pdf',
+        content_type: 'application/pdf'
+      )
+      blob = lesson.resources.blobs.first
+      proposal.update!(resource_deletions: { resources: [blob.id] })
+      proposal.resources.attach(blob)
+
+      visit proposal_path(id: proposal.id)
+      expect(page).to have_content('Deleted')
+      expect(page).to have_content('removed_resource.pdf')
+
+      within "#proposal_status_form_#{proposal.id}" do
+        select 'Accepted', from: "proposal_status_#{proposal.id}"
+        click_button "proposal_status_form_submit_#{proposal.id}"
+      end
+
+      expect(lesson.reload.resources).not_to be_attached
     end
   end
 end

@@ -5,7 +5,22 @@
   = render('lessons/shared/guide_preview', lesson:, large_preview: true)
   = render('lessons/shared/attribute_list', lesson:)
 
-  = render 'lessons/shared/resource_list', resources: lesson.resources, lesson:
+  - resources = lesson.resources_attachments.includes(:blob)
+  - resources = resources.reject { |resource| lesson.resource_deleted?(:resources, resource.blob_id) } if lesson.changed_lesson
+  = render 'lessons/shared/resource_list', resources:, lesson:
+  - if lesson.changed_lesson
+    = render 'proposals/resource_changes',
+             proposal: lesson,
+             current_lesson: lesson.changed_lesson,
+             attachment_name: :resources,
+             label: t('resources')
+    - if lesson.instance_of?(EveningClass) && lesson.specialist_structured?
+      - EveningClass::SPECIALIST_SUBTYPES.each do |subtype|
+        = render 'proposals/resource_changes',
+                 proposal: lesson,
+                 current_lesson: lesson.changed_lesson,
+                 attachment_name: :"#{subtype}_resources",
+                 label: t("lessons.subtypes.#{subtype}")
   - if lesson.type == 'PhonicsClass'
     = render 'lessons/phonics_classes/phonics_resources',
              resources: lesson.phonics_resources

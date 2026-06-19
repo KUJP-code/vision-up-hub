@@ -4,7 +4,7 @@ module Proposable
   extend ActiveSupport::Concern
   NOT_PROPOSABLE =
     %w[admin_approval assigned_editor_id changed_lesson_id created_at
-       creator_id curriculum_approval id released status type
+       creator_id curriculum_approval id released resource_deletions status type
        updated_at].freeze
 
   included do
@@ -25,17 +25,8 @@ module Proposable
 
     def replace_with(proposal)
       self.class.transaction do
-        proposal.attributes.each do |key, value|
-          next if NOT_PROPOSABLE.include?(key)
-
-          send(:"#{key}=", value)
-        end
-
-        replace_single_attachments(proposal)
-        replace_lesson_links(proposal)
-        replace_resources(proposal)
-        replace_phonics_resources(proposal) if type == 'PhonicsClass'
-        replace_specialist_resources(proposal) if type == 'EveningClass'
+        assign_proposable_attributes(proposal)
+        replace_lesson_content(proposal)
         save!
         proposal.update!(status: :accepted)
       end
@@ -46,6 +37,22 @@ module Proposable
   end
 
   private
+
+  def assign_proposable_attributes(proposal)
+    proposal.attributes.each do |key, value|
+      next if NOT_PROPOSABLE.include?(key)
+
+      send(:"#{key}=", value)
+    end
+  end
+
+  def replace_lesson_content(proposal)
+    replace_single_attachments(proposal)
+    replace_lesson_links(proposal)
+    replace_resources(proposal)
+    replace_phonics_resources(proposal) if type == 'PhonicsClass'
+    replace_specialist_resources(proposal) if type == 'EveningClass'
+  end
 
   def replace_single_attachments(proposal)
     proposal.attachment_reflections.each do |name, reflection|
@@ -67,11 +74,31 @@ module Proposable
   end
 
   def replace_resources(proposal)
-    proposal.resources.each do |resource|
-      next if resources.any? { |r| r.filename == resource.filename }
+    replace_attached_resources_from_proposal(proposal, :resources)
+  end
 
-      resources.attach(resource.blob)
+  def replace_attached_resources_from_proposal(proposal, attachment_name)
+    purge_proposed_resource_deletions(proposal, attachment_name)
+    attach_proposed_resources(proposal, attachment_name)
+  end
+
+  def purge_proposed_resource_deletions(proposal, attachment_name)
+    blob_ids = proposal.resource_deletion_blob_ids(attachment_name)
+    public_send(:"#{attachment_name}_attachments").where(blob_id: blob_ids).find_each(&:purge)
+  end
+
+  def attach_proposed_resources(proposal, attachment_name)
+    proposal.public_send(attachment_name).each do |resource|
+      blob = resource.respond_to?(:blob) ? resource.blob : resource
+      next if proposal.resource_deleted?(attachment_name, blob.id)
+      next if resource_attached?(attachment_name, blob)
+
+      public_send(attachment_name).attach(blob)
     end
+  end
+
+  def resource_attached?(attachment_name, blob)
+    public_send(attachment_name).any? { |existing| existing.filename == blob.filename }
   end
 
   def replace_phonics_resources(proposal)
@@ -92,6 +119,8 @@ module Proposable
     self.class.specialist_resource_attachment_names.each do |attachment_name|
       public_send(attachment_name).purge
       proposal.public_send(attachment_name).each do |resource|
+        next if proposal.resource_deleted?(attachment_name, resource.blob_id)
+
         public_send(attachment_name).attach(resource.blob)
       end
     end
