@@ -266,6 +266,10 @@
       @apply absolute -top-10 -right-10 w-20;
     }
 
+    .btn-modal-edit {
+      @apply absolute -top-8 right-12 rounded bg-secondary px-3 py-1 text-sm font-bold text-center text-white;
+    }
+
     .dialog-content {
       @apply h-full flex flex-col gap-3 p-8 text-secondary overflow-y-scroll;
     }

@@ -50,5 +50,35 @@ RSpec.describe 'Teacher lessons', type: :request do
       expect(response.body).not_to include('Evening Class')
       expect(response.body).not_to include('class="tab ')
     end
+
+    it 'renders an edit link for admins' do
+      get teacher_lesson_path(
+        0,
+        teacher_id: teacher.id,
+        date: date,
+        level: 'keep_up',
+        type: 'EveningClass',
+        subtype: 'conversation_time'
+      )
+
+      expect(response.body).to include(edit_lesson_path(keep_up_one_lesson))
+      expect(response.body).to include('data-turbo-frame="_top"')
+    end
+
+    it 'does not render an edit link for teachers' do
+      sign_in teacher
+
+      get teacher_lesson_path(
+        0,
+        teacher_id: teacher.id,
+        date: date,
+        level: 'keep_up',
+        type: 'EveningClass',
+        subtype: 'conversation_time'
+      )
+
+      expect(response.body).not_to include(edit_lesson_path(keep_up_one_lesson))
+      expect(response.body).not_to include('btn-modal-edit')
+    end
   end
 end
