@@ -99,18 +99,37 @@ RSpec.describe Lesson do
 
       get lesson_path(seasonal)
 
-      expect(response.body).to include('Kindy English')
-      expect(response.body).to include('English')
-      expect(response.body).to include('Galaxy')
-      expect(response.body).to include('>Low<')
-      expect(response.body).to include('>High<')
-      expect(response.body).to include('>Questions<')
+      expect(response.body).to include('Kindy')
+      expect(response.body).to include('Ele')
+      expect(response.body).to include('Galaxy Low')
+      expect(response.body).to include('Galaxy High')
+      expect(response.body).to include('Galaxy Questions')
       expect(response.body).not_to include('Remove example_lesson.pdf from this lesson?')
 
       get edit_lesson_path(seasonal)
 
       expect(response.body).to include('example_lesson.pdf')
       expect(response.body).not_to include('Remove example_lesson.pdf from this lesson?')
+    end
+
+    it 'shows links and resources before the update notes area' do
+      seasonal = create(:seasonal_activity, creator: user, assigned_editor: user)
+      seasonal.resources.attach(
+        io: File.open(pdf),
+        filename: 'resource.pdf',
+        content_type: 'application/pdf'
+      )
+      create(:lesson_link, lesson: seasonal, title: 'Planning doc',
+                           url: 'https://docs.google.com/document/d/xyz123/edit')
+
+      get lesson_path(seasonal)
+
+      resource_position = response.body.index('resource.pdf')
+      link_position = response.body.index('Planning doc')
+      notes_position = response.body.index('Internal notes')
+
+      expect(resource_position).to be < notes_position
+      expect(link_position).to be < notes_position
     end
   end
 end

@@ -16,38 +16,32 @@
                              lesson.ele_english_class.attached? ||
                              galaxy_english_classes.any?
 
-.flex.flex-col.gap-6.text-start
+.flex.flex-col.gap-4.text-start
   - if top_materials.any?
-    %section.grid.md:grid-cols-2.gap-3
-      - top_materials.each do |title, attachment|
-        .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
-          %h3.font-bold.text-secondary= title
-          = render 'lessons/seasonal_activities/attachment_link',
+    %section.flex.flex-col.gap-2
+      %h3.font-bold.text-secondary Materials
+      .flex.flex-wrap.gap-2
+        - top_materials.each do |title, attachment|
+          = render 'lessons/seasonal_activities/attachment_filename',
                    attachment:,
-                   label: attachment.filename.to_s
+                   label: title
 
   - if english_classes_attached
-    %section.flex.flex-col.gap-3
-      %h3.font-bold.text-xl.text-secondary English Class
-      .grid.md:grid-cols-3.gap-3
+    %section.flex.flex-col.gap-2
+      %h3.font-bold.text-secondary English Class
+      .flex.flex-wrap.gap-2
         - if lesson.kindy_english_class.attached?
-          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
-            %h4.font-bold Kindy English
-            = render 'lessons/seasonal_activities/attachment_link',
-                     attachment: lesson.kindy_english_class,
-                     label: lesson.kindy_english_class.filename.to_s
+          = render 'lessons/seasonal_activities/attachment_filename',
+                   attachment: lesson.kindy_english_class,
+                   label: 'Kindy'
 
         - if lesson.ele_english_class.attached?
-          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
-            %h4.font-bold English
-            = render 'lessons/seasonal_activities/attachment_link',
-                     attachment: lesson.ele_english_class,
-                     label: lesson.ele_english_class.filename.to_s
+          = render 'lessons/seasonal_activities/attachment_filename',
+                   attachment: lesson.ele_english_class,
+                   label: 'Ele'
 
         - if galaxy_english_classes.any?
-          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
-            %h4.font-bold Galaxy
-            - galaxy_english_classes.each do |label, attachment|
-              = render 'lessons/seasonal_activities/attachment_link',
-                       attachment:,
-                       label: label
+          - galaxy_english_classes.each do |label, attachment|
+            = render 'lessons/seasonal_activities/attachment_filename',
+                     attachment:,
+                     label: "Galaxy #{label}"

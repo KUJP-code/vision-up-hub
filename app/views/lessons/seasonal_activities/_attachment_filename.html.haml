@@ -1,7 +1,11 @@
--# locals: (attachment:)
+-# locals: (attachment:, label: nil)
 
 - if attachment.attached?
-  = link_to attachment.filename.to_s,
-            url_for(attachment),
+  - link_label = [label, attachment.filename.to_s].compact.join(': ')
+  = link_to url_for(attachment),
             target: '_blank',
-            rel: 'noopener'
+            rel: 'noopener',
+            class: 'btn btn-main flex max-w-full items-center gap-2 px-2 py-1 text-sm' do
+    %span.truncate= link_label
+    = inline_svg_tag 'download_icon.svg',
+                     class: 'fill-white h-4 w-4 shrink-0'

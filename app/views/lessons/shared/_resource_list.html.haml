@@ -1,19 +1,17 @@
 -# locals: (lesson:, resources:)
 
-.flex.flex-wrap.justify-start.items-center.gap-3
-  - if lesson.instance_of?(EveningClass) && lesson.specialist_structured?
-    - specialist_resources = EveningClass::SPECIALIST_SUBTYPES.any? { |subtype| lesson.specialist_resources_for(subtype).any? }
-    - unless specialist_resources
+- specialist_resources = lesson.instance_of?(EveningClass) && lesson.specialist_structured? && EveningClass::SPECIALIST_SUBTYPES.any? { |subtype| lesson.specialist_resources_for(subtype).any? }
+
+- if resources.any? && !specialist_resources
+  %section.flex.flex-col.gap-2.text-start
+    %h3.font-bold.text-secondary Resources
+    .flex.flex-wrap.justify-start.items-center.gap-2
       - resources.each do |resource|
-        .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-          = link_to file_path(resource.blob), target: '_blank', rel: 'noopener', class: 'btn btn-main resource flex justify-around' do
-            %p= resource.filename
+        .flex.max-w-full.flex-col.gap-1
+          = link_to file_path(resource.blob),
+                    target: '_blank',
+                    rel: 'noopener',
+                    class: 'btn btn-main flex max-w-full items-center gap-2 px-2 py-1 text-sm' do
+            %span.truncate= resource.filename
             = inline_svg_tag 'download_icon.svg',
-                             class: 'fill-white'
-  - else
-    - resources.each do |resource|
-      .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-        = link_to file_path(resource.blob), target: '_blank', rel: 'noopener', class: 'btn btn-main resource flex justify-around' do
-          %p= resource.filename
-          = inline_svg_tag 'download_icon.svg',
-                           class: 'fill-white'
+                             class: 'fill-white h-4 w-4 shrink-0'

@@ -43,6 +43,19 @@
         = render 'lessons/party_activities/show_fields', lesson: @lesson
       - when 'EventActivity'
         = render 'lessons/event_activities/show_fields', lesson: @lesson
+
+      .flex.flex-col.gap-3
+        = render 'lessons/shared/attribute_list', lesson: @lesson
+        = render 'lessons/shared/resource_list', resources: @resources, lesson: @lesson
+        - if @lesson_links.any?
+          = render 'lessons/shared/link_list', lesson_links: @lesson_links
+        - if @phonics_resources
+          = render 'lessons/phonics_classes/phonics_resources',
+                   resources: @phonics_resources
+        - if @lesson.is_a?(EnglishClass)
+          = render 'lessons/english_classes/homework_resources',
+                   lesson: @lesson
+
       - if @courses.any?
         %h3 Used in the following courses:
         - if @courses.size > 5
@@ -58,13 +71,24 @@
 
       - if @org_lessons.any?
         %h3 Used in the following organisations
-        - @org_lessons.each do |ol|
-          %div
-            = link_to "#{ol.organisation.name} on #{ol.event_date.strftime('%-d %b %Y')}",
-                      organisation_path(ol.organisation)
-            - if ol.event_date.present?
-              %small.text-muted.ml-2
-                (Visibility: #{events_visible_range_for(ol.event_date)})
+        - if @org_lessons.size > 5
+          %details
+            %summary Show #{@org_lessons.size} organisations
+            - @org_lessons.each do |ol|
+              %div
+                = link_to "#{ol.organisation.name} on #{ol.event_date.strftime('%-d %b %Y')}",
+                          organisation_path(ol.organisation)
+                - if ol.event_date.present?
+                  %small.text-muted.ml-2
+                    (Visibility: #{events_visible_range_for(ol.event_date)})
+        - else
+          - @org_lessons.each do |ol|
+            %div
+              = link_to "#{ol.organisation.name} on #{ol.event_date.strftime('%-d %b %Y')}",
+                        organisation_path(ol.organisation)
+              - if ol.event_date.present?
+                %small.text-muted.ml-2
+                  (Visibility: #{events_visible_range_for(ol.event_date)})
 
 
       = render 'lessons/shared/approval', lesson: @lesson
@@ -73,17 +97,6 @@
 
     = render 'lessons/shared/guide_preview', lesson: @lesson
 
-  .flex.flex-col.p-3.gap-3
-    = render 'lessons/shared/attribute_list', lesson: @lesson
-    = render 'lessons/shared/resource_list', resources: @resources, lesson: @lesson
-    - if @lesson_links.any?
-      = render 'lessons/shared/link_list', lesson_links: @lesson_links
-    - if @phonics_resources
-      = render 'lessons/phonics_classes/phonics_resources',
-               resources: @phonics_resources
-    - if @lesson.is_a?(EnglishClass)
-      = render 'lessons/english_classes/homework_resources',
-               lesson: @lesson
   .flex.justify-center.gap-3
     = link_to 'Delete',
               lesson_path(@lesson),
