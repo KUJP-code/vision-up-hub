@@ -1,84 +1,53 @@
 -# locals: (lesson:)
 
-.flex.flex-wrap.justify-start.items-center.gap-3
-  - if lesson.ele_english_class.attached?
-    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-      %h3 Ele English Class
-      = link_to rails_blob_url(lesson.ele_english_class),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn btn-main resource flex justify-around' do
-        %p= lesson.ele_english_class.filename.to_s
-        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+:ruby
+  galaxy_english_classes = [
+    ['Low', lesson.galaxy_low_english_class],
+    ['High', lesson.galaxy_high_english_class],
+    ['Questions', lesson.galaxy_questions_english_class]
+  ].select { |_label, attachment| attachment.attached? }
 
-      - if current_user.is?('Admin')
-        = link_to file_path(id: lesson.ele_english_class.blob.id,
-                            record_id: lesson.id,
-                            record_type: 'Lesson'),
-                  data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{lesson.ele_english_class.filename} from this lessson?" },
-                  class: 'btn btn-danger flex justify-around' do
-          %p= lesson.ele_english_class.filename
-          = inline_svg_tag 'delete_icon.svg',
-                            class: 'fill-white'
+  top_materials = [
+    ['Guide', lesson.activity_guide],
+    ['Scrapbook', lesson.scrapbook]
+  ].select { |_label, attachment| attachment.attached? }
 
-  - if lesson.kindy_english_class.attached?
-    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-      %h3 Kindy English Class
-      = link_to rails_blob_url(lesson.kindy_english_class),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn btn-main resource flex justify-around' do
-        %p= lesson.kindy_english_class.filename.to_s
-        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
+  english_classes_attached = lesson.kindy_english_class.attached? ||
+                             lesson.ele_english_class.attached? ||
+                             galaxy_english_classes.any?
 
-      - if current_user.is?('Admin')
-        = link_to file_path(id: lesson.kindy_english_class.blob.id,
-                            record_id: lesson.id,
-                            record_type: 'Lesson'),
-                  data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{lesson.kindy_english_class.filename} from this lessson?" },
-                  class: 'btn btn-danger flex justify-around' do
-          %p= lesson.kindy_english_class.filename
-          = inline_svg_tag 'delete_icon.svg',
-                            class: 'fill-white'
+.flex.flex-col.gap-6.text-start
+  - if top_materials.any?
+    %section.grid.md:grid-cols-2.gap-3
+      - top_materials.each do |title, attachment|
+        .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
+          %h3.font-bold.text-secondary= title
+          = render 'lessons/seasonal_activities/attachment_link',
+                   attachment:,
+                   label: attachment.filename.to_s
 
-  - if lesson.activity_guide.attached?
-    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-      %h3 Guide
-      = link_to rails_blob_url(lesson.activity_guide),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn btn-main resource flex justify-around' do
-        %p= lesson.activity_guide.filename.to_s
-        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
-      - if current_user.is?('Admin')
-        = link_to file_path(id: lesson.activity_guide.blob.id,
-                            record_id: lesson.id,
-                            record_type: 'Lesson'),
-                  data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{lesson.activity_guide.filename} from this lessson?" },
-                  class: 'btn btn-danger flex justify-around' do
-          %p= lesson.activity_guide.filename
-          = inline_svg_tag 'delete_icon.svg',
-                            class: 'fill-white'
+  - if english_classes_attached
+    %section.flex.flex-col.gap-3
+      %h3.font-bold.text-xl.text-secondary English Class
+      .grid.md:grid-cols-3.gap-3
+        - if lesson.kindy_english_class.attached?
+          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
+            %h4.font-bold Kindy English
+            = render 'lessons/seasonal_activities/attachment_link',
+                     attachment: lesson.kindy_english_class,
+                     label: lesson.kindy_english_class.filename.to_s
 
-  - if lesson.scrapbook.attached?
-    .flex.flex-col.gap-1.p-1.border-2.border-secondary-50.rounded
-      %h3 Scrapbook
-      = link_to rails_blob_url(lesson.scrapbook),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn btn-main resource flex justify-around' do
-        %p= lesson.scrapbook.filename.to_s
-        = inline_svg_tag 'download_icon.svg', class: 'fill-white'
-      - if current_user.is?('Admin')
-        = link_to file_path(id: lesson.scrapbook.blob.id,
-                            record_id: lesson.id,
-                            record_type: 'Lesson'),
-                  data: { turbo_method: 'delete',
-                          turbo_confirm: "Remove #{lesson.scrapbook.filename} from this lessson?" },
-                  class: 'btn btn-danger flex justify-around' do
-          %p= lesson.scrapbook.filename
-          = inline_svg_tag 'delete_icon.svg',
-                            class: 'fill-white'
+        - if lesson.ele_english_class.attached?
+          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
+            %h4.font-bold English
+            = render 'lessons/seasonal_activities/attachment_link',
+                     attachment: lesson.ele_english_class,
+                     label: lesson.ele_english_class.filename.to_s
+
+        - if galaxy_english_classes.any?
+          .flex.flex-col.gap-2.p-3.border-2.border-secondary-50.rounded.bg-white
+            %h4.font-bold Galaxy
+            - galaxy_english_classes.each do |label, attachment|
+              = render 'lessons/seasonal_activities/attachment_link',
+                       attachment:,
+                       label: label

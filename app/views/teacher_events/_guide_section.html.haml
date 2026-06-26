@@ -1,46 +1,78 @@
 -# locals: (lesson:)
 
-%section.resource-section
-  - if lesson.respond_to?(:activity_guide) && lesson.activity_guide.attached?
-    %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-      = t('.Guide')
-    %section{ class: 'w-full md:w-1/3 flex items-center gap-2' }
-      = link_to file_path(lesson.activity_guide.blob.id),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn-outline flex items-center gap-2' do
-        %span{ class: 'flex-grow truncate' }= t('.activity_guide')
-        = inline_svg_tag 'download_icon.svg', class: 'fill-secondary flex-shrink-0'
+:ruby
+  activity_guide = lesson.activity_guide if lesson.respond_to?(:activity_guide) && lesson.activity_guide.attached?
+  scrapbook = lesson.scrapbook if lesson.respond_to?(:scrapbook) && lesson.scrapbook.attached?
+  kindy_english_class = if lesson.respond_to?(:kindy_english_class) && lesson.kindy_english_class.attached?
+                          lesson.kindy_english_class
+                        end
+  ele_english_class = if lesson.respond_to?(:ele_english_class) && lesson.ele_english_class.attached?
+                        lesson.ele_english_class
+                      end
 
-  - if lesson.respond_to?(:ele_english_class) && lesson.ele_english_class.attached?
-    %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-      = t('.English Class')
-    %section{ class: 'w-full md:w-1/3 flex items-center gap-2' }
-      = link_to file_path(lesson.ele_english_class.blob.id),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn-outline' do
-        %span{ class: 'basis-5/6 truncate' }= t('.ele_english_class')
-        = inline_svg_tag 'download_icon.svg', class: 'fill-secondary'
+  galaxy_english_classes = [
+    ['Low', lesson.respond_to?(:galaxy_low_english_class) ? lesson.galaxy_low_english_class : nil],
+    ['High', lesson.respond_to?(:galaxy_high_english_class) ? lesson.galaxy_high_english_class : nil],
+    ['Questions', lesson.respond_to?(:galaxy_questions_english_class) ? lesson.galaxy_questions_english_class : nil]
+  ].select { |_label, attachment| attachment&.attached? }
 
-  - if lesson.respond_to?(:kindy_english_class) && lesson.kindy_english_class.attached?
-    %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-      = t('.Kindy English Class')
-    %section{ class: 'w-full md:w-1/3 flex items-center gap-2' }
-      = link_to file_path(lesson.kindy_english_class.blob.id),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn-outline' do
-        %span{ class: 'basis-5/6 truncate' }= t('.kindy_english_class')
-        = inline_svg_tag 'download_icon.svg', class: 'fill-secondary'
+  top_materials = [
+    ['Guide', activity_guide],
+    ['Scrapbook', scrapbook]
+  ].select { |_label, attachment| attachment.present? }
 
-  - if lesson.respond_to?(:scrapbook) && lesson.scrapbook.attached?
-    %h3.w-full.md:col-span-2.font-semibold.text-lg.sticky.top-0.bg-white
-      = t('.Scrapbook')
-    %section{ class: 'w-full md:w-1/3 flex items-center gap-2' }
-      = link_to file_path(lesson.scrapbook.blob.id),
-                target: '_blank',
-                rel: 'noopener',
-                class: 'btn-outline' do
-        %span{ class: 'basis-5/6 truncate' }= t('.scrapbook')
-        = inline_svg_tag 'download_icon.svg', class: 'fill-secondary'
+  english_classes_attached = kindy_english_class.present? ||
+                             ele_english_class.present? ||
+                             galaxy_english_classes.any?
+
+%section.flex.flex-col.gap-6.min-w-0
+  - if top_materials.any?
+    .grid.grid-cols-1.md:grid-cols-2.gap-3.min-w-0
+      - top_materials.each do |title, attachment|
+        .flex.flex-col.gap-2.min-w-0
+          %h3.font-semibold.text-lg= title
+          = link_to file_path(attachment.blob.id),
+                    target: '_blank',
+                    rel: 'noopener',
+                    class: 'btn-outline w-full min-w-0 gap-2' do
+            %span{ class: 'flex-1 min-w-0 truncate' }= attachment.filename.to_s
+            = inline_svg_tag 'download_icon.svg',
+                             class: 'fill-secondary flex-shrink-0 w-6'
+
+  - if english_classes_attached
+    .flex.flex-col.gap-3.min-w-0
+      %h3.font-semibold.text-lg English Class
+      .grid.grid-cols-1.md:grid-cols-3.gap-3.min-w-0
+        - if kindy_english_class.present?
+          .flex.flex-col.gap-2.min-w-0
+            %h4.font-semibold Kindy
+            = link_to file_path(kindy_english_class.blob.id),
+                      target: '_blank',
+                      rel: 'noopener',
+                      class: 'btn-outline w-full min-w-0 gap-2' do
+              %span{ class: 'flex-1 min-w-0 truncate' }= kindy_english_class.filename.to_s
+              = inline_svg_tag 'download_icon.svg',
+                               class: 'fill-secondary flex-shrink-0 w-6'
+
+        - if ele_english_class.present?
+          .flex.flex-col.gap-2.min-w-0
+            %h4.font-semibold Ele
+            = link_to file_path(ele_english_class.blob.id),
+                      target: '_blank',
+                      rel: 'noopener',
+                      class: 'btn-outline w-full min-w-0 gap-2' do
+              %span{ class: 'flex-1 min-w-0 truncate' }= ele_english_class.filename.to_s
+              = inline_svg_tag 'download_icon.svg',
+                               class: 'fill-secondary flex-shrink-0 w-6'
+
+        - if galaxy_english_classes.any?
+          .flex.flex-col.gap-2.min-w-0
+            %h4.font-semibold Galaxy
+            - galaxy_english_classes.each do |label, attachment|
+              = link_to file_path(attachment.blob.id),
+                        target: '_blank',
+                        rel: 'noopener',
+                        class: 'btn-outline w-full min-w-0 gap-2' do
+                %span{ class: 'flex-1 min-w-0 truncate' }= label
+                = inline_svg_tag 'download_icon.svg',
+                                 class: 'fill-secondary flex-shrink-0 w-6'

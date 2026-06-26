@@ -3,6 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'TeacherEvents' do
+  let(:pdf) { Rails.root.join('spec/example_lesson.pdf') }
+
+  def attach_pdf(record, name)
+    record.public_send(name).attach(
+      io: pdf.open,
+      filename: "#{name}.pdf",
+      content_type: 'application/pdf'
+    )
+  end
+
   describe 'GET /teacher_events' do
     let!(:today) { Date.current }
     let(:approval_payload) do
@@ -83,6 +93,53 @@ RSpec.describe 'TeacherEvents' do
         expect(response.body).to include('Teacher Org Event')
         expect(response.body).not_to include('Other Org Event')
       end
+    end
+  end
+
+  describe 'GET /teacher_events/:id' do
+    let(:admin) { create(:user, :admin) }
+    let(:teacher) { create(:user, :teacher) }
+    let(:seasonal) { create(:seasonal_activity, title: 'Galaxy Summer') }
+
+    before do
+      attach_pdf(seasonal, :kindy_english_class)
+      attach_pdf(seasonal, :ele_english_class)
+      attach_pdf(seasonal, :galaxy_low_english_class)
+      attach_pdf(seasonal, :galaxy_high_english_class)
+      attach_pdf(seasonal, :galaxy_questions_english_class)
+      sign_in admin
+    end
+
+    after do
+      sign_out admin
+    end
+
+    it 'shows galaxy english sheets even without an activity guide' do
+      get teacher_event_path(seasonal)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Kindy')
+      expect(response.body).to include('Ele')
+      expect(response.body).to include('Galaxy')
+      expect(response.body).to include('>Low<')
+      expect(response.body).to include('>High<')
+      expect(response.body).to include('>Questions<')
+    end
+
+    it 'renders an edit link for admins' do
+      get teacher_event_path(seasonal)
+
+      expect(response.body).to include(edit_lesson_path(seasonal))
+      expect(response.body).to include('data-turbo-frame="_top"')
+    end
+
+    it 'does not render an edit link for teachers' do
+      sign_in teacher
+
+      get teacher_event_path(seasonal)
+
+      expect(response.body).not_to include(edit_lesson_path(seasonal))
+      expect(response.body).not_to include('btn-modal-edit')
     end
   end
 end

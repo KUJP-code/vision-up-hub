@@ -2,6 +2,13 @@
   border = "border-b-2 #{lvl_border_class(@lesson.short_level)}"
 
 = turbo_frame_tag 'lesson' do
+  - if current_user.is?('Admin') && policy(@lesson).edit?
+    = link_to 'Edit',
+              edit_lesson_path(@lesson),
+              class: 'btn-modal-edit',
+              aria: { label: 'Edit lesson' },
+              data: { turbo_frame: '_top' }
+
   %dialog.resources-dialog#lesson-video.video-dialog
     .body.p-4.flex.justify-center.items-center
       %form.h-0
@@ -23,7 +30,7 @@
 
       %h3.details= lesson_details_heading(@lesson)
 
-    - if @lesson.respond_to?(:activity_guide) && @lesson.activity_guide.attached?
+    - if @lesson.respond_to?(:seasonal_materials_attached?) ? @lesson.seasonal_materials_attached? : (@lesson.respond_to?(:activity_guide) && @lesson.activity_guide.attached?)
       = render 'teacher_events/guide_section', lesson: @lesson
 
     - if @resources.any?

@@ -6,19 +6,47 @@
     = f.label :cover_image, 'Cover Image'
     %small best with 64x64px pngs but any image works, just check it after creation.
     = f.file_field :cover_image, accept: 'image/png'
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.cover_image
     
-  .form-group
-    = f.label :ele_english_class, 'Ele English Class'
-    = f.file_field :ele_english_class
-
   .form-group
     = f.label :kindy_english_class, 'Kindy English Class'
     = f.file_field :kindy_english_class
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.kindy_english_class
+
+  .form-group
+    = f.label :ele_english_class, 'English Class'
+    = f.file_field :ele_english_class
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.ele_english_class
+
+  .form-group
+    = f.label :galaxy_low_english_class, 'Galaxy English Low'
+    = f.file_field :galaxy_low_english_class
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.galaxy_low_english_class
+
+  .form-group
+    = f.label :galaxy_high_english_class, 'Galaxy English High'
+    = f.file_field :galaxy_high_english_class
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.galaxy_high_english_class
+
+  .form-group
+    = f.label :galaxy_questions_english_class, 'Galaxy English Questions'
+    = f.file_field :galaxy_questions_english_class
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.galaxy_questions_english_class
 
   .form-group
     = f.label :activity_guide, 'Guide'
     = f.file_field :activity_guide
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.activity_guide
 
   .form-group
     = f.label :scrapbook, 'Scrapbook'
     = f.file_field :scrapbook
+    = render 'lessons/seasonal_activities/attachment_filename',
+             attachment: lesson.scrapbook

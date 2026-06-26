@@ -17,8 +17,11 @@ RSpec.describe 'creating a seasonal activity', :js do
     click_link 'create_seasonal_activity'
     within '#seasonal_activity_form' do
       fill_in 'seasonal_activity_title', with: 'Test Seasonal Activity'
-      attach_file('Ele English Class', dummy_file_path)
       attach_file('Kindy English Class', dummy_file_path)
+      attach_file('English Class', dummy_file_path)
+      attach_file('Galaxy English Low', dummy_file_path)
+      attach_file('Galaxy English High', dummy_file_path)
+      attach_file('Galaxy English Questions', dummy_file_path)
       attach_file('Scrapbook', dummy_file_path)
       fill_in 'seasonal_activity_goal', with: 'test'
       click_button 'commit'
