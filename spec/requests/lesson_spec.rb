@@ -109,7 +109,7 @@ RSpec.describe Lesson do
       get edit_lesson_path(seasonal)
 
       expect(response.body).to include('example_lesson.pdf')
-      expect(response.body).not_to include('Remove example_lesson.pdf from this lesson?')
+      expect(response.body).not_to include('seasonal_activity[resource_deletions][kindy_english_class][]')
     end
 
     it 'shows links and resources before the update notes area' do

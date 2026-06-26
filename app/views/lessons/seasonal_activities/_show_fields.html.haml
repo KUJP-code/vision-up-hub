@@ -22,7 +22,7 @@
       %h3.font-bold.text-secondary Materials
       .flex.flex-wrap.gap-2
         - top_materials.each do |title, attachment|
-          = render 'lessons/seasonal_activities/attachment_filename',
+          = render 'lessons/seasonal_activities/attachment_button',
                    attachment:,
                    label: title
 
@@ -31,17 +31,17 @@
       %h3.font-bold.text-secondary English Class
       .flex.flex-wrap.gap-2
         - if lesson.kindy_english_class.attached?
-          = render 'lessons/seasonal_activities/attachment_filename',
+          = render 'lessons/seasonal_activities/attachment_button',
                    attachment: lesson.kindy_english_class,
                    label: 'Kindy'
 
         - if lesson.ele_english_class.attached?
-          = render 'lessons/seasonal_activities/attachment_filename',
+          = render 'lessons/seasonal_activities/attachment_button',
                    attachment: lesson.ele_english_class,
                    label: 'Ele'
 
         - if galaxy_english_classes.any?
           - galaxy_english_classes.each do |label, attachment|
-            = render 'lessons/seasonal_activities/attachment_filename',
+            = render 'lessons/seasonal_activities/attachment_button',
                      attachment:,
                      label: "Galaxy #{label}"
