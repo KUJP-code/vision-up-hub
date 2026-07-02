@@ -1,28 +1,29 @@
 %section.w-full.text-center.flex.flex-col.gap-3
   %h3 CSVs should be formatted as follows:
-  %table.w-full
-    %thead
-      %tr
-        - Parent::CSV_HEADERS.each do |header|
-          :ruby
-            bookend = if header == Parent::CSV_HEADERS.first
-              ' thead-s'
-            elsif header == Parent::CSV_HEADERS.last
-              ' thead-e'
-            else
-              ''
-            end
+  .w-full.overflow-x-auto.overscroll-x-contain.pb-2
+    %table.w-full.min-w-max
+      %thead
+        %tr
+          - Parent::CSV_HEADERS.each do |header|
+            :ruby
+              bookend = if header == Parent::CSV_HEADERS.first
+                ' thead-s'
+              elsif header == Parent::CSV_HEADERS.last
+                ' thead-e'
+              else
+                ''
+              end
 
-          %th{ class: "thead bg-secondary-50#{bookend}" }= header
-    %tbody
-      %tr
-        %td 陽葵
-        %td example@gmail.com
-        %td ParentPass123
-      %tr
-        - Parent::CSV_HEADERS.each do |_|
-          %td ...
-      %tr
-        %td Name in Japanese or English
-        %td Parent's email
-        %td Parent's password (10+ chars, uppercase, lowercase, and number)
+            %th{ class: "thead bg-secondary-50#{bookend}" }= header
+      %tbody
+        %tr
+          %td 陽葵
+          %td example@gmail.com
+          %td ParentPass123
+        %tr
+          - Parent::CSV_HEADERS.each do |_|
+            %td ...
+        %tr
+          %td Name in Japanese or English
+          %td Parent's email
+          %td Parent's password (10+ chars, uppercase, lowercase, and number)

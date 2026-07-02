@@ -3,7 +3,7 @@
          href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' }
 
 
-%main.flex.flex-col.gap-12.overflow-y-auto.p-3
+%main.flex.flex-col.gap-12.overflow-x-hidden.overflow-y-auto.p-3
   = render 'shared/subtitle', text: t('.create_students', org: @organisation.name)
 
   - if current_user.is?('Admin')
