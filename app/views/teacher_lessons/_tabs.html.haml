@@ -2,10 +2,21 @@
 
 :ruby
   return if lessons.size <= 1
+  tab_top_positions = case lessons.size
+                      when 1
+                        [40]
+                      when 2
+                        [15, 40]
+                      when 3
+                        [15, 40, 65]
+                      else
+                        Array.new(lessons.size) { |i| 15 + ((50.0 / (lessons.size - 1)) * i) }
+                      end
 
-- lessons.each do |l|
+- lessons.each_with_index do |l, index|
   - active = l == active_lesson
 
   = link_to teacher_lesson_path(l, teacher_id:, type:, level:, date:, subtype: params[:subtype]),
-            class: "tab #{active ? 'active' : 'inactive'}" do
+            class: "tab #{active ? 'active' : 'inactive'}",
+            style: "top: #{tab_top_positions.fetch(index).round(2)}%;" do
     = image_tag tab_icon_path(l)
