@@ -250,6 +250,10 @@
     }
   }
 
+  svg[class*="fill-"] [fill] {
+    fill: inherit;
+  }
+
   .resources-dialog {
     @apply inset-0 bg-transparent h-screen w-screen;
 
@@ -349,7 +353,7 @@
   }
 
   .tab-nav-scroll {
-    @apply w-full flex flex-col md:flex-row md:flex-nowrap gap-2 md:justify-start md:overflow-x-auto md:overscroll-x-contain md:pb-2 md:border-b-2 md:border-secondary text-nowrap;
+    @apply w-full shrink-0 flex flex-col md:flex-row md:flex-nowrap gap-2 md:justify-start md:overflow-x-auto md:overscroll-x-contain md:pb-2 md:border-b-2 md:border-secondary text-nowrap;
     scrollbar-gutter: stable;
 
     .nav-tab {
