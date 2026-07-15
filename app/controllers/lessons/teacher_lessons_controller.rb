@@ -57,17 +57,33 @@ class TeacherLessonsController < ApplicationController
   end
 
   def phonics_resources
-    course_lesson = @teacher.course_lessons.find_by(lesson_id: @lesson.id)
-    return PhonicsResource.none unless course_lesson
-
-    plan = @teacher.plans.find_by(course_id: course_lesson.course_id)
-    return PhonicsResource.none unless plan
-
-    week = @teacher.course_week(plan, @date)
+    course_weeks = matching_phonics_course_weeks
+    return PhonicsResource.none if course_weeks.empty?
 
     @lesson.phonics_resources
-           .for_course_week(course_lesson.course_id, week)
+           .where(course_week_conditions(course_weeks), *course_weeks.flatten)
            .includes(:blob)
+  end
+
+  def matching_phonics_course_weeks
+    plans_by_course_id = @teacher.plans.active.index_by(&:course_id)
+    lesson_day = @date.strftime('%A').downcase
+
+    @teacher.course_lessons
+            .where(lesson_id: @lesson.id, day: lesson_day)
+            .filter_map do |course_lesson|
+      plan = plans_by_course_id[course_lesson.course_id]
+      next unless plan
+
+      week = @teacher.course_week(plan, @date)
+      next unless course_lesson.week == week
+
+      [course_lesson.course_id, week]
+    end
+  end
+
+  def course_week_conditions(course_weeks)
+    course_weeks.map { '(course_id = ? AND week = ?)' }.join(' OR ')
   end
 
   def validated_level(level_param, teacher)

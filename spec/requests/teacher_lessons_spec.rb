@@ -3,6 +3,49 @@
 require 'rails_helper'
 
 RSpec.describe 'Teacher lessons', type: :request do
+  describe 'GET /teacher_lessons/:id for phonics classes' do
+    let(:date) { Time.zone.today.beginning_of_week.to_date }
+    let(:organisation) { create(:organisation, name: 'KidsUP') }
+    let(:admin) { create(:user, :admin, organisation:) }
+    let(:teacher) { create(:user, :teacher, organisation:) }
+    let(:inactive_course) { create(:course, title: 'Inactive Phonics') }
+    let(:active_course) { create(:course, title: 'Active Phonics') }
+    let!(:phonics_class) { create(:phonics_class, title: 'Phonics A') }
+    let!(:blob) do
+      ActiveStorage::Blob.create_and_upload!(
+        io: StringIO.new('phonics resource'),
+        filename: 'active-phonics-resource.pdf',
+        content_type: 'application/pdf'
+      )
+    end
+
+    before do
+      sign_in admin
+      create(:plan, organisation:, course: inactive_course, start: date.beginning_of_week)
+      create(:plan, organisation:, course: active_course, start: date.beginning_of_week)
+      create(:course_lesson, course: inactive_course, lesson: phonics_class, week: 1, day: :monday)
+      create(:course_lesson, course: active_course, lesson: phonics_class, week: 1, day: :monday)
+      phonics_class.phonics_resources.create!(blob:, course: active_course, week: 1)
+      allow(Flipper).to receive(:enabled?).with(:kindy, teacher).and_return(true)
+      allow(Flipper).to receive(:enabled?).with(:elementary, teacher).and_return(false)
+      allow(Flipper).to receive(:enabled?).with(:keep_up, teacher).and_return(false)
+      allow(Flipper).to receive(:enabled?).with(:specialist, teacher).and_return(false)
+    end
+
+    it 'renders resources for the active course when the lesson also belongs to another course' do
+      get teacher_lesson_path(
+        phonics_class,
+        teacher_id: teacher.id,
+        date:,
+        level: 'kindy',
+        type: 'PhonicsClass'
+      )
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('active-phonics-resource.pdf')
+    end
+  end
+
   describe 'GET /teacher_lessons/:id for keep up evening classes' do
     let(:date) { Time.zone.today.beginning_of_week.to_date }
     let(:organisation) { create(:organisation, name: 'KidsUP') }
