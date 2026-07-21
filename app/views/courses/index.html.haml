@@ -2,9 +2,6 @@
 
 %main.flex.flex-col.gap-3.p-3
   %nav
-    = link_to 'Lesson/Course Matrix',
-              lesson_uses_path,
-              class: 'btn btn-secondary'
     - if policy(Course).new?
       = link_to 'Create course',
                 new_course_path,

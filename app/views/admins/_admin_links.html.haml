@@ -1,73 +1,38 @@
-%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
-  %h3.text-center School Management Links
-  %nav.w-full.flex.flex-wrap.justify-center.gap-3
-    = link_to 'Announcements',
-              announcements_path,
-              class: 'btn btn-secondary'
+%section.flex.w-full.flex-col.gap-2.rounded.border.border-secondary.p-2
+  %h2.text-center.font-bold Organisation Management
+  %nav.grid.w-full.grid-cols-2.gap-2
+    = link_to 'Organisations', organisations_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Schools',
+              organisation_schools_path(@user.organisation_id),
+              class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Plans', plans_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Announcements', announcements_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'New Notification', new_notification_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Batch PDFs', report_card_batches_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
 
+%section.flex.w-full.flex-col.gap-2.rounded.border.border-secondary.p-2
+  %h2.text-center.font-bold Curriculum Management
+  %nav.grid.w-full.grid-cols-2.gap-2
+    = link_to 'Courses', courses_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Category Resources', category_resources_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'File List', files_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Lesson Calendar', lesson_calendars_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Missing Lessons', missing_lessons_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Monthly Materials', monthly_materials_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Homework', homeworks_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Teacher Tools', teacher_tools_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+
+%section.flex.w-full.flex-col.gap-2.rounded.border.border-secondary.p-2
+  %h2.text-center.font-bold Account & System
+  %nav.grid.w-full.grid-cols-2.gap-2
     - if @user.id == current_user.id
       = link_to 'My Account',
                 edit_organisation_admin_path(@user.organisation_id, @user),
-                class: 'btn btn-secondary'
-
-    = link_to 'New Notification',
-              new_notification_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Organisations',
-              organisations_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Password Change',
-              admin_change_password_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Plans',
-              plans_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Schools',
-              organisation_schools_path(@user.organisation_id),
-              class: 'btn btn-secondary'
-
-%section.flex.flex-col.gap-3.border-2.border-secondary.rounded.p-2
-  %h3.text-center Admin Links
-  %nav.w-full.flex.flex-wrap.justify-center.gap-3
-
-    = link_to 'Device Authorization',
-              devices_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Batch Pdfs',
-              report_card_batches_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'CSV Exports',
-              csv_exports_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'DB',
-              pg_hero_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Flipper',
-              flipper_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Triggerable Jobs',
-              triggerable_jobs_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'Teacher Tools',
-              teacher_tools_path,
-              class: 'btn btn-secondary'
-
-    = link_to 'New Privacy Policy',
-              new_privacy_policy_path,
-              class: 'btn btn-secondary'
-    = link_to 'Policy Acceptances', privacy_policy_acceptances_path, 
-              class: 'btn btn-secondary'
-
-    = link_to 'Jobs',
-              mission_control_jobs_path,
-              class: 'btn btn-secondary'
+                class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Password Change', admin_change_password_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'New Privacy Policy', new_privacy_policy_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Policy Acceptances', privacy_policy_acceptances_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'DB', pg_hero_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Flipper', flipper_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Triggerable Jobs', triggerable_jobs_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
+    = link_to 'Jobs', mission_control_jobs_path, class: 'btn btn-secondary w-full px-2 py-2 text-sm'
