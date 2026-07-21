@@ -16,7 +16,12 @@ RSpec.describe 'creating teacher records from a CSV', :js do
   end
 
   it 'can parse teachers from a CSV' do
-    visit new_organisation_teacher_upload_path(organisation_id: user.organisation_id)
+    visit root_path
+    within '#main_nav_links' do
+      find('#upload-selector-toggle').click
+      click_link I18n.t('shared.upload_selector.teachers')
+    end
+
     within '#teacher_create_form' do
       attach_file 'teacher_upload_file', Rails.root.join('tmp/teachers.csv')
       click_button I18n.t('teacher_uploads.new.create_teachers', org: user.organisation.name)

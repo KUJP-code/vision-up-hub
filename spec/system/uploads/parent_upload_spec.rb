@@ -16,7 +16,12 @@ RSpec.describe 'creating parent records from a CSV', :js do
   end
 
   it 'can parse parents from a CSV' do
-    visit new_organisation_parent_upload_path(organisation_id: user.organisation_id)
+    visit root_path
+    within '#main_nav_links' do
+      find('#upload-selector-toggle').click
+      click_link I18n.t('shared.upload_selector.parents')
+    end
+
     within '#parent_create_form' do
       attach_file 'parent_upload_file', Rails.root.join('tmp/parents.csv')
       click_button I18n.t('parent_uploads.new.create_parents', org: user.organisation.name)
