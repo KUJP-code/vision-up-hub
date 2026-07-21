@@ -2,11 +2,17 @@
 ja:
   organisations:
     card:
-      edit_organisation: "組織を編集"
+      view_organisation: "組織を表示"
     index:
       add_organisation: "新しい組織を追加する"
+      email: "メール"
+      name: "組織名"
+      no_organisations: "組織が見つかりません。"
+      notes: "備考"
       organisations: "組織一覧"
+      phone: "電話"
     show:
+      edit_organisation: "組織を編集"
       events: "イベント"
       lesson_calendar: "レッスンカレンダー"
       missing_lessons: "不足レッスン"

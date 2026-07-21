@@ -1,10 +1,24 @@
 = render 'shared/subtitle', text: t('.organisations')
 
-%main.flex.flex-wrap.items-start.justify-between.gap-3.p-3
+%main.flex.flex-col.gap-3.p-3
   - if policy(Organisation).new?
     = link_to t('.add_organisation'),
               new_organisation_path,
-              class: 'btn btn-main w-full'
-  = render partial: 'organisations/card',
-           collection: @organisations,
-           as: :organisation
+              class: 'btn btn-secondary w-full'
+
+  - if @organisations.any?
+    .w-full.overflow-x-auto.overscroll-x-contain
+      %table.w-full.min-w-full.text-left
+        %thead
+          %tr
+            %th.thead.thead-s.bg-secondary-50= t('.name')
+            %th.thead.bg-secondary-50= t('.email')
+            %th.thead.bg-secondary-50= t('.phone')
+            %th.thead.bg-secondary-50= t('.notes')
+            %th.thead.thead-e.bg-secondary-50= t('actions')
+        %tbody
+          = render partial: 'organisations/card',
+                   collection: @organisations,
+                   as: :organisation
+  - else
+    %p.p-6.text-center= t('.no_organisations')

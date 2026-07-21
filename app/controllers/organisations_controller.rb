@@ -35,7 +35,7 @@ class OrganisationsController < ApplicationController
 
   def update
     if @organisation.update(organisation_params)
-      redirect_to organisations_url,
+      redirect_to organisation_url(@organisation),
                   notice: t('update_success', resource: '')
     else
       render :edit, status: :unprocessable_entity

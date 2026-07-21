@@ -1,14 +1,12 @@
 -# locals: (organisation:)
 
-.flex.flex-col.justify-between.gap-2.p-3.rounded.border
-  .flex.flex-col
-    = link_to organisation.name,
+%tr
+  %td.p-3.font-bold
+    = link_to organisation.name, organisation_path(organisation)
+  %td.p-3= organisation.email.presence || '-'
+  %td.p-3= organisation.phone.presence || '-'
+  %td.p-3= organisation.notes.present? ? truncate(organisation.notes, length: 80) : '-'
+  %td.p-3.text-center
+    = link_to t('.view_organisation'),
               organisation_path(organisation),
-              class: 'text-2xl'
-    %h3= organisation.email
-    %h3= organisation.phone
-  %p= organisation.notes
-  - if policy(organisation).edit?
-    = link_to t('.edit_organisation'),
-              edit_organisation_path(organisation),
-              class: 'btn btn-main'
+              class: 'btn btn-secondary'

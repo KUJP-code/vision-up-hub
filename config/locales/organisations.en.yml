@@ -2,11 +2,17 @@
 en:
   organisations:
     card:
-      edit_organisation: "Edit Organisation"
+      view_organisation: "View organisation"
     index:
       add_organisation: "Add new organisation"
+      email: "Email"
+      name: "Name"
+      no_organisations: "No organisations found."
+      notes: "Notes"
       organisations: "Organisations"
+      phone: "Phone"
     show:
+      edit_organisation: "Edit organisation"
       events: "Events"
       lesson_calendar: "Lesson Calendar"
       missing_lessons: "Missing Lessons"

@@ -24,4 +24,17 @@ RSpec.describe 'creating an organisation' do
     expect(page).to have_content('8945902345')
     expect(page).to have_content('Test notes for this org')
   end
+
+  it 'opens an organisation before offering edit' do
+    organisation = Organisation.find_by!(name: 'KidsUP')
+    visit organisations_path
+
+    expect(page).to have_no_link(I18n.t('organisations.show.edit_organisation'))
+    click_link 'KidsUP'
+
+    expect(page).to have_current_path(
+      organisation_path(id: organisation.id, locale: I18n.locale)
+    )
+    expect(page).to have_link(I18n.t('organisations.show.edit_organisation'))
+  end
 end

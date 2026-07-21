@@ -6,6 +6,11 @@
   - if @organisation.notes.present?
     %p= @organisation.notes
 
+  - if policy(@organisation).edit?
+    = link_to t('.edit_organisation'),
+              edit_organisation_path(@organisation),
+              class: 'btn btn-secondary w-full'
+
   - if current_user.is?('Writer')
     %nav.flex.flex-wrap.gap-3
       = link_to t('.lesson_calendar'),
