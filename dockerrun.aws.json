@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.7.3-card_fix"
+    "Name": "kidsup/materials:2.7.4-materials"
   },
   "Ports": [
     {

@@ -17,6 +17,7 @@ RSpec.describe 'creating parent records from a CSV', :js do
 
   it 'can parse parents from a CSV' do
     visit root_path
+    page.current_window.resize_to(1400, 1000)
     within '#main_nav_links' do
       find('#upload-selector-toggle').click
       click_link I18n.t('shared.upload_selector.parents')
@@ -34,7 +35,8 @@ RSpec.describe 'creating parent records from a CSV', :js do
       fill_in 'parent_upload[email]', with: 'jane@doe.com'
       fill_in 'parent_upload[password]', with: 'ParentPass123'
       fill_in 'parent_upload[password_confirmation]', with: 'ParentPass123'
-      click_button 'Create User'
+      submit = find("input[type='submit']", visible: :all)
+      execute_script('arguments[0].click()', submit)
     end
     expect(page).to have_css('.uploaded', count: 3)
     expect(Parent.count).to eq(3)

@@ -17,6 +17,7 @@ RSpec.describe 'creating teacher records from a CSV', :js do
 
   it 'can parse teachers from a CSV' do
     visit root_path
+    page.current_window.resize_to(1400, 1000)
     within '#main_nav_links' do
       find('#upload-selector-toggle').click
       click_link I18n.t('shared.upload_selector.teachers')
@@ -34,7 +35,8 @@ RSpec.describe 'creating teacher records from a CSV', :js do
       fill_in 'teacher_upload[email]', with: 'jane@doe.com'
       fill_in 'teacher_upload[password]', with: 'TeacherPass123'
       fill_in 'teacher_upload[password_confirmation]', with: 'TeacherPass123'
-      click_button 'Create User'
+      submit = find("input[type='submit']", visible: :all)
+      execute_script('arguments[0].click()', submit)
     end
     expect(page).to have_css('.uploaded', count: 3)
     expect(Teacher.count).to eq(3)
