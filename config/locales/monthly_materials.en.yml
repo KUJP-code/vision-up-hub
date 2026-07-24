@@ -2,13 +2,11 @@ en:
   monthly_materials:
     form:
       course: "Course"
-      from_date: "Week starting on:"
-      from_week: "From week"
+      month: "Month"
       organisation: "Organisation"
       search: "Search"
-      weeks_forward: "Weeks forward"
     index:
-      date: "Week/Day"
+      date: "Date"
       material_list: "Material list"
       monthly_materials: "Monthly Materials"
       title: "Title"

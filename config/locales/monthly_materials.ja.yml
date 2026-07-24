@@ -2,13 +2,11 @@ ja:
   monthly_materials:
     form:
       course: "コース"
-      from_date: "開始日"
-      from_week: "開始週"
+      month: "月"
       organisation: "組織"
       search: "検索"
-      weeks_forward: "週間後"
     index:
-      date: "週/日"
+      date: "日付"
       material_list: "教材一覧"
       monthly_materials: "月間教材"
       title: "タイトル"

@@ -55,6 +55,7 @@ ja:
       long: "%Y年%m月%d日(%a)"
       long_no_wday: "%Y年%m月%d日"
       short: "%m/%d"
+      with_weekday: "%m月%d日(%A)"
     month_names:
       -
       - 1月

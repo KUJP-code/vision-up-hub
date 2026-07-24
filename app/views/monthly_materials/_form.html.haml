@@ -1,13 +1,9 @@
--# locals: (courses:, orgs: nil, organisation: nil, plan_data:, from_week: nil)
-
-- week = from_week || params.dig(:q, :from_week)
+-# locals: (courses:, orgs: nil, organisation: nil, month:)
 
 = form_with url: monthly_materials_path,
             method: :get,
             scope: :q,
-            html: { class: 'w-full flex flex-wrap justify-center gap-3',
-                    data: { controller: 'course-dates',
-                            'course-dates-plans-value': plan_data } } do |f|
+            html: { class: 'w-full flex flex-wrap justify-center gap-3' } do |f|
   - if orgs.present?
     .flex-row.items-center
       = label_tag :org, t('.organisation')
@@ -19,32 +15,12 @@
     .flex-row.items-center
       = f.label :course, t('.course')
       = f.select :course,
-                 options_for_select(courses, params.dig(:q, :course)), {},
-                 data: { 'course-dates-target': 'course',
-                         action: 'course-dates#calculateDate' }
+                 options_for_select(courses, params.dig(:q, :course))
   - else
-    = f.hidden_field :course,
-                     value: courses.first&.[](1),
-                     data: { 'course-dates-target': 'course' }
+    = f.hidden_field :course, value: courses.first&.[](1)
 
   .flex-row.items-center
-    = f.label :from_week, t('.from_week')
-    = f.number_field :from_week,
-                     min: 1, max: 52,
-                     value: week,
-                     required: true,
-                     data: { action: 'course-dates#calculateDate',
-                             'course-dates-target': 'week' }
-
-  .flex-row.items-center
-    = f.label :weeks_forward, t('.weeks_forward')
-    = f.number_field :weeks_forward,
-                     required: true,
-                     min: 1, max: 52,
-                     value: @weeks_forward
+    = f.label :month, t('.month')
+    = f.month_field :month, value: month.strftime('%Y-%m'), required: true
 
   = f.submit t('.search'), class: 'btn btn-main'
-
-  %h2.w-full.text-center.font-bold.text-2xl
-    = t('.from_date')
-  %ul.w-full.text-center{ 'data-course-dates-target': 'date' }

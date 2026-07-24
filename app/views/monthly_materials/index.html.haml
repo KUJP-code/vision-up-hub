@@ -2,8 +2,7 @@
 
 %main.flex.flex-col.items-center.gap-3.p-3
   = render 'monthly_materials/form',
-           courses: @courses, orgs: @orgs, organisation: @organisation, plan_data: @plan_data,
-           from_week: @from_week
+           courses: @courses, orgs: @orgs, organisation: @organisation, month: @month
 
   %table.w-full.text-center.align-top
     %thead
@@ -12,34 +11,22 @@
         %th.thead.bg-secondary-50= t('.title')
         %th.thead.bg-secondary-50= t('.date')
         %th.thead.thead-e.bg-secondary-50= t('.material_list')
-    - if @lessons
+    - if @lesson_occurrences
       %tbody
-        - @lessons.uniq.each_with_index do |l, i|
-          :ruby
-            course_id = params.dig(:q, :course)&.to_i ||
-                        l.course_lessons.first.course_id
-            course_lesson = l.course_lessons.find do |cl|
-              cl.course_id == course_id &&
-                cl.week >= @from_week &&
-                cl.week <= @to_week
-            end
-            new_type = @lessons[i - 1].type != l.type
-
-          %tr{ class: !i.zero? && new_type ? 'border-t-2 border-secondary' : '' }
+        - @lesson_occurrences.each_with_index do |(lesson, _course_lesson, date), i|
+          - new_date = !i.zero? && @lesson_occurrences[i - 1][2] != date
+          - new_type = i.zero? || @lesson_occurrences[i - 1][0].type != lesson.type
+          %tr{ class: new_date ? 'border-t-2 border-secondary' : '' }
             - if new_type
-              %td.align-top.p-1= l.type.titleize
+              %td.align-top.p-1= lesson.type.titleize
             - else
               %td.align-top.p-1
             %td.align-top.p-1
               - if current_user.is?('Admin', 'Writer')
-                = link_to with_subtype(l), lesson_path(l)
+                = link_to with_subtype(lesson), lesson_path(lesson)
               - else
-                = with_subtype(l)
-            %td.align-top.p-1
-              - if course_lesson
-                W#{course_lesson.week}/#{course_lesson.day.titleize[0..2]}
-              - else
-                'Unknown date'
+                = with_subtype(lesson)
+            %td.align-top.p-1= l(date, format: :with_weekday)
             %td.align-top.p-1
               %ul
-                = list_from(l.materials)
+                = list_from(lesson.materials)

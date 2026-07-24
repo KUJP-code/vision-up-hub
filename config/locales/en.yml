@@ -1,4 +1,7 @@
 en:
+  date:
+    formats:
+      with_weekday: "%A, %B %-d"
   generate: "Create"
   Kindy: "Kindy"
   Land: "Land"
