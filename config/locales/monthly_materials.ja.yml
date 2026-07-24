@@ -1,7 +1,6 @@
 ja:
   monthly_materials:
     form:
-      course: "コース"
       month: "月"
       organisation: "組織"
       search: "検索"

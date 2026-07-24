@@ -1,7 +1,6 @@
 en:
   monthly_materials:
     form:
-      course: "Course"
       month: "Month"
       organisation: "Organisation"
       search: "Search"

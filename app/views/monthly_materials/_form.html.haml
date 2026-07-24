@@ -1,4 +1,4 @@
--# locals: (courses:, orgs: nil, organisation: nil, month:)
+-# locals: (orgs: nil, organisation: nil, month:)
 
 = form_with url: monthly_materials_path,
             method: :get,
@@ -10,14 +10,6 @@
       = select_tag :org,
                    options_for_select(orgs.pluck(:name, :id), organisation&.id || params[:org]),
                    onchange: 'this.form.requestSubmit()'
-
-  - if courses.size > 1
-    .flex-row.items-center
-      = f.label :course, t('.course')
-      = f.select :course,
-                 options_for_select(courses, params.dig(:q, :course))
-  - else
-    = f.hidden_field :course, value: courses.first&.[](1)
 
   .flex-row.items-center
     = f.label :month, t('.month')

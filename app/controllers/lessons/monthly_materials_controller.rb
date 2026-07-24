@@ -15,12 +15,11 @@ class MonthlyMaterialsController < ApplicationController
   def query_params
     if params[:q].blank?
       {
-        course: @courses.first&.last,
         month: Time.zone.today.strftime('%Y-%m'),
         org: @organisation&.id
       }.compact
     else
-      params.require(:q).permit(:course, :month, :org)
+      params.require(:q).permit(:month, :org)
     end
   end
 
@@ -28,27 +27,29 @@ class MonthlyMaterialsController < ApplicationController
     if current_user.is?('Admin', 'Writer')
       @orgs = policy_scope(Organisation).order(:name)
       @organisation = selected_organisation
-      course_plans = @organisation ? @organisation.courses.includes(:plans).distinct : Course.none
-      @courses = course_plans.pluck(:title, :id)
     else
       @organisation = current_user.organisation
-      @courses = policy_scope(Course).pluck(:title, :id)
     end
   end
 
   def lesson_occurrences
-    plan = selected_plan
-    return [] unless plan
+    return [] unless @organisation
 
     month_range = @month.all_month
-    occurrences = lessons_for(plan, month_range).flat_map do |lesson|
+    occurrences = @organisation.plans.flat_map { |plan| occurrences_for(plan, month_range) }
+
+    occurrences.sort_by { |lesson, _course_lesson, date| [date, lesson.type, lesson.title] }
+  end
+
+  def occurrences_for(plan, month_range)
+    lessons_for(plan, month_range).flat_map do |lesson|
       lesson.course_lessons.filter_map do |course_lesson|
+        next unless course_lesson.course_id == plan.course_id
+
         date = occurrence_date(plan, course_lesson)
         [lesson, course_lesson, date] if month_range.cover?(date)
       end
     end
-
-    occurrences.sort_by { |lesson, _course_lesson, date| [date, lesson.type, lesson.title] }
   end
 
   def lessons_for(plan, month_range)
@@ -69,12 +70,6 @@ class MonthlyMaterialsController < ApplicationController
     Date.strptime("#{query_params[:month]}-01", '%Y-%m-%d')
   rescue Date::Error, TypeError
     Time.zone.today.beginning_of_month
-  end
-
-  def selected_plan
-    return if query_params[:course].blank? || @organisation.blank?
-
-    @organisation.plans.find_by(course_id: query_params[:course])
   end
 
   def course_week(plan, date)
