@@ -17,6 +17,13 @@ RSpec.describe Listable do
     expect(daily_activity.instructions).to eq(['Step 1'])
   end
 
+  it 'removes blank lines from lists' do
+    daily_activity.instructions = "Step 1\n\nStep 2"
+    daily_activity.save
+
+    expect(daily_activity.instructions).to eq(['Step 1', 'Step 2'])
+  end
+
   it 'returns the current value of the field if unchanged' do
     daily_activity.save
     old_instructions = daily_activity.instructions

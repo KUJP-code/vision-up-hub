@@ -29,6 +29,26 @@ RSpec.describe EveningClass do
     expect(lesson).to be_valid
   end
 
+  it 'stores purchase materials as a list for monthly materials reporting' do
+    lesson = build(:evening_class, purchase_materials: "Paper\r\nGlue\n\nScissors")
+
+    lesson.validate
+
+    expect(lesson.purchase_materials).to eq(%w[Paper Glue Scissors])
+  end
+
+  it 'combines basic and purchase materials for guides' do
+    lesson = build(
+      :evening_class,
+      basic_materials: "Pencils\nPaper",
+      purchase_materials: "Glue\nScissors"
+    )
+
+    lesson.validate
+
+    expect(lesson.materials).to eq(%w[Pencils Paper Glue Scissors])
+  end
+
   context 'when generating PDF guide' do
     it 'does not generate a PDF' do
       pdf = build(:evening_class).attach_guide

@@ -32,6 +32,17 @@ class Lesson < ApplicationRecord
 
   has_many_attached :resources
 
+  # Guides treat both editor-facing material lists as one continuous list.
+  def materials
+    Array(basic_materials) + Array(purchase_materials)
+  end
+
+  # Backwards compatibility for imports, factories, and older callers: values
+  # submitted as `materials` are purchase requirements.
+  def materials=(value)
+    self.purchase_materials = value
+  end
+
   def resource_deletion_blob_ids(attachment_name)
     Array(resource_deletions.to_h[attachment_name.to_s]).filter_map(&:presence).map(&:to_i)
   end

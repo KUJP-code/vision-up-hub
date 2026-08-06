@@ -1239,7 +1239,7 @@ CREATE TABLE public.lessons (
     instructions jsonb DEFAULT '[]'::jsonb,
     large_groups jsonb DEFAULT '[]'::jsonb,
     links jsonb DEFAULT '{}'::jsonb,
-    materials jsonb DEFAULT '[]'::jsonb,
+    purchase_materials jsonb DEFAULT '[]'::jsonb,
     notes jsonb DEFAULT '[]'::jsonb,
     outro jsonb DEFAULT '[]'::jsonb,
     subtype integer,
@@ -1263,7 +1263,8 @@ CREATE TABLE public.lessons (
     project_session_1_goal text,
     project_session_2_goal text,
     special_lesson_goal text,
-    resource_deletions jsonb DEFAULT '{}'::jsonb NOT NULL
+    resource_deletions jsonb DEFAULT '{}'::jsonb NOT NULL,
+    basic_materials jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -4849,6 +4850,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260806000000'),
 ('20260617090000'),
 ('20260608000000'),
 ('20260417093000'),

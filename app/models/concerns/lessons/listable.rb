@@ -17,7 +17,7 @@ module Listable
     def listify(string, attribute)
       return send(attribute) unless string.instance_of?(String)
 
-      string.tr("\r", '').split("\n")
+      string.tr("\r", '').split("\n").reject(&:blank?)
     end
   end
 end

@@ -11,12 +11,12 @@ class Exercise < Lesson
 
   ATTRIBUTES = %i[
     subtype pdf_image image_page warning land_lang_goals sky_lang_goals
-    galaxy_lang_goals materials intro interesting_fact instructions
+    galaxy_lang_goals basic_materials purchase_materials intro interesting_fact instructions
     large_groups outro notes links
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
-    land_lang_goals sky_lang_goals galaxy_lang_goals materials
+    land_lang_goals sky_lang_goals galaxy_lang_goals basic_materials purchase_materials
     intro instructions large_groups outro notes
   ].freeze
 

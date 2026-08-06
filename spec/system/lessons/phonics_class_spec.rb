@@ -22,7 +22,7 @@ RSpec.describe 'creating a Phonics lesson' do
       fill_in 'phonics_class_extra_fun', with: "Extra 1\nExtra 2"
       fill_in 'phonics_class_intro', with: "Intro 1\nIntro 2"
       fill_in 'phonics_class_instructions', with: "Test Instructions 1\nTest Instructions 2"
-      fill_in 'phonics_class_materials', with: "Material 1\nMaterial 2"
+      fill_in 'phonics_class_purchase_materials', with: "Material 1\nMaterial 2"
       fill_in 'phonics_class_review', with: "Review 1\nReview 2"
       click_button I18n.t('helpers.submit.create')
     end

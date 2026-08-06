@@ -12,13 +12,13 @@ class PhonicsClass < Lesson
     intro
     instructions
     links
-    materials
+    basic_materials purchase_materials
     pdf_image
     review
   ].freeze
 
   LISTABLE_ATTRIBUTES = %i[
-    materials
+    basic_materials purchase_materials
     intro
     instructions
     review

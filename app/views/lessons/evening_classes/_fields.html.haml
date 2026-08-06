@@ -16,6 +16,9 @@
              { prompt: 'Select a subtype' },
              { data: { fields_target: 'subtypeSelect' } }
 
+- EveningClass::LISTABLE_ATTRIBUTES.each do |attr|
+  = render 'lessons/shared/list_fields', attr:, f:, lesson:
+
 .flex.flex-col.gap-4{ data: { fields_target: 'specialistSubtypeFields' }, style: (lesson.specialist_structured? ? nil : 'display:none;') }
   - EveningClass::SPECIALIST_SUBTYPES.each do |subtype|
     .border.border-secondary-50.rounded.p-4.flex.flex-col.gap-3

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EveningClass < Lesson
+  include Listable
+
   KEEP_UP_SUBTYPES = %w[conversation_time topic_study special_lesson].freeze
   LEGACY_SPECIALIST_SUBTYPES = %w[literacy discussion].freeze
   SPECIALIST_SUBTYPES = %w[
@@ -28,13 +30,15 @@ class EveningClass < Lesson
 
   ATTRIBUTES = %i[
     subtype
+    basic_materials
+    purchase_materials
     literacy_goal
     discussion_goal
     project_session_1_goal
     project_session_2_goal
     special_lesson_goal
   ].freeze
-  LISTABLE_ATTRIBUTES = %i[].freeze
+  LISTABLE_ATTRIBUTES = %i[basic_materials purchase_materials].freeze
 
   validates :subtype, presence: true, unless: :specialist?
   validate :subtype_matches_level

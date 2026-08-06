@@ -19,6 +19,8 @@ RSpec.describe 'creating an Evening class' do
       fill_in 'evening_class_goal', with: 'Test Goal'
       select 'Specialist Advanced', from: 'evening_class_level'
       select I18n.t('lessons.subtypes.project_session_2'), from: 'evening_class_subtype'
+      fill_in 'evening_class_basic_materials', with: 'Pencils'
+      fill_in 'evening_class_purchase_materials', with: "Paper\nGlue"
       attach_file 'evening_class_resources',
                   Rails.root.join('spec/example_lesson.pdf')
       click_button I18n.t('helpers.submit.create')
@@ -26,5 +28,8 @@ RSpec.describe 'creating an Evening class' do
     expect(page).to have_content('Test Evening Lesson')
     expect(page).to have_content('Project Session 2')
     expect(page).to have_css('a.resource', count: 1)
+    expect(EveningClass.last.basic_materials).to eq(%w[Pencils])
+    expect(EveningClass.last.purchase_materials).to eq(%w[Paper Glue])
+    expect(EveningClass.last.materials).to eq(%w[Pencils Paper Glue])
   end
 end
