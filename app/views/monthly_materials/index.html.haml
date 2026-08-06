@@ -1,5 +1,13 @@
 = render 'shared/subtitle', text: t('.monthly_materials')
 
+%dialog.resources-dialog#lesson-resources
+  .body
+    %form.h-0
+      %button{ formmethod: :dialog, aria: { label: 'Close lesson preview' } }
+        = image_tag 'exit.svg', class: 'btn-close'
+
+    = turbo_frame_tag 'lesson'
+
 %main.flex.flex-col.items-center.gap-3.p-3
   = render 'monthly_materials/form',
            orgs: @orgs, organisation: @organisation, month: @month
@@ -24,9 +32,27 @@
             %td.align-top.p-1
               - if current_user.is?('Admin', 'Writer')
                 = link_to with_subtype(lesson), lesson_path(lesson)
+              - elsif current_user.is?('Teacher')
+                :ruby
+                  subtype = if lesson.type == 'EveningClass'
+                              lesson.specialist_structured? ? lesson.specialist_subtypes_with_content.first : lesson.subtype
+                            end
+                  preview_path = monthly_material_path(
+                    lesson,
+                    date:,
+                    course_lesson_id: _course_lesson.id,
+                    subtype:
+                  )
+                %button.text-secondary.underline{ type: 'button',
+                  data: { action: 'dialog#open',
+                          controller: 'dialog',
+                          'dialog-dialog-value': 'lesson-resources',
+                          'dialog-frame-value': 'lesson',
+                          'dialog-src-value': preview_path } }
+                  = with_subtype(lesson)
               - else
                 = with_subtype(lesson)
             %td.align-top.p-1= l(date, format: :with_weekday)
             %td.align-top.p-1
               %ul
-                = list_from(lesson.materials)
+                = list_from(lesson.purchase_materials)

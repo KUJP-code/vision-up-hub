@@ -10,16 +10,70 @@ class MonthlyMaterialsController < ApplicationController
     @lesson_occurrences = lesson_occurrences
   end
 
+  def show
+    authorize :monthly_materials, :index?
+    @lesson = policy_scope(Lesson).find(params[:id])
+    @teacher = current_user
+    @date = parsed_preview_date
+    @level = @lesson.calendar_level
+    @type = @lesson.type
+    @type_lessons = Lesson.where(id: @lesson.id)
+    @specialist_subtype = preview_specialist_subtype
+    @resources = preview_resources
+    @lesson_links = @specialist_subtype.present? ? [] : @lesson.lesson_links
+
+    render 'teacher_lessons/show'
+  end
+
   private
 
+  def parsed_preview_date
+    Date.parse(params[:date])
+  rescue Date::Error, TypeError
+    Time.zone.today
+  end
+
+  def preview_specialist_subtype
+    return unless @lesson.is_a?(EveningClass) && @lesson.specialist_structured?
+    return unless @lesson.specialist_subtypes_with_content.include?(params[:subtype])
+
+    params[:subtype]
+  end
+
+  def preview_resources
+    resources = if @specialist_subtype.present?
+                  @lesson.specialist_resources_for(@specialist_subtype).includes(:blob)
+                else
+                  @lesson.resources_attachments.includes(:blob)
+                end.to_a
+
+    resources.concat(preview_phonics_resources)
+    resources.sort_by { |resource| resource.blob.filename }
+  end
+
+  def preview_phonics_resources
+    return [] unless @lesson.is_a?(PhonicsClass)
+
+    course_lesson = @lesson.course_lessons.find_by(id: params[:course_lesson_id])
+    return [] unless course_lesson
+
+    @lesson.phonics_resources
+           .for_course_week(course_lesson.course_id, course_lesson.week)
+           .includes(:blob)
+           .to_a
+  end
+
   def query_params
-    if params[:q].blank?
+    submitted_params = params.permit(:month, :org)
+    submitted_params = params.require(:q).permit(:month, :org) if params[:q].present?
+
+    if submitted_params[:month].blank?
       {
         month: Time.zone.today.strftime('%Y-%m'),
         org: @organisation&.id
       }.compact
     else
-      params.require(:q).permit(:month, :org)
+      submitted_params
     end
   end
 
@@ -58,7 +112,7 @@ class MonthlyMaterialsController < ApplicationController
     return Lesson.none if to_week < 1 || from_week > 52
 
     policy_scope(Lesson)
-      .where.not("lessons.materials = '[]'")
+      .where.not("lessons.purchase_materials = '[]'")
       .includes(:course_lessons)
       .where(course_lessons: {
                course_id: plan.course_id,
@@ -79,7 +133,7 @@ class MonthlyMaterialsController < ApplicationController
   def occurrence_date(plan, course_lesson)
     plan.start.to_date +
       (course_lesson.week - 1).weeks +
-      (CourseLesson.days.fetch(course_lesson.day) - CourseLesson.days.fetch('monday')).days
+      CourseLesson.day_offset(course_lesson.day).days
   end
 
   def selected_organisation

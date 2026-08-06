@@ -29,6 +29,9 @@ application.register("dialog", DialogController);
 import NavController from "./nav_controller";
 application.register("nav", NavController);
 
+import MonthPickerController from "./month_picker_controller";
+application.register("month-picker", MonthPickerController);
+
 import PrintController from "./print_controller";
 application.register("print", PrintController);
 

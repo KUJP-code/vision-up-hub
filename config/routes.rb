@@ -33,7 +33,7 @@ Rails.application.routes.draw do
       resources :lesson_versions, only: %i[show update]
       resources :level_changes, only: %i[new create]
       resources :missing_lessons, only: %i[index]
-      resources :monthly_materials, only: %i[index]
+      resources :monthly_materials, only: %i[index show]
       resources :notifications, except: %i[edit]
       resources :privacy_policies, only: %i[new create show]
       resources :parents_reports, only: %i[create index update]

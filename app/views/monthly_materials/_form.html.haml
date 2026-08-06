@@ -2,7 +2,6 @@
 
 = form_with url: monthly_materials_path,
             method: :get,
-            scope: :q,
             html: { class: 'w-full flex flex-wrap justify-center gap-3' } do |f|
   - if orgs.present?
     .flex-row.items-center
@@ -12,7 +11,12 @@
                    onchange: 'this.form.requestSubmit()'
 
   .flex-row.items-center
-    = f.label :month, t('.month')
-    = f.month_field :month, value: month.strftime('%Y-%m'), required: true
+    = label_tag :month, t('.month')
+    = month_field_tag :month,
+                      month.strftime('%Y-%m'),
+                      required: true,
+                      class: 'cursor-pointer',
+                      data: { controller: 'month-picker',
+                              action: 'click->month-picker#open' }
 
-  = f.submit t('.search'), class: 'btn btn-main'
+  = button_tag t('.search'), type: :submit, class: 'btn btn-main', name: nil
