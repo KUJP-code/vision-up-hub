@@ -36,6 +36,10 @@ class CourseLesson < ApplicationRecord
     DAY_SHORTCUTS[day.to_s] || [day.to_s]
   end
 
+  def self.day_offset(day)
+    (days.fetch(day.to_s) - days.fetch('monday')) % 7
+  end
+
   def day=(value)
     @invalid_day = nil
     normalized_value = value.is_a?(String) ? value.strip.downcase : value

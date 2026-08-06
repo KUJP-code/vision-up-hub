@@ -3,6 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe LessonCalendarHelper do
+  describe '#calendar_date' do
+    it 'places Sunday at the end of the Monday-based course week' do
+      course_lesson = build(:course_lesson, day: :sunday)
+
+      expect(helper.calendar_date(Date.new(2026, 7, 20), course_lesson))
+        .to eq(Date.new(2026, 7, 26))
+    end
+  end
+
   describe '#calendar_entries' do
     it 'expands structured specialist evening lessons into subtype entries' do
       lesson = create(

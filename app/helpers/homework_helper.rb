@@ -45,7 +45,7 @@ module HomeworkHelper
     return '' unless plan
 
     week_start = plan.start.to_date + (homework.week - 1).weeks
-    lesson_date = week_start + (CourseLesson.days.fetch(homework.day) - 2).days
+    lesson_date = week_start + CourseLesson.day_offset(homework.day).days
     "#{l(lesson_date, format: :short)} (#{t("levels.#{homework.lesson.short_level.downcase.tr(' ', '_')}")})"
   end
 

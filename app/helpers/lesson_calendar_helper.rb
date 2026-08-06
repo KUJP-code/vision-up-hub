@@ -4,7 +4,7 @@ module LessonCalendarHelper
   CalendarEntry = Struct.new(:course_lesson, :lesson, :subtype, keyword_init: true)
 
   def calendar_date(date, course_lesson)
-    date + (CourseLesson.days[course_lesson.day] - 2).days
+    date + CourseLesson.day_offset(course_lesson.day).days
   end
 
   def calendar_entries(course_lessons)
