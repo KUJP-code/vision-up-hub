@@ -136,6 +136,89 @@ specialist_evening_class_seeds.each do |level, attrs|
   lesson.save!(validate: false)
 end
 
+puts 'Adding demo lesson materials...'
+
+demo_materials = {
+  ['DailyActivity', 'kindy'] => {
+    basic: ['Crayons', 'Child-safe scissors', 'A4 paper'],
+    purchase: ['Cotton balls', 'Glow sticks']
+  },
+  ['DailyActivity', 'elementary'] => {
+    basic: ['Colored pencils', 'Glue sticks', 'Construction paper'],
+    purchase: ['Mini canvases', 'Acrylic paint set']
+  },
+  ['Exercise', 'kindy'] => {
+    basic: ['Cones', 'Beanbags', 'Floor markers'],
+    purchase: ['Balloons', 'Paper streamers']
+  },
+  ['Exercise', 'elementary'] => {
+    basic: ['Cones', 'Jump ropes', 'Soft balls'],
+    purchase: ['Painter\'s tape', 'Blindfolds']
+  },
+  ['PhonicsClass', 'land_one'] => {
+    basic: ['Whiteboard', 'Whiteboard markers', 'Alphabet cards'],
+    purchase: ['Letter stickers', 'Mini notebooks']
+  },
+  ['PhonicsClass', 'sky_one'] => {
+    basic: ['Whiteboard', 'Whiteboard markers', 'Word cards'],
+    purchase: ['Magnetic letters', 'Dry-erase pockets']
+  },
+  ['PhonicsClass', 'galaxy_one'] => {
+    basic: ['Whiteboard', 'Whiteboard markers', 'Dictionaries'],
+    purchase: ['Index cards', 'Highlighter set']
+  }
+}.freeze
+
+demo_materials.each do |key, material_lists|
+  type, level = key
+  type.constantize.find_by!(level:).update!(
+    basic_materials: material_lists.fetch(:basic),
+    purchase_materials: material_lists.fetch(:purchase)
+  )
+end
+
+keep_up_materials = {
+  conversation_time: {
+    basic: ['Whiteboard markers', 'Student notebooks'],
+    purchase: ['Conversation prompt cards']
+  },
+  topic_study: {
+    basic: ['Pencils', 'Dictionaries'],
+    purchase: ['Current magazines', 'Topic photo pack']
+  },
+  special_lesson: {
+    basic: ['Colored pencils', 'Glue sticks'],
+    purchase: ['Craft kit', 'Presentation prizes']
+  }
+}.freeze
+
+EveningClass.where(level: %i[keep_up_one keep_up_two]).find_each do |lesson|
+  material_lists = keep_up_materials.fetch(lesson.subtype.to_sym)
+  lesson.update!(
+    basic_materials: material_lists.fetch(:basic),
+    purchase_materials: material_lists.fetch(:purchase)
+  )
+end
+
+specialist_materials = {
+  specialist: {
+    basic: ['Laptops', 'Sticky notes', 'Presentation screen'],
+    purchase: ['Poster board', 'Display adhesive']
+  },
+  specialist_advanced: {
+    basic: ['Laptops', 'Research notebooks', 'Presentation screen'],
+    purchase: ['Presentation folders', 'USB presentation clicker']
+  }
+}.freeze
+
+specialist_materials.each do |level, material_lists|
+  EveningClass.find_by!(level:).update_columns(
+    basic_materials: material_lists.fetch(:basic),
+    purchase_materials: material_lists.fetch(:purchase),
+    updated_at: Time.current
+  )
+end
+
 Lesson.all.each do |lesson|
   lesson.attach_guide
 end
@@ -207,7 +290,7 @@ weekday_evening_schedule = {
 }.freeze
 
 course_lessons = Lesson.all.map do |lesson|
-  lesson.update(creator_id: 1, assigned_editor_id: writer.id)
+  lesson.update(creator_id: admin.id, assigned_editor_id: writer.id)
   if lesson.type == 'EveningClass'
     lesson_days.filter_map do |day|
       day_key = day.to_sym
