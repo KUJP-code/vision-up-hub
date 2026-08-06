@@ -8,6 +8,10 @@ ja:
   failed: "失敗しました。管理者にお問い合わせください。"
   actions: "結果"
   activerecord:
+    attributes:
+      lesson:
+        basic_materials: "基本教材"
+        purchase_materials: "購入が必要な教材"
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"

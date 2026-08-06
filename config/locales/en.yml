@@ -10,6 +10,10 @@ en:
   actions: "Actions"
   failed: "Failed, please contact an admin."
   activerecord:
+    attributes:
+      lesson:
+        basic_materials: "Basic materials"
+        purchase_materials: "Materials to purchase"
     models:
       school_class: "Class"
       test_result: "Result"
