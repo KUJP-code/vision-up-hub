@@ -219,7 +219,67 @@ specialist_materials.each do |level, material_lists|
   )
 end
 
-Lesson.all.each do |lesson|
+puts 'Creating demo events, seasonal activities, and parties...'
+
+event_lesson_seeds = [
+  {
+    factory: :seasonal_activity,
+    title: 'Summer Discovery Week',
+    goal: 'Explore summer themes through collaborative English activities.',
+    event_date: 2.weeks.from_now.to_date
+  },
+  {
+    factory: :seasonal_activity,
+    title: 'Autumn Adventure Week',
+    goal: 'Build seasonal vocabulary through creative autumn activities.',
+    event_date: 8.weeks.from_now.to_date
+  },
+  {
+    factory: :event_activity,
+    title: 'KidsUP Science Fair',
+    goal: 'Present a simple experiment using clear English explanations.',
+    event_date: 1.week.from_now.to_date
+  },
+  {
+    factory: :event_activity,
+    title: 'English Presentation Day',
+    goal: 'Share a prepared presentation with confidence.',
+    event_date: 6.weeks.from_now.to_date
+  },
+  {
+    factory: :party_activity,
+    title: 'Summer Festival Party',
+    goal: 'Use English naturally through festival games and challenges.',
+    event_date: 3.weeks.from_now.to_date
+  },
+  {
+    factory: :party_activity,
+    title: 'Halloween Party',
+    goal: 'Practice seasonal English through costumes, games, and teamwork.',
+    event_date: 10.weeks.from_now.to_date
+  }
+].freeze
+
+event_lesson_seeds.each do |attrs|
+  lesson = fb.create(
+    attrs.fetch(:factory),
+    title: attrs.fetch(:title),
+    goal: attrs.fetch(:goal),
+    **released_attrs
+  )
+
+  Organisation.find_each do |organisation|
+    lesson.organisation_lessons.create!(
+      organisation:,
+      event_date: attrs.fetch(:event_date)
+    )
+  end
+
+  lesson.resources.attach(test_file)
+  lesson.activity_guide.attach(test_file) if lesson.respond_to?(:activity_guide)
+end
+
+Lesson.where(type: %w[DailyActivity Exercise PhonicsClass]).find_each do |lesson|
   lesson.attach_guide
 end
 
@@ -390,6 +450,11 @@ TutorialCategory.all.each do |category|
   fb.create_list(:faq_tutorial, 2, tutorial_category_id: category.id)
 end
 
-PrivacyPolicy.create!(version: "2025-07-03", content: "Initial privacy policy…")
+puts 'Creating privacy policy acceptances...'
+
+privacy_policy = PrivacyPolicy.create!(version: '2025-07-03', content: 'Initial privacy policy…')
+User.find_each do |user|
+  privacy_policy.acceptances.create!(user:, accepted_at: Time.current)
+end
 
 puts 'Done!'
