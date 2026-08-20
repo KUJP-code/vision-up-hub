@@ -93,6 +93,28 @@ RSpec.describe 'TeacherEvents' do
         expect(response.body).to include('Teacher Org Event')
         expect(response.body).not_to include('Other Org Event')
       end
+
+      it 'shows seasonal activities for two months after their event date' do
+        seasonal = create(:seasonal_activity, title: 'Recent Seasonal', released: true,
+                                              admin_approval: approval_payload)
+        create(:organisation_lesson, organisation: teacher.organisation, lesson: seasonal,
+                                     event_date: today - 2.months)
+
+        get teacher_events_path(category: 'seasonalactivity')
+
+        expect(response.body).to include('Recent Seasonal')
+      end
+
+      it 'continues to hide party activities one month after their event date' do
+        party = create(:party_activity, title: 'Old Party', released: true,
+                                        admin_approval: approval_payload)
+        create(:organisation_lesson, organisation: teacher.organisation, lesson: party,
+                                     event_date: today - 2.months)
+
+        get teacher_events_path(category: 'partyactivity')
+
+        expect(response.body).not_to include('Old Party')
+      end
     end
   end
 

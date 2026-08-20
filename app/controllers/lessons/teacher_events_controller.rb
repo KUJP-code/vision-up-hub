@@ -33,9 +33,9 @@ class TeacherEventsController < ApplicationController
   end
 
   def event_lessons_scope
-    scope = Lesson
-            .where(type: EVENT_TYPES, released: true)
-            .within_event_window(@date)
+    scope = seasonal_lessons_scope
+            .or(other_event_lessons_scope)
+            .where(released: true)
             .includes(:organisation_lessons)
 
     if current_user.is?('Admin', 'Writer')
@@ -47,6 +47,16 @@ class TeacherEventsController < ApplicationController
     end
 
     scope.order('organisation_lessons.event_date ASC')
+  end
+
+  def seasonal_lessons_scope
+    Lesson.where(type: 'SeasonalActivity')
+          .within_event_window(@date, past: 2.months)
+  end
+
+  def other_event_lessons_scope
+    Lesson.where(type: EVENT_TYPES - ['SeasonalActivity'])
+          .within_event_window(@date)
   end
 
   def set_resources

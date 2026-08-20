@@ -80,7 +80,7 @@
                           organisation_path(ol.organisation)
                 - if ol.event_date.present?
                   %small.text-muted.ml-2
-                    (Visibility: #{events_visible_range_for(ol.event_date)})
+                    (Visibility: #{events_visible_range_for(ol.event_date, past: @lesson.is_a?(SeasonalActivity) ? 2.months : 1.month)})
         - else
           - @org_lessons.each do |ol|
             %div
@@ -88,7 +88,7 @@
                         organisation_path(ol.organisation)
               - if ol.event_date.present?
                 %small.text-muted.ml-2
-                  (Visibility: #{events_visible_range_for(ol.event_date)})
+                  (Visibility: #{events_visible_range_for(ol.event_date, past: @lesson.is_a?(SeasonalActivity) ? 2.months : 1.month)})
 
 
       = render 'lessons/shared/approval', lesson: @lesson
