@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe TutorialPolicy do
   subject(:policy) { described_class.new(user, record) }
 
-  let(:record) { build(:faq_tutorial) }
+  let(:record) { build(:tutorial_category, :faq) }
 
   context 'when admin' do
     let(:user) { build(:user, :admin) }

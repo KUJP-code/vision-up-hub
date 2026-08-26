@@ -82,3 +82,9 @@ application.register("teacher-tool-reorder", TeacherToolReorderController);
 
 import TeacherToolsPanelController from "./teacher_tools_panel_controller";
 application.register("teacher-tools-panel", TeacherToolsPanelController);
+
+import AutoReorderController from "./auto_reorder_controller";
+application.register("auto-reorder", AutoReorderController);
+
+import ResourceItemsController from "./resource_items_controller";
+application.register("resource-items", ResourceItemsController);

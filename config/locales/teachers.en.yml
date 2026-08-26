@@ -6,7 +6,7 @@ en:
       students: "Students"
       support: "Support"
       test: "Tests"
-      tutorials: "Tutorials"
+      tutorials: "Resources"
       events: "Events"
     subtitle:
       future_lessons: "Future lessons for %{date}"

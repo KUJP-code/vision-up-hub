@@ -2,19 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Creating a tutorial category' do
+RSpec.describe 'Creating a resource card' do
   let(:admin_user) { create(:user, :admin) }
 
   before do
     sign_in admin_user
   end
 
-  it 'allows an admin user to create a new tutorial category' do
-    visit new_tutorial_category_path
-    fill_in 'Title', with: 'New Category'
+  it 'allows an admin user to create the card directly' do
+    visit new_tutorial_path
+    fill_in 'Resource Card Title', with: 'New Resource'
     find('input[type="submit"]').click
 
-    expect(page).to have_content('Category was successfully created.')
-    expect(page).to have_content('New Category')
+    expect(page).to have_content('Resource was successfully created.')
+    expect(page).to have_content('New Resource')
   end
 end

@@ -1,0 +1,59 @@
+-# locals: (tutorial:)
+
+= form_with model: tutorial, url: tutorial.new_record? ? tutorials_path : tutorial_path(tutorial),
+            html: { class: 'form', data: { controller: 'fields resource-items' } } do |f|
+  = render 'shared/form_errors', resource: tutorial
+
+  .form-group
+    = f.label :title, 'Resource Card Title'
+    = f.text_field :title, required: true
+  .form-group
+    = f.label :tutorial_section_id, 'Section'
+    = f.collection_select :tutorial_section_id, TutorialSection.all, :id, :title,
+                          { include_blank: 'Others (unassigned)' }
+  .form-group
+    = f.label :cover_image, 'Card Image'
+    = f.file_field :cover_image, accept: 'image/png,image/jpeg'
+
+  %h3.font-bold.text-center.mt-6 Company Visibility
+  = f.fields_for :organisation_tutorial_categories,
+                 tutorial.organisation_tutorial_categories do |org_fields|
+    = render 'organisation_tutorial_categories/fields',
+             f: org_fields, organisations: Organisation.order(:name)
+  %template{ 'data-fields-target': 'template' }
+    = f.fields_for :organisation_tutorial_categories,
+                   tutorial.organisation_tutorial_categories.new,
+                   child_index: 'CHILD' do |org_fields|
+      = render 'organisation_tutorial_categories/fields',
+               f: org_fields, organisations: Organisation.order(:name)
+  %div{ 'data-fields-target': 'target' }
+  %button.btn.btn-secondary.self-center{ type: 'button',
+                                         'data-action': 'fields#add' } Add Organisation
+
+  .form-group
+    = f.label :files, 'Files'
+    = f.file_field :files, multiple: true,
+                           accept: TutorialCategory::ALLOWED_FILETYPES.join(',')
+    %small Select one or more files. You can add more when editing this card.
+  - if tutorial.files.attached?
+    .flex.flex-col.gap-2
+      %h3.font-semibold Existing Files
+      - tutorial.files.attachments.each do |attachment|
+        %label.flex.items-center.gap-2
+          = check_box_tag 'tutorial_category[remove_file_ids][]', attachment.id
+          Remove #{attachment.filename}
+
+  .flex.flex-wrap.gap-2
+    - %w[link video faq].each do |kind|
+      %button.btn.btn-secondary{ type: 'button',
+                                 data: { action: 'resource-items#add',
+                                         'resource-items-kind-param': kind } }
+        Add #{kind == 'faq' ? 'FAQ' : kind.titleize}
+  .flex.flex-col.gap-3{ data: { 'resource-items-target': 'items' } }
+    - tutorial.items.each_with_index do |item, index|
+      = render 'tutorials/item_fields', item:, index:
+  - %w[link video faq].each do |kind|
+    %template{ data: { 'resource-items-target': "#{kind}Template" } }
+      = render 'tutorials/item_fields', item: { 'kind' => kind }, index: 'CHILD'
+
+  = f.submit class: 'btn btn-main'

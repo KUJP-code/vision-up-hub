@@ -1,0 +1,27 @@
+-# locals: (resource:)
+
+- resource.files.each do |file|
+  = link_to file_path(id: file.blob.id),
+            target: '_blank', rel: 'noopener',
+            class: 'btn-outline justify-between grow' do
+    %span.truncate= file.filename
+    = inline_svg_tag 'download_icon.svg', class: 'fill-secondary'
+
+- resource.items.each_with_index do |item, index|
+  - if item['kind'] == 'faq'
+    %details.dropdown.border.border-secondary
+      %summary= item['title']
+      .dropdown-item.border-secondary.p-2= simple_format(item['body'])
+  - elsif item['kind'] == 'video'
+    %button{ class: 'btn-outline text-start justify-between grow', type: 'button',
+             data: { action: 'dialog#open', controller: 'dialog',
+                     'dialog-dialog-value': 'video-tutorial',
+                     'dialog-frame-value': 'video-tutorials',
+                     'dialog-src-value': tutorial_path(resource, item: index) } }
+      %span.truncate= item['title']
+      = inline_svg_tag 'watch.svg', class: 'fill-secondary w-6 h-6'
+  - else
+    = link_to item['url'], target: '_blank', rel: 'noopener',
+                           class: 'btn-outline justify-between grow' do
+      %span.truncate= item['title']
+      = inline_svg_tag 'next.svg', class: 'fill-secondary w-6 h-6'

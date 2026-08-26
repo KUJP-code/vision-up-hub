@@ -1014,39 +1014,6 @@ ALTER SEQUENCE public.devices_id_seq OWNED BY public.devices.id;
 
 
 --
--- Name: faq_tutorials; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.faq_tutorials (
-    id bigint NOT NULL,
-    question character varying,
-    answer character varying,
-    tutorial_category_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: faq_tutorials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.faq_tutorials_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: faq_tutorials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.faq_tutorials_id_seq OWNED BY public.faq_tutorials.id;
-
-
---
 -- Name: flipper_features; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1451,39 +1418,6 @@ CREATE SEQUENCE public.organisations_id_seq
 --
 
 ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
-
-
---
--- Name: pdf_tutorials; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.pdf_tutorials (
-    id bigint NOT NULL,
-    title character varying,
-    category integer,
-    tutorial_category_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: pdf_tutorials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.pdf_tutorials_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: pdf_tutorials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.pdf_tutorials_id_seq OWNED BY public.pdf_tutorials.id;
 
 
 --
@@ -2524,7 +2458,10 @@ CREATE TABLE public.tutorial_categories (
     id bigint NOT NULL,
     title character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    tutorial_section_id bigint,
+    "position" integer DEFAULT 0 NOT NULL,
+    items jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -2545,6 +2482,38 @@ CREATE SEQUENCE public.tutorial_categories_id_seq
 --
 
 ALTER SEQUENCE public.tutorial_categories_id_seq OWNED BY public.tutorial_categories.id;
+
+
+--
+-- Name: tutorial_sections; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tutorial_sections (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tutorial_sections_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tutorial_sections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tutorial_sections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tutorial_sections_id_seq OWNED BY public.tutorial_sections.id;
 
 
 --
@@ -2597,40 +2566,6 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
-
---
--- Name: video_tutorials; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.video_tutorials (
-    id bigint NOT NULL,
-    title character varying,
-    video_path character varying,
-    category integer,
-    tutorial_category_id bigint NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: video_tutorials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.video_tutorials_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: video_tutorials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.video_tutorials_id_seq OWNED BY public.video_tutorials.id;
 
 
 --
@@ -2711,13 +2646,6 @@ ALTER TABLE ONLY public.devices ALTER COLUMN id SET DEFAULT nextval('public.devi
 
 
 --
--- Name: faq_tutorials id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.faq_tutorials ALTER COLUMN id SET DEFAULT nextval('public.faq_tutorials_id_seq'::regclass);
-
-
---
 -- Name: flipper_features id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2792,13 +2720,6 @@ ALTER TABLE ONLY public.organisation_tutorial_categories ALTER COLUMN id SET DEF
 --
 
 ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('public.organisations_id_seq'::regclass);
-
-
---
--- Name: pdf_tutorials id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pdf_tutorials ALTER COLUMN id SET DEFAULT nextval('public.pdf_tutorials_id_seq'::regclass);
 
 
 --
@@ -3012,17 +2933,17 @@ ALTER TABLE ONLY public.tutorial_categories ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: tutorial_sections id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutorial_sections ALTER COLUMN id SET DEFAULT nextval('public.tutorial_sections_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
-
-
---
--- Name: video_tutorials id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.video_tutorials ALTER COLUMN id SET DEFAULT nextval('public.video_tutorials_id_seq'::regclass);
 
 
 --
@@ -3122,14 +3043,6 @@ ALTER TABLE ONLY public.devices
 
 
 --
--- Name: faq_tutorials faq_tutorials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.faq_tutorials
-    ADD CONSTRAINT faq_tutorials_pkey PRIMARY KEY (id);
-
-
---
 -- Name: flipper_features flipper_features_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3215,14 +3128,6 @@ ALTER TABLE ONLY public.organisation_tutorial_categories
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
-
-
---
--- Name: pdf_tutorials pdf_tutorials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pdf_tutorials
-    ADD CONSTRAINT pdf_tutorials_pkey PRIMARY KEY (id);
 
 
 --
@@ -3474,19 +3379,19 @@ ALTER TABLE ONLY public.tutorial_categories
 
 
 --
+-- Name: tutorial_sections tutorial_sections_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutorial_sections
+    ADD CONSTRAINT tutorial_sections_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: video_tutorials video_tutorials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.video_tutorials
-    ADD CONSTRAINT video_tutorials_pkey PRIMARY KEY (id);
 
 
 --
@@ -3613,13 +3518,6 @@ CREATE INDEX index_devices_on_user_id ON public.devices USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_devices_on_user_id_and_token ON public.devices USING btree (user_id, token);
-
-
---
--- Name: index_faq_tutorials_on_tutorial_category_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_faq_tutorials_on_tutorial_category_id ON public.faq_tutorials USING btree (tutorial_category_id);
 
 
 --
@@ -3781,13 +3679,6 @@ CREATE UNIQUE INDEX index_organisations_on_name ON public.organisations USING bt
 --
 
 CREATE UNIQUE INDEX index_organisations_on_phone ON public.organisations USING btree (phone);
-
-
---
--- Name: index_pdf_tutorials_on_tutorial_category_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_pdf_tutorials_on_tutorial_category_id ON public.pdf_tutorials USING btree (tutorial_category_id);
 
 
 --
@@ -4232,6 +4123,20 @@ CREATE UNIQUE INDEX index_tutorial_categories_on_title ON public.tutorial_catego
 
 
 --
+-- Name: index_tutorial_categories_on_tutorial_section_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tutorial_categories_on_tutorial_section_id ON public.tutorial_categories USING btree (tutorial_section_id);
+
+
+--
+-- Name: index_tutorial_sections_on_title; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tutorial_sections_on_title ON public.tutorial_sections USING btree (title);
+
+
+--
 -- Name: index_users_on_confirmation_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4264,13 +4169,6 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 --
 
 CREATE UNIQUE INDEX index_users_on_unlock_token ON public.users USING btree (unlock_token);
-
-
---
--- Name: index_video_tutorials_on_tutorial_category_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_video_tutorials_on_tutorial_category_id ON public.video_tutorials USING btree (tutorial_category_id);
 
 
 --
@@ -4332,14 +4230,6 @@ ALTER TABLE ONLY public.phonics_resources
 
 ALTER TABLE ONLY public.pearson_results
     ADD CONSTRAINT fk_rails_102c4d6859 FOREIGN KEY (student_id) REFERENCES public.students(id);
-
-
---
--- Name: faq_tutorials fk_rails_1176cd5d25; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.faq_tutorials
-    ADD CONSTRAINT fk_rails_1176cd5d25 FOREIGN KEY (tutorial_category_id) REFERENCES public.tutorial_categories(id);
 
 
 --
@@ -4476,14 +4366,6 @@ ALTER TABLE ONLY public.lessons
 
 ALTER TABLE ONLY public.organisation_lessons
     ADD CONSTRAINT fk_rails_63bee9cdab FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
-
-
---
--- Name: video_tutorials fk_rails_71cd453c5e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.video_tutorials
-    ADD CONSTRAINT fk_rails_71cd453c5e FOREIGN KEY (tutorial_category_id) REFERENCES public.tutorial_categories(id);
 
 
 --
@@ -4759,6 +4641,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: tutorial_categories fk_rails_cc62075ae9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutorial_categories
+    ADD CONSTRAINT fk_rails_cc62075ae9 FOREIGN KEY (tutorial_section_id) REFERENCES public.tutorial_sections(id) ON DELETE SET NULL;
+
+
+--
 -- Name: course_tests fk_rails_ccafea4c74; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4815,14 +4705,6 @@ ALTER TABLE ONLY public.class_teachers
 
 
 --
--- Name: pdf_tutorials fk_rails_e687f3a992; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.pdf_tutorials
-    ADD CONSTRAINT fk_rails_e687f3a992 FOREIGN KEY (tutorial_category_id) REFERENCES public.tutorial_categories(id);
-
-
---
 -- Name: test_visibility_overrides fk_rails_f66e143411; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4850,6 +4732,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260820000200'),
+('20260820000100'),
+('20260820000000'),
 ('20260806000000'),
 ('20260617090000'),
 ('20260608000000'),

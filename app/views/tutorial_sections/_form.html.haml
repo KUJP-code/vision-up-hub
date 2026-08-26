@@ -1,0 +1,10 @@
+-# locals: (section:)
+= form_with model: section, html: { class: 'form' } do |f|
+  = render 'shared/form_errors', resource: section
+  .form-group
+    = f.label :title
+    = f.text_field :title, required: true
+  .form-group
+    = f.label :cover_image, 'Cover Image'
+    = f.file_field :cover_image, accept: 'image/png,image/jpeg'
+  = f.submit class: 'btn btn-main'

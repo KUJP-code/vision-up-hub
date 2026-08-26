@@ -1,8 +1,23 @@
-= turbo_frame_tag 'video-tutorials' do
-  %section.flex.items-center.justify-center.h-full.w-full.p-4
-    - if @tutorial
-      %iframe{ src: @tutorial.video_path, frameborder: '0',
-               allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture',
-               allowfullscreen: true, class: 'w-full h-full' }
-    - else
-      %h1= t('.no_video')
+- if params.key?(:item)
+  = turbo_frame_tag 'video-tutorials' do
+    .video-container
+      - permissions = 'accelerometer; autoplay; clipboard-write; encrypted-media; '
+      %iframe{ src: TutorialCategory.embed_url(@item['url']), frameborder: '0',
+               allow: "#{permissions}gyroscope; picture-in-picture",
+               allowfullscreen: true }
+- else
+  = turbo_frame_tag 'tutorials-frame' do
+    .dialog-content
+      %section.flex.items-center.gap-3
+        %h1.text-3xl= @tutorial.title
+        - if tutorial_draggable?
+          .grow
+          = link_to 'Edit', edit_tutorial_path(@tutorial),
+                    class: 'btn btn-secondary', data: { turbo_frame: '_top' }
+          = link_to 'Delete', tutorial_path(@tutorial),
+                    class: 'btn btn-danger',
+                    data: { turbo_method: :delete,
+                            turbo_confirm: 'Delete this resource card?',
+                            turbo_frame: '_top' }
+      .flex.flex-col.gap-4
+        = render 'tutorials/resource_items', resource: @tutorial

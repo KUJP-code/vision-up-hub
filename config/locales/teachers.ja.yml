@@ -6,7 +6,7 @@ ja:
       students: "生徒"
       support: "サポート"
       test: "テスト"
-      tutorials: インフォメーション
+      tutorials: リソース
       events: "イベント"
     subtitle:
       future_lessons: "次の授業: %{date}"

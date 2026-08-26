@@ -1,0 +1,25 @@
+-# locals: (index:, item:)
+
+- kind = item['kind']
+.card.p-3.flex.flex-col.gap-3{ data: { resource_item: true } }
+  = hidden_field_tag "tutorial_category[items_attributes][#{index}][kind]", kind
+  .flex.items-center.justify-between
+    %h3.font-bold= kind == 'faq' ? 'FAQ' : kind.titleize
+    %button.btn.btn-danger.py-1.px-2{ type: 'button',
+                                      data: {
+                                        action: 'resource-items#remove'
+                                      } } Remove
+  .form-group
+    = label_tag "tutorial_resource_items_#{index}_title", kind == 'faq' ? 'Question' : 'Title'
+    = text_field_tag "tutorial_category[items_attributes][#{index}][title]",
+                     item['title'], id: "tutorial_resource_items_#{index}_title", required: true
+  - if kind == 'faq'
+    .form-group
+      = label_tag "tutorial_resource_items_#{index}_body", 'Answer'
+      = text_area_tag "tutorial_category[items_attributes][#{index}][body]",
+                      item['body'], id: "tutorial_resource_items_#{index}_body", required: true
+  - else
+    .form-group
+      = label_tag "tutorial_resource_items_#{index}_url", kind == 'video' ? 'Video URL' : 'URL'
+      = url_field_tag "tutorial_category[items_attributes][#{index}][url]",
+                      item['url'], id: "tutorial_resource_items_#{index}_url", required: true

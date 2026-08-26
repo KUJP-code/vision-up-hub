@@ -1,118 +1,133 @@
 # frozen_string_literal: true
 
 class TutorialsController < ApplicationController
-  before_action :set_type, except: %i[index show]
-  before_action :set_tutorial, except: %i[index create new show]
-  before_action :set_categories, except: %i[index destroy]
-  after_action :verify_authorized, except: %i[index show]
+  before_action :set_tutorial, only: %i[show edit update destroy]
+  after_action :verify_authorized, except: :index
 
   def index
-    base = policy_scope(TutorialCategory)
-
-    if current_user.is?('Admin') && params[:organisation_id].present?
-      base = base.joins(:organisation_tutorial_categories)
-                 .where(organisation_tutorial_categories: { organisation_id: params[:organisation_id] })
-    end
-
-    @categories = base.reorder(:title)
-
-    visible_ids = @categories.pluck(:id)
-
-    @tutorials = {
-      pdf: PdfTutorial.where(tutorial_category_id: visible_ids).includes(file_attachment: :blob),
-      video: VideoTutorial.where(tutorial_category_id: visible_ids),
-      faq: FaqTutorial.where(tutorial_category_id: visible_ids)
-    }
+    visible_resources = policy_scope(TutorialCategory).includes(:tutorial_section, cover_image_attachment: :blob)
+    visible_resources = resources_for_spy(visible_resources)
+    @section_entries = section_entries(visible_resources)
+    @selected_section = selected_section(@section_entries)
+    @show_section_picker = @section_entries.many? && @selected_section.nil?
+    @categories = @show_section_picker ? TutorialCategory.none : resources_in(@selected_section, visible_resources)
   end
 
   def show
-    @tutorial = authorize VideoTutorial.find(params[:id])
+    @item = @tutorial.items.fetch(params[:item].to_i, {}) if params.key?(:item)
   end
 
   def new
-    @tutorial = authorize tutorial_class.new
+    @tutorial = authorize TutorialCategory.new(tutorial_section_id: params[:tutorial_section_id])
   end
 
   def edit; end
 
   def create
-    @tutorial = authorize tutorial_class.new(tutorial_params)
-
+    @tutorial = authorize TutorialCategory.new(tutorial_params.merge(position: next_position))
     if @tutorial.save
-      redirect_to tutorials_path,
-                  notice: "#{@type} tutorial was successfully created."
+      redirect_to tutorials_path(section: section_param), notice: 'Resource was successfully created.'
     else
-      render :new,
-             status: :unprocessable_entity,
-             alert: "#{@type} tutorial could not be created."
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    if @tutorial.update(tutorial_params)
-      redirect_to tutorials_path,
-                  notice: "#{@type} tutorial was successfully updated."
+    attributes = tutorial_params
+    retain_existing_files(attributes)
+    assign_new_position(attributes)
+    if @tutorial.update(attributes)
+      redirect_to tutorials_path(section: section_param), notice: 'Resource was successfully updated.'
     else
-      render :edit,
-             status: :unprocessable_entity,
-             alert: "#{@type} tutorial could not be updated."
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @tutorial.destroy
-      redirect_to tutorials_path,
-                  notice: 'Tutorial was successfully deleted.'
-    else
-      redirect_to tutorials_path,
-                  alert: 'There was an error deleting this tutorial.'
-    end
+    section = section_param
+    @tutorial.destroy
+    redirect_to tutorials_path(section:), notice: 'Resource was successfully deleted.'
+  end
+
+  def reorder
+    authorize TutorialCategory, :update?
+    section_id = params[:tutorial_section_id].presence
+    reorder_records(TutorialCategory.where(tutorial_section_id: section_id), params[:tutorial_ids])
+    head :no_content
   end
 
   private
 
   def tutorial_params
-    case @type
-    when 'PDF'
-      params.require(:pdf_tutorial).permit(
-        :title, :tutorial_category_id, :file
-      )
-    when 'Video'
-      params.require(:video_tutorial).permit(
-        :title, :tutorial_category_id, :video_path
-      )
-    when 'FAQ'
-      params.require(:faq_tutorial).permit(
-        :question, :answer, :tutorial_category_id
-      )
-    else
-      {}
-    end
-  end
-
-  def set_categories
-    @categories = TutorialCategory.pluck(:title, :id)
-                                  .map { |title, id| [title.titleize, id] }
-  end
-
-  def set_type
-    return @type = params[:type] if %w[PDF Video FAQ].include?(params[:type])
-
-    redirect_to root_path
+    params.require(:tutorial_category).permit(
+      :title, :cover_image, :tutorial_section_id,
+      files: [], remove_file_ids: [], items_attributes: %i[kind title url body _destroy],
+      organisation_tutorial_categories_attributes: %i[id organisation_id _destroy]
+    )
   end
 
   def set_tutorial
-    @tutorial = authorize tutorial_class.find(params[:id])
+    @tutorial = authorize TutorialCategory.find(params[:id])
   end
 
-  def tutorial_class
-    case @type
-    when 'PDF'
-      PdfTutorial
-    when 'Video'
-      VideoTutorial
-    when 'FAQ'
-      FaqTutorial
+  def resources_for_spy(scope)
+    return scope unless current_user.is?('Admin') && params[:organisation_id].present?
+
+    scope.joins(:organisation_tutorial_categories)
+         .where(organisation_tutorial_categories: { organisation_id: params[:organisation_id] })
+  end
+
+  def section_entries(resources)
+    entries = visible_sections(resources).map { |section| [section.id.to_s, section] }
+    entries << ['others', nil] if resources.exists?(tutorial_section_id: nil)
+    entries
+  end
+
+  def visible_sections(resources)
+    return TutorialSection.all if current_user.is?('Admin', 'Sales') && params[:organisation_id].blank?
+
+    TutorialSection.where(id: resources.where.not(tutorial_section_id: nil).select(:tutorial_section_id))
+  end
+
+  def selected_section(entries)
+    return entries.first if entries.one?
+    return if params[:section].blank?
+
+    entries.find { |key, _section| key == params[:section].to_s }
+  end
+
+  def resources_in(section_entry, resources)
+    return resources.reorder(:position, :title) unless section_entry
+
+    key, section = section_entry
+    scope = key == 'others' ? resources.where(tutorial_section_id: nil) : resources.where(tutorial_section: section)
+    scope.reorder(:position, :title)
+  end
+
+  def section_param
+    @tutorial.tutorial_section_id || 'others'
+  end
+
+  def next_position
+    section_id = tutorial_params[:tutorial_section_id].presence
+    (TutorialCategory.where(tutorial_section_id: section_id).maximum(:position) || -1) + 1
+  end
+
+  def retain_existing_files(attributes)
+    attributes[:files] = @tutorial.files.blobs + attributes[:files] if attributes[:files].present?
+  end
+
+  def assign_new_position(attributes)
+    new_section_id = attributes[:tutorial_section_id].presence&.to_i
+    return if new_section_id == @tutorial.tutorial_section_id
+
+    attributes[:position] = (TutorialCategory.where(tutorial_section_id: new_section_id).maximum(:position) || -1) + 1
+  end
+
+  def reorder_records(scope, ordered_ids)
+    records = scope.where(id: Array(ordered_ids)).index_by { |record| record.id.to_s }
+    TutorialCategory.transaction do
+      Array(ordered_ids).each_with_index { |id, position| records[id.to_s]&.update!(position:) }
     end
   end
 end

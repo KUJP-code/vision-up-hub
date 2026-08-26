@@ -50,8 +50,12 @@ Rails.application.routes.draw do
       end
       resources :special_lessons, only: %i[create index update]
       resources :stand_show_speaks, only: %i[create index update]
-      resources :tutorials
-      resources :tutorial_categories
+      resources :tutorials do
+        patch :reorder, on: :collection
+      end
+      resources :tutorial_sections, except: %i[index show] do
+        patch :reorder, on: :collection
+      end
       resources :user_searches, only: %i[index]
       resources :students, except: %i[destroy] do
         member do

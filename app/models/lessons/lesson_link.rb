@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class LessonLink < ApplicationRecord
+  HUB_HOSTS = %w[
+    hub.kids-up.app
+    vision-up.app
+    vision-up.hub
+    vision.hub
+  ].freeze
+
   belongs_to :lesson
 
   enum kind: { resource: 0, video: 1 }
-
-  ALLOWED_RESOURCE_HOSTS = %w[
-    docs.google.com
-    drive.google.com
-  ].freeze
 
   validates :url, presence: true
   before_validation :classify_and_normalize_url, prepend: true
@@ -55,6 +57,12 @@ class LessonLink < ApplicationRecord
     return if url.blank?
 
     u = url.strip
+    if u.start_with?('/')
+      self.url = u
+      self.kind = :resource
+      return
+    end
+
     begin
       parsed = URI.parse(u)
     rescue URI::InvalidURIError
@@ -73,16 +81,17 @@ class LessonLink < ApplicationRecord
     uri  = URI.parse(url)
     host = uri.host.to_s
 
+    if HUB_HOSTS.include?(host.downcase)
+      self.url = relative_url(uri)
+      self.kind = :resource
+      return
+    end
+
     if host.match?(/(youtube\.com|youtu\.be|vimeo\.com)/i)
       self.kind = :video
       # VideoEmbeddable will convert/validate
     else
       self.kind = :resource
-
-      unless ALLOWED_RESOURCE_HOSTS.include?(host)
-        errors.add(:url, "host '#{host}' is not allowed")
-        return
-      end
 
       if host == 'docs.google.com'
         self.url = url
@@ -92,5 +101,12 @@ class LessonLink < ApplicationRecord
     end
   rescue URI::InvalidURIError
     errors.add(:url, 'is not a valid URL')
+  end
+
+  def relative_url(uri)
+    path = uri.path.presence || '/'
+    path += "?#{uri.query}" if uri.query.present?
+    path += "##{uri.fragment}" if uri.fragment.present?
+    path
   end
 end

@@ -41,6 +41,29 @@ RSpec.describe LessonLink, type: :model do
       expect(link.url).to end_with('/preview')
     end
 
+    it 'accepts links to either Hub access point' do
+      primary = build(:lesson_link, url: 'https://vision-up.hub/en/tutorials?section=2#files')
+      alternate = build(:lesson_link, url: 'https://hub.kids-up.app/en/tutorials')
+
+      expect(primary).to be_valid
+      expect(alternate).to be_valid
+      expect(primary.url).to eq('/en/tutorials?section=2#files')
+      expect(alternate.url).to eq('/en/tutorials')
+    end
+
+    it 'keeps normalized Hub paths relative on later validations' do
+      link = create(:lesson_link, url: 'https://hub.kids-up.app/en/tutorials')
+
+      expect { link.update!(title: 'Resources') }.not_to change(link, :url)
+    end
+
+    it 'accepts resources on other HTTP hosts' do
+      link = build(:lesson_link, url: 'https://example.com/teacher-guide')
+
+      expect(link).to be_valid
+      expect(link.kind).to eq('resource')
+    end
+
     describe 'google docs normalization' do
       it 'normalizes /edit to /preview' do
         link = create(:lesson_link, url: 'https://docs.google.com/document/d/xyz/edit')

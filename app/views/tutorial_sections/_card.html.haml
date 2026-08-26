@@ -1,0 +1,18 @@
+-# locals: (key:, section:, draggable: false, reorder_data: {})
+
+= link_to tutorials_path(section: key, organisation_id: params[:organisation_id]),
+          class: 'card basis-1/3 max-w-full p-3 flex flex-col gap-3',
+          draggable: draggable.to_s, data: reorder_data do
+  - if section&.cover_image&.attached? && section.cover_image.content_type.in?(%w[image/png image/jpeg])
+    = image_tag section.cover_image,
+                class: 'w-full aspect-square object-contain',
+                alt: section.title
+  - elsif section.nil?
+    = image_tag 'levels/specialist.svg',
+                class: 'w-full aspect-square object-contain',
+                alt: 'Others example image'
+  - else
+    = inline_svg_tag 'tutorials.svg',
+                     class: 'w-full aspect-square fill-secondary',
+                     title: section.title
+  %h2.text-3xl.text-center.mt-auto= section&.title || 'Others'

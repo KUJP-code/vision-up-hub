@@ -444,10 +444,8 @@ test_svg = ActiveStorage::Blob.find_by(filename: 'tutorials_test_icon.svg')
   category.save
 end
 
-TutorialCategory.all.each do |category|
-  fb.create_list(:pdf_tutorial, 2, tutorial_category_id: category.id)
-  fb.create_list(:video_tutorial, 2, tutorial_category_id: category.id)
-  fb.create_list(:faq_tutorial, 2, tutorial_category_id: category.id)
+TutorialCategory.find_each do |resource|
+  resource.update!(items: fb.attributes_for(:tutorial_category, :mixed)[:items])
 end
 
 puts 'Creating privacy policy acceptances...'

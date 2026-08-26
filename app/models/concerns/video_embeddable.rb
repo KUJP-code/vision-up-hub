@@ -12,11 +12,15 @@ module VideoEmbeddable
   VALID_HOSTS = (YOUTUBE_HOSTS + VIMEO_HOSTS).freeze
 
   included do
-    before_validation :convert_video_link, unless: :embeddable_link?
-    validate :allowed_host?
+    before_validation :convert_video_link, if: -> { validate_video_path? && !embeddable_link? }
+    validate :allowed_host?, if: :validate_video_path?
   end
 
   private
+
+  def validate_video_path?
+    video_path.present? && (!respond_to?(:video?) || video?)
+  end
 
   def convert_video_link
     return disallowed_host_error unless allowed_host?

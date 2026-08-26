@@ -1,6 +1,3 @@
-= render 'shared/subtitle', text: "Creating #{@tutorial.class.name.titleize}"
-
+= render 'shared/subtitle', text: 'Add Resource'
 %main
-  = render "tutorials/forms/#{@type.downcase}_form",
-           tutorial: @tutorial,
-           categories: @categories
+  = render 'form', tutorial: @tutorial

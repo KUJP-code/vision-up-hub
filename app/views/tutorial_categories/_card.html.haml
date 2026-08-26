@@ -1,14 +1,20 @@
--# locals: (category:)
+-# locals: (category:, draggable: false, reorder_data: {})
+
+:ruby
+  card_data = {
+    action: ['dialog#open', reorder_data[:action]].compact.join(' '),
+    controller: 'dialog',
+    'dialog-dialog-value': 'tutorial-resources',
+    'dialog-frame-value': 'tutorials-frame',
+    'dialog-src-value': tutorial_path(category)
+  }.merge(reorder_data.except(:action))
 
 %button{ class: 'card flex flex-col items-center p-2 gap-2 h-full min-w-0',
-         data: { action: 'dialog#open',
-                 controller: 'dialog',
-                 'dialog-dialog-value': 'tutorial-resources',
-                 'dialog-frame-value': 'tutorials-frame',
-                 'dialog-src-value': tutorial_category_path(category) },
+         draggable: draggable.to_s,
+         data: card_data,
          type: 'button' }
-  %div.flex.items-center.justify-center
-    -if category.cover_image.attached?
+  .flex.items-center.justify-center
+    - if category.cover_image.attached?
       = tutorial_image_tag(category, class: 'w-16 h-16 rounded', alt: 'Preview')
     - else
       = inline_svg_tag('tutorials.svg', class: 'w-16 h-16 rounded fill-current text-[#645880]')

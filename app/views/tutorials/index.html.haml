@@ -1,6 +1,6 @@
-- admin = current_user.is?('Admin')
+- admin = current_user.is?('Admin', 'Sales')
 
-= render 'shared/subtitle', text: t('.tutorials')
+= render 'shared/subtitle', text: 'Resources'
 
 %dialog.resources-dialog#tutorial-resources
   .body
@@ -16,23 +16,56 @@
         = image_tag 'exit.svg', class: 'btn-close'
     = turbo_frame_tag 'video-tutorials'
 
-%main.flex.flex-col.p-3.gap-3
+%main{ class: 'flex flex-col p-3 gap-3 md:min-h-[calc(100vh-14rem)]' }
   - if admin
     - orgs_for_spy = Organisation.joins(:organisation_tutorial_categories).distinct.order(:name)
     = render 'tutorials/org_spy', org_tutorials: orgs_for_spy
-    %details.dropdown.bg-secondary.text-white
-      %summary.p-2.font-semibold Create a Tutorial
-      %nav.dropdown-nav
-        - TutorialCategory::TUTORIAL_TYPES.each do |type|
-          = link_to "#{type} Tutorial",
-                    new_tutorial_path(type:),
-                    class: 'dropdown-item'
+    .flex.flex-wrap.gap-3
+      = link_to 'Add Section', new_tutorial_section_path, class: 'btn btn-secondary'
+      = link_to 'Add Resource',
+                new_tutorial_path(tutorial_section_id: @selected_section&.last&.id),
+                class: 'btn btn-main'
 
-    = link_to new_tutorial_category_path,
-              class: 'btn btn-secondary flex items-center w-full md:w-1/3' do
-      %span Add New Category
-      = inline_svg_tag 'next.svg', class: 'fill-white h-8 w-8'
+  - if @show_section_picker
+    - section_reorder = tutorial_reorder_data(reorder_tutorial_sections_path,
+                                              'tutorial_section_ids')
+    %section{ class: 'flex flex-1 gap-6 p-6 flex-col justify-start items-stretch ' \
+                     'md:flex-row md:items-center md:justify-center',
+              data: section_reorder }
+      - @section_entries.each do |key, section|
+        - if section
+          = render 'tutorial_sections/card',
+                   key:, section:, draggable: admin,
+                   reorder_data: tutorial_reorder_item_data(section.id)
+        - else
+          = render 'tutorial_sections/card', key:, section:
+  - else
+    - if @section_entries.many?
+      %nav.tab-nav
+        - @section_entries.each do |key, section|
+          = link_to section&.title || 'Others',
+                    tutorials_path(section: key, organisation_id: params[:organisation_id]),
+                    class: "nav-tab #{@selected_section&.first == key ? 'active' : 'inactive'}"
 
-  %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6
-    - @categories.each do |category|
-      = render 'tutorial_categories/card', category:
+    - if admin && @selected_section&.last
+      .flex.gap-3.justify-end
+        = link_to 'Edit Section',
+                  edit_tutorial_section_path(@selected_section.last),
+                  class: 'btn btn-secondary'
+        = link_to 'Delete Section', tutorial_section_path(@selected_section.last),
+                  class: 'btn btn-danger',
+                  data: { turbo_method: :delete,
+                          turbo_confirm: 'Delete this section? Categories move to Others.' }
+
+    :ruby
+      section_id = @selected_section&.last&.id
+      reorder_url = reorder_tutorials_path(tutorial_section_id: section_id)
+      category_reorder = tutorial_reorder_data(reorder_url, 'tutorial_ids')
+    %section.grid.grid-cols-2.md:grid-cols-5.gap-3.py-6{ data: category_reorder }
+      - @categories.each do |category|
+        = render 'tutorial_categories/card',
+                 category:, draggable: admin,
+                 reorder_data: tutorial_reorder_item_data(category.id)
+
+    - if @categories.empty?
+      %p.text-center.p-6 No resource categories are available in this section yet.
