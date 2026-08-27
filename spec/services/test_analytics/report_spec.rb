@@ -17,7 +17,8 @@ RSpec.describe TestAnalytics::Report do
     expect(report.summary).to include(results: 1, students: 1, schools: 1, average: 80.0)
     expect(report.school_rows.first).to include(name: school.name, average: 80.0)
     expect(report.student_rows.first).to include(student: student.name, score: 80)
-    expect(report.school_comparison_chart[:labels]).to eq(["#{school.name} (1)"])
+    expect(report.school_comparison_chart[:labels]).to eq(["#{school.name} — 1 result"])
+    expect(report.school_comparison_chart[:datasets].second[:label]).to eq('All-school average · 80.0%')
     expect(report.school_chart_min).to eq(70)
   end
 end

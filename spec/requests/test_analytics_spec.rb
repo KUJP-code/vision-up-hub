@@ -13,7 +13,18 @@ RSpec.describe 'Test analytics' do
       get analytics_tests_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('Analytics', 'Select a test to view analytics')
+      expect(response.body).to include('Analytics', 'All schools overview', 'Last year', 'Last 5 years')
+    end
+
+    it 'lists the newest tests first and includes their levels' do
+      older = create(:test, name: 'July 2025', level: :land_one, created_at: 1.year.ago)
+      newer = create(:test, name: 'July 2026', level: :sky_one, created_at: 1.day.ago)
+      sign_in admin
+
+      get analytics_tests_path
+
+      expect(response.body.index("#{newer.name} (Sky)"))
+        .to be < response.body.index("#{older.name} (Land)")
     end
 
     it 'falls back to the latest test month when the last three months are empty' do
@@ -27,7 +38,7 @@ RSpec.describe 'Test analytics' do
       get analytics_tests_path(test_id: test.id)
 
       expect(response.body).to include("Latest test set · #{tested_on.strftime('%B %Y')}")
-      expect(response.body).to include('Last year', 'Last 5 years')
+      expect(response.body).not_to include('Last year', 'Last 5 years')
       expect(response.body).not_to include('Last 6 months')
     end
 

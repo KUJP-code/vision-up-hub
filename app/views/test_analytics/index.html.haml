@@ -10,20 +10,44 @@
     .flex.flex-col.gap-1
       = form.label :test_id, 'Test', class: 'font-bold'
       - test_options = @tests.map { |test| ["#{test.name} (#{test.short_level})", test.id] }
-      = form.select :test_id, test_options, { prompt: 'Select a test', selected: params[:test_id] }, class: 'input', required: true
+      = form.select :test_id, test_options, { include_blank: 'All tests overview', selected: params[:test_id] }, class: 'input'
     .flex.items-end.justify-end
       = form.submit 'Update analytics', class: 'btn btn-main'
 
   - unless @selected_test
-    .rounded.border.border-main.bg-white.p-10.text-center
-      %h2 Select a test to view analytics
-      %p The page will only load results after you choose a test above.
+    .rounded.border-2.border-main.bg-white.p-4
+      %h2 All schools overview
+      %p.text-sm.mb-3 #{@overview.period || 'No results available'} · select a test above for detailed analytics
+      - if @overview.any?
+        %div{ class: 'max-h-[42rem] overflow-y-auto' }
+          %div{ style: "height: #{@overview.chart_height}px" }
+            %canvas{ data: { controller: 'chart',
+                             'chart-data-value': @overview.chart_data.to_json,
+                             'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: @overview.chart_min, max: 100 } }, plugins: { legend: { display: true } } }.to_json,
+                             'chart-type-value': 'bar' } }
+      - else
+        .p-10.text-center No test results are available for this organisation.
+
+    .grid.grid-cols-1.xl:grid-cols-2.gap-6
+      - @overview_reports.each do |label, overview|
+        .rounded.border.border-main.bg-white.p-4
+          %h2= label
+          %p.text-sm.mb-3 Overall school average comparison
+          - if overview.any?
+            %div{ class: 'max-h-[42rem] overflow-y-auto' }
+              %div{ style: "height: #{overview.chart_height}px" }
+                %canvas{ data: { controller: 'chart',
+                                 'chart-data-value': overview.chart_data.to_json,
+                                 'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: overview.chart_min, max: 100 } }, plugins: { legend: { display: true } } }.to_json,
+                                 'chart-type-value': 'bar' } }
+          - else
+            .h-72.flex.items-center.justify-center.text-center No results in this period
   - else
     .flex.flex-wrap.justify-between.items-center.gap-2
       %div
         %h2 #{@selected_test.name} (#{@selected_test.short_level})
         %p.text-sm Main tables use: #{@reporting_period || 'No results available'}
-      %p.text-sm School labels include the number of results in brackets.
+      %p.text-sm School labels show how many results contributed to each average.
 
     - summary = @report.summary
     .grid.grid-cols-2.md:grid-cols-4.xl:grid-cols-8.gap-3
@@ -44,23 +68,8 @@
           %div{ style: "height: #{@report.school_chart_height}px" }
             %canvas{ data: { controller: 'chart',
                              'chart-data-value': @report.school_comparison_chart.to_json,
-                             'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: @report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
+                             'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: @report.school_chart_min, max: 100 } }, plugins: { legend: { display: true } } }.to_json,
                              'chart-type-value': 'bar' } }
-
-      .grid.grid-cols-1.xl:grid-cols-2.gap-6
-        - @comparison_reports.each do |label, comparison_report|
-          .rounded.border.border-main.bg-white.p-4
-            %h2= label
-            %p.text-sm.mb-3 School average comparison
-            - if comparison_report.results.any?
-              %div{ class: 'max-h-[42rem] overflow-y-auto' }
-                %div{ style: "height: #{comparison_report.school_chart_height}px" }
-                  %canvas{ data: { controller: 'chart',
-                                   'chart-data-value': comparison_report.school_comparison_chart.to_json,
-                                   'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: comparison_report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
-                                   'chart-type-value': 'bar' } }
-            - else
-              .h-72.flex.items-center.justify-center.text-center No results in this period
 
       = render 'analytics_table', title: 'Schools comparison', table: 'schools', rows: @report.school_rows,
                columns: { name: 'School', organisation: 'Organisation', students: 'Students', results: 'Results', average: 'Average %', listening: 'Listening %', reading: 'Reading %', writing: 'Writing %', speaking: 'Speaking %', improved_rate: 'Moved up %', override_rate: 'Override %' }

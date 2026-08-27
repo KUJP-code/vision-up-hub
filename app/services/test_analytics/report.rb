@@ -28,7 +28,7 @@ module TestAnalytics
 
     def school_rows
       results.group_by(&:school).map do |school, group|
-        row_for(group).merge(name: school.name, organisation: school.organisation.name)
+        row_for(group).merge(name: TestAnalytics::SchoolName.english(school.name), organisation: school.organisation.name)
       end.sort_by { |row| [-row[:average], row[:name]] }
     end
 
@@ -47,7 +47,7 @@ module TestAnalytics
             date: result.tested_on,
             student: student.name,
             student_id: student.student_id,
-            school: result.school.name,
+            school: TestAnalytics::SchoolName.english(result.school.name),
             test: result.test.name,
             score: result.total_percent,
             change: previous ? result.total_percent - previous.total_percent : nil,
@@ -85,14 +85,27 @@ module TestAnalytics
 
     def school_comparison_chart
       rows = school_rows
+      overall_average = average(results, :total_percent)
       {
-        labels: rows.map { |row| "#{row[:name]} (#{row[:results]})" },
-        datasets: [{
-          label: 'Average score',
-          data: rows.map { |row| row[:average] },
-          backgroundColor: rows.each_index.map { |index| chart_colors[index % chart_colors.length] },
-          borderRadius: 5
-        }]
+        labels: rows.map { |row| "#{row[:name]} — #{TestAnalytics::SchoolName.result_count(row[:results])}" },
+        datasets: [
+          {
+            label: 'School average',
+            data: rows.map { |row| row[:average] },
+            backgroundColor: rows.each_index.map { |index| chart_colors[index % chart_colors.length] },
+            borderRadius: 5
+          },
+          {
+            type: 'line',
+            label: "All-school average · #{overall_average}%",
+            data: rows.map { overall_average },
+            borderColor: '#191919',
+            borderDash: [7, 5],
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0
+          }
+        ]
       }
     end
 
