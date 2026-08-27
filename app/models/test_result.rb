@@ -13,15 +13,16 @@ class TestResult < ApplicationRecord
   enum :new_level, LEVELS, suffix: true
   enum :prev_level, LEVELS, prefix: true
 
-  before_validation :scores_to_int, :set_grade, :prevent_evening
+  before_validation :scores_to_int, :set_grade, :set_reporting_context, :prevent_evening
   after_save :update_student_level
 
   belongs_to :test
   belongs_to :student
-  delegate :organisation_id, to: :student
+  belongs_to :school
+  belongs_to :organisation
 
   validate :reason_given?
-  validates :new_level, :prev_level, :total_percent, presence: true
+  validates :new_level, :prev_level, :total_percent, :tested_on, presence: true
   validates :listen_percent, :read_percent,
             :speak_percent, :total_percent,
             :write_percent, numericality:
@@ -93,6 +94,12 @@ class TestResult < ApplicationRecord
   end
 
   private
+
+  def set_reporting_context
+    self.tested_on ||= Time.zone.today
+    self.school ||= student&.school
+    self.organisation ||= student&.organisation
+  end
 
   def prevent_evening
     self.new_level = 'galaxy_two' if EVENING_COURSES.include?(new_level)

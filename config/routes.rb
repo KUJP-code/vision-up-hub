@@ -84,6 +84,8 @@ Rails.application.routes.draw do
       resources :teacher_events, only: %i[index show]
       resources :teacher_resources, only: %i[index]
       resources :tests, except: %i[show] do
+        get :analytics, on: :collection, to: 'test_analytics#index'
+        get 'analytics/export', on: :collection, to: 'test_analytics#export', as: :analytics_export
         resources :test_results, only: %i[create index update]
       end
 

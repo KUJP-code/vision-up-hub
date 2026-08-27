@@ -1,0 +1,7 @@
+-# locals: (active:)
+
+%nav.tab-nav.mb-4
+  = link_to 'Tests', tests_path,
+            class: "nav-tab #{active == :tests ? 'active' : 'inactive'}"
+  = link_to 'Analytics', analytics_tests_path,
+            class: "nav-tab #{active == :analytics ? 'active' : 'inactive'}"

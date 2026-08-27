@@ -8,6 +8,7 @@ class CsvExportsController < ApplicationController
 
   def index
     @allowed_models = ALLOWED_MODELS
+    @organisation = current_user.organisation
   end
 
   def show
@@ -71,9 +72,18 @@ class CsvExportsController < ApplicationController
   end
 
   def export_all_test_results(path)
-    File.open(path, 'wb') do |f|
-      TestResult.copy_to do |line|
-        f.write line
+    headers = %w[tested_on student student_id school test total_percent listening_percent reading_percent writing_percent speaking_percent previous_level new_level reason]
+    results = TestResult.includes(:student, :school, :test)
+                        .where(organisation_id: current_user.organisation_id)
+
+    CSV.open(path, 'wb') do |csv|
+      csv << headers
+      results.find_each do |result|
+        csv << [result.tested_on, result.student.name, result.student.student_id,
+                result.school.name, result.test.name, result.total_percent,
+                result.listen_percent, result.read_percent, result.write_percent,
+                result.speak_percent, result.prev_level.titleize,
+                result.new_level.titleize, result.reason]
       end
     end
   end
@@ -96,7 +106,7 @@ class CsvExportsController < ApplicationController
     CSV.open(path, 'wb') do |csv|
       csv << headers
       TestResult.includes(student: :school)
-                .where(test_id:).find_each do |result|
+                .where(test_id:, organisation_id: current_user.organisation_id).find_each do |result|
         csv << [result.student.name, result.student.en_name, result.student.student_id,
                 result.student.grade, result.student.school.name, result.prev_level.titleize,
                 result.basics, *result.listening, *result.reading,

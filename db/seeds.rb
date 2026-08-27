@@ -427,6 +427,98 @@ Student.all.each do |student|
   student.update(level: Student.levels.keys.sample)
 end
 
+puts 'Creating historical KidsUP test analytics data...'
+
+analytics_tests = {
+  land: fb.create(
+    :test,
+    name: 'Land Progress Check',
+    level: :land_one,
+    basics: 2,
+    questions: "writing: 2, 3, 4\nreading: 5, 4\nlistening: 2, 3, 6\nspeaking: 10",
+    thresholds: "Land One:1\nLand Two:65\nLand Three:82"
+  ),
+  sky: fb.create(
+    :test,
+    name: 'Sky Progress Check',
+    level: :sky_one,
+    basics: 2,
+    questions: "writing: 2, 3, 4\nreading: 5, 4\nlistening: 2, 3, 6\nspeaking: 10",
+    thresholds: "Sky One:1\nSky Two:65\nSky Three:82"
+  ),
+  galaxy: fb.create(
+    :test,
+    name: 'Galaxy Progress Check',
+    level: :galaxy_one,
+    basics: 2,
+    questions: "writing: 2, 3, 4\nreading: 5, 4\nlistening: 2, 3, 6\nspeaking: 10",
+    thresholds: "Galaxy One:1\nGalaxy Two:65\nGalaxy Three:82"
+  )
+}
+
+analytics_tests.each_value do |test|
+  full_course.course_tests.create!(test:, week: 1)
+end
+
+analytics_schools = kids_up.schools.order(:id).first(4)
+analytics_levels = {
+  land: %w[land_one land_two land_three],
+  sky: %w[sky_one sky_two sky_three],
+  galaxy: %w[galaxy_one galaxy_two galaxy_three]
+}
+analytics_dates = [11, 8, 5, 2].map { |months| months.months.ago.to_date }
+analytics_random = Random.new(27_082_026)
+
+analytics_levels.each_with_index do |(group, levels), group_index|
+  8.times do |student_index|
+    school = analytics_schools[(student_index + group_index) % analytics_schools.size]
+    student = Student.create!(
+      name: "Analytics #{group.to_s.titleize} Student #{student_index + 1}",
+      en_name: "#{group.to_s.titleize} Student #{student_index + 1}",
+      student_id: "AN#{group_index + 1}#{format('%03d', student_index + 1)}",
+      birthday: Date.new(2017 - group_index, (student_index % 12) + 1, 15),
+      start_date: 18.months.ago.to_date,
+      level: levels.first,
+      school:,
+      organisation: kids_up,
+      sex: student_index.even? ? :male : :female,
+      status: :active
+    )
+
+    analytics_dates.each_with_index do |tested_on, cycle|
+      score = 48 + (student_index * 4) + (cycle * 7) + analytics_random.rand(-5..5)
+      score = score.clamp(35, 96)
+      new_level = if score >= 82
+                    levels.third
+                  elsif score >= 65
+                    levels.second
+                  else
+                    levels.first
+                  end
+      previous_level = student.level
+      overridden = (student_index + cycle).multiple_of?(7) && new_level != previous_level
+      selected_level = overridden ? previous_level : new_level
+
+      TestResult.create!(
+        test: analytics_tests.fetch(group),
+        student:,
+        school:,
+        organisation: kids_up,
+        tested_on:,
+        prev_level: previous_level,
+        new_level: selected_level,
+        total_percent: score,
+        listen_percent: (score + analytics_random.rand(-8..8)).clamp(0, 100),
+        read_percent: (score + analytics_random.rand(-8..8)).clamp(0, 100),
+        write_percent: (score + analytics_random.rand(-8..8)).clamp(0, 100),
+        speak_percent: (score + analytics_random.rand(-8..8)).clamp(0, 100),
+        basics: 2,
+        reason: overridden ? 'Seeded teacher judgement example' : nil
+      )
+    end
+  end
+end
+
 puts 'Creating Tutorials...'
 
 File.open(Rails.root.join('app/assets/icons/back.svg')) do |f|

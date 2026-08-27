@@ -41,6 +41,11 @@
           #{result.total_percent || 0}%
 
     %td.p-2
+      = date_field_tag 'test_result[tested_on]',
+                       result.tested_on || Date.current,
+                       class: 'border-secondary', form:
+
+    %td.p-2
       - prev_level = result.prev_level || student.level
       = prev_level.titleize
       = hidden_field_tag 'test_result[prev_level]',

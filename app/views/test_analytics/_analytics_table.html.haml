@@ -1,0 +1,24 @@
+-# locals: (title:, table:, rows:, columns:)
+
+%section.rounded.border.border-main.bg-white.p-4
+  .flex.flex-wrap.justify-between.items-center.gap-3.mb-3
+    %h2= title
+    = link_to 'Export CSV', analytics_export_tests_path(request.query_parameters.merge(table:)), class: 'btn btn-secondary'
+  .overflow-x-auto.max-h-96{ data: { controller: 'sortable-table' } }
+    %table.w-full.text-center
+      %thead.sticky.top-0
+        %tr
+          - columns.each_with_index do |(key, label), index|
+            - type = key == :date ? 'date' : %i[students results average listening reading writing speaking improved_rate override_rate score change].include?(key) ? 'number' : 'text'
+            %th.thead.bg-secondary-50
+              %button.w-full.flex.items-center.justify-center.gap-1{ type: 'button',
+                data: { action: 'sortable-table#sort',
+                        'sortable-table-column-param': index,
+                        'sortable-table-type-param': type } }
+                %span= label
+                %span.w-3.text-xs{ data: { 'sortable-table-target': 'indicator' } }
+      %tbody{ data: { 'sortable-table-target': 'body' } }
+        - rows.each do |row|
+          %tr.border-b
+            - columns.each_key do |key|
+              %td.p-2.whitespace-nowrap{ data: { sort_value: row[key] } }= row[key].nil? ? '—' : row[key]

@@ -88,3 +88,6 @@ application.register("auto-reorder", AutoReorderController);
 
 import ResourceItemsController from "./resource_items_controller";
 application.register("resource-items", ResourceItemsController);
+
+import SortableTableController from "./sortable_table_controller";
+application.register("sortable-table", SortableTableController);

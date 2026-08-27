@@ -4,6 +4,9 @@
 
 %main.flex.flex-col.gap-3.p-3
   - if admin
+    = render 'tests/tabs', active: :tests
+
+  - if admin
     = link_to 'New Test',
               new_test_path,
               class: 'btn btn-secondary w-full'

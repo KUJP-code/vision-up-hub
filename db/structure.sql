@@ -1,7 +1,7 @@
-\restrict 8LdxVUzpTNT1J3EVnpdL6Z5XiB2SjEe3aIQg8GS2udhBioHzJ1xoYO2fFIcm136
+\restrict mKRP2ABLiqezLqyfNYKEArdKaobBRnbF5yiAJbMkV1lDnTOzVDW4ekIdBHtGjWT
 
--- Dumped from database version 16.13
--- Dumped by pg_dump version 16.13
+-- Dumped from database version 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2360,7 +2360,10 @@ CREATE TABLE public.test_results (
     updated_at timestamp(6) without time zone NOT NULL,
     reason character varying,
     basics integer DEFAULT 0,
-    grade character varying DEFAULT ''::character varying
+    grade character varying DEFAULT ''::character varying,
+    tested_on date NOT NULL,
+    school_id bigint NOT NULL,
+    organisation_id bigint NOT NULL
 );
 
 
@@ -4081,6 +4084,20 @@ CREATE INDEX index_teacher_tools_on_organisation_id ON public.teacher_tools USIN
 
 
 --
+-- Name: index_test_results_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_test_results_on_organisation_id ON public.test_results USING btree (organisation_id);
+
+
+--
+-- Name: index_test_results_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_test_results_on_school_id ON public.test_results USING btree (school_id);
+
+
+--
 -- Name: index_test_results_on_student_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4209,6 +4226,14 @@ ALTER TABLE ONLY public.support_requests
 
 
 --
+-- Name: test_results fk_rails_075eb4aa91; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_results
+    ADD CONSTRAINT fk_rails_075eb4aa91 FOREIGN KEY (organisation_id) REFERENCES public.organisations(id);
+
+
+--
 -- Name: students fk_rails_0adebddbd5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4222,6 +4247,14 @@ ALTER TABLE ONLY public.students
 
 ALTER TABLE ONLY public.phonics_resources
     ADD CONSTRAINT fk_rails_0b53c57831 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: test_results fk_rails_0f95effa9e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.test_results
+    ADD CONSTRAINT fk_rails_0f95effa9e FOREIGN KEY (school_id) REFERENCES public.schools(id);
 
 
 --
@@ -4724,7 +4757,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 8LdxVUzpTNT1J3EVnpdL6Z5XiB2SjEe3aIQg8GS2udhBioHzJ1xoYO2fFIcm136
+\unrestrict mKRP2ABLiqezLqyfNYKEArdKaobBRnbF5yiAJbMkV1lDnTOzVDW4ekIdBHtGjWT
 
 SET search_path TO "$user", public;
 
@@ -4732,6 +4765,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20260827000000'),
 ('20260820000200'),
 ('20260820000100'),
 ('20260820000000'),
@@ -4840,3 +4874,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('2'),
 ('1'),
 ('0');
+

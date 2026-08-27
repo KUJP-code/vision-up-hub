@@ -61,6 +61,7 @@ class TestResultsController < ApplicationController
           .permit(:total_percent, :write_percent, :read_percent,
                   :listen_percent, :speak_percent, :prev_level,
                   :new_level, :test_id, :student_id, :reason, :basics,
+                  :tested_on,
                   { answers: { listening: [], reading: [],
                                speaking: [], writing: [] } })
   end
