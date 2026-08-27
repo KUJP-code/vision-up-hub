@@ -13,7 +13,7 @@ RSpec.describe 'Test analytics' do
       get analytics_tests_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('Analytics', 'No results match these filters')
+      expect(response.body).to include('Analytics', 'Select a test to view analytics')
     end
 
     it 'falls back to the latest test month when the last three months are empty' do
@@ -24,10 +24,11 @@ RSpec.describe 'Test analytics' do
       create(:test_result, student:, test:, tested_on:, reason: 'Seeded result')
       sign_in admin
 
-      get analytics_tests_path
+      get analytics_tests_path(test_id: test.id)
 
       expect(response.body).to include("Latest test set · #{tested_on.strftime('%B %Y')}")
-      expect(response.body).to include('Last 6 months', 'Last year', 'Last 5 years')
+      expect(response.body).to include('Last year', 'Last 5 years')
+      expect(response.body).not_to include('Last 6 months')
     end
 
     it 'does not allow teachers to view analytics' do
@@ -43,8 +44,9 @@ RSpec.describe 'Test analytics' do
   describe 'GET /tests/analytics/export' do
     it 'exports an analytics table as CSV' do
       sign_in admin
+      test = create(:test)
 
-      get analytics_export_tests_path(table: 'schools')
+      get analytics_export_tests_path(table: 'schools', test_id: test.id)
 
       expect(response).to have_http_status(:ok)
       expect(response.media_type).to eq('text/csv')

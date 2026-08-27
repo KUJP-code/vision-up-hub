@@ -103,6 +103,10 @@ module TestAnalytics
       [((scores.min - 10) / 10).floor * 10, 0].max
     end
 
+    def school_chart_height
+      [school_rows.size * 38 + 60, 280].max
+    end
+
     private
 
     def row_for(group)

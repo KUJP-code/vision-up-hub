@@ -9,54 +9,60 @@
       = form.collection_select :organisation_id, @organisations, :id, :name, { selected: @organisation.id }, class: 'input'
     .flex.flex-col.gap-1
       = form.label :test_id, 'Test', class: 'font-bold'
-      = form.collection_select :test_id, @tests, :id, :name, { include_blank: 'All tests', selected: params[:test_id] }, class: 'input'
+      - test_options = @tests.map { |test| ["#{test.name} (#{test.short_level})", test.id] }
+      = form.select :test_id, test_options, { prompt: 'Select a test', selected: params[:test_id] }, class: 'input', required: true
     .flex.items-end.justify-end
       = form.submit 'Update analytics', class: 'btn btn-main'
 
-  .flex.flex-wrap.justify-between.items-center.gap-2
-    %div
-      %h2= params[:test_id].present? ? @tests.find { |test| test.id == params[:test_id].to_i }&.name : 'All tests'
-      %p.text-sm Main tables use: #{@reporting_period || 'No results available'}
-    %p.text-sm School labels include the number of results in brackets.
-
-  - summary = @report.summary
-  .grid.grid-cols-2.md:grid-cols-4.xl:grid-cols-8.gap-3
-    - { 'Results' => summary[:results], 'Students' => summary[:students], 'Schools' => summary[:schools], 'Average score' => summary[:average] ? "#{summary[:average]}%" : '—', 'Moved up' => summary[:improved], 'Maintained' => summary[:maintained], 'Moved down' => summary[:declined], 'Override rate' => "#{summary[:override_rate]}%" }.each do |label, value|
-      .rounded.border.border-main.bg-white.p-3.text-center
-        .text-2xl.font-bold.text-secondary= value
-        .text-sm= label
-
-  - if summary[:results].zero?
-    .rounded.border.border-main.bg-white.p-8.text-center
-      %h2 No results match these filters
-      %p There are no recorded results for this organisation and test.
+  - unless @selected_test
+    .rounded.border.border-main.bg-white.p-10.text-center
+      %h2 Select a test to view analytics
+      %p The page will only load results after you choose a test above.
   - else
-    .rounded.border-2.border-main.bg-white.p-4
-      %h2 Current school comparison
-      %p.text-sm.mb-3= @reporting_period
-      .h-80
-        %canvas{ data: { controller: 'chart',
-                         'chart-data-value': @report.school_comparison_chart.to_json,
-                         'chart-options-value': { responsive: true, maintainAspectRatio: false, scales: { y: { min: @report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
-                         'chart-type-value': 'bar' } }
+    .flex.flex-wrap.justify-between.items-center.gap-2
+      %div
+        %h2 #{@selected_test.name} (#{@selected_test.short_level})
+        %p.text-sm Main tables use: #{@reporting_period || 'No results available'}
+      %p.text-sm School labels include the number of results in brackets.
 
-    .grid.grid-cols-1.xl:grid-cols-3.gap-6
-      - @comparison_reports.each do |label, comparison_report|
-        .rounded.border.border-main.bg-white.p-4
-          %h2= label
-          %p.text-sm.mb-3 School average comparison
-          - if comparison_report.results.any?
-            .h-72
-              %canvas{ data: { controller: 'chart',
-                               'chart-data-value': comparison_report.school_comparison_chart.to_json,
-                               'chart-options-value': { responsive: true, maintainAspectRatio: false, scales: { y: { min: comparison_report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
-                               'chart-type-value': 'bar' } }
-          - else
-            .h-72.flex.items-center.justify-center.text-center No results in this period
+    - summary = @report.summary
+    .grid.grid-cols-2.md:grid-cols-4.xl:grid-cols-8.gap-3
+      - { 'Results' => summary[:results], 'Students' => summary[:students], 'Schools' => summary[:schools], 'Average score' => summary[:average] ? "#{summary[:average]}%" : '—', 'Moved up' => summary[:improved], 'Maintained' => summary[:maintained], 'Moved down' => summary[:declined], 'Override rate' => "#{summary[:override_rate]}%" }.each do |label, value|
+        .rounded.border.border-main.bg-white.p-3.text-center
+          .text-2xl.font-bold.text-secondary= value
+          .text-sm= label
 
-    = render 'analytics_table', title: 'Schools comparison', table: 'schools', rows: @report.school_rows,
-             columns: { name: 'School', organisation: 'Organisation', students: 'Students', results: 'Results', average: 'Average %', listening: 'Listening %', reading: 'Reading %', writing: 'Writing %', speaking: 'Speaking %', improved_rate: 'Moved up %', override_rate: 'Override %' }
-    = render 'analytics_table', title: 'Test comparison', table: 'tests', rows: @report.test_rows,
-             columns: { name: 'Test', students: 'Students', results: 'Results', average: 'Average %', listening: 'Listening %', reading: 'Reading %', writing: 'Writing %', speaking: 'Speaking %', improved_rate: 'Moved up %', override_rate: 'Override %' }
-    = render 'analytics_table', title: 'Student progress', table: 'students', rows: @report.student_rows,
-             columns: { date: 'Date', student: 'Student', student_id: 'Student ID', school: 'School', test: 'Test', score: 'Score %', change: 'Change', previous_level: 'Previous level', new_level: 'New level' }
+    - if summary[:results].zero?
+      .rounded.border.border-main.bg-white.p-8.text-center
+        %h2 No results match this test
+        %p There are no recorded results in the last five years.
+    - else
+      .rounded.border-2.border-main.bg-white.p-4
+        %h2 Current school comparison
+        %p.text-sm.mb-3= @reporting_period
+        %div{ class: 'max-h-[42rem] overflow-y-auto' }
+          %div{ style: "height: #{@report.school_chart_height}px" }
+            %canvas{ data: { controller: 'chart',
+                             'chart-data-value': @report.school_comparison_chart.to_json,
+                             'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: @report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
+                             'chart-type-value': 'bar' } }
+
+      .grid.grid-cols-1.xl:grid-cols-2.gap-6
+        - @comparison_reports.each do |label, comparison_report|
+          .rounded.border.border-main.bg-white.p-4
+            %h2= label
+            %p.text-sm.mb-3 School average comparison
+            - if comparison_report.results.any?
+              %div{ class: 'max-h-[42rem] overflow-y-auto' }
+                %div{ style: "height: #{comparison_report.school_chart_height}px" }
+                  %canvas{ data: { controller: 'chart',
+                                   'chart-data-value': comparison_report.school_comparison_chart.to_json,
+                                   'chart-options-value': { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { min: comparison_report.school_chart_min, max: 100 } }, plugins: { legend: { display: false } } }.to_json,
+                                   'chart-type-value': 'bar' } }
+            - else
+              .h-72.flex.items-center.justify-center.text-center No results in this period
+
+      = render 'analytics_table', title: 'Schools comparison', table: 'schools', rows: @report.school_rows,
+               columns: { name: 'School', organisation: 'Organisation', students: 'Students', results: 'Results', average: 'Average %', listening: 'Listening %', reading: 'Reading %', writing: 'Writing %', speaking: 'Speaking %', improved_rate: 'Moved up %', override_rate: 'Override %' }
+      = render 'analytics_table', title: 'Student progress', table: 'students', rows: @report.student_rows,
+               columns: { date: 'Date', student: 'Student', student_id: 'Student ID', school: 'School', test: 'Test', score: 'Score %', change: 'Change', previous_level: 'Previous level', new_level: 'New level' }

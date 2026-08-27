@@ -5,13 +5,19 @@ class TestAnalyticsController < ApplicationController
   before_action :set_filters
 
   def index
-    @report = TestAnalytics::Report.new(primary_results)
+    return unless @selected_test
+
+    results = dashboard_results
+    @report = TestAnalytics::Report.new(primary_results(results))
     @comparison_reports = comparison_windows.map do |label, start_date|
-      [label, TestAnalytics::Report.new(results_since(start_date))]
+      period_results = results.select { |result| result.tested_on >= start_date }
+      [label, TestAnalytics::Report.new(period_results)]
     end
   end
 
   def export
+    return redirect_to(analytics_tests_path, alert: 'Select a test before exporting.') unless @selected_test
+
     report = TestAnalytics::Report.new(primary_results)
     table = params[:table].presence_in(%w[schools students tests]) || 'students'
     send_data csv_for(report, table), filename: "test-analytics-#{table}-#{Date.current}.csv"
@@ -27,36 +33,36 @@ class TestAnalyticsController < ApplicationController
     @organisations = Organisation.order(:name)
     @organisation = @organisations.find_by(id: params[:organisation_id]) || current_user.organisation
     @tests = Test.order(:name)
+    @selected_test = @tests.find { |test| test.id == params[:test_id].to_i } if params[:test_id].present?
   end
 
   def base_results
     scope = TestResult.includes(:student, :test, school: :organisation)
                       .where(organisation_id: @organisation.id)
-    scope = scope.where(test_id: params[:test_id]) if params[:test_id].present?
+    scope = scope.where(test_id: @selected_test.id) if @selected_test
     scope
   end
 
-  def primary_results
-    recent = results_since(3.months.ago.to_date)
-    if recent.exists?
-      @reporting_period = 'Last 3 months'
-      return recent.order(:tested_on)
-    end
-
-    latest_date = base_results.maximum(:tested_on)
-    return base_results.none if latest_date.blank?
-
-    @reporting_period = "Latest test set · #{latest_date.strftime('%B %Y')}"
-    base_results.where(tested_on: latest_date.all_month).order(:tested_on)
+  def dashboard_results
+    base_results.where(tested_on: 5.years.ago.to_date..Date.current).order(:tested_on).to_a
   end
 
-  def results_since(start_date)
-    base_results.where(tested_on: start_date..Date.current)
+  def primary_results(results = dashboard_results)
+    recent = results.select { |result| result.tested_on >= 3.months.ago.to_date }
+    if recent.any?
+      @reporting_period = 'Last 3 months'
+      return recent
+    end
+
+    latest_date = results.map(&:tested_on).max
+    return [] if latest_date.blank?
+
+    @reporting_period = "Latest test set · #{latest_date.strftime('%B %Y')}"
+    results.select { |result| result.tested_on.in?(latest_date.all_month) }
   end
 
   def comparison_windows
     [
-      ['Last 6 months', 6.months.ago.to_date],
       ['Last year', 1.year.ago.to_date],
       ['Last 5 years', 5.years.ago.to_date]
     ]
