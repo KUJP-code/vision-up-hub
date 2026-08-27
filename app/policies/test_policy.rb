@@ -35,7 +35,7 @@ class TestPolicy < ApplicationPolicy
       when 'Admin'
         scope.all
       when 'Teacher'
-        user.available_tests(Time.zone.today, since: 2.months.ago.to_date)
+        user.available_tests(Time.zone.today, since: 6.months.ago.to_date)
       when 'OrgAdmin', 'SchoolManager'
         user.available_tests
       else

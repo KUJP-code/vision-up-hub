@@ -84,12 +84,12 @@ RSpec.describe TestPolicy do
     it_behaves_like 'unauthorized user'
     it_behaves_like 'school staff for tests'
 
-    it 'hides tests scheduled more than two months ago' do
+    it 'hides tests scheduled more than six months ago' do
       course.save && user.save
       plan = user.organisation.plans.create!(attributes_for(:plan, course_id: course.id,
-                                                                   start: 4.months.ago.to_date))
-      old_week = user.organisation.course_week(plan, 2.months.ago.to_date) - 1
-      recent_week = user.organisation.course_week(plan, 2.months.ago.to_date)
+                                                                   start: 8.months.ago.to_date))
+      old_week = user.organisation.course_week(plan, 6.months.ago.to_date) - 1
+      recent_week = user.organisation.course_week(plan, 6.months.ago.to_date)
       old_test = create(:test, name: 'Expired Test', course_tests:
                         [create(:course_test, course_id: course.id, week: old_week)])
       recent_test = create(:test, name: 'Recent Test', course_tests:
