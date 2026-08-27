@@ -98,7 +98,7 @@ class TestResult < ApplicationRecord
   def set_reporting_context
     self.tested_on ||= Time.zone.today
     self.school ||= student&.school
-    self.organisation ||= student&.organisation
+    self.organisation ||= school&.organisation
   end
 
   def prevent_evening

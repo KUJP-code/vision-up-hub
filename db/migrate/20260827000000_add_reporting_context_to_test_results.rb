@@ -10,8 +10,9 @@ class AddReportingContextToTestResults < ActiveRecord::Migration[7.1]
       UPDATE test_results
       SET tested_on = test_results.created_at::date,
           school_id = students.school_id,
-          organisation_id = students.organisation_id
+          organisation_id = schools.organisation_id
       FROM students
+      INNER JOIN schools ON schools.id = students.school_id
       WHERE students.id = test_results.student_id
     SQL
 
