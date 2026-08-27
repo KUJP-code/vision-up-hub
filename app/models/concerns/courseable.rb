@@ -4,8 +4,8 @@ module Courseable
   extend ActiveSupport::Concern
 
   included do
-    def available_tests(date = Time.zone.today)
-      query = test_query(date)
+    def available_tests(date = Time.zone.today, since: nil)
+      query = test_query(date, since:)
       Test.joins(:course_tests).where(query[:string], *query[:conditions])
     end
 
@@ -60,21 +60,25 @@ module Courseable
     result
   end
 
-  def test_query(date)
-    course_weeks = plans.active.map { |p| [p.course_id, course_week(p, date)] }
+  def test_query(date, since: nil)
+    course_weeks = plans.active.map do |plan|
+      [plan.course_id, course_week(plan, date), (course_week(plan, since) if since)]
+    end
     build_test_query(course_weeks)
   end
 
   def build_test_query(course_weeks)
     result = { string: '', conditions: [] }
-    course_weeks.each do |course_id, week|
+    course_weeks.each do |course_id, week, earliest_week|
       query_string = 'course_tests.course_id = ? AND course_tests.week <= ?'
+      query_string += ' AND course_tests.week >= ?' if earliest_week
       result[:string] = if result[:string].empty?
-                          query_string
-                        else
-                          "#{result[:string]} OR #{query_string}"
-                        end
-      result[:conditions] = result[:conditions] + [course_id, week]
+                         query_string
+                       else
+                         "#{result[:string]} OR #{query_string}"
+                       end
+      result[:conditions] += [course_id, week]
+      result[:conditions] << earliest_week if earliest_week
     end
 
     result

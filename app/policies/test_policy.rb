@@ -34,7 +34,9 @@ class TestPolicy < ApplicationPolicy
       case user.type
       when 'Admin'
         scope.all
-      when 'OrgAdmin', 'SchoolManager', 'Teacher'
+      when 'Teacher'
+        user.available_tests(Time.zone.today, since: 2.months.ago.to_date)
+      when 'OrgAdmin', 'SchoolManager'
         user.available_tests
       else
         scope.none
