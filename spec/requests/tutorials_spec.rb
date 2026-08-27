@@ -45,6 +45,23 @@ RSpec.describe 'Resources' do
     end
   end
 
+  describe 'GET /tutorials/:id video item' do
+    it 'renders the embedded video at the full modal size' do
+      tutorial = create(:tutorial_category, items: [{
+                          'kind' => 'video',
+                          'title' => 'Training video',
+                          'url' => 'https://www.youtube.com/watch?v=abcdefghijk'
+                        }])
+
+      get tutorial_path(tutorial, item: 0)
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('flex items-center justify-center h-full w-full p-4')
+      iframe = response.parsed_body.at_css('iframe')
+      expect(iframe['class'].split).to contain_exactly('w-full', 'h-full')
+    end
+  end
+
   describe 'POST /tutorials' do
     it 'creates the card and multiple item types through one endpoint' do
       expect do
