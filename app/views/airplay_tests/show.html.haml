@@ -1,0 +1,54 @@
+- content_for :head do
+  %meta{ name: 'turbo-cache-control', content: 'no-cache' }
+
+= render 'shared/subtitle', text: 'AirPlay Video Test'
+
+%main.flex.flex-col.items-center.gap-4.p-4{ data: { controller: 'airplay-test', 'airplay-test-video-id-value': 'HbknVoJvPbk' } }
+  %section.w-full.max-w-3xl.rounded-xl.bg-white.p-4.shadow
+    %div{ data: { 'airplay-test-target': 'ready' } }
+      %h1.mb-2.text-center.text-2xl.font-bold.text-secondary YouTube → Apple TV test
+      %p.mb-4.text-center.text-sm.text-slate-600
+        Start Screen Mirroring from iPad Control Centre first, then tap the button below.
+
+      .mx-auto.mb-4.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
+        %div.h-full.w-full{ data: { 'airplay-test-target': 'player' } }
+
+      %button.btn.btn-main.w-full.text-xl{ type: 'button',
+        data: { action: 'airplay-test#start', 'airplay-test-target': 'startButton' } }
+        ▶ Start YouTube video
+      = link_to 'Open the original video on YouTube',
+        'https://www.youtube.com/watch?v=HbknVoJvPbk',
+        class: 'mt-3 block text-center text-sm text-secondary underline',
+        target: '_blank', rel: 'noopener'
+
+    %div.hidden{ data: { 'airplay-test-target': 'remote' } }
+      %p.mb-1.text-center.text-sm.font-bold.uppercase.tracking-wide.text-success Playing / AirPlay test
+      %h1.mb-6.text-center.text-2xl.font-bold.text-secondary Lesson remote
+
+      %button.btn.btn-main.mb-4.w-full.py-8.text-3xl{ type: 'button',
+        data: { action: 'airplay-test#togglePlayback', 'airplay-test-target': 'playButton' } }
+        ⏸ Pause
+
+      .mb-4.grid.grid-cols-2.gap-4
+        %button.btn.btn-secondary.py-6.text-2xl{ type: 'button', data: { action: 'airplay-test#back' } } ↶ 5 sec
+        %button.btn.btn-secondary.py-6.text-2xl{ type: 'button', data: { action: 'airplay-test#forward' } } 5 sec ↷
+
+      %p.mb-5.text-center.font-mono.text-lg{ data: { 'airplay-test-target': 'time' } } 0:00
+
+      %button.btn.btn-danger.w-full.py-5.text-xl{ type: 'button', data: { action: 'airplay-test#stop' } }
+        ■ Stop & return to mirroring
+
+      %button.mt-4.w-full.text-center.text-sm.text-secondary.underline{ type: 'button',
+        data: { action: 'airplay-test#showPlayer' } }
+        Show YouTube player / AirPlay controls
+
+    %div.hidden{ data: { 'airplay-test-target': 'error' } }
+      %p.rounded-lg.bg-red-50.p-4.text-center.text-danger{ data: { 'airplay-test-target': 'errorMessage' } }
+
+  %section.w-full.max-w-3xl.rounded-xl.border.border-secondary-50.bg-white.p-4.text-sm.text-slate-600
+    %h2.mb-2.font-bold.text-secondary What to check
+    %ol.list-decimal.space-y-1.pl-5
+      %li The mirrored page is initially visible on Apple TV.
+      %li Starting the video makes it take over the TV output.
+      %li Pause, play, and ±5 seconds work from this iPad remote.
+      %li Stop releases the video and the mirrored page returns.

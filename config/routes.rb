@@ -119,6 +119,7 @@ Rails.application.routes.draw do
     end
 
     authenticate :user, ->(user) { user.is?('Admin') } do
+      resource :airplay_test, only: :show
       mount Flipper::UI.app(Flipper) => '/flipper', as: :flipper
       mount MissionControl::Jobs::Engine, at: '/jobs'
       mount PgHero::Engine, at: '/pghero'

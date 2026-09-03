@@ -86,6 +86,9 @@ application.register("teacher-tools-panel", TeacherToolsPanelController);
 import AutoReorderController from "./auto_reorder_controller";
 application.register("auto-reorder", AutoReorderController);
 
+import AirplayTestController from "./airplay_test_controller";
+application.register("airplay-test", AirplayTestController);
+
 import ResourceItemsController from "./resource_items_controller";
 application.register("resource-items", ResourceItemsController);
 
