@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.7.6.2-test_performance"
+    "Name": "kidsup/materials:2.7.7-tv_test"
   },
   "Ports": [
     {
