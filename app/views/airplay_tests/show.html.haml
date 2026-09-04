@@ -3,26 +3,35 @@
 
 = render 'shared/subtitle', text: 'AirPlay Video Test'
 
-%main.flex.flex-col.items-center.gap-4.p-4{ data: { controller: 'airplay-test', 'airplay-test-video-id-value': 'HbknVoJvPbk' } }
+- test_video = 'https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8'
+
+%main.flex.flex-col.items-center.gap-4.p-4{
+  data: { controller: 'airplay-test', 'airplay-test-source-value': test_video }
+}
   %section.w-full.max-w-3xl.rounded-xl.bg-white.p-4.shadow
     %div{ data: { 'airplay-test-target': 'ready' } }
-      %h1.mb-2.text-center.text-2xl.font-bold.text-secondary YouTube → Apple TV test
-      %p.mb-4.text-center.text-sm.text-slate-600
-        Start Screen Mirroring from iPad Control Centre first, then tap the button below.
+      %h1.mb-2.text-center.text-2xl.font-bold.text-secondary Native AirPlay handoff test
+      %p.mb-2.text-center.text-sm.text-slate-600
+        Start Screen Mirroring from iPad Control Centre first. Then use the button below to hand only the video to Apple TV.
+      %p.mb-4.text-center.text-sm.font-semibold.text-secondary{
+        data: { 'airplay-test-target': 'status' }
+      }
+        Looking for an Apple TV…
 
-      .mx-auto.mb-4.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
-        %div.h-full.w-full{ data: { 'airplay-test-target': 'player' } }
-
-      %button.btn.btn-main.w-full.text-xl{ type: 'button',
+      %button.btn.btn-main.w-full.text-xl{ type: 'button', disabled: true,
         data: { action: 'airplay-test#start', 'airplay-test-target': 'startButton' } }
-        ▶ Start YouTube video
-      = link_to 'Open the original video on YouTube',
-        'https://www.youtube.com/watch?v=HbknVoJvPbk',
-        class: 'mt-3 block text-center text-sm text-secondary underline',
-        target: '_blank', rel: 'noopener'
+        AirPlay video to Apple TV
+
+    -# Keep the media element rendered during wireless playback. Safari may suspend
+    -# display:none media; native AirPlay replaces the Apple TV's mirrored output.
+    .mx-auto.my-4.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
+      %video.h-full.w-full{ src: test_video, controls: true, playsinline: true,
+        preload: 'metadata', 'x-webkit-airplay': 'allow',
+        data: { 'airplay-test-target': 'player' } }
 
     %div.hidden{ data: { 'airplay-test-target': 'remote' } }
-      %p.mb-1.text-center.text-sm.font-bold.uppercase.tracking-wide.text-success Playing / AirPlay test
+      %p.mb-1.text-center.text-sm.font-bold.uppercase.tracking-wide.text-success
+        Native AirPlay active
       %h1.mb-6.text-center.text-2xl.font-bold.text-secondary Lesson remote
 
       %button.btn.btn-main.mb-4.w-full.py-8.text-3xl{ type: 'button',
@@ -36,19 +45,18 @@
       %p.mb-5.text-center.font-mono.text-lg{ data: { 'airplay-test-target': 'time' } } 0:00
 
       %button.btn.btn-danger.w-full.py-5.text-xl{ type: 'button', data: { action: 'airplay-test#stop' } }
-        ■ Stop & return to mirroring
-
-      %button.mt-4.w-full.text-center.text-sm.text-secondary.underline{ type: 'button',
-        data: { action: 'airplay-test#showPlayer' } }
-        Show YouTube player / AirPlay controls
+        ■ Stop video & return to mirroring
 
     %div.hidden{ data: { 'airplay-test-target': 'error' } }
       %p.rounded-lg.bg-red-50.p-4.text-center.text-danger{ data: { 'airplay-test-target': 'errorMessage' } }
 
   %section.w-full.max-w-3xl.rounded-xl.border.border-secondary-50.bg-white.p-4.text-sm.text-slate-600
-    %h2.mb-2.font-bold.text-secondary What to check
+    %h2.mb-2.font-bold.text-secondary Expected sequence
     %ol.list-decimal.space-y-1.pl-5
-      %li The mirrored page is initially visible on Apple TV.
-      %li Starting the video makes it take over the TV output.
-      %li Pause, play, and ±5 seconds work from this iPad remote.
-      %li Stop releases the video and the mirrored page returns.
+      %li The app page is initially mirrored on Apple TV.
+      %li Choose the Apple TV from the AirPlay picker.
+      %li The TV shows only the video while the iPad remains on this remote.
+      %li Play, pause, and ±5 seconds control the video on the TV.
+      %li Stop ends native video playback and the mirrored app page returns.
+    %p.mt-3
+      This test uses Apple’s public HLS example stream. Production videos need a direct compatible MP4 or HLS URL to use the same handoff.

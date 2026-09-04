@@ -1,104 +1,111 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["player", "ready", "remote", "startButton", "playButton", "time", "error", "errorMessage"];
-  static values = { videoId: String };
+  static targets = ["player", "ready", "remote", "startButton", "playButton", "time", "status", "error", "errorMessage"];
+  static values = { source: String };
 
   connect() {
-    this.playing = false;
-    this.playerVisible = true;
-    this.loadYouTubeApi();
+    this.events = new AbortController();
+    const options = { signal: this.events.signal };
+
+    this.playerTarget.addEventListener("play", () => this.playbackChanged(true), options);
+    this.playerTarget.addEventListener("pause", () => this.playbackChanged(false), options);
+    this.playerTarget.addEventListener("timeupdate", () => this.updateTime(), options);
+    this.playerTarget.addEventListener("ended", () => this.stop(), options);
+    this.playerTarget.addEventListener("error", () => this.mediaError(), options);
+    this.playerTarget.addEventListener("webkitplaybacktargetavailabilitychanged", (event) => this.availabilityChanged(event), options);
+    this.playerTarget.addEventListener("webkitcurrentplaybacktargetiswirelesschanged", () => this.routeChanged(), options);
+
+    if (typeof this.playerTarget.webkitShowPlaybackTargetPicker !== "function") {
+      this.startButtonTarget.disabled = true;
+      this.statusTarget.textContent = "Open this page in Safari on an iPad to run the AirPlay test.";
+    }
   }
 
   disconnect() {
-    window.clearInterval(this.timeTimer);
-    if (this.player?.destroy) this.player.destroy();
-  }
-
-  loadYouTubeApi() {
-    if (window.YT?.Player) return this.createPlayer();
-
-    window.youtubeApiReadyCallbacks ||= [];
-    window.youtubeApiReadyCallbacks.push(() => this.createPlayer());
-
-    if (document.querySelector("script[data-youtube-iframe-api]")) return;
-
-    const script = document.createElement("script");
-    script.src = "https://www.youtube.com/iframe_api";
-    script.dataset.youtubeIframeApi = "true";
-    document.head.appendChild(script);
-    window.onYouTubeIframeAPIReady = () => {
-      window.youtubeApiReadyCallbacks.splice(0).forEach((callback) => callback());
-    };
-  }
-
-  createPlayer() {
-    if (!this.hasPlayerTarget || this.player) return;
-
-    this.player = new window.YT.Player(this.playerTarget, {
-      videoId: this.videoIdValue,
-      playerVars: { playsinline: 1, rel: 0 },
-      events: {
-        onReady: () => { this.startButtonTarget.disabled = false; },
-        onStateChange: (event) => this.stateChanged(event),
-        onError: () => this.showError("YouTube could not load this video. Use the original-video link below to confirm it is available.")
-      }
-    });
+    this.events?.abort();
   }
 
   start() {
-    if (!this.player?.playVideo) return this.showError("The YouTube player is still loading. Please wait a moment and try again.");
+    if (typeof this.playerTarget.webkitShowPlaybackTargetPicker !== "function") {
+      return this.showError("This browser cannot open Apple's AirPlay device picker. Use Safari on the iPad.");
+    }
 
-    this.player.playVideo();
-    this.readyTarget.classList.add("hidden");
-    this.remoteTarget.classList.remove("hidden");
-    this.timeTimer = window.setInterval(() => this.updateTime(), 500);
+    // Apple requires the route picker to be opened directly from a user gesture.
+    this.playerTarget.webkitShowPlaybackTargetPicker();
+    this.playerTarget.play().catch(() => {
+      this.showError("Playback did not start. Select the Apple TV, then tap Play again.");
+    });
   }
 
   togglePlayback() {
-    if (this.playing) this.player.pauseVideo();
-    else this.player.playVideo();
+    if (this.playerTarget.paused) {
+      this.playerTarget.play().catch(() => this.showError("The video could not resume."));
+    } else {
+      this.playerTarget.pause();
+    }
   }
 
-  async back() { this.seekBy(-5); }
-  async forward() { this.seekBy(5); }
+  back() { this.seekBy(-5); }
+  forward() { this.seekBy(5); }
 
   seekBy(seconds) {
-    const currentTime = Number(this.player?.getCurrentTime?.() || 0);
-    this.player?.seekTo?.(Math.max(0, currentTime + seconds), true);
+    this.playerTarget.currentTime = Math.max(0, this.playerTarget.currentTime + seconds);
     this.updateTime();
   }
 
   stop() {
-    this.player?.stopVideo?.();
-    this.resetRemote();
+    this.playerTarget.pause();
+    this.playerTarget.currentTime = 0;
+
+    // Reloading tears down the media's wireless playback session so the existing
+    // Control Centre screen-mirroring session can become visible again.
+    this.playerTarget.removeAttribute("src");
+    this.playerTarget.load();
+    this.playerTarget.src = this.sourceValue;
+    this.playerTarget.load();
+    this.showReady();
   }
 
-  showPlayer() {
-    this.playerVisible = !this.playerVisible;
-    this.readyTarget.classList.toggle("hidden", !this.playerVisible);
-    this.remoteTarget.classList.toggle("hidden", this.playerVisible);
+  availabilityChanged(event) {
+    const available = event.availability === "available";
+    this.startButtonTarget.disabled = !available;
+    this.statusTarget.textContent = available
+      ? "Apple TV available. Tap below and select it."
+      : "No AirPlay device found. Check that the iPad and Apple TV are on the same network.";
   }
 
-  stateChanged(event) {
-    this.playing = event.data === window.YT.PlayerState.PLAYING;
-    this.playButtonTarget.textContent = this.playing ? "⏸ Pause" : "▶ Play";
-    if (event.data === window.YT.PlayerState.ENDED) this.resetRemote();
+  routeChanged() {
+    if (this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
+      this.readyTarget.classList.add("hidden");
+      this.remoteTarget.classList.remove("hidden");
+      this.statusTarget.textContent = "Video is playing directly on the Apple TV.";
+    } else {
+      this.showReady();
+    }
+  }
+
+  playbackChanged(playing) {
+    this.playButtonTarget.textContent = playing ? "⏸ Pause" : "▶ Play";
   }
 
   updateTime() {
-    const seconds = Math.max(0, Math.floor(Number(this.player?.getCurrentTime?.() || 0)));
+    const seconds = Math.max(0, Math.floor(Number(this.playerTarget.currentTime || 0)));
     const minutes = Math.floor(seconds / 60);
     this.timeTarget.textContent = `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
   }
 
-  resetRemote() {
-    window.clearInterval(this.timeTimer);
+  showReady() {
     this.readyTarget.classList.remove("hidden");
     this.remoteTarget.classList.add("hidden");
-    this.playing = false;
-    this.playButtonTarget.textContent = "▶ Play";
+    this.playbackChanged(false);
     this.updateTime();
+  }
+
+  mediaError() {
+    if (this.playerTarget.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+      this.showError("The HLS test video could not be loaded. Check the iPad's internet connection.");
+    }
   }
 
   showError(message) {
