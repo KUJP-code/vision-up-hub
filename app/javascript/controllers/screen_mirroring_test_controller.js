@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["player", "setup", "remote", "playButton", "time", "error"];
+  static targets = ["stage", "player", "setup", "remote", "playButton", "time", "error"];
 
   connect() {
     this.events = new AbortController();
@@ -19,6 +19,8 @@ export default class extends Controller {
   }
 
   start() {
+    this.enterFullscreen();
+    this.stageTarget.classList.add("fixed", "inset-0", "z-[60]", "rounded-none");
     this.playerTarget.play().then(() => {
       this.setupTarget.classList.add("hidden");
       this.remoteTarget.classList.remove("hidden");
@@ -44,6 +46,8 @@ export default class extends Controller {
   stop() {
     this.playerTarget.pause();
     this.playerTarget.currentTime = 0;
+    this.exitFullscreen();
+    this.stageTarget.classList.remove("fixed", "inset-0", "z-[60]", "rounded-none");
     this.setupTarget.classList.remove("hidden");
     this.remoteTarget.classList.add("hidden");
     this.updateTime();
@@ -51,6 +55,26 @@ export default class extends Controller {
 
   updatePlayButton() {
     this.playButtonTarget.textContent = this.playerTarget.paused ? "▶ Play" : "⏸ Pause";
+  }
+
+  enterFullscreen() {
+    const request = this.stageTarget.requestFullscreen || this.stageTarget.webkitRequestFullscreen;
+    if (!request) return;
+
+    try {
+      const result = request.call(this.stageTarget);
+      result?.catch?.(() => {});
+    } catch (_error) {
+      // The fixed viewport layout below remains as a browser-fullscreen fallback.
+    }
+  }
+
+  exitFullscreen() {
+    const exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (!exit || (!document.fullscreenElement && !document.webkitFullscreenElement)) return;
+
+    const result = exit.call(document);
+    result?.catch?.(() => {});
   }
 
   updateTime() {

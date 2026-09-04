@@ -5,38 +5,41 @@
 
 - test_video = 'https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8'
 
-%main.flex.min-h-full.flex-col.items-center.bg-black.p-4.pb-40{
+%main.flex.min-h-full.flex-col.items-center.bg-black.p-4{
   data: { controller: 'screen-mirroring-test' }
 }
   %section.w-full.max-w-5xl
     %div.mb-4.rounded-lg.bg-white.p-4{ data: { 'screen-mirroring-test-target': 'setup' } }
       %h1.mb-2.text-center.text-2xl.font-bold.text-secondary Mirrored video with application remote
       %p.mb-4.text-center.text-sm.text-slate-600
-        Start Screen Mirroring from iPad Control Centre, then play. This test deliberately remains mirrored and does not use native video AirPlay.
+        Start Screen Mirroring from iPad Control Centre, then play. The video fills the screen with a compact remote over its bottom edge.
       %button.btn.btn-main.w-full.text-xl{ type: 'button', data: { action: 'screen-mirroring-test#start' } }
         ▶ Play mirrored video
 
-    .aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
-      %video.h-full.w-full{ src: test_video, playsinline: true, preload: 'metadata',
+    .relative.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black{
+      data: { 'screen-mirroring-test-target': 'stage' }
+    }
+      %video.absolute.inset-0.h-full.w-full.object-contain{ src: test_video, playsinline: true, preload: 'metadata',
         'x-webkit-airplay': 'deny', disableRemotePlayback: true,
         data: { 'screen-mirroring-test-target': 'player' } }
+
+      %div{
+        class: 'absolute bottom-3 left-1/2 z-10 hidden w-full max-w-3xl -translate-x-1/2 rounded-xl bg-white/90 p-3 shadow-2xl backdrop-blur',
+        data: { 'screen-mirroring-test-target': 'remote' }
+      }
+        .grid.grid-cols-4.gap-2
+          %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#back' } }
+            ↶ 5 sec
+          %button.btn.btn-main.py-4.text-lg{ type: 'button',
+            data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } }
+            ⏸ Pause
+          %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#forward' } }
+            5 sec ↷
+          %button.btn.btn-danger.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#stop' } }
+            ■ Stop
+        %p.mt-2.text-center.font-mono.text-secondary{ data: { 'screen-mirroring-test-target': 'time' } } 0:00
 
     %p.mt-3.hidden.rounded-lg.bg-red-50.p-4.text-center.text-danger{
       data: { 'screen-mirroring-test-target': 'error' }
     }
       The test video could not play. Open this page in Safari and check the iPad’s internet connection.
-
-  .fixed.bottom-0.left-16.right-0.z-40.hidden.border-t-2.border-secondary.bg-white.p-3.shadow-2xl{
-    data: { 'screen-mirroring-test-target': 'remote' }
-  }
-    .mx-auto.grid.w-full.max-w-3xl.grid-cols-4.gap-2
-      %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#back' } }
-        ↶ 5 sec
-      %button.btn.btn-main.py-4.text-lg{ type: 'button',
-        data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } }
-        ⏸ Pause
-      %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#forward' } }
-        5 sec ↷
-      %button.btn.btn-danger.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#stop' } }
-        ■ Stop
-    %p.mt-2.text-center.font-mono.text-secondary{ data: { 'screen-mirroring-test-target': 'time' } } 0:00
