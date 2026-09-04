@@ -20,7 +20,11 @@
 
       %button.btn.btn-main.w-full.text-xl{ type: 'button', disabled: true,
         data: { action: 'airplay-test#start', 'airplay-test-target': 'startButton' } }
-        AirPlay video to Apple TV
+        Play video on mirrored Apple TV
+
+      %button.btn.btn-secondary.mt-3.hidden.w-full.text-lg{ type: 'button',
+        data: { action: 'airplay-test#chooseTarget', 'airplay-test-target': 'routeButton' } }
+        Choose a different Apple TV
 
     -# Keep the media element rendered during wireless playback. Safari may suspend
     -# display:none media; native AirPlay replaces the Apple TV's mirrored output.
@@ -54,7 +58,7 @@
     %h2.mb-2.font-bold.text-secondary Expected sequence
     %ol.list-decimal.space-y-1.pl-5
       %li The app page is initially mirrored on Apple TV.
-      %li Choose the Apple TV from the AirPlay picker.
+      %li Start the video without reopening the picker for the already-mirrored TV.
       %li The TV shows only the video while the iPad remains on this remote.
       %li Play, pause, and ±5 seconds control the video on the TV.
       %li Stop ends native video playback and the mirrored app page returns.

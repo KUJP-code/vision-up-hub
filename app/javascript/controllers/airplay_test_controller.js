@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["player", "ready", "remote", "startButton", "playButton", "time", "status", "error", "errorMessage"];
+  static targets = ["player", "ready", "remote", "startButton", "routeButton", "playButton", "time", "status", "error", "errorMessage"];
   static values = { source: String };
 
   connect() {
@@ -19,10 +19,14 @@ export default class extends Controller {
     if (typeof this.playerTarget.webkitShowPlaybackTargetPicker !== "function") {
       this.startButtonTarget.disabled = true;
       this.statusTarget.textContent = "Open this page in Safari on an iPad to run the AirPlay test.";
+    } else {
+      this.startButtonTarget.disabled = false;
     }
   }
 
   disconnect() {
+    window.clearTimeout(this.routeTimer);
+    window.clearTimeout(this.restoreTimer);
     this.events?.abort();
   }
 
@@ -31,11 +35,23 @@ export default class extends Controller {
       return this.showError("This browser cannot open Apple's AirPlay device picker. Use Safari on the iPad.");
     }
 
+    this.playerTarget.play().catch(() => {
+      this.showError("Playback did not start. Tap Play again, or use Choose Apple TV.");
+    });
+
+    this.statusTarget.textContent = "Starting video on the current mirrored Apple TV…";
+    window.clearTimeout(this.routeTimer);
+    this.routeTimer = window.setTimeout(() => {
+      if (!this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
+        this.routeButtonTarget.classList.remove("hidden");
+        this.statusTarget.textContent = "The current mirror did not take over. Use the fallback selector below.";
+      }
+    }, 2000);
+  }
+
+  chooseTarget() {
     // Apple requires the route picker to be opened directly from a user gesture.
     this.playerTarget.webkitShowPlaybackTargetPicker();
-    this.playerTarget.play().catch(() => {
-      this.showError("Playback did not start. Select the Apple TV, then tap Play again.");
-    });
   }
 
   togglePlayback() {
@@ -55,6 +71,7 @@ export default class extends Controller {
   }
 
   stop() {
+    window.clearTimeout(this.routeTimer);
     this.playerTarget.pause();
     this.playerTarget.currentTime = 0;
 
@@ -62,25 +79,34 @@ export default class extends Controller {
     // Control Centre screen-mirroring session can become visible again.
     this.playerTarget.removeAttribute("src");
     this.playerTarget.load();
+    window.clearTimeout(this.restoreTimer);
+    this.restoreTimer = window.setTimeout(() => this.restoreSource(), 2000);
+    this.showReady();
+  }
+
+  restoreSource() {
+    if (this.playerTarget.getAttribute("src")) return;
+
     this.playerTarget.src = this.sourceValue;
     this.playerTarget.load();
-    this.showReady();
   }
 
   availabilityChanged(event) {
     const available = event.availability === "available";
-    this.startButtonTarget.disabled = !available;
     this.statusTarget.textContent = available
-      ? "Apple TV available. Tap below and select it."
+      ? "Apple TV available. Start the video using the current mirror."
       : "No AirPlay device found. Check that the iPad and Apple TV are on the same network.";
   }
 
   routeChanged() {
     if (this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
+      window.clearTimeout(this.routeTimer);
       this.readyTarget.classList.add("hidden");
       this.remoteTarget.classList.remove("hidden");
+      this.routeButtonTarget.classList.add("hidden");
       this.statusTarget.textContent = "Video is playing directly on the Apple TV.";
     } else {
+      this.restoreSource();
       this.showReady();
     }
   }
@@ -98,6 +124,7 @@ export default class extends Controller {
   showReady() {
     this.readyTarget.classList.remove("hidden");
     this.remoteTarget.classList.add("hidden");
+    this.routeButtonTarget.classList.add("hidden");
     this.playbackChanged(false);
     this.updateTime();
   }
