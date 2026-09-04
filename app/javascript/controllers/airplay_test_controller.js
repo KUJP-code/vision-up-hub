@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["player", "ready", "remote", "startButton", "routeButton", "playButton", "time", "status", "error", "errorMessage"];
+  static targets = ["player", "ready", "remote", "startButton", "playButton", "time", "status", "error", "errorMessage"];
   static values = { source: String };
 
   connect() {
@@ -35,28 +35,16 @@ export default class extends Controller {
       return this.showError("This browser cannot open Apple's AirPlay device picker. Use Safari on the iPad.");
     }
 
-    // While Screen Mirroring is active, fullscreen gives iPadOS the strongest
-    // signal that this element is the visual media it should promote to Apple TV.
-    // Once wireless playback starts, routeChanged() returns the iPad to our remote.
-    this.enterVideoFullscreen();
-    this.playerTarget.play().catch(() => {
-      this.showError("Playback did not start. Tap Play again, or use Choose Apple TV.");
-    });
-
-    this.statusTarget.textContent = "Starting video on the current mirrored Apple TV…";
+    this.awaitingRoute = true;
+    this.playerTarget.webkitShowPlaybackTargetPicker();
+    this.statusTarget.textContent = "Select an Apple TV. The video will remain stopped until Safari confirms the wireless route.";
     window.clearTimeout(this.routeTimer);
     this.routeTimer = window.setTimeout(() => {
       if (!this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
-        this.exitVideoFullscreen();
-        this.routeButtonTarget.classList.remove("hidden");
-        this.statusTarget.textContent = "The current mirror did not take over. Use the fallback selector below.";
+        this.awaitingRoute = false;
+        this.statusTarget.textContent = "Video AirPlay was not connected, so playback was not started. Stop Screen Mirroring in Control Centre and try again.";
       }
-    }, 2000);
-  }
-
-  chooseTarget() {
-    // Apple requires the route picker to be opened directly from a user gesture.
-    this.playerTarget.webkitShowPlaybackTargetPicker();
+    }, 3000);
   }
 
   togglePlayback() {
@@ -77,7 +65,7 @@ export default class extends Controller {
 
   stop() {
     window.clearTimeout(this.routeTimer);
-    this.exitVideoFullscreen();
+    this.awaitingRoute = false;
     this.playerTarget.pause();
     this.playerTarget.currentTime = 0;
 
@@ -100,17 +88,19 @@ export default class extends Controller {
   availabilityChanged(event) {
     const available = event.availability === "available";
     this.statusTarget.textContent = available
-      ? "Apple TV available. Start the video using the current mirror."
+      ? "Apple TV available. Tap below to connect native video AirPlay."
       : "No AirPlay device found. Check that the iPad and Apple TV are on the same network.";
   }
 
   routeChanged() {
     if (this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
       window.clearTimeout(this.routeTimer);
-      this.exitVideoFullscreen();
+      if (this.awaitingRoute) {
+        this.awaitingRoute = false;
+        this.playerTarget.play().catch(() => this.showError("The Apple TV connected, but playback could not start."));
+      }
       this.readyTarget.classList.add("hidden");
       this.remoteTarget.classList.remove("hidden");
-      this.routeButtonTarget.classList.add("hidden");
       this.statusTarget.textContent = "Video is playing directly on the Apple TV.";
     } else {
       this.restoreSource();
@@ -122,23 +112,6 @@ export default class extends Controller {
     this.playButtonTarget.textContent = playing ? "⏸ Pause" : "▶ Play";
   }
 
-  enterVideoFullscreen() {
-    if (!this.playerTarget.webkitSupportsFullscreen || typeof this.playerTarget.webkitEnterFullscreen !== "function") return;
-
-    try {
-      this.playerTarget.webkitEnterFullscreen();
-    } catch (_error) {
-      // Some iPadOS versions decide fullscreen availability only after playback.
-      // Playback and the explicit AirPlay fallback remain available in that case.
-    }
-  }
-
-  exitVideoFullscreen() {
-    if (!this.playerTarget.webkitDisplayingFullscreen || typeof this.playerTarget.webkitExitFullscreen !== "function") return;
-
-    this.playerTarget.webkitExitFullscreen();
-  }
-
   updateTime() {
     const seconds = Math.max(0, Math.floor(Number(this.playerTarget.currentTime || 0)));
     const minutes = Math.floor(seconds / 60);
@@ -148,7 +121,6 @@ export default class extends Controller {
   showReady() {
     this.readyTarget.classList.remove("hidden");
     this.remoteTarget.classList.add("hidden");
-    this.routeButtonTarget.classList.add("hidden");
     this.playbackChanged(false);
     this.updateTime();
   }

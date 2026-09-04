@@ -89,6 +89,9 @@ application.register("auto-reorder", AutoReorderController);
 import AirplayTestController from "./airplay_test_controller";
 application.register("airplay-test", AirplayTestController);
 
+import ScreenMirroringTestController from "./screen_mirroring_test_controller";
+application.register("screen-mirroring-test", ScreenMirroringTestController);
+
 import ResourceItemsController from "./resource_items_controller";
 application.register("resource-items", ResourceItemsController);
 

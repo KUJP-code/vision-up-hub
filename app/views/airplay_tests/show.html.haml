@@ -12,7 +12,7 @@
     %div{ data: { 'airplay-test-target': 'ready' } }
       %h1.mb-2.text-center.text-2xl.font-bold.text-secondary Native AirPlay handoff test
       %p.mb-2.text-center.text-sm.text-slate-600
-        Start Screen Mirroring from iPad Control Centre first. The video will briefly enter fullscreen while iPadOS attempts to hand it to Apple TV.
+        Connect native video AirPlay below. Playback cannot start on the iPad: it begins only after Safari confirms an Apple TV video route.
       %p.mb-4.text-center.text-sm.font-semibold.text-secondary{
         data: { 'airplay-test-target': 'status' }
       }
@@ -20,18 +20,16 @@
 
       %button.btn.btn-main.w-full.text-xl{ type: 'button', disabled: true,
         data: { action: 'airplay-test#start', 'airplay-test-target': 'startButton' } }
-        Play video on mirrored Apple TV
-
-      %button.btn.btn-secondary.mt-3.hidden.w-full.text-lg{ type: 'button',
-        data: { action: 'airplay-test#chooseTarget', 'airplay-test-target': 'routeButton' } }
-        Choose a different Apple TV
+        Connect video to Apple TV
 
     -# Keep the media element rendered during wireless playback. Safari may suspend
     -# display:none media; native AirPlay replaces the Apple TV's mirrored output.
-    .mx-auto.my-4.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
+    .relative.mx-auto.my-4.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black
       %video.h-full.w-full{ src: test_video, controls: true, playsinline: true,
         preload: 'metadata', 'x-webkit-airplay': 'allow',
         data: { 'airplay-test-target': 'player' } }
+      .pointer-events-none.absolute.inset-0.flex.items-center.justify-center.bg-secondary.p-6.text-center.text-lg.font-bold.text-white
+        Video is hidden on this iPad. Use the application controls below after Apple TV connects.
 
     %div.hidden{ data: { 'airplay-test-target': 'remote' } }
       %p.mb-1.text-center.text-sm.font-bold.uppercase.tracking-wide.text-success
@@ -57,8 +55,8 @@
   %section.w-full.max-w-3xl.rounded-xl.border.border-secondary-50.bg-white.p-4.text-sm.text-slate-600
     %h2.mb-2.font-bold.text-secondary Expected sequence
     %ol.list-decimal.space-y-1.pl-5
-      %li The app page is initially mirrored on Apple TV.
-      %li Start the video; Safari briefly enters fullscreen to request video takeover on the already-mirrored TV.
+      %li If the app is mirrored, stop Screen Mirroring from iPad Control Centre.
+      %li Use the system picker to establish native video AirPlay.
       %li The TV shows only the video while the iPad remains on this remote.
       %li Play, pause, and ±5 seconds control the video on the TV.
       %li Stop ends native video playback and the mirrored app page returns.
