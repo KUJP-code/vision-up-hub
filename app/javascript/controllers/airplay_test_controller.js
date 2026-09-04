@@ -35,6 +35,10 @@ export default class extends Controller {
       return this.showError("This browser cannot open Apple's AirPlay device picker. Use Safari on the iPad.");
     }
 
+    // While Screen Mirroring is active, fullscreen gives iPadOS the strongest
+    // signal that this element is the visual media it should promote to Apple TV.
+    // Once wireless playback starts, routeChanged() returns the iPad to our remote.
+    this.enterVideoFullscreen();
     this.playerTarget.play().catch(() => {
       this.showError("Playback did not start. Tap Play again, or use Choose Apple TV.");
     });
@@ -43,6 +47,7 @@ export default class extends Controller {
     window.clearTimeout(this.routeTimer);
     this.routeTimer = window.setTimeout(() => {
       if (!this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
+        this.exitVideoFullscreen();
         this.routeButtonTarget.classList.remove("hidden");
         this.statusTarget.textContent = "The current mirror did not take over. Use the fallback selector below.";
       }
@@ -72,6 +77,7 @@ export default class extends Controller {
 
   stop() {
     window.clearTimeout(this.routeTimer);
+    this.exitVideoFullscreen();
     this.playerTarget.pause();
     this.playerTarget.currentTime = 0;
 
@@ -101,6 +107,7 @@ export default class extends Controller {
   routeChanged() {
     if (this.playerTarget.webkitCurrentPlaybackTargetIsWireless) {
       window.clearTimeout(this.routeTimer);
+      this.exitVideoFullscreen();
       this.readyTarget.classList.add("hidden");
       this.remoteTarget.classList.remove("hidden");
       this.routeButtonTarget.classList.add("hidden");
@@ -113,6 +120,23 @@ export default class extends Controller {
 
   playbackChanged(playing) {
     this.playButtonTarget.textContent = playing ? "⏸ Pause" : "▶ Play";
+  }
+
+  enterVideoFullscreen() {
+    if (!this.playerTarget.webkitSupportsFullscreen || typeof this.playerTarget.webkitEnterFullscreen !== "function") return;
+
+    try {
+      this.playerTarget.webkitEnterFullscreen();
+    } catch (_error) {
+      // Some iPadOS versions decide fullscreen availability only after playback.
+      // Playback and the explicit AirPlay fallback remain available in that case.
+    }
+  }
+
+  exitVideoFullscreen() {
+    if (!this.playerTarget.webkitDisplayingFullscreen || typeof this.playerTarget.webkitExitFullscreen !== "function") return;
+
+    this.playerTarget.webkitExitFullscreen();
   }
 
   updateTime() {

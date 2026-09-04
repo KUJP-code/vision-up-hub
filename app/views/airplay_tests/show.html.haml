@@ -12,7 +12,7 @@
     %div{ data: { 'airplay-test-target': 'ready' } }
       %h1.mb-2.text-center.text-2xl.font-bold.text-secondary Native AirPlay handoff test
       %p.mb-2.text-center.text-sm.text-slate-600
-        Start Screen Mirroring from iPad Control Centre first. Then use the button below to hand only the video to Apple TV.
+        Start Screen Mirroring from iPad Control Centre first. The video will briefly enter fullscreen while iPadOS attempts to hand it to Apple TV.
       %p.mb-4.text-center.text-sm.font-semibold.text-secondary{
         data: { 'airplay-test-target': 'status' }
       }
@@ -58,7 +58,7 @@
     %h2.mb-2.font-bold.text-secondary Expected sequence
     %ol.list-decimal.space-y-1.pl-5
       %li The app page is initially mirrored on Apple TV.
-      %li Start the video without reopening the picker for the already-mirrored TV.
+      %li Start the video; Safari briefly enters fullscreen to request video takeover on the already-mirrored TV.
       %li The TV shows only the video while the iPad remains on this remote.
       %li Play, pause, and ±5 seconds control the video on the TV.
       %li Stop ends native video playback and the mirrored app page returns.
