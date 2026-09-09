@@ -63,6 +63,17 @@ RSpec.describe 'Resources' do
   end
 
   describe 'POST /tutorials' do
+    it 'creates a category with an uploaded file and no removals' do
+      upload = Rack::Test::UploadedFile.new(Rails.root.join('spec/example_lesson.pdf'), 'application/pdf')
+
+      expect do
+        post tutorials_path, params: { tutorial_category: { title: 'Uploaded guide', files: ['', upload] } }
+      end.to change(TutorialCategory, :count).by(1)
+
+      expect(response).to have_http_status(:redirect)
+      expect(TutorialCategory.last.files.count).to eq(1)
+    end
+
     it 'creates the card and multiple item types through one endpoint' do
       expect do
         post tutorials_path, params: { tutorial_category: {
@@ -75,6 +86,26 @@ RSpec.describe 'Resources' do
       end.to change(TutorialCategory, :count).by(1)
 
       expect(TutorialCategory.last.items.pluck('kind')).to contain_exactly('link', 'faq')
+    end
+  end
+
+  describe 'PATCH /tutorials/:id' do
+    it 'uploads a new file and removes only selected files belonging to the category' do
+      tutorial = create(:tutorial_category, :file)
+      other = create(:tutorial_category, :file)
+      removed_file = tutorial.files_attachments.first
+      other_file = other.files_attachments.first
+      upload = Rack::Test::UploadedFile.new(Rails.root.join('spec/example_lesson.pdf'), 'application/pdf')
+
+      patch tutorial_path(tutorial), params: { tutorial_category: {
+        title: tutorial.title, files: ['', upload],
+        remove_file_ids: ['', removed_file.id.to_s, other_file.id.to_s]
+      } }
+
+      expect(response).to have_http_status(:redirect)
+      expect(tutorial.reload.files.count).to eq(1)
+      expect(tutorial.files_attachments.pluck(:id)).not_to include(removed_file.id)
+      expect(other.reload.files_attachments.pluck(:id)).to eq([other_file.id])
     end
   end
 

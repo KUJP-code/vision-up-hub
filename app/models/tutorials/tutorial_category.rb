@@ -108,6 +108,9 @@ class TutorialCategory < ApplicationRecord
   end
 
   def purge_removed_files
-    files.attachments.where(id: Array(remove_file_ids).compact_blank).find_each(&:purge)
+    ids = Array(remove_file_ids).compact_blank
+    return if ids.empty?
+
+    files_attachments.where(id: ids).find_each(&:purge)
   end
 end
