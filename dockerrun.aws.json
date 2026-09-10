@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.7.8-resources_fix"
+    "Name": "kidsup/materials:2.7.9-vimeo_test"
   },
   "Ports": [
     {
