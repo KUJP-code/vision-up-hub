@@ -11,7 +11,7 @@ RSpec.describe 'AirPlay video test', type: :request do
     get airplay_test_path
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('bipbop_16x9_variant.m3u8')
+    expect(response.body).to include('player.vimeo.com/external/1225145089.m3u8')
     expect(response.body).to include('Native AirPlay handoff test')
     expect(response.body).to include('Stop video & return to mirroring')
   end
