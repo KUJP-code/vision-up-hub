@@ -16,12 +16,12 @@
 .lm-stage :focus-visible { outline: 3px solid #ee9e45; outline-offset: 4px; }
 .lm-stage h2 { font-size: 20px; font-weight: 700; }
 .lm-stage h3 { font-size: 17px; font-weight: 700; }
-.lm-lesson-dialog { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; }
+.lm-lesson-dialog { z-index: 100; position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; }
 .lm-stage { position: fixed; inset: 0; width: 100%; height: 100%; width: 100dvw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: hidden; background: linear-gradient(135deg, #d6f2fc, #69c0dd 55%, #3193c1); color: #26465d; }
 .lm-stage::backdrop { background: #69c0dd; }
 .lm-splash, .lm-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .lm-video { background: #08131d; }
-.lm-video-stage { position: fixed; inset: 0; z-index: 4; width: 100%; height: 100%; overflow: hidden; background: black; }
+.lm-video-stage.fixed { position: fixed; inset: 0; width: 100%; height: 100%; }
 .lm-lesson-menu { position: relative; z-index: 2; display: flex; justify-content: center; align-items: flex-start; gap: 12px; padding: max(16px, env(safe-area-inset-top)) 16px 16px; }
 .lm-bubble { display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 24px 24px 24px 8px; padding: 10px 16px; color: #645880; background: white; border: 3px solid #645880; box-shadow: 0 4px 0 #645880; list-style: none; transition: transform .12s, box-shadow .12s; }
 .lm-bubble:active, details[open] > .lm-bubble { transform: translateY(3px); box-shadow: 0 1px 0 #645880; }
@@ -77,3 +77,6 @@
   .lm-bubble { gap: 6px; padding: 8px 10px; font-size: 12px; }
   .lm-menu-icon { width: 26px; height: 26px; font-size: 16px; }
 }
+
+.lm-fullscreen-feedback { position: absolute; bottom: 16px; left: 16px; z-index: 5; color: #645880; }
+.lm-fullscreen-feedback p:not(:empty) { background: white; padding: 8px; border-radius: 10px; }

@@ -65,13 +65,15 @@
       %p あいさつの練習 → 動画を見る → みんなでやってみよう！
       %button.btn.btn-secondary.self-center{ type: 'button', data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
 
-  %dialog.lm-lesson-dialog{ data: { 'screen-mirroring-test-target': 'lessonDialog', action: 'cancel->screen-mirroring-test#closeLesson' }, 'aria-label': 'レッスン画面' }
+  %div.lm-lesson-dialog{ hidden: true, role: 'dialog', 'aria-modal': 'true', data: { 'screen-mirroring-test-target': 'lessonDialog' }, 'aria-label': 'レッスン画面' }
     .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
       .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
         = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
         - [['see-you', 'See you!'], ['hello', 'Hello!'], ['nice-to-meet-you', 'Nice to meet you!']].each do |position, phrase|
           %button.lm-speech-hotspot{ class: "lm-speech-#{position}", type: 'button', 'aria-label': "#{phrase} を聞く", data: { action: 'screen-mirroring-test#speak', phrase: phrase } }
             %span.lm-speech-icon{ 'aria-hidden': 'true' } ♪
+        - { 'See you!' => 'see-you', 'Hello!' => 'hello', 'Nice to meet you!' => 'nice-to-meet-you' }.each do |phrase, clip|
+          %audio{ preload: 'auto', src: asset_path("speech/#{clip}.wav"), data: { 'screen-mirroring-test-target': 'phraseAudio', phrase: phrase } }
         %p.lm-sr-only{ role: 'status', data: { 'screen-mirroring-test-target': 'speechStatus' } }
       %nav.lm-lesson-menu{ 'aria-label': 'レッスンメニュー', data: { 'screen-mirroring-test-target': 'menu' } }
         %button.lm-bubble.lm-basic{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: basic_video, kind: 'basic', title: 'ベーシックイングリッシュ' } }
@@ -92,7 +94,10 @@
             - stories.each_with_index do |story, index|
               %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: story_video, kind: 'story', title: story } }= "#{index + 1}. #{story}"
         %button.lm-bubble.lm-menu-exit{ type: 'button', data: { action: 'screen-mirroring-test#closeLesson' } } ✕ 終了
-      .lm-video-stage{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
+      .lm-fullscreen-feedback
+        %button.btn.btn-secondary{ hidden: true, type: 'button', data: { 'screen-mirroring-test-target': 'fullscreenButton', action: 'screen-mirroring-test#enterFullscreen' } } 全画面にする
+        %p{ role: 'status', data: { 'screen-mirroring-test-target': 'fullscreenStatus' } }
+      .lm-video-stage.relative.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
         - { basic: basic_video, activity: activity_video, story: story_video }.each do |kind, source|
           %video.lm-video{ hidden: true, src: source, playsinline: true, preload: 'metadata', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player', kind: kind } }
         %section.lm-remote.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
