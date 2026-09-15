@@ -11,27 +11,17 @@ function fixture(document = {}) {
   vm.runInContext(source, context);
   const controller = new context.Mockup();
   controller.lessonDialogTarget = { hidden: false };
-  controller.fullscreenButtonTarget = { hidden: true };
-  controller.fullscreenStatusTarget = { textContent: '' };
   controller.speechStatusTarget = { textContent: '' };
   return controller;
 }
 
-test('lesson fullscreen targets the document and reports rejection instead of silently succeeding', async () => {
-  let requested = false;
-  const document = { documentElement: { requestFullscreen() { requested = true; return Promise.reject(new Error('denied')); } } };
-  const controller = fixture(document);
-  controller.enterFullscreen();
-  await new Promise(resolve => setImmediate(resolve));
-  assert.equal(requested, true);
-  assert.equal(controller.fullscreenButtonTarget.hidden, false);
-  assert.notEqual(controller.fullscreenStatusTarget.textContent, '');
-});
-
-test('missing fullscreen support exposes the retry state', () => {
-  const controller = fixture({ documentElement: {} });
-  controller.enterFullscreen();
-  assert.equal(controller.fullscreenButtonTarget.hidden, false);
+test('starting the lesson opens the splash without requesting fullscreen', () => {
+  const controller = fixture({ activeElement: {}, body: { children: [] }, documentElement: { requestFullscreen() { throw Error('Lesson should not request fullscreen'); } } });
+  controller.element = { children: [] };
+  controller.lessonDialogTarget = { hidden: true };
+  controller.menuTarget = { querySelector() { return { focus() {} }; } };
+  controller.start();
+  assert.equal(controller.lessonDialogTarget.hidden, false);
 });
 
 test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then remote', async () => {
@@ -40,17 +30,18 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   const controller = fixture();
   controller.stageTarget = {
     hidden: true,
+    getBoundingClientRect() {},
     requestFullscreen() { calls.push('fullscreen'); assert.equal(this, controller.stageTarget); return Promise.resolve(); },
     classList: { add(...names) { calls.push(['fixed', ...names]); } }
   };
-  controller.playerTargets = [{
+  controller.playerTarget = {
     dataset: { kind: 'basic' }, readyState: 1,
     pause() {}, play() { calls.push('play'); return new Promise(resolve => { finishPlay = resolve; }); }
-  }];
+  };
   for (const target of ['speed','videoTitle','error','remote','menu','splash']) controller[`${target}Target`] = { hidden: false };
   controller.playButtonTarget = { focus() {} };
   controller.playbackGeneration = 0;
-  controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = () => {};
+  controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.loadVideoSource = controller.resetGuide = () => {};
   controller.playVideo({ currentTarget: { dataset: { kind: 'basic', title: 'Lesson' } } });
   assert.deepEqual(calls, ['fullscreen', ['fixed', 'fixed', 'inset-0', 'z-[60]', 'rounded-none'], 'play']);
   assert.equal(controller.remoteTarget.hidden, true);
@@ -80,4 +71,15 @@ test('phrase taps play local media and stop the previous clip', () => {
   controller.speak({ currentTarget: { dataset: { phrase: 'See you!' } } });
   assert.deepEqual(played, ['See you!']);
   assert.ok(controller.phraseAudioTargets.every(audio => audio.paused && audio.currentTime === 0));
+});
+
+test('preparing a different lesson reuses the single video and does not reload a matching source', () => {
+  const controller = fixture();
+  let loads = 0;
+  controller.playerTarget = { src: 'basic.m3u8', dataset: {}, getAttribute() { return this.src; }, load() { loads++; } };
+  controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
+  assert.equal(controller.playerTarget.src, 'story.m3u8');
+  assert.equal(loads, 1);
+  controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
+  assert.equal(loads, 1);
 });

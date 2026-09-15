@@ -66,7 +66,7 @@
       %button.btn.btn-secondary.self-center{ type: 'button', data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
 
   %div.lm-lesson-dialog{ hidden: true, role: 'dialog', 'aria-modal': 'true', data: { 'screen-mirroring-test-target': 'lessonDialog' }, 'aria-label': 'レッスン画面' }
-    .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
+    .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen', action: 'pointerover->screen-mirroring-test#prepareVideo focusin->screen-mirroring-test#prepareVideo pointerdown->screen-mirroring-test#prepareVideo' } }
       .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
         = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
         - [['see-you', 'See you!'], ['hello', 'Hello!'], ['nice-to-meet-you', 'Nice to meet you!']].each do |position, phrase|
@@ -80,35 +80,33 @@
           %span.lm-menu-icon{ 'aria-hidden': 'true' } ABC
           ベーシックイングリッシュ
         %details
-          %summary.lm-bubble.lm-activity
+          %summary.lm-bubble.lm-activity{ data: { kind: 'activity', src: activity_video } }
             %span.lm-menu-icon{ 'aria-hidden': 'true' } ✂
             アクティビティ ▾
           .lm-dropdown
             - activities.each do |activity|
               %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: activity_video, kind: 'activity', title: activity } }= "▶ #{activity}"
         %details
-          %summary.lm-bubble.lm-story
+          %summary.lm-bubble.lm-story{ data: { kind: 'story', src: story_video } }
             %span.lm-menu-icon{ 'aria-hidden': 'true' } ★
             ストーリータイム ▾
           .lm-dropdown
             - stories.each_with_index do |story, index|
               %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: story_video, kind: 'story', title: story } }= "#{index + 1}. #{story}"
         %button.lm-bubble.lm-menu-exit{ type: 'button', data: { action: 'screen-mirroring-test#closeLesson' } } ✕ 終了
-      .lm-fullscreen-feedback
-        %button.btn.btn-secondary{ hidden: true, type: 'button', data: { 'screen-mirroring-test-target': 'fullscreenButton', action: 'screen-mirroring-test#enterFullscreen' } } 全画面にする
-        %p{ role: 'status', data: { 'screen-mirroring-test-target': 'fullscreenStatus' } }
       .lm-video-stage.relative.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
-        - { basic: basic_video, activity: activity_video, story: story_video }.each do |kind, source|
-          %video.lm-video{ hidden: true, src: source, playsinline: true, preload: 'metadata', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player', kind: kind } }
-        %section.lm-remote.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
+        %video.lm-video{ src: basic_video, playsinline: true, preload: 'metadata', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player', kind: 'basic' } }
+        %section.lm-remote.lm-remote-compact.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
           .lm-remote-heading.border-b-2.border-secondary.pb-3
             %h2{ data: { 'screen-mirroring-test-target': 'videoTitle' } }
+            %button.btn.btn-outline{ type: 'button', 'aria-expanded': 'false', 'aria-controls': 'lm-video-guide', data: { action: 'screen-mirroring-test#toggleGuide', 'screen-mirroring-test-target': 'guideButton' } } 先生用ガイドを開く
+          #lm-video-guide.lm-guide-panel{ hidden: true, data: { 'screen-mirroring-test-target': 'guidePanel' } }
             %label.flex.min-w-0.flex-col.gap-1
               %span.text-xs 先生用ガイド · サンプルチャプター
               %select.lm-chapter-picker{ 'aria-label': 'チャプターを選択', data: { 'screen-mirroring-test-target': 'chapterPicker', action: 'screen-mirroring-test#selectChapter' } }
-          .lm-guide
-            %h3.font-bold{ data: { 'screen-mirroring-test-target': 'chapterTitle' } } ① 導入
-            %p{ data: { 'screen-mirroring-test-target': 'guide' } }
+            .lm-guide
+              %h3.font-bold{ data: { 'screen-mirroring-test-target': 'chapterTitle' } } ① 導入
+              %p{ data: { 'screen-mirroring-test-target': 'guide' } }
           .lm-controls.border-t-2.border-secondary.pt-3
             .lm-control-row
               .lm-play-controls

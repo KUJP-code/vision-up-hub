@@ -78,5 +78,14 @@
   .lm-menu-icon { width: 26px; height: 26px; font-size: 16px; }
 }
 
-.lm-fullscreen-feedback { position: absolute; bottom: 16px; left: 16px; z-index: 5; color: #645880; }
-.lm-fullscreen-feedback p:not(:empty) { background: white; padding: 8px; border-radius: 10px; }
+
+/* Start with the compact overlay from 2.7.9.1; expand the guide on demand. */
+.lm-remote.lm-remote-compact { height: auto; width: min(850px, calc(100% - 32px)); left: 50%; right: auto; transform: translateX(-50%); padding: 12px; }
+.lm-remote-compact .lm-remote-heading { border: 0; padding-bottom: 8px; }
+.lm-remote-compact .lm-remote-heading h2 { font-size: 16px; }
+.lm-remote-compact .lm-remote-heading button { min-height: 40px; padding: 4px 12px; font-size: 12px; }
+.lm-remote-compact .lm-control-row { gap: 8px; }
+.lm-remote-compact .lm-controls { border: 0; padding-top: 0; }
+.lm-remote-compact .lm-controls button { min-height: 48px; font-size: 14px; }
+.lm-remote-compact .lm-time { margin-top: 6px; }
+.lm-guide-panel { flex: 1; min-height: 0; overflow-y: auto; padding-top: 12px; }

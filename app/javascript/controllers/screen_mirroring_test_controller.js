@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 // This controller belongs exclusively to the admin-only lesson mockup.
 export default class extends Controller {
-  static targets = ["lessonDialog", "lessonScreen", "stage", "player", "menu", "remote", "playButton", "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle", "guide", "speed", "chapterPicker", "splash", "speechStatus", "phraseAudio", "fullscreenButton", "fullscreenStatus"];
+  static targets = ["lessonDialog", "lessonScreen", "stage", "player", "menu", "remote", "playButton", "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle", "guide", "speed", "chapterPicker", "splash", "speechStatus", "phraseAudio", "guidePanel", "guideButton"];
 
   connect() {
     this.chapterSets = {
@@ -42,8 +42,7 @@ export default class extends Controller {
     });
     ["fullscreenchange", "webkitfullscreenchange"].forEach(event => {
       document.addEventListener(event, () => {
-        this.fullscreenButtonTarget.hidden = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (this.lessonDialogTarget.hidden) this.exitFullscreen(true);
+        if (this.lessonDialogTarget.hidden) this.exitFullscreen();
       }, options);
     });
 
@@ -69,9 +68,34 @@ export default class extends Controller {
     this.updateRemote();
   }
 
-  // Keep one preloaded video per source, as in vimeo_test; do not replace src on the play tap.
-  get playerTarget() {
-    return this.playerTargets.find(player => player.dataset.kind === (this.activeKind || "basic"));
+  // There is exactly one video element, as in 2.7.9.1. Selecting a menu prepares
+  // its source before the video link is tapped; pointer/focus also cover direct links.
+  prepareVideo(event) {
+    if (!this.stageTarget.hidden) return;
+    const choice = event.target.closest("[data-src][data-kind]");
+    if (choice) this.loadVideoSource(choice.dataset);
+  }
+
+  loadVideoSource({ src, kind }) {
+    if (this.playerTarget.getAttribute("src") === src) return;
+    this.playerTarget.src = src;
+    this.playerTarget.dataset.kind = kind;
+    this.playerTarget.load();
+  }
+
+  toggleGuide() {
+    const expanded = this.guidePanelTarget.hidden;
+    this.guidePanelTarget.hidden = !expanded;
+    this.remoteTarget.classList.toggle("lm-remote-compact", !expanded);
+    this.guideButtonTarget.setAttribute("aria-expanded", String(expanded));
+    this.guideButtonTarget.textContent = expanded ? "ガイドを閉じる" : "先生用ガイドを開く";
+  }
+
+  resetGuide() {
+    this.guidePanelTarget.hidden = true;
+    this.remoteTarget.classList.add("lm-remote-compact");
+    this.guideButtonTarget.setAttribute("aria-expanded", "false");
+    this.guideButtonTarget.textContent = "先生用ガイドを開く";
   }
 
   setChapters(kind) {
@@ -114,7 +138,7 @@ export default class extends Controller {
     this.cancelSpeech();
     this.playbackGeneration += 1;
     this.playerTargets.forEach(player => player.pause());
-    this.exitFullscreen(true);
+    this.exitFullscreen();
     this.lessonDialogTarget.hidden = true;
     this.restoreBackground();
     if (this.resourceTarget.open) this.resourceTarget.close();
@@ -138,8 +162,6 @@ export default class extends Controller {
   start() {
     this.returnFocus = document.activeElement;
     this.lessonDialogTarget.hidden = false;
-    // Fullscreen the document, rather than a descendant of a modal dialog.
-    this.enterFullscreen();
     this.backgroundElements = [...this.element.children, ...document.body.children]
       .filter(element => element !== this.lessonDialogTarget && !element.contains(this.lessonDialogTarget) && !element.inert);
     this.backgroundElements.forEach(element => { element.inert = true; });
@@ -149,26 +171,6 @@ export default class extends Controller {
   restoreBackground() {
     this.backgroundElements?.forEach(element => { element.inert = false; });
     this.backgroundElements = [];
-  }
-
-  enterFullscreen() {
-    if (document.fullscreenElement || document.webkitFullscreenElement) return;
-    const element = document.documentElement;
-    const request = element.requestFullscreen || element.webkitRequestFullscreen || element.webkitRequestFullScreen;
-    const failed = () => {
-      if (this.lessonDialogTarget.hidden) return;
-      this.fullscreenButtonTarget.hidden = false;
-      this.fullscreenStatusTarget.textContent = "全画面表示を開始できませんでした。もう一度お試しください。";
-    };
-    if (!request) { failed(); return; }
-    this.ownsFullscreen = true;
-    try {
-      const result = request.call(element);
-      result?.then?.(() => {
-        this.fullscreenStatusTarget.textContent = "";
-        if (this.lessonDialogTarget.hidden) this.exitFullscreen(true);
-      }).catch(failed);
-    } catch (_) { failed(); }
   }
 
   // Fullscreen implementation copied from deployed 2.7.9.1 (06c57ab8).
@@ -188,26 +190,27 @@ export default class extends Controller {
     event?.preventDefault();
     this.lessonDialogTarget.hidden = true;
     this.stop();
-    this.exitFullscreen(true);
+    this.exitFullscreen();
     this.restoreBackground();
     this.returnFocus?.focus();
   }
 
   playVideo(event) {
-    const { title, kind } = event.currentTarget.dataset;
+    const { src, title, kind } = event.currentTarget.dataset;
     this.closeMenus();
     this.cancelSpeech();
     this.setChapters(kind);
-    this.playerTargets.forEach(player => { player.pause(); player.hidden = true; });
-    this.activeKind = kind;
+    this.playerTarget.pause();
+    this.loadVideoSource({ src, kind });
+    this.resetGuide();
     if (this.playerTarget.readyState > 0) this.playerTarget.currentTime = 0;
     this.playerTarget.playbackRate = 1;
     this.speedTarget.value = "1";
     this.videoTitleTarget.textContent = title;
     this.errorTarget.hidden = true;
-    this.playerTarget.hidden = false;
     this.remoteTarget.hidden = true;
     this.stageTarget.hidden = false;
+    this.stageTarget.getBoundingClientRect();
     this.updateRemote();
     // 2.7.9.1 sequence: container fullscreen, fixed viewport, then video.play().
     this.enterVideoFullscreen();
@@ -266,7 +269,6 @@ export default class extends Controller {
     this.exitFullscreen();
     this.stageTarget.classList.remove("fixed", "inset-0", "z-[60]", "rounded-none");
     this.stageTarget.hidden = true;
-    this.playerTarget.hidden = true;
     this.remoteTarget.hidden = true;
     this.menuTarget.hidden = false;
     this.splashTarget.hidden = false;
@@ -274,9 +276,9 @@ export default class extends Controller {
     if (wasPlaying && !this.lessonDialogTarget.hidden) this.menuTarget.querySelector("button").focus();
   }
 
-  exitFullscreen(includeLesson = false) {
+  exitFullscreen() {
     const fullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-    if (fullscreen !== this.stageTarget && !(includeLesson && this.ownsFullscreen && fullscreen === document.documentElement)) return;
+    if (fullscreen !== this.stageTarget) return;
     const exit = document.exitFullscreen || document.webkitExitFullscreen;
     if (!exit) return;
     const result = exit.call(document);
