@@ -1,45 +1,121 @@
 - content_for :head do
   %meta{ name: 'turbo-cache-control', content: 'no-cache' }
+  = stylesheet_link_tag 'lesson_mockup'
 
-= render 'shared/subtitle', text: 'Screen Mirroring Video Test'
+- story_video = 'https://player.vimeo.com/external/1225145089.m3u8?s=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false'
+- basic_video = 'https://player.vimeo.com/external/1225143839.m3u8?s=11fe9dcb7779be20830d9059c8f5cbd8ec478453&logging=false'
+- activity_video = 'https://player.vimeo.com/external/1225144027.m3u8?s=7f8bb660ffbff5cac412806c9c59fe812954df4f&logging=false'
+- activities = ['ぬりえ', '工作', 'ライティング']
+- stories = ['にげだしたふうせん', 'はらぺこのくま', 'まほうのぼうし', 'ちいさな種', 'おやすみ、おつきさま']
 
-- test_video = 'https://player.vimeo.com/external/1225145089.m3u8?s=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false'
+%main.lesson-mockup.flex.flex-col.gap-4.p-4{ lang: 'ja', data: { controller: 'screen-mirroring-test' } }
+  %header#subtitle.lm-subtitle
+    %button.w-12.shrink-0{ type: 'button', 'aria-label': '前の日', data: { action: 'screen-mirroring-test#changeDate', offset: -1 } }
+      = image_tag 'back.svg', alt: ''
+    .flex.min-w-0.flex-col.items-center
+      %h1 今日のレッスン
+      %label
+        %span.lm-sr-only レッスン日
+        %input.lm-lesson-date{ type: 'date', value: Date.current.iso8601, data: { 'screen-mirroring-test-target': 'date' } }
+    %button.w-12.shrink-0{ type: 'button', 'aria-label': '次の日', data: { action: 'screen-mirroring-test#changeDate', offset: 1 } }
+      = image_tag 'next.svg', alt: ''
 
-%main.flex.min-h-full.flex-col.items-center.bg-black.p-4{
-  data: { controller: 'screen-mirroring-test' }
-}
-  %section.w-full.max-w-5xl
-    %div.mb-4.rounded-lg.bg-white.p-4{ data: { 'screen-mirroring-test-target': 'setup' } }
-      %h1.mb-2.text-center.text-2xl.font-bold.text-secondary Mirrored video with application remote
-      %p.mb-4.text-center.text-sm.text-slate-600
-        Start Screen Mirroring from iPad Control Centre, then play. The video fills the screen with a compact remote over its bottom edge.
-      %button.btn.btn-main.w-full.text-xl{ type: 'button', data: { action: 'screen-mirroring-test#start' } }
-        ▶ Play mirrored video
+  .lm-preparation.flex.w-full.flex-col.gap-4
+    .card.lm-week-panel.p-3
+      = image_tag 'w1-splash.jpg', class: 'lm-week-thumbnail rounded', alt: 'あいさつをするキャラクターたち'
+      .flex.min-w-0.flex-col.gap-2
+        %p.text-sm 第１週 · はじめての英語
+        %h2.text-xl.font-bold みんなであいさつしよう！
+        %hr.border-secondary
+        %h3.text-sm.font-semibold 今週のフレーズ
+        %p.text-sm Hello! / Nice to meet you! / See you!
+      .lm-start-panel.flex.flex-col.gap-2
+        %button.btn.btn-main.w-full{ type: 'button', data: { action: 'screen-mirroring-test#start' } } レッスンをはじめる ▶
+        %p.text-center.text-xs 画面ミラーリングを開始してから、レッスンをはじめてください。
 
-    .relative.aspect-video.w-full.overflow-hidden.rounded-lg.bg-black{
-      data: { 'screen-mirroring-test-target': 'stage' }
-    }
-      %video.absolute.inset-0.h-full.w-full.object-contain{ src: test_video, playsinline: true, preload: 'metadata',
-        'x-webkit-airplay': 'deny', disableRemotePlayback: true,
-        data: { 'screen-mirroring-test-target': 'player' } }
+    .grid.grid-cols-1.gap-4.sm:grid-cols-2
+      - [['先生用ガイド', 'レッスンの流れと声かけのヒント', '先生用ガイド.pdf'], ['教材・準備ガイド', '必要な道具と事前準備をチェック', '教材準備ガイド.pdf']].each do |title, description, filename|
+        %section.card.flex.min-w-0.flex-col.gap-3.p-3
+          %h2.border-b-2.border-secondary.pb-2.text-xl.font-semibold= title
+          %p.text-sm= description
+          %a.btn-outline.w-full.justify-between.gap-2{ href: '#sample-resource', data: { action: 'screen-mirroring-test#previewResource', title: filename } }
+            %span.min-w-0.truncate= filename
+            = inline_svg_tag 'download_icon.svg', class: 'h-10 w-10 shrink-0 fill-secondary'
 
-      %div{
-        class: 'absolute bottom-3 left-1/2 z-10 hidden w-full max-w-3xl -translate-x-1/2 rounded-xl bg-white/90 p-3 shadow-2xl backdrop-blur',
-        data: { 'screen-mirroring-test-target': 'remote' }
-      }
-        .grid.grid-cols-4.gap-2
-          %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#back' } }
-            ↶ 5 sec
-          %button.btn.btn-main.py-4.text-lg{ type: 'button',
-            data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } }
-            ⏸ Pause
-          %button.btn.btn-secondary.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#forward' } }
-            5 sec ↷
-          %button.btn.btn-danger.py-4.text-lg{ type: 'button', data: { action: 'screen-mirroring-test#stop' } }
-            ■ Stop
-        %p.mt-2.text-center.font-mono.text-secondary{ data: { 'screen-mirroring-test-target': 'time' } } 0:00
+    %section.flex.flex-col.gap-3
+      %h2.text-xl.font-semibold ワークシート
+      .grid.grid-cols-1.gap-4.sm:grid-cols-3
+        - activities.each_with_index do |activity, index|
+          .card.flex.min-w-0.flex-col.gap-3.p-3
+            %h3.border-b-2.border-secondary.pb-2.text-center.font-semibold= "アクティビティ #{index + 1}：#{activity}"
+            %p.text-sm 子ども１人につき１枚
+            %a.btn-outline.w-full.justify-between.gap-2{ href: '#sample-resource', data: { action: 'screen-mirroring-test#previewResource', title: "#{activity}プリント.pdf" } }
+              %span.min-w-0.truncate= "#{activity}プリント.pdf"
+              = inline_svg_tag 'download_icon.svg', class: 'h-10 w-10 shrink-0 fill-secondary'
 
-    %p.mt-3.hidden.rounded-lg.bg-red-50.p-4.text-center.text-danger{
-      data: { 'screen-mirroring-test-target': 'error' }
-    }
-      The test video could not play. Open this page in Safari and check the iPad’s internet connection.
+    %p.text-center.text-xs 日付の切り替えと資料はサンプルです。すべての日付に同じレッスンを表示します。
+
+  %dialog.resources-dialog{ data: { 'screen-mirroring-test-target': 'resource' }, 'aria-labelledby': 'lm-resource-title' }
+    .body.flex.flex-col.gap-6.p-6
+      %button{ type: 'button', 'aria-label': '閉じる', data: { action: 'screen-mirroring-test#closeResource' } }
+        = image_tag 'exit.svg', class: 'btn-close', alt: ''
+      %p.text-sm 資料プレビュー · サンプル
+      %h2#lm-resource-title.border-b-2.border-secondary.pb-2.text-xl.font-semibold{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
+      %p 実際のPDFはまだ登録されていません。
+      %p あいさつの練習 → 動画を見る → みんなでやってみよう！
+      %button.btn.btn-secondary.self-center{ type: 'button', data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
+
+  %dialog.lm-lesson-dialog{ data: { 'screen-mirroring-test-target': 'lessonDialog', action: 'cancel->screen-mirroring-test#closeLesson' }, 'aria-label': 'レッスン画面' }
+    .lm-stage{ data: { 'screen-mirroring-test-target': 'stage' } }
+      .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
+        = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
+        - [['see-you', 'See you!'], ['hello', 'Hello!'], ['nice-to-meet-you', 'Nice to meet you!']].each do |position, phrase|
+          %button.lm-speech-hotspot{ class: "lm-speech-#{position}", type: 'button', 'aria-label': "#{phrase} を聞く", data: { action: 'screen-mirroring-test#speak', phrase: phrase } }
+            %span.lm-speech-icon{ 'aria-hidden': 'true' } ♪
+        %p.lm-sr-only{ role: 'status', data: { 'screen-mirroring-test-target': 'speechStatus' } }
+      %nav.lm-lesson-menu{ 'aria-label': 'レッスンメニュー', data: { 'screen-mirroring-test-target': 'menu' } }
+        %button.lm-bubble.lm-basic{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: basic_video, kind: 'basic', title: 'ベーシックイングリッシュ' } }
+          %span.lm-menu-icon{ 'aria-hidden': 'true' } ABC
+          ベーシックイングリッシュ
+        %details
+          %summary.lm-bubble.lm-activity
+            %span.lm-menu-icon{ 'aria-hidden': 'true' } ✂
+            アクティビティ ▾
+          .lm-dropdown
+            - activities.each do |activity|
+              %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: activity_video, kind: 'activity', title: activity } }= "▶ #{activity}"
+        %details
+          %summary.lm-bubble.lm-story
+            %span.lm-menu-icon{ 'aria-hidden': 'true' } ★
+            ストーリータイム ▾
+          .lm-dropdown
+            - stories.each_with_index do |story, index|
+              %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: story_video, kind: 'story', title: story } }= "#{index + 1}. #{story}"
+        %button.lm-bubble.lm-menu-exit{ type: 'button', data: { action: 'screen-mirroring-test#closeLesson' } } ✕ 終了
+      %video.lm-video{ hidden: true, playsinline: true, preload: 'none', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player' } }
+      %section.lm-remote.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
+        .lm-remote-heading.border-b-2.border-secondary.pb-3
+          %h2{ data: { 'screen-mirroring-test-target': 'videoTitle' } }
+          %label.flex.min-w-0.flex-col.gap-1
+            %span.text-xs 先生用ガイド · サンプルチャプター
+            %select.lm-chapter-picker{ 'aria-label': 'チャプターを選択', data: { 'screen-mirroring-test-target': 'chapterPicker', action: 'screen-mirroring-test#selectChapter' } }
+        .lm-guide
+          %h3.font-bold{ data: { 'screen-mirroring-test-target': 'chapterTitle' } } ① 導入
+          %p{ data: { 'screen-mirroring-test-target': 'guide' } }
+        .lm-controls.border-t-2.border-secondary.pt-3
+          .lm-control-row
+            .lm-play-controls
+              %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#back' } } ↶ 5秒
+              %button.btn.btn-main{ type: 'button', data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } } ▶ 再生
+              %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#forward' } } 5秒 ↷
+            .lm-chapter-controls
+              %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#previousChapter' } } ❮ 前の章
+              %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#nextChapter' } } 次の章 ❯
+              %label
+                %span.lm-sr-only 再生速度
+                %select{ data: { action: 'screen-mirroring-test#changeSpeed', 'screen-mirroring-test-target': 'speed' } }
+                  - ['0.75', '1', '1.25', '1.5'].each do |speed|
+                    %option{ value: speed, selected: speed == '1' }= "#{speed}倍速"
+            %button.btn.btn-danger{ type: 'button', data: { action: 'screen-mirroring-test#stop' } } ■ 停止
+          %p.lm-time.text-center.text-sm{ data: { 'screen-mirroring-test-target': 'time' } } 0:00 / 0:00
+        %p.lm-error{ hidden: true, role: 'alert', data: { 'screen-mirroring-test-target': 'error' } } 動画を再生できませんでした。iPadのSafariと通信環境を確認し、再生ボタンでお試しください。

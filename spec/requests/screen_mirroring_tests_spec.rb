@@ -11,8 +11,12 @@ RSpec.describe 'Screen mirroring video test', type: :request do
     get screen_mirroring_test_path
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('Mirrored video with application remote')
+    expect(response.body).to include('今日のレッスン')
+    expect(response.body).to include('player.vimeo.com/external/1225143839.m3u8')
     expect(response.body).to include('player.vimeo.com/external/1225145089.m3u8')
+    expect(response.body).to include('player.vimeo.com/external/1225144027.m3u8')
+    expect(response.body).to include('w1-splash')
+    expect(response.body).to include('先生用ガイド')
     expect(response.body).to include('x-webkit-airplay=\'deny\'')
   end
 

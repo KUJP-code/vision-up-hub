@@ -1,89 +1,239 @@
 import { Controller } from "@hotwired/stimulus";
 
+// This controller belongs exclusively to the admin-only lesson mockup.
 export default class extends Controller {
-  static targets = ["stage", "player", "setup", "remote", "playButton", "time", "error"];
+  static targets = ["lessonDialog", "stage", "player", "menu", "remote", "playButton", "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle", "guide", "speed", "chapterPicker", "splash", "speechStatus"];
 
   connect() {
+    this.chapterSets = {
+      basic: [
+        [0, "はじめのあいさつ", "笑顔で手を振って、Hello! とあいさつしましょう。子どもたちが画面に注目できたら始めます。"],
+        [90, "Hello! を言ってみよう", "動画のまねをして、みんなで Hello! と言いましょう。一時停止して、一人ずつ声をかけてみましょう。"],
+        [180, "はじめまして", "Nice to meet you! を聞いて、先生といっしょに繰り返しましょう。ジェスチャーも添えてみましょう。"],
+        [240, "お友だちと練習", "隣のお友だちと向かい合って、あいさつを交代で練習しましょう。返事を待つ時間をつくります。"],
+        [420, "See you! でさようなら", "手を振りながら See you! と言ってみましょう。先生が先にお手本を見せます。"],
+        [480, "今日のふりかえり", "３つのあいさつを、場面に合わせて言ってみましょう。できたらみんなで拍手をしましょう！"]
+      ],
+      story: [
+        [0, "お話のはじまり", "絵を見て、どんなお話か想像してみましょう。登場人物を指さして、注目を集めます。"],
+        [120, "だれが出てきたかな？", "ここまでに登場したキャラクターを確認しましょう。子どもたちが気づいたことを聞いてみます。"],
+        [180, "次はどうなる？", "動画を一時停止し、次に何が起こるか予想してみましょう。短い言葉やジェスチャーで答えてもらいます。"],
+        [300, "気持ちを考えよう", "登場人物はどんな気持ちかな？表情をまねして、みんなで考えてみましょう。"],
+        [360, "お話を楽しもう", "お話の続きを見ましょう。最後に、好きだった場面を一つ教えてもらいます。"]
+      ],
+      activity: [
+        [0, "準備しよう", "プリントと必要な道具がそろっているか確認しましょう。完成見本を見せてから始めます。"],
+        [45, "先生のお手本", "動画を見ながら、最初の手順を先生が見せましょう。子どもたちの手元も確認します。"],
+        [90, "いっしょにやってみよう", "動画を一時停止して、同じ手順をやってみましょう。困っている子には声をかけます。"],
+        [120, "自分でチャレンジ", "続きを自分で進めてもらいましょう。色や形など、使える英語で声をかけてみましょう。"],
+        [150, "できたものを見せよう", "作品やプリントを見せ合いましょう。一人ひとりのがんばりをほめて、片づけにつなげます。"]
+      ]
+    };
+    this.setChapters("basic");
     this.events = new AbortController();
     const options = { signal: this.events.signal };
-
-    this.playerTarget.addEventListener("play", () => this.updatePlayButton(), options);
-    this.playerTarget.addEventListener("pause", () => this.updatePlayButton(), options);
-    this.playerTarget.addEventListener("timeupdate", () => this.updateTime(), options);
+    ["play", "pause", "timeupdate", "loadedmetadata", "durationchange"].forEach(event => {
+      this.playerTarget.addEventListener(event, () => this.updateRemote(), options);
+    });
     this.playerTarget.addEventListener("ended", () => this.stop(), options);
     this.playerTarget.addEventListener("error", () => this.showError(), options);
+    this.lessonDialogTarget.addEventListener("close", () => this.stop(), options);
+    this.stageTarget.addEventListener("click", event => {
+      const selected = event.target.closest("details");
+      this.closeMenus(selected);
+    }, options);
+    this.stageTarget.addEventListener("keydown", event => {
+      if (event.key === "Escape" && this.menuTarget.querySelector("details[open]")) {
+        event.preventDefault();
+        this.closeMenus();
+      }
+    }, options);
+    this.updateRemote();
+  }
+
+  setChapters(kind) {
+    this.chapters = this.chapterSets[kind].map(([time, title, guide], index) => ({ time, title: `${index + 1}. ${title}`, guide }));
+    this.chapterPickerTarget.replaceChildren(...this.chapters.map(chapter => {
+      const option = document.createElement("option");
+      option.value = chapter.time;
+      option.textContent = `${this.formatTime(chapter.time)} · ${chapter.title}`;
+      return option;
+    }));
+  }
+
+  selectChapter() { this.seekTo(Number(this.chapterPickerTarget.value)); }
+
+  closeMenus(except = null) {
+    this.menuTarget.querySelectorAll("details").forEach(details => {
+      if (details !== except) details.open = false;
+    });
+  }
+
+  speak(event) {
+    const phrase = event.currentTarget.dataset.phrase;
+    if (!("speechSynthesis" in window)) {
+      this.speechStatusTarget.textContent = "この端末では音声サンプルを再生できません。";
+      return;
+    }
+    this.cancelSpeech();
+    const utterance = new SpeechSynthesisUtterance(phrase);
+    utterance.lang = "en-US";
+    utterance.rate = 0.85;
+    this.utterance = utterance;
+    this.speakingButton = event.currentTarget;
+    this.speakingButton.classList.add("lm-speaking");
+    this.speechStatusTarget.textContent = phrase;
+    const finish = () => {
+      if (this.utterance !== utterance) return;
+      this.speakingButton?.classList.remove("lm-speaking");
+      this.utterance = null;
+    };
+    utterance.onend = finish;
+    utterance.onerror = () => {
+      if (this.utterance === utterance) this.speechStatusTarget.textContent = "音声を再生できませんでした。もう一度タップしてください。";
+      finish();
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+
+  cancelSpeech() {
+    if (this.utterance) {
+      this.utterance = null;
+      window.speechSynthesis.cancel();
+    }
+    this.speakingButton?.classList.remove("lm-speaking");
   }
 
   disconnect() {
     this.events?.abort();
+    this.cancelSpeech();
+    this.playerTarget.pause();
+    this.exitFullscreen();
+    if (this.lessonDialogTarget.open) this.lessonDialogTarget.close();
+    if (this.resourceTarget.open) this.resourceTarget.close();
   }
+
+  changeDate(event) {
+    const date = new Date(`${this.dateTarget.value}T12:00:00`);
+    if (Number.isNaN(date.getTime())) return;
+    date.setDate(date.getDate() + Number(event.currentTarget.dataset.offset));
+    this.dateTarget.value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  }
+
+  previewResource(event) {
+    event.preventDefault();
+    this.resourceTitleTarget.textContent = event.currentTarget.dataset.title;
+    this.resourceTarget.showModal();
+  }
+
+  closeResource() { this.resourceTarget.close(); }
 
   start() {
-    this.enterFullscreen();
-    this.stageTarget.classList.add("fixed", "inset-0", "z-[60]", "rounded-none");
-    this.playerTarget.play().then(() => {
-      this.setupTarget.classList.add("hidden");
-      this.remoteTarget.classList.remove("hidden");
-    }).catch(() => this.showError());
-  }
-
-  togglePlayback() {
-    if (this.playerTarget.paused) {
-      this.playerTarget.play().catch(() => this.showError());
-    } else {
-      this.playerTarget.pause();
-    }
-  }
-
-  back() { this.seekBy(-5); }
-  forward() { this.seekBy(5); }
-
-  seekBy(seconds) {
-    this.playerTarget.currentTime = Math.max(0, this.playerTarget.currentTime + seconds);
-    this.updateTime();
-  }
-
-  stop() {
-    this.playerTarget.pause();
-    this.playerTarget.currentTime = 0;
-    this.exitFullscreen();
-    this.stageTarget.classList.remove("fixed", "inset-0", "z-[60]", "rounded-none");
-    this.setupTarget.classList.remove("hidden");
-    this.remoteTarget.classList.add("hidden");
-    this.updateTime();
-  }
-
-  updatePlayButton() {
-    this.playButtonTarget.textContent = this.playerTarget.paused ? "▶ Play" : "⏸ Pause";
+    // The splash fills the viewport; native fullscreen begins with the video tap.
+    this.lessonDialogTarget.showModal();
   }
 
   enterFullscreen() {
     const request = this.stageTarget.requestFullscreen || this.stageTarget.webkitRequestFullscreen;
-    if (!request) return;
+    try { request?.call(this.stageTarget)?.catch?.(() => {}); } catch (_) { /* Keep the viewport fallback used by the original test. */ }
+  }
 
-    try {
-      const result = request.call(this.stageTarget);
-      result?.catch?.(() => {});
-    } catch (_error) {
-      // The fixed viewport layout below remains as a browser-fullscreen fallback.
-    }
+  closeLesson(event) {
+    event?.preventDefault();
+    this.stop();
+    this.exitFullscreen();
+    this.lessonDialogTarget.close();
+  }
+
+  playVideo(event) {
+    const { src, title, kind } = event.currentTarget.dataset;
+    this.closeMenus();
+    this.cancelSpeech();
+    this.setChapters(kind);
+    this.playerTarget.pause();
+    this.playerTarget.src = src;
+    this.playerTarget.load();
+    this.playerTarget.playbackRate = 1;
+    this.speedTarget.value = "1";
+    this.videoTitleTarget.textContent = title;
+    this.errorTarget.hidden = true;
+    this.menuTarget.hidden = true;
+    this.splashTarget.hidden = true;
+    this.playerTarget.hidden = false;
+    this.remoteTarget.hidden = false;
+    this.playButtonTarget.focus();
+    this.updateRemote();
+    // Preserve the original test: fullscreen request and play in one user gesture,
+    // without awaiting fullscreen (which can lose Safari's playback activation).
+    this.enterFullscreen();
+    this.play();
+  }
+
+  play() { this.playerTarget.play().catch(error => { if (error.name !== "AbortError") this.showError(); }); }
+
+  togglePlayback() {
+    this.errorTarget.hidden = true;
+    if (this.playerTarget.paused) this.play();
+    else this.playerTarget.pause();
+  }
+
+  back() { this.seekTo(this.playerTarget.currentTime - 5); }
+  forward() { this.seekTo(this.playerTarget.currentTime + 5); }
+
+  seekTo(seconds) {
+    if (!Number.isFinite(this.playerTarget.duration)) return;
+    this.playerTarget.currentTime = Math.min(this.playerTarget.duration, Math.max(0, seconds));
+    this.updateRemote();
+  }
+
+  previousChapter() {
+    const previous = this.chapters.filter(chapter => chapter.time < this.playerTarget.currentTime - 1).pop();
+    this.seekTo(previous?.time || 0);
+  }
+
+  nextChapter() {
+    const next = this.chapters.find(chapter => chapter.time > this.playerTarget.currentTime + 1 && chapter.time < this.playerTarget.duration);
+    if (next) this.seekTo(next.time);
+  }
+
+  changeSpeed() { this.playerTarget.playbackRate = Number(this.speedTarget.value); }
+
+  stop() {
+    const wasPlaying = !this.remoteTarget.hidden;
+    this.cancelSpeech();
+    this.closeMenus();
+    this.exitFullscreen();
+    this.playerTarget.pause();
+    this.playerTarget.removeAttribute("src");
+    this.playerTarget.load();
+    this.playerTarget.hidden = true;
+    this.remoteTarget.hidden = true;
+    this.menuTarget.hidden = false;
+    this.splashTarget.hidden = false;
+    this.errorTarget.hidden = true;
+    if (wasPlaying && this.lessonDialogTarget.open) this.menuTarget.querySelector("button").focus();
   }
 
   exitFullscreen() {
+    if ((document.fullscreenElement || document.webkitFullscreenElement) !== this.stageTarget) return;
     const exit = document.exitFullscreen || document.webkitExitFullscreen;
-    if (!exit || (!document.fullscreenElement && !document.webkitFullscreenElement)) return;
-
-    const result = exit.call(document);
-    result?.catch?.(() => {});
+    try { exit?.call(document)?.catch?.(() => {}); } catch (_) { /* Already exited. */ }
   }
 
-  updateTime() {
-    const seconds = Math.max(0, Math.floor(Number(this.playerTarget.currentTime || 0)));
-    const minutes = Math.floor(seconds / 60);
-    this.timeTarget.textContent = `${minutes}:${String(seconds % 60).padStart(2, "0")}`;
+  updateRemote() {
+    const current = this.playerTarget.currentTime || 0;
+    const chapter = this.chapters.filter(item => item.time <= current).pop() || this.chapters[0];
+    this.chapterTitleTarget.textContent = chapter.title;
+    this.chapterPickerTarget.value = String(chapter.time);
+    this.guideTarget.textContent = chapter.guide;
+    this.playButtonTarget.textContent = this.playerTarget.paused ? "▶ 再生" : "Ⅱ 一時停止";
+    this.timeTarget.textContent = `${this.formatTime(current)} / ${this.formatTime(this.playerTarget.duration)}`;
   }
 
-  showError() {
-    this.errorTarget.classList.remove("hidden");
+  formatTime(value) {
+    const seconds = Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+    return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
   }
+
+  showError() { if (!this.remoteTarget.hidden) this.errorTarget.hidden = false; }
 }

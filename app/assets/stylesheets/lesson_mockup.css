@@ -1,0 +1,78 @@
+/* Preparation layout stays local to the admin demo; shared lesson styles are reused. */
+#subtitle.lm-subtitle { gap: 12px; }
+#subtitle.lm-subtitle .lm-lesson-date { border: 0; padding: 0; min-height: 24px; background: transparent; color: inherit; font-size: 12px; font-weight: 400; }
+.lm-week-panel { display: grid; grid-template-columns: 1fr; align-items: center; gap: 16px; }
+.lm-week-thumbnail { width: 100%; }
+@media (min-width: 640px) {
+  .lm-week-panel { grid-template-columns: minmax(0, 1fr) 210px; }
+  .lm-week-thumbnail { display: none; }
+}
+@media (min-width: 960px) {
+  .lm-week-panel { grid-template-columns: minmax(150px, 24%) minmax(0, 1fr) 210px; }
+  .lm-week-thumbnail { display: block; }
+}
+.lesson-mockup [hidden] { display: none !important; }
+.lm-stage button, .lm-stage summary { min-height: 48px; font-weight: 700; cursor: pointer; }
+.lm-stage :focus-visible { outline: 3px solid #ee9e45; outline-offset: 4px; }
+.lm-stage h2 { font-size: 20px; font-weight: 700; }
+.lm-stage h3 { font-size: 17px; font-weight: 700; }
+.lm-lesson-dialog { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; }
+.lm-stage { position: fixed; inset: 0; width: 100%; height: 100%; width: 100dvw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: hidden; background: linear-gradient(135deg, #d6f2fc, #69c0dd 55%, #3193c1); color: #26465d; }
+.lm-stage::backdrop { background: #69c0dd; }
+.lm-splash, .lm-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.lm-video { background: #08131d; }
+.lm-lesson-menu { position: relative; z-index: 2; display: flex; justify-content: center; align-items: flex-start; gap: 12px; padding: max(16px, env(safe-area-inset-top)) 16px 16px; }
+.lm-bubble { display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 24px 24px 24px 8px; padding: 10px 16px; color: #645880; background: white; border: 3px solid #645880; box-shadow: 0 4px 0 #645880; list-style: none; transition: transform .12s, box-shadow .12s; }
+.lm-bubble:active, details[open] > .lm-bubble { transform: translateY(3px); box-shadow: 0 1px 0 #645880; }
+.lm-basic { background: #dff4fb; }
+.lm-activity { background: #fff0ce; }
+.lm-story { background: #f4e4f5; }
+.lm-menu-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: white; font-size: 20px; }
+.lm-basic .lm-menu-icon { font-size: 12px; }
+.lm-menu-exit { border-radius: 20px; font-size: 14px; }
+/* Scale the image and its hotspots together to cover the viewport without letterboxing. */
+.lm-splash-frame { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: max(100vw, calc(100vh * 16 / 9)); width: max(100dvw, calc(100dvh * 16 / 9)); aspect-ratio: 16 / 9; }
+.lm-stage .lm-speech-hotspot { position: absolute; min-height: 0; background: transparent; border: 3px solid transparent; border-radius: 24%; }
+.lm-speech-see-you { left: 14.5%; top: 17%; width: 14%; height: 14%; }
+.lm-speech-hello { left: 48%; top: 15%; width: 13%; height: 22%; border-radius: 50% !important; }
+.lm-speech-nice-to-meet-you { left: 70%; top: 23%; width: 22%; height: 22%; border-radius: 50% !important; }
+.lm-speech-icon { position: absolute; right: 5%; bottom: 3%; display: grid; place-items: center; width: clamp(20px, 3vw, 36px); height: clamp(20px, 3vw, 36px); color: #645880; background: white; border: 2px solid #645880; border-radius: 50%; }
+.lm-chapter-picker { max-width: 340px; width: 100%; font-size: 14px; }
+.lm-bubble::-webkit-details-marker { display: none; }
+.lm-lesson-menu details { position: relative; }
+.lm-dropdown { color: #645880; border: 2px solid #645880; position: absolute; top: calc(100% + 8px); left: 0; min-width: 100%; width: max-content; max-width: 85vw; padding: 8px; background: white; border-radius: 18px; box-shadow: 0 10px 35px #15395140; }
+.lm-dropdown button { display: block; width: 100%; text-align: left; padding: 12px 16px; border-radius: 10px; }
+.lm-dropdown button:hover { background: #e8f6fb; }
+.lm-remote { position: absolute; z-index: 3; bottom: max(16px, env(safe-area-inset-bottom)); left: 16px; right: 16px; height: 75%; display: flex; flex-direction: column; padding: 24px; }
+.lm-remote-heading { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.lm-guide { flex: 1; min-height: 0; overflow-y: auto; padding: 24px 0; }
+.lm-stage .lm-guide h3 { font-size: 24px; }
+.lm-guide p { max-width: 52em; margin-top: 16px; font-size: 22px; line-height: 2; }
+.lm-controls { flex-shrink: 0; }
+.lm-control-row { display: grid; grid-template-columns: 3fr 3fr 1fr; gap: 16px; }
+.lm-play-controls, .lm-chapter-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lm-controls button { min-height: 56px; padding: 12px 8px; white-space: nowrap; }
+.lm-chapter-controls select { width: 100%; height: 100%; min-height: 56px; }
+.lm-time { margin-top: 12px; font-variant-numeric: tabular-nums; }
+.lm-error { padding: 12px; margin-top: 10px; background: #fff0ee; color: #963e37; border-radius: 10px; font-size: 13px; }
+.lm-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+@media (max-width: 700px) {
+  .lm-lesson-menu { flex-wrap: wrap; gap: 6px; }
+  .lm-bubble { padding: 8px 12px; font-size: 12px; }
+  .lm-remote { padding: 16px; height: 85%; }
+  .lm-remote-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .lm-guide { padding: 16px 0; }
+  .lm-guide p { font-size: 18px; }
+  .lm-control-row { grid-template-columns: minmax(0, 1fr) 80px; gap: 8px; }
+  .lm-play-controls { grid-column: 1; }
+  .lm-chapter-controls { grid-column: 1; grid-row: 2; }
+  .lm-control-row > button { grid-column: 2; grid-row: 1 / 3; }
+  .lm-controls button, .lm-controls select { font-size: 12px; }
+  .lm-dropdown { left: auto; right: 0; }
+}
+
+@media (max-width: 950px) {
+  .lm-lesson-menu { gap: 8px; }
+  .lm-bubble { gap: 6px; padding: 8px 10px; font-size: 12px; }
+  .lm-menu-icon { width: 26px; height: 26px; font-size: 16px; }
+}
