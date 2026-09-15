@@ -66,7 +66,7 @@
       %button.btn.btn-secondary.self-center{ type: 'button', data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
 
   %dialog.lm-lesson-dialog{ data: { 'screen-mirroring-test-target': 'lessonDialog', action: 'cancel->screen-mirroring-test#closeLesson' }, 'aria-label': 'レッスン画面' }
-    .lm-stage{ data: { 'screen-mirroring-test-target': 'stage' } }
+    .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
       .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
         = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
         - [['see-you', 'See you!'], ['hello', 'Hello!'], ['nice-to-meet-you', 'Nice to meet you!']].each do |position, phrase|
@@ -92,30 +92,32 @@
             - stories.each_with_index do |story, index|
               %button{ type: 'button', data: { action: 'screen-mirroring-test#playVideo', src: story_video, kind: 'story', title: story } }= "#{index + 1}. #{story}"
         %button.lm-bubble.lm-menu-exit{ type: 'button', data: { action: 'screen-mirroring-test#closeLesson' } } ✕ 終了
-      %video.lm-video{ hidden: true, playsinline: true, preload: 'none', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player' } }
-      %section.lm-remote.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
-        .lm-remote-heading.border-b-2.border-secondary.pb-3
-          %h2{ data: { 'screen-mirroring-test-target': 'videoTitle' } }
-          %label.flex.min-w-0.flex-col.gap-1
-            %span.text-xs 先生用ガイド · サンプルチャプター
-            %select.lm-chapter-picker{ 'aria-label': 'チャプターを選択', data: { 'screen-mirroring-test-target': 'chapterPicker', action: 'screen-mirroring-test#selectChapter' } }
-        .lm-guide
-          %h3.font-bold{ data: { 'screen-mirroring-test-target': 'chapterTitle' } } ① 導入
-          %p{ data: { 'screen-mirroring-test-target': 'guide' } }
-        .lm-controls.border-t-2.border-secondary.pt-3
-          .lm-control-row
-            .lm-play-controls
-              %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#back' } } ↶ 5秒
-              %button.btn.btn-main{ type: 'button', data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } } ▶ 再生
-              %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#forward' } } 5秒 ↷
-            .lm-chapter-controls
-              %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#previousChapter' } } ❮ 前の章
-              %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#nextChapter' } } 次の章 ❯
-              %label
-                %span.lm-sr-only 再生速度
-                %select{ data: { action: 'screen-mirroring-test#changeSpeed', 'screen-mirroring-test-target': 'speed' } }
-                  - ['0.75', '1', '1.25', '1.5'].each do |speed|
-                    %option{ value: speed, selected: speed == '1' }= "#{speed}倍速"
-            %button.btn.btn-danger{ type: 'button', data: { action: 'screen-mirroring-test#stop' } } ■ 停止
-          %p.lm-time.text-center.text-sm{ data: { 'screen-mirroring-test-target': 'time' } } 0:00 / 0:00
-        %p.lm-error{ hidden: true, role: 'alert', data: { 'screen-mirroring-test-target': 'error' } } 動画を再生できませんでした。iPadのSafariと通信環境を確認し、再生ボタンでお試しください。
+      .lm-video-stage{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
+        - { basic: basic_video, activity: activity_video, story: story_video }.each do |kind, source|
+          %video.lm-video{ hidden: true, src: source, playsinline: true, preload: 'metadata', 'x-webkit-airplay': 'deny', disableRemotePlayback: true, data: { 'screen-mirroring-test-target': 'player', kind: kind } }
+        %section.lm-remote.rounded.bg-white.text-secondary{ hidden: true, 'aria-label': '動画リモコンと先生用ガイド', data: { 'screen-mirroring-test-target': 'remote' } }
+          .lm-remote-heading.border-b-2.border-secondary.pb-3
+            %h2{ data: { 'screen-mirroring-test-target': 'videoTitle' } }
+            %label.flex.min-w-0.flex-col.gap-1
+              %span.text-xs 先生用ガイド · サンプルチャプター
+              %select.lm-chapter-picker{ 'aria-label': 'チャプターを選択', data: { 'screen-mirroring-test-target': 'chapterPicker', action: 'screen-mirroring-test#selectChapter' } }
+          .lm-guide
+            %h3.font-bold{ data: { 'screen-mirroring-test-target': 'chapterTitle' } } ① 導入
+            %p{ data: { 'screen-mirroring-test-target': 'guide' } }
+          .lm-controls.border-t-2.border-secondary.pt-3
+            .lm-control-row
+              .lm-play-controls
+                %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#back' } } ↶ 5秒
+                %button.btn.btn-main{ type: 'button', data: { action: 'screen-mirroring-test#togglePlayback', 'screen-mirroring-test-target': 'playButton' } } ▶ 再生
+                %button.btn.btn-secondary{ type: 'button', data: { action: 'screen-mirroring-test#forward' } } 5秒 ↷
+              .lm-chapter-controls
+                %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#previousChapter' } } ❮ 前の章
+                %button.btn.btn-outline.justify-center{ type: 'button', data: { action: 'screen-mirroring-test#nextChapter' } } 次の章 ❯
+                %label
+                  %span.lm-sr-only 再生速度
+                  %select{ data: { action: 'screen-mirroring-test#changeSpeed', 'screen-mirroring-test-target': 'speed' } }
+                    - ['0.75', '1', '1.25', '1.5'].each do |speed|
+                      %option{ value: speed, selected: speed == '1' }= "#{speed}倍速"
+              %button.btn.btn-danger{ type: 'button', data: { action: 'screen-mirroring-test#stop' } } ■ 停止
+            %p.lm-time.text-center.text-sm{ data: { 'screen-mirroring-test-target': 'time' } } 0:00 / 0:00
+          %p.lm-error{ hidden: true, role: 'alert', data: { 'screen-mirroring-test-target': 'error' } } 動画を再生できませんでした。iPadのSafariと通信環境を確認し、再生ボタンでお試しください。

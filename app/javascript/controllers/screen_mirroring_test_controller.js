@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 // This controller belongs exclusively to the admin-only lesson mockup.
 export default class extends Controller {
-  static targets = ["lessonDialog", "stage", "player", "menu", "remote", "playButton", "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle", "guide", "speed", "chapterPicker", "splash", "speechStatus"];
+  static targets = ["lessonDialog", "lessonScreen", "stage", "player", "menu", "remote", "playButton", "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle", "guide", "speed", "chapterPicker", "splash", "speechStatus"];
 
   connect() {
     this.chapterSets = {
@@ -32,23 +32,36 @@ export default class extends Controller {
     this.setChapters("basic");
     this.events = new AbortController();
     const options = { signal: this.events.signal };
-    ["play", "pause", "timeupdate", "loadedmetadata", "durationchange"].forEach(event => {
-      this.playerTarget.addEventListener(event, () => this.updateRemote(), options);
+    this.playbackGeneration = 0;
+    this.playerTargets.forEach(player => {
+      ["play", "pause", "timeupdate", "loadedmetadata", "durationchange"].forEach(event => {
+        player.addEventListener(event, () => { if (player === this.playerTarget) this.updateRemote(); }, options);
+      });
+      player.addEventListener("ended", () => { if (player === this.playerTarget) this.stop(); }, options);
+      player.addEventListener("error", () => { if (player === this.playerTarget) this.showError(); }, options);
     });
-    this.playerTarget.addEventListener("ended", () => this.stop(), options);
-    this.playerTarget.addEventListener("error", () => this.showError(), options);
+    ["fullscreenchange", "webkitfullscreenchange"].forEach(event => {
+      document.addEventListener(event, () => {
+        if (!this.lessonDialogTarget.open) this.exitFullscreen(true);
+      }, options);
+    });
     this.lessonDialogTarget.addEventListener("close", () => this.stop(), options);
-    this.stageTarget.addEventListener("click", event => {
+    this.lessonScreenTarget.addEventListener("click", event => {
       const selected = event.target.closest("details");
       this.closeMenus(selected);
     }, options);
-    this.stageTarget.addEventListener("keydown", event => {
+    this.lessonScreenTarget.addEventListener("keydown", event => {
       if (event.key === "Escape" && this.menuTarget.querySelector("details[open]")) {
         event.preventDefault();
         this.closeMenus();
       }
     }, options);
     this.updateRemote();
+  }
+
+  // Keep one preloaded video per source, as in vimeo_test; do not replace src on the play tap.
+  get playerTarget() {
+    return this.playerTargets.find(player => player.dataset.kind === (this.activeKind || "basic"));
   }
 
   setChapters(kind) {
@@ -107,8 +120,9 @@ export default class extends Controller {
   disconnect() {
     this.events?.abort();
     this.cancelSpeech();
-    this.playerTarget.pause();
-    this.exitFullscreen();
+    this.playbackGeneration += 1;
+    this.playerTargets.forEach(player => player.pause());
+    this.exitFullscreen(true);
     if (this.lessonDialogTarget.open) this.lessonDialogTarget.close();
     if (this.resourceTarget.open) this.resourceTarget.close();
   }
@@ -129,30 +143,30 @@ export default class extends Controller {
   closeResource() { this.resourceTarget.close(); }
 
   start() {
-    // The splash fills the viewport; native fullscreen begins with the video tap.
     this.lessonDialogTarget.showModal();
+    this.enterFullscreen(this.lessonScreenTarget);
   }
 
-  enterFullscreen() {
-    const request = this.stageTarget.requestFullscreen || this.stageTarget.webkitRequestFullscreen;
-    try { request?.call(this.stageTarget)?.catch?.(() => {}); } catch (_) { /* Keep the viewport fallback used by the original test. */ }
+  enterFullscreen(element = this.stageTarget) {
+    const request = element.requestFullscreen || element.webkitRequestFullscreen;
+    try { request?.call(element)?.catch?.(() => {}); } catch (_) { /* Keep the viewport fallback used by the original test. */ }
   }
 
   closeLesson(event) {
     event?.preventDefault();
-    this.stop();
-    this.exitFullscreen();
     this.lessonDialogTarget.close();
+    this.stop();
+    this.exitFullscreen(true);
   }
 
   playVideo(event) {
-    const { src, title, kind } = event.currentTarget.dataset;
+    const { title, kind } = event.currentTarget.dataset;
     this.closeMenus();
     this.cancelSpeech();
     this.setChapters(kind);
-    this.playerTarget.pause();
-    this.playerTarget.src = src;
-    this.playerTarget.load();
+    this.playerTargets.forEach(player => { player.pause(); player.hidden = true; });
+    this.activeKind = kind;
+    if (this.playerTarget.readyState > 0) this.playerTarget.currentTime = 0;
     this.playerTarget.playbackRate = 1;
     this.speedTarget.value = "1";
     this.videoTitleTarget.textContent = title;
@@ -160,8 +174,8 @@ export default class extends Controller {
     this.menuTarget.hidden = true;
     this.splashTarget.hidden = true;
     this.playerTarget.hidden = false;
-    this.remoteTarget.hidden = false;
-    this.playButtonTarget.focus();
+    this.remoteTarget.hidden = true;
+    this.stageTarget.hidden = false;
     this.updateRemote();
     // Preserve the original test: fullscreen request and play in one user gesture,
     // without awaiting fullscreen (which can lose Safari's playback activation).
@@ -169,7 +183,17 @@ export default class extends Controller {
     this.play();
   }
 
-  play() { this.playerTarget.play().catch(error => { if (error.name !== "AbortError") this.showError(); }); }
+  play() {
+    const generation = ++this.playbackGeneration;
+    this.playerTarget.play().then(() => {
+      if (generation !== this.playbackGeneration || this.stageTarget.hidden) return;
+      // Match vimeo_test: the remote is revealed only after playback has started.
+      this.remoteTarget.hidden = false;
+      this.playButtonTarget.focus();
+    }).catch(error => {
+      if (generation === this.playbackGeneration && error.name !== "AbortError") this.showError();
+    });
+  }
 
   togglePlayback() {
     this.errorTarget.hidden = true;
@@ -199,13 +223,14 @@ export default class extends Controller {
   changeSpeed() { this.playerTarget.playbackRate = Number(this.speedTarget.value); }
 
   stop() {
-    const wasPlaying = !this.remoteTarget.hidden;
+    const wasPlaying = !this.stageTarget.hidden;
+    this.playbackGeneration += 1;
     this.cancelSpeech();
     this.closeMenus();
     this.exitFullscreen();
     this.playerTarget.pause();
-    this.playerTarget.removeAttribute("src");
-    this.playerTarget.load();
+    if (this.playerTarget.readyState > 0) this.playerTarget.currentTime = 0;
+    this.stageTarget.hidden = true;
     this.playerTarget.hidden = true;
     this.remoteTarget.hidden = true;
     this.menuTarget.hidden = false;
@@ -214,8 +239,9 @@ export default class extends Controller {
     if (wasPlaying && this.lessonDialogTarget.open) this.menuTarget.querySelector("button").focus();
   }
 
-  exitFullscreen() {
-    if ((document.fullscreenElement || document.webkitFullscreenElement) !== this.stageTarget) return;
+  exitFullscreen(includeLesson = false) {
+    const fullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fullscreen !== this.stageTarget && !(includeLesson && fullscreen === this.lessonScreenTarget)) return;
     const exit = document.exitFullscreen || document.webkitExitFullscreen;
     try { exit?.call(document)?.catch?.(() => {}); } catch (_) { /* Already exited. */ }
   }
@@ -235,5 +261,9 @@ export default class extends Controller {
     return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
   }
 
-  showError() { if (!this.remoteTarget.hidden) this.errorTarget.hidden = false; }
+  showError() {
+    if (this.stageTarget.hidden) return;
+    this.remoteTarget.hidden = false;
+    this.errorTarget.hidden = false;
+  }
 }
