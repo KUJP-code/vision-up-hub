@@ -55,7 +55,7 @@ gem 'prawn-table'
 
 # Generate PDF previews
 gem 'image_processing', '1.12.2'
-gem 'poppler', '4.2.9'
+gem 'poppler', '4.3.9'
 gem 'ruby-vips', '2.2.0'
 
 # SolidQueue for background processing
