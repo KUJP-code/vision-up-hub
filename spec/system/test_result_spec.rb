@@ -29,6 +29,28 @@ RSpec.describe 'creating a test result', :js do
     end
     let!(:student) { create(:student, level: :sky_one) }
 
+    it 'shows a saved override and its reason after reopening the test' do
+      reason = 'Needs more time in Sky One before moving up.'
+      result = create(:test_result, test:, student:,
+                                    prev_level: :sky_one, new_level: :sky_one,
+                                    total_percent: 76, reason:,
+                                    answers: { listening: [2, 2], reading: [3, 3],
+                                               speaking: [6, 6], writing: [10] })
+
+      visit test_test_results_path(test)
+
+      2.times do
+        within("#student#{student.id}_result") do
+          expect(page).to have_select('test_result[new_level]', selected: 'Sky One')
+          expect(page).to have_field('test_result[reason]', with: reason, visible: true)
+        end
+        page.refresh
+      end
+
+      expect(result.reload.new_level).to eq('sky_one')
+      expect(result.reason).to eq(reason)
+    end
+
     it 'can create a test result as teacher' do
       visit tests_path
       click_link "test_#{test.id}"

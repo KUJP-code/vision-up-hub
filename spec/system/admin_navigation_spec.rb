@@ -15,7 +15,9 @@ RSpec.describe 'admin navigation' do
     expect(page).to have_link('My Account')
 
     expect(page).to have_no_link('Device Authorization')
-    expect(page).to have_no_link('CSV Exports')
+    within('section', text: 'Organisation Management') do
+      expect(page).to have_link('CSV Exports', href: csv_exports_path(locale: I18n.locale))
+    end
     expect(page).to have_no_link('Lesson/Course Matrix')
   end
 

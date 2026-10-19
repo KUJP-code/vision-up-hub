@@ -1,3 +1,10 @@
+# These seeds bootstrap a complete demo database; they do not update existing data.
+# Check before uploading files or changing features so reruns leave data untouched.
+if Organisation.exists?
+  puts 'Organisations already exist; skipping demo seeds to preserve existing data.'
+  return
+end
+
 require 'factory_bot_rails'
 fb = FactoryBot
 

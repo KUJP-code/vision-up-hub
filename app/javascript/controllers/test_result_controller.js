@@ -20,6 +20,7 @@ export default class extends Controller {
 
 	static values = {
 		basics: Number,
+		persisted: Boolean,
 		thresholds: Object,
 		questions: Object,
 	};
@@ -28,7 +29,9 @@ export default class extends Controller {
 		this.thresholds = this.thresholdsValue;
 		this.questions = this.questionsValue;
 		this.setSkillMaxes();
-		this.calculate();
+		this.calculate({
+			preserveLevel: this.persistedValue || this.reasonTarget.value.trim() !== "",
+		});
 	}
 
 	setSkillMaxes() {
@@ -65,7 +68,9 @@ export default class extends Controller {
 			skillMaxes.reduce((total, max) => total + max, 0) + this.basicsValue;
 	}
 
-	calculate() {
+	calculate({ preserveLevel = false } = {}) {
+		const hasOverride =
+			this.newLevel !== undefined && this.newLevelTarget.value !== this.newLevel;
 		const basicsScore = Number.parseInt(this.basicsTarget.value);
 		const listeningScore = this.calcSkillPercent(
 			this.listeningTargets,
@@ -96,7 +101,7 @@ export default class extends Controller {
 		const totalPercent = Math.round((totalScore / this.maxScore) * 100);
 
 		this.setTotalPercent(totalPercent);
-		this.setNewLevel(totalPercent);
+		this.setNewLevel(totalPercent, preserveLevel || hasOverride);
 	}
 
 	calcSkillPercent(targets, maxScore, outputs) {
@@ -125,7 +130,7 @@ export default class extends Controller {
 		}
 	}
 
-	setNewLevel(totalPercent) {
+	setNewLevel(totalPercent, preserveLevel = false) {
 		const eveningCourses = ["Specialist", "Specialist Advanced"];
 		const prevLevel = { lvl: this.prevLevelTarget.value, percent: 0 };
 		const rec = Object.entries(this.thresholds).reduce((rec, threshold) => {
@@ -144,7 +149,10 @@ export default class extends Controller {
 		}
 
 		this.newLevel = rec.lvl.toLowerCase().replace(" ", "_");
-		this.newLevelTarget.value = this.newLevel;
+		if (!preserveLevel) {
+			this.newLevelTarget.value = this.newLevel;
+		}
+		this.checkRecommendedLevel();
 	}
 
 	flagEvening() {
@@ -165,11 +173,14 @@ export default class extends Controller {
 	}
 
 	checkRecommendedLevel() {
+		const hasReason = this.reasonTarget.value.trim() !== "";
+		this.reasonTarget.classList.toggle(
+			"hidden",
+			this.newLevelTarget.value === this.newLevel && !hasReason,
+		);
 		if (this.newLevelTarget.value !== this.newLevel) {
-			this.reasonTarget.classList.remove("hidden");
 			this.newLevelTarget.classList.add("border-yellow-300", "text-yellow-600");
 		} else {
-			this.reasonTarget.classList.add("hidden");
 			this.newLevelTarget.classList.remove(
 				"border-yellow-300",
 				"text-yellow-600",

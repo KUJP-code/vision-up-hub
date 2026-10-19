@@ -10,7 +10,8 @@
       data: { controller: 'test-result',
             'test-result-thresholds-value': test.thresholds.to_json,
             'test-result-questions-value': test.questions.to_json,
-            'test-result-basics-value': test.basics },
+            'test-result-basics-value': test.basics,
+            'test-result-persisted-value': result.persisted? },
     id: "student#{student.id}_result" }
   = turbo_frame_tag dom_id(result) do
     %td.p-2.whitespace-nowrap
@@ -60,8 +61,10 @@
                     form:, data: { action: 'test-result#checkRecommendedLevel',
                                     'test-result-target': 'newLevel' }
         = text_area_tag 'test_result[reason]',
-                        '',
-                        class: 'hidden', data: { 'test-result-target': 'reason' },
+                        result.reason,
+                        class: result.reason.present? ? '' : 'hidden',
+                        data: { 'test-result-target': 'reason' },
+                        aria: { label: t('.give_reason') },
                         form:, placeholder: t('.give_reason')
 
     %td.p-2
