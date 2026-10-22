@@ -1,0 +1,30 @@
+%dialog.lm-flashcards{ 'aria-label': 'フラッシュカード',
+                       data: { 'screen-mirroring-test-target': 'flashcards' } }
+  %button.lm-flash-arrow.lm-flash-previous{ type: 'button',
+                                            'aria-label': '前のカード',
+                                            data: { action: 'screen-mirroring-test#previousCard' } }
+    = render 'icon', name: 'previous'
+  %article.lm-flashcard
+    .lm-flash-illustration
+      %svg.lm-flash-crop{ viewBox: '540 180 520 665', role: 'img',
+                          'aria-label': '手を振ってあいさつするキャラクター',
+                          data: { 'screen-mirroring-test-target': 'cardImage' } }
+        %defs
+          %clippath#lm-flash-crop-clip
+            %rect{ x: 540, y: 180, width: 520, height: 665,
+                   data: { 'screen-mirroring-test-target': 'cardClipRect' } }
+        %image{ href: asset_path('w1-flashcard-characters.png'), width: 1672, height: 941,
+                'clip-path': 'url(#lm-flash-crop-clip)' }
+      %button.lm-round.lm-card-sound{ type: 'button',
+                                      'aria-label': 'フレーズを聞く',
+                                      data: { action: 'screen-mirroring-test#speakCard' } }
+        = render 'icon', name: 'sound'
+    %p.lm-flash-phrase{ data: { 'screen-mirroring-test-target': 'cardPhrase' },
+                        'aria-live': 'polite' } Hello!
+    %p.lm-hint{ data: { 'screen-mirroring-test-target': 'cardCount' } } 1 / 3
+  %button.lm-flash-arrow.lm-flash-next{ type: 'button',
+                                        'aria-label': '次のカード',
+                                        data: { action: 'screen-mirroring-test#nextCard' } }
+    = render 'icon', name: 'next'
+  %button.lm-pill.lm-flash-close{ type: 'button',
+                                  data: { action: 'screen-mirroring-test#closeFlashcards' } } 閉じる

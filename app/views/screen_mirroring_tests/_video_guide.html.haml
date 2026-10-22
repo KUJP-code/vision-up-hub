@@ -1,0 +1,20 @@
+.lm-guide-panel#lm-video-guide{ hidden: true,
+                                data: { 'screen-mirroring-test-target': 'guidePanel' } }
+  .lm-guide-heading
+    %h2{ data: { 'screen-mirroring-test-target': 'videoTitle' } } みんなであいさつしよう！
+    %label
+      %span.lm-sr-only チャプターを選択
+      %select{ data: { 'screen-mirroring-test-target': 'chapterPicker',
+                       action: 'screen-mirroring-test#selectChapter' } }
+  .lm-guide-columns
+    %section
+      %h3 レッスンのねらい
+      %p Hello! / Nice to meet you! / See you! の３つのあいさつを、場面に合わせて使ってみましょう。
+      %p 動画を一時停止しながら、子どもたちのペースに合わせて進めましょう。
+    %section
+      %h3{ data: { 'screen-mirroring-test-target': 'chapterTitle' } }
+      %p{ data: { 'screen-mirroring-test-target': 'guide' } }
+    %section
+      %h3 声かけのヒント
+      %p 先生が先にお手本を見せてから、子どもたちの返事を待ちましょう。
+      %p ことばが出なくても、手を振ったりジェスチャーで答えたりできたら、たくさんほめましょう！

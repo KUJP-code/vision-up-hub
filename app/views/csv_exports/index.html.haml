@@ -2,20 +2,32 @@
 
 %main.flex.flex-col.gap-6.p-3
   %nav.tab-nav
-    = link_to 'General', csv_exports_path, class: "nav-tab #{params[:tab] == 'tests' ? 'inactive' : 'active'}"
-    = link_to 'Tests', csv_exports_path(tab: 'tests'), class: "nav-tab #{params[:tab] == 'tests' ? 'active' : 'inactive'}"
+    = link_to 'General', csv_exports_path,
+              class: "nav-tab #{params[:tab] == 'tests' ? 'inactive' : 'active'}"
+    = link_to 'Tests', csv_exports_path(tab: 'tests'),
+              class: "nav-tab #{params[:tab] == 'tests' ? 'active' : 'inactive'}"
 
   - if params[:tab] == 'tests'
     .flex.flex-col.items-center.gap-4.p-6.rounded.border.border-main.bg-white
       %h2 Test results
-      %p Export every recorded test result for #{@organisation.name}. This export is restricted to your organisation.
-      = link_to 'Export all organisation test results', csv_export_path(id: 0, model: 'TestResult'), class: 'btn btn-main'
+      %p
+        Select a test to export student details, name/date scores,
+        individual listening, reading and writing scores, levels and reasons
+        for #{@organisation.name}.
+      = link_to 'Export results by test', new_csv_export_path(model: 'TestResult'),
+                class: 'btn btn-main'
+      %p Export a summary of all recorded test results for #{@organisation.name}.
+      = link_to 'Export all organisation test results (summary)',
+                csv_export_path(id: 0, model: 'TestResult'), class: 'btn btn-secondary'
   - else
     .h-full.flex.flex-wrap.justify-around.items-center.gap-6
       .flex.flex-col.gap-3.p-3.rounded.border.border-main
         %h2 Export all records
         - (@allowed_models - ['TestResult']).each do |model|
-          = link_to "Export all #{model.titleize.pluralize}", csv_export_path(id: 0, model:), class: 'btn btn-main'
+          = link_to "Export all #{model.titleize.pluralize}",
+                    csv_export_path(id: 0, model:), class: 'btn btn-main'
       .flex.flex-col.gap-3.p-3.rounded.border.border-secondary
         %h2 Filter for export
         = link_to 'Lesson', new_csv_export_path(model: 'Lesson'), class: 'btn btn-secondary'
+        = link_to 'Test Result', new_csv_export_path(model: 'TestResult'),
+                  class: 'btn btn-secondary'

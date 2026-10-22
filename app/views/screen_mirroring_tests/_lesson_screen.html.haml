@@ -1,0 +1,82 @@
+:ruby
+  prepare_actions = %w[
+    pointerover->screen-mirroring-test#prepareVideo
+    focusin->screen-mirroring-test#prepareVideo
+    pointerdown->screen-mirroring-test#prepareVideo
+  ].join(' ')
+  phrases = {
+    'see-you' => 'See you!', 'hello' => 'Hello!', 'nice-to-meet-you' => 'Nice to meet you!'
+  }
+
+.lm-lesson-dialog{ hidden: true,
+                   role: 'dialog',
+                   'aria-modal': 'true',
+                   'aria-label': 'レッスン画面',
+                   data: { 'screen-mirroring-test-target': 'lessonDialog' } }
+  .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen',
+                     action: prepare_actions } }
+    .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
+      = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
+      - phrases.each do |position, phrase|
+        %button.lm-speech-hotspot{ class: "lm-speech-#{position}",
+                                   type: 'button',
+                                   'aria-label': "#{phrase} を聞く",
+                                   data: { action: 'screen-mirroring-test#speak', phrase: } }
+          %span.lm-speech-icon{ 'aria-hidden': 'true' }
+            = render 'icon', name: 'sound'
+    - phrases.each do |clip, phrase|
+      %audio{ preload: 'auto',
+              src: asset_path("speech/#{clip}.wav"),
+              data: { 'screen-mirroring-test-target': 'phraseAudio', phrase: } }
+    %p.lm-sr-only{ role: 'status', data: { 'screen-mirroring-test-target': 'speechStatus' } }
+    %header.lm-lesson-menu{ data: { 'screen-mirroring-test-target': 'menu' } }
+      .lm-lesson-badge
+        .lm-badge-icon
+          = render 'icon', name: 'book'
+        %div
+          %p{ data: { 'screen-mirroring-test-target': 'lessonWeek' } } 第１週 · ベーシックイングリッシュ
+          %h2 みんなであいさつしよう！
+      %nav.lm-lesson-tabs{ 'aria-label': 'レッスンメニュー',
+                           data: { 'screen-mirroring-test-target': 'lessonTabs' } }
+        %button.lm-pill.lm-primary{ type: 'button',
+                                    data: { action: 'screen-mirroring-test#playVideo',
+                                            src: basic_video,
+                                            kind: 'basic',
+                                            title: 'みんなであいさつしよう！' } } ベーシックイングリッシュ
+        %button.lm-pill{ type: 'button',
+                         data: { action: 'screen-mirroring-test#openFlashcards' } } フラッシュカード
+        %button.lm-pill{ type: 'button',
+                         'aria-haspopup': 'dialog',
+                         'aria-expanded': 'false',
+                         data: { action: 'screen-mirroring-test#openPicker', kind: 'activity' } }
+          アクティビティ
+        %button.lm-pill{ type: 'button',
+                         'aria-haspopup': 'dialog',
+                         'aria-expanded': 'false',
+                         data: { action: 'screen-mirroring-test#openPicker', kind: 'story' } }
+          ストーリータイム
+      %button.lm-close{ type: 'button',
+                        'aria-label': 'レッスンを終了',
+                        data: { action: 'screen-mirroring-test#closeLesson' } }
+        = render 'icon', name: 'close'
+
+    %dialog.lm-picker{ 'aria-label': 'レッスンを選ぶ', data: { 'screen-mirroring-test-target': 'picker' } }
+      %button.lm-close.lm-modal-close{ type: 'button',
+                                       'aria-label': '閉じる',
+                                       data: { action: 'screen-mirroring-test#closePicker' } }
+        = render 'icon', name: 'close'
+      .lm-picker-scroll{ data: { 'screen-mirroring-test-target': 'pickerScroll' } }
+        %section{ data: { 'screen-mirroring-test-target': 'pickerActivity' },
+                  'aria-label': 'アクティビティを選ぶ' }
+          = render 'content_cards', items: activities, video: activity_video, kind: 'activity'
+        %section{ hidden: true,
+                  data: { 'screen-mirroring-test-target': 'pickerStory' },
+                  'aria-label': 'ストーリーを選ぶ' }
+          = render 'content_cards', items: stories, video: story_video, kind: 'story'
+      .lm-picker-footer
+        %button.lm-pill{ type: 'button', data: { action: 'screen-mirroring-test#closePicker' } } 閉じる
+      .lm-picker-navigation{ data: { 'screen-mirroring-test-target': 'pickerNavigation' } }
+
+    = render 'flashcards'
+
+    = render 'video_player', basic_video:

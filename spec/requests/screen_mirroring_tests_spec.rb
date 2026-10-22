@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Screen mirroring video test', type: :request do
+RSpec.describe 'Screen mirroring video test' do
   let(:organisation) { create(:organisation, name: 'KidsUP') }
 
   it 'is available to admins' do
@@ -21,6 +21,14 @@ RSpec.describe 'Screen mirroring video test', type: :request do
     expect(response.body).to include('disableRemotePlayback')
     expect(response.body).to include('speech/hello')
     expect(response.body).to include('x-webkit-airplay=\'deny\'')
+    document = Nokogiri::HTML(response.body)
+    expect(document.at_css('body')['class']).to eq('lesson-prototype-body')
+    expect(document.at_css('#main-nav')).to be_nil
+    expect(document.css('.lm-sidebar [data-view]').size).to eq(4)
+    expect(document.css('.lm-lesson-tabs button').size).to eq(4)
+    expect(document.at_css('.lm-progress input')['type']).to eq('range')
+    expect(document.css('.lm-thumbnail-activity img').size).to eq(9)
+    expect(document.at_css('.lm-thumbnail-activity')['data-video']).to include('1225144027.m3u8')
   end
 
   it 'renders the original 2.7.9.1 reference without mockup styles for admins' do

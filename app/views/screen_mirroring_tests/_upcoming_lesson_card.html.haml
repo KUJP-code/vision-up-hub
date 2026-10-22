@@ -1,0 +1,10 @@
+%article.lm-card.lm-upcoming-card{ 'aria-label': "第#{week}週 · 準備中" }
+  .lm-upcoming-preview
+    = image_tag 'w1-splash.jpg', alt: '', loading: 'lazy'
+    .lm-upcoming-overlay
+      %strong Coming soon
+      %span 準備中
+  .lm-upcoming-caption
+    %p.lm-eyebrow{ data: { 'screen-mirroring-test-target': local_assigns[:week_target] } }
+      第#{week}週 · ベーシックイングリッシュ
+    %h2 次のレッスンを準備しています

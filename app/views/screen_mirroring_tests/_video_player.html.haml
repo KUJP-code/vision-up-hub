@@ -1,0 +1,81 @@
+.lm-video-stage{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
+  %video.lm-video{ src: basic_video,
+                   playsinline: true,
+                   preload: 'metadata',
+                   'x-webkit-airplay': 'deny',
+                   disableRemotePlayback: true,
+                   data: { 'screen-mirroring-test-target': 'player', kind: 'basic' } }
+  %button.lm-close.lm-video-close{ type: 'button',
+                                   'aria-label': '動画を閉じる',
+                                   data: { action: 'screen-mirroring-test#stop' } }
+    = render 'icon', name: 'close'
+  %section.lm-remote{ hidden: true,
+                      'aria-label': '動画リモコンと先生用ガイド',
+                      data: { 'screen-mirroring-test-target': 'remote' } }
+    = render 'video_guide'
+    %label.lm-progress
+      %span.lm-sr-only 再生位置
+      %input{ type: 'range',
+              min: 0,
+              max: 100,
+              step: 0.1,
+              value: 0,
+              'aria-label': '再生位置',
+              data: { 'screen-mirroring-test-target': 'progress',
+                      action: 'input->screen-mirroring-test#scrub' } }
+    .lm-controls
+      .lm-play-controls
+        %button.lm-round.lm-play{ type: 'button',
+                                  'aria-label': '再生',
+                                  data: { action: 'screen-mirroring-test#togglePlayback',
+                                          'screen-mirroring-test-target': 'playButton' } }
+          %span{ data: { 'screen-mirroring-test-target': 'playIcon' } }
+            = image_tag 'remote/play.svg', alt: ''
+          %span{ hidden: true, data: { 'screen-mirroring-test-target': 'pauseIcon' } }
+            = image_tag 'remote/pause.svg', alt: ''
+        %button.lm-round{ type: 'button',
+                          'aria-label': '前の章',
+                          data: { action: 'screen-mirroring-test#previousChapter' } }
+          = image_tag 'remote/chapter-back.svg', alt: ''
+        %button.lm-round{ type: 'button',
+                          'aria-label': '次の章',
+                          data: { action: 'screen-mirroring-test#nextChapter' } }
+          = image_tag 'remote/chapter-next.svg', alt: ''
+        %button.lm-round.lm-skip{ type: 'button',
+                                  'aria-label': '5秒戻る',
+                                  data: { action: 'screen-mirroring-test#back' } }
+          = image_tag 'remote/back-five.svg', alt: ''
+        %button.lm-round.lm-skip{ type: 'button',
+                                  'aria-label': '5秒進む',
+                                  data: { action: 'screen-mirroring-test#forward' } }
+          = image_tag 'remote/forward-five.svg', alt: ''
+      %p.lm-time{ data: { 'screen-mirroring-test-target': 'time' } } 0:00 / 0:00
+      .lm-remote-options
+        %button.lm-chapter-stop{ type: 'button',
+                                 role: 'switch',
+                                 'aria-checked': 'false',
+                                 data: { action: 'screen-mirroring-test#toggleChapterStop',
+                                         'screen-mirroring-test-target': 'chapterStop' } }
+          %span 章末停止
+          %span.lm-switch{ 'aria-hidden': 'true' }
+        %details.lm-speed
+          %summary.lm-round{ 'aria-label': '再生速度' }
+            = render 'icon', name: 'speed'
+          .lm-speed-popover
+            %p 再生速度
+            .lm-speed-choices{ role: 'group', 'aria-label': '再生速度' }
+              - %w[0.5 0.75 1 1.25 1.5].each do |rate|
+                %button{ type: 'button', 'aria-pressed': rate == '1' ? 'true' : 'false',
+                         data: { action: 'screen-mirroring-test#changeSpeed', rate:,
+                                 'screen-mirroring-test-target': 'speedButton' } }
+                  #{rate}x
+        %button.lm-pill.lm-guide-button{ type: 'button',
+                                         'aria-expanded': 'false',
+                                         'aria-controls': 'lm-video-guide',
+                                         data: { action: 'screen-mirroring-test#toggleGuide',
+                                                 'screen-mirroring-test-target': 'guideButton' } }
+          先生用ガイド
+    %p.lm-error{ hidden: true,
+                 role: 'alert',
+                 data: { 'screen-mirroring-test-target': 'error' } }
+      動画を再生できませんでした。通信環境を確認し、再生ボタンでお試しください。

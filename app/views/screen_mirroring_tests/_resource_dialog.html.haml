@@ -1,0 +1,17 @@
+%dialog.lm-resource-dialog{ data: { 'screen-mirroring-test-target': 'resource' },
+                            'aria-labelledby': 'lm-resource-title' }
+  %button.lm-close.lm-modal-close{ type: 'button',
+                                   'aria-label': '閉じる',
+                                   data: { action: 'screen-mirroring-test#closeResource' } }
+    = render 'icon', name: 'close'
+  %p.lm-eyebrow 資料プレビュー · サンプル
+  %h2#lm-resource-title{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
+  %div{ data: { 'screen-mirroring-test-target': 'resourceGuide' } }
+    %p あいさつの練習 → 動画を見る → みんなでやってみよう！
+    %p 笑顔で手を振って、Hello! とあいさつしましょう。動画を一時停止しながら、子どもたちといっしょに練習します。
+  %div{ hidden: true, data: { 'screen-mirroring-test-target': 'resourceMaterials' } }
+    %h3 教材・準備ガイド
+    %p 子ども１人につきプリント１枚、色えんぴつをご用意ください。
+  %p.lm-hint 実際のPDFはまだ登録されていません。
+  %button.lm-pill.lm-modal-done{ type: 'button',
+                                 data: { action: 'screen-mirroring-test#closeResource' } } 閉じる

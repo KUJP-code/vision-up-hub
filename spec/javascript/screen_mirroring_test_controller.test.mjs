@@ -6,12 +6,14 @@ import assert from 'node:assert/strict';
 const source = readFileSync(new URL('../../app/javascript/controllers/screen_mirroring_test_controller.js', import.meta.url), 'utf8')
   .replace('import { Controller } from "@hotwired/stimulus";', 'class Controller {}')
   .replace('export default class', 'globalThis.Mockup = class');
-function fixture(document = {}) {
-  const context = vm.createContext({ document });
+function fixture(document = {}, globals = {}) {
+  const context = vm.createContext({ document, ...globals });
   vm.runInContext(source, context);
   const controller = new context.Mockup();
   controller.lessonDialogTarget = { hidden: false };
   controller.speechStatusTarget = { textContent: '' };
+  controller.lessonWeekTarget = { textContent: '' };
+  controller.speedButtonTargets = [];
   return controller;
 }
 
@@ -41,7 +43,7 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   for (const target of ['speed','videoTitle','error','remote','menu','splash']) controller[`${target}Target`] = { hidden: false };
   controller.playButtonTarget = { focus() {} };
   controller.playbackGeneration = 0;
-  controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.loadVideoSource = controller.resetGuide = () => {};
+  controller.closePicker = controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.loadVideoSource = controller.resetGuide = () => {};
   controller.playVideo({ currentTarget: { dataset: { kind: 'basic', title: 'Lesson' } } });
   assert.deepEqual(calls, ['fullscreen', ['fixed', 'fixed', 'inset-0', 'z-[60]', 'rounded-none'], 'play']);
   assert.equal(controller.remoteTarget.hidden, true);
@@ -82,4 +84,135 @@ test('preparing a different lesson reuses the single video and does not reload a
   assert.equal(loads, 1);
   controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
   assert.equal(loads, 1);
+});
+
+test('chapter stopping pauses once at a crossed boundary and allows resuming', () => {
+  const controller = fixture();
+  let pauses = 0;
+  controller.pauseAtChapterEnd = true;
+  controller.lastPlaybackTime = 89.9;
+  controller.chapters = [{ time: 0 }, { time: 90 }, { time: 180 }];
+  controller.playerTarget = {
+    currentTime: 90.2, paused: false, seeking: false,
+    pause() { this.paused = true; pauses++; }
+  };
+  controller.checkChapterEnd();
+  assert.equal(controller.playerTarget.currentTime, 90);
+  assert.equal(pauses, 1);
+  controller.playerTarget.paused = false;
+  controller.playerTarget.currentTime = 90.2;
+  controller.checkChapterEnd();
+  assert.equal(pauses, 1);
+});
+
+test('manual chapter jumps do not trigger chapter stopping', () => {
+  const controller = fixture();
+  controller.pauseAtChapterEnd = true;
+  controller.lastPlaybackTime = 0;
+  controller.chapters = [{ time: 0 }, { time: 90 }, { time: 180 }];
+  controller.updateRemote = () => {};
+  controller.playerTarget = {
+    duration: 550, currentTime: 0, paused: false, seeking: false,
+    pause() { throw Error('An explicit seek should not stop playback'); }
+  };
+  controller.seekTo(190);
+  controller.checkChapterEnd();
+  assert.equal(controller.playerTarget.currentTime, 190);
+  controller.seekTo(900);
+  assert.equal(controller.playerTarget.currentTime, 550);
+  controller.seekTo(-5);
+  assert.equal(controller.playerTarget.currentTime, 0);
+});
+
+test('a pending play promise cannot reveal the remote after leaving playback', async () => {
+  const controller = fixture();
+  let finishPlay;
+  controller.playbackGeneration = 0;
+  controller.stageTarget = { hidden: false };
+  controller.playerTarget = { play() { return new Promise(resolve => { finishPlay = resolve; }); } };
+  controller.remoteTarget = { hidden: true };
+  controller.play();
+  controller.playbackGeneration++;
+  controller.stageTarget.hidden = true;
+  finishPlay();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(controller.remoteTarget.hidden, true);
+});
+
+test('thumbnail URLs are resolved from public, player, stream, and unlisted Vimeo links', () => {
+  const controller = fixture({}, { URL });
+  assert.equal(controller.vimeoPageUrl('https://vimeo.com/123'), 'https://vimeo.com/123');
+  assert.equal(controller.vimeoPageUrl('https://player.vimeo.com/video/456?h=abc123'), 'https://vimeo.com/456/abc123');
+  assert.equal(controller.vimeoPageUrl('https://player.vimeo.com/external/789.m3u8?s=stream-signature'), 'https://vimeo.com/789');
+  assert.equal(controller.vimeoPageUrl('https://vimeo.com/123/privatehash'), 'https://vimeo.com/123/privatehash');
+  assert.equal(controller.vimeoPageUrl('https://example.com/123'), null);
+  assert.equal(controller.vimeoPageUrl('invalid URL'), null);
+});
+
+function thumbnailContainer(video) {
+  const placeholder = { hidden: false };
+  const image = {
+    hidden: true,
+    addEventListener(_event, listener) { this.loaded = listener; },
+    set src(value) { this.url = value; this.loaded(); }
+  };
+  return {
+    dataset: { video }, isConnected: true, image, placeholder,
+    querySelector(selector) { return selector === 'img' ? image : placeholder; }
+  };
+}
+
+test('duplicate cards share a thumbnail lookup and a different video gets its own thumbnail', async () => {
+  const lookups = [];
+  const controller = fixture({}, {
+    URL,
+    fetch: async endpoint => {
+      lookups.push(endpoint.searchParams.get('url'));
+      assert.equal(endpoint.searchParams.get('maxwidth'), '960');
+      return { ok: true, json: async () => ({ thumbnail_url: `https://i.vimeocdn.com/${lookups.length}.jpg` }) };
+    }
+  });
+  const first = thumbnailContainer('https://player.vimeo.com/external/123.m3u8?s=one');
+  const duplicate = thumbnailContainer('https://vimeo.com/123');
+  await Promise.all([controller.thumbnailTargetConnected(first), controller.thumbnailTargetConnected(duplicate)]);
+  assert.deepEqual(lookups, ['https://vimeo.com/123']);
+  assert.equal(first.image.url, duplicate.image.url);
+  assert.equal(first.image.hidden, false);
+  assert.equal(first.placeholder.hidden, true);
+  const different = thumbnailContainer('https://vimeo.com/456');
+  await controller.thumbnailTargetConnected(different);
+  assert.deepEqual(lookups, ['https://vimeo.com/123', 'https://vimeo.com/456']);
+  assert.notEqual(different.image.url, first.image.url);
+});
+
+test('unavailable thumbnail metadata leaves a usable placeholder', async () => {
+  const controller = fixture({}, { URL, fetch: async () => { throw Error('offline'); } });
+  const card = thumbnailContainer('https://vimeo.com/123');
+  await controller.thumbnailTargetConnected(card);
+  assert.equal(card.image.hidden, true);
+  assert.equal(card.placeholder.hidden, false);
+});
+
+test('future-week previews start on the next calendar week and restore current content', () => {
+  const controller = fixture();
+  controller.sampleLessonDate = '2026-10-22';
+  controller.dateTarget = { value: '2026-10-25' };
+  controller.homeLessonTarget = { hidden: false };
+  controller.homeUpcomingTarget = { hidden: true };
+  controller.weekHeadingTarget = { textContent: '' };
+  controller.upcomingWeekTarget = { textContent: '' };
+  controller.updateWeek();
+  assert.equal(controller.homeLessonTarget.hidden, false);
+  controller.dateTarget.value = '2026-10-26';
+  controller.updateWeek();
+  assert.equal(controller.homeLessonTarget.hidden, true);
+  assert.equal(controller.homeUpcomingTarget.hidden, false);
+  assert.match(controller.upcomingWeekTarget.textContent, /第2週/);
+  controller.dateTarget.value = '2026-11-02';
+  controller.updateWeek();
+  assert.match(controller.upcomingWeekTarget.textContent, /第3週/);
+  controller.dateTarget.value = '2026-10-22';
+  controller.updateWeek();
+  assert.equal(controller.homeLessonTarget.hidden, false);
+  assert.equal(controller.homeUpcomingTarget.hidden, true);
 });

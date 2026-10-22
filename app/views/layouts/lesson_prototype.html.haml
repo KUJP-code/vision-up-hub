@@ -1,0 +1,14 @@
+!!! 5
+%html{ lang: 'ja' }
+  %head
+    %title AI先生 · レッスン体験
+    %meta{ charset: 'utf-8' }
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    %meta{ name: 'robots', content: 'noindex, nofollow' }
+    %meta{ name: 'turbo-cache-control', content: 'no-cache' }
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag 'lesson_mockup'
+    = javascript_include_tag 'application', 'data-turbo-track': 'reload', type: 'module'
+  %body.lesson-prototype-body
+    = yield

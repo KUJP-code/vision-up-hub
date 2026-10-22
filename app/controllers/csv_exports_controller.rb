@@ -101,7 +101,8 @@ class CsvExportsController < ApplicationController
   end
 
   def export_results_for_test(path, test_id)
-    headers = test_result_headers(Test.find(test_id))
+    test = Test.find(test_id)
+    headers = test_result_headers(test)
 
     CSV.open(path, 'wb') do |csv|
       csv << headers
@@ -109,17 +110,24 @@ class CsvExportsController < ApplicationController
                 .where(test_id:, organisation_id: current_user.organisation_id).find_each do |result|
         csv << [result.student.name, result.student.en_name, result.student.student_id,
                 result.student.grade, result.student.school.name, result.prev_level.titleize,
-                result.basics, *result.listening, *result.reading,
-                *result.writing, result.new_level.titleize, result.reason]
+                result.basics, *test_result_scores(result, test),
+                result.new_level.titleize, result.reason]
       end
+    end
+  end
+
+  def test_result_scores(result, test)
+    %w[listening reading writing].flat_map do |skill|
+      scores = Array(result.public_send(skill))
+      Array(test.public_send(skill)).each_index.map { |index| scores[index] }
     end
   end
 
   def test_result_headers(test)
     headers = %w[name en_name student_id grade school current_level name_date]
-    test.listening.size.times { |i| headers << "listening_#{(i + 97).chr}" }
-    test.reading.size.times { |i| headers << "reading_#{(i + 97).chr}" }
-    test.writing.size.times { |i| headers << "writing_#{(i + 97).chr}" }
+    Array(test.listening).size.times { |i| headers << "listening_#{(i + 97).chr}" }
+    Array(test.reading).size.times { |i| headers << "reading_#{(i + 97).chr}" }
+    Array(test.writing).size.times { |i| headers << "writing_#{(i + 97).chr}" }
     headers << 'new_level' << 'reason'
   end
 

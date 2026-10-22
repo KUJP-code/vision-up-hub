@@ -1,0 +1,43 @@
+:ruby
+  activity = kind == 'activity'
+  categories = %w[ぬりえ 工作 教材不要]
+  descriptions = [
+    '好きな色を使って、あいさつをするお友だちをぬってみましょう。',
+    '動画のお手本を見ながら、みんなで作品を作りましょう。',
+    'あいさつのことばを、声に出しながら書いてみましょう。'
+  ]
+  story_description = '登場人物といっしょに、英語のお話を楽しみましょう。次に何が起こるかな？'
+
+.lm-card-grid
+  - items.each_with_index do |title, index|
+    %article.lm-card.lm-content-card{ data: { category: activity ? categories[index % 3] : nil } }
+      .lm-content-thumbnail{ class: "lm-thumbnail-#{kind}",
+                             data: { 'screen-mirroring-test-target': 'thumbnail', video: } }
+        %img{ hidden: true, alt: '', width: 960, height: 540 }
+        .lm-thumbnail-placeholder
+          = render 'icon', name: activity ? 'activity' : 'book'
+          %span= title
+      - if activity
+        %p.lm-eyebrow 第１週 · アクティビティ #{index + 1}
+      %h2= title
+      %p.lm-card-description= activity ? descriptions[index % 3] : story_description
+      .lm-card-buttons
+        %button.lm-pill.lm-primary{ type: 'button',
+                                    data: { action: 'screen-mirroring-test#launchVideo',
+                                            src: video,
+                                            kind:,
+                                            title: } }
+          = activity ? 'アクティビティをはじめる' : 'ストーリーをはじめる'
+          = render 'icon', name: 'play'
+        - if activity
+          %button.lm-pill{ type: 'button',
+                           data: { action: 'screen-mirroring-test#previewResource',
+                                   title: "#{title} · 先生用ガイド", resource_kind: 'guide' } }
+            先生用ガイド
+            = render 'icon', name: 'download'
+          - unless index % 3 == 2
+            %button.lm-pill{ type: 'button',
+                             data: { action: 'screen-mirroring-test#previewResource',
+                                     title: "#{title} · レッスン教材", resource_kind: 'materials' } }
+              レッスン教材
+              = render 'icon', name: 'download'

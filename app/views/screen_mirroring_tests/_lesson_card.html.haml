@@ -1,0 +1,22 @@
+%article.lm-card.lm-week-card
+  = image_tag 'w1-splash.jpg', class: 'lm-card-image', alt: 'あいさつをするキャラクターたち'
+  .lm-card-content
+    %p.lm-eyebrow 第#{week}週 · ベーシックイングリッシュ
+    %h2 みんなであいさつしよう！
+    %p あいさつのことばを聞いて、みんなで楽しく英語を話してみましょう。
+    %h3 今週のフレーズ
+    %p Hello! / Nice to meet you! / See you!
+    %h3 今週の語彙
+    %p Hello / friends / goodbye
+    .lm-card-actions
+      %button.lm-pill.lm-primary{ type: 'button',
+                                  data: { action: 'screen-mirroring-test#start', week: } }
+        レッスンをはじめる
+        = render 'icon', name: 'play'
+      %button.lm-pill{ type: 'button',
+                       data: { action: 'screen-mirroring-test#previewResource',
+                               title: '先生用ガイド',
+                               resource_kind: 'guide' } }
+        先生用ガイド
+        = render 'icon', name: 'download'
+    %p.lm-hint 画面ミラーリングを開始してから、レッスンをはじめてください。
