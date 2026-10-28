@@ -42,6 +42,17 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     page.current_window.resize_to(1280, 800)
     click_button 'フラッシュカード', exact: true
     expect(page).to have_css('.lm-flash-phrase', text: 'Hello!')
+    expect(page).not_to have_text('1 / 3')
+    expect(page.evaluate_script('getComputedStyle(document.querySelector(".lesson-mockup")).fontFamily')).to include('M PLUS 1p')
+    loaded_fonts = page.driver.browser.execute_async_script(<<~JS)
+      const done = arguments[arguments.length - 1];
+      Promise.all([
+        document.fonts.load('15px "M PLUS 1p"'),
+        document.fonts.load('700 15px "M PLUS 1p"'),
+        document.fonts.load('40px "Kids UP Reading Sample"', 'Hello!')
+      ]).then(fonts => done(fonts.map(items => items.length))).catch(() => done([]));
+    JS
+    expect(loaded_fonts).to eq([1, 1, 1])
     find('button[aria-label="次のカード"]').click
     expect(page).to have_css('.lm-flash-phrase', text: 'Nice to meet you!')
     page.driver.browser.action.send_keys(:arrow_left).perform

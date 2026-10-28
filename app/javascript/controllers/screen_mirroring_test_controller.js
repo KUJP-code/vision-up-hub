@@ -8,7 +8,7 @@ export default class extends Controller {
     "guide", "speedButton", "chapterPicker", "splash", "speechStatus", "phraseAudio",
     "guidePanel", "guideButton", "sidebar", "page", "pageTitle", "navButton", "filter",
     "resourceGuide", "resourceMaterials", "lessonWeek", "picker", "pickerActivity",
-    "pickerStory", "flashcards", "cardPhrase", "cardCount", "cardImage", "progress",
+    "pickerStory", "flashcards", "cardPhrase", "cardImage", "progress",
     "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
     "pickerScroll", "homeLesson", "homeUpcoming", "weekHeading", "upcomingWeek", "cardClipRect"
   ];
@@ -218,7 +218,7 @@ export default class extends Controller {
     this.cancelSpeech();
     const phrases = ["Hello!", "Nice to meet you!", "See you!"];
     this.cardPhraseTarget.textContent = phrases[this.cardIndex];
-    this.cardCountTarget.textContent = `${this.cardIndex + 1} / ${phrases.length}`;
+    this.cardPhraseTarget.dataset.readingFont = String(this.cardIndex === 0);
     const crops = ["540 180 520 665", "1070 380 620 470", "0 245 475 565"];
     this.cardImageTarget.setAttribute("viewBox", crops[this.cardIndex]);
     crops[this.cardIndex].split(" ").forEach((value, index) => {
