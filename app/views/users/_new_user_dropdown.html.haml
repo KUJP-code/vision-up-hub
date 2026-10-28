@@ -8,7 +8,7 @@
 
       - type_path = send(:"new_organisation_#{type.singularize.underscore}_path",
                          org)
-      = link_to split_on_capitals(type),
+      = link_to user_role_label(type),
                 type_path,
                 class: 'dropdown-item',
                 id: "create_#{type.singularize.underscore}"

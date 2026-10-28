@@ -37,7 +37,7 @@
             = link_to user.name,
                       send(path, user.organisation_id, user),
                       data: { 'turbo-frame' => '_top' }
-          %td= split_on_capitals(user.type)
+          %td= user_role_label(user.type)
           %td= mail_to user.email
 
           - if current_user.is?('Admin')

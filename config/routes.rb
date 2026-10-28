@@ -114,6 +114,7 @@ Rails.application.routes.draw do
         resources :school_managers
         resources :teachers
         resources :writers
+        resources :ai_senseis, only: %i[new create edit update destroy]
       end
       post 'reassign_editor', to: 'admins#reassign_editor', as: :reassign_editor
       get 'admin_password_change', to: 'admins#new_password_change', as: :admin_password_change
@@ -121,6 +122,10 @@ Rails.application.routes.draw do
 
       # Index for KU staff who can see everything
       get 'users', to: 'users#index', as: :users
+    end
+
+    authenticate :user, ->(user) { user.is?('Admin', 'AiSensei') } do
+      get 'ai-sensei', to: 'screen_mirroring_tests#show', as: :ai_sensei
     end
 
     authenticate :user, ->(user) { user.is?('Admin') } do

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module UserHelper
+  def user_role_label(type)
+    type == 'AiSensei' ? 'ai-sensei' : split_on_capitals(type)
+  end
+
   def viewing_self?
     User::TYPES.include?(controller_name.titleize.tr(' ', '').singularize) &&
       current_user.id == params[:id].to_i

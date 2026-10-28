@@ -24,7 +24,7 @@
         .form-group
           = f.label :type, t('.role')
           = f.select :type,
-                     current_user.class::VISIBLE_TYPES.map { |t| [t.titleize, t] },
+                     current_user.class::VISIBLE_TYPES.map { |t| [user_role_label(t), t] },
                      { prompt: t('.select_role') }
 
       - unless orgs.empty?

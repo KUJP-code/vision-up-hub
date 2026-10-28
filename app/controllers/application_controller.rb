@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   around_action :set_locale
+  before_action :restrict_ai_sensei_access
   before_action :configure_permitted_params, if: :devise_controller?
   before_action :ensure_privacy_policy_accepted, unless: -> { logging_out? }
   before_action :ensure_device_record, unless: -> { logging_out? }
@@ -14,10 +15,39 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     session[:login_date] = Date.current.ajd.to_i
+    if resource.is?('AiSensei')
+      stored_location_for(:user)
+      return ai_sensei_path
+    end
+
     super
   end
 
   private
+
+  def restrict_ai_sensei_access
+    return unless current_user&.is?('AiSensei')
+    return if ai_sensei_action_allowed?
+
+    if request.get? || request.head?
+      redirect_to ai_sensei_path
+    else
+      head :forbidden
+    end
+  end
+
+  def ai_sensei_action_allowed?
+    case controller_name
+    when 'screen_mirroring_tests'
+      action_name == 'show' && params[:reference].blank?
+    when 'sessions'
+      devise_controller? && %w[new create destroy].include?(action_name)
+    when 'session_handoffs'
+      true
+    else
+      false
+    end
+  end
 
   def ensure_device_record
     return unless user_signed_in?
@@ -58,6 +88,7 @@ class ApplicationController < ActionController::Base
 
   def ensure_privacy_policy_accepted
     return unless user_signed_in?
+    return if current_user.is?('AiSensei')
     return unless Rails.configuration.x.require_privacy_policy
 
     latest_id = PrivacyPolicy.latest_id

@@ -39,5 +39,9 @@ FactoryBot.define do
     trait :parent do
       type { 'Parent' }
     end
+
+    trait :ai_sensei do
+      type { 'AiSensei' }
+    end
   end
 end

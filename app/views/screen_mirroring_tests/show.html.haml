@@ -38,9 +38,15 @@
                                      'screen-mirroring-test-target': 'navButton' } }
         = render 'icon', name: icon
         %span.lm-nav-label= label
-    = link_to root_path, class: 'lm-hub-link', title: '管理画面に戻る' do
-      %span ↩
-      %span.lm-nav-label 管理画面に戻る
+    - if current_user.is?('AiSensei')
+      = link_to destroy_user_session_path, class: 'lm-hub-link', title: 'ログアウト',
+                'aria-label': 'ログアウト', data: { turbo_method: :delete, turbo_frame: '_top' } do
+        = render 'icon', name: 'logout'
+        %span.lm-nav-label ログアウト
+    - else
+      = link_to root_path, class: 'lm-hub-link', title: '管理画面に戻る' do
+        %span ↩
+        %span.lm-nav-label 管理画面に戻る
   .lm-workspace
     %header.lm-page-header
       %h1{ data: { 'screen-mirroring-test-target': 'pageTitle' } } ホーム

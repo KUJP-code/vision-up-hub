@@ -4,7 +4,7 @@ class User < ApplicationRecord
   include Notifiable
 
   KU_TYPES = %w[Admin Sales Writer].freeze
-  TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer].freeze
+  TYPES = %w[Admin OrgAdmin Parent Sales SchoolManager Teacher Writer AiSensei].freeze
   PASSWORD_COMPLEXITY_REGEX = /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+\z/.freeze
 
   validates :name, presence: true
