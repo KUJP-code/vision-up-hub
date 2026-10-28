@@ -50,10 +50,21 @@ export default class extends Controller {
         player.addEventListener(event, () => {
           if (event === "timeupdate") this.checkChapterEnd();
           this.updateRemote();
+          if (event === "pause" && player === this.playerTarget) this.showRemote();
         }, options);
       });
       player.addEventListener("ended", () => { if (player === this.playerTarget) this.stop(); }, options);
       player.addEventListener("error", () => { if (player === this.playerTarget) this.showError(); }, options);
+    });
+    ["pointermove", "pointerdown", "pointerup", "click", "keydown", "focusin"].forEach(event => {
+      this.stageTarget.addEventListener(event, () => this.showRemote(), options);
+    });
+    this.stageTarget.addEventListener("pointerdown", () => { this.remoteInteraction = true; }, options);
+    ["pointerup", "pointercancel"].forEach(event => {
+      document.addEventListener(event, () => {
+        this.remoteInteraction = false;
+        this.showRemote();
+      }, options);
     });
     ["fullscreenchange", "webkitfullscreenchange"].forEach(event => {
       document.addEventListener(event, () => {
@@ -301,6 +312,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    clearTimeout(this.remoteTimeout);
     this.events?.abort();
     this.cancelSpeech();
     this.playbackGeneration += 1;
@@ -422,6 +434,7 @@ export default class extends Controller {
       this.splashTarget.hidden = true;
       this.remoteTarget.hidden = false;
       this.playButtonTarget.focus();
+      this.showRemote();
     }).catch(error => {
       if (generation === this.playbackGeneration && error.name !== "AbortError") this.showError();
     });
@@ -431,6 +444,25 @@ export default class extends Controller {
     this.errorTarget.hidden = true;
     if (this.playerTarget.paused) this.play();
     else this.playerTarget.pause();
+  }
+
+  showRemote() {
+    clearTimeout(this.remoteTimeout);
+    if (this.stageTarget.hidden || this.remoteTarget.hidden) return;
+    this.stageTarget.classList.remove("lm-controls-hidden");
+    this.remoteTarget.inert = false;
+    this.remoteTimeout = setTimeout(() => this.hideRemote(), 5000);
+  }
+
+  hideRemote() {
+    // Keep controls available while paused, reading the guide, or choosing a speed.
+    if (this.stageTarget.hidden || this.playerTarget.paused || this.remoteInteraction ||
+        !this.guidePanelTarget.hidden || !this.errorTarget.hidden ||
+        this.remoteTarget.querySelector("details[open]")) return;
+    if (this.remoteTarget.contains(document.activeElement)) this.stageTarget.focus({ preventScroll: true });
+    clearTimeout(this.remoteTimeout);
+    this.remoteTarget.inert = true;
+    this.stageTarget.classList.add("lm-controls-hidden");
   }
 
   back() { this.seekTo(this.playerTarget.currentTime - 5); }
@@ -486,6 +518,10 @@ export default class extends Controller {
   }
 
   stop() {
+    clearTimeout(this.remoteTimeout);
+    this.remoteInteraction = false;
+    this.stageTarget.classList.remove("lm-controls-hidden");
+    this.remoteTarget.inert = false;
     const wasPlaying = !this.stageTarget.hidden;
     this.playbackGeneration += 1;
     this.cancelSpeech();
@@ -495,6 +531,7 @@ export default class extends Controller {
     this.exitFullscreen();
     this.stageTarget.classList.remove("fixed", "inset-0", "z-[60]", "rounded-none");
     this.stageTarget.hidden = true;
+    clearTimeout(this.remoteTimeout);
     this.remoteTarget.hidden = true;
     this.menuTarget.hidden = false;
     this.splashTarget.hidden = false;
@@ -545,5 +582,6 @@ export default class extends Controller {
     if (this.stageTarget.hidden) return;
     this.remoteTarget.hidden = false;
     this.errorTarget.hidden = false;
+    this.showRemote();
   }
 }

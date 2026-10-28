@@ -1,4 +1,4 @@
-.lm-video-stage{ hidden: true, data: { 'screen-mirroring-test-target': 'stage' } }
+.lm-video-stage{ hidden: true, tabindex: -1, data: { 'screen-mirroring-test-target': 'stage' } }
   %video.lm-video{ src: basic_video,
                    playsinline: true,
                    preload: 'metadata',
@@ -60,7 +60,7 @@
           %span.lm-switch{ 'aria-hidden': 'true' }
         %details.lm-speed
           %summary.lm-round{ 'aria-label': '再生速度' }
-            = render 'icon', name: 'speed'
+            = image_tag 'remote/speed.svg', alt: ''
           .lm-speed-popover
             %p 再生速度
             .lm-speed-choices{ role: 'group', 'aria-label': '再生速度' }

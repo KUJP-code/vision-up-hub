@@ -248,6 +248,37 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).not_to have_css('.lm-upcoming-card')
   end
 
+  it 'fades the remote after five idle seconds and restores it for pointer, touch, and keyboard use' do
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    expect(page).to have_css('.lm-remote')
+    expect(page).not_to have_css('.lm-controls-hidden')
+    expect(page).to have_css('.lm-controls-hidden', wait: 7)
+    expect(page).not_to have_css('.lm-remote')
+    expect(page.evaluate_script('document.querySelector(".lm-remote").inert')).to be true
+
+    %w[pointermove pointerdown keydown].each do |event|
+      page.execute_script <<~JS, event
+        const stage = document.querySelector('.lm-video-stage');
+        stage.dispatchEvent(new Event(arguments[0], { bubbles: true }));
+      JS
+      expect(page).to have_css('.lm-remote')
+      expect(page.evaluate_script('document.querySelector(".lm-remote").inert')).to be false
+    end
+    page.execute_script('document.dispatchEvent(new Event("pointerup"))')
+    find('button[aria-label="一時停止"]').click
+    # A paused lesson keeps the controls visible even after the idle deadline.
+    expect(page).to have_css('button[aria-label="再生"]')
+    page.driver.browser.execute_async_script('setTimeout(arguments[arguments.length - 1], 5300)')
+    expect(page).to have_css('.lm-remote')
+    find('button[aria-label="再生"]').click
+    expect(page).to have_css('.lm-controls-hidden', wait: 7)
+    page.execute_script('document.querySelector(".lm-video-stage").dispatchEvent(new Event("pointermove"))')
+    find('button[aria-label="動画を閉じる"]').click
+    expect(page).not_to have_css('.lm-video-stage')
+  end
+
   private
 
   def stub_video_playback
