@@ -78,8 +78,17 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
     within('.lm-picker') { first('button', text: 'レッスン教材').click }
     expect(page).to have_css('.lm-resource-dialog[open]', text: '教材・準備ガイド')
+    within('.lm-resource-dialog') do
+      expect(page).to have_button('PDFをダウンロード', disabled: true, count: 2)
+    end
     within('.lm-resource-dialog') { click_button '閉じる', exact: true }
     expect(page).to have_css('.lm-picker[open]')
+    within('.lm-picker') { first('button', text: '先生用ガイド').click }
+    within('.lm-resource-dialog') do
+      expect(page).to have_text('先生用ガイドPDF')
+      expect(page).to have_button('PDFをダウンロード', disabled: true, count: 1)
+      click_button '閉じる', exact: true
+    end
     within('.lm-picker') { click_button '閉じる', exact: true }
     within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
     expect(page).to have_css('.lm-picker .lm-content-card', count: 5)

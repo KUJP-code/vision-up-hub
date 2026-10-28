@@ -7,11 +7,23 @@
   %p.lm-eyebrow 資料プレビュー · サンプル
   %h2#lm-resource-title{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
   %div{ data: { 'screen-mirroring-test-target': 'resourceGuide' } }
-    %p あいさつの練習 → 動画を見る → みんなでやってみよう！
-    %p 笑顔で手を振って、Hello! とあいさつしましょう。動画を一時停止しながら、子どもたちといっしょに練習します。
+    .lm-resource-file
+      %p 先生用ガイドPDF。レッスンのねらい、準備するもの、動画に合わせた進め方をまとめたガイドです。
+      %button.lm-pill{ type: 'button', disabled: true }
+        PDFをダウンロード
+        = render 'icon', name: 'download'
   %div{ hidden: true, data: { 'screen-mirroring-test-target': 'resourceMaterials' } }
     %h3 教材・準備ガイド
-    %p 子ども１人につきプリント１枚、色えんぴつをご用意ください。
+    .lm-resource-file
+      %p 教材PDF 1：子ども用プリント。子ども１人につき１枚印刷してください。活動に合わせて、色えんぴつやはさみをご用意ください。
+      %button.lm-pill{ type: 'button', disabled: true }
+        PDFをダウンロード
+        = render 'icon', name: 'download'
+    .lm-resource-file
+      %p 教材PDF 2：先生用の完成見本。活動を始める前に見せたり、作り方を説明したりするときに使います。
+      %button.lm-pill{ type: 'button', disabled: true }
+        PDFをダウンロード
+        = render 'icon', name: 'download'
   %p.lm-hint 実際のPDFはまだ登録されていません。
   %button.lm-pill.lm-modal-done{ type: 'button',
                                  data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
