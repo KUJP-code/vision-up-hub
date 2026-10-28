@@ -27,7 +27,7 @@ RSpec.describe 'Screen mirroring video test' do
     expect(document.css('.lm-sidebar [data-view]').size).to eq(4)
     expect(document.css('.lm-lesson-tabs button').size).to eq(4)
     expect(document.at_css('.lm-progress input')['type']).to eq('range')
-    expect(document.css('.lm-thumbnail-activity img').size).to eq(9)
+    expect(document.css('.lm-thumbnail-activity img').size).to eq(13)
     expect(document.at_css('.lm-thumbnail-activity')['data-video']).to include('1225144027.m3u8')
   end
 
