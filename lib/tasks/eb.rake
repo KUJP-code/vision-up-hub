@@ -71,7 +71,8 @@ end
 
 def build_docker_image(version)
   puts "Tag will be 'kidsup/materials:#{version}'"
-  system("docker build . -t kidsup/materials:#{version}")
+  # Match the production server's architecture when building on an ARM Mac.
+  system("docker build --platform linux/amd64 . -t kidsup/materials:#{version}")
   return if $CHILD_STATUS.exitstatus.zero?
 
   puts 'Docker build failed. Aborting'
