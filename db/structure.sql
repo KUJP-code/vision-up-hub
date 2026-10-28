@@ -1783,6 +1783,40 @@ ALTER SEQUENCE public.schools_id_seq OWNED BY public.schools.id;
 
 
 --
+-- Name: session_handoffs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.session_handoffs (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    destination_host character varying NOT NULL,
+    state_digest character varying NOT NULL,
+    token_digest character varying NOT NULL,
+    authentication_digest character varying NOT NULL,
+    expires_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: session_handoffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.session_handoffs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: session_handoffs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.session_handoffs_id_seq OWNED BY public.session_handoffs.id;
+
+
+--
 -- Name: solid_queue_blocked_executions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2796,6 +2830,13 @@ ALTER TABLE ONLY public.schools ALTER COLUMN id SET DEFAULT nextval('public.scho
 
 
 --
+-- Name: session_handoffs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_handoffs ALTER COLUMN id SET DEFAULT nextval('public.session_handoffs_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3219,6 +3260,14 @@ ALTER TABLE ONLY public.school_teachers
 
 ALTER TABLE ONLY public.schools
     ADD CONSTRAINT schools_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: session_handoffs session_handoffs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_handoffs
+    ADD CONSTRAINT session_handoffs_pkey PRIMARY KEY (id);
 
 
 --
@@ -3822,6 +3871,27 @@ CREATE INDEX index_school_teachers_on_teacher_id ON public.school_teachers USING
 --
 
 CREATE INDEX index_schools_on_organisation_id ON public.schools USING btree (organisation_id);
+
+
+--
+-- Name: index_session_handoffs_on_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_session_handoffs_on_expires_at ON public.session_handoffs USING btree (expires_at);
+
+
+--
+-- Name: index_session_handoffs_on_token_digest; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_session_handoffs_on_token_digest ON public.session_handoffs USING btree (token_digest);
+
+
+--
+-- Name: index_session_handoffs_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_session_handoffs_on_user_id ON public.session_handoffs USING btree (user_id);
 
 
 --
@@ -4738,6 +4808,14 @@ ALTER TABLE ONLY public.class_teachers
 
 
 --
+-- Name: session_handoffs fk_rails_f561528685; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.session_handoffs
+    ADD CONSTRAINT fk_rails_f561528685 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: test_visibility_overrides fk_rails_f66e143411; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4765,6 +4843,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20261028000000'),
 ('20260827000000'),
 ('20260820000200'),
 ('20260820000100'),

@@ -2,7 +2,12 @@
 
 Rails.application.routes.draw do
   scope '(/:locale)', locale: /ja|en/ do
-    devise_for :users
+    devise_for :users, controllers: { sessions: 'sessions' }
+    resource :session_handoff, only: [] do
+      get :start
+      get :authorize
+      get :complete
+    end
     resources :privacy_policy_acceptances, only: %i[new create index]
     get 'pending_device', to: 'devices#pending', as: :pending_device
 
