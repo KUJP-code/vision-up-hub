@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.0-tests"
+    "Name": "kidsup/materials:2.9.1-sensei_role"
   },
   "Ports": [
     {
