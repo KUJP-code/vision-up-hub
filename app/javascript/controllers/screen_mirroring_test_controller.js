@@ -168,8 +168,8 @@ export default class extends Controller {
   filterActivities(event) {
     const category = event.currentTarget.dataset.category;
     this.filterTargets.forEach(button => button.setAttribute("aria-pressed", String(button === event.currentTarget)));
-    // The picker and home show the whole sample collection.
-    this.pageTargets.find(page => page.dataset.view === "activities").querySelectorAll("[data-category]").forEach(card => {
+    // Filter only menu cards; keep all category selectors visible.
+    this.pageTargets.find(page => page.dataset.view === "activities").querySelectorAll(".lm-content-card[data-category]").forEach(card => {
       card.hidden = category !== "全て" && card.dataset.category !== category;
     });
   }

@@ -5,7 +5,13 @@
                 's=11fe9dcb7779be20830d9059c8f5cbd8ec478453&logging=false'
   activity_video = 'https://player.vimeo.com/external/1225144027.m3u8?' \
                    's=7f8bb660ffbff5cac412806c9c59fe812954df4f&logging=false'
-  activities = %w[ぬりえ 工作 ライティング]
+  activities = [
+    { title: 'ぬりえ', category: 'ぬりえ', description: '好きな色を使って、あいさつをするお友だちをぬってみましょう。プリントと色えんぴつを使います。' },
+    { title: '工作', category: '工作', description: '動画のお手本を見ながら、あいさつカードを作りましょう。画用紙、はさみ、のりをご用意ください。' },
+    { title: 'ライティング', category: '脳トレ', description: 'あいさつのことばをなぞって、絵とことばをつなぎましょう。プリントを使って、思い出しながら考えます。' },
+    { title: '折り紙のお友だち', category: '折り紙', description: '折り紙でお友だちを作ってみましょう。動画を一時停止しながら、一つずついっしょに折ります。' },
+    { title: 'からだであいさつ', category: '教材不要', description: '手を振ったり、体を動かしたりしながら、Hello! とあいさつしましょう。教材の準備はいりません。' }
+  ]
   stories = ['にげだしたふうせん', 'はらぺこのくま', 'まほうのぼうし', 'ちいさな種', 'おやすみ、おつきさま']
   nav_items = [
     %w[home ホーム home],
@@ -59,7 +65,7 @@
             = render 'icon', name: 'next'
         %div{ data: { 'screen-mirroring-test-target': 'homeLesson' } }
           = render 'lesson_card', week: 1
-          = render 'content_cards', items: activities, video: activity_video, kind: 'activity'
+          = render 'content_cards', items: activities.first(3), video: activity_video, kind: 'activity'
         %div{ hidden: true, data: { 'screen-mirroring-test-target': 'homeUpcoming' } }
           = render 'upcoming_lesson_card', week: 2, week_target: 'upcomingWeek'
         %p.lm-hint.lm-sample-note 第１週はサンプルレッスンです。次の週のレッスンは準備中です。
@@ -68,13 +74,13 @@
                 'aria-label': 'ベーシックイングリッシュのメニュー' }
         = render 'lesson_card', week: 1
         .lm-upcoming-grid
-          - (2..3).each do |week|
+          - (2..10).each do |week|
             = render 'upcoming_lesson_card', week:
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'activities' },
                 'aria-label': 'アクティビティのメニュー' }
         .lm-filters{ 'aria-label': 'アクティビティの種類' }
-          - %w[全て 工作 ぬりえ 教材不要].each do |category|
+          - %w[全て 工作 脳トレ ぬりえ 折り紙 教材不要].each do |category|
             %button.lm-pill{ type: 'button',
                              'aria-pressed': category == '全て' ? 'true' : 'false',
                              data: { action: 'screen-mirroring-test#filterActivities',

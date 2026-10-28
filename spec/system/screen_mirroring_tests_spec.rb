@@ -15,11 +15,18 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     click_button 'ベーシックイングリッシュ', exact: true
     expect(page).to have_css('.lm-page-header', text: 'ベーシックイングリッシュのメニュー')
     expect(page).to have_css('.lm-week-card', count: 1)
-    expect(page).to have_css('.lm-upcoming-card', text: 'Coming soon', count: 2)
+    expect(page).to have_css('.lm-upcoming-card', text: 'Coming soon', count: 9)
+    (2..10).each { |week| expect(page).to have_css('.lm-upcoming-caption', text: "第#{week}週") }
     click_button 'アクティビティ', exact: true
-    within('.lm-filters') { click_button '工作' }
-    expect(page).to have_css('.lm-content-card', count: 1)
-    expect(page).to have_css('.lm-content-card h2', text: '工作')
+    %w[工作 脳トレ ぬりえ 折り紙 教材不要].each do |category|
+      within('.lm-filters') { click_button category, exact: true }
+      expect(page).to have_css('.lm-filters button', count: 6)
+      expect(page).to have_css('.lm-filters button[aria-pressed="true"]', text: category, count: 1)
+      expect(page).to have_css(".lm-content-card[data-category='#{category}']", count: 1)
+      expect(page).to have_css('.lm-content-card', count: 1)
+    end
+    within('.lm-filters') { click_button '全て', exact: true }
+    expect(page).to have_css('.lm-content-card', count: 5)
     click_button 'ストーリータイム', exact: true
     expect(page).to have_css('.lm-content-card', count: 5)
     click_button 'ホーム', exact: true
@@ -204,7 +211,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-picker-navigation') { click_button 'ストーリータイム', exact: true }
     expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 5)
     within('.lm-picker-navigation') { click_button 'アクティビティ', exact: true }
-    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 3)
+    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 5)
     within('.lm-picker-navigation') { click_button 'フラッシュカード', exact: true }
     expect(page).not_to have_css('.lm-picker[open]')
     expect(page).to have_css('.lm-flashcards[open]')
