@@ -42,6 +42,7 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   };
   for (const target of ['speed','videoTitle','error','remote','menu','splash']) controller[`${target}Target`] = { hidden: false };
   controller.playButtonTarget = { focus() {} };
+  controller.showRemote = () => {};
   controller.playbackGeneration = 0;
   controller.closePicker = controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.loadVideoSource = controller.resetGuide = () => {};
   controller.playVideo({ currentTarget: { dataset: { kind: 'basic', title: 'Lesson' } } });
@@ -91,7 +92,7 @@ test('chapter stopping pauses once at a crossed boundary and allows resuming', (
   let pauses = 0;
   controller.pauseAtChapterEnd = true;
   controller.lastPlaybackTime = 89.9;
-  controller.chapters = [{ time: 0 }, { time: 90 }, { time: 180 }];
+  controller.chapters = [{ time: 0, endTime: 90 }, { time: 90, endTime: 180 }];
   controller.playerTarget = {
     currentTime: 90.2, paused: false, seeking: false,
     pause() { this.paused = true; pauses++; }
@@ -109,7 +110,7 @@ test('manual chapter jumps do not trigger chapter stopping', () => {
   const controller = fixture();
   controller.pauseAtChapterEnd = true;
   controller.lastPlaybackTime = 0;
-  controller.chapters = [{ time: 0 }, { time: 90 }, { time: 180 }];
+  controller.chapters = [{ time: 0, endTime: 90 }, { time: 90, endTime: 180 }];
   controller.updateRemote = () => {};
   controller.playerTarget = {
     duration: 550, currentTime: 0, paused: false, seeking: false,
@@ -122,6 +123,48 @@ test('manual chapter jumps do not trigger chapter stopping', () => {
   assert.equal(controller.playerTarget.currentTime, 550);
   controller.seekTo(-5);
   assert.equal(controller.playerTarget.currentTime, 0);
+});
+
+test('timecodes retain frame precision and per-video chapter end times', () => {
+  const controller = fixture();
+  controller.contentValue = { fps: 24, lessons: {
+    'activity-1': { chapters: [{ start: '00:01:41:22', end: '00:02:17:01', title: '貼る場所の確認', guide: 'Jotの場所を確認します。', pause_after: true }] },
+    'activity-2': { chapters: [{ start: '00:02:22:16', end: '00:02:56:03', title: '色ぬり', guide: 'Color your name' }] }
+  } };
+  const craft = controller.lessonChapters('activity-1')[0];
+  assert.equal(craft.time, 101 + 22 / 24);
+  assert.equal(craft.endTime, 137 + 1 / 24);
+  assert.equal(craft.pause_after, true);
+  assert.match(controller.chapterLabel(craft), /1:41–2:17.*貼る場所の確認.*一時停止/);
+  const coloring = controller.lessonChapters('activity-2')[0];
+  assert.equal(coloring.time, 142 + 16 / 24);
+  assert.equal(coloring.guide, 'Color your name');
+});
+
+test('marked activity pauses work with chapter stopping off and resume only once', () => {
+  const controller = fixture();
+  let pauses = 0;
+  const end = 137 + 1 / 24;
+  controller.pauseAtChapterEnd = false;
+  controller.lastPlaybackTime = 136.9;
+  controller.chapters = [
+    { time: 101 + 22 / 24, endTime: end, pause_after: true },
+    { time: 137 + 3 / 24, endTime: 167 }
+  ];
+  controller.playerTarget = {
+    currentTime: 137.2, paused: false, seeking: false,
+    pause() { this.paused = true; pauses++; }
+  };
+  controller.checkChapterEnd();
+  assert.equal(controller.playerTarget.currentTime, end);
+  assert.equal(pauses, 1);
+  controller.playerTarget.paused = false;
+  controller.playerTarget.currentTime = 137.2;
+  controller.checkChapterEnd();
+  assert.equal(pauses, 1);
+  controller.playerTarget.currentTime = 168;
+  controller.checkChapterEnd();
+  assert.equal(pauses, 1);
 });
 
 test('a pending play promise cannot reveal the remote after leaving playback', async () => {

@@ -27,8 +27,22 @@ RSpec.describe 'Screen mirroring video test' do
     expect(document.css('.lm-sidebar [data-view]').size).to eq(4)
     expect(document.css('.lm-lesson-tabs button').size).to eq(4)
     expect(document.at_css('.lm-progress input')['type']).to eq('range')
-    expect(document.css('.lm-thumbnail-activity img').size).to eq(13)
-    expect(document.at_css('.lm-thumbnail-activity')['data-video']).to include('1225144027.m3u8')
+    expect(document.css('.lm-thumbnail-activity img').size).to eq(9)
+    %w[home activities].each do |view|
+      cards = document.css(".lm-pages [data-view='#{view}'] .lm-content-card")
+      expect(cards.size).to eq(3)
+      cards.each_with_index do |card, index|
+        source = card.at_css('[data-src]')
+        expect(source['data-src']).to include("#{1225144025 + index}.m3u8")
+        expect(source['data-content-key']).to eq("activity-#{index + 1}")
+        expect(card.at_css('.lm-content-thumbnail')['data-video']).to eq(source['data-src'])
+        expect(card.at_css('[data-resource-kind="guide"]')['data-content-key']).to eq("activity-#{index + 1}")
+      end
+    end
+    content = JSON.parse(document.at_css('.lesson-mockup')['data-screen-mirroring-test-content-value'])
+    expect(content.fetch('fps')).to eq(24)
+    expect(content.fetch('lessons').fetch('activity-1').fetch('chapters').count { |chapter| chapter['pause_after'] }).to eq(3)
+    expect(content.fetch('lessons').fetch('basic').fetch('chapters').last.fetch('end')).to eq('00:09:20:03')
   end
 
   it 'renders the original 2.7.9.1 reference without mockup styles for admins' do

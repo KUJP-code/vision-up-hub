@@ -18,15 +18,15 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-upcoming-card', text: 'Coming soon', count: 9)
     (2..10).each { |week| expect(page).to have_css('.lm-upcoming-caption', text: "第#{week}週") }
     click_button 'アクティビティ', exact: true
-    %w[工作 脳トレ ぬりえ 折り紙 教材不要].each do |category|
+    %w[工作 ぬりえ 脳トレ].each do |category|
       within('.lm-filters') { click_button category, exact: true }
-      expect(page).to have_css('.lm-filters button', count: 6)
+      expect(page).to have_css('.lm-filters button', count: 4)
       expect(page).to have_css('.lm-filters button[aria-pressed="true"]', text: category, count: 1)
       expect(page).to have_css(".lm-content-card[data-category='#{category}']", count: 1)
       expect(page).to have_css('.lm-content-card', count: 1)
     end
     within('.lm-filters') { click_button '全て', exact: true }
-    expect(page).to have_css('.lm-content-card', count: 5)
+    expect(page).to have_css('.lm-content-card', count: 3)
     click_button 'ストーリータイム', exact: true
     expect(page).to have_css('.lm-content-card', count: 5)
     click_button 'ホーム', exact: true
@@ -85,8 +85,10 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-picker[open]')
     within('.lm-picker') { first('button', text: '先生用ガイド').click }
     within('.lm-resource-dialog') do
-      expect(page).to have_text('先生用ガイドPDF')
-      expect(page).to have_button('PDFをダウンロード', disabled: true, count: 1)
+      expect(page).to have_text('工作を通してキャラクターの名前')
+      expect(page).to have_text('00:01:41:22 – 00:02:17:01 · 一時停止')
+      find('p', text: 'Cut out Jot', visible: :all).scroll_to(:center)
+      expect(page).to have_text('Cut out Jot')
       click_button '閉じる', exact: true
     end
     within('.lm-picker') { click_button '閉じる', exact: true }
@@ -107,13 +109,13 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('button[aria-label="再生"]')
     within('.lm-remote') { click_button '先生用ガイド', exact: true }
     expect(page).to have_css('.lm-guide-panel', text: 'レッスンのねらい')
-    select '1:30–3:00 2. Hello! を言ってみよう', from: 'チャプターを選択'
-    expect(page).to have_css('.lm-guide-columns h3', text: 'Hello! を言ってみよう')
-    expect(page).to have_css('.lm-time', text: '1:30 / 9:10')
+    select '0:39–1:21 2. ターゲット表現① Hello', from: 'チャプターを選択'
+    expect(page).to have_css('.lm-guide-columns h3', text: 'ターゲット表現① Hello')
+    expect(page).to have_css('.lm-time', text: '0:39 / 9:20')
     find('button[aria-label="次の章"]').click
-    expect(page).to have_css('.lm-time', text: '3:00 / 9:10')
+    expect(page).to have_css('.lm-time', text: '1:21 / 9:20')
     find('button[aria-label="5秒戻る"]').click
-    expect(page).to have_css('.lm-time', text: '2:55 / 9:10')
+    expect(page).to have_css('.lm-time', text: '1:16 / 9:20')
     find('summary[aria-label="再生速度"]').click
     click_button '0.75x'
     expect(page.evaluate_script('document.querySelector("video").playbackRate')).to eq(0.75)
@@ -121,11 +123,11 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     find('button[aria-label="再生"]').click
     page.execute_script <<~JS
       const video = document.querySelector('video');
-      video.currentTime = 181;
+      video.currentTime = 82;
       video.dispatchEvent(new Event('timeupdate'));
     JS
     expect(page).to have_css('button[aria-label="再生"]')
-    expect(page).to have_css('.lm-time', text: '3:00 / 9:10')
+    expect(page).to have_css('.lm-time', text: '1:21 / 9:20')
     [[1024, 768], [768, 1024], [390, 844]].each do |width, height|
       page.current_window.resize_to(width, height)
       expect(page.evaluate_script(<<~JS)).to be true
@@ -220,7 +222,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-picker-navigation') { click_button 'ストーリータイム', exact: true }
     expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 5)
     within('.lm-picker-navigation') { click_button 'アクティビティ', exact: true }
-    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 5)
+    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 3)
     within('.lm-picker-navigation') { click_button 'フラッシュカード', exact: true }
     expect(page).not_to have_css('.lm-picker[open]')
     expect(page).to have_css('.lm-flashcards[open]')
@@ -240,12 +242,56 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     click_button '来週', exact: true
     expect(page).to have_css('.lm-upcoming-card', text: 'Coming soon')
     expect(page).not_to have_button('レッスンをはじめる')
+    expect(page).not_to have_button('アクティビティをはじめる')
     expect(page).to have_css('.lm-upcoming-caption', text: '第2週')
     click_button '来週', exact: true
     expect(page).to have_css('.lm-upcoming-caption', text: '第3週')
     2.times { click_button '先週', exact: true }
     expect(page).to have_button('レッスンをはじめる')
     expect(page).not_to have_css('.lm-upcoming-card')
+  end
+
+  it 'uses each activity video and its own teacher guide, chapters, and pause points' do
+    stub_video_playback
+    [
+      ['あいさつの工作', '1225144025', 'はさみ', 'Cut out Jot', '00:04:02:10'],
+      ['なまえをなぞって色ぬり', '1225144026', 'クレヨン', 'Trace your name', '00:04:19:10'],
+      ['Helloの点つなぎ', '1225144027', '点つなぎ', 'Find one', '00:05:52:00']
+    ].each_with_index do |(title, video_id, preparation, instruction, ending), index|
+      card = find(".lm-pages [data-view='home'] .lm-content-card", text: title)
+      within(card) { click_button '先生用ガイド', exact: true }
+      within('.lm-resource-dialog') do
+        expect(page).to have_text(preparation)
+        find('p', text: instruction, visible: :all).scroll_to(:center)
+        expect(page).to have_text(instruction)
+        find('p', text: ending, visible: :all).scroll_to(:center)
+        expect(page).to have_text(ending)
+        click_button '閉じる', exact: true
+      end
+      within(card) { click_button 'アクティビティをはじめる', exact: true }
+      expect(page).to have_css('.lm-remote')
+      expect(page.evaluate_script('document.querySelector("video").src')).to include("#{video_id}.m3u8")
+      within('.lm-remote') { click_button '先生用ガイド', exact: true }
+      expect(page).to have_css('.lm-guide-panel', text: preparation)
+      expect(page).to have_css('.lm-guide-heading h2', text: title)
+      find('select[data-screen-mirroring-test-target="chapterPicker"]').find_all('option')[2].select_option
+      expect(page).to have_css('.lm-guide-columns', text: instruction) if index == 1
+      next_time = page.evaluate_script('document.querySelector("video").currentTime')
+      expect(next_time).to be_within(0.001).of([101 + 22.0 / 24, 99 + 14.0 / 24, 161 + 13.0 / 24][index])
+      if index.zero?
+        page.execute_script <<~JS
+          const video = document.querySelector('video');
+          video.currentTime = 137.2;
+          video.dispatchEvent(new Event('timeupdate'));
+        JS
+        expect(page).to have_css('button[aria-label="再生"]')
+        expect(page.evaluate_script('document.querySelector("video").currentTime')).to be_within(0.001).of(137 + 1.0 / 24)
+        find('button[aria-label="再生"]').click
+        expect(page).to have_css('button[aria-label="一時停止"]')
+      end
+      find('button[aria-label="動画を閉じる"]').click
+      expect(page).not_to have_css('.lm-lesson-dialog')
+    end
   end
 
   it 'fades the remote after five idle seconds and restores it for pointer, touch, and keyboard use' do
@@ -293,7 +339,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       Object.defineProperties(video, {
         currentTime: { get: () => clock, set: value => { clock = value; } },
         src: { get: () => source, set: value => { source = value; } },
-        duration: { get: () => 550 },
+        duration: { get: () => 560.125 },
         readyState: { get: () => 1 },
         paused: { get: () => video.demoPaused !== false },
         seeking: { get: () => false }

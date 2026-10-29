@@ -68,7 +68,7 @@
       .lm-picker-scroll{ data: { 'screen-mirroring-test-target': 'pickerScroll' } }
         %section{ data: { 'screen-mirroring-test-target': 'pickerActivity' },
                   'aria-label': 'アクティビティを選ぶ' }
-          = render 'content_cards', items: activities, video: activity_video, kind: 'activity'
+          = render 'content_cards', items: activities, kind: 'activity'
         %section{ hidden: true,
                   data: { 'screen-mirroring-test-target': 'pickerStory' },
                   'aria-label': 'ストーリーを選ぶ' }

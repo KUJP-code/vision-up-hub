@@ -1,7 +1,9 @@
 import { Controller } from "@hotwired/stimulus";
 
-// This controller belongs exclusively to the admin-only lesson mockup.
+// Shared by the AI Sensei event view and the admin lesson preview.
 export default class extends Controller {
+  static values = { content: Object };
+
   static targets = [
     "lessonDialog", "lessonScreen", "stage", "player", "menu", "remote", "playButton",
     "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle",
@@ -10,35 +12,13 @@ export default class extends Controller {
     "resourceGuide", "resourceMaterials", "lessonWeek", "picker", "pickerActivity",
     "pickerStory", "flashcards", "cardPhrase", "cardImage", "progress",
     "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
-    "pickerScroll", "homeLesson", "homeUpcoming", "weekHeading", "upcomingWeek", "cardClipRect"
+    "pickerScroll", "homeLesson", "homeUpcoming", "weekHeading", "upcomingWeek", "cardClipRect",
+    "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
+    "resourceTip", "resourceChapters", "resourceScroll"
   ];
 
   connect() {
     this.sampleLessonDate = this.dateTarget.value;
-    this.chapterSets = {
-      basic: [
-        [0, "はじめのあいさつ", "笑顔で手を振って、Hello! とあいさつしましょう。子どもたちが画面に注目できたら始めます。"],
-        [90, "Hello! を言ってみよう", "動画のまねをして、みんなで Hello! と言いましょう。一時停止して、一人ずつ声をかけてみましょう。"],
-        [180, "はじめまして", "Nice to meet you! を聞いて、先生といっしょに繰り返しましょう。ジェスチャーも添えてみましょう。"],
-        [240, "お友だちと練習", "隣のお友だちと向かい合って、あいさつを交代で練習しましょう。返事を待つ時間をつくります。"],
-        [420, "See you! でさようなら", "手を振りながら See you! と言ってみましょう。先生が先にお手本を見せます。"],
-        [480, "今日のふりかえり", "３つのあいさつを、場面に合わせて言ってみましょう。できたらみんなで拍手をしましょう！"]
-      ],
-      story: [
-        [0, "お話のはじまり", "絵を見て、どんなお話か想像してみましょう。登場人物を指さして、注目を集めます。"],
-        [120, "だれが出てきたかな？", "ここまでに登場したキャラクターを確認しましょう。子どもたちが気づいたことを聞いてみます。"],
-        [180, "次はどうなる？", "動画を一時停止し、次に何が起こるか予想してみましょう。短い言葉やジェスチャーで答えてもらいます。"],
-        [300, "気持ちを考えよう", "登場人物はどんな気持ちかな？表情をまねして、みんなで考えてみましょう。"],
-        [360, "お話を楽しもう", "お話の続きを見ましょう。最後に、好きだった場面を一つ教えてもらいます。"]
-      ],
-      activity: [
-        [0, "準備しよう", "プリントと必要な道具がそろっているか確認しましょう。完成見本を見せてから始めます。"],
-        [45, "先生のお手本", "動画を見ながら、最初の手順を先生が見せましょう。子どもたちの手元も確認します。"],
-        [90, "いっしょにやってみよう", "動画を一時停止して、同じ手順をやってみましょう。困っている子には声をかけます。"],
-        [120, "自分でチャレンジ", "続きを自分で進めてもらいましょう。色や形など、使える英語で声をかけてみましょう。"],
-        [150, "できたものを見せよう", "作品やプリントを見せ合いましょう。一人ひとりのがんばりをほめて、片づけにつなげます。"]
-      ]
-    };
     this.setChapters("basic");
     this.events = new AbortController();
     const options = { signal: this.events.signal };
@@ -275,13 +255,34 @@ export default class extends Controller {
     this.guideButtonTarget.setAttribute("aria-expanded", "false");
   }
 
-  setChapters(kind) {
-    this.chapters = this.chapterSets[kind].map(([time, title, guide], index) => ({ time, title: `${index + 1}. ${title}`, guide }));
+  timecodeSeconds(timecode) {
+    const [hours, minutes, seconds, frames] = timecode.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds + frames / this.contentValue.fps;
+  }
+
+  lessonChapters(key) {
+    return this.contentValue.lessons[key].chapters.map((chapter, index) => ({
+      ...chapter,
+      time: this.timecodeSeconds(chapter.start),
+      endTime: chapter.end ? this.timecodeSeconds(chapter.end) : null,
+      title: `${index + 1}. ${chapter.title}`
+    }));
+  }
+
+  chapterLabel(chapter) {
+    return `${this.formatTime(chapter.time)}–${chapter.endTime == null ? "最後" : this.formatTime(chapter.endTime)} ${chapter.title}${chapter.pause_after ? " · 一時停止" : ""}`;
+  }
+
+  setChapters(key) {
+    const lesson = this.contentValue.lessons[key];
+    this.chapters = this.lessonChapters(key);
+    this.guideObjectiveTarget.textContent = lesson.objective;
+    this.guideMaterialsTarget.textContent = lesson.materials;
+    this.guideTipTarget.textContent = lesson.tip;
     this.chapterPickerTarget.replaceChildren(...this.chapters.map(chapter => {
       const option = document.createElement("option");
       option.value = chapter.time;
-      const next = this.chapters[this.chapters.indexOf(chapter) + 1];
-      option.textContent = `${this.formatTime(chapter.time)}–${next ? this.formatTime(next.time) : "最後"} ${chapter.title}`;
+      option.textContent = this.chapterLabel(chapter);
       return option;
     }));
   }
@@ -349,11 +350,30 @@ export default class extends Controller {
 
   previewResource(event) {
     event.preventDefault();
-    this.resourceTitleTarget.textContent = event.currentTarget.dataset.title;
-    const materials = event.currentTarget.dataset.resourceKind === "materials";
+    const { title, resourceKind, contentKey = "basic" } = event.currentTarget.dataset;
+    this.resourceTitleTarget.textContent = title;
+    const materials = resourceKind === "materials";
+    if (!materials) {
+      const lesson = this.contentValue.lessons[contentKey];
+      this.resourceObjectiveTarget.textContent = lesson.objective;
+      this.resourcePreparationTarget.textContent = lesson.materials;
+      this.resourceTipTarget.textContent = lesson.tip;
+      this.resourceChaptersTarget.replaceChildren(...this.lessonChapters(contentKey).map(chapter => {
+        const section = document.createElement("section");
+        const heading = document.createElement("h3");
+        const timing = document.createElement("p");
+        const guide = document.createElement("p");
+        heading.textContent = chapter.title;
+        timing.textContent = `${chapter.start} – ${chapter.end || "最後"}${chapter.pause_after ? " · 一時停止" : ""}`;
+        guide.textContent = chapter.guide;
+        section.append(heading, timing, guide);
+        return section;
+      }));
+    }
     this.resourceGuideTarget.hidden = materials;
     this.resourceMaterialsTarget.hidden = !materials;
     this.resourceTarget.showModal();
+    this.resourceScrollTarget.scrollTop = 0;
   }
 
   closeResource() { this.resourceTarget.close(); }
@@ -401,11 +421,11 @@ export default class extends Controller {
   }
 
   playVideo(event) {
-    const { src, title, kind } = event.currentTarget.dataset;
+    const { src, title, kind, contentKey = kind } = event.currentTarget.dataset;
     this.closePicker();
     this.closeMenus();
     this.cancelSpeech();
-    this.setChapters(kind);
+    this.setChapters(contentKey);
     this.playerTarget.pause();
     this.loadVideoSource({ src, kind });
     this.resetGuide();
@@ -485,11 +505,15 @@ export default class extends Controller {
 
   checkChapterEnd() {
     const current = this.playerTarget.currentTime;
-    if (this.pauseAtChapterEnd && !this.playerTarget.paused && !this.playerTarget.seeking) {
-      const boundary = this.chapters.find(chapter => chapter.time > this.lastPlaybackTime && chapter.time <= current);
+    if (!this.playerTarget.paused && !this.playerTarget.seeking) {
+      const boundary = this.chapters.find(chapter => {
+        const end = chapter.endTime;
+        return (this.pauseAtChapterEnd || chapter.pause_after) && end != null &&
+          end > this.lastPlaybackTime && end <= current;
+      });
       if (boundary) {
         this.playerTarget.pause();
-        this.playerTarget.currentTime = boundary.time;
+        this.playerTarget.currentTime = boundary.endTime;
       }
     }
     this.lastPlaybackTime = this.playerTarget.currentTime;

@@ -1,17 +1,10 @@
 :ruby
   story_video = 'https://player.vimeo.com/external/1225145089.m3u8?' \
                 's=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false'
-  basic_video = 'https://player.vimeo.com/external/1225143839.m3u8?' \
-                's=11fe9dcb7779be20830d9059c8f5cbd8ec478453&logging=false'
-  activity_video = 'https://player.vimeo.com/external/1225144027.m3u8?' \
-                   's=7f8bb660ffbff5cac412806c9c59fe812954df4f&logging=false'
-  activities = [
-    { title: 'ぬりえ', category: 'ぬりえ', description: '好きな色を使って、あいさつをするお友だちをぬってみましょう。プリントと色えんぴつを使います。' },
-    { title: '工作', category: '工作', description: '動画のお手本を見ながら、あいさつカードを作りましょう。画用紙、はさみ、のりをご用意ください。' },
-    { title: 'ライティング', category: '脳トレ', description: 'あいさつのことばをなぞって、絵とことばをつなぎましょう。プリントを使って、思い出しながら考えます。' },
-    { title: '折り紙のお友だち', category: '折り紙', description: '折り紙でお友だちを作ってみましょう。動画を一時停止しながら、一つずついっしょに折ります。' },
-    { title: 'からだであいさつ', category: '教材不要', description: '手を振ったり、体を動かしたりしながら、Hello! とあいさつしましょう。教材の準備はいりません。' }
-  ]
+  basic_video = @lesson_content.fetch('lessons').fetch('basic').fetch('video')
+  activities = @lesson_content.fetch('lessons').filter_map do |key, lesson|
+    lesson.merge('key' => key) if key.start_with?('activity-')
+  end
   stories = ['にげだしたふうせん', 'はらぺこのくま', 'まほうのぼうし', 'ちいさな種', 'おやすみ、おつきさま']
   nav_items = [
     %w[home ホーム home],
@@ -20,7 +13,8 @@
     %w[stories ストーリータイム cards]
   ]
 
-.lesson-mockup{ data: { controller: 'screen-mirroring-test' } }
+.lesson-mockup{ data: { controller: 'screen-mirroring-test',
+                       'screen-mirroring-test-content-value': @lesson_content.to_json } }
   %aside.lm-sidebar{ 'aria-label': 'AI先生 ナビゲーション',
                      data: { 'screen-mirroring-test-target': 'sidebar' } }
     %button.lm-nav-button.lm-nav-toggle{ type: 'button',
@@ -71,7 +65,7 @@
             = render 'icon', name: 'next'
         %div{ data: { 'screen-mirroring-test-target': 'homeLesson' } }
           = render 'lesson_card', week: 1
-          = render 'content_cards', items: activities.first(3), video: activity_video, kind: 'activity'
+          = render 'content_cards', items: activities, kind: 'activity'
         %div{ hidden: true, data: { 'screen-mirroring-test-target': 'homeUpcoming' } }
           = render 'upcoming_lesson_card', week: 2, week_target: 'upcomingWeek'
         %p.lm-hint.lm-sample-note 第１週はサンプルレッスンです。次の週のレッスンは準備中です。
@@ -86,13 +80,13 @@
                 data: { 'screen-mirroring-test-target': 'page', view: 'activities' },
                 'aria-label': 'アクティビティのメニュー' }
         .lm-filters{ 'aria-label': 'アクティビティの種類' }
-          - %w[全て 工作 脳トレ ぬりえ 折り紙 教材不要].each do |category|
+          - ['全て', *activities.map { |activity| activity.fetch('category') }.uniq].each do |category|
             %button.lm-pill{ type: 'button',
                              'aria-pressed': category == '全て' ? 'true' : 'false',
                              data: { action: 'screen-mirroring-test#filterActivities',
                                      category:,
                                      'screen-mirroring-test-target': 'filter' } }= category
-        = render 'content_cards', items: activities, video: activity_video, kind: 'activity'
+        = render 'content_cards', items: activities, kind: 'activity'
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'stories' },
                 'aria-label': 'ストーリーのメニュー' }
@@ -100,4 +94,4 @@
 
   = render 'resource_dialog'
 
-  = render 'lesson_screen', basic_video:, activity_video:, story_video:, activities:, stories:
+  = render 'lesson_screen', basic_video:, story_video:, activities:, stories:

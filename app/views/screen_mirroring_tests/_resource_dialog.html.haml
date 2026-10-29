@@ -4,26 +4,29 @@
                                    'aria-label': '閉じる',
                                    data: { action: 'screen-mirroring-test#closeResource' } }
     = render 'icon', name: 'close'
-  %p.lm-eyebrow 資料プレビュー · サンプル
-  %h2#lm-resource-title{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
-  %div{ data: { 'screen-mirroring-test-target': 'resourceGuide' } }
-    .lm-resource-file
-      %p 先生用ガイドPDF。レッスンのねらい、準備するもの、動画に合わせた進め方をまとめたガイドです。
-      %button.lm-pill{ type: 'button', disabled: true }
-        PDFをダウンロード
-        = render 'icon', name: 'download'
-  %div{ hidden: true, data: { 'screen-mirroring-test-target': 'resourceMaterials' } }
-    %h3 教材・準備ガイド
-    .lm-resource-file
-      %p 教材PDF 1：子ども用プリント。子ども１人につき１枚印刷してください。活動に合わせて、色えんぴつやはさみをご用意ください。
-      %button.lm-pill{ type: 'button', disabled: true }
-        PDFをダウンロード
-        = render 'icon', name: 'download'
-    .lm-resource-file
-      %p 教材PDF 2：先生用の完成見本。活動を始める前に見せたり、作り方を説明したりするときに使います。
-      %button.lm-pill{ type: 'button', disabled: true }
-        PDFをダウンロード
-        = render 'icon', name: 'download'
-  %p.lm-hint 実際のPDFはまだ登録されていません。
-  %button.lm-pill.lm-modal-done{ type: 'button',
-                                 data: { action: 'screen-mirroring-test#closeResource' } } 閉じる
+  .lm-resource-scroll{ data: { 'screen-mirroring-test-target': 'resourceScroll' } }
+    %p.lm-eyebrow レッスン資料
+    %h2#lm-resource-title{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
+    %div{ data: { 'screen-mirroring-test-target': 'resourceGuide' } }
+      %h3 レッスンのねらい
+      %p{ data: { 'screen-mirroring-test-target': 'resourceObjective' } }
+      %h3 準備するもの
+      %p{ data: { 'screen-mirroring-test-target': 'resourcePreparation' } }
+      %h3 声かけのヒント
+      %p{ data: { 'screen-mirroring-test-target': 'resourceTip' } }
+      %div{ data: { 'screen-mirroring-test-target': 'resourceChapters' } }
+    %div{ hidden: true, data: { 'screen-mirroring-test-target': 'resourceMaterials' } }
+      %h3 教材・準備ガイド
+      .lm-resource-file
+        %p 教材PDF 1：子ども用プリント。子ども１人につき１枚印刷してください。活動に合わせて、色えんぴつやはさみをご用意ください。
+        %button.lm-pill{ type: 'button', disabled: true }
+          PDFをダウンロード
+          = render 'icon', name: 'download'
+      .lm-resource-file
+        %p 教材PDF 2：先生用の完成見本。活動を始める前に見せたり、作り方を説明したりするときに使います。
+        %button.lm-pill{ type: 'button', disabled: true }
+          PDFをダウンロード
+          = render 'icon', name: 'download'
+      %p.lm-hint 教材PDFはまだ登録されていません。
+    %button.lm-pill.lm-modal-done{ type: 'button',
+                                   data: { action: 'screen-mirroring-test#closeResource' } } 閉じる

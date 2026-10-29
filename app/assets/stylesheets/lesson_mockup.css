@@ -104,6 +104,7 @@
 .lesson-mockup .lm-picker-navigation .lm-lesson-tabs { justify-content: center; gap: 14px; margin: 0; }
 .lesson-mockup .lm-picker-navigation .lm-lesson-tabs .lm-pill { min-height: 42px; font-size: 13px; padding: 8px 18px; }
 .lesson-mockup .lm-resource-dialog { width: min(800px,calc(100vw - 64px)); margin: auto; max-height: calc(100dvh - 64px); background: white; }
+.lesson-mockup .lm-resource-scroll { max-height: calc(100dvh - 120px); overflow-y: auto; }
 .lesson-mockup .lm-resource-dialog h2 { border-bottom: 1px solid; margin: 8px 0 24px; padding-bottom: 10px; }
 .lesson-mockup .lm-resource-dialog p { margin-bottom: 18px; }
 .lesson-mockup .lm-resource-file { margin: 20px 0 28px; }
