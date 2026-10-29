@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.1-sensei_role"
+    "Name": "kidsup/materials:2.9.2-sensei_activities"
   },
   "Ports": [
     {
