@@ -126,13 +126,13 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('button[aria-label="再生"]')
     within('.lm-remote') { click_button '先生用ガイド', exact: true }
     expect(page).to have_css('.lm-guide-panel', text: 'レッスンのねらい')
-    select '0:39–1:21 2. ターゲット表現① Hello', from: 'チャプターを選択'
-    expect(page).to have_css('.lm-guide-columns h3', text: 'ターゲット表現① Hello')
-    expect(page).to have_css('.lm-time', text: '0:39 / 9:20')
+    select '0:34–3:53 2. ターゲット表現の導入とリピート練習', from: 'チャプターを選択'
+    expect(page).to have_css('.lm-guide-columns h3', text: 'ターゲット表現の導入とリピート練習')
+    expect(page).to have_css('.lm-time', text: '0:34 / 9:20')
     find('button[aria-label="次の章"]').click
-    expect(page).to have_css('.lm-time', text: '1:21 / 9:20')
+    expect(page).to have_css('.lm-time', text: '3:53 / 9:20')
     find('button[aria-label="5秒戻る"]').click
-    expect(page).to have_css('.lm-time', text: '1:16 / 9:20')
+    expect(page).to have_css('.lm-time', text: '3:48 / 9:20')
     find('summary[aria-label="再生速度"]').click
     click_button '0.75x'
     expect(page.evaluate_script('document.querySelector("video").playbackRate')).to eq(0.75)
@@ -140,11 +140,11 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     find('button[aria-label="再生"]').click
     page.execute_script <<~JS
       const video = document.querySelector('video');
-      video.currentTime = 82;
+      video.currentTime = 234;
       video.dispatchEvent(new Event('timeupdate'));
     JS
     expect(page).to have_css('button[aria-label="再生"]')
-    expect(page).to have_css('.lm-time', text: '1:21 / 9:20')
+    expect(page).to have_css('.lm-time', text: '3:53 / 9:20')
     [[1024, 768], [768, 1024], [390, 844]].each do |width, height|
       page.current_window.resize_to(width, height)
       expect(page.evaluate_script(<<~JS)).to be true

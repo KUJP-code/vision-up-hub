@@ -42,7 +42,13 @@ RSpec.describe 'Screen mirroring video test' do
     content = JSON.parse(document.at_css('.lesson-mockup')['data-screen-mirroring-test-content-value'])
     expect(content.fetch('fps')).to eq(24)
     expect(content.fetch('lessons').fetch('activity-1').fetch('chapters').count { |chapter| chapter['pause_after'] }).to eq(3)
-    expect(content.fetch('lessons').fetch('basic').fetch('chapters').last.fetch('end')).to eq('00:09:20:03')
+    basic_chapters = content.fetch('lessons').fetch('basic').fetch('chapters')
+    expect(basic_chapters.map { |chapter| chapter.fetch('start') }).to eq(
+      %w[00:00:00:07 00:00:34:00 00:03:53:00 00:06:15:00 00:08:04:00 00:08:56:00]
+    )
+    expect(basic_chapters.map { |chapter| chapter.fetch('end') }).to eq(
+      %w[00:00:34:00 00:03:53:00 00:06:15:00 00:08:04:00 00:08:56:00 00:09:20:03]
+    )
   end
 
   it 'renders the original 2.7.9.1 reference without mockup styles for admins' do
