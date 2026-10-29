@@ -14,6 +14,7 @@ function fixture(document = {}, globals = {}) {
   controller.speechStatusTarget = { textContent: '' };
   controller.lessonWeekTarget = { textContent: '' };
   controller.speedButtonTargets = [];
+  controller.videoActive = false;
   return controller;
 }
 
@@ -21,9 +22,12 @@ test('starting the lesson opens the splash without requesting fullscreen', () =>
   const controller = fixture({ activeElement: {}, body: { children: [] }, documentElement: { requestFullscreen() { throw Error('Lesson should not request fullscreen'); } } });
   controller.element = { children: [] };
   controller.lessonDialogTarget = { hidden: true };
+  controller.stageTarget = { hidden: true };
   controller.menuTarget = { querySelector() { return { focus() {} }; } };
   controller.start();
   assert.equal(controller.lessonDialogTarget.hidden, false);
+  assert.equal(controller.stageTarget.hidden, false);
+  assert.equal(controller.videoActive, false);
 });
 
 test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then remote', async () => {
@@ -31,21 +35,30 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   let finishPlay;
   const controller = fixture();
   controller.stageTarget = {
-    hidden: true,
+    hidden: false,
+    setAttribute() {},
     getBoundingClientRect() {},
     requestFullscreen() { calls.push('fullscreen'); assert.equal(this, controller.stageTarget); return Promise.resolve(); },
     classList: { add(...names) { calls.push(['fixed', ...names]); } }
   };
   controller.playerTarget = {
     dataset: { kind: 'basic' }, readyState: 1,
-    pause() {}, play() { calls.push('play'); return new Promise(resolve => { finishPlay = resolve; }); }
+    getAttribute() { return 'basic.m3u8'; },
+    get currentTime() { return 0; },
+    set currentTime(_value) { throw Error('A prepared video must not seek on Play'); },
+    get playbackRate() { return 1; },
+    set playbackRate(_value) { throw Error('A prepared video must not reset its speed'); },
+    pause() { throw Error('A prepared video must not pause before Play'); },
+    load() { throw Error('A prepared video must not reload before Play'); },
+    play() { calls.push('play'); return new Promise(resolve => { finishPlay = resolve; }); }
   };
   for (const target of ['speed','videoTitle','error','remote','menu','splash']) controller[`${target}Target`] = { hidden: false };
-  controller.playButtonTarget = { focus() {} };
+  controller.playButtonTarget = { focus() { throw Error('Starting playback must not force focus onto the remote'); } };
   controller.showRemote = () => {};
   controller.playbackGeneration = 0;
-  controller.closePicker = controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.loadVideoSource = controller.resetGuide = () => {};
-  controller.playVideo({ currentTarget: { dataset: { kind: 'basic', title: 'Lesson' } } });
+  controller.closePicker = restoreFocus => assert.equal(restoreFocus, false);
+  controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.resetGuide = () => {};
+  controller.playVideo({ currentTarget: { dataset: { src: 'basic.m3u8', kind: 'basic', title: 'Lesson' } } });
   assert.deepEqual(calls, ['fullscreen', ['fixed', 'fixed', 'inset-0', 'z-[60]', 'rounded-none'], 'play']);
   assert.equal(controller.remoteTarget.hidden, true);
   assert.equal(controller.menuTarget.hidden, false);
@@ -85,6 +98,44 @@ test('preparing a different lesson reuses the single video and does not reload a
   assert.equal(loads, 1);
   controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
   assert.equal(loads, 1);
+});
+
+test('cards outside the lesson can prepare a source while playing videos ignore preparation', () => {
+  const controller = fixture();
+  const prepared = [];
+  controller.lessonDialogTarget.hidden = true;
+  controller.loadVideoSource = source => prepared.push(source.src);
+  const event = { target: { closest: () => ({ dataset: { src: 'activity.m3u8', kind: 'activity' } }) } };
+  controller.prepareVideo(event);
+  assert.deepEqual(prepared, ['activity.m3u8']);
+  controller.videoActive = true;
+  controller.prepareVideo(event);
+  assert.deepEqual(prepared, ['activity.m3u8']);
+});
+
+test('direct card launch does not focus Basic English and replace the prepared source', () => {
+  const controller = fixture({ activeElement: {}, body: { children: [] } });
+  controller.element = { children: [] };
+  controller.lessonDialogTarget.hidden = true;
+  controller.stageTarget = { hidden: true };
+  controller.menuTarget = { querySelector() { throw Error('A direct launch must not focus another video'); } };
+  let opened;
+  controller.playVideo = event => { opened = event.currentTarget.dataset.src; };
+  controller.launchVideo({ currentTarget: { dataset: { src: 'activity.m3u8', kind: 'activity' } } });
+  assert.equal(opened, 'activity.m3u8');
+  assert.equal(controller.videoOpenedFromMenu, true);
+  assert.equal(controller.stageTarget.hidden, false);
+});
+
+test('cancelling idle phrase audio does not pause or seek its media elements', () => {
+  const controller = fixture();
+  controller.phraseAudioTargets = [{
+    paused: true, readyState: 1,
+    get currentTime() { return 0; },
+    set currentTime(_value) { throw Error('Idle audio should not seek'); },
+    pause() { throw Error('Idle audio should not pause'); }
+  }];
+  controller.cancelSpeech();
 });
 
 test('chapter stopping pauses once at a crossed boundary and allows resuming', () => {
@@ -170,6 +221,7 @@ test('marked activity pauses work with chapter stopping off and resume only once
 function resumablePlaybackFixture() {
   const controller = fixture();
   controller.playbackGeneration = 0;
+  controller.videoActive = true;
   controller.stageTarget = { hidden: false };
   controller.menuTarget = { hidden: false };
   controller.splashTarget = { hidden: false };
@@ -255,12 +307,13 @@ test('a pending play promise cannot reveal the remote after leaving playback', a
   const controller = fixture();
   let finishPlay;
   controller.playbackGeneration = 0;
+  controller.videoActive = true;
   controller.stageTarget = { hidden: false };
   controller.playerTarget = { play() { return new Promise(resolve => { finishPlay = resolve; }); } };
   controller.remoteTarget = { hidden: true };
   controller.play();
   controller.playbackGeneration++;
-  controller.stageTarget.hidden = true;
+  controller.videoActive = false;
   finishPlay();
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(controller.remoteTarget.hidden, true);

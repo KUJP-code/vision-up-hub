@@ -1,4 +1,5 @@
-.lm-video-stage{ hidden: true, tabindex: -1, data: { 'screen-mirroring-test-target': 'stage' } }
+.lm-video-stage{ hidden: true, inert: true, 'aria-hidden': 'true', tabindex: -1,
+                  data: { 'screen-mirroring-test-target': 'stage' } }
   %video.lm-video{ src: basic_video,
                    playsinline: true,
                    preload: 'metadata',

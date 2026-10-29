@@ -23,6 +23,7 @@ export default class extends Controller {
     this.events = new AbortController();
     const options = { signal: this.events.signal };
     this.playbackGeneration = 0;
+    this.videoActive = false;
     this.lastPlaybackTime = 0;
     this.pauseAtChapterEnd = false;
     this.playerTargets.forEach(player => {
@@ -56,7 +57,10 @@ export default class extends Controller {
       const selected = event.target.closest("details");
       this.closeMenus(selected);
     }, options);
-    this.lessonScreenTarget.addEventListener("keydown", event => {
+    // Starting playback leaves focus alone, so Escape must also work when the
+    // browser moves focus to the document after the launch button becomes inert.
+    document.addEventListener("keydown", event => {
+      if (this.lessonDialogTarget.hidden) return;
       // Native dialogs handle their own Escape key and focus trap.
       if (this.pickerTarget.open || this.flashcardsTarget.open || this.resourceTarget.open) return;
       if (event.key === "Escape" && this.lessonScreenTarget.querySelector("details[open]")) {
@@ -64,10 +68,11 @@ export default class extends Controller {
         this.closeMenus();
       } else if (event.key === "Escape") {
         event.preventDefault();
-        if (!this.stageTarget.hidden) this.stop();
+        if (this.videoActive) this.stop();
         else this.closeLesson();
       } else if (event.key === "Tab") {
-        const buttons = [...this.lessonDialogTarget.querySelectorAll("button, summary, select, input, [tabindex]")].filter(element => element.getClientRects().length);
+        const buttons = [...this.lessonDialogTarget.querySelectorAll("button, summary, select, input, [tabindex]")]
+          .filter(element => element.getClientRects().length && !element.closest("[inert]"));
         const first = buttons[0], last = buttons[buttons.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
@@ -180,18 +185,20 @@ export default class extends Controller {
       this.pickerNavigationTarget.append(this.lessonTabsTarget);
       this.pickerTarget.showModal();
     }
+    const choice = (activity ? this.pickerActivityTarget : this.pickerStoryTarget).querySelector("[data-src][data-kind]");
+    if (choice) this.loadVideoSource(choice.dataset);
   }
 
-  restoreLessonTabs() {
+  restoreLessonTabs(restoreFocus = true) {
     if (this.lessonTabsTarget.parentElement === this.menuTarget) return;
     this.menuTarget.insertBefore(this.lessonTabsTarget, this.menuTarget.querySelector(".lm-close"));
     this.lessonTabsTarget.querySelectorAll("[aria-expanded]").forEach(button => button.setAttribute("aria-expanded", "false"));
-    if (!this.lessonDialogTarget.hidden && this.stageTarget.hidden && !this.flashcardsTarget.open) this.pickerReturnFocus?.focus();
+    if (restoreFocus && !this.lessonDialogTarget.hidden && !this.videoActive && !this.flashcardsTarget.open) this.pickerReturnFocus?.focus();
   }
 
-  closePicker() {
+  closePicker(restoreFocus = true) {
     if (this.pickerTarget.open) this.pickerTarget.close();
-    this.restoreLessonTabs();
+    this.restoreLessonTabs(restoreFocus);
   }
 
   openFlashcards() {
@@ -229,10 +236,10 @@ export default class extends Controller {
     this.playVideo(event);
   }
 
-  // There is exactly one video element, as in 2.7.9.1. Selecting a menu prepares
-  // its source before the video link is tapped; pointer/focus also cover direct links.
+  // Prepare the single player on pointer/focus events in every content view,
+  // including cards outside the lesson screen, before their click starts playback.
   prepareVideo(event) {
-    if (!this.stageTarget.hidden) return;
+    if (this.videoActive) return;
     const choice = event.target.closest("[data-src][data-kind]");
     if (choice) this.loadVideoSource(choice.dataset);
   }
@@ -242,6 +249,12 @@ export default class extends Controller {
     this.playerTarget.src = src;
     this.playerTarget.dataset.kind = kind;
     this.playerTarget.load();
+  }
+
+  setVideoActive(active) {
+    this.videoActive = active;
+    this.stageTarget.inert = !active;
+    this.stageTarget.setAttribute("aria-hidden", String(!active));
   }
 
   toggleGuide() {
@@ -307,8 +320,8 @@ export default class extends Controller {
 
   cancelSpeech() {
     this.phraseAudioTargets.forEach(audio => {
-      audio.pause();
-      if (audio.readyState > 0) audio.currentTime = 0;
+      if (!audio.paused) audio.pause();
+      if (audio.readyState > 0 && audio.currentTime > 0) audio.currentTime = 0;
     });
   }
 
@@ -317,6 +330,7 @@ export default class extends Controller {
     this.events?.abort();
     this.cancelSpeech();
     this.playbackGeneration += 1;
+    this.setVideoActive(false);
     this.playerTargets.forEach(player => player.pause());
     this.exitFullscreen();
     this.lessonDialogTarget.hidden = true;
@@ -383,10 +397,14 @@ export default class extends Controller {
     this.videoOpenedFromMenu = false;
     this.lessonWeekTarget.textContent = `第${event?.currentTarget.dataset.week || 1}週 · ベーシックイングリッシュ`;
     this.lessonDialogTarget.hidden = false;
+    // Keep a rendered 16:9 video surface under the splash before Play is tapped.
+    this.stageTarget.hidden = false;
     this.backgroundElements = [...this.element.children, ...document.body.children]
       .filter(element => element !== this.lessonDialogTarget && !element.contains(this.lessonDialogTarget) && !element.matches("dialog") && !element.inert);
     this.backgroundElements.forEach(element => { element.inert = true; });
-    this.menuTarget.querySelector("button").focus();
+    // A direct card launch has already prepared its own source; focusing Basic
+    // English here would replace it through the focusin preparation handler.
+    if (event) this.menuTarget.querySelector("button").focus();
   }
 
   restoreBackground() {
@@ -422,20 +440,21 @@ export default class extends Controller {
 
   playVideo(event) {
     const { src, title, kind, contentKey = kind } = event.currentTarget.dataset;
-    this.closePicker();
+    this.closePicker(false);
     this.closeMenus();
     this.cancelSpeech();
     this.setChapters(contentKey);
-    this.playerTarget.pause();
+    // Pointer/focus normally prepared this already. Retain a synchronous fallback
+    // for keyboard, assistive-technology, and programmatic clicks.
     this.loadVideoSource({ src, kind });
     this.resetGuide();
-    if (this.playerTarget.readyState > 0) this.playerTarget.currentTime = 0;
-    this.playerTarget.playbackRate = 1;
+    if (this.playerTarget.playbackRate !== 1) this.playerTarget.playbackRate = 1;
     this.lastPlaybackTime = 0;
     this.updateSpeedButtons();
     this.videoTitleTarget.textContent = title;
     this.errorTarget.hidden = true;
     this.remoteTarget.hidden = true;
+    this.setVideoActive(true);
     this.stageTarget.hidden = false;
     this.stageTarget.getBoundingClientRect();
     this.updateRemote();
@@ -453,12 +472,11 @@ export default class extends Controller {
     // this run, even if buffering delays the first timeupdate after resuming.
     this.autoPauseIgnoreUntil = current + 3;
     this.playerTarget.play().then(() => {
-      if (generation !== this.playbackGeneration || this.stageTarget.hidden) return;
+      if (generation !== this.playbackGeneration || !this.videoActive) return;
       // 2.7.9.1 hides setup and reveals the remote after play() resolves.
       this.menuTarget.hidden = true;
       this.splashTarget.hidden = true;
       this.remoteTarget.hidden = false;
-      this.playButtonTarget.focus();
       this.showRemote();
     }).catch(error => {
       if (generation === this.playbackGeneration && error.name !== "AbortError") this.showError();
@@ -473,7 +491,7 @@ export default class extends Controller {
 
   showRemote() {
     clearTimeout(this.remoteTimeout);
-    if (this.stageTarget.hidden || this.remoteTarget.hidden) return;
+    if (!this.videoActive || this.remoteTarget.hidden) return;
     this.stageTarget.classList.remove("lm-controls-hidden");
     this.remoteTarget.inert = false;
     this.remoteTimeout = setTimeout(() => this.hideRemote(), 5000);
@@ -481,7 +499,7 @@ export default class extends Controller {
 
   hideRemote() {
     // Keep controls available while paused, reading the guide, or choosing a speed.
-    if (this.stageTarget.hidden || this.playerTarget.paused || this.remoteInteraction ||
+    if (!this.videoActive || this.playerTarget.paused || this.remoteInteraction ||
         !this.guidePanelTarget.hidden || !this.errorTarget.hidden ||
         this.remoteTarget.querySelector("details[open]")) return;
     if (this.remoteTarget.contains(document.activeElement)) this.stageTarget.focus({ preventScroll: true });
@@ -553,15 +571,15 @@ export default class extends Controller {
     this.remoteInteraction = false;
     this.stageTarget.classList.remove("lm-controls-hidden");
     this.remoteTarget.inert = false;
-    const wasPlaying = !this.stageTarget.hidden;
+    const wasPlaying = this.videoActive;
+    this.setVideoActive(false);
     this.playbackGeneration += 1;
     this.cancelSpeech();
     this.closeMenus();
-    this.playerTarget.pause();
-    if (this.playerTarget.readyState > 0) this.playerTarget.currentTime = 0;
+    if (!this.playerTarget.paused) this.playerTarget.pause();
+    if (this.playerTarget.readyState > 0 && this.playerTarget.currentTime > 0) this.playerTarget.currentTime = 0;
     this.exitFullscreen();
     this.stageTarget.classList.remove("fixed", "inset-0", "z-[60]", "rounded-none");
-    this.stageTarget.hidden = true;
     clearTimeout(this.remoteTimeout);
     this.remoteTarget.hidden = true;
     this.menuTarget.hidden = false;
@@ -610,7 +628,7 @@ export default class extends Controller {
   }
 
   showError() {
-    if (this.stageTarget.hidden) return;
+    if (!this.videoActive) return;
     this.remoteTarget.hidden = false;
     this.errorTarget.hidden = false;
     this.showRemote();

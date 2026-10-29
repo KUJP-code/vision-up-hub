@@ -1,9 +1,4 @@
 :ruby
-  prepare_actions = %w[
-    pointerover->screen-mirroring-test#prepareVideo
-    focusin->screen-mirroring-test#prepareVideo
-    pointerdown->screen-mirroring-test#prepareVideo
-  ].join(' ')
   phrases = {
     'see-you' => 'See you!', 'hello' => 'Hello!', 'nice-to-meet-you' => 'Nice to meet you!'
   }
@@ -13,8 +8,7 @@
                    'aria-modal': 'true',
                    'aria-label': 'レッスン画面',
                    data: { 'screen-mirroring-test-target': 'lessonDialog' } }
-  .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen',
-                     action: prepare_actions } }
+  .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
     .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
       = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
       - phrases.each do |position, phrase|

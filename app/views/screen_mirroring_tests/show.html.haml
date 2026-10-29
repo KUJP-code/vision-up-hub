@@ -14,6 +14,7 @@
   ]
 
 .lesson-mockup{ data: { controller: 'screen-mirroring-test',
+                       action: 'pointerover->screen-mirroring-test#prepareVideo focusin->screen-mirroring-test#prepareVideo pointerdown->screen-mirroring-test#prepareVideo',
                        'screen-mirroring-test-content-value': @lesson_content.to_json } }
   %aside.lm-sidebar{ 'aria-label': 'AI先生 ナビゲーション',
                      data: { 'screen-mirroring-test-target': 'sidebar' } }

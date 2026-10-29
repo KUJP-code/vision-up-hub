@@ -9,3 +9,9 @@ The old and current views both request fullscreen on the video container, apply 
 If the baseline routes video correctly and the current view does not, narrow the view differences on that same setup. If both fail, the baseline has not reproduced the remembered behavior; investigate the browser/device/receiver state and any remaining shared-layout differences before attributing the failure to the new launch flow. Desktop tests exercise markup and playback calls; they cannot verify iPad/TV AirPlay routing.
 
 Both reference modes remain restricted to admins. AI Sensei event accounts cannot open them.
+
+## Targeted startup changes
+
+The user confirmed that the 2.7.9.1 reference hands off video correctly on their iPad/TV setup. The current view now prepares sources on pointer/focus events throughout the menus and cards, and prepares the first source when opening a picker. Opening a lesson renders the idle video in a 16:9 surface under the splash; the idle surface remains inert and hidden from assistive technology. Starting a prepared video avoids an extra pause, load, or seek, and requests fullscreen followed synchronously by playback. Position resets happen when stopping. Direct launches avoid focusing Basic English, which would otherwise overwrite their prepared source, and playback no longer forces focus onto the remote.
+
+The current remote's appearance and the video AirPlay attributes are retained so that the iPad/TV retest can isolate startup behavior. Compare the current view with `/ja/screen_mirroring_test?reference=2.7.9.1` using a Story video (both use `1225145089`). The browser checks verify source preparation, a rendered 16:9 surface before fullscreen, and fullscreen-before-play ordering, plus switching and replay controls. Automatic AirPlay routing and any effect of the remote's size/layering still require the physical iPad/TV test.

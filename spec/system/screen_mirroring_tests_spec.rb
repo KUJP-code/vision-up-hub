@@ -53,6 +53,14 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
   it 'opens the lesson, moves between flashcards, and restores focus on exit' do
     click_button 'レッスンをはじめる'
     expect(page).to have_css('.lm-lesson-dialog')
+    expect(page.evaluate_script(<<~JS)).to be true
+      (() => {
+        const stage = document.querySelector('.lm-video-stage');
+        const bounds = stage.getBoundingClientRect();
+        return !stage.hidden && stage.inert && stage.getAttribute('aria-hidden') === 'true' &&
+          bounds.width > 0 && Math.abs(bounds.width / bounds.height - 16 / 9) < 0.01;
+      })()
+    JS
     expect(page.evaluate_script('document.fullscreenElement === null')).to be true
     [[1024, 768], [768, 1024], [390, 844]].each do |width, height|
       page.current_window.resize_to(width, height)
@@ -155,7 +163,8 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       JS
     end
     find('button[aria-label="動画を閉じる"]').click
-    expect(page).not_to have_css('.lm-video-stage')
+    expect(page).not_to have_css('.lm-video-stage.fixed')
+    expect(page.evaluate_script('document.querySelector(".lm-video-stage").inert')).to be true
     expect(page).to have_css('.lm-lesson-tabs')
     expect(page).to have_css('video', count: 1, visible: :all)
   end
@@ -188,6 +197,24 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       expect(page).to have_css('.lm-content-card', count: 1)
       expect(page).to have_css('.lm-filters button[aria-pressed="true"]', text: '工作')
     end
+  end
+
+  it 'prepares a direct card before click and starts it without reloading, pausing, or seeking' do
+    stub_video_playback
+    launch = first(".lm-pages [data-view='home'] [data-content-key='activity-1'][data-src]")
+    page.execute_script <<~JS, launch
+      arguments[0].dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    JS
+    expect(page.evaluate_script('document.querySelector("video").demoLoads')).to eq(1)
+    launch.click
+    expect(page).to have_css('.lm-remote')
+    expect(page.evaluate_script('document.querySelector("video").demoStart')).to include(
+      'loads' => 1, 'pauses' => 0, 'seeks' => 0, 'src' => launch['data-src']
+    )
+    expect(page.evaluate_script('document.querySelector("video").demoLaunchOrder')).to eq(%w[fullscreen play])
+    ratio = page.evaluate_script('document.querySelector("video").demoFullscreenRatio')
+    expect(ratio).to be_within(0.01).of(16.0 / 9)
+    expect(page.evaluate_script('document.querySelector(".lm-video-stage").inert')).to be false
   end
 
   it 'returns videos chosen inside a lesson to its splash screen' do
@@ -355,7 +382,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-controls-hidden', wait: 7)
     page.execute_script('document.querySelector(".lm-video-stage").dispatchEvent(new Event("pointermove"))')
     find('button[aria-label="動画を閉じる"]').click
-    expect(page).not_to have_css('.lm-video-stage')
+    expect(page).not_to have_css('.lm-video-stage.fixed')
   end
 
   private
@@ -365,28 +392,40 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     # of network timing and the browser's support for Vimeo's HLS source.
     page.execute_script <<~JS
       const video = document.querySelector('video');
+      let source = video.getAttribute('src') || '';
+      const originalGetAttribute = video.getAttribute.bind(video);
       video.removeAttribute('src');
-      video.load = () => {};
+      video.demoLoads = video.demoPauses = video.demoSeeks = 0;
+      video.demoLaunchOrder = [];
+      video.load = () => { video.demoLoads++; };
+      video.getAttribute = name => name === 'src' ? source : originalGetAttribute(name);
       let clock = 0;
-      let source = '';
       Object.defineProperties(video, {
-        currentTime: { get: () => clock, set: value => { clock = value; } },
-        src: { get: () => source, set: value => { source = value; } },
+        currentTime: { get: () => clock, set: value => { clock = value; video.demoSeeks++; } },
+        src: { get: () => source, set: value => { source = value; clock = 0; } },
         duration: { get: () => 560.125 },
         readyState: { get: () => 1 },
         paused: { get: () => video.demoPaused !== false },
         seeking: { get: () => false }
       });
       video.play = () => {
+        video.demoLaunchOrder.push('play');
+        video.demoStart = { loads: video.demoLoads, pauses: video.demoPauses, seeks: video.demoSeeks, src: source };
         video.demoPaused = false;
         video.dispatchEvent(new Event('play'));
         return Promise.resolve();
       };
       video.pause = () => {
+        video.demoPauses++;
         video.demoPaused = true;
         video.dispatchEvent(new Event('pause'));
       };
-      document.querySelector('.lm-video-stage').requestFullscreen = () => Promise.resolve();
+      document.querySelector('.lm-video-stage').requestFullscreen = () => {
+        const bounds = document.querySelector('.lm-video-stage').getBoundingClientRect();
+        video.demoFullscreenRatio = bounds.width / bounds.height;
+        video.demoLaunchOrder.push('fullscreen');
+        return Promise.resolve();
+      };
     JS
   end
 end
