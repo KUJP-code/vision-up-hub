@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.2-sensei_activities"
+    "Name": "kidsup/materials:2.9.3-sensei_timestamps"
   },
   "Ports": [
     {
