@@ -447,6 +447,11 @@ export default class extends Controller {
 
   play() {
     const generation = ++this.playbackGeneration;
+    const current = this.playerTarget.currentTime || 0;
+    this.lastPlaybackTime = current;
+    // HLS seeks can settle just before a pause point. Skip nearby points for
+    // this run, even if buffering delays the first timeupdate after resuming.
+    this.autoPauseIgnoreUntil = current + 3;
     this.playerTarget.play().then(() => {
       if (generation !== this.playbackGeneration || this.stageTarget.hidden) return;
       // 2.7.9.1 hides setup and reveals the remote after play() resolves.
@@ -492,6 +497,7 @@ export default class extends Controller {
     if (!Number.isFinite(this.playerTarget.duration)) return;
     this.playerTarget.currentTime = Math.min(this.playerTarget.duration, Math.max(0, seconds));
     this.lastPlaybackTime = this.playerTarget.currentTime;
+    this.autoPauseIgnoreUntil = 0;
     this.updateRemote();
   }
 
@@ -509,6 +515,7 @@ export default class extends Controller {
       const boundary = this.chapters.find(chapter => {
         const end = chapter.endTime;
         return (this.pauseAtChapterEnd || chapter.pause_after) && end != null &&
+          end > (this.autoPauseIgnoreUntil || 0) &&
           end > this.lastPlaybackTime && end <= current;
       });
       if (boundary) {

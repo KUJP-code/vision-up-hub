@@ -33,6 +33,23 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-week-card', count: 1)
   end
 
+  it 'opens and controls the isolated 2.8.3.1 comparison player' do
+    visit screen_mirroring_test_path(locale: :ja, reference: '2.8.3.1')
+    expect(page).to have_css('[data-controller="screen-mirroring-2831-reference"]')
+    click_button 'レッスンをはじめる ▶', exact: true
+    stub_video_playback
+    within('.lm-lesson-menu') { click_button 'ベーシックイングリッシュ' }
+    expect(page).to have_css('.lm-remote')
+    expect(page).to have_button('Ⅱ 一時停止')
+    click_button 'Ⅱ 一時停止', exact: true
+    expect(page).to have_button('▶ 再生')
+    click_button '▶ 再生', exact: true
+    expect(page).to have_button('Ⅱ 一時停止')
+    click_button '■ 停止', exact: true
+    expect(page).not_to have_css('.lm-video-stage')
+    expect(page).to have_css('.lm-lesson-menu')
+  end
+
   it 'opens the lesson, moves between flashcards, and restores focus on exit' do
     click_button 'レッスンをはじめる'
     expect(page).to have_css('.lm-lesson-dialog')
@@ -286,8 +303,24 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
         JS
         expect(page).to have_css('button[aria-label="再生"]')
         expect(page.evaluate_script('document.querySelector("video").currentTime')).to be_within(0.001).of(137 + 1.0 / 24)
+        # HLS may settle slightly before the requested pause timestamp.
+        page.execute_script('document.querySelector("video").currentTime = 137.01')
         find('button[aria-label="再生"]').click
+        page.execute_script <<~JS
+          const video = document.querySelector('video');
+          video.currentTime = 137.2;
+          video.dispatchEvent(new Event('timeupdate'));
+          video.currentTime = 141;
+          video.dispatchEvent(new Event('timeupdate'));
+        JS
         expect(page).to have_css('button[aria-label="一時停止"]')
+        page.execute_script <<~JS
+          const video = document.querySelector('video');
+          video.currentTime = 167.2;
+          video.dispatchEvent(new Event('timeupdate'));
+        JS
+        expect(page).to have_css('button[aria-label="再生"]')
+        expect(page.evaluate_script('document.querySelector("video").currentTime')).to eq(167)
       end
       find('button[aria-label="動画を閉じる"]').click
       expect(page).not_to have_css('.lm-lesson-dialog')

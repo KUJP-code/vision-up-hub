@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class ScreenMirroringTestsController < ApplicationController
-  layout -> { params[:reference] == '2.7.9.1' ? 'application' : 'lesson_prototype' }
+  layout -> { %w[2.7.9.1 2.8.3.1].include?(params[:reference]) ? 'application' : 'lesson_prototype' }
 
   def show
-    if params[:reference] == '2.7.9.1'
+    case params[:reference]
+    when '2.7.9.1'
       render :reference
+    when '2.8.3.1'
+      render :reference_2831
     else
       @lesson_content = AiSenseiContent.week_one
     end

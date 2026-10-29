@@ -69,6 +69,33 @@ RSpec.describe 'Screen mirroring video test' do
     expect(response).to have_http_status(:not_found)
   end
 
+  it 'renders the isolated 2.8.3.1 layout and player for admins' do
+    sign_in create(:user, :admin, organisation:)
+
+    get screen_mirroring_test_path(reference: '2.8.3.1')
+
+    expect(response).to have_http_status(:ok)
+    document = Nokogiri::HTML(response.body)
+    expect(document.at_css('#main-nav')).to be_present
+    expect(document.at_css('body')['class']).not_to eq('lesson-prototype-body')
+    expect(document.at_css('[data-controller="screen-mirroring-2831-reference"]')).to be_present
+    stylesheets = document.css('link[rel="stylesheet"]').map { |link| link['href'] }
+    expect(stylesheets.any? { |href| href.include?('ai_sensei_2831_reference') }).to be true
+    expect(stylesheets.any? { |href| href.include?('lesson_mockup') }).to be false
+    expect(document.css('video').size).to eq(1)
+    expect(document.at_css('video')['src']).to include('1225143839.m3u8')
+    expect(document.at_css('video')['x-webkit-airplay']).to eq('deny')
+    expect(document.css('.lm-picker')).to be_empty
+  end
+
+  it 'keeps the 2.8.3.1 comparison restricted to admins' do
+    sign_in create(:user, :teacher, organisation:)
+
+    get screen_mirroring_test_path(reference: '2.8.3.1')
+
+    expect(response).to have_http_status(:not_found)
+  end
+
   it 'is not available to non-admin users' do
     sign_in create(:user, :teacher, organisation:)
 

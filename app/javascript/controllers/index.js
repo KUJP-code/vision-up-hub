@@ -92,6 +92,9 @@ application.register("screen-mirroring-test", ScreenMirroringTestController);
 import ScreenMirroringReferenceController from "./screen_mirroring_reference_controller";
 application.register("screen-mirroring-reference", ScreenMirroringReferenceController);
 
+import ScreenMirroring2831ReferenceController from "./screen_mirroring_2831_reference_controller";
+application.register("screen-mirroring-2831-reference", ScreenMirroring2831ReferenceController);
+
 import ResourceItemsController from "./resource_items_controller";
 application.register("resource-items", ResourceItemsController);
 

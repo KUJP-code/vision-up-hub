@@ -60,6 +60,8 @@ RSpec.describe 'AI Sensei event accounts' do
 
     get ai_sensei_path(reference: '2.7.9.1')
     expect(response).to redirect_to(ai_sensei_path)
+    get ai_sensei_path(reference: '2.8.3.1')
+    expect(response).to redirect_to(ai_sensei_path)
     get screen_mirroring_test_path(reference: '2.7.9.1')
     expect(response).to have_http_status(:not_found)
     get devices_path

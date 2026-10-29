@@ -167,6 +167,90 @@ test('marked activity pauses work with chapter stopping off and resume only once
   assert.equal(pauses, 1);
 });
 
+function resumablePlaybackFixture() {
+  const controller = fixture();
+  controller.playbackGeneration = 0;
+  controller.stageTarget = { hidden: false };
+  controller.menuTarget = { hidden: false };
+  controller.splashTarget = { hidden: false };
+  controller.remoteTarget = { hidden: false };
+  controller.errorTarget = { hidden: true };
+  controller.playButtonTarget = { focus() {} };
+  controller.showRemote = controller.updateRemote = () => {};
+  controller.playerTarget = {
+    currentTime: 0, duration: 200, paused: true, seeking: false,
+    pause() { this.paused = true; },
+    play() { this.paused = false; return Promise.resolve(); }
+  };
+  return controller;
+}
+
+for (const chapterStop of [false, true]) {
+  test(`resuming just before an auto-pause skips it despite HLS rounding (chapter stop ${chapterStop})`, async () => {
+    const controller = resumablePlaybackFixture();
+    controller.pauseAtChapterEnd = chapterStop;
+    controller.chapters = [
+      { time: 0, endTime: 70, pause_after: !chapterStop },
+      { time: 70, endTime: 100, pause_after: !chapterStop }
+    ];
+    controller.lastPlaybackTime = 69.9;
+    controller.playerTarget.paused = false;
+    controller.playerTarget.currentTime = 70.2;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, true);
+    assert.equal(controller.playerTarget.currentTime, 70);
+
+    // Model the HLS player landing a fraction of a second before the requested seek.
+    controller.playerTarget.currentTime = 69.96;
+    controller.togglePlayback();
+    await Promise.resolve();
+    controller.playerTarget.currentTime = 70.2;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, false);
+
+    // A delayed update after buffering must not trigger the skipped point either.
+    controller.playerTarget.currentTime = 76;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, false);
+    controller.playerTarget.currentTime = 100.2;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, true);
+    assert.equal(controller.playerTarget.currentTime, 100);
+  });
+}
+
+test('play skips points within three video seconds and preserves later ones at different speeds', async () => {
+  for (const rate of [0.5, 1.5]) {
+    const controller = resumablePlaybackFixture();
+    controller.pauseAtChapterEnd = true;
+    controller.chapters = [{ endTime: 70 }, { endTime: 71 }];
+    controller.playerTarget.playbackRate = rate;
+    controller.playerTarget.currentTime = 67;
+    controller.togglePlayback();
+    await Promise.resolve();
+    controller.playerTarget.currentTime = 70.1;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, false);
+    controller.playerTarget.currentTime = 71.1;
+    controller.checkChapterEnd();
+    assert.equal(controller.playerTarget.paused, true);
+  }
+});
+
+test('seeking back deliberately re-enables an earlier pause point', async () => {
+  const controller = resumablePlaybackFixture();
+  controller.pauseAtChapterEnd = true;
+  controller.chapters = [{ endTime: 70 }];
+  controller.playerTarget.currentTime = 70;
+  controller.togglePlayback();
+  await Promise.resolve();
+  controller.seekTo(60);
+  controller.playerTarget.currentTime = 70.2;
+  controller.checkChapterEnd();
+  assert.equal(controller.playerTarget.paused, true);
+  assert.equal(controller.playerTarget.currentTime, 70);
+});
+
 test('a pending play promise cannot reveal the remote after leaving playback', async () => {
   const controller = fixture();
   let finishPlay;
