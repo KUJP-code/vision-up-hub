@@ -7,6 +7,7 @@
     - title = activity ? item.fetch('title') : item
     - video_source = activity ? item.fetch('video') : video
     - content_key = activity ? item.fetch('key') : 'story'
+    - caption_src = asset_path(@lesson_content.fetch('lessons').fetch(content_key).fetch('subtitle_asset'))
     %article.lm-card.lm-content-card{ data: { category: activity ? item.fetch('category') : nil } }
       .lm-content-thumbnail{ class: "lm-thumbnail-#{kind}",
                              data: { 'screen-mirroring-test-target': 'thumbnail', video: video_source } }
@@ -22,6 +23,7 @@
         %button.lm-pill.lm-primary{ type: 'button',
                                     data: { action: 'screen-mirroring-test#launchVideo',
                                             src: video_source,
+                                            caption_src:,
                                             content_key:,
                                             kind:,
                                             title: } }

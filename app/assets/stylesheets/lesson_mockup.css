@@ -33,8 +33,8 @@
 .lesson-mockup .lm-workspace { margin-left: 60px; }
 .lesson-mockup .lm-page-header { position: sticky; top: 0; z-index: 2; height: 54px; display: grid; place-items: center; background: white; }
 .lesson-mockup .lm-pages { max-width: 1600px; margin: 0 auto; padding: 16px; }
-.lesson-mockup .lm-week-navigation { display: flex; align-items: center; justify-content: space-between; margin: 0 0 16px; text-align: center; }
-.lesson-mockup .lm-week-navigation h2 { font-size: 17px; }
+.lesson-mockup .lm-week-navigation { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1600px; padding: 0 16px; margin: 0; text-align: center; }
+.lesson-mockup .lm-week-navigation h1 { font-size: 17px; }
 .lesson-mockup .lm-week-navigation .lm-pill { min-width: 125px; }
 .lesson-mockup .lm-lesson-date { border: 0; padding: 0; background: transparent; font-size: 12px; text-align: center; }
 .lesson-mockup .lm-card { background: white; border-radius: 17px; padding: 12px; box-shadow: 0 8px 22px #00000016; }
@@ -65,13 +65,14 @@
 /* The lesson owns its viewport. No production navigation or selectors are reused. */
 .lesson-mockup .lm-lesson-dialog { position: fixed; inset: 0; z-index: 100; }
 .lesson-mockup .lm-stage { position: absolute; inset: 0; overflow: hidden; background: #f5d4b2; }
-.lesson-mockup .lm-splash-frame, .lesson-mockup .lm-video-stage:not(.fixed) { position: absolute; left: 50%; top: calc(50% + 30px); transform: translate(-50%,-50%); width: min(100vw,calc((100dvh - 60px) * 16 / 9)); aspect-ratio: 16 / 9; }
-.lesson-mockup .lm-splash-frame { z-index: 1; }
-.lesson-mockup .lm-splash { display: block; width: 100%; height: 100%; }
+.lesson-mockup .lm-video-stage:not(.fixed) { position: absolute; left: 50%; top: calc(50% + 30px); transform: translate(-50%,-50%); width: min(100vw,calc((100dvh - 60px) * 16 / 9)); aspect-ratio: 16 / 9; }
+/* Cover the viewport using the W1 image's native proportions; scale speech buttons with it. */
+.lesson-mockup .lm-splash-frame { --lm-splash-ratio: 2546 / 1080; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: max(100vw,calc(100dvh * var(--lm-splash-ratio))); aspect-ratio: var(--lm-splash-ratio); z-index: 1; }
+.lesson-mockup .lm-splash { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .lesson-mockup .lm-speech-hotspot { position: absolute; min-height: 0; padding: 0; border: 3px solid transparent; border-radius: 24%; background: transparent; }
-.lesson-mockup .lm-speech-see-you { left: 14.5%; top: 17%; width: 14%; height: 14%; }
-.lesson-mockup .lm-speech-hello { left: 48%; top: 15%; width: 14%; height: 22%; }
-.lesson-mockup .lm-speech-nice-to-meet-you { left: 70%; top: 23%; width: 23%; height: 22%; }
+.lesson-mockup .lm-speech-see-you { left: 22%; top: 17%; width: 12%; height: 17%; }
+.lesson-mockup .lm-speech-hello { left: 48%; top: 14%; width: 11%; height: 25%; }
+.lesson-mockup .lm-speech-nice-to-meet-you { left: 63.5%; top: 22%; width: 18%; height: 26%; }
 .lesson-mockup .lm-speech-icon { position: absolute; right: 5%; bottom: 3%; display: grid; place-items: center; width: 28px; height: 28px; color: var(--lm-purple); background: #ffffffe0; border-radius: 50%; opacity: 0; }
 .lesson-mockup .lm-speech-icon svg { width: 18px; height: 18px; }
 .lesson-mockup .lm-speech-hotspot:is(:hover,:focus-visible) .lm-speech-icon { opacity: 1; }
@@ -164,6 +165,8 @@
 .lesson-mockup .lm-speed-choices { display: flex; gap: 8px; margin-top: 6px; }
 .lesson-mockup .lm-speed-choices button { flex: 1; border: 1px solid #c3bdcd; border-radius: 999px; background: white; padding: 2px 5px; font-size: 12px; font-weight: 700; }
 .lesson-mockup .lm-speed-choices [aria-pressed='true'] { color: white; background: var(--lm-purple); }
+.lesson-mockup .lm-subtitles { font-size: 13px; font-weight: 700; }
+.lesson-mockup .lm-subtitles[aria-pressed='true'] { color: var(--lm-purple); background: white; box-shadow: inset 0 0 0 1px var(--lm-purple); }
 .lesson-mockup select { max-width: 100%; padding: 5px 10px; background: white; border: 1px solid var(--lm-purple); border-radius: 5px; }
 .lesson-mockup .lm-guide-button { justify-content: center; min-width: 122px; }
 .lesson-mockup .lm-guide-button[aria-expanded='true'] { color: var(--lm-purple); background: white; border-color: var(--lm-purple); }
@@ -202,7 +205,7 @@
   .lesson-mockup .lm-lesson-menu > .lm-close { position: absolute; right: 0; top: 6px; }
   .lesson-mockup .lm-lesson-tabs { width: 100%; justify-content: center; padding: 0 8px; }
   .lesson-mockup .lm-lesson-tabs .lm-pill { min-height: 36px; padding: 6px 12px; }
-  .lesson-mockup .lm-splash-frame, .lesson-mockup .lm-video-stage:not(.fixed) { top: calc(50% + 52.5px); width: min(100vw,calc((100dvh - 105px) * 16 / 9)); }
+  .lesson-mockup .lm-video-stage:not(.fixed) { top: calc(50% + 52.5px); width: min(100vw,calc((100dvh - 105px) * 16 / 9)); }
   .lesson-mockup .lm-controls { flex-wrap: wrap; gap: 8px 14px; }
   .lesson-mockup .lm-remote-options { gap: 12px; }
   .lesson-mockup .lm-chapter-stop { gap: 6px; }
@@ -221,9 +224,10 @@
 }
 @media (max-width: 540px) {
   .lesson-mockup .lm-pages { padding: 10px; }
+  .lesson-mockup .lm-week-navigation { padding-inline: 10px; }
   .lesson-mockup .lm-page-header h1 { font-size: 15px; }
   .lesson-mockup .lm-week-navigation .lm-pill { min-width: 0; gap: 4px; padding: 6px 10px; font-size: 12px; }
-  .lesson-mockup .lm-week-navigation h2 { font-size: 13px; }
+  .lesson-mockup .lm-week-navigation h1 { font-size: 13px; }
   .lesson-mockup .lm-week-card { grid-template-columns: 1fr; }
   .lesson-mockup .lm-card-image { min-height: 0; aspect-ratio: 16 / 9; }
   .lesson-mockup .lm-card-grid, .lesson-mockup .lm-picker .lm-card-grid { grid-template-columns: 1fr; }

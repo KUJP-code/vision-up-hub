@@ -44,26 +44,26 @@
         %span.lm-nav-label 管理画面に戻る
   .lm-workspace
     %header.lm-page-header
-      %h1{ data: { 'screen-mirroring-test-target': 'pageTitle' } } ホーム
+      .lm-week-navigation{ data: { 'screen-mirroring-test-target': 'homeHeader' } }
+        %button.lm-pill{ type: 'button',
+                         data: { action: 'screen-mirroring-test#changeDate', offset: -7 } }
+          = render 'icon', name: 'previous'
+          先週
+        %div
+          %h1{ data: { 'screen-mirroring-test-target': 'weekHeading' } } 今週のレッスン
+          %label
+            %span.lm-sr-only レッスン日
+            %input.lm-lesson-date{ type: 'date', value: Date.current.iso8601,
+                                   data: { 'screen-mirroring-test-target': 'date',
+                                           action: 'change->screen-mirroring-test#updateWeek' } }
+        %button.lm-pill{ type: 'button',
+                         data: { action: 'screen-mirroring-test#changeDate', offset: 7 } }
+          来週
+          = render 'icon', name: 'next'
+      %h1{ hidden: true, data: { 'screen-mirroring-test-target': 'pageTitle' } }
     %main.lm-pages
       %section{ data: { 'screen-mirroring-test-target': 'page', view: 'home' },
                 'aria-label': '今日のレッスン' }
-        .lm-week-navigation
-          %button.lm-pill{ type: 'button',
-                           data: { action: 'screen-mirroring-test#changeDate', offset: -7 } }
-            = render 'icon', name: 'previous'
-            先週
-          %div
-            %h2{ data: { 'screen-mirroring-test-target': 'weekHeading' } } 今週のレッスン
-            %label
-              %span.lm-sr-only レッスン日
-              %input.lm-lesson-date{ type: 'date', value: Date.current.iso8601,
-                                     data: { 'screen-mirroring-test-target': 'date',
-                                             action: 'change->screen-mirroring-test#updateWeek' } }
-          %button.lm-pill{ type: 'button',
-                           data: { action: 'screen-mirroring-test#changeDate', offset: 7 } }
-            来週
-            = render 'icon', name: 'next'
         %div{ data: { 'screen-mirroring-test-target': 'homeLesson' } }
           = render 'lesson_card', week: 1
           = render 'content_cards', items: activities, kind: 'activity'

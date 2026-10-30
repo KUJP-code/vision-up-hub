@@ -35,6 +35,7 @@
         %button.lm-pill.lm-primary{ type: 'button',
                                     data: { action: 'screen-mirroring-test#playVideo',
                                             src: basic_video,
+                                            caption_src: asset_path(@lesson_content.fetch('lessons').fetch('basic').fetch('subtitle_asset')),
                                             kind: 'basic',
                                             title: 'みんなであいさつしよう！' } } ベーシックイングリッシュ
         %button.lm-pill{ type: 'button',

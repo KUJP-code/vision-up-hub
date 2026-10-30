@@ -172,7 +172,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
   it 'returns direct video launches to their original menu, filter, and button' do
     stub_video_playback
     [
-      ['home', 'ホーム', 'アクティビティをはじめる', 'ホーム', :close],
+      ['home', 'ホーム', 'アクティビティをはじめる', '今週のレッスン', :close],
       ['activities', 'アクティビティ', 'アクティビティをはじめる', 'アクティビティのメニュー', :escape],
       ['stories', 'ストーリータイム', 'ストーリーをはじめる', 'ストーリーのメニュー', :ended]
     ].each do |view, tab, launch, heading, exit_action|
@@ -205,16 +205,102 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     page.execute_script <<~JS, launch
       arguments[0].dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
     JS
-    expect(page.evaluate_script('document.querySelector("video").demoLoads')).to eq(1)
+    expect(page.evaluate_script('document.querySelector("video").demoSourceChanges')).to eq(1)
     launch.click
     expect(page).to have_css('.lm-remote')
+    # A second queued click must not request fullscreen/play again or change
+    # the return destination of a direct launch.
+    page.execute_script <<~JS, launch
+      arguments[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    JS
     expect(page.evaluate_script('document.querySelector("video").demoStart')).to include(
-      'loads' => 1, 'pauses' => 0, 'seeks' => 0, 'src' => launch['data-src']
+      'loads' => 0, 'sourceChanges' => 1, 'pauses' => 0, 'seeks' => 0, 'src' => launch['data-src']
     )
     expect(page.evaluate_script('document.querySelector("video").demoLaunchOrder')).to eq(%w[fullscreen play])
     ratio = page.evaluate_script('document.querySelector("video").demoFullscreenRatio')
     expect(ratio).to be_within(0.01).of(16.0 / 9)
     expect(page.evaluate_script('document.querySelector(".lm-video-stage").inert')).to be false
+    find('button[aria-label="動画を閉じる"]').click
+    expect(page).not_to have_css('.lm-lesson-dialog')
+    expect(page.find(':focus')).to eq(launch)
+  end
+
+  it 'toggles available native captions with one CC button' do
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      const english = video.addTextTrack('captions', 'English (auto-generated)', 'en-x-autogen');
+      english.addCue(new VTTCue(0, 10, 'Hello!'));
+      english.mode = 'showing';
+    JS
+    expect(page).to have_css('.lm-subtitles[aria-pressed="true"]')
+    expect(page).not_to have_css('.lm-subtitles select', visible: :all)
+    click_button 'CC', exact: true
+    expect(page).to have_css('.lm-subtitles[aria-pressed="false"]')
+    expect(page.evaluate_script('Array.from(document.querySelector("video").textTracks).every(track => track.mode !== "showing")')).to be true
+    click_button 'CC', exact: true
+    expect(page).to have_css('.lm-subtitles[aria-pressed="true"]')
+    expect(page.evaluate_script('Array.from(document.querySelector("video").textTracks).filter(track => track.mode === "showing").length')).to eq(1)
+  end
+
+  it 'loads the actual Vimeo English WebVTT fallback without native HLS caption discovery' do
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    click_button 'CC', exact: true
+    expect(page).to have_css('video track[src*="subtitles/basic.en"]', visible: :all)
+    expect(page).to have_css('video track', visible: :all, wait: 10) { |track|
+      page.evaluate_script('arguments[0].readyState === 2 && arguments[0].track.cues && arguments[0].track.cues.length > 0', track)
+    }
+    expect(page.evaluate_script('document.querySelector("video track").track.mode')).to eq('showing')
+    click_button 'CC', exact: true
+    expect(page.evaluate_script('document.querySelector("video track").track.mode')).to eq('disabled')
+  end
+
+  it 'shows an actual timed caption when the native HLS track has no cues' do
+    clip_name = "caption-clock-#{SecureRandom.hex(6)}.mp4"
+    clip_path = Rails.public_path.join(clip_name)
+    FileUtils.cp(Rails.root.join('spec/fixtures/files/caption-clock.mp4'), clip_path)
+    click_button 'レッスンをはじめる'
+    page.execute_script <<~JS, "/#{clip_name}"
+      const video = document.querySelector('video');
+      const button = document.querySelector('.lm-lesson-tabs [data-kind="basic"]');
+      video.src = button.dataset.src = arguments[0];
+      video.addTextTrack('subtitles', 'English (auto-generated)', 'en-x-autogen');
+      document.querySelector('.lm-video-stage').requestFullscreen = () => Promise.resolve();
+    JS
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    expect(page).to have_css('button[aria-label="一時停止"]')
+    find('button[aria-label="一時停止"]').click
+    page.execute_script('document.querySelector("video").currentTime = 1')
+    click_button 'CC', exact: true
+    expect(page).to have_css('video track', visible: :all, wait: 10) { |track|
+      page.evaluate_script('Array.from(arguments[0].track.activeCues || []).some(cue => cue.text.includes("Hello, everyone."))', track)
+    }
+    expect(page.evaluate_script('Array.from(document.querySelector("video").textTracks).filter(track => track.mode === "showing").length')).to eq(1)
+    expect_caption_above_remote
+    find('.lm-guide-button').click
+    expect(page).to have_css('.lm-guide-panel')
+    expect_caption_above_remote
+    click_button 'CC', exact: true
+    expect(page).to have_css('.lm-subtitles[aria-pressed="false"]')
+    click_button 'CC', exact: true
+    expect(page).to have_css('video track', visible: :all) { |track|
+      page.evaluate_script('Array.from(arguments[0].track.activeCues || []).some(cue => cue.text.includes("Hello, everyone."))', track)
+    }
+  ensure
+    FileUtils.rm_f(clip_path) if clip_path
+  end
+
+  it 'hides CC when the video has no caption tracks' do
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    page.execute_script('document.querySelector("video track").remove()')
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    expect(page).to have_css('.lm-remote')
+    expect(page).not_to have_button('CC', exact: true)
   end
 
   it 'returns videos chosen inside a lesson to its splash screen' do
@@ -387,6 +473,26 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
 
   private
 
+  def expect_caption_above_remote
+    # Inspect the browser's rendered cue box, not just TextTrack.mode or activeCues.
+    root = page.driver.browser.execute_cdp('DOM.getDocument', depth: -1, pierce: true).fetch('root')
+    find_cue = lambda do |node|
+      return node if node.fetch('attributes', []).each_slice(2).to_h['pseudo'] == 'cue'
+
+      (node.fetch('children', []) + node.fetch('shadowRoots', [])).each do |child|
+        found = find_cue.call(child)
+        return found if found
+      end
+      nil
+    end
+    cue = find_cue.call(root)
+    expect(cue).not_to be_nil
+    box = page.driver.browser.execute_cdp('DOM.getBoxModel', backendNodeId: cue.fetch('backendNodeId')).fetch('model')
+    bottom = box.fetch('border').each_slice(2).map(&:last).max
+    remote_top = page.evaluate_script('document.querySelector(".lm-remote").getBoundingClientRect().top')
+    expect(bottom).to be < remote_top
+  end
+
   def stub_video_playback
     # Exercise the real DOM controls with a deterministic media clock, independent
     # of network timing and the browser's support for Vimeo's HLS source.
@@ -395,14 +501,14 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       let source = video.getAttribute('src') || '';
       const originalGetAttribute = video.getAttribute.bind(video);
       video.removeAttribute('src');
-      video.demoLoads = video.demoPauses = video.demoSeeks = 0;
+      video.demoLoads = video.demoSourceChanges = video.demoPauses = video.demoSeeks = 0;
       video.demoLaunchOrder = [];
       video.load = () => { video.demoLoads++; };
       video.getAttribute = name => name === 'src' ? source : originalGetAttribute(name);
       let clock = 0;
       Object.defineProperties(video, {
         currentTime: { get: () => clock, set: value => { clock = value; video.demoSeeks++; } },
-        src: { get: () => source, set: value => { source = value; clock = 0; } },
+        src: { get: () => source, set: value => { source = value; clock = 0; video.demoSourceChanges++; } },
         duration: { get: () => 560.125 },
         readyState: { get: () => 1 },
         paused: { get: () => video.demoPaused !== false },
@@ -410,7 +516,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       });
       video.play = () => {
         video.demoLaunchOrder.push('play');
-        video.demoStart = { loads: video.demoLoads, pauses: video.demoPauses, seeks: video.demoSeeks, src: source };
+        video.demoStart = { loads: video.demoLoads, sourceChanges: video.demoSourceChanges, pauses: video.demoPauses, seeks: video.demoSeeks, src: source };
         video.demoPaused = false;
         video.dispatchEvent(new Event('play'));
         return Promise.resolve();

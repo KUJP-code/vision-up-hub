@@ -27,6 +27,8 @@ RSpec.describe 'Screen mirroring video test' do
     expect(document.css('.lm-sidebar [data-view]').size).to eq(4)
     expect(document.css('.lm-lesson-tabs button').size).to eq(4)
     expect(document.at_css('.lm-progress input')['type']).to eq('range')
+    expect(document.at_css('button[data-screen-mirroring-test-target="subtitleButton"]')).to be_present
+    expect(document.at_css('select[data-screen-mirroring-test-target="subtitlePicker"]')).to be_nil
     expect(document.css('.lm-thumbnail-activity img').size).to eq(9)
     %w[home activities].each do |view|
       cards = document.css(".lm-pages [data-view='#{view}'] .lm-content-card")
@@ -35,6 +37,7 @@ RSpec.describe 'Screen mirroring video test' do
         source = card.at_css('[data-src]')
         expect(source['data-src']).to include("#{1225144025 + index}.m3u8")
         expect(source['data-content-key']).to eq("activity-#{index + 1}")
+        expect(source['data-caption-src']).to include("subtitles/activity-#{index + 1}.en")
         expect(card.at_css('.lm-content-thumbnail')['data-video']).to eq(source['data-src'])
         expect(card.at_css('[data-resource-kind="guide"]')['data-content-key']).to eq("activity-#{index + 1}")
       end

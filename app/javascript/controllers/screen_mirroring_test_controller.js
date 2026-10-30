@@ -12,9 +12,9 @@ export default class extends Controller {
     "resourceGuide", "resourceMaterials", "lessonWeek", "picker", "pickerActivity",
     "pickerStory", "flashcards", "cardPhrase", "cardImage", "progress",
     "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
-    "pickerScroll", "homeLesson", "homeUpcoming", "weekHeading", "upcomingWeek", "cardClipRect",
+    "pickerScroll", "homeLesson", "homeUpcoming", "homeHeader", "weekHeading", "upcomingWeek", "cardClipRect",
     "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
-    "resourceTip", "resourceChapters", "resourceScroll"
+    "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback"
   ];
 
   connect() {
@@ -30,6 +30,7 @@ export default class extends Controller {
       ["play", "pause", "timeupdate", "loadedmetadata", "durationchange"].forEach(event => {
         player.addEventListener(event, () => {
           if (event === "timeupdate") this.checkChapterEnd();
+          if (event === "loadedmetadata" || event === "play") this.syncSubtitles(true);
           this.updateRemote();
           if (event === "pause" && player === this.playerTarget) this.showRemote();
         }, options);
@@ -37,6 +38,24 @@ export default class extends Controller {
       player.addEventListener("ended", () => { if (player === this.playerTarget) this.stop(); }, options);
       player.addEventListener("error", () => { if (player === this.playerTarget) this.showError(); }, options);
     });
+    const textTracks = this.playerTarget.textTracks;
+    const watchedTracks = new WeakSet();
+    const watchCaptionCues = () => this.allSubtitleTracks().forEach(track => {
+      if (watchedTracks.has(track)) return;
+      watchedTracks.add(track);
+      track.addEventListener("cuechange", () => this.positionSubtitles(), options);
+    });
+    ["addtrack", "removetrack"].forEach(event => {
+      textTracks.addEventListener(event, () => { watchCaptionCues(); this.syncSubtitles(true); }, options);
+    });
+    watchCaptionCues();
+    textTracks.addEventListener("change", () => this.syncSubtitles(), options);
+    this.captionFallbackTarget.addEventListener("load", () => this.syncSubtitles(true), options);
+    this.playerTarget.addEventListener("webkitcurrentplaybacktargetiswirelesschanged", () => this.syncSubtitles(true), options);
+    this.captionResizeObserver = new ResizeObserver(() => this.positionSubtitles());
+    this.captionResizeObserver.observe(this.playerTarget);
+    this.captionResizeObserver.observe(this.remoteTarget);
+    this.syncSubtitles();
     ["pointermove", "pointerdown", "pointerup", "click", "keydown", "focusin"].forEach(event => {
       this.stageTarget.addEventListener(event, () => this.showRemote(), options);
     });
@@ -141,13 +160,15 @@ export default class extends Controller {
 
   navigate(event) {
     const view = event.currentTarget.dataset.view;
-    const titles = { home: "ホーム", basic: "ベーシックイングリッシュのメニュー", activities: "アクティビティのメニュー", stories: "ストーリーのメニュー" };
+    const titles = { home: "今週のレッスン", basic: "ベーシックイングリッシュのメニュー", activities: "アクティビティのメニュー", stories: "ストーリーのメニュー" };
     this.pageTargets.forEach(page => { page.hidden = page.dataset.view !== view; });
     this.navButtonTargets.forEach(button => {
       if (button.dataset.view === view) button.setAttribute("aria-current", "page");
       else button.removeAttribute("aria-current");
     });
     this.pageTitleTarget.textContent = titles[view];
+    this.pageTitleTarget.hidden = view === "home";
+    this.homeHeaderTarget.hidden = view !== "home";
     this.sidebarTarget.classList.remove("lm-sidebar-open");
     const toggle = this.sidebarTarget.querySelector("button");
     toggle.setAttribute("aria-expanded", "false");
@@ -230,6 +251,7 @@ export default class extends Controller {
   speakCard() { this.speak({ currentTarget: { dataset: { phrase: this.cardPhraseTarget.textContent } } }); }
 
   launchVideo(event) {
+    if (this.videoActive) return;
     const fromMenu = this.lessonDialogTarget.hidden;
     if (fromMenu) this.start();
     this.videoOpenedFromMenu = fromMenu;
@@ -244,11 +266,15 @@ export default class extends Controller {
     if (choice) this.loadVideoSource(choice.dataset);
   }
 
-  loadVideoSource({ src, kind }) {
+  loadVideoSource({ src, kind, captionSrc }) {
+    if (captionSrc && this.hasCaptionFallbackTarget && this.captionFallbackTarget.getAttribute("src") !== captionSrc) {
+      this.captionFallbackTarget.src = captionSrc;
+    }
     if (this.playerTarget.getAttribute("src") === src) return;
+    // Assigning src invokes the media load algorithm. Calling load() as well
+    // restarts that selection unnecessarily.
     this.playerTarget.src = src;
     this.playerTarget.dataset.kind = kind;
-    this.playerTarget.load();
   }
 
   setVideoActive(active) {
@@ -327,6 +353,7 @@ export default class extends Controller {
 
   disconnect() {
     clearTimeout(this.remoteTimeout);
+    this.captionResizeObserver?.disconnect();
     this.events?.abort();
     this.cancelSpeech();
     this.playbackGeneration += 1;
@@ -439,14 +466,18 @@ export default class extends Controller {
   }
 
   playVideo(event) {
-    const { src, title, kind, contentKey = kind } = event.currentTarget.dataset;
+    if (this.videoActive) return;
+    // Lock the launch before closing the picker: focus restoration must not
+    // prepare another source, and another click must not reopen this player.
+    this.setVideoActive(true);
+    const { src, title, kind, captionSrc, contentKey = kind } = event.currentTarget.dataset;
     this.closePicker(false);
     this.closeMenus();
     this.cancelSpeech();
     this.setChapters(contentKey);
     // Pointer/focus normally prepared this already. Retain a synchronous fallback
     // for keyboard, assistive-technology, and programmatic clicks.
-    this.loadVideoSource({ src, kind });
+    this.loadVideoSource({ src, kind, captionSrc });
     this.resetGuide();
     if (this.playerTarget.playbackRate !== 1) this.playerTarget.playbackRate = 1;
     this.lastPlaybackTime = 0;
@@ -454,7 +485,6 @@ export default class extends Controller {
     this.videoTitleTarget.textContent = title;
     this.errorTarget.hidden = true;
     this.remoteTarget.hidden = true;
-    this.setVideoActive(true);
     this.stageTarget.hidden = false;
     this.stageTarget.getBoundingClientRect();
     this.updateRemote();
@@ -494,6 +524,7 @@ export default class extends Controller {
     if (!this.videoActive || this.remoteTarget.hidden) return;
     this.stageTarget.classList.remove("lm-controls-hidden");
     this.remoteTarget.inert = false;
+    this.positionSubtitles();
     this.remoteTimeout = setTimeout(() => this.hideRemote(), 5000);
   }
 
@@ -506,6 +537,7 @@ export default class extends Controller {
     clearTimeout(this.remoteTimeout);
     this.remoteTarget.inert = true;
     this.stageTarget.classList.add("lm-controls-hidden");
+    this.positionSubtitles();
   }
 
   back() { this.seekTo(this.playerTarget.currentTime - 5); }
@@ -564,6 +596,101 @@ export default class extends Controller {
     this.speedButtonTargets.forEach(button => {
       button.setAttribute("aria-pressed", String(Number(button.dataset.rate) === this.playerTarget.playbackRate));
     });
+  }
+
+  allSubtitleTracks() {
+    return Array.from(this.playerTarget.textTracks || []).filter(track => ["subtitles", "captions"].includes(track.kind));
+  }
+
+  subtitleTracks() {
+    const tracks = this.allSubtitleTracks();
+    const fallback = this.hasCaptionFallbackTarget ? this.captionFallbackTarget.track : null;
+    if (!fallback || !tracks.includes(fallback)) return tracks;
+    const native = tracks.filter(track => track !== fallback && track.language.split("-")[0] === fallback.language.split("-")[0]);
+    // An advertised HLS track can exist without usable cues on a laptop. Keep
+    // the real WebVTT fallback until native cues exist, or AirPlay owns playback.
+    const preferred = native.find(track => this.playerTarget.webkitCurrentPlaybackTargetIsWireless === true || track.cues?.length > 0);
+    return tracks.filter(track => track === fallback ? !preferred : !native.includes(track) || track === preferred);
+  }
+
+  subtitleLabel(track, index) {
+    const language = track.language.toLowerCase().split("-")[0];
+    const label = { en: "英語", ja: "日本語" }[language] || track.label || `字幕 ${index + 1}`;
+    return /autogen|auto.generated|自動生成/i.test(`${track.language} ${track.label}`) ? `${label}（自動生成）` : label;
+  }
+
+  preferredSubtitle(tracks, preference) {
+    if (!preference) return null;
+    return tracks.find(track => track.language === preference.language && track.label === preference.label) ||
+      tracks.find(track => track.language && track.language.split("-")[0] === preference.language.split("-")[0]);
+  }
+
+  syncSubtitles(applyPreference = false) {
+    const tracks = this.subtitleTracks();
+    this.allSubtitleTracks().filter(track => !tracks.includes(track)).forEach(excluded => {
+      const replacement = tracks.find(track => track.language.split("-")[0] === excluded.language.split("-")[0]);
+      if (replacement && excluded.mode === "showing" && this.subtitlePreference !== null) replacement.mode = "showing";
+      if (excluded.mode !== "disabled") excluded.mode = "disabled";
+    });
+    if (applyPreference && this.subtitlePreference !== undefined) {
+      const preference = this.subtitlePreference;
+      const selected = preference ? this.preferredSubtitle(tracks, preference) || tracks[0] : null;
+      tracks.forEach(track => {
+        const mode = track === selected ? "showing" : "disabled";
+        if (track.mode !== mode) track.mode = mode;
+      });
+    }
+    const showing = tracks.find(track => track.mode === "showing");
+    if (showing) this.lastSubtitlePreference = { language: showing.language, label: showing.label };
+    this.subtitleButtonTarget.hidden = tracks.length === 0;
+    this.subtitleButtonTarget.setAttribute("aria-pressed", String(Boolean(showing)));
+    this.subtitleButtonTarget.setAttribute("aria-label", showing ? "字幕をオフにする" : "字幕をオンにする");
+    this.subtitleButtonTarget.setAttribute("title", showing ? `${this.subtitleLabel(showing, tracks.indexOf(showing))} · オン` : "字幕をオンにする");
+    this.positionSubtitles();
+  }
+
+  positionSubtitles() {
+    if (!this.videoActive) return;
+    const tracks = this.allSubtitleTracks().filter(track => track.mode === "showing" && track.cues?.length);
+    if (!tracks.length) return;
+    const player = this.playerTarget;
+    const bounds = player.getBoundingClientRect();
+    if (!player.videoWidth || !player.videoHeight || !bounds.height) return;
+    // Cue percentages refer to the contained video picture, excluding letterboxing.
+    const height = Math.min(bounds.height, bounds.width * player.videoHeight / player.videoWidth);
+    const top = bounds.top + (bounds.height - height) / 2;
+    const remoteVisible = !this.remoteTarget.hidden && !this.stageTarget.classList.contains("lm-controls-hidden");
+    const nativeDisplay = player.webkitCurrentPlaybackTargetIsWireless === true || player.webkitDisplayingFullscreen === true;
+    const bottom = remoteVisible ? Math.min(top + height, this.remoteTarget.getBoundingClientRect().top) : top + height;
+    this.captionPositions ||= new WeakMap();
+    tracks.forEach(track => Array.from(track.cues).forEach(cue => {
+      // Respect captions which already have an authored position.
+      if (!this.captionPositions.has(cue)) {
+        if (cue.line !== "auto") return;
+        this.captionPositions.set(cue, { line: cue.line, snapToLines: cue.snapToLines, lineAlign: cue.lineAlign });
+      }
+      // Chromium positions percentage cues by their top even with lineAlign=end.
+      // Reserve at least two default cue lines so the whole caption clears controls.
+      const lines = Math.max(2, cue.text.split("\n").length);
+      const line = Math.max(0, Math.min(95, (bottom - top - 16) / height * 100 - lines * 6));
+      const position = nativeDisplay || !remoteVisible ? this.captionPositions.get(cue) : { line, snapToLines: false, lineAlign: "start" };
+      Object.entries(position).forEach(([key, value]) => { if (cue[key] !== value) cue[key] = value; });
+    }));
+  }
+
+  toggleSubtitles() {
+    const tracks = this.subtitleTracks();
+    if (tracks.length === 0) return;
+    const showing = this.allSubtitleTracks().find(track => track.mode === "showing");
+    if (showing) {
+      this.lastSubtitlePreference = { language: showing.language, label: showing.label };
+      this.subtitlePreference = null;
+    } else {
+      const selected = this.preferredSubtitle(tracks, this.lastSubtitlePreference) || tracks[0];
+      this.subtitlePreference = { language: selected.language, label: selected.label };
+    }
+    this.syncSubtitles(true);
+    this.showRemote();
   }
 
   stop() {

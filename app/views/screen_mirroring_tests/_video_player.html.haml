@@ -6,6 +6,9 @@
                    'x-webkit-airplay': 'deny',
                    disableRemotePlayback: true,
                    data: { 'screen-mirroring-test-target': 'player', kind: 'basic' } }
+    %track{ kind: 'subtitles', srclang: 'en', label: 'English (auto-generated)',
+            src: asset_path(@lesson_content.fetch('lessons').fetch('basic').fetch('subtitle_asset')),
+            data: { 'screen-mirroring-test-target': 'captionFallback' } }
   %button.lm-close.lm-video-close{ type: 'button',
                                    'aria-label': '動画を閉じる',
                                    data: { action: 'screen-mirroring-test#stop' } }
@@ -59,6 +62,10 @@
                                          'screen-mirroring-test-target': 'chapterStop' } }
           %span 章末停止
           %span.lm-switch{ 'aria-hidden': 'true' }
+        %button.lm-round.lm-subtitles{ type: 'button', hidden: true,
+                                       'aria-label': '字幕をオンにする', 'aria-pressed': 'false',
+                                       data: { 'screen-mirroring-test-target': 'subtitleButton',
+                                               action: 'screen-mirroring-test#toggleSubtitles' } } CC
         %details.lm-speed
           %summary.lm-round{ 'aria-label': '再生速度' }
             = image_tag 'remote/speed.svg', alt: ''

@@ -1,0 +1,13 @@
+# AI Sensei subtitles
+
+The current remote has one **CC** button. It appears only when the player has subtitle/caption tracks. Clicking it turns captions on using an available track; clicking again turns them off. The button highlights while captions are on and reflects changes made through native controls. There is no language menu. Metadata tracks are left alone.
+
+Until a teacher clicks CC, the player retains Safari's native selection. Toggling off and back on restores the last active caption track where available, otherwise it uses the first available track. The on/off choice is retained when switching videos in the same view; captions use whichever language is available on the new video. No video reload or seek is needed.
+
+The five current Vimeo HLS manifests were checked on October 29, 2026. Basic English, Story, and Activities 1–3 each declare only **English (auto-generated)** (`en-x-autogen`); none currently declares Japanese. CC does not translate captions or create missing tracks.
+
+English WebVTT files were also retrieved from those Vimeo subtitle playlists and saved under `app/assets/ai-teacher/subtitles/`. Each video attaches its matching file as a same-origin HTML track, so English is available even when a laptop does not expose the HLS subtitle rendition. A native HLS track takes preference once it has usable cues, or when AirPlay owns playback; an empty advertised track no longer suppresses the caption-file fallback. Only one equivalent track is shown. These files are snapshots of Vimeo's auto-generated captions and should be refreshed if the source captions change.
+
+The control uses browser-native text tracks. Local captions with automatic positioning move above the remote, including its expanded guide, so the controls do not cover the text. The calculation accounts for letterboxing; authored cue positions are preserved, and original positioning is restored when controls hide or playback moves to AirPlay. Actual AirPlay switching must still be verified on the iPad/TV setup. The archived reference views keep their original controls. Tests cover native track selection, empty native tracks, actual Basic English WebVTT parsing, and an active caption on a real media clock using the small synthetic `caption-clock.mp4` test fixture. A browser screenshot is also checked to confirm that the caption is visible above the remote.
+
+See the [HTML text-track API](https://html.spec.whatwg.org/multipage/media.html#text-track-api) and [Apple HLS authoring specification](https://developer.apple.com/streaming/hls-authoring-specification-for-apple-devices.html).

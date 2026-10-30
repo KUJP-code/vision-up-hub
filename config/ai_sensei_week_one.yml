@@ -3,6 +3,7 @@ fps: 24
 lessons:
   story:
     title: ストーリータイム
+    subtitle_asset: subtitles/story.en.vtt
     objective: 登場人物といっしょに、英語のお話を楽しみましょう。
     materials: 教材の準備はいりません。
     tip: 一時停止しながら、子どもたちが気づいたことを聞いてみましょう。
@@ -14,6 +15,7 @@ lessons:
       - { start: '00:06:00:00', title: お話を楽しもう, guide: お話の続きを見ましょう。最後に、好きだった場面を一つ教えてもらいます。 }
   basic:
     title: みんなであいさつしよう！
+    subtitle_asset: subtitles/basic.en.vtt
     video: https://player.vimeo.com/external/1225143839.m3u8?s=11fe9dcb7779be20830d9059c8f5cbd8ec478453&logging=false
     objective: Hello / Nice to meet you / See you の３つのあいさつを、場面に合わせて使ってみましょう。
     materials: 教材の準備はいりません。立って体を動かせるスペースを確保しましょう。
@@ -56,6 +58,7 @@ lessons:
         guide: 子どもたちの頑張りをほめましょう。「帰る時間には何と言うかな？」と問いかけ、全員で手を振って「See you!」と挨拶して終わります。
   activity-1:
     title: あいさつの工作
+    subtitle_asset: subtitles/activity-1.en.vtt
     category: 工作
     description: Jot、Echo、Helloのパーツを切って貼り、あいさつの作品を作りましょう。
     video: https://player.vimeo.com/external/1225144025.m3u8?s=60ed890e2bcfe86b6108771b13c05d76388318a0&logging=false
@@ -96,6 +99,7 @@ lessons:
         guide: 「Great job!」と子どもたちの頑張りをほめます。手を振りながら「Bye-bye」と元気よく挨拶して終わりましょう。
   activity-2:
     title: なまえをなぞって色ぬり
+    subtitle_asset: subtitles/activity-2.en.vtt
     category: ぬりえ
     description: 自分の名前をなぞって好きな色でぬり、作品を見せながら自己紹介しましょう。
     video: https://player.vimeo.com/external/1225144026.m3u8?s=19c3f10e7d44865e728639377e81f7a33f5c74e3&logging=false
@@ -133,6 +137,7 @@ lessons:
         guide: 「Great job today!」と頑張りをほめます。「See you next time」と元気に手を振って終わりましょう。
   activity-3:
     title: Helloの点つなぎ
+    subtitle_asset: subtitles/activity-3.en.vtt
     category: 脳トレ
     description: １から６までの数字を順につなぎ、Helloの文字を完成させましょう。
     video: https://player.vimeo.com/external/1225144027.m3u8?s=7f8bb660ffbff5cac412806c9c59fe812954df4f&logging=false

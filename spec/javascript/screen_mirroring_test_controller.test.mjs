@@ -59,6 +59,7 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   controller.closePicker = restoreFocus => assert.equal(restoreFocus, false);
   controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.resetGuide = () => {};
   controller.playVideo({ currentTarget: { dataset: { src: 'basic.m3u8', kind: 'basic', title: 'Lesson' } } });
+  controller.playVideo({ currentTarget: { dataset: { src: 'basic.m3u8', kind: 'basic', title: 'Lesson' } } });
   assert.deepEqual(calls, ['fullscreen', ['fixed', 'fixed', 'inset-0', 'z-[60]', 'rounded-none'], 'play']);
   assert.equal(controller.remoteTarget.hidden, true);
   assert.equal(controller.menuTarget.hidden, false);
@@ -89,15 +90,39 @@ test('phrase taps play local media and stop the previous clip', () => {
   assert.ok(controller.phraseAudioTargets.every(audio => audio.paused && audio.currentTime === 0));
 });
 
-test('preparing a different lesson reuses the single video and does not reload a matching source', () => {
+test('a new source is assigned once without an explicit media reload', () => {
   const controller = fixture();
-  let loads = 0;
-  controller.playerTarget = { src: 'basic.m3u8', dataset: {}, getAttribute() { return this.src; }, load() { loads++; } };
+  let assignments = 0;
+  let source = 'basic.m3u8';
+  controller.playerTarget = {
+    dataset: {},
+    get src() { return source; },
+    set src(value) { source = value; assignments++; },
+    getAttribute() { return source; },
+    load() { throw Error('Assigning src already starts media loading'); }
+  };
   controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
   assert.equal(controller.playerTarget.src, 'story.m3u8');
-  assert.equal(loads, 1);
+  assert.equal(assignments, 1);
   controller.loadVideoSource({ src: 'story.m3u8', kind: 'story' });
-  assert.equal(loads, 1);
+  assert.equal(assignments, 1);
+});
+
+test('switching videos also switches the caption file without reloading the video', () => {
+  const controller = fixture();
+  let caption = 'basic.en.vtt';
+  controller.hasCaptionFallbackTarget = true;
+  controller.captionFallbackTarget = {
+    getAttribute() { return caption; },
+    set src(value) { caption = value; }
+  };
+  controller.playerTarget = {
+    dataset: {}, src: 'basic.m3u8', getAttribute() { return this.src; },
+    load() { throw Error('Caption changes must not explicitly reload the video'); }
+  };
+  controller.loadVideoSource({ src: 'activity.m3u8', kind: 'activity', captionSrc: 'activity.en.vtt' });
+  assert.equal(caption, 'activity.en.vtt');
+  assert.equal(controller.playerTarget.src, 'activity.m3u8');
 });
 
 test('cards outside the lesson can prepare a source while playing videos ignore preparation', () => {
@@ -125,6 +150,21 @@ test('direct card launch does not focus Basic English and replace the prepared s
   assert.equal(opened, 'activity.m3u8');
   assert.equal(controller.videoOpenedFromMenu, true);
   assert.equal(controller.stageTarget.hidden, false);
+  controller.videoActive = true;
+  controller.playVideo = () => { throw Error('An active direct launch must not open a second time'); };
+  controller.launchVideo({ currentTarget: { dataset: { src: 'activity.m3u8', kind: 'activity' } } });
+  assert.equal(controller.videoOpenedFromMenu, true);
+});
+
+test('focus changes while closing a picker cannot replace the source being opened', () => {
+  const controller = fixture();
+  controller.stageTarget = { setAttribute() {} };
+  controller.loadVideoSource = () => { throw Error('Focus must not replace the selected source'); };
+  controller.closePicker = () => {
+    controller.prepareVideo({ target: { closest: () => ({ dataset: { src: 'basic.m3u8', kind: 'basic' } }) } });
+    throw Error('Checked focus restoration');
+  };
+  assert.throws(() => controller.playVideo({ currentTarget: { dataset: { src: 'activity.m3u8' } } }), /Checked focus restoration/);
 });
 
 test('cancelling idle phrase audio does not pause or seek its media elements', () => {
@@ -136,6 +176,161 @@ test('cancelling idle phrase audio does not pause or seek its media elements', (
     pause() { throw Error('Idle audio should not pause'); }
   }];
   controller.cancelSpeech();
+});
+
+function subtitleFixture(tracks) {
+  const controller = fixture();
+  // TextTrackList is array-like; older Safari versions need not make it iterable.
+  controller.playerTarget = { textTracks: Object.assign({ length: tracks.length }, tracks) };
+  controller.subtitleButtonTarget = { setAttribute(name, value) { this[name] = value; } };
+  controller.showRemote = () => {};
+  return controller;
+}
+
+test('CC reflects native captions while leaving metadata tracks alone', () => {
+  const tracks = [
+    { kind: 'metadata', language: '', label: '', mode: 'hidden' },
+    { kind: 'captions', language: 'en-x-autogen', label: 'English (auto-generated)', mode: 'showing' }
+  ];
+  const controller = subtitleFixture(tracks);
+  controller.syncSubtitles();
+  assert.equal(controller.subtitleButtonTarget.hidden, false);
+  assert.equal(controller.subtitleButtonTarget['aria-pressed'], 'true');
+  assert.equal(controller.subtitleButtonTarget['aria-label'], '字幕をオフにする');
+  controller.toggleSubtitles();
+  assert.equal(tracks[1].mode, 'disabled');
+  assert.equal(tracks[0].mode, 'hidden');
+  assert.equal(controller.subtitleButtonTarget['aria-pressed'], 'false');
+});
+
+test('one CC click enables available captions and the next turns them off', () => {
+  const tracks = [{ kind: 'subtitles', language: 'en', label: 'English', mode: 'disabled' }];
+  const controller = subtitleFixture(tracks);
+  controller.syncSubtitles();
+  controller.toggleSubtitles();
+  assert.equal(tracks[0].mode, 'showing');
+  controller.toggleSubtitles();
+  assert.equal(tracks[0].mode, 'disabled');
+  controller.toggleSubtitles();
+  assert.equal(tracks[0].mode, 'showing');
+});
+
+test('CC restores the currently selected native language after toggling off and on', () => {
+  const tracks = [
+    { kind: 'subtitles', language: 'en', label: 'English', mode: 'disabled' },
+    { kind: 'subtitles', language: 'ja', label: 'Japanese', mode: 'showing' }
+  ];
+  const controller = subtitleFixture(tracks);
+  controller.toggleSubtitles();
+  assert.deepEqual(tracks.map(track => track.mode), ['disabled', 'disabled']);
+  controller.toggleSubtitles();
+  assert.deepEqual(tracks.map(track => track.mode), ['disabled', 'showing']);
+});
+
+test('CC uses whichever language is available on the next video and preserves Off', () => {
+  const controller = subtitleFixture([{ kind: 'subtitles', language: 'ja', label: 'Japanese', mode: 'disabled' }]);
+  controller.toggleSubtitles();
+  const english = { kind: 'captions', language: 'en', label: 'English', mode: 'disabled' };
+  controller.playerTarget.textTracks = [english];
+  controller.syncSubtitles(true);
+  assert.equal(english.mode, 'showing');
+  controller.toggleSubtitles();
+  english.mode = 'showing';
+  controller.syncSubtitles(true);
+  assert.equal(english.mode, 'disabled');
+});
+
+test('CC hides without available captions and reappears when a track arrives', () => {
+  const controller = subtitleFixture([{ kind: 'metadata', language: '', label: '', mode: 'hidden' }]);
+  controller.syncSubtitles();
+  assert.equal(controller.subtitleButtonTarget.hidden, true);
+  controller.toggleSubtitles();
+  const english = { kind: 'subtitles', language: 'en', label: 'English', mode: 'disabled' };
+  controller.playerTarget.textTracks = [english];
+  controller.syncSubtitles(true);
+  assert.equal(controller.subtitleButtonTarget.hidden, false);
+  assert.equal(controller.subtitleButtonTarget['aria-pressed'], 'false');
+  controller.toggleSubtitles();
+  assert.equal(english.mode, 'showing');
+  controller.playerTarget.textTracks = [];
+  controller.syncSubtitles(true);
+  assert.equal(controller.subtitleButtonTarget.hidden, true);
+});
+
+test('native HLS subtitles replace an equivalent fallback without duplicate captions', () => {
+  const fallback = { kind: 'subtitles', language: 'en', label: 'English (auto-generated)', mode: 'showing' };
+  const controller = subtitleFixture([fallback]);
+  controller.hasCaptionFallbackTarget = true;
+  controller.captionFallbackTarget = { track: fallback };
+  controller.syncSubtitles();
+  const native = { kind: 'subtitles', language: 'en-x-autogen', label: 'English (auto-generated)', mode: 'hidden', cues: [{ text: 'Hello!' }] };
+  controller.playerTarget.textTracks = [fallback, native];
+  controller.syncSubtitles(true);
+  assert.equal(native.mode, 'showing');
+  assert.equal(fallback.mode, 'disabled');
+  controller.toggleSubtitles();
+  assert.equal(native.mode, 'disabled');
+  assert.equal(fallback.mode, 'disabled');
+});
+
+test('CC ignores an empty native HLS track and enables the caption-file fallback', () => {
+  const fallback = { kind: 'subtitles', language: 'en', label: 'English (auto-generated)', mode: 'disabled' };
+  const native = { kind: 'subtitles', language: 'en-x-autogen', label: 'English (auto-generated)', mode: 'disabled', cues: null };
+  const controller = subtitleFixture([fallback, native]);
+  controller.hasCaptionFallbackTarget = true;
+  controller.captionFallbackTarget = { track: fallback };
+  controller.toggleSubtitles();
+  assert.equal(fallback.mode, 'showing');
+  assert.equal(native.mode, 'disabled');
+  controller.toggleSubtitles();
+  assert.equal(fallback.mode, 'disabled');
+});
+
+test('caption selection follows AirPlay routing and returns to the local fallback', () => {
+  const fallback = { kind: 'subtitles', language: 'en', label: 'English (auto-generated)', mode: 'disabled' };
+  const native = { kind: 'subtitles', language: 'en-x-autogen', label: 'English (auto-generated)', mode: 'disabled', cues: null };
+  const controller = subtitleFixture([fallback, native]);
+  controller.hasCaptionFallbackTarget = true;
+  controller.captionFallbackTarget = { track: fallback };
+  controller.toggleSubtitles();
+  controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = true;
+  controller.syncSubtitles(true);
+  assert.equal(native.mode, 'showing');
+  assert.equal(fallback.mode, 'disabled');
+  controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = false;
+  controller.syncSubtitles(true);
+  assert.equal(fallback.mode, 'showing');
+  assert.equal(native.mode, 'disabled');
+});
+
+test('captions clear the remote within the letterboxed picture and restore native positions for AirPlay', () => {
+  const cue = { text: 'Hello, everyone.', line: 'auto', snapToLines: true, lineAlign: 'start' };
+  const authored = { line: 10, snapToLines: false, lineAlign: 'start' };
+  const controller = subtitleFixture([{ kind: 'subtitles', mode: 'showing', cues: [cue, authored] }]);
+  controller.videoActive = true;
+  Object.assign(controller.playerTarget, {
+    videoWidth: 1600, videoHeight: 900,
+    getBoundingClientRect: () => ({ top: 0, width: 800, height: 600 })
+  });
+  let remoteTop = 480;
+  controller.remoteTarget = { hidden: false, getBoundingClientRect: () => ({ top: remoteTop }) };
+  controller.stageTarget = { classList: { contains: () => false } };
+  controller.positionSubtitles();
+  assert.equal(cue.line, (480 - 75 - 16) / 450 * 100 - 12);
+  assert.equal(cue.snapToLines, false);
+  assert.equal(cue.lineAlign, 'start');
+  assert.equal(authored.line, 10);
+  remoteTop = 300; // Opening the guide increases the remote height.
+  controller.positionSubtitles();
+  assert.equal(cue.line, (300 - 75 - 16) / 450 * 100 - 12);
+  controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = true;
+  controller.positionSubtitles();
+  assert.deepEqual(cue, { text: 'Hello, everyone.', line: 'auto', snapToLines: true, lineAlign: 'start' });
+  controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = false;
+  controller.positionSubtitles();
+  controller.stageTarget.classList.contains = () => true;
+  controller.positionSubtitles();
+  assert.equal(cue.line, 'auto');
 });
 
 test('chapter stopping pauses once at a crossed boundary and allows resuming', () => {
