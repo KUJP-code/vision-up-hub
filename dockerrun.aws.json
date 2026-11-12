@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.4-sensei_remote"
+    "Name": "kidsup/materials:2.9.5-text_wrapping"
   },
   "Ports": [
     {
