@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   def ai_sensei_action_allowed?
     case controller_name
     when 'screen_mirroring_tests'
-      action_name == 'show' && params[:reference].blank?
+      (action_name == 'show' && params[:reference].blank?) || (action_name == 'layout_report' && Rails.env.local?)
     when 'sessions'
       devise_controller? && %w[new create destroy].include?(action_name)
     when 'session_handoffs'

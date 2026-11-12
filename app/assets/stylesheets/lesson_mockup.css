@@ -4,8 +4,11 @@
 @font-face { font-family: 'M PLUS 1p'; src: url('ai-teacher/MPLUS1p-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
 /* The supplied PDF embeds only the glyphs for Hello! in Kids UP Reading. */
 @font-face { font-family: 'Kids UP Reading Sample'; src: url('ai-teacher/KidsUPReading-hello.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-.lesson-prototype-body { margin: 0; background: #f0f0f0; }
-.lesson-mockup { --lm-purple: #65577f; --lm-blue: #67bfd6; --lm-paper: #f0f0f0; color: var(--lm-purple); font: 15px/1.5 'M PLUS 1p', sans-serif; }
+.lesson-prototype-root { height: 100%; overflow: hidden; overscroll-behavior: none; }
+.lesson-prototype-body { position: fixed; inset: 0; height: 100%; height: 100dvh; margin: 0; overflow: hidden; overscroll-behavior: none; background: #f0f0f0; }
+html.lm-lesson-open { height: 100%; overflow: hidden; overscroll-behavior: none; }
+html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow: hidden; overscroll-behavior: none; }
+.lesson-mockup { --lm-purple: #65577f; --lm-blue: #67bfd6; --lm-paper: #f0f0f0; position: absolute; inset: 0; overflow: hidden; color: var(--lm-purple); font: 15px/1.5 'M PLUS 1p', sans-serif; }
 .lesson-mockup *, .lesson-mockup *::before, .lesson-mockup *::after { box-sizing: border-box; }
 .lesson-mockup [hidden] { display: none !important; }
 .lesson-mockup :is(h1,h2,h3,p) { margin: 0; }
@@ -17,6 +20,7 @@
 .lesson-mockup button { border: 0; }
 .lesson-mockup :focus-visible { outline: 3px solid #eb9f3d; outline-offset: 4px; }
 .lesson-mockup svg { display: block; width: 24px; height: 24px; flex-shrink: 0; }
+.lesson-mockup .lm-shared-icon { fill: currentColor; }
 .lesson-mockup button:hover { filter: brightness(1.05); }
 .lesson-mockup .lm-pill { border: 2px solid transparent; border-radius: 999px; min-height: 42px; padding: 8px 18px; display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--lm-purple); color: white; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .lesson-mockup .lm-pill svg { width: 17px; height: 17px; }
@@ -30,7 +34,8 @@
 .lesson-mockup .lm-nav-label { display: none; font-size: 13px; font-weight: 700; }
 .lesson-mockup .lm-sidebar-open .lm-nav-label { display: inline; }
 .lesson-mockup .lm-hub-link { margin-top: auto; color: white; font-size: 26px; }
-.lesson-mockup .lm-workspace { margin-left: 60px; }
+.lesson-mockup .lm-workspace { height: 100%; margin-left: 60px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: none; }
+.lesson-mockup .lm-workspace[inert] { overflow: hidden; }
 .lesson-mockup .lm-page-header { position: sticky; top: 0; z-index: 2; height: 54px; display: grid; place-items: center; background: white; }
 .lesson-mockup .lm-pages { max-width: 1600px; margin: 0 auto; padding: 16px; }
 .lesson-mockup .lm-week-navigation { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 1600px; padding: 0 16px; margin: 0; text-align: center; }
@@ -63,12 +68,18 @@
 .lesson-mockup .lm-filters .lm-pill { min-width: 140px; }
 .lesson-mockup .lm-filters [aria-pressed='true'] { background: white; border-color: var(--lm-purple); color: var(--lm-purple); }
 /* The lesson owns its viewport. No production navigation or selectors are reused. */
-.lesson-mockup .lm-lesson-dialog { position: fixed; inset: 0; z-index: 100; }
-.lesson-mockup .lm-stage { position: absolute; inset: 0; overflow: hidden; background: #f5d4b2; }
+/* Pin to the page origin; visualViewport offsets must not become extra menu margins. */
+.lesson-mockup .lm-lesson-dialog { position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh; overflow: hidden; overscroll-behavior: none; z-index: 100; }
+.lesson-mockup .lm-stage { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; background: #f5d4b2; }
+.lesson-mockup .lm-stage > audio { display: none; }
+.lesson-mockup .lm-splash-viewport { position: relative; z-index: 1; flex: 1; min-height: 0; min-width: 0; overflow: hidden; container-type: size; }
 .lesson-mockup .lm-video-stage:not(.fixed) { position: absolute; left: 50%; top: calc(50% + 30px); transform: translate(-50%,-50%); width: min(100vw,calc((100dvh - 60px) * 16 / 9)); aspect-ratio: 16 / 9; }
-/* Cover the viewport using the W1 image's native proportions; scale speech buttons with it. */
-.lesson-mockup .lm-splash-frame { --lm-splash-ratio: 2546 / 1080; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: max(100vw,calc(100dvh * var(--lm-splash-ratio))); aspect-ratio: var(--lm-splash-ratio); z-index: 1; }
+/* Centre-cover the area below the menu; keep artwork and speech buttons at the native image ratio. */
+.lesson-mockup .lm-splash-frame { --lm-splash-ratio: 2546 / 1080; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: max(100%,calc((100cqh + 1px) * var(--lm-splash-ratio))); aspect-ratio: var(--lm-splash-ratio); z-index: 1; }
 .lesson-mockup .lm-splash { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.lesson-mockup :is(.lm-splash-frame,.lm-lesson-menu) { touch-action: pinch-zoom; }
+.lesson-mockup :is(.lm-picker-scroll,.lm-resource-scroll,.lm-guide-panel) { overscroll-behavior: none; }
+.lesson-mockup input[type='range'] { touch-action: none; }
 .lesson-mockup .lm-speech-hotspot { position: absolute; min-height: 0; padding: 0; border: 3px solid transparent; border-radius: 24%; background: transparent; }
 .lesson-mockup .lm-speech-see-you { left: 22%; top: 17%; width: 12%; height: 17%; }
 .lesson-mockup .lm-speech-hello { left: 48%; top: 14%; width: 11%; height: 25%; }
@@ -76,7 +87,7 @@
 .lesson-mockup .lm-speech-icon { position: absolute; right: 5%; bottom: 3%; display: grid; place-items: center; width: 28px; height: 28px; color: var(--lm-purple); background: #ffffffe0; border-radius: 50%; opacity: 0; }
 .lesson-mockup .lm-speech-icon svg { width: 18px; height: 18px; }
 .lesson-mockup .lm-speech-hotspot:is(:hover,:focus-visible) .lm-speech-icon { opacity: 1; }
-.lesson-mockup .lm-lesson-menu { position: relative; z-index: 2; display: flex; align-items: center; gap: 12px; height: 60px; background: #eaeaea; }
+.lesson-mockup .lm-lesson-menu { position: relative; order: -1; flex-shrink: 0; z-index: 2; display: flex; align-items: center; gap: 12px; height: 60px; background: #eaeaea; }
 .lesson-mockup .lm-lesson-badge { height: 100%; align-self: stretch; display: flex; align-items: center; gap: 14px; padding-right: 24px; background: var(--lm-blue); color: white; border-bottom-right-radius: 30px; min-width: 320px; }
 .lesson-mockup .lm-lesson-badge p { font-size: 10px; }
 .lesson-mockup .lm-lesson-badge h2 { font-size: 16px; white-space: nowrap; }
@@ -85,6 +96,8 @@
 .lesson-mockup .lm-lesson-tabs { display: flex; justify-content: flex-end; align-items: center; gap: 14px; margin-left: auto; }
 .lesson-mockup .lm-lesson-tabs .lm-pill { font-size: 13px; padding: 8px 18px; min-height: 40px; justify-content: center; }
 .lesson-mockup .lm-close { display: grid; place-items: center; padding: 6px; width: 40px; height: 40px; border-radius: 50%; background: #f37897; color: white; flex-shrink: 0; }
+.lesson-mockup .lm-close:focus { outline: none; }
+.lesson-mockup.lm-keyboard-navigation .lm-close:focus-visible { outline: 3px solid var(--lm-purple); outline-offset: 3px; }
 .lesson-mockup .lm-lesson-menu > .lm-close { margin-right: 12px; }
 .lesson-mockup .lm-stage:has(.lm-picker[open]) .lm-lesson-menu { background: transparent; }
 .lesson-mockup .lm-stage:has(.lm-picker[open]) .lm-lesson-menu > .lm-close { visibility: hidden; }
@@ -99,8 +112,6 @@
 .lesson-mockup .lm-picker .lm-content-card { padding: 8px; }
 .lesson-mockup .lm-picker .lm-content-card h2 { font-size: 14px; }
 .lesson-mockup .lm-picker .lm-pill { font-size: 11px; padding: 6px 12px; min-height: 34px; }
-.lesson-mockup .lm-picker-footer { display: flex; justify-content: center; padding: 24px; }
-.lesson-mockup .lm-picker-footer .lm-pill { padding-inline: 20px; font-size: 14px; }
 .lesson-mockup .lm-picker-navigation { position: relative; padding: 24px; background: #c5eaf2; border-radius: 0 0 12px 12px; }
 .lesson-mockup .lm-picker-navigation::before { content: '⌄'; position: absolute; top: -15px; left: calc(50% - 14px); color: var(--lm-blue); font-size: 30px; line-height: 1; }
 .lesson-mockup .lm-picker-navigation .lm-lesson-tabs { justify-content: center; gap: 14px; margin: 0; }
@@ -111,7 +122,6 @@
 .lesson-mockup .lm-resource-dialog p { margin-bottom: 18px; }
 .lesson-mockup .lm-resource-file { margin: 20px 0 28px; }
 .lesson-mockup .lm-resource-file button:disabled { cursor: default; }
-.lesson-mockup .lm-modal-done { display: flex; margin: 24px auto 0; }
 .lesson-mockup .lm-flashcards { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100%; max-height: none; border: 0; background: transparent; padding: 0; }
 .lesson-mockup .lm-flashcards::backdrop { background: #ffffff20; backdrop-filter: blur(5px); }
 .lesson-mockup .lm-flashcard { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(360px,calc(100vw - 144px)); height: min(500px,74dvh); display: flex; flex-direction: column; align-items: center; border: 3px solid var(--lm-purple); border-radius: 16px; background: white; box-shadow: 0 5px 30px #0003; padding: 20px 24px; }
@@ -124,7 +134,6 @@
 .lesson-mockup .lm-flash-arrow svg { width: clamp(42px,5vw,64px); height: clamp(42px,5vw,64px); stroke-width: 4; }
 .lesson-mockup .lm-flash-previous { left: -24px; border-radius: 0 100% 100% 0; padding: 0 10px 0 26px; }
 .lesson-mockup .lm-flash-next { right: -24px; border-radius: 100% 0 0 100%; padding: 0 26px 0 10px; }
-.lesson-mockup .lm-flash-close { position: absolute; left: 50%; bottom: max(12px,3dvh); transform: translateX(-50%); border: 1px solid white; border-radius: 6px; }
 .lesson-mockup .lm-upcoming-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
 .lesson-mockup .lm-upcoming-preview { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: #d9eef3; }
 .lesson-mockup .lm-upcoming-preview img { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(7px); opacity: .5; }
@@ -152,7 +161,7 @@
 .lesson-mockup .lm-skip + .lm-skip { margin-left: 0; }
 .lesson-mockup .lm-skip { margin-left: 15px; }
 .lesson-mockup .lm-time { font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 700; }
-.lesson-mockup .lm-remote-options { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+.lesson-mockup .lm-remote-options { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
 .lesson-mockup .lm-chapter-stop { display: flex; align-items: center; gap: 12px; padding: 10px 0; background: transparent; font-size: 12px; font-weight: 700; }
 .lesson-mockup .lm-switch { position: relative; width: 44px; height: 10px; background: white; border-radius: 10px; }
 .lesson-mockup .lm-switch::after { content: '⏻'; position: absolute; left: 0; top: -8px; display: grid; place-items: center; width: 26px; height: 26px; border: 2px solid white; border-radius: 50%; background: #c3bdcd; color: white; transition: left .15s; }

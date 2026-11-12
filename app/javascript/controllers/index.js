@@ -89,6 +89,9 @@ application.register("auto-reorder", AutoReorderController);
 import ScreenMirroringTestController from "./screen_mirroring_test_controller";
 application.register("screen-mirroring-test", ScreenMirroringTestController);
 
+import LayoutProbeController from "./layout_probe_controller";
+application.register("layout-probe", LayoutProbeController);
+
 import ScreenMirroringReferenceController from "./screen_mirroring_reference_controller";
 application.register("screen-mirroring-reference", ScreenMirroringReferenceController);
 

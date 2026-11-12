@@ -7,7 +7,9 @@ const source = readFileSync(new URL('../../app/javascript/controllers/screen_mir
   .replace('import { Controller } from "@hotwired/stimulus";', 'class Controller {}')
   .replace('export default class', 'globalThis.Mockup = class');
 function fixture(document = {}, globals = {}) {
-  const context = vm.createContext({ document, ...globals });
+  document.documentElement ||= {};
+  document.documentElement.classList ||= { add() {}, remove() {} };
+  const context = vm.createContext({ document, window: { scrollX: 0, scrollY: 0, scrollTo() {} }, ...globals });
   vm.runInContext(source, context);
   const controller = new context.Mockup();
   controller.lessonDialogTarget = { hidden: false };
@@ -76,6 +78,37 @@ test('2.7.9.1 prefixed fullscreen fallback requests the video container', () => 
   controller.stageTarget = { webkitRequestFullscreen() { requested = true; assert.equal(this, controller.stageTarget); } };
   controller.enterVideoFullscreen();
   assert.equal(requested, true);
+});
+
+test('AirPlay selects the native video route directly and reflects wireless playback', () => {
+  const controller = fixture();
+  const calls = [];
+  controller.playerTarget = {
+    webkitShowPlaybackTargetPicker() { calls.push('picker'); },
+    webkitCurrentPlaybackTargetIsWireless: false
+  };
+  controller.airPlayButtonTarget = { setAttribute(name, value) { this[name] = value; } };
+  controller.showRemote = () => calls.push('remote');
+  controller.updateAirPlay();
+  assert.equal(controller.airPlayButtonTarget.hidden, false);
+  assert.equal(controller.airPlayButtonTarget.textContent, 'AirPlay');
+  controller.chooseAirPlay();
+  assert.deepEqual(calls, ['picker', 'remote']);
+  controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = true;
+  controller.updateAirPlay();
+  assert.equal(controller.airPlayButtonTarget.textContent, 'AirPlay 接続中');
+  assert.equal(controller.airPlayButtonTarget['aria-label'], 'AirPlayの出力先を変更');
+  delete controller.playerTarget.webkitShowPlaybackTargetPicker;
+  controller.updateAirPlay();
+  assert.equal(controller.airPlayButtonTarget.hidden, true);
+});
+
+test('wireless video keeps the iPad remote available instead of fading it', () => {
+  const controller = fixture();
+  controller.videoActive = true;
+  controller.playerTarget = { paused: false, webkitCurrentPlaybackTargetIsWireless: true };
+  controller.stageTarget = { classList: { add() { throw Error('The AirPlay remote must stay visible'); } } };
+  controller.hideRemote();
 });
 
 test('phrase taps play local media and stop the previous clip', () => {

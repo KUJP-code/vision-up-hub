@@ -5,6 +5,10 @@
                                             data: { action: 'screen-mirroring-test#previousCard' } }
     = render 'icon', name: 'previous'
   %article.lm-flashcard
+    %button.lm-close.lm-modal-close{ type: 'button',
+                                   'aria-label': '閉じる',
+                                   data: { action: 'screen-mirroring-test#closeFlashcards' } }
+      = render 'icon', name: 'close'
     .lm-flash-illustration
       %svg.lm-flash-crop{ viewBox: '540 180 520 665', role: 'img',
                           'aria-label': '手を振ってあいさつするキャラクター',
@@ -25,5 +29,3 @@
                                         'aria-label': '次のカード',
                                         data: { action: 'screen-mirroring-test#nextCard' } }
     = render 'icon', name: 'next'
-  %button.lm-pill.lm-flash-close{ type: 'button',
-                                  data: { action: 'screen-mirroring-test#closeFlashcards' } } 閉じる

@@ -14,7 +14,7 @@ export default class extends Controller {
     "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
     "pickerScroll", "homeLesson", "homeUpcoming", "homeHeader", "weekHeading", "upcomingWeek", "cardClipRect",
     "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
-    "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback"
+    "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback", "airPlayButton", "workspace"
   ];
 
   connect() {
@@ -22,6 +22,15 @@ export default class extends Controller {
     this.setChapters("basic");
     this.events = new AbortController();
     const options = { signal: this.events.signal };
+    this.element.addEventListener("pointerdown", () => this.element.classList.remove("lm-keyboard-navigation"), options);
+    document.addEventListener("keydown", event => {
+      if (event.key === "Tab") this.element.classList.add("lm-keyboard-navigation");
+    }, options);
+    document.addEventListener("touchstart", event => this.recordPageTouch(event), { ...options, capture: true, passive: true });
+    document.addEventListener("touchmove", event => this.preventPageOverscroll(event), { ...options, capture: true, passive: false });
+    ["touchend", "touchcancel"].forEach(event => {
+      document.addEventListener(event, () => { this.lessonTouch = null; }, { ...options, capture: true, passive: true });
+    });
     this.playbackGeneration = 0;
     this.videoActive = false;
     this.lastPlaybackTime = 0;
@@ -51,7 +60,12 @@ export default class extends Controller {
     watchCaptionCues();
     textTracks.addEventListener("change", () => this.syncSubtitles(), options);
     this.captionFallbackTarget.addEventListener("load", () => this.syncSubtitles(true), options);
-    this.playerTarget.addEventListener("webkitcurrentplaybacktargetiswirelesschanged", () => this.syncSubtitles(true), options);
+    this.playerTarget.addEventListener("webkitcurrentplaybacktargetiswirelesschanged", () => {
+      this.syncSubtitles(true);
+      this.updateAirPlay();
+      this.showRemote();
+    }, options);
+    this.updateAirPlay();
     this.captionResizeObserver = new ResizeObserver(() => this.positionSubtitles());
     this.captionResizeObserver.observe(this.playerTarget);
     this.captionResizeObserver.observe(this.remoteTarget);
@@ -173,7 +187,7 @@ export default class extends Controller {
     const toggle = this.sidebarTarget.querySelector("button");
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "メニューを開く");
-    window.scrollTo(0, 0);
+    this.workspaceTarget.scrollTo(0, 0);
   }
 
   toggleSidebar(event) {
@@ -421,6 +435,7 @@ export default class extends Controller {
 
   start(event) {
     this.returnFocus = document.activeElement;
+    this.lockPageScroll();
     this.videoOpenedFromMenu = false;
     this.lessonWeekTarget.textContent = `第${event?.currentTarget.dataset.week || 1}週 · ベーシックイングリッシュ`;
     this.lessonDialogTarget.hidden = false;
@@ -434,9 +449,52 @@ export default class extends Controller {
     if (event) this.menuTarget.querySelector("button").focus();
   }
 
+  recordPageTouch(event) {
+    this.lessonTouch = this.element.contains(event.target) && event.touches.length === 1
+      ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+  }
+
+  preventPageOverscroll(event) {
+    if (event.touches.length !== 1 || !this.lessonTouch) return;
+    const touch = event.touches[0];
+    const dx = this.lessonTouch.x - touch.clientX;
+    const dy = this.lessonTouch.y - touch.clientY;
+    this.lessonTouch = { x: touch.clientX, y: touch.clientY };
+    // Native sliders handle their own drag; two-finger zoom is left to Safari.
+    if (event.target.closest("input[type='range']")) return;
+    // Allow a panel to scroll only while it can consume this movement. At its
+    // boundary Safari would otherwise hand the gesture to the page and bounce.
+    for (let node = event.target; node && node !== document.body; node = node.parentElement) {
+      const css = window.getComputedStyle(node);
+      if (Math.abs(dy) >= Math.abs(dx) && /^(auto|scroll)$/.test(css.overflowY)) {
+        const remaining = node.scrollHeight - node.clientHeight - node.scrollTop;
+        if ((dy > 0 && remaining > 1) || (dy < 0 && node.scrollTop > 0)) return;
+      }
+      if (Math.abs(dx) > Math.abs(dy) && /^(auto|scroll)$/.test(css.overflowX)) {
+        const remaining = node.scrollWidth - node.clientWidth - node.scrollLeft;
+        if ((dx > 0 && remaining > 1) || (dx < 0 && node.scrollLeft > 0)) return;
+      }
+    }
+    if (event.cancelable) event.preventDefault();
+  }
+
+  lockPageScroll() {
+    if (this.pageScrollPosition) return;
+    this.pageScrollPosition = this.hasWorkspaceTarget
+      ? { x: this.workspaceTarget.scrollLeft, y: this.workspaceTarget.scrollTop }
+      : { x: window.scrollX, y: window.scrollY };
+    document.documentElement.classList.add("lm-lesson-open");
+  }
+
   restoreBackground() {
     this.backgroundElements?.forEach(element => { element.inert = false; });
     this.backgroundElements = [];
+    if (this.pageScrollPosition) {
+      const { x, y } = this.pageScrollPosition;
+      this.pageScrollPosition = null;
+      document.documentElement.classList.remove("lm-lesson-open");
+      (this.hasWorkspaceTarget ? this.workspaceTarget : window).scrollTo(x, y);
+    }
   }
 
   // Fullscreen implementation copied from deployed 2.7.9.1 (06c57ab8).
@@ -519,6 +577,19 @@ export default class extends Controller {
     else this.playerTarget.pause();
   }
 
+  updateAirPlay() {
+    const wireless = !!this.playerTarget.webkitCurrentPlaybackTargetIsWireless;
+    this.airPlayButtonTarget.hidden = typeof this.playerTarget.webkitShowPlaybackTargetPicker !== "function";
+    this.airPlayButtonTarget.textContent = wireless ? "AirPlay 接続中" : "AirPlay";
+    this.airPlayButtonTarget.setAttribute("aria-label", wireless ? "AirPlayの出力先を変更" : "AirPlayの出力先を選択");
+  }
+
+  chooseAirPlay() {
+    // Safari requires the native route picker to open directly from a user tap.
+    this.playerTarget.webkitShowPlaybackTargetPicker?.();
+    this.showRemote();
+  }
+
   showRemote() {
     clearTimeout(this.remoteTimeout);
     if (!this.videoActive || this.remoteTarget.hidden) return;
@@ -530,7 +601,7 @@ export default class extends Controller {
 
   hideRemote() {
     // Keep controls available while paused, reading the guide, or choosing a speed.
-    if (!this.videoActive || this.playerTarget.paused || this.remoteInteraction ||
+    if (!this.videoActive || this.playerTarget.paused || this.playerTarget.webkitCurrentPlaybackTargetIsWireless || this.remoteInteraction ||
         !this.guidePanelTarget.hidden || !this.errorTarget.hidden ||
         this.remoteTarget.querySelector("details[open]")) return;
     if (this.remoteTarget.contains(document.activeElement)) this.stageTarget.focus({ preventScroll: true });

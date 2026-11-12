@@ -1,5 +1,19 @@
 # AI Sensei AirPlay comparison
 
+## Current investigation: page mirroring versus video-only output
+
+**iPad/TV verification, November 2, 2026:** After refreshing the updated current screen and starting a Story video, the user confirmed that the TV switches to video-only playback automatically, without using the new AirPlay button. This verifies the reported handoff on their setup after enabling AirPlay and removing the remote-playback opt-out. It does not establish why the archived original succeeds with its opt-out attributes, or independently verify captions and every remote control on the receiver.
+
+The user clarified that the failure is the TV continuing to mirror the page/remote instead of switching to video-only output. The earlier splash/layout timing adjustment did not fix their setup and has been removed; fullscreen/play ordering once again follows the original reference.
+
+An actual browser comparison using the same local MP4 confirmed that both screens enter container fullscreen, with the video and container covering the viewport. This uses real `requestFullscreen()` and real playback, unlike the existing control tests that stub those methods. The probe is saved under `tmp/fullscreen-probe.json`; permanent coverage is in `spec/system/screen_mirroring_fullscreen_spec.rb`. Chrome confirms browser fullscreen, not iPad external presentation. Safari WebDriver could not run because the local Safari installation has remote automation disabled; its settings were not changed.
+
+Both screens originally set `x-webkit-airplay="deny"` and `disableRemotePlayback`, so those attributes do not explain the difference by themselves. They do explicitly opt out of the desired direct video route, however: [Apple's AirPlay guide](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/AirPlayGuide/OptingInorOutofAirPlay/OptingInorOutofAirPlay.html) documents the allow/deny setting, and [WebKit's implementation](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/html/MediaElementSession.cpp) checks both opt-outs. The original's successful automatic handoff despite those settings is still an observed device behaviour, not a reproduced root cause.
+
+The current player now explicitly allows AirPlay and removes `disableRemotePlayback`. On Safari it also offers the native output picker through an AirPlay button, reflects the actual wireless playback flag, and keeps the iPad remote visible while wireless playback is active. The archived references are unchanged. Tests cover permission markup, picker invocation, wireless-state changes, caption selection, remote visibility, and control layout. They cannot verify the receiver's output. Retest the current Story video against the original on the same iPad/TV connection. If automatic handoff does not occur, use the player's AirPlay button to choose the TV and check video-only output, captions, and remote controls.
+
+The notes below record earlier comparisons and changes.
+
 An admin can open `/ja/screen_mirroring_test?reference=2.8.3.1` to compare the likely working baseline with the current AI Sensei view. This reference uses the view, controller, and stylesheet from deployment commit `9dacb8fa` (2.8.3.1, September 15, 2026). Only the asset and Stimulus registration names are isolated. It uses the current application's shared layout and shared assets, so it is a playback/view comparison rather than a complete historical deployment.
 
 Use the same iPad, browser, TV, and screen-mirroring connection for both views. Start Basic English in each: both use Vimeo video `1225143839` with the same HLS URL. Record whether the TV switches to video-only playback while the remote remains on the iPad, along with the iPadOS version. Repeat once from a fresh page load for each view.

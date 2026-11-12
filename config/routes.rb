@@ -126,6 +126,7 @@ Rails.application.routes.draw do
 
     authenticate :user, ->(user) { user.is?('Admin', 'AiSensei') } do
       get 'ai-sensei', to: 'screen_mirroring_tests#show', as: :ai_sensei
+      post 'ai-sensei/layout-report', to: 'screen_mirroring_tests#layout_report', as: :ai_sensei_layout_report
     end
 
     authenticate :user, ->(user) { user.is?('Admin') } do

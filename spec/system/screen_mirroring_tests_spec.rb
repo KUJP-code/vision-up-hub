@@ -33,6 +33,68 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-week-card', count: 1)
   end
 
+  it 'sends opt-in local viewport diagnostics and marks the actual page edge' do
+    expect(page).not_to have_css('[data-layout-probe-marker]')
+    visit ai_sensei_path(locale: :ja, layout_probe: '1')
+    expect(page).to have_css('.lesson-mockup[data-layout-probe-status="sent"]')
+    expect(page).to have_css('[data-layout-probe-marker]')
+    report = JSON.parse(File.readlines(Rails.root.join('tmp/ai-sensei-layout-reports-test.jsonl')).last)
+    expect(report['dimensions']['inner_width']).to be > 0
+    expect(report['elements'].find { |element| element['name'] == '.lm-page-header' }['top']).to eq(0)
+    expect(report['elements'].find { |element| element['name'] == '[data-layout-probe-marker]' }['top']).to eq(0)
+  ensure
+    FileUtils.rm_f(Rails.root.join('tmp/ai-sensei-layout-reports-test.jsonl'))
+  end
+
+  it 'keeps the shared home, menu, and exit icons in the navigation colour on focus' do
+    %w[home activities home].each do |view|
+      find(".lm-sidebar [data-view='#{view}']").click
+      expect(page.evaluate_script(<<~JS)).to be true
+        [...document.querySelectorAll('.lm-sidebar .lm-shared-icon')].every(icon =>
+          [...icon.querySelectorAll('path')].every(path => getComputedStyle(path).fill === getComputedStyle(icon.closest('button, a')).color)
+        )
+      JS
+    end
+    home = find('.lm-sidebar [data-view="home"]')
+    page.execute_script('arguments[0].focus()', home)
+    expect(page.evaluate_script('getComputedStyle(document.querySelector(".lm-sidebar [data-view=home] svg path")).fill')).to eq('rgb(255, 255, 255)')
+  end
+
+  it 'scrolls the menu content with native touch gestures while the app frame stays at the page edges' do
+    page.current_window.resize_to(1024, 768)
+    browser = page.driver.browser
+    browser.execute_cdp('Emulation.setTouchEmulationEnabled', enabled: true, maxTouchPoints: 2)
+    gesture = lambda do |distance|
+      browser.execute_cdp('Input.synthesizeScrollGesture', x: 750, y: 400,
+                          yDistance: distance, speed: 900, gestureSourceType: 'touch')
+    end
+    gesture.call(-220)
+    expect(page.evaluate_script('document.querySelector(".lm-workspace").scrollTop')).to be > 0
+    [0, 1].each do |edge|
+      page.execute_script <<~JS, edge
+        const workspace = document.querySelector('.lm-workspace');
+        workspace.scrollTop = arguments[0] ? workspace.scrollHeight : 0;
+      JS
+      gesture.call(edge.zero? ? 180 : -180)
+      expect(page.evaluate_script(<<~JS)).to be true
+        (() => {
+          const workspace = document.querySelector('.lm-workspace');
+          const frame = document.querySelector('.lesson-mockup').getBoundingClientRect();
+          const header = document.querySelector('.lm-page-header').getBoundingClientRect();
+          const sidebar = document.querySelector('.lm-sidebar').getBoundingClientRect();
+          return scrollY === 0 && document.scrollingElement.scrollHeight <= innerHeight &&
+            frame.top === 0 && Math.abs(frame.bottom - innerHeight) < 1 &&
+            header.top === 0 && sidebar.top === 0 && Math.abs(sidebar.bottom - innerHeight) < 1 &&
+            workspace.scrollTop >= 0 && workspace.scrollTop <= workspace.scrollHeight - workspace.clientHeight + 1;
+        })()
+      JS
+    end
+    within('.lm-sidebar') { click_button 'ストーリータイム', exact: true }
+    expect(page.evaluate_script('document.querySelector(".lm-workspace").scrollTop')).to eq(0)
+  ensure
+    browser&.execute_cdp('Emulation.setTouchEmulationEnabled', enabled: false)
+  end
+
   it 'opens and controls the isolated 2.8.3.1 comparison player' do
     visit screen_mirroring_test_path(locale: :ja, reference: '2.8.3.1')
     expect(page).to have_css('[data-controller="screen-mirroring-2831-reference"]')
@@ -98,6 +160,134 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).not_to have_css('[inert]')
   end
 
+  it 'fills the lesson viewport without scrolling the page underneath and restores the menu position on exit' do
+    page.current_window.resize_to(390, 844)
+    launch = find('.lm-week-card button', text: 'レッスンをはじめる', match: :first)
+    launch.scroll_to(:center)
+    page.execute_script('document.querySelector(".lm-workspace").scrollTo(0, 100)')
+    scroll_position = page.evaluate_script('document.querySelector(".lm-workspace").scrollTop')
+    expect(scroll_position).to be > 0
+    launch.click
+
+    [[390, 844], [1024, 768], [768, 1024]].each do |width, height|
+      page.current_window.resize_to(width, height)
+      page.execute_script('window.scrollBy(100, 200)')
+      expect(page.evaluate_script(<<~JS)).to be true
+        (() => {
+          const rect = document.querySelector('.lm-lesson-dialog').getBoundingClientRect();
+          return window.scrollX === 0 && window.scrollY === 0 &&
+            document.scrollingElement.scrollHeight <= innerHeight &&
+            document.scrollingElement.scrollWidth <= innerWidth &&
+            rect.left === 0 && rect.top === 0 &&
+            Math.abs(rect.width - innerWidth) < 1 && Math.abs(rect.height - innerHeight) < 1;
+        })()
+      JS
+    end
+
+    within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
+    page.execute_script('document.querySelector(".lm-picker-scroll").scrollTop = 100')
+    expect(page.evaluate_script('document.querySelector(".lm-picker-scroll").scrollTop')).to be > 0
+    expect(page.evaluate_script('window.scrollY')).to eq(0)
+    within('.lm-picker') { find('button[aria-label="閉じる"]').click }
+    page.current_window.resize_to(390, 844)
+    find('button[aria-label="レッスンを終了"]').click
+    expect(page.evaluate_script('document.querySelector(".lm-workspace").scrollTop')).to be_within(1).of(scroll_position)
+    page.execute_script('document.querySelector(".lm-workspace").scrollBy(0, 100)')
+    expect(page.evaluate_script('document.querySelector(".lm-workspace").scrollTop')).to be > scroll_position
+    expect(page.evaluate_script('window.scrollY')).to eq(0)
+  end
+
+  it 'keeps the menu pinned to the page top when Safari reports a visual viewport offset' do
+    click_button 'レッスンをはじめる'
+    page.execute_script <<~JS
+      const viewport = window.visualViewport;
+      window.lessonViewport = {offsetTop: 24, offsetLeft: 16, width: innerWidth - 32, height: innerHeight - 48};
+      Object.keys(window.lessonViewport).forEach(name => {
+        Object.defineProperty(viewport, name, {configurable: true, get: () => window.lessonViewport[name]});
+      });
+    JS
+    %w[resize scroll].each do |event|
+      page.execute_script('window.visualViewport.dispatchEvent(new Event(arguments[0]))', event)
+      expect(page.evaluate_script(<<~JS)).to be true
+        (() => {
+          const lesson = document.querySelector('.lm-lesson-dialog').getBoundingClientRect();
+          const menu = document.querySelector('.lm-lesson-menu').getBoundingClientRect();
+          return lesson.top === 0 && lesson.left === 0 && menu.top === 0 &&
+            Math.abs(lesson.width - innerWidth) < 0.1 && Math.abs(lesson.height - innerHeight) < 0.1;
+        })()
+      JS
+      page.execute_script('window.lessonViewport = {offsetTop: 0, offsetLeft: 0, width: innerWidth, height: innerHeight}')
+    end
+  end
+
+  it 'centre-crops the artwork below the menu at its natural aspect ratio and scales speech hotspots with it' do
+    click_button 'レッスンをはじめる'
+    expect(page).to have_css('.lm-splash') { page.evaluate_script('document.querySelector(".lm-splash").naturalWidth > 0') }
+    [[1280, 800], [1024, 768], [768, 1024], [390, 844]].each do |width, height|
+      page.current_window.resize_to(width, height)
+      expect(page.evaluate_script(<<~JS)).to be true
+        (() => {
+          const menu = document.querySelector('.lm-lesson-menu').getBoundingClientRect();
+          const slot = document.querySelector('.lm-splash-viewport').getBoundingClientRect();
+          const frame = document.querySelector('.lm-splash-frame').getBoundingClientRect();
+          const image = document.querySelector('.lm-splash');
+          const picture = image.getBoundingClientRect();
+          const hello = document.querySelector('.lm-speech-hello').getBoundingClientRect();
+          const painted = document.elementFromPoint(slot.left + slot.width / 2, slot.top + slot.height / 2);
+          return menu.top === 0 && Math.abs(slot.top - menu.bottom) < 0.1 &&
+            Math.abs(slot.bottom - innerHeight) < 0.1 && slot.left === 0 && Math.abs(slot.width - innerWidth) < 0.1 &&
+            Math.abs(frame.width / frame.height - image.naturalWidth / image.naturalHeight) < 0.001 &&
+            frame.width >= slot.width && frame.height >= slot.height &&
+            Math.abs((frame.left + frame.right) / 2 - (slot.left + slot.right) / 2) < 0.1 &&
+            Math.abs((frame.top + frame.bottom) / 2 - (slot.top + slot.bottom) / 2) < 0.1 &&
+            Math.abs(picture.width - frame.width) < 0.1 && Math.abs(picture.height - frame.height) < 0.1 &&
+            Math.abs(hello.left - (frame.left + frame.width * 0.48)) < 1 &&
+            Math.abs(hello.top - (frame.top + frame.height * 0.14)) < 1 &&
+            !!painted.closest('.lm-splash-frame');
+        })()
+      JS
+    end
+  end
+
+  it 'cancels touch overscroll on the lesson and panel boundaries while preserving panel scrolling and pinch zoom' do
+    click_button 'レッスンをはじめる'
+    page.execute_script <<~JS
+      window.lessonDragAllowed = (selector, deltaY, fingers = 1) => {
+        const target = document.querySelector(selector);
+        const touches = y => Array.from({length: fingers}, (_, identifier) =>
+          new Touch({identifier, target, clientX: 100 + identifier * 30, clientY: y})
+        );
+        target.dispatchEvent(new TouchEvent('touchstart', {bubbles: true, touches: touches(200)}));
+        const allowed = target.dispatchEvent(new TouchEvent('touchmove', {bubbles: true, cancelable: true, touches: touches(200 + deltaY)}));
+        target.dispatchEvent(new TouchEvent('touchend', {bubbles: true, touches: []}));
+        return allowed;
+      };
+    JS
+    [60, -60].each do |delta|
+      expect(page.evaluate_script('window.lessonDragAllowed(".lm-splash", arguments[0])', delta)).to be false
+      expect(page.evaluate_script('window.lessonDragAllowed(".lm-lesson-menu", arguments[0])', delta)).to be false
+    end
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-splash", 60, 2)')).to be true
+    within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
+    page.execute_script('document.querySelector(".lm-picker-scroll").scrollTop = 0')
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-picker-scroll h2", 60)')).to be false
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-picker-scroll h2", -60)')).to be true
+    page.execute_script('document.querySelector(".lm-picker-scroll").scrollTop = 100')
+    [60, -60].each do |delta|
+      expect(page.evaluate_script('window.lessonDragAllowed(".lm-picker-scroll h2", arguments[0])', delta)).to be true
+    end
+    page.execute_script <<~JS
+      const panel = document.querySelector('.lm-picker-scroll');
+      panel.scrollTop = panel.scrollHeight;
+    JS
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-picker-scroll h2", -60)')).to be false
+    within('.lm-picker') { find('button[aria-label="閉じる"]').click }
+    find('button[aria-label="レッスンを終了"]').click
+    page.execute_script('document.querySelector(".lm-workspace").scrollTop = 0')
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-pages", 60)')).to be false
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-pages", -60)')).to be true
+  end
+
   it 'opens picker resources without leaving the lesson or trapping focus behind a modal' do
     click_button 'レッスンをはじめる'
     within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
@@ -106,7 +296,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-resource-dialog') do
       expect(page).to have_button('PDFをダウンロード', disabled: true, count: 2)
     end
-    within('.lm-resource-dialog') { click_button '閉じる', exact: true }
+    within('.lm-resource-dialog') { find('button[aria-label="閉じる"]').click }
     expect(page).to have_css('.lm-picker[open]')
     within('.lm-picker') { first('button', text: '先生用ガイド').click }
     within('.lm-resource-dialog') do
@@ -114,14 +304,46 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       expect(page).to have_text('00:01:41:22 – 00:02:17:01 · 一時停止')
       find('p', text: 'Cut out Jot', visible: :all).scroll_to(:center)
       expect(page).to have_text('Cut out Jot')
-      click_button '閉じる', exact: true
+      find('button[aria-label="閉じる"]').click
     end
-    within('.lm-picker') { click_button '閉じる', exact: true }
+    within('.lm-picker') { find('button[aria-label="閉じる"]').click }
     within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
     expect(page).to have_css('.lm-picker .lm-content-card', count: 5)
     page.driver.browser.action.send_keys(:escape).perform
     expect(page).not_to have_css('.lm-picker[open]')
     expect(page).to have_css('.lm-lesson-dialog')
+  end
+
+  it 'uses one X per modal and shows its focus indicator only for keyboard navigation' do
+    within('.lm-week-card') { click_button '先生用ガイド', exact: true }
+    resource = find('.lm-resource-dialog[open]')
+    expect(resource).to have_css('button[aria-label="閉じる"]', count: 1)
+    expect(resource).not_to have_text('閉じる')
+    close = resource.find('button[aria-label="閉じる"]')
+    expect(close).to have_css('svg')
+    expect(page.evaluate_script('getComputedStyle(arguments[0]).outlineStyle', close)).to eq('none')
+    page.driver.browser.action.send_keys(:tab).perform
+    page.execute_script('arguments[0].focus()', close)
+    expect(page.evaluate_script('getComputedStyle(arguments[0]).outlineColor', close)).to eq('rgb(101, 87, 127)')
+    expect(page.evaluate_script('getComputedStyle(arguments[0]).outlineWidth', close)).to eq('3px')
+    close.click
+
+    click_button 'レッスンをはじめる'
+    within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
+    picker = find('.lm-picker[open]')
+    expect(picker).to have_css('button[aria-label="閉じる"]', count: 1)
+    expect(picker).not_to have_text('閉じる')
+    expect(page.evaluate_script('getComputedStyle(document.querySelector(".lm-picker .lm-modal-close")).outlineStyle')).to eq('none')
+    within(picker) { find('button[aria-label="閉じる"]').click }
+
+    click_button 'フラッシュカード', exact: true
+    flashcards = find('.lm-flashcards[open]')
+    expect(flashcards).to have_css('button[aria-label="閉じる"]', count: 1)
+    expect(flashcards).not_to have_text('閉じる')
+    expect(flashcards).to have_css('.lm-flashcard .lm-modal-close svg')
+    within(flashcards) { find('button[aria-label="閉じる"]').click }
+    expect(page).not_to have_css('.lm-flashcards[open]')
+    expect(page).to have_css('.lm-lesson-tabs')
   end
 
   it 'controls the video and chapter guide, then returns to the splash' do
@@ -167,6 +389,44 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page.evaluate_script('document.querySelector(".lm-video-stage").inert')).to be true
     expect(page).to have_css('.lm-lesson-tabs')
     expect(page).to have_css('video', count: 1, visible: :all)
+  end
+
+  it 'offers native AirPlay routing and keeps the wireless remote visible and usable on iPad sizes' do
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      video.webkitShowPlaybackTargetPicker = () => { video.demoAirPlayRequests = (video.demoAirPlayRequests || 0) + 1; };
+      video.webkitCurrentPlaybackTargetIsWireless = false;
+      video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
+    JS
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    click_button 'AirPlay', exact: true
+    expect(page.evaluate_script('document.querySelector("video").demoAirPlayRequests')).to eq(1)
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      video.webkitCurrentPlaybackTargetIsWireless = true;
+      video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
+    JS
+    expect(page).to have_button('AirPlay 接続中', exact: true)
+    [[1024, 768], [768, 1024], [390, 844]].each do |width, height|
+      page.current_window.resize_to(width, height)
+      expect(page.evaluate_script(<<~JS)).to be true
+        [...document.querySelectorAll('.lm-controls button')].filter(button => button.getClientRects().length).every(button => {
+          const rect = button.getBoundingClientRect();
+          return rect.left >= 0 && rect.right <= innerWidth && rect.bottom <= innerHeight;
+        })
+      JS
+    end
+    page.driver.browser.execute_async_script('setTimeout(arguments[arguments.length - 1], 5300)')
+    expect(page).to have_css('.lm-remote')
+    expect(page).not_to have_css('.lm-controls-hidden')
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      video.webkitCurrentPlaybackTargetIsWireless = false;
+      video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
+    JS
+    expect(page).to have_button('AirPlay', exact: true)
   end
 
   it 'returns direct video launches to their original menu, filter, and button' do
@@ -359,7 +619,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-flash-crop[viewBox="540 180 520 665"]')
     find('button[aria-label="次のカード"]').click
     expect(page).to have_css('.lm-flash-crop[viewBox="1070 380 620 470"]')
-    within('.lm-flashcards') { click_button '閉じる', exact: true }
+    within('.lm-flashcards') { find('button[aria-label="閉じる"]').click }
     within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
     within('.lm-picker-navigation') { click_button 'ベーシックイングリッシュ', exact: true }
     expect(page).not_to have_css('.lm-picker[open]')
@@ -396,7 +656,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
         expect(page).to have_text(instruction)
         find('p', text: ending, visible: :all).scroll_to(:center)
         expect(page).to have_text(ending)
-        click_button '閉じる', exact: true
+        find('button[aria-label="閉じる"]').click
       end
       within(card) { click_button 'アクティビティをはじめる', exact: true }
       expect(page).to have_css('.lm-remote')

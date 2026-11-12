@@ -18,10 +18,12 @@ RSpec.describe 'Screen mirroring video test' do
     expect(response.body).to include('player.vimeo.com/external/1225144027.m3u8')
     expect(response.body).to include('w1-splash')
     expect(response.body).to include('先生用ガイド')
-    expect(response.body).to include('disableRemotePlayback')
     expect(response.body).to include('speech/hello')
-    expect(response.body).to include('x-webkit-airplay=\'deny\'')
     document = Nokogiri::HTML(response.body)
+    expect(document.at_css('meta[name="viewport"]')['content']).to include('viewport-fit=cover')
+    expect(document.at_css('video')['x-webkit-airplay']).to eq('allow')
+    expect(document.at_css('video').attribute('disableremoteplayback')).to be_nil
+    expect(document.at_css('[data-screen-mirroring-test-target="airPlayButton"]')).to be_present
     expect(document.at_css('body')['class']).to eq('lesson-prototype-body')
     expect(document.at_css('#main-nav')).to be_nil
     expect(document.css('.lm-sidebar [data-view]').size).to eq(4)

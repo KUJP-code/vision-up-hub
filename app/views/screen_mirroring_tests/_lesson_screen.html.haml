@@ -9,15 +9,16 @@
                    'aria-label': 'レッスン画面',
                    data: { 'screen-mirroring-test-target': 'lessonDialog' } }
   .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
-    .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
-      = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
-      - phrases.each do |position, phrase|
-        %button.lm-speech-hotspot{ class: "lm-speech-#{position}",
-                                   type: 'button',
-                                   'aria-label': "#{phrase} を聞く",
-                                   data: { action: 'screen-mirroring-test#speak', phrase: } }
-          %span.lm-speech-icon{ 'aria-hidden': 'true' }
-            = render 'icon', name: 'sound'
+    .lm-splash-viewport
+      .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
+        = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
+        - phrases.each do |position, phrase|
+          %button.lm-speech-hotspot{ class: "lm-speech-#{position}",
+                                     type: 'button',
+                                     'aria-label': "#{phrase} を聞く",
+                                     data: { action: 'screen-mirroring-test#speak', phrase: } }
+            %span.lm-speech-icon{ 'aria-hidden': 'true' }
+              = render 'icon', name: 'sound'
     - phrases.each do |clip, phrase|
       %audio{ preload: 'auto',
               src: asset_path("speech/#{clip}.wav"),
@@ -68,8 +69,6 @@
                   data: { 'screen-mirroring-test-target': 'pickerStory' },
                   'aria-label': 'ストーリーを選ぶ' }
           = render 'content_cards', items: stories, video: story_video, kind: 'story'
-      .lm-picker-footer
-        %button.lm-pill{ type: 'button', data: { action: 'screen-mirroring-test#closePicker' } } 閉じる
       .lm-picker-navigation{ data: { 'screen-mirroring-test-target': 'pickerNavigation' } }
 
     = render 'flashcards'

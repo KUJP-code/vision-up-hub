@@ -3,8 +3,7 @@
   %video.lm-video{ src: basic_video,
                    playsinline: true,
                    preload: 'metadata',
-                   'x-webkit-airplay': 'deny',
-                   disableRemotePlayback: true,
+                   'x-webkit-airplay': 'allow',
                    data: { 'screen-mirroring-test-target': 'player', kind: 'basic' } }
     %track{ kind: 'subtitles', srclang: 'en', label: 'English (auto-generated)',
             src: asset_path(@lesson_content.fetch('lessons').fetch('basic').fetch('subtitle_asset')),
@@ -55,6 +54,10 @@
           = image_tag 'remote/forward-five.svg', alt: ''
       %p.lm-time{ data: { 'screen-mirroring-test-target': 'time' } } 0:00 / 0:00
       .lm-remote-options
+        %button.lm-pill.lm-airplay{ type: 'button', hidden: true,
+                                  'aria-label': 'AirPlayの出力先を選択',
+                                  data: { 'screen-mirroring-test-target': 'airPlayButton',
+                                          action: 'screen-mirroring-test#chooseAirPlay' } } AirPlay
         %button.lm-chapter-stop{ type: 'button',
                                  role: 'switch',
                                  'aria-checked': 'false',
