@@ -29,6 +29,11 @@ export default class extends Controller {
     }, options);
     document.addEventListener("touchstart", event => this.recordPageTouch(event), { ...options, capture: true, passive: true });
     document.addEventListener("touchmove", event => this.preventPageOverscroll(event), { ...options, capture: true, passive: false });
+    this.guidePanelTarget.addEventListener("wheel", event => {
+      if (event.ctrlKey) return;
+      const unit = [1, 16, this.guidePanelTarget.clientHeight][event.deltaMode];
+      this.scrollAirPlayGuide(event, event.deltaY * unit);
+    }, { ...options, passive: false });
     ["touchend", "touchcancel"].forEach(event => {
       document.addEventListener(event, () => { this.lessonTouch = null; }, { ...options, capture: true, passive: true });
     });
@@ -491,6 +496,8 @@ export default class extends Controller {
     this.lessonTouch = { x: touch.clientX, y: touch.clientY };
     // Native sliders handle their own drag; two-finger zoom is left to Safari.
     if (event.target.closest("input[type='range']")) return;
+    if (this.guidePanelTarget.contains(event.target) &&
+        this.scrollAirPlayGuide(event, Math.abs(dy) >= Math.abs(dx) ? dy : 0)) return;
     // Allow a panel to scroll only while it can consume this movement. At its
     // boundary Safari would otherwise hand the gesture to the page and bounce.
     for (let node = event.target; node && node !== document.body; node = node.parentElement) {
@@ -505,6 +512,17 @@ export default class extends Controller {
       }
     }
     if (event.cancelable) event.preventDefault();
+  }
+
+  scrollAirPlayGuide(event, deltaY) {
+    const guide = this.guidePanelTarget;
+    if (!this.playerTarget.webkitCurrentPlaybackTargetIsWireless || guide.hidden || !event.cancelable) return false;
+
+    // Keep the gesture inside the guide instead of starting native momentum or edge bounce.
+    event.preventDefault();
+    const top = Math.max(0, Math.min(guide.scrollTop + deltaY, guide.scrollHeight - guide.clientHeight));
+    if (top !== guide.scrollTop) guide.scrollTop = top;
+    return true;
   }
 
   lockPageScroll() {
@@ -608,6 +626,7 @@ export default class extends Controller {
 
   updateAirPlay() {
     const wireless = !!this.playerTarget.webkitCurrentPlaybackTargetIsWireless;
+    this.stageTarget.toggleAttribute("data-airplay", wireless);
     this.airPlayButtonTarget.hidden = typeof this.playerTarget.webkitShowPlaybackTargetPicker !== "function";
     this.airPlayButtonTarget.textContent = wireless ? "AirPlay 接続中" : "AirPlay";
     this.airPlayButtonTarget.setAttribute("aria-label", wireless ? "AirPlayの出力先を変更" : "AirPlayの出力先を選択");
@@ -834,9 +853,10 @@ export default class extends Controller {
   updateRemote() {
     const current = this.playerTarget.currentTime || 0;
     const chapter = this.chapters.filter(item => item.time <= current).pop() || this.chapters[0];
-    this.chapterTitleTarget.textContent = chapter.title;
-    this.chapterPickerTarget.value = String(chapter.time);
-    this.guideTarget.textContent = chapter.guide;
+    const chapterTime = String(chapter.time);
+    if (this.chapterTitleTarget.textContent !== chapter.title) this.chapterTitleTarget.textContent = chapter.title;
+    if (this.chapterPickerTarget.value !== chapterTime) this.chapterPickerTarget.value = chapterTime;
+    if (this.guideTarget.textContent !== chapter.guide) this.guideTarget.textContent = chapter.guide;
     this.playButtonTarget.setAttribute("aria-label", this.playerTarget.paused ? "再生" : "一時停止");
     this.playIconTarget.hidden = !this.playerTarget.paused;
     this.pauseIconTarget.hidden = this.playerTarget.paused;

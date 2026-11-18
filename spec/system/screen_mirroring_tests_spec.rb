@@ -265,18 +265,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
 
   it 'cancels touch overscroll on the lesson and panel boundaries while preserving panel scrolling and pinch zoom' do
     click_button 'レッスンをはじめる'
-    page.execute_script <<~JS
-      window.lessonDragAllowed = (selector, deltaY, fingers = 1) => {
-        const target = document.querySelector(selector);
-        const touches = y => Array.from({length: fingers}, (_, identifier) =>
-          new Touch({identifier, target, clientX: 100 + identifier * 30, clientY: y})
-        );
-        target.dispatchEvent(new TouchEvent('touchstart', {bubbles: true, touches: touches(200)}));
-        const allowed = target.dispatchEvent(new TouchEvent('touchmove', {bubbles: true, cancelable: true, touches: touches(200 + deltaY)}));
-        target.dispatchEvent(new TouchEvent('touchend', {bubbles: true, touches: []}));
-        return allowed;
-      };
-    JS
+    install_lesson_drag_probe
     [60, -60].each do |delta|
       expect(page.evaluate_script('window.lessonDragAllowed(".lm-splash", arguments[0])', delta)).to be false
       expect(page.evaluate_script('window.lessonDragAllowed(".lm-lesson-menu", arguments[0])', delta)).to be false
@@ -439,6 +428,57 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
     JS
     expect(page).to have_button('AirPlay', exact: true)
+  end
+
+  it 'scrolls the video guide within its bounds when AirPlay is active' do
+    page.current_window.resize_to(768, 1024)
+    click_button 'レッスンをはじめる'
+    stub_video_playback
+    install_lesson_drag_probe
+    within('.lm-lesson-tabs') { click_button 'ベーシックイングリッシュ', exact: true }
+    within('.lm-remote') { click_button '先生用ガイド', exact: true }
+    select '3:53–6:15 3. 単語・表現チェッククイズ', from: 'チャプターを選択'
+    guide = find('.lm-guide-panel')
+    max_scroll = page.evaluate_script('arguments[0].scrollHeight - arguments[0].clientHeight', guide)
+    expect(max_scroll).to be > 60
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", -60)')).to be true
+
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      video.webkitCurrentPlaybackTargetIsWireless = true;
+      video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
+    JS
+    expect(page.evaluate_script('getComputedStyle(arguments[0]).touchAction', guide)).to eq('pinch-zoom')
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", -60)')).to be false
+    expect(page.evaluate_script('arguments[0].scrollTop', guide)).to eq(60)
+    expect(page.evaluate_script(<<~JS)).to be true
+      (() => {
+        const text = document.querySelector('[data-screen-mirroring-test-target="guide"]');
+        const previous = text.firstChild;
+        document.querySelector('video').dispatchEvent(new Event('timeupdate'));
+        return text.firstChild === previous;
+      })()
+    JS
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", -10000)')).to be false
+    expect(page.evaluate_script('arguments[0].scrollTop', guide)).to eq(max_scroll)
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", 10000)')).to be false
+    expect(page.evaluate_script('arguments[0].scrollTop', guide)).to eq(0)
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", -60, 2)')).to be true
+    expect(page.evaluate_script(<<~JS, guide)).to eq([false, 40])
+      ((guide) => {
+        const allowed = guide.dispatchEvent(new WheelEvent('wheel', {deltaY: 40, bubbles: true, cancelable: true}));
+        return [allowed, guide.scrollTop];
+      })(arguments[0])
+    JS
+
+    page.execute_script <<~JS
+      const video = document.querySelector('video');
+      video.webkitCurrentPlaybackTargetIsWireless = false;
+      video.dispatchEvent(new Event('webkitcurrentplaybacktargetiswirelesschanged'));
+    JS
+    expect(page.evaluate_script('getComputedStyle(arguments[0]).touchAction', guide)).to eq('auto')
+    expect(page.evaluate_script('window.lessonDragAllowed(".lm-guide-columns p", -60)')).to be true
+    expect(page.evaluate_script('window.scrollY')).to eq(0)
   end
 
   it 'returns direct video launches to their original menu, filter, and button' do
@@ -803,6 +843,21 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
   end
 
   private
+
+  def install_lesson_drag_probe
+    page.execute_script <<~JS
+      window.lessonDragAllowed = (selector, deltaY, fingers = 1) => {
+        const target = document.querySelector(selector);
+        const touches = y => Array.from({length: fingers}, (_, identifier) =>
+          new Touch({identifier, target, clientX: 100 + identifier * 30, clientY: y})
+        );
+        target.dispatchEvent(new TouchEvent('touchstart', {bubbles: true, touches: touches(200)}));
+        const allowed = target.dispatchEvent(new TouchEvent('touchmove', {bubbles: true, cancelable: true, touches: touches(200 + deltaY)}));
+        target.dispatchEvent(new TouchEvent('touchend', {bubbles: true, touches: []}));
+        return allowed;
+      };
+    JS
+  end
 
   def expect_caption_above_remote
     # Inspect the browser's rendered cue box, not just TextTrack.mode or activeCues.

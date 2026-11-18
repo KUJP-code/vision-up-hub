@@ -187,6 +187,7 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
 .lesson-mockup .lm-progress input::-moz-range-progress { height: 5px; background: var(--lm-blue); }
 .lesson-mockup .lm-progress input::-moz-range-thumb { width: 10px; height: 10px; border: 3px solid white; border-radius: 50%; background: var(--lm-blue); }
 .lesson-mockup .lm-guide-panel { height: min(40dvh,340px); padding: 16px 24px; overflow-y: auto; background: white; }
+.lesson-mockup .lm-video-stage[data-airplay] .lm-guide-panel { touch-action: pinch-zoom; }
 .lesson-mockup .lm-guide-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 1px solid var(--lm-purple); padding-bottom: 10px; margin-bottom: 10px; }
 .lesson-mockup .lm-guide-heading h2 { font-size: 17px; }
 .lesson-mockup .lm-guide-heading select { width: 320px; font-size: 12px; }

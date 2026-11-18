@@ -88,15 +88,18 @@ test('AirPlay selects the native video route directly and reflects wireless play
     webkitShowPlaybackTargetPicker() { calls.push('picker'); },
     webkitCurrentPlaybackTargetIsWireless: false
   };
+  controller.stageTarget = { toggleAttribute(name, present) { this[name] = present; } };
   controller.airPlayButtonTarget = { setAttribute(name, value) { this[name] = value; } };
   controller.showRemote = () => calls.push('remote');
   controller.updateAirPlay();
   assert.equal(controller.airPlayButtonTarget.hidden, false);
+  assert.equal(controller.stageTarget['data-airplay'], false);
   assert.equal(controller.airPlayButtonTarget.textContent, 'AirPlay');
   controller.chooseAirPlay();
   assert.deepEqual(calls, ['picker', 'remote']);
   controller.playerTarget.webkitCurrentPlaybackTargetIsWireless = true;
   controller.updateAirPlay();
+  assert.equal(controller.stageTarget['data-airplay'], true);
   assert.equal(controller.airPlayButtonTarget.textContent, 'AirPlay 接続中');
   assert.equal(controller.airPlayButtonTarget['aria-label'], 'AirPlayの出力先を変更');
   delete controller.playerTarget.webkitShowPlaybackTargetPicker;
