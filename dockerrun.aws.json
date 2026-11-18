@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.6-vision"
+    "Name": "kidsup/materials:2.9.7-ai_sensei"
   },
   "Ports": [
     {
