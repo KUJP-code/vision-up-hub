@@ -13,7 +13,7 @@
                                    data: { action: 'screen-mirroring-test#stop' } }
     = render 'icon', name: 'close'
   %section.lm-remote{ hidden: true,
-                      'aria-label': '動画リモコンと先生用ガイド',
+                      'aria-label': '動画リモコン',
                       data: { 'screen-mirroring-test-target': 'remote' } }
     = render 'video_guide'
     %label.lm-progress
@@ -38,11 +38,13 @@
             = image_tag 'remote/pause.svg', alt: ''
         %button.lm-round{ type: 'button',
                           'aria-label': '前の章',
-                          data: { action: 'screen-mirroring-test#previousChapter' } }
+                          data: { action: 'screen-mirroring-test#previousChapter',
+                                  'screen-mirroring-test-target': 'chapterControl' } }
           = image_tag 'remote/chapter-back.svg', alt: ''
         %button.lm-round{ type: 'button',
                           'aria-label': '次の章',
-                          data: { action: 'screen-mirroring-test#nextChapter' } }
+                          data: { action: 'screen-mirroring-test#nextChapter',
+                                  'screen-mirroring-test-target': 'chapterControl' } }
           = image_tag 'remote/chapter-next.svg', alt: ''
         %button.lm-round.lm-skip{ type: 'button',
                                   'aria-label': '5秒戻る',
@@ -62,7 +64,7 @@
                                  role: 'switch',
                                  'aria-checked': 'false',
                                  data: { action: 'screen-mirroring-test#toggleChapterStop',
-                                         'screen-mirroring-test-target': 'chapterStop' } }
+                                         'screen-mirroring-test-target': 'chapterStop chapterControl' } }
           %span 章末停止
           %span.lm-switch{ 'aria-hidden': 'true' }
         %button.lm-round.lm-subtitles{ type: 'button', hidden: true,
@@ -84,7 +86,7 @@
                                          'aria-expanded': 'false',
                                          'aria-controls': 'lm-video-guide',
                                          data: { action: 'screen-mirroring-test#toggleGuide',
-                                                 'screen-mirroring-test-target': 'guideButton' } }
+                                                 'screen-mirroring-test-target': 'guideButton chapterControl' } }
           先生用ガイド
     %p.lm-error{ hidden: true,
                  role: 'alert',

@@ -8,7 +8,8 @@
     - week = item.fetch('week')
     - video_source = item.fetch('video')
     - content_key = item.fetch('key')
-    - caption_src = asset_path(item.fetch('subtitle_asset'))
+    - subtitle = item['subtitle_asset']
+    - caption_src = subtitle && asset_path(subtitle)
     %article.lm-card.lm-content-card{ data: { category: activity ? item.fetch('category') : nil } }
       .lm-content-thumbnail{ class: "lm-thumbnail-#{kind}",
                              data: { 'screen-mirroring-test-target': 'thumbnail', video: video_source } }

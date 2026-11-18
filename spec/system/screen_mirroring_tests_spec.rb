@@ -28,7 +28,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-filters') { click_button '全て', exact: true }
     expect(page).to have_css('.lm-content-card', count: 9)
     click_button 'ストーリータイム', exact: true
-    expect(page).to have_css('.lm-content-card', count: 2)
+    expect(page).to have_css('.lm-content-card', count: 3)
     click_button 'ホーム', exact: true
     expect(page).to have_css('.lm-week-card', count: 1)
   end
@@ -309,7 +309,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     end
     within('.lm-picker') { find('button[aria-label="閉じる"]').click }
     within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
-    expect(page).to have_css('.lm-picker .lm-content-card', count: 2)
+    expect(page).to have_css('.lm-picker .lm-content-card', count: 3)
     page.driver.browser.action.send_keys(:escape).perform
     expect(page).not_to have_css('.lm-picker[open]')
     expect(page).to have_css('.lm-lesson-dialog')
@@ -672,7 +672,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     story = tabs.find_button('ストーリータイム', exact: true)
     story.click
     within('.lm-picker[open][aria-label="ストーリーを選ぶ"]') do
-      expect(page).to have_css('.lm-content-card', count: 2)
+      expect(page).to have_css('.lm-content-card', count: 3)
       expect(page).not_to have_css('nav', visible: :all)
     end
     page.driver.browser.action.send_keys(:escape).perform
@@ -681,30 +681,63 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-lesson-menu .lm-lesson-tabs')
   end
 
-  it 'switches between the two story videos and their matching captions' do
+  it 'switches between guided stories and the video-only story' do
     stub_video_playback
+    titles = ['The Runaway Balloon（にげだしたふうせん）', 'The Playground Hello Hunt', 'Monsters on the Move']
     within('.lm-sidebar') { click_button 'ストーリータイム', exact: true }
     within('.lm-pages [data-view="stories"]') do
-      expect(all('.lm-content-card h2').map(&:text)).to eq(['にげだしたふうせん', 'The Hello Hunt'])
-      within(find('.lm-content-card', text: 'The Hello Hunt')) { click_button 'ストーリーをはじめる' }
+      expect(all('.lm-content-card h2').map(&:text)).to eq(titles)
+      within(find('.lm-content-card', text: titles[1])) { click_button 'ストーリーをはじめる' }
     end
     expect(page).to have_css('.lm-remote')
     expect(page.evaluate_script('document.querySelector("video").src')).to include('1247526401.m3u8')
     expect(page).to have_css('video track[src*="subtitles/story-2.en"]', visible: :all)
     within('.lm-remote') { click_button '先生用ガイド', exact: true }
-    expect(page).to have_css('.lm-guide-panel', text: '地図と赤いすべり台')
+    within('.lm-guide-panel') do
+      expect(page).to have_text('公園で地図を発見')
+      expect(page).to have_css('select option', count: 11, visible: :all)
+      select '6:16–7:18 11. ヒントとキャラクターのクイズ', from: 'チャプターを選択'
+      expect(page).to have_text('Who is this?（これは誰かな？）→ Tale')
+    end
+    expect(page.evaluate_script('document.querySelector("video").currentTime')).to eq(376)
+    within('.lm-remote') { click_button 'CC', exact: true }
     find('button[aria-label="動画を閉じる"]').click
 
     within('.lm-sidebar') { click_button 'ホーム', exact: true }
     click_button 'レッスンをはじめる'
     within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
     within('.lm-picker') do
-      expect(all('.lm-content-card h2').map(&:text)).to eq(['にげだしたふうせん', 'The Hello Hunt'])
-      within(find('.lm-content-card', text: 'にげだしたふうせん')) { click_button 'ストーリーをはじめる' }
+      expect(all('.lm-content-card h2').map(&:text)).to eq(titles)
+      within(find('.lm-content-card', text: titles[2])) { click_button 'ストーリーをはじめる' }
+    end
+    expect(page.evaluate_script('document.querySelector("video").src')).to include('1247889122.m3u8')
+    expect(page).to have_css('video track:not([src])', visible: :all)
+    within('.lm-remote') do
+      expect(page).to have_css('button[aria-label="一時停止"]')
+      expect(page).not_to have_button('CC', exact: true)
+      expect(page).not_to have_css('button[aria-label="前の章"], button[aria-label="次の章"]')
+      %w[先生用ガイド 章末停止].each { |label| expect(page).not_to have_button(label, exact: true) }
+      find('button[aria-label="5秒進む"]').click
+    end
+    expect(page.evaluate_script('document.querySelector("video").currentTime')).to eq(5)
+    find('button[aria-label="動画を閉じる"]').click
+
+    within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
+    within('.lm-picker') do
+      within(find('.lm-content-card', text: titles[0])) { click_button 'ストーリーをはじめる' }
     end
     expect(page).to have_css('.lm-remote')
     expect(page.evaluate_script('document.querySelector("video").src')).to include('1225145089.m3u8')
     expect(page).to have_css('video track[src*="subtitles/story.en"]', visible: :all)
+    within('.lm-remote') { click_button '先生用ガイド', exact: true }
+    within('.lm-guide-panel') do
+      expect(page).to have_text('公園で風船を発見')
+      expect(page).to have_css('select option', count: 11, visible: :all)
+      select '6:58–8:03 11. キャラクタークイズ', from: 'チャプターを選択'
+      expect(page).to have_text('開始時刻は推定です')
+      expect(page).to have_text('What is this? → The balloon')
+    end
+    expect(page.evaluate_script('document.querySelector("video").currentTime')).to eq(418)
   end
 
   it 'opens Animals and Weather from successive weeks with their own lesson content' do

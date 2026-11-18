@@ -11,7 +11,7 @@ export default class extends Controller {
     "guidePanel", "guideButton", "sidebar", "page", "pageTitle", "navButton", "filter",
     "lessonWeek", "lessonTitle", "basicTab", "storyTab", "picker", "pickerActivity", "pickerWeek",
     "pickerStory", "flashcards", "cardPhrase", "cardArtwork", "progress",
-    "playIcon", "pauseIcon", "chapterStop", "thumbnail",
+    "playIcon", "pauseIcon", "chapterStop", "chapterControl", "thumbnail",
     "pickerScroll", "homeWeek", "homeUpcoming", "homeHeader", "weekHeading", "splashImage", "greetingHotspots",
     "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
     "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback", "airPlayButton", "workspace"
@@ -277,8 +277,16 @@ export default class extends Controller {
   }
 
   loadVideoSource({ src, kind, captionSrc }) {
-    if (captionSrc && this.hasCaptionFallbackTarget && this.captionFallbackTarget.getAttribute("src") !== captionSrc) {
-      this.captionFallbackTarget.src = captionSrc;
+    if (this.hasCaptionFallbackTarget) {
+      const fallback = this.captionFallbackTarget;
+      if (fallback.getAttribute("src") !== (captionSrc || null)) {
+        if (captionSrc) {
+          fallback.src = captionSrc;
+        } else {
+          fallback.track.mode = "disabled";
+          fallback.removeAttribute("src");
+        }
+      }
     }
     if (this.playerTarget.getAttribute("src") === src) return;
     // Assigning src invokes the media load algorithm. Calling load() as well
@@ -313,7 +321,7 @@ export default class extends Controller {
     const content = this.contentValue[week];
     const lesson = content.lessons[key];
     const fps = lesson.timecode_fps || content.fps;
-    return lesson.chapters.map((chapter, index) => ({
+    return (lesson.chapters || []).map((chapter, index) => ({
       ...chapter,
       time: this.timecodeSeconds(chapter.start, fps),
       endTime: chapter.end ? this.timecodeSeconds(chapter.end, fps) : null,
@@ -328,9 +336,10 @@ export default class extends Controller {
   setChapters(week, key) {
     const lesson = this.contentValue[week].lessons[key];
     this.chapters = this.lessonChapters(week, key);
-    this.guideObjectiveTarget.textContent = lesson.objective;
-    this.guideMaterialsTarget.textContent = lesson.materials;
-    this.guideTipTarget.textContent = lesson.tip;
+    this.chapterControlTargets.forEach(control => { control.hidden = this.chapters.length === 0; });
+    this.guideObjectiveTarget.textContent = lesson.objective ?? "";
+    this.guideMaterialsTarget.textContent = lesson.materials ?? "";
+    this.guideTipTarget.textContent = lesson.tip ?? "";
     this.chapterPickerTarget.replaceChildren(...this.chapters.map(chapter => {
       const option = document.createElement("option");
       option.value = chapter.time;
@@ -708,6 +717,7 @@ export default class extends Controller {
     const tracks = this.allSubtitleTracks();
     const fallback = this.hasCaptionFallbackTarget ? this.captionFallbackTarget.track : null;
     if (!fallback || !tracks.includes(fallback)) return tracks;
+    if (this.captionFallbackTarget.src === "") return tracks.filter(track => track !== fallback);
     const native = tracks.filter(track => track !== fallback && track.language.split("-")[0] === fallback.language.split("-")[0]);
     // An advertised HLS track can exist without usable cues on a laptop. Keep
     // the real WebVTT fallback until native cues exist, or AirPlay owns playback.
@@ -836,10 +846,12 @@ export default class extends Controller {
   updateRemote() {
     const current = this.playerTarget.currentTime || 0;
     const chapter = this.chapters.filter(item => item.time <= current).pop() || this.chapters[0];
-    const chapterTime = String(chapter.time);
-    if (this.chapterTitleTarget.textContent !== chapter.title) this.chapterTitleTarget.textContent = chapter.title;
-    if (this.chapterPickerTarget.value !== chapterTime) this.chapterPickerTarget.value = chapterTime;
-    if (this.guideTarget.textContent !== chapter.guide) this.guideTarget.textContent = chapter.guide;
+    if (chapter) {
+      const chapterTime = String(chapter.time);
+      if (this.chapterTitleTarget.textContent !== chapter.title) this.chapterTitleTarget.textContent = chapter.title;
+      if (this.chapterPickerTarget.value !== chapterTime) this.chapterPickerTarget.value = chapterTime;
+      if (this.guideTarget.textContent !== chapter.guide) this.guideTarget.textContent = chapter.guide;
+    }
     this.playButtonTarget.setAttribute("aria-label", this.playerTarget.paused ? "再生" : "一時停止");
     this.playIconTarget.hidden = !this.playerTarget.paused;
     this.pauseIconTarget.hidden = this.playerTarget.paused;

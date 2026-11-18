@@ -8,45 +8,253 @@ vocabulary: Hello / friends / goodbye
 flashcards: [Hello!, Nice to meet you!, See you!]
 lessons:
   story-1:
-    title: にげだしたふうせん
+    title: The Runaway Balloon（にげだしたふうせん）
     video: https://player.vimeo.com/external/1225145089.m3u8?s=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false
     subtitle_asset: subtitles/story.en.vtt
-    objective: 登場人物といっしょに、英語のお話を楽しみましょう。
+    objective: |-
+      Jot（ジョット）が公園で見つけた風船を追いかける中で、Echo（エコー）、Boom（ブーム）、Tale（テイル）と出会う物語です。
+      キャラクター同士の出会いを通して、英語でのあいさつや自己紹介の表現に親しみます。物語に合わせたTPRアクションで、体を動かしながら英語を学びます。
+
+      メインターゲット表現
+      ・Hello!（こんにちは！）
+      ・I'm ○○.（私は○○です）
+      ・Nice to meet you!（はじめまして！）
+      ・Nice to meet you, too!（こちらこそ、はじめまして！）
+      ・See you!（またね！）
     materials: 教材の準備はいりません。
-    tip: 一時停止しながら、子どもたちが気づいたことを聞いてみましょう。
-    chapters:
-      - { start: '00:00:00:00', end: '00:02:00:00', title: お話のはじまり, guide: 絵を見て、どんなお話か想像してみましょう。登場人物を指さして、注目を集めます。 }
-      - { start: '00:02:00:00', end: '00:03:00:00', title: だれが出てきたかな？, guide: ここまでに登場したキャラクターを確認しましょう。子どもたちが気づいたことを聞いてみます。 }
-      - { start: '00:03:00:00', end: '00:05:00:00', title: 次はどうなる？, guide: 動画を一時停止し、次に何が起こるか予想してみましょう。短い言葉やジェスチャーで答えてもらいます。 }
-      - { start: '00:05:00:00', end: '00:06:00:00', title: 気持ちを考えよう, guide: 登場人物はどんな気持ちかな？表情をまねして、みんなで考えてみましょう。 }
-      - { start: '00:06:00:00', title: お話を楽しもう, guide: お話の続きを見ましょう。最後に、好きだった場面を一つ教えてもらいます。 }
-  story-2:
-    title: The Hello Hunt
-    video: https://player.vimeo.com/external/1247526401.m3u8?s=26cb44df329ef7b69abd23ab2050f6b56dbbc751&logging=false
-    subtitle_asset: subtitles/story-2.en.vtt
-    objective: 色や形のヒントを探しながら、英語であいさつをしましょう。
-    materials: 教材の準備はいりません。
-    tip: ヒントが出たら、子どもたちが絵を指さしたり答えたりする時間を取りましょう。
+    tip: 動画の呼びかけに合わせて動いたり、あいさつをしたりしましょう。手を伸ばす場面では両足を床につけたまま行います。
     chapters:
       - start: '00:00:00:00'
-        end: '00:01:54:00'
-        title: 地図と赤いすべり台
-        guide: Jotが地図を見つけます。赤い丸をヒントに、赤いすべり台を探しましょう。Echoに会ったら「Hello!」と手を振りましょう。
-      - start: '00:01:54:00'
-        end: '00:04:03:00'
-        title: 青いブランコと黄色い砂場
-        guide: 青い星と黄色い四角をヒントに、ブランコと砂場を探しましょう。BoomやTailに会ったら「Nice to meet you.」と言ってみましょう。
-      - start: '00:04:03:00'
+        end: '00:00:47:00'
+        title: 公園で風船を発見
+        guide: |-
+          Jotが公園を歩いていると、空に浮かぶ風船を見つけます。ナレーターの呼びかけに合わせて、上を見たり、風船を指さしたりします。
+
+          TPRアクション
+          ・Look up：顔を上に向け、空を見上げましょう。
+          ・Point to the balloon：画面の風船を見つけ、指をさしましょう。
+      - start: '00:00:47:00'
+        end: '00:01:30:00'
+        title: 風船を追いかけよう
+        guide: |-
+          風に飛ばされた風船をJotが追いかけます。子どもたちもJotと一緒に、その場で足踏みをしながら風船を追いかけます。続いて、画面に現れる風船を探します。
+
+          TPRアクション
+          ・March：「March! March! March!」の掛け声に合わせて、その場で足踏みをしましょう。
+          ・Point：「Point to the balloon.」の合図で、画面の風船を見つけて指をさしましょう。
+      - start: '00:01:30:00'
+        end: '00:02:10:00'
+        title: Echoとの出会い
+        guide: |-
+          風船を追いかけていたJotは、Echoと出会います。初めて会った2人は、「Hello!」「I'm ○○.」「Nice to meet you!」を使ってあいさつと自己紹介をします。
+          風船が再び飛んでいき、2人は一緒に追いかけることにします。
+
+          TPRアクション
+          ・Wave hello：「Let's wave hello to Echo.」の合図に合わせて、Echoに向かって手を振りましょう。
+      - start: '00:02:10:00'
+        end: '00:02:41:00'
+        title: Boomとの出会い
+        guide: |-
+          飛んできた風船がBoomの頭に乗り、JotとEchoはBoomに出会います。3人は自己紹介をし、「Nice to meet you!」とあいさつを交わします。
+          Boomも加わり、3人で風船を追いかけることになります。
+
+          参加ポイント
+          新しいキャラクターが登場するたびに繰り返される「Hello!」「Nice to meet you!」に注目しましょう。この場面には、特定のTPR指示はありません。
+      - start: '00:02:41:00'
+        end: '00:03:26:00'
+        title: 風船はどこ？
+        guide: |-
+          3人は風船を見失ってしまいます。Echoが音を聞くように促し、みんなで静かに耳を澄ませます。地面や茂みの中を探した後、木の上に引っかかっている風船を発見します。
+
+          TPRアクション
+          ・Listen：「Put your hand by your ear.」の合図で、片手を耳に当て、静かに音を聞きましょう。
+          ・Look down：「Is it on the ground?」に合わせて、下を見ましょう。
+          ・Look for the balloon：「Is it in the bushes?」に合わせて、両手で双眼鏡を作るようにして前方を探しましょう。
+          ・Look up：「Look up!」の合図で上を見て、風船を探しましょう。
+      - start: '00:03:26:00'
+        end: '00:04:07:00'
+        title: Taleとの出会い
+        guide: |-
+          風船が引っかかっている木のそばで、Taleと出会います。Jot、Echo、Boom、Taleは自己紹介をし、あいさつを交わします。
+          Boomが風船を取ろうとしますが、高くて手が届きません。子どもたちも一緒に手を伸ばして手伝います。
+
+          TPRアクション
+          ・Reach up high：「Stay in your place and reach up high.」に合わせて、両手を上に伸ばしましょう。
+          ・A little higher：「A little higher!」の合図で、さらに高く手を伸ばしましょう。
+          安全のため、ジャンプをせず、両足を床につけたまま行います。
+      - start: '00:04:07:00'
+        end: '00:05:19:00'
+        title: みんなで風船を取ろう
+        guide: |-
+          4人は協力して風船を取る方法を考えます。キャラクターたちは肩に乗り合って高い場所にある風船に手を伸ばし、ついに風船を取ることに成功します。
+          子どもたちも応援の言葉をかけ、成功したら一緒に喜びます。
+
+          TPRアクション
+          ・Cheer：「Everyone, say 'You can do it!'」の呼びかけに合わせて、「You can do it!」と言って応援しましょう。
+          ・Celebrate：「Put your hands up and say hooray!」の合図で、両手を上げながら「Hooray!」と言いましょう。
+      - start: '00:05:19:00'
+        end: '00:06:00:00'
+        title: 風船からのメッセージ
+        guide: |-
+          風船に小さなカードがついていることに気づきます。カードには「Hello, new friends!」と書かれていました。風船をきっかけに出会った4人は、新しい友達になったことを喜び、お互いにあいさつをします。
+
+          参加ポイント
+          4人が順番に「Hello!」とあいさつする様子に注目しましょう。この場面には、特定のTPR指示はありません。
+      - start: '00:06:00:00'
+        end: '00:06:43:00'
+        title: また会おうね
+        guide: |-
+          夕方になり、4人は家に帰る時間になります。お互いに「See you!」とあいさつをして別れます。子どもたちもキャラクターに向かって手を振り、一緒に別れのあいさつをします。
+
+          TPRアクション
+          ・Wave goodbye：「Wave to your new friends.」の合図で、キャラクターたちに向かって手を振りましょう。
+          ・Say goodbye：「Can you say it, too?」に合わせて、一緒に「See you!」と言いましょう。
+      - start: '00:06:43:00'
+        end: '00:06:58:00'
+        title: 風船の次の冒険
+        guide: |-
+          誰もいなくなった公園で、風船が再び飛んでいきます。ナレーターが風船の行き先を問いかけ、次の新しい友達との出会いを予感させながら物語が終わります。
+
+          参加ポイント
+          風船がどこへ向かうのかを想像しながら、物語の最後を楽しみましょう。この場面には、特定のTPR指示はありません。
+      - start: '00:06:58:00'
+        end: '00:08:03:00'
+        title: キャラクタークイズ
+        guide: |-
+          開始時刻は推定です。物語に登場したキャラクターと風船を使った復習クイズを行います。画面を見て、名前を英語で答えましょう。
+
+          1. Who is this? → Echo
+          2. Who is this? → Tale
+          3. Who is this? → Boom
+          4. Who is this? → Jot
+          5. What is this? → The balloon
+
+          質問の後に解答時間があります。答えが発表される前に英語で答えてみましょう。最後に「Great job, boys and girls!」「Bye-bye!」のあいさつでレッスンを終了します。
+  story-2:
+    title: The Playground Hello Hunt
+    video: https://player.vimeo.com/external/1247526401.m3u8?s=26cb44df329ef7b69abd23ab2050f6b56dbbc751&logging=false
+    subtitle_asset: subtitles/story-2.en.vtt
+    objective: |-
+      Jot（ジョット）が公園で見つけた地図を手がかりに、Echo（エコー）、Boom（ブーム）、Tale（テイル）と出会う物語です。赤い丸、青い星、黄色い四角のヒントをたどりながら、新しい友達とあいさつや自己紹介をします。
+      最後には、4人で協力して魔法のFriendship Circleを開きます。物語を通して英語の表現に親しみ、指さしや足踏み、ジャンプなどのTPRアクションを楽しみます。
+
+      メインターゲット表現
+      ・Hello!（こんにちは！）
+      ・I'm ○○.（私は○○です）
+      ・Nice to meet you!（はじめまして！）
+      ・Nice to meet you, too!（こちらこそ、はじめまして！）
+      ・See you!（またね！）
+    materials: 教材の準備はいりません。
+    tip: ヒントが出たら、子どもたちが絵を指さしたり答えたりする時間を取りましょう。体を動かすときは周りとの間隔を確保してください。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:44:00'
+        title: 公園で地図を発見
+        guide: |-
+          Jotが公園にやってくると、不思議な地図を見つけます。ナレーターの呼びかけに合わせて、画面にある地図を探します。
+
+          TPRアクション
+          ・Look and Point：「Everyone, look at the map!」「Can you point to it?」の合図で、画面の地図を見つけて指をさしましょう。
+      - start: '00:00:44:00'
+        end: '00:01:25:00'
+        title: 赤い丸のヒント
+        guide: |-
+          地図に描かれた最初のヒントは、赤い丸です。Jotが公園の中を探すと、赤い滑り台を発見します。子どもたちも滑り台を探して指をさし、その場で足踏みをしながらJotと一緒に向かいます。
+
+          TPRアクション
+          ・Point：「Point to the red slide!」の合図で、画面の赤い滑り台を指さしましょう。
+          ・March：「Now march with me!」「March, march, march!」に合わせて、その場で元気よく足踏みをしましょう。
+      - start: '00:01:25:00'
+        end: '00:02:04:00'
+        title: Echoとの出会い
+        guide: |-
+          赤い滑り台のそばで、JotはEchoと出会います。2人は「Hello!」「I'm ○○.」「Nice to meet you!」を使って、あいさつと自己紹介をします。
+          Echoが青い星のシールを見つけたと伝えると、Jotは次のヒントだと気づきます。
+
+          TPRアクション
+          ・Wave Hello：「Wave hello to Echo!」の合図に合わせて、Echoに向かって手を振りましょう。
+      - start: '00:02:04:00'
+        end: '00:02:29:00'
+        title: 青い星のヒント
+        guide: |-
+          次のヒントは、青い星と2つのブランコです。JotとEchoは公園の中から青いブランコを探します。子どもたちも画面をよく見て、ブランコを見つけましょう。
+
+          TPRアクション
+          ・Look and Point：「Look carefully.」「Point to the blue swings!」の合図で、画面の中から青いブランコを探して指をさしましょう。
+      - start: '00:02:29:00'
+        end: '00:03:13:00'
+        title: Boomとの出会い
+        guide: |-
+          青いブランコのそばで、JotとEchoはBoomと出会います。3人は「Hello!」「I'm ○○.」「Nice to meet you!」を使って、あいさつと自己紹介をします。
+          BoomはJotたちのゲームに興味を持ち、自分が見つけた黄色い四角のシールを見せます。
+
+          TPRアクション
+          ・Clap：「Clap for the new clue!」の合図に合わせて、新しいヒントを見つけたことを拍手でお祝いしましょう。
+      - start: '00:03:13:00'
+        end: '00:03:47:00'
+        title: 黄色い四角のヒント
+        guide: |-
+          3人は黄色い四角のヒントを手がかりに、公園の中を探します。滑り台やブランコを確認した後、黄色い砂場を発見します。子どもたちも立ち上がって砂場を探しましょう。
+
+          TPRアクション
+          ・Stand Up：「Stand up and look.」の合図で立ち上がり、画面をよく見ましょう。
+          ・Point：「Point to the yellow sandbox!」の合図で、黄色い砂場を指さしましょう。
+      - start: '00:03:47:00'
+        end: '00:04:14:00'
+        title: Taleとの出会い
+        guide: |-
+          黄色い砂場で、JotたちはTaleと出会います。4人は「Hello!」「I'm ○○.」「Nice to meet you!」を使って、あいさつと自己紹介をします。
+          Taleが最後のヒントである虹色の丸を見せると、みんなで公園の中から探します。
+
+          TPRアクション
+          ・Sit Down：「Sit and look around the playground.」の合図で座りましょう。
+          ・Look Around：「Can you see a rainbow circle?」の問いかけに合わせて、画面の中から虹色の丸を探しましょう。
+      - start: '00:04:14:00'
+        end: '00:05:03:00'
+        title: 魔法のFriendship Circle
+        guide: |-
+          4人は公園の中央にある魔法のFriendship Circleを発見します。Friendship Circleは眠っていて、まだ光っていません。
+          子どもたちも一緒に3つのアクションを行います。すべてのアクションが成功すると、Friendship Circleが光り始めます。
+
+          TPRアクション
+          ・Jump：「Jump one time!」の合図で、1回ジャンプしましょう。
+          ・Stomp：「Now stomp two times!」の合図で、その場で床を2回踏み鳴らしましょう。
+          ・Thumbs Up：「Now give a thumbs up!」の合図で、親指を立ててサムズアップのポーズをしましょう。
+          周囲の子どもとぶつからないよう、十分なスペースを確保して行いましょう。
+      - start: '00:05:03:00'
         end: '00:05:44:00'
-        title: 虹色の輪
-        guide: 虹色の輪を見つけたら、動画に合わせて１回ジャンプ、２回足踏み、最後に親指を立てましょう。
+        title: 4人の新しい友達
+        guide: |-
+          Friendship Circleの中に、Jot、Echo、Boom、Taleを表す4つの光る星が現れます。4人はヒントをすべて見つけ、Friendship Circleを開くことができたことを喜びます。
+
+          TPRアクション
+          ・Wave Hello：「Wave hello to the four new friends!」の合図で、4人のキャラクターに向かって手を振りましょう。
+          ・Clap：「Now clap for our new friendship!」の合図で、拍手で新しい友情をお祝いしましょう。
       - start: '00:05:44:00'
-        end: '00:06:17:00'
-        title: お別れのあいさつ
-        guide: 帰る時間になったら、友だちに手を振って「See you!」と言いましょう。
-      - start: '00:06:17:00'
-        title: おさらいクイズ
-        guide: 画面に出てくる形やキャラクターの名前を答えましょう。
+        end: '00:06:16:00'
+        title: また会おうね
+        guide: |-
+          公園のベルが鳴り、家に帰る時間になります。Jot、Echo、Boom、Taleはお互いに「See you!」と言って、別れのあいさつをします。
+          最後にJotが地図の裏を見る演出があり、次の冒険を予感させながら物語が終わります。
+
+          TPRアクション
+          ・Wave Goodbye：「Wave to your friends and say 'See you!'」の合図に合わせて、手を振りながら「See you!」と言いましょう。
+      - start: '00:06:16:00'
+        end: '00:07:18:00'
+        title: ヒントとキャラクターのクイズ
+        guide: |-
+          物語に登場した図形とキャラクターを使った復習クイズを行います。画面に表示される絵を見て、図形やキャラクターの名前を英語で答えましょう。
+
+          1. What is this?（これは何かな？）→ Star（星）
+          2. What is this?（これは何かな？）→ Square（四角）
+          3. What is this?（これは何かな？）→ Circle（丸）
+          4. Who is this?（これは誰かな？）→ Tale
+          5. Who is this?（これは誰かな？）→ Jot
+
+          質問の後に解答時間があります。答えが発表される前に英語で答えてみましょう。最後に「Great job, boys and girls!」「Bye-bye!」のあいさつでレッスンを終了します。
+  story-3:
+    title: Monsters on the Move
+    video: https://player.vimeo.com/external/1247889122.m3u8?s=e9605fd1c935a72f73d62f7c0cb456bcb9b8be8d&logging=false
   basic:
     title: みんなであいさつしよう！
     subtitle_asset: subtitles/basic.en.vtt
