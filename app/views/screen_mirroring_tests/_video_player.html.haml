@@ -1,12 +1,12 @@
 .lm-video-stage{ hidden: true, inert: true, 'aria-hidden': 'true', tabindex: -1,
                   data: { 'screen-mirroring-test-target': 'stage' } }
-  %video.lm-video{ src: basic_video,
+  %video.lm-video{ src: basic_lesson.fetch('video'),
                    playsinline: true,
                    preload: 'metadata',
                    'x-webkit-airplay': 'allow',
                    data: { 'screen-mirroring-test-target': 'player', kind: 'basic' } }
     %track{ kind: 'subtitles', srclang: 'en', label: 'English (auto-generated)',
-            src: asset_path(@lesson_content.fetch('lessons').fetch('basic').fetch('subtitle_asset')),
+            src: asset_path(basic_lesson.fetch('subtitle_asset')),
             data: { 'screen-mirroring-test-target': 'captionFallback' } }
   %button.lm-close.lm-video-close{ type: 'button',
                                    'aria-label': '動画を閉じる',

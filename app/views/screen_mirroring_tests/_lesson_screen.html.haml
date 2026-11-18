@@ -2,6 +2,7 @@
   phrases = {
     'see-you' => 'See you!', 'hello' => 'Hello!', 'nice-to-meet-you' => 'Nice to meet you!'
   }
+  basic_lesson = first_week.fetch('lessons').fetch('basic')
 
 .lm-lesson-dialog{ hidden: true,
                    role: 'dialog',
@@ -10,35 +11,44 @@
                    data: { 'screen-mirroring-test-target': 'lessonDialog' } }
   .lm-stage{ data: { 'screen-mirroring-test-target': 'lessonScreen' } }
     .lm-splash-viewport
-      .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash' } }
-        = image_tag 'w1-splash.jpg', class: 'lm-splash', alt: 'Hello! Nice to meet you! See you!'
-        - phrases.each do |position, phrase|
-          %button.lm-speech-hotspot{ class: "lm-speech-#{position}",
-                                     type: 'button',
-                                     'aria-label': "#{phrase} を聞く",
-                                     data: { action: 'screen-mirroring-test#speak', phrase: } }
-            %span.lm-speech-icon{ 'aria-hidden': 'true' }
-              = render 'icon', name: 'sound'
+      .lm-splash-frame{ data: { 'screen-mirroring-test-target': 'splash', week: 1 } }
+        = image_tag first_week.fetch('splash'), class: 'lm-splash', alt: first_week.fetch('splash_alt'),
+                    data: { 'screen-mirroring-test-target': 'splashImage' }
+        %div{ data: { 'screen-mirroring-test-target': 'greetingHotspots' } }
+          - phrases.each do |position, phrase|
+            %button.lm-speech-hotspot{ class: "lm-speech-#{position}",
+                                       type: 'button',
+                                       'aria-label': "#{phrase} を聞く",
+                                       data: { action: 'screen-mirroring-test#speak', phrase: } }
+              %span.lm-speech-icon{ 'aria-hidden': 'true' }
+                = render 'icon', name: 'sound'
     - phrases.each do |clip, phrase|
       %audio{ preload: 'auto',
               src: asset_path("speech/#{clip}.wav"),
               data: { 'screen-mirroring-test-target': 'phraseAudio', phrase: } }
+    - @lesson_weeks.each do |week, content|
+      - content.fetch('flashcards').each do |phrase|
+        - asset = "week-#{week}/#{phrase.downcase.delete_suffix('!').tr(' ', '-')}"
+        %audio{ preload: 'none',
+                src: asset_path("#{asset}.mp3"),
+                data: { 'screen-mirroring-test-target': 'phraseAudio', phrase:, week:, artwork: asset_path("#{asset}.svg") } }
     %p.lm-sr-only{ role: 'status', data: { 'screen-mirroring-test-target': 'speechStatus' } }
     %header.lm-lesson-menu{ data: { 'screen-mirroring-test-target': 'menu' } }
       .lm-lesson-badge
         .lm-badge-icon
           = render 'icon', name: 'book'
         %div
-          %p{ data: { 'screen-mirroring-test-target': 'lessonWeek' } } 第１週 · ベーシックイングリッシュ
-          %h2 みんなであいさつしよう！
+          %p{ data: { 'screen-mirroring-test-target': 'lessonWeek' } } 第1週 · ベーシックイングリッシュ
+          %h2{ data: { 'screen-mirroring-test-target': 'lessonTitle' } }= basic_lesson.fetch('title')
       %nav.lm-lesson-tabs{ 'aria-label': 'レッスンメニュー',
                            data: { 'screen-mirroring-test-target': 'lessonTabs' } }
         %button.lm-pill.lm-primary{ type: 'button',
-                                    data: { action: 'screen-mirroring-test#playVideo',
-                                            src: basic_video,
-                                            caption_src: asset_path(@lesson_content.fetch('lessons').fetch('basic').fetch('subtitle_asset')),
+                                    data: { 'screen-mirroring-test-target': 'basicTab',
+                                            action: 'screen-mirroring-test#playVideo',
+                                            src: basic_lesson.fetch('video'),
+                                            caption_src: asset_path(basic_lesson.fetch('subtitle_asset')),
                                             kind: 'basic',
-                                            title: 'みんなであいさつしよう！' } } ベーシックイングリッシュ
+                                            title: basic_lesson.fetch('title') } } ベーシックイングリッシュ
         %button.lm-pill{ type: 'button',
                          data: { action: 'screen-mirroring-test#openFlashcards' } } フラッシュカード
         %button.lm-pill{ type: 'button',
@@ -49,7 +59,8 @@
         %button.lm-pill{ type: 'button',
                          'aria-haspopup': 'dialog',
                          'aria-expanded': 'false',
-                         data: { action: 'screen-mirroring-test#openPicker', kind: 'story' } }
+                         data: { 'screen-mirroring-test-target': 'storyTab',
+                                 action: 'screen-mirroring-test#openPicker', kind: 'story' } }
           ストーリータイム
       %button.lm-close{ type: 'button',
                         'aria-label': 'レッスンを終了',
@@ -64,13 +75,15 @@
       .lm-picker-scroll{ data: { 'screen-mirroring-test-target': 'pickerScroll' } }
         %section{ data: { 'screen-mirroring-test-target': 'pickerActivity' },
                   'aria-label': 'アクティビティを選ぶ' }
-          = render 'content_cards', items: activities, kind: 'activity'
+          - activities.each do |week, items|
+            %div{ hidden: week != 1, data: { 'screen-mirroring-test-target': 'pickerWeek', week: } }
+              = render 'content_cards', items:, kind: 'activity'
         %section{ hidden: true,
                   data: { 'screen-mirroring-test-target': 'pickerStory' },
                   'aria-label': 'ストーリーを選ぶ' }
-          = render 'content_cards', items: stories, video: story_video, kind: 'story'
+          = render 'content_cards', items: stories, video: story_video, kind: 'story', story_lesson:
       .lm-picker-navigation{ data: { 'screen-mirroring-test-target': 'pickerNavigation' } }
 
     = render 'flashcards'
 
-    = render 'video_player', basic_video:
+    = render 'video_player', basic_lesson:

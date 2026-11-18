@@ -10,17 +10,9 @@
                                    data: { action: 'screen-mirroring-test#closeFlashcards' } }
       = render 'icon', name: 'close'
     .lm-flash-illustration
-      %svg.lm-flash-crop{ viewBox: '540 180 520 665', role: 'img',
-                          'aria-label': '手を振ってあいさつするキャラクター',
-                          data: { 'screen-mirroring-test-target': 'cardImage' } }
-        %defs
-          %clippath#lm-flash-crop-clip
-            %rect{ x: 540, y: 180, width: 520, height: 665,
-                   data: { 'screen-mirroring-test-target': 'cardClipRect' } }
-        %image{ href: asset_path('w1-flashcard-characters.png'), width: 1672, height: 941,
-                'clip-path': 'url(#lm-flash-crop-clip)' }
+      %img.lm-flash-artwork{ alt: '', data: { 'screen-mirroring-test-target': 'cardArtwork' } }
       %button.lm-round.lm-card-sound{ type: 'button',
-                                      'aria-label': 'フレーズを聞く',
+                                      'aria-label': '音声を聞く',
                                       data: { action: 'screen-mirroring-test#speakCard' } }
         = render 'icon', name: 'sound'
     %p.lm-flash-phrase{ data: { 'screen-mirroring-test-target': 'cardPhrase' },

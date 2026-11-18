@@ -10,7 +10,7 @@ class ScreenMirroringTestsController < ApplicationController
     when '2.8.3.1'
       render :reference_2831
     else
-      @lesson_content = AiSenseiContent.week_one
+      @lesson_weeks = AiSenseiContent.weeks
     end
   end
 

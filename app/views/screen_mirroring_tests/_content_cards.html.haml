@@ -3,11 +3,12 @@
   story_description = '登場人物といっしょに、英語のお話を楽しみましょう。次に何が起こるかな？'
 
 .lm-card-grid
-  - items.each_with_index do |item, index|
+  - items.each do |item|
     - title = activity ? item.fetch('title') : item
+    - week = activity ? item.fetch('week') : 1
     - video_source = activity ? item.fetch('video') : video
     - content_key = activity ? item.fetch('key') : 'story'
-    - caption_src = asset_path(@lesson_content.fetch('lessons').fetch(content_key).fetch('subtitle_asset'))
+    - caption_src = asset_path((activity ? item : story_lesson).fetch('subtitle_asset'))
     %article.lm-card.lm-content-card{ data: { category: activity ? item.fetch('category') : nil } }
       .lm-content-thumbnail{ class: "lm-thumbnail-#{kind}",
                              data: { 'screen-mirroring-test-target': 'thumbnail', video: video_source } }
@@ -16,7 +17,7 @@
           = render 'icon', name: activity ? 'activity' : 'book'
           %span= title
       - if activity
-        %p.lm-eyebrow 第１週 · アクティビティ #{index + 1}
+        %p.lm-eyebrow 第#{week}週 · アクティビティ #{content_key.delete_prefix('activity-')}
       %h2= title
       %p.lm-card-description= activity ? item.fetch('description') : story_description
       .lm-card-buttons
@@ -24,7 +25,7 @@
                                     data: { action: 'screen-mirroring-test#launchVideo',
                                             src: video_source,
                                             caption_src:,
-                                            content_key:,
+                                            content_key:, week:,
                                             kind:,
                                             title: } }
           = activity ? 'アクティビティをはじめる' : 'ストーリーをはじめる'
@@ -32,12 +33,11 @@
         - if activity
           %button.lm-pill{ type: 'button',
                            data: { action: 'screen-mirroring-test#previewResource',
-                                   title: "#{title} · 先生用ガイド", content_key:, resource_kind: 'guide' } }
+                                   title: "#{title} · 先生用ガイド", content_key:, week: } }
             先生用ガイド
             = render 'icon', name: 'download'
-          - unless item.fetch('category') == '教材不要'
-            %button.lm-pill{ type: 'button',
-                             data: { action: 'screen-mirroring-test#previewResource',
-                                     title: "#{title} · レッスン教材", resource_kind: 'materials' } }
+          - if item['worksheet']
+            = link_to asset_path(item.fetch('worksheet')), class: 'lm-pill',
+                      download: File.basename(item.fetch('worksheet')), data: { turbo: false } do
               レッスン教材
               = render 'icon', name: 'download'

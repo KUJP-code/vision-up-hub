@@ -7,7 +7,7 @@
   .lm-resource-scroll{ data: { 'screen-mirroring-test-target': 'resourceScroll' } }
     %p.lm-eyebrow レッスン資料
     %h2#lm-resource-title{ data: { 'screen-mirroring-test-target': 'resourceTitle' } }
-    %div{ data: { 'screen-mirroring-test-target': 'resourceGuide' } }
+    %div
       %h3 レッスンのねらい
       %p{ data: { 'screen-mirroring-test-target': 'resourceObjective' } }
       %h3 準備するもの
@@ -15,16 +15,3 @@
       %h3 声かけのヒント
       %p{ data: { 'screen-mirroring-test-target': 'resourceTip' } }
       %div{ data: { 'screen-mirroring-test-target': 'resourceChapters' } }
-    %div{ hidden: true, data: { 'screen-mirroring-test-target': 'resourceMaterials' } }
-      %h3 教材・準備ガイド
-      .lm-resource-file
-        %p 教材PDF 1：子ども用プリント。子ども１人につき１枚印刷してください。活動に合わせて、色えんぴつやはさみをご用意ください。
-        %button.lm-pill{ type: 'button', disabled: true }
-          PDFをダウンロード
-          = render 'icon', name: 'download'
-      .lm-resource-file
-        %p 教材PDF 2：先生用の完成見本。活動を始める前に見せたり、作り方を説明したりするときに使います。
-        %button.lm-pill{ type: 'button', disabled: true }
-          PDFをダウンロード
-          = render 'icon', name: 'download'
-      %p.lm-hint 教材PDFはまだ登録されていません。

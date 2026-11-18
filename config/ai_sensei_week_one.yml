@@ -1,5 +1,11 @@
-# Source timecodes use HH:MM:SS:FF. The Vimeo HLS manifests confirm 24 fps.
+# Guide timecodes use HH:MM:SS:FF. Vimeo streams at 24 fps.
 fps: 24
+splash: w1-splash.jpg
+splash_alt: あいさつをするキャラクターたち
+description: あいさつのことばを聞いて、みんなで楽しく英語を話してみましょう。
+phrases: Hello! / Nice to meet you! / See you!
+vocabulary: Hello / friends / goodbye
+flashcards: [Hello!, Nice to meet you!, See you!]
 lessons:
   story:
     title: ストーリータイム
@@ -23,41 +29,53 @@ lessons:
     chapters:
       - start: '00:00:00:07'
         end: '00:00:34:00'
-        title: あいさつ＆オープニング
-        guide: Jotが「I'm Jot. Nice to meet you.」と挨拶・自己紹介をし、子どもたちの名前を尋ねます。「お友だちへのあいさつの仕方」が今日のテーマであることを伝えましょう。
+        title: オープニング
+        guide: Jotが「I'm Jot. Nice to meet you.」と挨拶・自己紹介をします。「お友だちへのあいさつの仕方」を学びます。
       - start: '00:00:34:00'
         end: '00:03:53:00'
-        title: ターゲット表現の導入とリピート練習
-        guide: >-
-          お手本、リピート練習、実践を通して３つの基本フレーズを導入します。
-          「Hello」はTailと練習。会ったときの言葉をまねし、大きく手を振る「ビッグ・ハロー」にも挑戦しましょう。
-          「Nice to meet you」はEchoとTailのお手本を見て、新しいお友だちに会ったときの言葉として繰り返します。画面のEchoに向かって語りかけてみましょう。
-          「See you」はBoomがおうちに帰る場面を見て、お別れの言葉としてリピートします。
-          ３つの表現をおさらいし、Tailの直接の挨拶に応えましょう。Jotの呼びかけに合わせ、お友だちと手を振って「Hello」と言い合います。
-          必要に応じて一時停止し、全員が交代で挨拶できる時間をつくりましょう。
+        title: 今週のフレーズ、ワードを確認
+        guide: |-
+          お手本を見てリピートします。
+          「Hello」：誰かに会った時の言葉
+          「Nice to meet you」：新しいお友だちに会ったときの言葉
+          「See you」：別れ際に言う言葉
       - start: '00:03:53:00'
         end: '00:06:15:00'
         title: 単語・表現チェッククイズ
-        guide: >-
-          ２択クイズと「だれが消えたかな？」記憶ゲームで理解度を確認します。
-          Tailのシチュエーションクイズ３問に答えましょう。①Jotが教室に入るときは「Hello」（See youとの２択）。
-          ②Echoが新しいお友だちに会うときは「Nice to meet you」（See youとの２択）。③Boomがおうちに帰るときは「See you」（Helloとの２択）。
-          子どもたちの答えを待ってから確認します。記憶ゲームでは消えたキャラクターを当て、場面に合う挨拶を考えます。
-          Boomが再登場したら「Hello」、Echoが退出したら「See you」と言ってみましょう。
+        guide: |-
+          2択クイズと記憶ゲームで理解度を確認します。
+
+          シチュエーションクイズ（00:03:49:13 – 00:05:10:15）
+          Tailからの2択問題（3問）。
+          1. Jotが教室に入ってきたとき（Hello か See you。正解：Hello）
+          2. Echoが新しいお友だちに会ったとき（See you か Nice to meet you。正解：Nice to meet you）
+          3. Boomがおうちに帰るとき（See you か Hello。正解：See you）
+
+          「だれが消えたかな？」記憶ゲーム（00:05:10:17 – 00:06:21:06）
+          消えたキャラクターを当て、場面に合った挨拶をします。Boomが再登場したら「Hello」、Echoが退出したら「See you」が正解です。
       - start: '00:06:15:00'
         end: '00:08:04:00'
-        title: TPR 体を動かすアクティビティ
-        guide: 立ち上がって英語と動きを結びつけます。「Hello」は手を振り、全身の「ビッグ・ハロー」にも挑戦。「Nice to meet you」は手を差し出してエアー握手。「See you」は後ろに一歩下がりながらバイバイします。周りにぶつからない間隔を取りましょう。
+        title: 体を動かすアクティビティ
+        guide: |-
+          立ち上がり、英語フレーズと動きを連動させて定着させます。
+          「Hello」手を振る：通常の手振りと全身で「ビッグ・ハロー」。
+          「Nice to meet you」エアー握手：手を差し出してやさしく握手。
+          「See you」一歩下がってバイバイ：後ろに一歩下がりながら手振り。
       - start: '00:08:04:00'
         end: '00:08:56:00'
         title: ふりかえりクイズ
-        guide: Echoの進行で、選択肢なしで挨拶を言ってみましょう。①Jotがお友だちに会ったら「Hello」。②Boomに新しいお友だちができたら「Nice to meet you」。③Tailがおうちに帰ったら「See you」。すぐに言えなくても、考える時間をつくりましょう。
+        guide: |-
+          選択肢なしで即座にあいさつを言えるか確認します。
+          1. Jotがお友だちに会ったとき「Hello」
+          2. Boomに新しいお友だちができたとき「Nice to meet you」
+          3. Tailがおうちに帰るとき「See you」
       - start: '00:08:56:00'
         end: '00:09:20:03'
-        title: エンディング＆お別れ
-        guide: 子どもたちの頑張りをほめましょう。「帰る時間には何と言うかな？」と問いかけ、全員で手を振って「See you!」と挨拶して終わります。
+        title: さいごに
+        guide: 子どもたちの頑張りを褒めます。「帰る時間の言葉」を問いかけ、全員で手を振り「See you!」で終了します。
   activity-1:
     title: あいさつの工作
+    worksheet: worksheets/w1-cut-and-paste.pdf
     subtitle_asset: subtitles/activity-1.en.vtt
     category: 工作
     description: Jot、Echo、Helloのパーツを切って貼り、あいさつの作品を作りましょう。
@@ -68,73 +86,122 @@ lessons:
     chapters:
       - start: '00:00:00:07'
         end: '00:00:21:11'
-        title: あいさつ・導入
-        guide: Echoが「Hello everyone」と挨拶し、名前を覚えているか問いかけます。「I'm Echo. It's great to see you again.」と自己紹介したら、今日の工作を紹介。「Are you ready? Let's go.」の呼びかけに応えましょう。
-      - start: '00:00:21:12'
+        title: イントロ
+        guide: Echoがあいさつをし、これから工作を始めることを伝えています。
+      - start: '00:00:20:00'
         end: '00:01:41:20'
-        title: ターゲット表現の導入とリピート
-        guide: 「Scissors（はさみ）」「Glue（のり）」「Paper（紙）」を確認します。ワークシートのJot、Echo、Helloを見せ、「Say it with me. Hello.」に合わせて一緒に発音しましょう。言えたらしっかりほめます。
+        title: 使うものの紹介
+        guide: |-
+          工作で使うものを確認します。
+          ・Scissors / はさみ
+          ・Glue / のり
+          ・Paper / 紙
+
+          ワークシートに描かれているキャラクター・単語を一緒に確認します。
+          ・Jot
+          ・Echo
+          ・HELLO!
       - start: '00:01:41:22'
         end: '00:02:17:01'
-        title: アクティビティ① 貼る場所の確認
-        guide: 切り取ったパーツをどこに置くか確認します。Jotの場所、Echoの場所、Helloを入れる吹き出しを指さしましょう。一時停止したら、全員が貼る場所を確認できてから再生します。
+        title: アクティビティの手順 · 貼る場所の確認
+        guide: |-
+          アクティビティの手順（00:01:41:22 – 00:03:22:10）
+          切り取ったパーツをどこに置くかを事前に確認します。
         pause_after: true
       - start: '00:02:17:03'
         end: '00:02:47:00'
-        title: アクティビティ② 切る作業
-        guide: 「Cut out Jot」「Cut out Echo」「Cut out Hello」に合わせてパーツを切り取ります。「Cut carefully」と声をかけ、はさみを丁寧に使えるよう見守りましょう。一時停止したら、切り終えるまで待ってから再生します。
+        title: 切る作業
+        guide: |-
+          キャラクターや単語を順番にハサミで切り取ります。
+          ・Cut out / 切り抜く
         pause_after: true
       - start: '00:02:47:01'
         end: '00:03:22:10'
-        title: アクティビティ③ 貼る作業
-        guide: 「Put glue on Jot. Stick Jot here.」のお手本を見て、のりをつけてJotを貼ります。同じようにEchoを貼り、最後に吹き出しの中にHelloを貼りましょう。一時停止したら、作品が完成してから再生します。
+        title: 貼る作業
+        guide: |-
+          のりをつけて1つずつ貼っていきます。
+          ・Put glue on ○○ / ○○にのりをつけてね。
+          ・Stick ○○ here / ○○をここに貼ってね。
         pause_after: true
       - start: '00:03:22:12'
         end: '00:03:58:12'
-        title: ふりかえり・おさらい
-        guide: 完成した作品を指さしながらクイズに答えます。「Who is this?」でJotとEchoの名前を確認。「What is this? ... Hello! Can you say it? Hello.」と声をかけ、子どもたちの発話を促しましょう。
-      - start: '00:03:58:14'
-        end: '00:04:02:10'
-        title: お別れのあいさつ
-        guide: 「Great job!」と子どもたちの頑張りをほめます。手を振りながら「Bye-bye」と元気よく挨拶して終わりましょう。
+        title: おさらい
+        guide: クイズ形式で理解度を確認します。キャラクターの名前や「Hello!」を問いかけ、発話を促します。
   activity-2:
     title: なまえをなぞって色ぬり
+    worksheet: worksheets/w1-name-trace.pdf
     subtitle_asset: subtitles/activity-2.en.vtt
     category: ぬりえ
     description: 自分の名前をなぞって好きな色でぬり、作品を見せながら自己紹介しましょう。
     video: https://player.vimeo.com/external/1225144026.m3u8?s=19c3f10e7d44865e728639377e81f7a33f5c74e3&logging=false
+    # This guide counts up to frame 29.
+    timecode_fps: 30
     objective: 自分の名前をなぞって色をぬり、「Hello. I'm [名前].」で自己紹介しましょう。
     materials: 名前のワークシート、えんぴつ、クレヨンを用意しましょう。
     tip: 名前をなぞるときはゆっくり進めましょう。必要に応じて一時停止し、色ぬりや自己紹介の時間を十分につくります。
     chapters:
       - start: '00:00:00:00'
-        end: '00:00:22:21'
-        title: あいさつ・導入
-        guide: Jotが「Hello, everyone」と挨拶し、「Do you remember me?」と名前を覚えているか尋ねます。自己紹介の後、今日の活動を紹介。「Today we will write our name. Let's trace. Let's color. Ready? Let's go.」に応えて始めましょう。
-      - start: '00:00:22:23'
-        end: '00:01:39:12'
-        title: ターゲット表現・道具の導入
-        guide: 「Paper（紙）」「Pencil（えんぴつ）」「Crayons（クレヨン）」と「My name（私の名前）」を繰り返します。Jotが「I trace my name. Trace, trace, trace」と名前をなぞり、「Hello. I'm Jot.」と自己紹介するお手本を見ましょう。「Now it's your turn.」で子どもたちの番につなげます。
-      - start: '00:01:39:14'
-        end: '00:02:22:14'
-        title: アクティビティ① なぞり書き
-        guide: 紙とえんぴつを持ち、「Point to your name」で自分の名前を探して指さします。「Trace your name. Slowly.」と声をかけ、ゆっくり名前をなぞりましょう。
-      - start: '00:02:22:16'
-        end: '00:02:56:03'
-        title: アクティビティ② 色ぬり
-        guide: Red、Blue、Yellowなど好きな色を選びます。「Color your name」と声をかけ、なぞった名前をぬりましょう。一人ひとりが選んだ色も英語で確認してみます。
-      - start: '00:02:56:05'
-        end: '00:03:38:03'
-        title: アクティビティ③ 作品の見せ合いと自己紹介
-        guide: 「Show your name」で作品を見せ合います。自分の名前を指さしながら「Hello. I'm [名前].」と声に出して自己紹介しましょう。
-      - start: '00:03:38:05'
-        end: '00:04:15:22'
-        title: ふりかえり・おさらい
-        guide: 「What is this?」には「My name」、「Did we trace?」には「Yes, we traced」、「Did we color?」には「Yes, we colored」と答えておさらいします。最後に「What do we say?」と挨拶の言葉を促しましょう。
-      - start: '00:04:16:00'
-        end: '00:04:19:10'
-        title: お別れのあいさつ
-        guide: 「Great job today!」と頑張りをほめます。「See you next time」と元気に手を振って終わりましょう。
+        end: '00:00:20:05'
+        title: イントロ
+        guide: Jotがあいさつをし、今日のアクティビティでは自分の名前を書く練習をすることを伝えます。「Let's trace.」「Let's color.」と声をかけ、名前をなぞることと色を塗ることを紹介します。
+      - start: '00:00:22:29'
+        end: '00:01:07:08'
+        title: 使うものの紹介
+        guide: |-
+          アクティビティで使うものと、関連する単語を確認します。
+          ・Paper / 紙
+          ・Pencil / 鉛筆
+          ・Crayons / クレヨン
+          ・Name / 名前
+
+          Jotが自分の名前を書いた紙を見せ、名前をなぞる練習を紹介します。
+          ・My name / 私の名前
+          ・Trace / なぞる
+      - start: '00:01:14:27'
+        end: '00:03:36:20'
+        title: アクティビティの手順
+        guide: |-
+          自分の名前をなぞる
+          Jotがお手本を見せた後、自分の紙と鉛筆を用意します。自分の名前を見つけて指で指し、文字をゆっくりとなぞります。
+          ・Take your paper / 紙を持ってね。
+          ・Take your pencil / 鉛筆を持ってね。
+          ・Find your name / 自分の名前を見つけてね。
+          ・Point to your name / 自分の名前を指さしてね。
+          ・Trace your name / 自分の名前をなぞってね。
+          ・Slowly / ゆっくり。
+
+          名前に色を塗る
+          なぞり終わったら、自分の名前に好きな色を塗ります。Jotが色の例を紹介し、自由に好きな色を選ぶよう促します。
+          ・Color your name / 自分の名前に色を塗ってね。
+          ・Red / 赤
+          ・Blue / 青
+          ・Yellow / 黄色
+
+          完成
+          完成したら、自分の名前を見せて指さします。「Hello, I'm ...」というフレーズを使って、自分の名前を英語で発表する練習をします。
+          ・Show your name / 自分の名前を見せてね。
+          ・Point to your name / 自分の名前を指さしてね。
+          ・Hello, I'm ... / こんにちは、私は〇〇です。
+      - start: '00:03:38:00'
+        end: '00:04:18:02'
+        title: おさらい
+        guide: |-
+          クイズ形式で、今回のアクティビティで行ったことを振り返ります。
+
+          What is this?（00:03:38:00 – 00:03:50:11）
+          自分の名前を指して、何であるかを答えます。答え：My name.
+
+          Did we trace?（00:03:53:08 – 00:04:05:01）
+          名前をなぞったかどうかを確認します。答え：Yes. We traced.
+
+          Did we color?（00:04:06:06 – 00:04:18:02）
+          名前に色を塗ったかどうかを確認します。答え：Yes. We colored.
+
+          最後に「What do we say?」と問いかけ、「Hello, I'm ...」のフレーズをもう一度練習します。
+      - start: '00:04:15:20'
+        end: '00:04:19:04'
+        title: おわりのあいさつ
+        guide: Jotが子どもたちの頑張りを褒め、終了します。
   activity-3:
     title: Helloの点つなぎ
     subtitle_asset: subtitles/activity-3.en.vtt
@@ -145,27 +212,68 @@ lessons:
     materials: 点つなぎのワークシート、えんぴつを用意しましょう。
     tip: 数字を順に指さしてから線を引くと取り組みやすくなります。必要に応じて一時停止し、子どもたちのペースに合わせて進めましょう。
     chapters:
-      - start: '00:00:00:06'
-        end: '00:00:32:11'
-        title: あいさつ・導入
-        guide: Echoが「Hello everyone」と呼びかけ、名前を覚えているか確認して「I'm Echo」と自己紹介します。一緒に「Hello」と挨拶したら、点つなぎでHelloの文字を書く活動を紹介。「Are you ready? Let's begin.」で始めましょう。
-      - start: '00:00:32:13'
-        end: '00:02:41:11'
-        title: ターゲット表現・道具の導入と練習
-        guide: 「Pencil（えんぴつ）」「Worksheet（ワークシート）」を確認。「Teacher pencil, please」「Teacher worksheet, please」と先生に英語でリクエストしてみましょう。配り終えるまで、シートの「Stars」や１〜６の数字を数えます。１から順に線を引くお手本を見せましょう。
-      - start: '00:02:41:13'
-        end: '00:03:51:23'
-        title: アクティビティ① 点つなぎの実践
-        guide: 「Find one（１を見つけて）」「Find two（２を見つけて）」「Draw a line（線を引こう）」と声をかけます。数字を順に探し、線でつないでいきましょう。
-      - start: '00:03:52:00'
-        end: '00:04:05:02'
-        title: アクティビティ② カウントと完成の確認
-        guide: 線をつなぎながら、全員で「One, Two, Three, Four, Five, Six」と数え上げます。最後まで線を結べたか、手元を確認しましょう。
-      - start: '00:04:05:04'
-        end: '00:05:41:15'
-        title: ふりかえり・おさらい
-        guide: 「What does it say? ... It says hello.」と完成した単語を確認します。「Hello」「Nice to meet you」「See you」の基本フレーズを繰り返しましょう。最後に１〜６のカウントと、浮かび上がった「Hello」をもう一度おさらいします。
-      - start: '00:05:41:17'
-        end: '00:05:52:00'
-        title: お別れのあいさつ
-        guide: 「You all did a wonderful job!」と頑張りをほめましょう。「Bye bye. See you.」と元気に手を振って終わります。
+      - start: '00:00:00:00'
+        end: '00:00:31:00'
+        title: イントロ
+        guide: Echoがあいさつをし、自分の名前を覚えているか問いかけます。「Hello!」と一緒にあいさつをした後、今回のアクティビティでは「Hello」を書く練習をすることを伝えます。
+      - start: '00:00:31:00'
+        end: '00:01:14:07'
+        title: 使うものの紹介
+        guide: |-
+          アクティビティで使うものを確認します。
+          ・Pencil / 鉛筆
+          ・Worksheet / ワークシート
+
+          先生に必要なものをお願いする練習をします。
+          ・Pencil, please. / 鉛筆をください。
+          ・Worksheet, please. / ワークシートをください。
+      - start: '00:01:21:00'
+        end: '00:02:12:00'
+        title: ワークシートの確認
+        guide: |-
+          ワークシートに描かれている星や数字を確認します。
+          ・Star / 星
+          ・Number 1–6 / 数字の1～6
+          Echoと一緒に1から6まで数え、数字の順番を確認します。
+      - start: '00:02:12:00'
+        end: '00:04:21:13'
+        title: アクティビティの手順
+        guide: |-
+          数字をつなぐ練習（00:02:12:00 – 00:02:41:00）
+          Echoがお手本を見せながら、数字の1と2、続いて3を見つけて線でつなぎます。
+          ・Find number one / 1を見つけてね。
+          ・Find number two / 2を見つけてね。
+          ・Draw a line / 線を引いてね。
+
+          自分で数字をつなぐ（00:02:41:00 – 00:03:51:22）
+          子どもたちが自分でワークシートに取り組みます。1から6までの数字を順番に見つけ、線をつないでいきます。
+          ・Now it's your turn / 今度はみんなの番だよ。
+          ・Find one / 1を見つけてね。
+          ・Find two / 2を見つけてね。
+          ・Number three / 3だよ。
+          ・Number four / 4だよ。
+          ・Number five / 5だよ。
+          ・Number six / 6だよ。
+
+          完成した単語の確認（00:03:51:23 – 00:04:05:05）
+          Echoと一緒に1から6まで数えます。線をつなぐと「HELLO」という単語が完成することを確認し、みんなで「Hello!」と発音します。
+          ・Let's count together / 一緒に数えよう。
+      - start: '00:04:05:05'
+        end: '00:05:43:00'
+        title: 英語表現の練習とおさらい
+        guide: |-
+          完成した「HELLO」を使って、3つのあいさつ表現を練習します。Echoの後に続いて、みんなで発音します。
+          ・Hello. / こんにちは。
+          ・Nice to meet you. / はじめまして。
+          ・See you. / またね。
+          最後に3つの表現をもう一度順番に練習します。
+
+          数字の確認（00:05:21:08 – 00:05:30:25）
+          1から6まで順番に数えます。
+
+          単語の確認（00:05:31:12 – 00:05:43:00）
+          「What is this?」と問いかけ、完成した単語を答えます。答え：Hello!
+      - start: '00:05:43:00'
+        end: '00:05:51:20'
+        title: おわりのあいさつ
+        guide: Echoが子どもたちの頑張りを褒め、今日のアクティビティを終了します。「Bye bye! See you!」とあいさつをして終わります。

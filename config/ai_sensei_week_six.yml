@@ -1,0 +1,200 @@
+fps: 24
+splash: week-6/splash.webp
+splash_alt: キャラクターたちとねこ、いぬ、ハムスター、うさぎ
+description: 動物の名前を覚えて、好きな動物を英語で伝えましょう。
+phrases: What animals do you like? / I like cats.
+vocabulary: Cats / Dogs / Hamsters / Rabbits
+flashcards: [Cats, Dogs, Hamsters, Rabbits]
+lessons:
+  basic:
+    subtitle_asset: subtitles/week-6/basic.en.vtt
+    title: Animals（動物）
+    video: https://player.vimeo.com/external/1239740985.m3u8?s=853145fcd25bdfff8d048aec389742cd90c5601e&logging=false
+    objective: ４種類の動物の名前を言い、「I like cats.」のように好きな動物を伝えましょう。
+    materials: 教材の準備はいりません。動物のまねができるスペースを確保しましょう。
+    tip: シルエットや鳴き声のクイズでは、必要に応じて答えが出る前に動画を一時停止しましょう。
+    chapters:
+      - start: '00:00:00:18'
+        end: '00:00:47:16'
+        title: イントロ
+        guide: Jot（ジョット）があいさつし、前回学んだ色（Orange、Purple、White、Black、Brown）を確認してから、「Animals（動物）」を紹介します。「Do you know any animals?（動物を知っていますか？）」と質問したら、知っている動物を答えてみましょう。
+      - start: '00:00:47:16'
+        end: '00:03:25:22'
+        title: 動物の名前を覚えよう！
+        guide: |-
+          Cats（ねこ）、Dogs（いぬ）、Hamsters（ハムスター）、Rabbits（うさぎ）が紹介されたら、動画に合わせて一緒に発音しましょう。
+          「What animals do you like?（どんな動物が好きですか？）」に、「I like cats.（ねこが好きです）」のように答えます。動画に合わせて、自分の好きな動物を英語で言ってみましょう。
+      - start: '00:03:25:22'
+        end: '00:05:25:11'
+        title: クイズタイム！
+        guide: |-
+          Tale（テイル）が動物のシルエットを使ったクイズを出題します。写真を見て、何の動物か答えてもらいましょう。必要に応じて、答えが表示される前に一時停止してください。
+          正解は順に、① Rabbits、② Hamsters、③ Cats、④ Dogs。発表後はTaleと一緒に声に出して練習しましょう。
+      - start: '00:05:25:11'
+        end: '00:08:05:02'
+        title: 身体を動かしながら動物になりきろう！
+        guide: |-
+          Boom（ブーム）の動きを確認してから、子どもたちも同じ動きをしてみましょう。
+          Cat（ねこ）：両手を胸の前で曲げ、ねこの前足のように構えます。
+          Dog（いぬ）：しゃがんで両手を犬の前足のように構え、舌を出して犬が息をしているまねをします。
+          Hamster（ハムスター）：両手を口元に持っていき、食べ物を食べるまねをします。
+          Rabbit（うさぎ）：頭の上で両手をうさぎの耳のようにして、ぴょんぴょん跳ねます。
+      - start: '00:08:05:02'
+        end: '00:10:19:01'
+        title: おさらい
+        guide: |-
+          Echo（エコー）と一緒に、聞こえた鳴き声や音から動物を当てましょう。必要に応じて答えが表示される前に一時停止してください。
+          ① Dog：「Woof! Woof!」と鳴いてみましょう。
+          ② Rabbit：うさぎのように跳ねる音を出してみましょう。
+          ③ Cat：「Meow!」と鳴いてみましょう。
+          ④ Hamsters：「Squeak!」と鳴いてみましょう。
+      - start: '00:10:19:01'
+        end: '00:10:37:00'
+        title: エンディング
+        guide: キャラクターが全員登場します。子どもたちと一緒に「Bye bye!」とあいさつしてレッスンを終えましょう。
+  activity-1:
+    subtitle_asset: subtitles/week-6/activity-1.en.vtt
+    title: 折り紙で犬を作ろう
+    category: 工作
+    description: 折り紙で犬の顔を折り、目や鼻、口を描きましょう。
+    worksheet: worksheets/w6-origami-dog.pdf
+    video: https://player.vimeo.com/external/1239740992.m3u8?s=c27e960fc4c4fa7a0d6c33e584bee1a3c809217c&logging=false
+    objective: 折り紙で犬を作りながら、顔のパーツの名前と工作の指示を英語で確認しましょう。
+    materials: 折り紙と色鉛筆を用意しましょう。
+    tip: 折り方のお手本を見せてから、子どもたちが折る時間を取りましょう。
+    chapters:
+      - start: '00:00:00:21'
+        end: '00:00:10:13'
+        title: イントロ
+        guide: 「Woof, woof!」と犬の鳴き声をまねしながら、折り紙で作る犬の完成見本を紹介します。
+      - start: '00:00:10:13'
+        end: '00:01:49:20'
+        title: 使うものの紹介
+        guide: Origami paper（折り紙）とColored pencil（色鉛筆）を確認します。Echoと一緒に「Paper, please.（紙をください）」「Colored pencil, please.（色鉛筆をください）」と練習します。
+      - start: '00:01:49:20'
+        end: '00:02:23:00'
+        title: 顔の部分の確認
+        guide: 完成した犬を見ながら、Dog（犬）、Head（頭）、Ears（耳）、Eyes（目）、Nose（鼻）を確認し、Echoと一緒に「Dog!」と繰り返します。
+      - start: '00:02:23:00'
+        end: '00:05:00:22'
+        title: アクティビティの手順
+        guide: |-
+          折り紙を三角形にする（00:02:23:00 – 00:03:20:05）
+          「Turn the paper（紙の向きを変えて）」「Fold in half（半分に折って）」「Press（押さえて）」でTriangle（三角形）を作り、「Open it（開いて）」「Unfold（広げて）」に合わせて開きます。
+
+          犬の耳を作る（00:03:20:05 – 00:03:55:04）
+          「Take the right corner（右の角を持って）」「Fold it down（下に折って）」で耳を折り、「One ear（片方の耳）」「Two ears（両方の耳）」を確認します。
+
+          犬の顔の形を完成させる（00:03:55:05 – 00:04:33:03）
+          「Turn it over（裏返して）」「Fold the top corner down（上の角を下に折って）」「Fold it up a little（少し上に折って）」に合わせて折ります。
+
+          顔を描く（00:04:33:04 – 00:04:53:10）
+          「Draw two eyes（目を２つ描いて）」「One, two（１、２）」「Draw a nose（鼻を描いて）」「Draw a mouth（口を描いて）」に合わせて描きます。
+      - start: '00:04:53:11'
+        end: '00:05:14:20'
+        title: おさらい
+        guide: |-
+          「What is it?」（00:04:53:11 – 00:05:07:05）で完成した作品を問いかけます。「It's a dog!」と答え、「Dog!」ともう一度発音します。
+          「Do you like your dog?」（00:05:07:06 – 00:05:15:01）で自分の作品が好きかを問いかけ、「Yes!」と答えてもらいましょう。
+      - start: '00:05:15:02'
+        end: '00:05:17:09'
+        title: おわりのあいさつ
+        guide: Echoが子どもたちの頑張りをほめ、「Bye bye!」とあいさつします。
+  activity-2:
+    subtitle_asset: subtitles/week-6/activity-2.en.vtt
+    title: 動物を見つけて数えよう
+    category: 脳トレ
+    description: 画面に隠れた動物を見つけ、名前と数を英語で言ってみましょう。
+    video: https://player.vimeo.com/external/1239741013.m3u8?s=47d4c038b11c007e765315195a922adc1401d1ba&logging=false
+    # The guide timecodes count up to frame 29, even though Vimeo streams at 24 fps.
+    timecode_fps: 30
+    objective: ４種類の動物を見つけ、名前の単数形と複数形を使いながら、何匹いるか英語で数えましょう。
+    materials: 教材の準備はいりません。
+    tip: 動物を見つけたら、答えを確認する前に一緒に数えましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:20:04'
+        title: イントロ
+        guide: Jotが、これから画面に登場する動物を探すことを紹介します。
+      - start: '00:00:20:03'
+        end: '00:01:38:29'
+        title: 動物の名前を覚えよう
+        guide: 画面に登場するDog（犬）、Cat（猫）、Rabbit（うさぎ）、Hamster（ハムスター）を発音します。Dog / Dogs、Cat / Cats、Rabbit / Rabbits、Hamster / Hamstersと単数形と複数形を確認しましょう。
+      - start: '00:01:40:00'
+        end: '00:05:00:09'
+        title: 動物を見つけて数えよう
+        guide: |-
+          公園のうさぎ（00:01:40:00 – 00:02:47:02）
+          「What do you see?（何が見えるかな？）」「Can you find the rabbits hiding in the park?（公園に隠れているうさぎを見つけられるかな？）」「Can you see the rabbit?（うさぎが見えるかな？）」「Let's count together（一緒に数えよう）」と問いかけます。答えは「Five rabbits.（うさぎが５匹）」です。
+
+          ビーチの犬（00:02:47:03 – 00:03:30:19）
+          「Can you see the dog?（犬が見えるかな？）」と問いかけます。答えは「Four dogs.（犬が４匹）」です。
+
+          リビングルームの猫（00:03:30:20 – 00:04:15:04）
+          「Can you see the cat?（猫が見えるかな？）」「How many?（何匹いるかな？）」と問いかけます。答えは「Three cats.（猫が３匹）」です。
+
+          教室のハムスター（00:04:15:05 – 00:05:00:09）
+          「Can you see the hamster?（ハムスターが見えるかな？）」「How many?（何匹いるかな？）」と問いかけます。答えは「Two hamsters.（ハムスターが２匹）」です。
+      - start: '00:05:00:10'
+        end: '00:07:42:03'
+        title: 大きな画面から動物を探して数えよう
+        guide: |-
+          東京駅前の風景を見ながら、Jotが「What do you see?」と問いかけます。10秒間で犬、猫、うさぎ、ハムスターの４種類を探します。その後、それぞれの動物を10秒間で数えます。
+          00:05:51:04 – 00:06:17:01：Two dogs.（犬が２匹）
+          00:06:17:02 – 00:06:45:12：Four cats.（猫が４匹）
+          00:06:45:13 – 00:07:15:19：Five rabbits.（うさぎが５匹）
+          00:07:15:20 – 00:07:42:03：Three hamsters.（ハムスターが３匹）
+      - start: '00:07:42:04'
+        end: '00:08:54:02'
+        title: もう一度チャレンジ
+        guide: 「Find the animals（動物を探してね）」の合図で、Jotが名前を言った動物（Dog、Cat、Rabbit、Hamster）を５秒ずつで見つけます。最後にDogs、Cats、Rabbits、Hamstersと複数形を繰り返します。
+      - start: '00:08:54:03'
+        end: '00:09:19:02'
+        title: おさらい・おわりのあいさつ
+        guide: Jotの「What did we find today?」に合わせ、今日見つけたDogs（犬）、Cats（猫）、Rabbits（うさぎ）、Hamsters（ハムスター）をもう一度言いましょう。
+  activity-3:
+    subtitle_asset: subtitles/week-6/activity-3.en.vtt
+    title: 紙皿でねこを作ろう
+    category: 工作
+    description: 紙皿にねこの顔を描き、耳と毛糸のひげを貼って仕上げましょう。
+    worksheet: worksheets/w6-paper-plate-cat.pdf
+    video: https://player.vimeo.com/external/1239741014.m3u8?s=d7ce187e3125671e2b83aba065f75ef18867a705&logging=false
+    objective: 紙皿でねこを作りながら、顔のパーツや材料の英語を練習しましょう。
+    materials: 紙皿、色鉛筆、のり、耳のパーツ、毛糸を用意しましょう。
+    tip: 色塗りや貼り付けの時間を取り、完成したねこをみんなで見せ合いましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:11:14'
+        title: イントロ
+        guide: 紙皿でねこを作るアクティビティを紹介します。
+      - start: '00:00:11:15'
+        end: '00:02:24:09'
+        title: 使うものの紹介
+        guide: Paper plate（紙皿）、Colored pencils（色鉛筆）、Glue（のり）、Ears（耳）、Yarn（毛糸）を確認します。「Teacher, may we have the materials, please?（先生、材料をください）」と練習しましょう。材料がそろったら何を作るか問いかけ、「A cat!（ねこ！）」と答えます。
+      - start: '00:02:24:10'
+        end: '00:02:48:17'
+        title: 完成形とパーツの確認
+        guide: 完成した作品を見ながら、Eyes（目）、Nose（鼻）、Mouth（口）、Whiskers（ひげ）を確認します。
+      - start: '00:02:48:18'
+        end: '00:04:31:01'
+        title: アクティビティの手順
+        guide: |-
+          Step 1：顔を描く（00:02:52:02 – 00:03:15:12）
+          「Draw the face（顔を描いて）」「Draw eyes（目を描いて）」「Draw a nose（鼻を描いて）」「Draw a mouth（口を描いて）」に合わせて描きます。
+
+          Step 2：色を塗る（00:03:15:15 – 00:03:51:02）
+          「Color your cat（ねこに色を塗って）」「Use your colored pencils（色鉛筆を使って）」「Keep coloring（塗り続けて）」に合わせて色を塗ります。
+
+          Step 3：耳を貼る（00:03:51:03 – 00:04:12:20）
+          「Glue the ears（耳を貼って）」「Put on some glue（のりをつけて）」を聞いて、耳を貼ります。
+
+          Step 4：ひげをつける（00:04:12:21 – 00:04:25:22）
+          「Add the yarn（毛糸をつけて）」「Glue the yarn（毛糸を貼って）」「Make whiskers（ひげを作って）」「Long whiskers（長いひげ）」を聞いて、ひげをつけます。
+      - start: '00:04:25:23'
+        end: '00:04:52:19'
+        title: 完成した作品の発表
+        guide: 「Show me your cat（作ったねこを見せてね）」に合わせてカメラに作品を見せましょう。Echoが作品をほめたら、みんなで「Cat!」と繰り返します。
+      - start: '00:04:52:20'
+        end: '00:04:56:11'
+        title: おわりのあいさつ
+        guide: Echoが子どもたちの頑張りをほめ、「Bye bye!」とあいさつします。

@@ -1,10 +1,18 @@
 :ruby
   story_video = 'https://player.vimeo.com/external/1225145089.m3u8?' \
                 's=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false'
-  basic_video = @lesson_content.fetch('lessons').fetch('basic').fetch('video')
-  activities = @lesson_content.fetch('lessons').filter_map do |key, lesson|
-    lesson.merge('key' => key) if key.start_with?('activity-')
+  activities = @lesson_weeks.to_h do |week, content|
+    items = content.fetch('lessons').filter_map do |key, lesson|
+      lesson.merge('key' => key, 'week' => week) if key.start_with?('activity-')
+    end
+    [week, items]
   end
+  player_content = @lesson_weeks.transform_values do |week|
+    week.merge('splash_url' => asset_path(week.fetch('splash')),
+               'basic_caption_url' => asset_path(week.fetch('lessons').fetch('basic').fetch('subtitle_asset')))
+  end
+  first_week = @lesson_weeks.fetch(1)
+  story_lesson = first_week.fetch('lessons').fetch('story')
   stories = ['にげだしたふうせん', 'はらぺこのくま', 'まほうのぼうし', 'ちいさな種', 'おやすみ、おつきさま']
   nav_items = [
     %w[home ホーム home],
@@ -17,7 +25,7 @@
 .lesson-mockup{ data: { controller: layout_probe ? 'screen-mirroring-test layout-probe' : 'screen-mirroring-test',
                        'layout-probe-url-value': layout_probe ? ai_sensei_layout_report_path : nil,
                        action: 'pointerover->screen-mirroring-test#prepareVideo focusin->screen-mirroring-test#prepareVideo pointerdown->screen-mirroring-test#prepareVideo',
-                       'screen-mirroring-test-content-value': @lesson_content.to_json } }
+                       'screen-mirroring-test-content-value': player_content.to_json } }
   %aside.lm-sidebar{ 'aria-label': 'AI先生 ナビゲーション',
                      data: { 'screen-mirroring-test-target': 'sidebar' } }
     %button.lm-nav-button.lm-nav-toggle{ type: 'button',
@@ -66,35 +74,36 @@
     %main.lm-pages
       %section{ data: { 'screen-mirroring-test-target': 'page', view: 'home' },
                 'aria-label': '今日のレッスン' }
-        %div{ data: { 'screen-mirroring-test-target': 'homeLesson' } }
-          = render 'lesson_card', week: 1
-          = render 'content_cards', items: activities, kind: 'activity'
+        - @lesson_weeks.each do |week, content|
+          %div{ hidden: week != 1, data: { 'screen-mirroring-test-target': 'homeWeek', week: } }
+            = render 'lesson_card', week:, content:
+            = render 'content_cards', items: activities.fetch(week), kind: 'activity'
         %div{ hidden: true, data: { 'screen-mirroring-test-target': 'homeUpcoming' } }
-          = render 'upcoming_lesson_card', week: 2, week_target: 'upcomingWeek'
-        %p.lm-hint.lm-sample-note 第１週はサンプルレッスンです。次の週のレッスンは準備中です。
+          = render 'upcoming_lesson_card'
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'basic' },
                 'aria-label': 'ベーシックイングリッシュのメニュー' }
-        = render 'lesson_card', week: 1
+        - @lesson_weeks.each do |week, content|
+          = render 'lesson_card', week:, content:
         .lm-upcoming-grid
-          - (2..10).each do |week|
+          - ((2..10).to_a - @lesson_weeks.keys).each do |week|
             = render 'upcoming_lesson_card', week:
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'activities' },
                 'aria-label': 'アクティビティのメニュー' }
         .lm-filters{ 'aria-label': 'アクティビティの種類' }
-          - ['全て', *activities.map { |activity| activity.fetch('category') }.uniq].each do |category|
+          - ['全て', *activities.values.flatten.map { |activity| activity.fetch('category') }.uniq].each do |category|
             %button.lm-pill{ type: 'button',
                              'aria-pressed': category == '全て' ? 'true' : 'false',
                              data: { action: 'screen-mirroring-test#filterActivities',
                                      category:,
                                      'screen-mirroring-test-target': 'filter' } }= category
-        = render 'content_cards', items: activities, kind: 'activity'
+        = render 'content_cards', items: activities.values.flatten, kind: 'activity'
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'stories' },
                 'aria-label': 'ストーリーのメニュー' }
-        = render 'content_cards', items: stories, video: story_video, kind: 'story'
+        = render 'content_cards', items: stories, video: story_video, kind: 'story', story_lesson:
 
   = render 'resource_dialog'
 
-  = render 'lesson_screen', basic_video:, story_video:, activities:, stories:
+  = render 'lesson_screen', first_week:, story_video:, activities:, stories:, story_lesson:

@@ -1,0 +1,235 @@
+# Guide timecodes count up to frame 29, even though Vimeo streams at 24 fps.
+fps: 30
+splash: week-19/splash.webp
+splash_alt: キャラクターたちが晴れ、雨、曇り、雪を紹介するイラスト
+description: ４種類の天気を覚えて、今日の天気を英語で答えましょう。
+phrases: How's the weather? / It's sunny.
+vocabulary: Sunny / Rainy / Cloudy / Snowy
+flashcards: [Sunny, Rainy, Cloudy, Snowy]
+lessons:
+  basic:
+    subtitle_asset: subtitles/week-19/basic.en.vtt
+    title: Weather（天気）
+    video: https://player.vimeo.com/external/1247162640.m3u8?s=5d50aa6db7cb8bf767784741b490b66a2932ce47&logging=false
+    objective: ４種類の天気を英語で言い、「How's the weather?」と尋ねたり答えたりしましょう。
+    materials: 教材の準備はいりません。天気のジェスチャーができるスペースを確保しましょう。
+    tip: クイズで答えが表示される前に必要に応じて一時停止し、子どもたちが考える時間を取りましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:31:00'
+        title: イントロ
+        guide: Jot（ジョット）があいさつし、「Weather（天気）」を紹介します。外で遊ぶ前に天気を知っておく必要があることを伝えます。カーテンが開くと太陽が登場します。最初の天気「Sunny（晴れ）」を一緒に確認しましょう。
+      - start: '00:00:31:01'
+        end: '00:05:00:00'
+        title: 天気の表現を覚えよう！
+        guide: |-
+          Sunny（晴れ）、Rainy（雨）、Cloudy（曇り）、Snowy（雪）の４つの単語を学びます。
+          「How's the weather?（天気はどうですか？）」と聞き、「It's sunny.（晴れです。）」「It's rainy.（雨です。）」「It's cloudy.（曇りです。）」「It's snowy.（雪です。）」と答えます。
+          最後に子どもたちと窓の外を見て、今の天気がどれに当てはまるか考えましょう。
+      - start: '00:05:00:00'
+        end: '00:07:24:09'
+        title: クイズタイム！
+        guide: |-
+          Tale（テイル）が天気の写真やイラストを見せます。答えが表示される前に、必要に応じて一時停止しましょう。
+          クイズ① 今日の天気は何でしょう？ 正解は順に、① Sunny（晴れ）、② Cloudy（曇り）、③ Rainy（雨）、④ Snowy（雪）です。
+
+          クイズ② 天気予報からなくなったのは何？
+          日本の天気予報を見た後、Taleの合図で目を閉じます。目を開けて、なくなったものを考えましょう。① Rainy（雨）、② Snowy（雪）、③ Taleが順になくなります。
+      - start: '00:07:24:09'
+        end: '00:09:00:00'
+        title: 身体を動かしながら天気を表現しよう！
+        guide: |-
+          Boom（ブーム）のジェスチャーを見てから、子どもたちも同じ動きをしてみましょう。
+          Sunny（晴れ）：太陽のように両手を上げ、身体を大きく伸ばしましょう。
+          Rainy（雨）：指を動かして、雨粒が降る様子を表現しましょう。
+          Snowy（雪）：両腕で肩を抱き、寒そうに身体を震わせましょう。
+          最後にBoomの合図で座り、次のアクティビティに備えましょう。
+      - start: '00:09:00:00'
+        end: '00:09:45:00'
+        title: おさらい
+        guide: Echo（エコー）が「How's the weather?」と質問したら、画面の天気を見て英語で答えましょう。① It's sunny. ② It's rainy. ③ It's cloudy. ④ It's snowy.
+      - start: '00:09:45:00'
+        end: '00:10:06:10'
+        title: エンディング
+        guide: キャラクターが全員登場し、あいさつをしてレッスンを締めくくります。子どもたちと一緒に「See you!」と答えましょう。
+  activity-1:
+    subtitle_asset: subtitles/week-19/activity-1.en.vtt
+    title: 色紙を貼って虹を作ろう
+    category: 工作
+    description: ６色の名前を英語で言いながら、色紙を貼って虹を完成させましょう。
+    video: https://player.vimeo.com/external/1246964319.m3u8?s=9f1aa75bc3fbdda69d52f9a9120a023fc348d85e&logging=false
+    objective: 色の名前を英語で練習し、６色の色紙を貼って虹を作りましょう。
+    materials: 虹のワークシート、６色の色紙（赤、オレンジ、黄色、緑、青、ピンク）、のりを用意しましょう。
+    tip: 色紙を貼る前に「What color is this?」と聞いて色を確かめましょう。
+    chapters:
+      - start: '00:00:00:26'
+        end: '00:00:24:07'
+        title: イントロ
+        guide: Jotがあいさつをし、色のない虹を見せます。「Can you help me put the colors back?」と問いかけ、みんなで色鮮やかな虹を完成させることを伝えます。
+      - start: '00:00:24:08'
+        end: '00:01:35:10'
+        title: 使うものの紹介
+        guide: |-
+          Rainbow worksheet（虹のワークシート）、Colored paper（色紙）、Glue（のり）を確認します。
+          Red（赤）、Orange（オレンジ）、Yellow（黄色）、Green（緑）、Blue（青）、Pink（ピンク）の６色を一緒に発音しましょう。
+          「Teacher, may we have the materials, please?（先生、材料をもらえますか？）」と練習します。
+      - start: '00:01:35:11'
+        end: '00:02:01:20'
+        title: アクティビティ・チュートリアル
+        guide: |-
+          虹の一部分に少量ののりをつけ、色紙を１枚ずつ置いて押さえます。
+          「Put some glue on the rainbow（虹にのりをつけて）」「Pick up one piece of colored paper（色紙を１枚取って）」「Put it on the rainbow and press（虹の上に置いて押さえて）」に合わせて、「Glue, put and press（のりをつけて、置いて、押さえて）」の順に進めます。
+      - start: '00:02:01:21'
+        end: '00:07:11:05'
+        title: アクティビティの手順
+        guide: |-
+          赤（00:02:01:21 – 00:02:51:21）
+          「What color is this?（これは何色かな？）」「It's red.（赤色だよ）」と確認し、「Put some glue on the red part（赤い部分にのりをつけて）」「Add your red paper pieces（赤い色紙を貼って）」に合わせて貼ります。
+
+          オレンジ（00:02:51:22 – 00:03:36:15）
+          「Orange（オレンジ色）」「Add a little glue to the orange stripe（オレンジ色の部分に少しのりをつけて）」「Press them down gently（優しく押さえて）」に合わせて貼ります。
+
+          黄色（00:03:36:16 – 00:04:30:16）
+          「What color is it?（何色かな？）」「It's yellow.（黄色だよ）」「Put some glue on the yellow stripe（黄色の部分にのりをつけて）」「Add your yellow paper pieces（黄色の色紙を貼って）」に合わせて貼ります。
+
+          緑（00:04:30:17 – 00:05:26:16）
+          「It's green.（緑色だよ）」「Add a little glue to the green stripe（緑色の部分に少しのりをつけて）」「Add your green paper pieces（緑色の色紙を貼って）」に合わせて貼ります。
+
+          青（00:05:26:17 – 00:06:19:02）
+          「It's blue.（青色だよ）」「Put some glue on the blue stripe（青色の部分にのりをつけて）」「Add your blue paper pieces（青色の色紙を貼って）」「Press, press, press（ぎゅっ、ぎゅっ、ぎゅっ）」に合わせて貼ります。
+
+          ピンク（00:06:19:03 – 00:07:11:05）
+          「Can you guess what it is?（何色か分かるかな？）」「It's pink.（ピンク色だよ）」「Add a little glue to the pink stripe（ピンク色の部分に少しのりをつけて）」「This is our last color（これが最後の色だよ）」を聞いて、虹を完成させます。
+      - start: '00:07:11:06'
+        end: '00:07:44:00'
+        title: 完成した作品の発表・おさらい
+        guide: |-
+          Jotが「Look at our beautiful rainbows（きれいな虹を見てね）」「Hold up your rainbow and show me（虹を持ち上げて見せてね）」と声をかけます。
+          完成した虹を見せ合い、Red（赤）、Orange（オレンジ）、Yellow（黄色）、Green（緑）、Blue（青）、Pink（ピンク）の６色をもう一度確認します。
+      - start: '00:07:44:01'
+        end: '00:07:49:20'
+        title: おわりのあいさつ
+        guide: 「See you next time. Bye bye!」とあいさつします。
+  activity-2:
+    subtitle_asset: subtitles/week-19/activity-2.en.vtt
+    title: 天気に合う絵を見つけて貼ろう
+    category: 工作
+    description: 絵を切り取り、晴れ、雨、雪のどれに合うか考えて貼りましょう。
+    video: https://player.vimeo.com/external/1247013952.m3u8?s=e8b14812695d4ab31b469c9a4b3ad4503a7723cd&logging=false
+    objective: ９枚の絵を、Sunny、Rainy、Snowyの３種類の天気に分けましょう。
+    materials: 天気のワークシート、はさみ、のりを用意しましょう。
+    tip: のりをつける前に、絵をどの欄に置くか子どもたちに聞いてみましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:40:04'
+        title: イントロ
+        guide: キャラクターがあいさつし、天気の絵がバラバラになったと伝えます。間違った組み合わせを見せながら、子どもたちに絵を正しい場所へ戻すお手伝いをお願いします。
+      - start: '00:00:40:05'
+        end: '00:01:15:08'
+        title: 使うものの紹介
+        guide: Weather Match worksheet（天気のワークシート）、Scissors（はさみ）、Glue（のり）を確認します。ワークシートに描かれているSunny（晴れ）、Rainy（雨）、Snowy（雪）も確認します。
+      - start: '00:01:15:09'
+        end: '00:02:38:22'
+        title: アクティビティの準備
+        guide: |-
+          絵を切り取る（00:01:15:29 – 00:01:50:25）
+          「We have nine pictures（絵が９枚あるよ）」「Cut carefully along the dotted lines（点線に沿って丁寧に切って）」「Nice and slowly（ゆっくりね）」に合わせて、右側の絵を切り取ります。
+          「Spread out your pictures（絵を広げて並べて）」と声をかけ、はさみは安全な場所に置きます。
+
+          天気の確認（00:01:51:09 – 00:02:38:22）
+          ワークシートを見て、Sunny（晴れ）、Rainy（雨）、Snowy（雪）を一緒に確認します。
+      - start: '00:02:38:23'
+        end: '00:08:27:01'
+        title: アクティビティの手順
+        guide: |-
+          太陽で貼り方のお手本（00:02:39:15 – 00:03:15:24）
+          「What is it?（これは何かな？）」「It's the sun（太陽だよ）」「Where does the sun go?（太陽はどこに入るかな？）」「Sunny, rainy or snowy?（晴れ、雨、雪のどれかな？）」と確認し、のりをつけてSunnyの欄に貼ります。
+
+          傘（00:03:15:14 – 00:03:58:13）
+          「Find the umbrella（傘を探して）」「Where does it go?（どこに入るかな？）」と聞きます。答えはRainy（雨）です。
+
+          雪だるま（00:03:58:14 – 00:04:37:08）
+          「Find the snowman（雪だるまを探して）」「Where does it go?」と聞きます。答えはSnowy（雪）です。
+
+          サングラス（00:04:37:09 – 00:05:16:14）
+          「Find the sunglasses（サングラスを探して）」「Where do they go?」と聞きます。答えはSunny（晴れ）です。
+
+          雪の結晶（00:05:16:15 – 00:05:52:23）
+          「Find the snowflake（雪の結晶を探して）」「Does it go in sunny, rainy or snowy?」と聞きます。答えはSnowy（雪）です。
+
+          長靴（00:05:53:00 – 00:06:30:01）
+          「Find the rain boots（長靴を探して）」「Where do they go?」と聞きます。答えはRainy（雨）です。
+
+          日よけ帽子（00:06:30:02 – 00:07:10:02）
+          「Find the sun hat（日よけ帽子を探して）」「Where does it go?」と聞きます。答えはSunny（晴れ）です。
+
+          そり（00:07:10:03 – 00:07:48:14）
+          「Find the sled（そりを探して）」「Where does it go?」と聞きます。答えはSnowy（雪）です。
+
+          レインコート（00:07:48:15 – 00:08:26:21）
+          「Find the raincoat（レインコートを探して）」「Where does it go?」と聞きます。答えはRainy（雨）です。
+      - start: '00:08:26:22'
+        end: '00:09:10:04'
+        title: おさらい
+        guide: |-
+          ３つの絵を見て、Sunny、Rainy、Snowyのどれに合うかをクイズで振り返ります。
+          Umbrella（傘、00:08:31:00 – 00:08:43:00）：Rainy（雨）
+          Sun hat（日よけ帽子、00:08:43:00 – 00:08:55:01）：Sunny（晴れ）
+          Snowman（雪だるま、00:08:55:01 – 00:09:10:04）：Snowy（雪）
+      - start: '00:09:10:04'
+        end: '00:09:29:10'
+        title: おわりのあいさつ
+        guide: 絵を切り取り、天気に合う場所に貼ったことを振り返ります。「See you next time. Bye bye!」とあいさつします。
+  activity-3:
+    subtitle_asset: subtitles/week-19/activity-3.en.vtt
+    title: 天気探偵になろう
+    category: 脳トレ
+    description: ヒントや少しずつ見える絵から、どんな天気か当ててみましょう。
+    video: https://player.vimeo.com/external/1247145933.m3u8?s=a86cf46d1f384eb8732ea58a3b5f240dd337e890&logging=false
+    objective: ヒントから天気を予想し、「It's rainy.」のように英語で答えましょう。
+    materials: 教材の準備はいりません。
+    tip: カーテンが開く前や絵が全部見える前に、子どもたちが予想を伝える時間を取りましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:00:29:05'
+        title: イントロ
+        guide: Echoがあいさつし、カーテンが閉まっていて外の天気が見えないことを伝えます。子どもたちがWeather Detectives（天気の探偵）になって、ヒントから天気を当てるゲームを紹介します。
+      - start: '00:00:29:06'
+        end: '00:01:56:03'
+        title: 天気の名前を確認しよう
+        guide: |-
+          Sunny（晴れ）、Rainy（雨）、Cloudy（くもり）、Snowy（雪）を確認しましょう。
+          「Open, please.（開けてください）」と言ってカーテンを開け、「How's the weather?（天気はどうかな？）」と聞きます。答えは「It's sunny.（晴れです。）」です。
+      - start: '00:01:56:04'
+        end: '00:07:08:26'
+        title: 天気探偵ゲーム
+        guide: |-
+          Echoが３つのヒントを順に見せます。「What do you think the weather is?」と問いかけ、子どもたちが予想した後に「Open, please.」と声を合わせ、カーテンを開けて答えを確認します。
+
+          第１問（00:01:56:15 – 00:03:16:14）
+          ① Rain boots（長靴） ② Umbrella（傘） ③ Rain is falling（雨が降っている）
+          答え：It's rainy.（雨です。）
+
+          第２問（00:03:16:15 – 00:04:37:11）
+          ① Sun hat（日よけ帽子） ② Sunglasses（サングラス） ③ Big, bright sun（大きく明るい太陽）
+          答え：It's sunny.（晴れです。）
+
+          第３問（00:04:37:12 – 00:05:53:17）
+          ① The sun is hiding（太陽が隠れている） ② Lots of clouds（雲がたくさんある） ③ The sky is covered with clouds, but there's no rain（空が雲に覆われているけれど、雨は降っていない）
+          答え：It's cloudy.（くもりです。）
+
+          第４問（00:05:53:18 – 00:07:08:08）
+          ① Scarf and gloves（マフラーと手袋） ② Snowflakes（雪の結晶） ③ Snowman（雪だるま）
+          答え：It's snowy.（雪です。）
+      - start: '00:07:08:09'
+        end: '00:09:48:00'
+        title: 絵を少しずつ見て天気を当てよう
+        guide: |-
+          Echoが天気の絵を隠しているパネルを１枚ずつ消します。「What do you think it is?（何だと思う？）」「How's the weather?（天気はどうかな？）」と聞き、見えてきた絵から予想してもらいましょう。
+          第１問（00:07:25:00 – 00:08:14:13）：It's cloudy.（くもりです。）
+          第２問（00:08:14:14 – 00:09:02:15）：It's snowy.（雪です。）
+          第３問（00:09:02:16 – 00:09:47:22）：It's rainy.（雨です。）
+      - start: '00:09:47:23'
+        end: '00:10:06:08'
+        title: おさらい・おわりのあいさつ
+        guide: ３つのヒントや、少しずつ見える絵から天気を当てたことを振り返ります。「See you next time. Bye bye!」とあいさつします。

@@ -31,9 +31,9 @@ RSpec.describe 'Screen mirroring video test' do
     expect(document.at_css('.lm-progress input')['type']).to eq('range')
     expect(document.at_css('button[data-screen-mirroring-test-target="subtitleButton"]')).to be_present
     expect(document.at_css('select[data-screen-mirroring-test-target="subtitlePicker"]')).to be_nil
-    expect(document.css('.lm-thumbnail-activity img').size).to eq(9)
+    expect(document.css('.lm-thumbnail-activity img').size).to eq(27)
     %w[home activities].each do |view|
-      cards = document.css(".lm-pages [data-view='#{view}'] .lm-content-card")
+      cards = document.css(".lm-pages [data-view='#{view}'] .lm-content-card").select { |card| card.at_css('[data-src]')['data-week'] == '1' }
       expect(cards.size).to eq(3)
       cards.each_with_index do |card, index|
         source = card.at_css('[data-src]')
@@ -41,10 +41,10 @@ RSpec.describe 'Screen mirroring video test' do
         expect(source['data-content-key']).to eq("activity-#{index + 1}")
         expect(source['data-caption-src']).to include("subtitles/activity-#{index + 1}.en")
         expect(card.at_css('.lm-content-thumbnail')['data-video']).to eq(source['data-src'])
-        expect(card.at_css('[data-resource-kind="guide"]')['data-content-key']).to eq("activity-#{index + 1}")
+        expect(card.at_css('[data-action$="#previewResource"]')['data-content-key']).to eq("activity-#{index + 1}")
       end
     end
-    content = JSON.parse(document.at_css('.lesson-mockup')['data-screen-mirroring-test-content-value'])
+    content = JSON.parse(document.at_css('.lesson-mockup')['data-screen-mirroring-test-content-value']).fetch('1')
     expect(content.fetch('fps')).to eq(24)
     expect(content.fetch('lessons').fetch('activity-1').fetch('chapters').count { |chapter| chapter['pause_after'] }).to eq(3)
     basic_chapters = content.fetch('lessons').fetch('basic').fetch('chapters')
@@ -54,6 +54,35 @@ RSpec.describe 'Screen mirroring video test' do
     expect(basic_chapters.map { |chapter| chapter.fetch('end') }).to eq(
       %w[00:00:34:00 00:03:53:00 00:06:15:00 00:08:04:00 00:08:56:00 00:09:20:03]
     )
+  end
+
+  it 'serves the new lesson content and only the four supplied worksheet downloads' do
+    sign_in create(:user, :admin, organisation:)
+
+    get screen_mirroring_test_path
+
+    document = Nokogiri::HTML(response.body)
+    weeks = JSON.parse(document.at_css('.lesson-mockup')['data-screen-mirroring-test-content-value'])
+    expect(weeks.keys).to eq(%w[1 6 19])
+    {
+      '6' => %w[1239740985 1239740992 1239741013 1239741014],
+      '19' => %w[1247162640 1246964319 1247013952 1247145933]
+    }.each do |week, video_ids|
+      lessons = weeks.fetch(week).fetch('lessons')
+      expect(lessons.values.map { |lesson| lesson.fetch('video')[%r{/external/(\d+)}, 1] }).to eq(video_ids)
+      expect(lessons.values).to all(include('chapters' => be_present))
+    end
+    links = document.css('.lm-pages [data-view="home"] a[download]')
+    expect(links.map { |link| link['download'] }).to eq(
+      %w[w1-cut-and-paste.pdf w1-name-trace.pdf w6-origami-dog.pdf w6-paper-plate-cat.pdf]
+    )
+    expect(document.css('.lm-picker a[download]').map { |link| link['href'] }).to eq(links.map { |link| link['href'] })
+    links.each do |link|
+      get link['href']
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq('application/pdf')
+      expect(response.body).to start_with('%PDF-')
+    end
   end
 
   it 'renders the original 2.7.9.1 reference without mockup styles for admins' do

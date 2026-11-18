@@ -9,17 +9,18 @@ export default class extends Controller {
     "time", "error", "date", "resource", "resourceTitle", "videoTitle", "chapterTitle",
     "guide", "speedButton", "chapterPicker", "splash", "speechStatus", "phraseAudio",
     "guidePanel", "guideButton", "sidebar", "page", "pageTitle", "navButton", "filter",
-    "resourceGuide", "resourceMaterials", "lessonWeek", "picker", "pickerActivity",
-    "pickerStory", "flashcards", "cardPhrase", "cardImage", "progress",
+    "lessonWeek", "lessonTitle", "basicTab", "storyTab", "picker", "pickerActivity", "pickerWeek",
+    "pickerStory", "flashcards", "cardPhrase", "cardArtwork", "progress",
     "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
-    "pickerScroll", "homeLesson", "homeUpcoming", "homeHeader", "weekHeading", "upcomingWeek", "cardClipRect",
+    "pickerScroll", "homeWeek", "homeUpcoming", "homeHeader", "weekHeading", "splashImage", "greetingHotspots",
     "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
     "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback", "airPlayButton", "workspace"
   ];
 
   connect() {
     this.sampleLessonDate = this.dateTarget.value;
-    this.setChapters("basic");
+    this.activeWeek = "1";
+    this.setChapters(this.activeWeek, "basic");
     this.events = new AbortController();
     const options = { signal: this.events.signal };
     this.element.addEventListener("pointerdown", () => this.element.classList.remove("lm-keyboard-navigation"), options);
@@ -220,7 +221,8 @@ export default class extends Controller {
       this.pickerNavigationTarget.append(this.lessonTabsTarget);
       this.pickerTarget.showModal();
     }
-    const choice = (activity ? this.pickerActivityTarget : this.pickerStoryTarget).querySelector("[data-src][data-kind]");
+    const section = activity ? this.pickerWeekTargets.find(panel => !panel.hidden) : this.pickerStoryTarget;
+    const choice = section.querySelector("[data-src][data-kind]");
     if (choice) this.loadVideoSource(choice.dataset);
   }
 
@@ -244,30 +246,36 @@ export default class extends Controller {
   }
 
   closeFlashcards() { this.cancelSpeech(); this.flashcardsTarget.close(); }
-  previousCard() { this.cardIndex = (this.cardIndex + 2) % 3; this.updateCard(); }
-  nextCard() { this.cardIndex = (this.cardIndex + 1) % 3; this.updateCard(); }
+  previousCard() { this.moveCard(-1); }
+  nextCard() { this.moveCard(1); }
+
+  get flashcardPhrases() {
+    return this.contentValue[this.activeWeek].flashcards;
+  }
+
+  moveCard(offset) {
+    const count = this.flashcardPhrases.length;
+    this.cardIndex = (this.cardIndex + count + offset) % count;
+    this.updateCard();
+  }
 
   updateCard() {
     this.cancelSpeech();
-    const phrases = ["Hello!", "Nice to meet you!", "See you!"];
-    this.cardPhraseTarget.textContent = phrases[this.cardIndex];
-    this.cardPhraseTarget.dataset.readingFont = String(this.cardIndex === 0);
-    const crops = ["540 180 520 665", "1070 380 620 470", "0 245 475 565"];
-    this.cardImageTarget.setAttribute("viewBox", crops[this.cardIndex]);
-    crops[this.cardIndex].split(" ").forEach((value, index) => {
-      this.cardClipRectTarget.setAttribute(["x", "y", "width", "height"][index], value);
-    });
-    this.cardImageTarget.setAttribute("aria-label", [
-      "手を振ってあいさつするキャラクター", "はじめましてのあいさつをする２人", "手を振ってさようならを言うキャラクター"
-    ][this.cardIndex]);
+    const phrase = this.flashcardPhrases[this.cardIndex];
+    const { artwork } = this.findPhraseAudio(phrase, this.activeWeek).dataset;
+    this.cardPhraseTarget.textContent = phrase;
+    this.cardPhraseTarget.dataset.readingFont = String(phrase === "Hello!");
+    this.cardArtworkTarget.src = artwork;
   }
 
-  speakCard() { this.speak({ currentTarget: { dataset: { phrase: this.cardPhraseTarget.textContent } } }); }
+  speakCard() {
+    this.playPhrase(this.cardPhraseTarget.textContent, this.activeWeek);
+  }
 
   launchVideo(event) {
     if (this.videoActive) return;
     const fromMenu = this.lessonDialogTarget.hidden;
-    if (fromMenu) this.start();
+    if (fromMenu) this.start(null, event.currentTarget.dataset.week);
     this.videoOpenedFromMenu = fromMenu;
     this.playVideo(event);
   }
@@ -308,16 +316,19 @@ export default class extends Controller {
     this.guideButtonTarget.setAttribute("aria-expanded", "false");
   }
 
-  timecodeSeconds(timecode) {
+  timecodeSeconds(timecode, fps) {
     const [hours, minutes, seconds, frames] = timecode.split(":").map(Number);
-    return hours * 3600 + minutes * 60 + seconds + frames / this.contentValue.fps;
+    return hours * 3600 + minutes * 60 + seconds + frames / fps;
   }
 
-  lessonChapters(key) {
-    return this.contentValue.lessons[key].chapters.map((chapter, index) => ({
+  lessonChapters(week, key) {
+    const content = this.contentValue[week];
+    const lesson = content.lessons[key];
+    const fps = lesson.timecode_fps || content.fps;
+    return lesson.chapters.map((chapter, index) => ({
       ...chapter,
-      time: this.timecodeSeconds(chapter.start),
-      endTime: chapter.end ? this.timecodeSeconds(chapter.end) : null,
+      time: this.timecodeSeconds(chapter.start, fps),
+      endTime: chapter.end ? this.timecodeSeconds(chapter.end, fps) : null,
       title: `${index + 1}. ${chapter.title}`
     }));
   }
@@ -326,9 +337,9 @@ export default class extends Controller {
     return `${this.formatTime(chapter.time)}–${chapter.endTime == null ? "最後" : this.formatTime(chapter.endTime)} ${chapter.title}${chapter.pause_after ? " · 一時停止" : ""}`;
   }
 
-  setChapters(key) {
-    const lesson = this.contentValue.lessons[key];
-    this.chapters = this.lessonChapters(key);
+  setChapters(week, key) {
+    const lesson = this.contentValue[week].lessons[key];
+    this.chapters = this.lessonChapters(week, key);
     this.guideObjectiveTarget.textContent = lesson.objective;
     this.guideMaterialsTarget.textContent = lesson.materials;
     this.guideTipTarget.textContent = lesson.tip;
@@ -349,8 +360,16 @@ export default class extends Controller {
   }
 
   speak(event) {
+    this.playPhrase(event.currentTarget.dataset.phrase);
+  }
+
+  findPhraseAudio(phrase, week) {
+    return this.phraseAudioTargets.find(clip => clip.dataset.phrase === phrase && clip.dataset.week === week);
+  }
+
+  playPhrase(phrase, week) {
     this.cancelSpeech();
-    const audio = this.phraseAudioTargets.find(clip => clip.dataset.phrase === event.currentTarget.dataset.phrase);
+    const audio = this.findPhraseAudio(phrase, week);
     if (!audio) return;
     this.speechStatusTarget.textContent = "";
     audio.play().catch(() => {
@@ -397,47 +416,57 @@ export default class extends Controller {
     };
     const weeksAhead = Math.round((weekStart(this.dateTarget.value) - weekStart(this.sampleLessonDate)) / 604800000);
     if (!Number.isFinite(weeksAhead)) return;
-    this.homeLessonTarget.hidden = weeksAhead > 0;
-    this.homeUpcomingTarget.hidden = weeksAhead <= 0;
+    const selected = this.homeWeekTargets[Math.max(0, weeksAhead)];
+    this.homeWeekTargets.forEach(panel => { panel.hidden = panel !== selected; });
+    this.homeUpcomingTarget.hidden = Boolean(selected);
     this.weekHeadingTarget.textContent = weeksAhead > 0 ? "これからのレッスン" : "今週のレッスン";
-    this.upcomingWeekTarget.textContent = `第${Math.max(2, weeksAhead + 1)}週 · ベーシックイングリッシュ`;
   }
 
   previewResource(event) {
     event.preventDefault();
-    const { title, resourceKind, contentKey = "basic" } = event.currentTarget.dataset;
+    const { title, week, contentKey = "basic" } = event.currentTarget.dataset;
+    const lesson = this.contentValue[week].lessons[contentKey];
     this.resourceTitleTarget.textContent = title;
-    const materials = resourceKind === "materials";
-    if (!materials) {
-      const lesson = this.contentValue.lessons[contentKey];
-      this.resourceObjectiveTarget.textContent = lesson.objective;
-      this.resourcePreparationTarget.textContent = lesson.materials;
-      this.resourceTipTarget.textContent = lesson.tip;
-      this.resourceChaptersTarget.replaceChildren(...this.lessonChapters(contentKey).map(chapter => {
-        const section = document.createElement("section");
-        const heading = document.createElement("h3");
-        const timing = document.createElement("p");
-        const guide = document.createElement("p");
-        heading.textContent = chapter.title;
-        timing.textContent = `${chapter.start} – ${chapter.end || "最後"}${chapter.pause_after ? " · 一時停止" : ""}`;
-        guide.textContent = chapter.guide;
-        section.append(heading, timing, guide);
-        return section;
-      }));
-    }
-    this.resourceGuideTarget.hidden = materials;
-    this.resourceMaterialsTarget.hidden = !materials;
+    this.resourceObjectiveTarget.textContent = lesson.objective;
+    this.resourcePreparationTarget.textContent = lesson.materials;
+    this.resourceTipTarget.textContent = lesson.tip;
+    this.resourceChaptersTarget.replaceChildren(...this.lessonChapters(week, contentKey).map(chapter => {
+      const section = document.createElement("section");
+      const heading = document.createElement("h3");
+      const timing = document.createElement("p");
+      const guide = document.createElement("p");
+      heading.textContent = chapter.title;
+      timing.textContent = `${chapter.start} – ${chapter.end || "最後"}${chapter.pause_after ? " · 一時停止" : ""}`;
+      guide.textContent = chapter.guide;
+      section.append(heading, timing, guide);
+      return section;
+    }));
     this.resourceTarget.showModal();
     this.resourceScrollTarget.scrollTop = 0;
   }
 
   closeResource() { this.resourceTarget.close(); }
 
-  start(event) {
+  showLessonWeek(week) {
+    this.activeWeek = week;
+    const content = this.contentValue[week];
+    const basic = content.lessons.basic;
+    this.lessonWeekTarget.textContent = `第${week}週 · ベーシックイングリッシュ`;
+    this.lessonTitleTarget.textContent = basic.title;
+    this.splashTarget.dataset.week = week;
+    this.splashImageTarget.src = content.splash_url;
+    this.splashImageTarget.alt = content.splash_alt;
+    this.greetingHotspotsTarget.hidden = week !== "1";
+    this.storyTabTarget.hidden = !content.lessons.story;
+    Object.assign(this.basicTabTarget.dataset, { src: basic.video, title: basic.title, captionSrc: content.basic_caption_url });
+    this.pickerWeekTargets.forEach(panel => { panel.hidden = panel.dataset.week !== week; });
+  }
+
+  start(event, week = event?.currentTarget.dataset.week || "1") {
     this.returnFocus = document.activeElement;
     this.lockPageScroll();
     this.videoOpenedFromMenu = false;
-    this.lessonWeekTarget.textContent = `第${event?.currentTarget.dataset.week || 1}週 · ベーシックイングリッシュ`;
+    this.showLessonWeek(week);
     this.lessonDialogTarget.hidden = false;
     // Keep a rendered 16:9 video surface under the splash before Play is tapped.
     this.stageTarget.hidden = false;
@@ -446,7 +475,7 @@ export default class extends Controller {
     this.backgroundElements.forEach(element => { element.inert = true; });
     // A direct card launch has already prepared its own source; focusing Basic
     // English here would replace it through the focusin preparation handler.
-    if (event) this.menuTarget.querySelector("button").focus();
+    if (event) this.basicTabTarget.focus();
   }
 
   recordPageTouch(event) {
@@ -528,11 +557,11 @@ export default class extends Controller {
     // Lock the launch before closing the picker: focus restoration must not
     // prepare another source, and another click must not reopen this player.
     this.setVideoActive(true);
-    const { src, title, kind, captionSrc, contentKey = kind } = event.currentTarget.dataset;
+    const { src, title, kind, captionSrc, contentKey = kind, week = this.activeWeek } = event.currentTarget.dataset;
     this.closePicker(false);
     this.closeMenus();
     this.cancelSpeech();
-    this.setChapters(contentKey);
+    this.setChapters(week, contentKey);
     // Pointer/focus normally prepared this already. Retain a synchronous fallback
     // for keyboard, assistive-technology, and programmatic clicks.
     this.loadVideoSource({ src, kind, captionSrc });

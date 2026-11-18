@@ -53,7 +53,6 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
 .lesson-mockup .lm-card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 8px; padding-top: 24px; }
 .lesson-mockup .lm-card-actions .lm-pill { min-width: 210px; }
 .lesson-mockup .lm-hint { font-size: 11px !important; font-weight: 400; }
-.lesson-mockup .lm-sample-note { margin: 20px 0; text-align: center; }
 .lesson-mockup .lm-card-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
 .lesson-mockup .lm-content-card { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .lesson-mockup .lm-content-thumbnail { aspect-ratio: 16 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border-radius: 8px; background: #d9eef3; color: #508c9d; font-size: 20px; font-weight: 700; }
@@ -77,6 +76,8 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
 /* Centre-cover the area below the menu; keep artwork and speech buttons at the native image ratio. */
 .lesson-mockup .lm-splash-frame { --lm-splash-ratio: 2546 / 1080; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: max(100%,calc((100cqh + 1px) * var(--lm-splash-ratio))); aspect-ratio: var(--lm-splash-ratio); z-index: 1; }
 .lesson-mockup .lm-splash { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.lesson-mockup .lm-splash-frame:not([data-week='1']) { width: 100%; height: 100%; }
+.lesson-mockup .lm-splash-frame:not([data-week='1']) .lm-splash { object-fit: contain; }
 .lesson-mockup :is(.lm-splash-frame,.lm-lesson-menu) { touch-action: pinch-zoom; }
 .lesson-mockup :is(.lm-picker-scroll,.lm-resource-scroll,.lm-guide-panel) { overscroll-behavior: none; }
 .lesson-mockup input[type='range'] { touch-action: none; }
@@ -120,13 +121,12 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
 .lesson-mockup .lm-resource-scroll { max-height: calc(100dvh - 120px); overflow-y: auto; }
 .lesson-mockup .lm-resource-dialog h2 { border-bottom: 1px solid; margin: 8px 0 24px; padding-bottom: 10px; }
 .lesson-mockup .lm-resource-dialog p { margin-bottom: 18px; }
-.lesson-mockup .lm-resource-file { margin: 20px 0 28px; }
-.lesson-mockup .lm-resource-file button:disabled { cursor: default; }
+.lesson-mockup :is(.lm-resource-scroll, .lm-guide-panel) p { white-space: pre-line; }
 .lesson-mockup .lm-flashcards { position: fixed; inset: 0; margin: 0; width: 100%; max-width: none; height: 100%; max-height: none; border: 0; background: transparent; padding: 0; }
 .lesson-mockup .lm-flashcards::backdrop { background: #ffffff20; backdrop-filter: blur(5px); }
 .lesson-mockup .lm-flashcard { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(360px,calc(100vw - 144px)); height: min(500px,74dvh); display: flex; flex-direction: column; align-items: center; border: 3px solid var(--lm-purple); border-radius: 16px; background: white; box-shadow: 0 5px 30px #0003; padding: 20px 24px; }
 .lesson-mockup .lm-flash-illustration { position: relative; width: 100%; height: 60%; min-height: 0; overflow: hidden; border-bottom: 3px solid var(--lm-purple); padding-bottom: 12px; }
-.lesson-mockup .lm-flash-illustration .lm-flash-crop { display: block; width: 100%; height: 100%; }
+.lesson-mockup .lm-flash-artwork { display: block; width: 100%; height: 100%; object-fit: contain; }
 .lesson-mockup .lm-card-sound { position: absolute; right: 0; top: 0; box-shadow: 0 0 0 4px white; }
 .lesson-mockup .lm-flash-phrase { display: grid; place-items: center; flex: 1; text-align: center; font-size: 40px; color: #151515; line-height: 1.2; }
 .lesson-mockup .lm-flash-phrase[data-reading-font='true'] { font-family: 'Kids UP Reading Sample', 'M PLUS 1p', sans-serif; }

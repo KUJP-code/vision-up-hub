@@ -1,13 +1,13 @@
 %article.lm-card.lm-week-card
-  = image_tag 'w1-splash.jpg', class: 'lm-card-image', alt: 'あいさつをするキャラクターたち'
+  = image_tag content.fetch('splash'), class: 'lm-card-image', alt: content.fetch('splash_alt'), loading: week == 1 ? nil : 'lazy'
   .lm-card-content
     %p.lm-eyebrow 第#{week}週 · ベーシックイングリッシュ
-    %h2 みんなであいさつしよう！
-    %p あいさつのことばを聞いて、みんなで楽しく英語を話してみましょう。
+    %h2= content.fetch('lessons').fetch('basic').fetch('title')
+    %p= content.fetch('description')
     %h3 今週のフレーズ
-    %p Hello! / Nice to meet you! / See you!
+    %p= content.fetch('phrases')
     %h3 今週の語彙
-    %p Hello / friends / goodbye
+    %p= content.fetch('vocabulary')
     .lm-card-actions
       %button.lm-pill.lm-primary{ type: 'button',
                                   data: { action: 'screen-mirroring-test#start', week: } }
@@ -15,8 +15,7 @@
         = render 'icon', name: 'play'
       %button.lm-pill{ type: 'button',
                        data: { action: 'screen-mirroring-test#previewResource',
-                               title: '先生用ガイド',
-                               resource_kind: 'guide' } }
+                               title: '先生用ガイド', week: } }
         先生用ガイド
         = render 'icon', name: 'download'
     %p.lm-hint 画面ミラーリングを開始してから、レッスンをはじめてください。

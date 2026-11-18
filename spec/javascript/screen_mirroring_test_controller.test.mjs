@@ -15,6 +15,7 @@ function fixture(document = {}, globals = {}) {
   controller.lessonDialogTarget = { hidden: false };
   controller.speechStatusTarget = { textContent: '' };
   controller.lessonWeekTarget = { textContent: '' };
+  controller.showLessonWeek = () => {};
   controller.speedButtonTargets = [];
   controller.videoActive = false;
   return controller;
@@ -406,18 +407,22 @@ test('manual chapter jumps do not trigger chapter stopping', () => {
 
 test('timecodes retain frame precision and per-video chapter end times', () => {
   const controller = fixture();
-  controller.contentValue = { fps: 24, lessons: {
+  controller.contentValue = { '1': { fps: 24, lessons: {
     'activity-1': { chapters: [{ start: '00:01:41:22', end: '00:02:17:01', title: '貼る場所の確認', guide: 'Jotの場所を確認します。', pause_after: true }] },
     'activity-2': { chapters: [{ start: '00:02:22:16', end: '00:02:56:03', title: '色ぬり', guide: 'Color your name' }] }
-  } };
-  const craft = controller.lessonChapters('activity-1')[0];
+  } }, '6': { fps: 24, lessons: {
+    'activity-2': { timecode_fps: 30, chapters: [{ start: '00:00:20:03', end: '00:01:38:29', title: '動物の名前を覚えよう' }] }
+  } } };
+  const craft = controller.lessonChapters('1', 'activity-1')[0];
   assert.equal(craft.time, 101 + 22 / 24);
   assert.equal(craft.endTime, 137 + 1 / 24);
   assert.equal(craft.pause_after, true);
   assert.match(controller.chapterLabel(craft), /1:41–2:17.*貼る場所の確認.*一時停止/);
-  const coloring = controller.lessonChapters('activity-2')[0];
+  const coloring = controller.lessonChapters('1', 'activity-2')[0];
   assert.equal(coloring.time, 142 + 16 / 24);
   assert.equal(coloring.guide, 'Color your name');
+  const animalNames = controller.lessonChapters('6', 'activity-2')[0];
+  assert.equal(animalNames.endTime, 98 + 29 / 30);
 });
 
 test('marked activity pauses work with chapter stopping off and resume only once', () => {
@@ -601,26 +606,18 @@ test('unavailable thumbnail metadata leaves a usable placeholder', async () => {
   assert.equal(card.placeholder.hidden, false);
 });
 
-test('future-week previews start on the next calendar week and restore current content', () => {
+test('calendar weeks step through Week 1, Week 6, and Week 19 before the preview', () => {
   const controller = fixture();
   controller.sampleLessonDate = '2026-10-22';
   controller.dateTarget = { value: '2026-10-25' };
-  controller.homeLessonTarget = { hidden: false };
+  controller.homeWeekTargets = ['1', '6', '19'].map(week => ({ hidden: true, dataset: { week } }));
   controller.homeUpcomingTarget = { hidden: true };
   controller.weekHeadingTarget = { textContent: '' };
-  controller.upcomingWeekTarget = { textContent: '' };
-  controller.updateWeek();
-  assert.equal(controller.homeLessonTarget.hidden, false);
-  controller.dateTarget.value = '2026-10-26';
-  controller.updateWeek();
-  assert.equal(controller.homeLessonTarget.hidden, true);
-  assert.equal(controller.homeUpcomingTarget.hidden, false);
-  assert.match(controller.upcomingWeekTarget.textContent, /第2週/);
-  controller.dateTarget.value = '2026-11-02';
-  controller.updateWeek();
-  assert.match(controller.upcomingWeekTarget.textContent, /第3週/);
-  controller.dateTarget.value = '2026-10-22';
-  controller.updateWeek();
-  assert.equal(controller.homeLessonTarget.hidden, false);
-  assert.equal(controller.homeUpcomingTarget.hidden, true);
+  for (const [date, week] of [['2026-10-25', '1'], ['2026-10-26', '6'], ['2026-11-02', '19'],
+    ['2026-11-09', null], ['2026-10-22', '1']]) {
+    controller.dateTarget.value = date;
+    controller.updateWeek();
+    assert.deepEqual(controller.homeWeekTargets.filter(panel => !panel.hidden).map(panel => panel.dataset.week), week ? [week] : []);
+    assert.equal(controller.homeUpcomingTarget.hidden, Boolean(week));
+  }
 });
