@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:2.9.5-text_wrapping"
+    "Name": "kidsup/materials:2.9.6-vision"
   },
   "Ports": [
     {
