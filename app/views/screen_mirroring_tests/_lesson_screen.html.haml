@@ -40,8 +40,7 @@
         %div
           %p{ data: { 'screen-mirroring-test-target': 'lessonWeek' } } 第1週 · ベーシックイングリッシュ
           %h2{ data: { 'screen-mirroring-test-target': 'lessonTitle' } }= basic_lesson.fetch('title')
-      %nav.lm-lesson-tabs{ 'aria-label': 'レッスンメニュー',
-                           data: { 'screen-mirroring-test-target': 'lessonTabs' } }
+      %nav.lm-lesson-tabs{ 'aria-label': 'レッスンメニュー' }
         %button.lm-pill.lm-primary{ type: 'button',
                                     data: { 'screen-mirroring-test-target': 'basicTab',
                                             action: 'screen-mirroring-test#playVideo',
@@ -53,12 +52,10 @@
                          data: { action: 'screen-mirroring-test#openFlashcards' } } フラッシュカード
         %button.lm-pill{ type: 'button',
                          'aria-haspopup': 'dialog',
-                         'aria-expanded': 'false',
                          data: { action: 'screen-mirroring-test#openPicker', kind: 'activity' } }
           アクティビティ
         %button.lm-pill{ type: 'button',
                          'aria-haspopup': 'dialog',
-                         'aria-expanded': 'false',
                          data: { 'screen-mirroring-test-target': 'storyTab',
                                  action: 'screen-mirroring-test#openPicker', kind: 'story' } }
           ストーリータイム
@@ -81,8 +78,7 @@
         %section{ hidden: true,
                   data: { 'screen-mirroring-test-target': 'pickerStory' },
                   'aria-label': 'ストーリーを選ぶ' }
-          = render 'content_cards', items: stories, video: story_video, kind: 'story', story_lesson:
-      .lm-picker-navigation{ data: { 'screen-mirroring-test-target': 'pickerNavigation' } }
+          = render 'content_cards', items: stories, kind: 'story'
 
     = render 'flashcards'
 

@@ -59,7 +59,7 @@ test('2.7.9.1 playback order: container fullscreen, fixed viewport, play, then r
   controller.playButtonTarget = { focus() { throw Error('Starting playback must not force focus onto the remote'); } };
   controller.showRemote = () => {};
   controller.playbackGeneration = 0;
-  controller.closePicker = restoreFocus => assert.equal(restoreFocus, false);
+  controller.closePicker = () => assert.equal(controller.videoActive, true);
   controller.closeMenus = controller.cancelSpeech = controller.setChapters = controller.updateRemote = controller.resetGuide = () => {};
   controller.playVideo({ currentTarget: { dataset: { src: 'basic.m3u8', kind: 'basic', title: 'Lesson' } } });
   controller.playVideo({ currentTarget: { dataset: { src: 'basic.m3u8', kind: 'basic', title: 'Lesson' } } });

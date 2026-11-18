@@ -11,7 +11,7 @@ export default class extends Controller {
     "guidePanel", "guideButton", "sidebar", "page", "pageTitle", "navButton", "filter",
     "lessonWeek", "lessonTitle", "basicTab", "storyTab", "picker", "pickerActivity", "pickerWeek",
     "pickerStory", "flashcards", "cardPhrase", "cardArtwork", "progress",
-    "playIcon", "pauseIcon", "chapterStop", "thumbnail", "lessonTabs", "pickerNavigation",
+    "playIcon", "pauseIcon", "chapterStop", "thumbnail",
     "pickerScroll", "homeWeek", "homeUpcoming", "homeHeader", "weekHeading", "splashImage", "greetingHotspots",
     "guideObjective", "guideMaterials", "guideTip", "resourceObjective", "resourcePreparation",
     "resourceTip", "resourceChapters", "resourceScroll", "subtitleButton", "captionFallback", "airPlayButton", "workspace"
@@ -122,9 +122,6 @@ export default class extends Controller {
       if (event.key === "ArrowRight") { event.preventDefault(); this.nextCard(); }
     }, options);
     this.flashcardsTarget.addEventListener("close", () => this.cancelSpeech(), options);
-    this.pickerTarget.addEventListener("close", () => {
-      if (!this.pickerTarget.open) this.restoreLessonTabs();
-    }, options);
     [this.resourceTarget, this.pickerTarget, this.flashcardsTarget].forEach(dialog => {
       dialog.addEventListener("click", event => this.dismissBackdrop(event), options);
     });
@@ -212,39 +209,25 @@ export default class extends Controller {
   }
 
   openPicker(event) {
+    if (this.pickerTarget.open) return;
     this.cancelSpeech();
     const activity = event.currentTarget.dataset.kind === "activity";
     this.pickerActivityTarget.hidden = !activity;
     this.pickerStoryTarget.hidden = activity;
     this.pickerTarget.setAttribute("aria-label", activity ? "アクティビティを選ぶ" : "ストーリーを選ぶ");
-    this.lessonTabsTarget.querySelectorAll("[aria-expanded]").forEach(button => {
-      button.setAttribute("aria-expanded", String(button === event.currentTarget));
-    });
+    event.currentTarget.focus({ preventScroll: true });
+    this.pickerTarget.showModal();
     this.pickerScrollTarget.scrollTop = 0;
-    if (!this.pickerTarget.open) {
-      this.pickerReturnFocus = event.currentTarget;
-      this.pickerNavigationTarget.append(this.lessonTabsTarget);
-      this.pickerTarget.showModal();
-    }
     const section = activity ? this.pickerWeekTargets.find(panel => !panel.hidden) : this.pickerStoryTarget;
     const choice = section.querySelector("[data-src][data-kind]");
     if (choice) this.loadVideoSource(choice.dataset);
   }
 
-  restoreLessonTabs(restoreFocus = true) {
-    if (this.lessonTabsTarget.parentElement === this.menuTarget) return;
-    this.menuTarget.insertBefore(this.lessonTabsTarget, this.menuTarget.querySelector(".lm-close"));
-    this.lessonTabsTarget.querySelectorAll("[aria-expanded]").forEach(button => button.setAttribute("aria-expanded", "false"));
-    if (restoreFocus && !this.lessonDialogTarget.hidden && !this.videoActive && !this.flashcardsTarget.open) this.pickerReturnFocus?.focus();
-  }
-
-  closePicker(restoreFocus = true) {
+  closePicker() {
     if (this.pickerTarget.open) this.pickerTarget.close();
-    this.restoreLessonTabs(restoreFocus);
   }
 
   openFlashcards() {
-    this.closePicker();
     this.cardIndex = 0;
     this.updateCard();
     this.flashcardsTarget.showModal();
@@ -401,7 +384,7 @@ export default class extends Controller {
     this.lessonDialogTarget.hidden = true;
     this.restoreBackground();
     if (this.resourceTarget.open) this.resourceTarget.close();
-    if (this.pickerTarget.open) this.closePicker();
+    this.closePicker();
     if (this.flashcardsTarget.open) this.flashcardsTarget.close();
   }
 
@@ -462,7 +445,7 @@ export default class extends Controller {
     this.splashImageTarget.src = content.splash_url;
     this.splashImageTarget.alt = content.splash_alt;
     this.greetingHotspotsTarget.hidden = week !== "1";
-    this.storyTabTarget.hidden = !content.lessons.story;
+    this.storyTabTarget.hidden = !Object.keys(content.lessons).some(key => key.startsWith("story-"));
     Object.assign(this.basicTabTarget.dataset, { src: basic.video, title: basic.title, captionSrc: content.basic_caption_url });
     this.pickerWeekTargets.forEach(panel => { panel.hidden = panel.dataset.week !== week; });
   }
@@ -559,7 +542,7 @@ export default class extends Controller {
 
   closeLesson(event) {
     event?.preventDefault();
-    if (this.pickerTarget.open) this.closePicker();
+    this.closePicker();
     if (this.flashcardsTarget.open) this.closeFlashcards();
     if (this.resourceTarget.open) this.closeResource();
     this.lessonDialogTarget.hidden = true;
@@ -576,7 +559,7 @@ export default class extends Controller {
     // prepare another source, and another click must not reopen this player.
     this.setVideoActive(true);
     const { src, title, kind, captionSrc, contentKey = kind, week = this.activeWeek } = event.currentTarget.dataset;
-    this.closePicker(false);
+    this.closePicker();
     this.closeMenus();
     this.cancelSpeech();
     this.setChapters(week, contentKey);

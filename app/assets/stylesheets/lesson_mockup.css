@@ -100,23 +100,17 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
 .lesson-mockup .lm-close:focus { outline: none; }
 .lesson-mockup.lm-keyboard-navigation .lm-close:focus-visible { outline: 3px solid var(--lm-purple); outline-offset: 3px; }
 .lesson-mockup .lm-lesson-menu > .lm-close { margin-right: 12px; }
-.lesson-mockup .lm-stage:has(.lm-picker[open]) .lm-lesson-menu { background: transparent; }
-.lesson-mockup .lm-stage:has(.lm-picker[open]) .lm-lesson-menu > .lm-close { visibility: hidden; }
-.lesson-mockup .lm-lesson-tabs [aria-expanded='true'] { border-color: var(--lm-purple); background: transparent; color: var(--lm-purple); }
 /* Native dialogs keep keyboard focus and pointer interaction inside the active modal. */
 .lesson-mockup dialog { color: var(--lm-purple); font: inherit; border: 1px solid var(--lm-purple); border-radius: 12px; padding: 28px; overflow: visible; }
 .lesson-mockup dialog::backdrop { background: #53a9bc66; }
 .lesson-mockup .lm-modal-close { position: absolute; right: -18px; top: -18px; background: var(--lm-paper); color: var(--lm-purple); border: 1px solid var(--lm-purple); }
-.lesson-mockup .lm-picker { width: min(1080px,calc(100vw - 64px)); max-height: calc(100dvh - 80px); margin: auto; padding: 28px 0 0; background: var(--lm-paper); }
-.lesson-mockup .lm-picker-scroll { max-height: calc(100dvh - 300px); overflow-y: auto; padding: 12px; margin: 0 24px; }
+.lesson-mockup .lm-picker { width: min(1080px,calc(100vw - 64px)); max-height: calc(100dvh - 80px); margin: auto; padding: 16px 0; background: var(--lm-paper); }
+.lesson-mockup .lm-picker[open] { display: flex; flex-direction: column; }
+.lesson-mockup .lm-picker-scroll { min-height: 0; overflow-y: auto; padding: 12px; margin: 0 24px; }
 .lesson-mockup .lm-picker .lm-card-grid { gap: 12px; }
 .lesson-mockup .lm-picker .lm-content-card { padding: 8px; }
 .lesson-mockup .lm-picker .lm-content-card h2 { font-size: 14px; }
 .lesson-mockup .lm-picker .lm-pill { font-size: 11px; padding: 6px 12px; min-height: 34px; }
-.lesson-mockup .lm-picker-navigation { position: relative; padding: 24px; background: #c5eaf2; border-radius: 0 0 12px 12px; }
-.lesson-mockup .lm-picker-navigation::before { content: '⌄'; position: absolute; top: -15px; left: calc(50% - 14px); color: var(--lm-blue); font-size: 30px; line-height: 1; }
-.lesson-mockup .lm-picker-navigation .lm-lesson-tabs { justify-content: center; gap: 14px; margin: 0; }
-.lesson-mockup .lm-picker-navigation .lm-lesson-tabs .lm-pill { min-height: 42px; font-size: 13px; padding: 8px 18px; }
 .lesson-mockup .lm-resource-dialog { width: min(800px,calc(100vw - 64px)); margin: auto; max-height: calc(100dvh - 64px); background: white; }
 .lesson-mockup .lm-resource-scroll { max-height: calc(100dvh - 120px); overflow-y: auto; }
 .lesson-mockup .lm-resource-dialog h2 { border-bottom: 1px solid; margin: 8px 0 24px; padding-bottom: 10px; }
@@ -225,11 +219,8 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
   .lesson-mockup .lm-skip { margin-left: 8px; }
   .lesson-mockup .lm-guide-columns { grid-template-columns: 1fr; gap: 16px; }
   .lesson-mockup .lm-guide-heading { flex-wrap: wrap; gap: 8px; }
-  .lesson-mockup .lm-picker { padding: 18px 0 0; }
+  .lesson-mockup .lm-picker { padding: 12px 0; }
   .lesson-mockup .lm-picker-scroll { margin: 0 8px; }
-  .lesson-mockup .lm-picker-navigation { padding: 20px 12px; }
-  .lesson-mockup .lm-picker-navigation .lm-lesson-tabs { gap: 8px; }
-  .lesson-mockup .lm-picker-navigation .lm-lesson-tabs .lm-pill { padding: 8px 10px; font-size: 11px; }
   .lesson-mockup .lm-picker .lm-card-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 540px) {
@@ -250,8 +241,6 @@ html.lm-lesson-open .lesson-prototype-body { position: fixed; inset: 0; overflow
   .lesson-mockup .lm-time { margin-left: auto; }
   .lesson-mockup .lm-flash-phrase { font-size: 30px; }
   .lesson-mockup .lm-flashcard { padding: 16px; }
-  .lesson-mockup .lm-picker-navigation .lm-lesson-tabs { padding: 0; }
-  .lesson-mockup .lm-picker-navigation .lm-lesson-tabs .lm-pill { font-size: 9px; padding: 6px 4px; }
   .lesson-mockup .lm-upcoming-grid { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {

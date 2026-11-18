@@ -1,6 +1,4 @@
 :ruby
-  story_video = 'https://player.vimeo.com/external/1225145089.m3u8?' \
-                's=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false'
   activities = @lesson_weeks.to_h do |week, content|
     items = content.fetch('lessons').filter_map do |key, lesson|
       lesson.merge('key' => key, 'week' => week) if key.start_with?('activity-')
@@ -12,8 +10,9 @@
                'basic_caption_url' => asset_path(week.fetch('lessons').fetch('basic').fetch('subtitle_asset')))
   end
   first_week = @lesson_weeks.fetch(1)
-  story_lesson = first_week.fetch('lessons').fetch('story')
-  stories = ['にげだしたふうせん', 'はらぺこのくま', 'まほうのぼうし', 'ちいさな種', 'おやすみ、おつきさま']
+  stories = first_week.fetch('lessons').filter_map do |key, lesson|
+    lesson.merge('key' => key, 'week' => 1) if key.start_with?('story-')
+  end
   nav_items = [
     %w[home ホーム home],
     %w[basic ベーシックイングリッシュ book],
@@ -102,8 +101,8 @@
       %section{ hidden: true,
                 data: { 'screen-mirroring-test-target': 'page', view: 'stories' },
                 'aria-label': 'ストーリーのメニュー' }
-        = render 'content_cards', items: stories, video: story_video, kind: 'story', story_lesson:
+        = render 'content_cards', items: stories, kind: 'story'
 
   = render 'resource_dialog'
 
-  = render 'lesson_screen', first_week:, story_video:, activities:, stories:, story_lesson:
+  = render 'lesson_screen', first_week:, activities:, stories:

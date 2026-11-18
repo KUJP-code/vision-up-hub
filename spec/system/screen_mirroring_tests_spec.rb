@@ -28,7 +28,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     within('.lm-filters') { click_button '全て', exact: true }
     expect(page).to have_css('.lm-content-card', count: 9)
     click_button 'ストーリータイム', exact: true
-    expect(page).to have_css('.lm-content-card', count: 5)
+    expect(page).to have_css('.lm-content-card', count: 2)
     click_button 'ホーム', exact: true
     expect(page).to have_css('.lm-week-card', count: 1)
   end
@@ -198,6 +198,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       JS
     end
 
+    page.current_window.resize_to(390, 660)
     within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
     page.execute_script('document.querySelector(".lm-picker-scroll").scrollTop = 100')
     expect(page.evaluate_script('document.querySelector(".lm-picker-scroll").scrollTop')).to be > 0
@@ -271,6 +272,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       expect(page.evaluate_script('window.lessonDragAllowed(".lm-lesson-menu", arguments[0])', delta)).to be false
     end
     expect(page.evaluate_script('window.lessonDragAllowed(".lm-splash", 60, 2)')).to be true
+    page.current_window.resize_to(390, 660)
     within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
     page.execute_script('document.querySelector(".lm-picker-scroll").scrollTop = 0')
     expect(page.evaluate_script('window.lessonDragAllowed(".lm-picker-scroll h2", 60)')).to be false
@@ -307,7 +309,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     end
     within('.lm-picker') { find('button[aria-label="閉じる"]').click }
     within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
-    expect(page).to have_css('.lm-picker .lm-content-card', count: 5)
+    expect(page).to have_css('.lm-picker .lm-content-card', count: 2)
     page.driver.browser.action.send_keys(:escape).perform
     expect(page).not_to have_css('.lm-picker[open]')
     expect(page).to have_css('.lm-lesson-dialog')
@@ -654,30 +656,55 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
     expect(page).to have_css('.lm-lesson-dialog')
   end
 
-  it 'switches sections from the navigation inside the content modal' do
+  it 'keeps lesson navigation in the header and restores focus when each picker closes' do
     click_button 'レッスンをはじめる'
-    stub_video_playback
-    within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
-    expect(page).to have_css('.lm-picker[open] .lm-picker-navigation .lm-lesson-tabs')
-    find('.lm-picker-navigation').click(x: 8, y: 8, offset: :top_left)
-    expect(page).to have_css('.lm-picker[open]')
-    within('.lm-picker-navigation') { click_button 'ストーリータイム', exact: true }
-    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 5)
-    within('.lm-picker-navigation') { click_button 'アクティビティ', exact: true }
-    expect(page).to have_css('.lm-picker[open] .lm-content-card', count: 3)
-    within('.lm-picker-navigation') { click_button 'フラッシュカード', exact: true }
+    tabs = find('.lm-lesson-menu .lm-lesson-tabs')
+    activity = tabs.find_button('アクティビティ', exact: true)
+    activity.click
+    within('.lm-picker[open][aria-label="アクティビティを選ぶ"]') do
+      expect(page).to have_css('.lm-content-card', count: 3)
+      expect(page).not_to have_css('nav', visible: :all)
+      find('button[aria-label="閉じる"]').click
+    end
     expect(page).not_to have_css('.lm-picker[open]')
-    expect(page).to have_css('.lm-flashcards[open]')
-    expect(page).to have_css('.lm-flash-artwork[src*="week-1/hello-"]')
-    find('button[aria-label="次のカード"]').click
-    expect(page).to have_css('.lm-flash-artwork[src*="week-1/nice-to-meet-you-"]')
-    within('.lm-flashcards') { find('button[aria-label="閉じる"]').click }
-    within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
-    within('.lm-picker-navigation') { click_button 'ベーシックイングリッシュ', exact: true }
+    expect(page.find(':focus')).to eq(activity)
+
+    story = tabs.find_button('ストーリータイム', exact: true)
+    story.click
+    within('.lm-picker[open][aria-label="ストーリーを選ぶ"]') do
+      expect(page).to have_css('.lm-content-card', count: 2)
+      expect(page).not_to have_css('nav', visible: :all)
+    end
+    page.driver.browser.action.send_keys(:escape).perform
     expect(page).not_to have_css('.lm-picker[open]')
-    expect(page).to have_css('.lm-remote')
-    find('button[aria-label="動画を閉じる"]').click
+    expect(page.find(':focus')).to eq(story)
     expect(page).to have_css('.lm-lesson-menu .lm-lesson-tabs')
+  end
+
+  it 'switches between the two story videos and their matching captions' do
+    stub_video_playback
+    within('.lm-sidebar') { click_button 'ストーリータイム', exact: true }
+    within('.lm-pages [data-view="stories"]') do
+      expect(all('.lm-content-card h2').map(&:text)).to eq(['にげだしたふうせん', 'The Hello Hunt'])
+      within(find('.lm-content-card', text: 'The Hello Hunt')) { click_button 'ストーリーをはじめる' }
+    end
+    expect(page).to have_css('.lm-remote')
+    expect(page.evaluate_script('document.querySelector("video").src')).to include('1247526401.m3u8')
+    expect(page).to have_css('video track[src*="subtitles/story-2.en"]', visible: :all)
+    within('.lm-remote') { click_button '先生用ガイド', exact: true }
+    expect(page).to have_css('.lm-guide-panel', text: '地図と赤いすべり台')
+    find('button[aria-label="動画を閉じる"]').click
+
+    within('.lm-sidebar') { click_button 'ホーム', exact: true }
+    click_button 'レッスンをはじめる'
+    within('.lm-lesson-tabs') { click_button 'ストーリータイム', exact: true }
+    within('.lm-picker') do
+      expect(all('.lm-content-card h2').map(&:text)).to eq(['にげだしたふうせん', 'The Hello Hunt'])
+      within(find('.lm-content-card', text: 'にげだしたふうせん')) { click_button 'ストーリーをはじめる' }
+    end
+    expect(page).to have_css('.lm-remote')
+    expect(page.evaluate_script('document.querySelector("video").src')).to include('1225145089.m3u8')
+    expect(page).to have_css('video track[src*="subtitles/story.en"]', visible: :all)
   end
 
   it 'opens Animals and Weather from successive weeks with their own lesson content' do

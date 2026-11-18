@@ -7,8 +7,9 @@ phrases: Hello! / Nice to meet you! / See you!
 vocabulary: Hello / friends / goodbye
 flashcards: [Hello!, Nice to meet you!, See you!]
 lessons:
-  story:
-    title: ストーリータイム
+  story-1:
+    title: にげだしたふうせん
+    video: https://player.vimeo.com/external/1225145089.m3u8?s=182f1f053af84f2f1c03c0db77b8fb08e335e690&logging=false
     subtitle_asset: subtitles/story.en.vtt
     objective: 登場人物といっしょに、英語のお話を楽しみましょう。
     materials: 教材の準備はいりません。
@@ -19,6 +20,33 @@ lessons:
       - { start: '00:03:00:00', end: '00:05:00:00', title: 次はどうなる？, guide: 動画を一時停止し、次に何が起こるか予想してみましょう。短い言葉やジェスチャーで答えてもらいます。 }
       - { start: '00:05:00:00', end: '00:06:00:00', title: 気持ちを考えよう, guide: 登場人物はどんな気持ちかな？表情をまねして、みんなで考えてみましょう。 }
       - { start: '00:06:00:00', title: お話を楽しもう, guide: お話の続きを見ましょう。最後に、好きだった場面を一つ教えてもらいます。 }
+  story-2:
+    title: The Hello Hunt
+    video: https://player.vimeo.com/external/1247526401.m3u8?s=26cb44df329ef7b69abd23ab2050f6b56dbbc751&logging=false
+    subtitle_asset: subtitles/story-2.en.vtt
+    objective: 色や形のヒントを探しながら、英語であいさつをしましょう。
+    materials: 教材の準備はいりません。
+    tip: ヒントが出たら、子どもたちが絵を指さしたり答えたりする時間を取りましょう。
+    chapters:
+      - start: '00:00:00:00'
+        end: '00:01:54:00'
+        title: 地図と赤いすべり台
+        guide: Jotが地図を見つけます。赤い丸をヒントに、赤いすべり台を探しましょう。Echoに会ったら「Hello!」と手を振りましょう。
+      - start: '00:01:54:00'
+        end: '00:04:03:00'
+        title: 青いブランコと黄色い砂場
+        guide: 青い星と黄色い四角をヒントに、ブランコと砂場を探しましょう。BoomやTailに会ったら「Nice to meet you.」と言ってみましょう。
+      - start: '00:04:03:00'
+        end: '00:05:44:00'
+        title: 虹色の輪
+        guide: 虹色の輪を見つけたら、動画に合わせて１回ジャンプ、２回足踏み、最後に親指を立てましょう。
+      - start: '00:05:44:00'
+        end: '00:06:17:00'
+        title: お別れのあいさつ
+        guide: 帰る時間になったら、友だちに手を振って「See you!」と言いましょう。
+      - start: '00:06:17:00'
+        title: おさらいクイズ
+        guide: 画面に出てくる形やキャラクターの名前を答えましょう。
   basic:
     title: みんなであいさつしよう！
     subtitle_asset: subtitles/basic.en.vtt
