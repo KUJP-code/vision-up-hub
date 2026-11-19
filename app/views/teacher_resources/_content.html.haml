@@ -4,8 +4,8 @@
 .dialog-content
   %header
     %h1.type.border-b-2.border-secondary= @resource_title
-    - if @group_options.many?
-      %h1.level.border-b-2.border-secondary.text-end= @grouping == :level ? t("levels.#{@active_group}") : t("teacher_resources.index.#{@active_group}")
+    %h1.level.border-b-2.border-secondary.text-end= @group_heading
+    = image_tag @resource_icon, alt: '', class: 'h-full place-self-end'
 
   - if @active_resources.any?
     = render 'teacher_resources/resource_list', resources: @active_resources

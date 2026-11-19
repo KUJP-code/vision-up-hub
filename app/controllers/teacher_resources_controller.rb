@@ -2,6 +2,12 @@
 
 class TeacherResourcesController < ApplicationController
   helper_method :resource_group_icon_path, :resource_group_tab_style
+
+  RESOURCE_ICON_ALIASES = { 'ku_book_activity' => 'book_activity',
+                            'ku_lesson_review' => 'lesson_review',
+                            'sp_literacy' => 'literacy',
+                            'sp_discussion' => 'discussion' }.freeze
+
   after_action :verify_policy_scoped, only: :index
 
   def index
@@ -23,6 +29,8 @@ class TeacherResourcesController < ApplicationController
                                       .select { |resource| resource.resource.attached? }
                                       .sort_by { |resource| resource.resource.blob.filename.to_s }
     @resource_title = resource_title
+    @resource_icon = resource_icon_path
+    @group_heading = group_heading
   end
 
   private
@@ -91,6 +99,20 @@ class TeacherResourcesController < ApplicationController
   def resource_title
     key = @requested_card || @lesson_category
     I18n.t("category_resources.#{key}", default: I18n.t("teacher_resources.index.#{key}", default: key.to_s.humanize))
+  end
+
+  # Same icon as the card that opened the modal
+  def resource_icon_path
+    key = (@requested_card || @lesson_category).to_s
+    "lesson_types/#{RESOURCE_ICON_ALIASES.fetch(key, key.underscore)}.svg"
+  end
+
+  # Right-hand heading: the active tab's name, or "All Levels" when there's nothing to distinguish
+  def group_heading
+    return I18n.t("levels.#{@active_group}") if @grouping == :level && @active_group.present?
+    return I18n.t("teacher_resources.index.#{@active_group}") if @group_options.many?
+
+    I18n.t('levels.all_levels')
   end
 
   def resource_group_icon_path(group)
