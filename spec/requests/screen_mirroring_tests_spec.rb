@@ -56,7 +56,7 @@ RSpec.describe 'Screen mirroring video test' do
     )
   end
 
-  it 'serves the new lesson content and only the four supplied worksheet downloads' do
+  it 'serves Weeks 6 and 19 and offers worksheet downloads only for Week 1' do
     sign_in create(:user, :admin, organisation:)
 
     get screen_mirroring_test_path
@@ -73,9 +73,7 @@ RSpec.describe 'Screen mirroring video test' do
       expect(lessons.values).to all(include('chapters' => be_present))
     end
     links = document.css('.lm-pages [data-view="home"] a[download]')
-    expect(links.map { |link| link['download'] }).to eq(
-      %w[w1-cut-and-paste.pdf w1-name-trace.pdf w6-origami-dog.pdf w6-paper-plate-cat.pdf]
-    )
+    expect(links.map { |link| link['download'] }).to eq(%w[w1-cut-and-paste.pdf w1-name-trace.pdf])
     expect(document.css('.lm-picker a[download]').map { |link| link['href'] }).to eq(links.map { |link| link['href'] })
     links.each do |link|
       get link['href']

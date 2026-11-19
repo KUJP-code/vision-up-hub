@@ -743,14 +743,14 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
   it 'opens Animals and Weather from successive weeks with their own lesson content' do
     stub_video_playback
     [
-      [6, 'Animals（動物）', '1239740985', '動物の名前', %w[Cats Dogs Hamsters Rabbits], '折り紙で犬を作ろう', '1239740992', 2],
-      [19, 'Weather（天気）', '1247162640', '天気を英語', %w[Sunny Rainy Cloudy Snowy], '色紙を貼って虹を作ろう', '1246964319', 0]
-    ].each do |week, title, basic_video, guide, cards, activity, activity_video, downloads|
+      [6, 'Animals（動物）', '1239740985', '動物の名前', %w[Cats Dogs Hamsters Rabbits], '折り紙で犬を作ろう', '1239740992'],
+      [19, 'Weather（天気）', '1247162640', '天気を英語', %w[Sunny Rainy Cloudy Snowy], '色紙を貼って虹を作ろう', '1246964319']
+    ].each do |week, title, basic_video, guide, cards, activity, activity_video|
       click_button '来週', exact: true
       expect(page).to have_css('.lm-week-card', text: "第#{week}週")
       expect(page).to have_css('.lm-week-card', text: title)
       expect(page).to have_css('.lm-content-card', count: 3)
-      expect(page).to have_css('a[download]', count: downloads)
+      expect(page).not_to have_css('a[download]')
 
       within('.lm-week-card') { click_button '先生用ガイド', exact: true }
       within('.lm-resource-dialog') do
@@ -794,7 +794,7 @@ RSpec.describe 'AI Sensei lesson prototype', :js do
       within('.lm-lesson-tabs') { click_button 'アクティビティ', exact: true }
       within('.lm-picker') do
         expect(page).to have_css('.lm-content-card', count: 3)
-        expect(page).to have_css('a[download]', count: downloads)
+        expect(page).not_to have_css('a[download]')
         within(find('.lm-content-card', text: activity)) { click_button 'アクティビティをはじめる' }
       end
       expect(page).to have_css('.lm-remote')
