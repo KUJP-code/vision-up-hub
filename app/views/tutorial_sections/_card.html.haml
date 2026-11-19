@@ -15,4 +15,4 @@
     = inline_svg_tag 'tutorials.svg',
                      class: 'w-full aspect-square fill-secondary',
                      title: section.title
-  %h2.text-3xl.text-center.mt-auto= section&.title || 'Others'
+  %h2{ class: 'text-3xl text-center mt-auto min-h-[2lh] flex items-center justify-center' }= section&.title || 'Others'
