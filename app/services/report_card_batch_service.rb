@@ -32,8 +32,20 @@ class ReportCardBatchService
     Student
       .where(school_id: batch.school_id)
       .with_recent_results(cutoff)
-      .select  { |s| LevelBucket.for(s.level) == batch.level }
+      .preload(test_results: :test)
+      .select  { |s| tested_level_bucket(s) == batch.level }
       .sort_by { |s| s.en_name }
+  end
+
+  # Saving a result promotes the student straight away, so bucket by the test
+  # they sat (or the level they were in when they sat it), not their new level.
+  def tested_level_bucket(student)
+    result = student.test_results
+                    .select { |r| r.created_at >= cutoff }
+                    .max_by(&:created_at)
+    return LevelBucket.for(student.level) unless result
+
+    LevelBucket.for(result.test&.level) || LevelBucket.for(result.prev_level)
   end
 
   def render_batch_pdf(students)
