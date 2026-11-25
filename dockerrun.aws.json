@@ -9,7 +9,7 @@
     }
   ],
   "Image": {
-    "Name": "kidsup/materials:3.0.1-test_fixes"
+    "Name": "kidsup/materials:3.0.2-test_fixes_more"
   },
   "Ports": [
     {
