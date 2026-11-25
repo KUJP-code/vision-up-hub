@@ -38,6 +38,15 @@ class TestResult < ApplicationRecord
              listen_percent || 0] }
   end
 
+  # The level the student was in when they sat this test. Saving a result moves
+  # the student to new_level straight away, so their current level can't be
+  # used to work out which report card this result belongs on.
+  def tested_level
+    return test&.level if prev_level.blank? || prev_level_all_levels?
+
+    prev_level
+  end
+
   def recommended_level
     current_level = { level: prev_level, percent: 0 }
     rec = test.thresholds.reduce(current_level) do |recommended, threshold|

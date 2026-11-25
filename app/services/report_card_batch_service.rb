@@ -33,26 +33,26 @@ class ReportCardBatchService
       .where(school_id: batch.school_id)
       .with_recent_results(cutoff)
       .preload(test_results: :test)
-      .select  { |s| tested_level_bucket(s) == batch.level }
+      .select  { |s| LevelBucket.for(report_result(s)&.tested_level) == batch.level }
       .sort_by { |s| s.en_name }
   end
 
-  # Saving a result promotes the student straight away, so bucket by the test
-  # they sat (or the level they were in when they sat it), not their new level.
-  def tested_level_bucket(student)
-    result = student.test_results
-                    .select { |r| r.created_at >= cutoff }
-                    .max_by(&:created_at)
-    return LevelBucket.for(student.level) unless result
-
-    LevelBucket.for(result.test&.level) || LevelBucket.for(result.prev_level)
+  # The result this student's card reports on: their latest test in the window.
+  # The sheet it goes on is the level they sat it at (a Sky student who has just
+  # moved up to Galaxy gets a Sky card), not the level they are in now.
+  def report_result(student)
+    @report_results ||= {}
+    @report_results[student.id] ||= student.test_results
+                                           .select { |r| r.created_at >= cutoff }
+                                           .max_by(&:created_at)
   end
 
   def render_batch_pdf(students)
+    reports = students.map { |s| StudentReportPdf.new(s, result: report_result(s)) }
     html = ApplicationController.render(
       template: 'report_card_batches/batch_print_version',
       layout: 'pdf',
-      assigns: { students: }
+      assigns: { students:, reports: }
     )
     Grover.new(html, **StudentReportPdf.pdf_options).to_pdf
   end

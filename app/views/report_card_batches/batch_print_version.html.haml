@@ -1,7 +1,11 @@
-- @students.each_with_index do |student, index|
-  %section.print-page
-    - report_pdf = StudentReportPdf.new(student)
+- if @reports.empty?
+  %section.print-page.flex.items-center.justify-center
+    .text-lg.text-secondary No test results for this level in the last 3 months.
+  -# No charts to wait for, so let the PDF render straight away
+  %script window.chartReady = true;
 
+- @reports.each do |report_pdf|
+  %section.print-page
     - html = ApplicationController.render( template: report_pdf.template, layout: false, assigns: report_pdf.assigns )
 
     = raw(html)

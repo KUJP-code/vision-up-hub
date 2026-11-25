@@ -2,12 +2,16 @@
   %main
 
     .flex.header.border-b-4.border-secondary
-      - current_level = @levels.select { |lvl| lvl[:order] <= @student.mapped_level_order }.max_by { |lvl| lvl[:order] }
-      - current_level ||= levels.first
+      -# Style the card for the level the test was sat at, not the level the
+      -# student has since moved up to.
+      - report_level = @recent_result&.tested_level || @student.level
+      - report_order = Student::LEVEL_ORDER_MAP[report_level] || @student.mapped_level_order
+      - current_level = @levels.select { |lvl| lvl[:order] <= report_order }.max_by { |lvl| lvl[:order] }
+      - current_level ||= @levels.first
       .flex.flex-col.items-center.p-2
         - base_name = current_level[:name].split('_').first
         = inline_svg_tag("levels/#{base_name}_no_text.svg", width: 110, height: 110, title: t("levels.#{current_level[:name]}"))
-        .-mt-2.text= t(".#{@student.level.titleize}")
+        .-mt-2.text= t(".#{report_level.titleize}")
       .flex.flex-col.items-left.gap-1.p-8
         .text-4xl.mb-2
           = @student.en_name

@@ -1,8 +1,10 @@
 class StudentReportPdf
   include Rails.application.routes.url_helpers
 
-  def initialize(student, pearson = false, **options)
+  # result: the test result to report on (defaults to the student's latest).
+  def initialize(student, pearson = false, result: nil, **options)
     @student = student
+    @result = result
 
     raw_flag = options.key?(:pearson) ? options[:pearson] : pearson
     @pearson_mode = cast_boolean(raw_flag)
@@ -48,8 +50,9 @@ class StudentReportPdf
   def standard_assigns
     results        = student.test_results.includes(:test)
                             .order(created_at: :desc)
+    results        = results.where(created_at: ..@result.created_at) if @result
     active_result  = nil
-    recent_result  = results.first
+    recent_result  = @result || results.first
 
     {
       student:,
