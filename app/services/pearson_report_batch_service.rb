@@ -47,7 +47,7 @@ class PearsonReportBatchService
     html = ApplicationController.render(
       template: 'report_card_batches/pearson_batch_print_version',
       layout: 'pdf',
-      assigns: { students: }
+      assigns: { students:, pdf_title: title }
     )
     Grover.new(html, **StudentReportPdf.pdf_options).to_pdf
   end
@@ -56,9 +56,14 @@ class PearsonReportBatchService
     batch.file.purge if batch.file.attached?
     batch.file.attach(
       io: StringIO.new(pdf_blob),
-      filename: 'pearson_report.pdf',
+      filename: "#{title}.pdf",
       content_type: 'application/pdf'
     )
+  end
+
+  def title
+    scope = batch.level == 'school' ? '' : "#{batch.level.titleize} "
+    "#{scope}Pearson Reports - #{batch.school.name}"
   end
 
   def levels_for_batch

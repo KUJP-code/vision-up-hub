@@ -14,7 +14,7 @@ class StudentReportPdf
     html = ApplicationController.render(
       template: template_name,
       layout: 'pdf',
-      assigns: render_assigns
+      assigns: render_assigns.merge(pdf_title: title)
     )
 
     render_pdf(html)
@@ -41,6 +41,11 @@ class StudentReportPdf
 
   def template
     template_name
+  end
+
+  def title
+    kind = pearson_mode? ? 'Pearson Report' : 'Report Card'
+    "#{kind} - #{student.en_name.presence || student.name}"
   end
 
   def render_assigns

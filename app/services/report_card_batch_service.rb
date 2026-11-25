@@ -52,7 +52,7 @@ class ReportCardBatchService
     html = ApplicationController.render(
       template: 'report_card_batches/batch_print_version',
       layout: 'pdf',
-      assigns: { students:, reports: }
+      assigns: { students:, reports:, pdf_title: title }
     )
     Grover.new(html, **StudentReportPdf.pdf_options).to_pdf
   end
@@ -61,8 +61,12 @@ class ReportCardBatchService
     batch.file.purge if batch.file.attached?
     batch.file.attach(
       io: StringIO.new(pdf_blob),
-      filename: "report_#{batch.level}.pdf",
+      filename: "#{title}.pdf",
       content_type: 'application/pdf'
     )
+  end
+
+  def title
+    "#{batch.level.titleize} Report Cards - #{batch.school.name}"
   end
 end

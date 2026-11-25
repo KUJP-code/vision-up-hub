@@ -1,5 +1,8 @@
 %html
   %head
+    -# Shown as the tab title in the browser's PDF viewer; without it Chrome
+    -# falls back to the page URL (http://example.com when Grover renders HTML).
+    %title= @pdf_title.presence || 'Kids Up Report Card'
     :ruby
       host_for_pdf =
         if Rails.env.development?
