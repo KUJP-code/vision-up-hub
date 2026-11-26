@@ -30,7 +30,7 @@
     - section_reorder = tutorial_reorder_data(reorder_tutorial_sections_path,
                                               'tutorial_section_ids')
     %section{ class: 'flex flex-1 gap-6 p-6 flex-col justify-start items-stretch ' \
-                     'md:flex-row md:items-stretch md:justify-center',
+                     'md:flex-row md:items-center md:justify-center',
               data: section_reorder }
       - @section_entries.each do |key, section|
         - if section
