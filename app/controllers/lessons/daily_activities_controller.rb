@@ -38,6 +38,7 @@ class DailyActivitiesController < LessonsController
   private
 
   def type_params
-    params.require(:daily_activity).permit(lesson_params + DailyActivity::ATTRIBUTES)
+    image_lists = DailyActivity::IMAGE_LISTS.map { |name| { name => [] } }
+    params.require(:daily_activity).permit(lesson_params + DailyActivity::ATTRIBUTES + image_lists)
   end
 end

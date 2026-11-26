@@ -28,6 +28,18 @@ RSpec.describe DailyActivity do
           'Test Daily Activity', 'Discovery', '1. Instruction 1', '2. Instruction 2'
         )
     end
+
+    it 'adds Photo Guide pages, pairing images that fit' do
+      %w[landscape landscape portrait].each do |name|
+        daily_activity.photo_guides.attach(io: file_fixture("#{name}.png").open,
+                                           filename: "#{name}.png", content_type: 'image/png')
+      end
+
+      pages = PDF::Inspector::Page.analyze(daily_activity.attach_guide).pages
+      expect(pages.size).to eq(3)
+      expect(pages[1][:strings]).to include('Photo Guide:', 'Test Daily Activity', '2')
+      expect(pages[2][:strings]).to include('Photo Guide:', '3')
+    end
   end
 
   context 'when accepting a proposal with images' do

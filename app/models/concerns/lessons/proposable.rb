@@ -50,7 +50,7 @@ module Proposable
     replace_single_attachments(proposal)
     replace_lesson_links(proposal)
     replace_resources(proposal)
-    replace_attached_resources_from_proposal(proposal, :classroom_layouts) if type == 'Exercise'
+    image_lists.each { |name| replace_attached_resources_from_proposal(proposal, name) }
     replace_phonics_resources(proposal) if type == 'PhonicsClass'
     replace_specialist_resources(proposal) if type == 'EveningClass'
   end
@@ -72,6 +72,10 @@ module Proposable
     proposal.lesson_links.each do |link|
       lesson_links.build(title: link.title, url: link.url)
     end
+  end
+
+  def image_lists
+    self.class.const_defined?(:IMAGE_LISTS) ? self.class::IMAGE_LISTS : []
   end
 
   def replace_resources(proposal)

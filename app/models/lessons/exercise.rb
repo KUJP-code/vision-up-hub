@@ -6,12 +6,14 @@ class Exercise < Lesson
   store_accessor :lang_goals, :land, :sky, :galaxy, suffix: true
 
   has_one_attached :pdf_image
-  has_one_attached :image_page
   has_many_attached :classroom_layouts
-  PDF_IMAGES = %i[pdf_image classroom_layouts image_page].freeze
+  has_many_attached :photo_guides
+  # Multi-image uploads that each add pages after the main guide page
+  IMAGE_LISTS = %i[classroom_layouts photo_guides].freeze
+  PDF_IMAGES = (%i[pdf_image] + IMAGE_LISTS).freeze
 
   ATTRIBUTES = %i[
-    subtype pdf_image image_page warning land_lang_goals sky_lang_goals
+    subtype pdf_image warning land_lang_goals sky_lang_goals
     galaxy_lang_goals basic_materials purchase_materials intro interesting_fact instructions
     large_groups outro notes links
   ].freeze

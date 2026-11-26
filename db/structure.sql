@@ -1,4 +1,4 @@
-\restrict jXnrSGwZYxQUF8Vr0vyRbilzyiLFxqJ8JgJcMgE5A0ra7nOEBs7DQrp5mt15UOK
+\restrict RCQs9s9JkoSrLKAPD1ZrDMNJ62NnoScPSQKPi28QF0u2IPcihj7rIyTPGzvvSkU
 
 -- Dumped from database version 16.15 (Homebrew)
 -- Dumped by pg_dump version 16.15 (Homebrew)
@@ -4835,7 +4835,7 @@ ALTER TABLE ONLY public.privacy_policy_acceptances
 -- PostgreSQL database dump complete
 --
 
-\unrestrict jXnrSGwZYxQUF8Vr0vyRbilzyiLFxqJ8JgJcMgE5A0ra7nOEBs7DQrp5mt15UOK
+\unrestrict RCQs9s9JkoSrLKAPD1ZrDMNJ62NnoScPSQKPi28QF0u2IPcihj7rIyTPGzvvSkU
 
 SET search_path TO "$user", public;
 
@@ -4843,6 +4843,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('5'),
 ('4'),
 ('3'),
+('20261126000000'),
 ('20261028000000'),
 ('20260827000000'),
 ('20260820000200'),

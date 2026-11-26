@@ -140,7 +140,7 @@ class LessonsController < ApplicationController
   end
 
   def resource_deletion_params
-    attachment_names = %w[resources classroom_layouts]
+    attachment_names = %w[resources classroom_layouts photo_guides]
     attachment_names += EveningClass.specialist_resource_attachment_names if defined?(EveningClass)
 
     attachment_names.index_with { [] }

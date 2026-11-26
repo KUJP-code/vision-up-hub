@@ -17,28 +17,15 @@ module ExercisePdf
         draw_lang_goals(pdf:)
         draw_body(pdf)
         level = kindy? ? 'Kindy' : 'Elementary'
-        draw_footer(pdf:, level:, page_num: first_page_number(classroom_layouts, image_page))
-        add_image_pages(pdf:, level:, sections: image_page_sections, shared_header: image_pages_header)
+        draw_footer(pdf:, level:, page_num: first_page_number(classroom_layouts, photo_guides))
+        add_image_pages(pdf:, level:, groups: image_page_groups, title:)
       end
     end
   end
 
-  def image_pages_header
-    { pre: subtype.titleize, main: title }
-  end
-
-  # Classroom layouts first (numbered if there's more than one), then the photo guide.
-  def image_page_sections
-    layouts = image_blobs(classroom_layouts)
-    layout_sections = layouts.map.with_index(1) do |blob, i|
-      label = layouts.one? ? 'Classroom Layout:' : "Classroom Layout #{i}:"
-      { blob:, label:, header: { pre: subtype.titleize, main: label, sub: title } }
-    end
-
-    layout_sections + [
-      { blob: image_blobs(image_page).first, label: 'Photo guide:',
-        header: { pre: subtype.titleize, main: title, sub: 'Photo guide' } }
-    ]
+  def image_page_groups
+    [{ label: 'Classroom Layout:', blobs: image_blobs(classroom_layouts) },
+     { label: 'Photo Guide:', blobs: image_blobs(photo_guides) }]
   end
 
   def draw_header(pdf)

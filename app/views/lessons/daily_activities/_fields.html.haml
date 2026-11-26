@@ -1,15 +1,13 @@
 -# locals: (f:, lesson:)
 
-- image_page = lesson.image_page
-
 = content_for :priority_fields do
   = render 'lessons/shared/pdf_image_field',
            f:,
            lesson:,
            attr: :pdf_image
 
-  = render 'lessons/shared/pdf_image_field',
-           f:, lesson:, attr: :image_page
+  - DailyActivity::IMAGE_LISTS.each do |attr|
+    = render 'lessons/shared/pdf_image_list_field', attr:, f:, lesson:
 
   .form-group
     = f.label :subtype

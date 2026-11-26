@@ -19,15 +19,14 @@ module DailyActivityPdf
         draw_lang_goals(pdf:)
         draw_body(pdf)
         level = kindy? ? 'Kindy' : 'Elementary'
-        draw_footer(pdf:, level:, page_num: first_page_number(image_page))
-        add_image_pages(pdf:, level:, sections: image_page_sections, shared_header: {})
+        draw_footer(pdf:, level:, page_num: first_page_number(photo_guides))
+        add_image_pages(pdf:, level:, groups: image_page_groups, title:)
       end
     end
   end
 
-  def image_page_sections
-    [{ blob: image_blobs(image_page).first,
-       header: { pre: subtype.titleize, main: title, sub: 'Photo guide' } }]
+  def image_page_groups
+    [{ label: 'Photo Guide:', blobs: image_blobs(photo_guides) }]
   end
 
   def draw_header(pdf)

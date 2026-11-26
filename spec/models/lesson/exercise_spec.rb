@@ -15,16 +15,20 @@ RSpec.describe Exercise do
     expect(build(:exercise)).to be_valid
   end
 
-  context 'when accepting a proposal with classroom layouts' do
+  context 'when accepting a proposal with guide images' do
     let(:lesson) { create(:exercise) }
     let(:proposal) { create(:exercise, :proposal, changed_lesson: lesson) }
 
-    it 'copies the layouts onto the lesson' do
-      proposal.classroom_layouts.attach(io: file_fixture('landscape.png').open, filename: 'layout.png',
-                                        content_type: 'image/png')
+    it 'copies the classroom layouts and photo guides onto the lesson' do
+      %i[classroom_layouts photo_guides].each do |attr|
+        proposal.public_send(attr).attach(io: file_fixture('landscape.png').open, filename: "#{attr}.png",
+                                          content_type: 'image/png')
+      end
 
       expect(lesson.replace_with(proposal)).to be(true)
-      expect(lesson.reload.classroom_layouts.blobs).to eq(proposal.classroom_layouts.blobs)
+      lesson.reload
+      expect(lesson.classroom_layouts.blobs).to eq(proposal.classroom_layouts.blobs)
+      expect(lesson.photo_guides.blobs).to eq(proposal.photo_guides.blobs)
     end
   end
 
@@ -51,53 +55,57 @@ RSpec.describe Exercise do
       expect(guide_pages.size).to eq(1)
     end
 
-    it 'adds a Classroom Layout page' do
+    it 'adds a Classroom Layout page headed with the group and activity' do
       attach_fixture(:classroom_layouts, 'landscape')
 
       pages = guide_pages
       expect(pages.size).to eq(2)
-      expect(pages.last[:strings]).to include('Classroom Layout:', 'Test Exercise', '2')
+      expect(pages.last[:strings]).to include('Test Exercise', 'Classroom Layout:', '2')
     end
 
-    it 'puts both images on one page when they fit' do
-      attach_fixture(:classroom_layouts, 'landscape')
-      attach_fixture(:image_page, 'landscape')
-
-      pages = guide_pages
-      expect(pages.size).to eq(2)
-      expect(pages.last[:strings]).to include('Classroom Layout:', 'Photo guide:')
-    end
-
-    it 'numbers multiple classroom layouts and pairs them up where they fit' do
+    it 'labels each group once, without numbering the pictures' do
       attach_fixture(:classroom_layouts, 'landscape')
       attach_fixture(:classroom_layouts, 'landscape')
       attach_fixture(:classroom_layouts, 'portrait')
-      attach_fixture(:image_page, 'landscape')
+      attach_fixture(:photo_guides, 'landscape')
+      attach_fixture(:photo_guides, 'landscape')
 
       pages = guide_pages
       expect(pages.size).to eq(4)
-      expect(pages[1][:strings]).to include('Classroom Layout 1:', 'Classroom Layout 2:')
-      expect(pages[2][:strings]).to include('Classroom Layout 3:')
-      expect(pages[2][:strings]).not_to include('Photo guide:')
-      expect(pages[3][:strings]).to include('Photo guide', '4')
+      expect(pages.flat_map { |p| p[:strings] }.grep(/\d:\z/)).to be_empty
+      # two landscape layouts share a page; the portrait one doesn't fit with anything
+      expect(pages[1][:strings].count('Classroom Layout:')).to eq(1)
+      expect(pages[2][:strings]).to include('Classroom Layout:')
+      expect(pages[3][:strings].count('Photo Guide:')).to eq(1)
+      expect(pages[3][:strings]).to include('4')
     end
 
-    it 'rejects classroom layouts that are not images' do
-      exercise.classroom_layouts.attach(io: StringIO.new('%PDF'), filename: 'layout.pdf',
-                                        content_type: 'application/pdf')
+    it 'labels the group change when layouts and photos share a page' do
+      attach_fixture(:classroom_layouts, 'landscape')
+      attach_fixture(:photo_guides, 'landscape')
 
-      expect(exercise).not_to be_valid
-      expect(exercise.errors[:classroom_layouts]).to be_present
+      pages = guide_pages
+      expect(pages.size).to eq(2)
+      expect(pages.last[:strings]).to include('Classroom Layout:', 'Photo Guide:')
     end
 
     it 'gives each image its own page when sharing would shrink them too much' do
       attach_fixture(:classroom_layouts, 'landscape')
-      attach_fixture(:image_page, 'portrait')
+      attach_fixture(:photo_guides, 'portrait')
 
       pages = guide_pages
       expect(pages.size).to eq(3)
       expect(pages[1][:strings]).to include('Classroom Layout:')
-      expect(pages[2][:strings]).to include('Photo guide', '3')
+      expect(pages[1][:strings]).not_to include('Photo Guide:')
+      expect(pages[2][:strings]).to include('Photo Guide:', '3')
+    end
+
+    it 'rejects guide images that are not PNG or JPG' do
+      exercise.photo_guides.attach(io: StringIO.new('%PDF'), filename: 'guide.pdf',
+                                   content_type: 'application/pdf')
+
+      expect(exercise).not_to be_valid
+      expect(exercise.errors[:photo_guides]).to be_present
     end
   end
 end

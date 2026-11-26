@@ -1,0 +1,12 @@
+-# locals: (f:, lesson:, attr:)
+-# Multi-image upload that adds pages after the main guide page.
+
+.form-group
+  = f.label attr, attr.to_s.titleize
+  = f.file_field attr, multiple: true,
+                       accept: %w[image/jpeg image/png]
+  %small Only JPG/JPEG or PNG files. Added to the guide after the main page, in upload order.
+  = render 'lessons/shared/editable_resource_list',
+           f:,
+           resources: lesson.public_send(:"#{attr}_attachments").includes(:blob),
+           attachment_name: attr
