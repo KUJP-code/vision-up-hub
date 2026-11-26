@@ -7,7 +7,8 @@ class Exercise < Lesson
 
   has_one_attached :pdf_image
   has_one_attached :image_page
-  PDF_IMAGES = %i[pdf_image image_page].freeze
+  has_many_attached :classroom_layouts
+  PDF_IMAGES = %i[pdf_image classroom_layouts image_page].freeze
 
   ATTRIBUTES = %i[
     subtype pdf_image image_page warning land_lang_goals sky_lang_goals

@@ -1,7 +1,5 @@
 -# locals: (f:, lesson:)
 
-- image_attrs = Exercise::ATTRIBUTES.grep(/image/)
-
 .form-group
   = f.label :subtype
   = f.select :subtype,
@@ -16,9 +14,19 @@
   = f.label :warning
   = f.text_field :warning
 
-- image_attrs.each do |attr|
+- %i[pdf_image image_page].each do |attr|
   = render 'lessons/shared/pdf_image_field',
            attr:, f:, lesson:
+
+.form-group
+  = f.label :classroom_layouts
+  = f.file_field :classroom_layouts, multiple: true,
+                                     accept: %w[image/jpeg image/png]
+  %small Only JPG/JPEG or PNG files. Each layout is added to the guide after the main page.
+  = render 'lessons/shared/editable_resource_list',
+           f:,
+           resources: lesson.classroom_layouts_attachments.includes(:blob),
+           attachment_name: :classroom_layouts
 
 - Exercise::LISTABLE_ATTRIBUTES.each do |attr|
   = render('lessons/shared/list_fields', attr:, f:, lesson:)

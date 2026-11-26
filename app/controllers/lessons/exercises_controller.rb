@@ -38,6 +38,6 @@ class ExercisesController < LessonsController
   private
 
   def type_params
-    params.require(:exercise).permit(lesson_params + Exercise::ATTRIBUTES)
+    params.require(:exercise).permit(lesson_params + Exercise::ATTRIBUTES + [{ classroom_layouts: [] }])
   end
 end

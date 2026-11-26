@@ -50,6 +50,7 @@ module Proposable
     replace_single_attachments(proposal)
     replace_lesson_links(proposal)
     replace_resources(proposal)
+    replace_attached_resources_from_proposal(proposal, :classroom_layouts) if type == 'Exercise'
     replace_phonics_resources(proposal) if type == 'PhonicsClass'
     replace_specialist_resources(proposal) if type == 'EveningClass'
   end

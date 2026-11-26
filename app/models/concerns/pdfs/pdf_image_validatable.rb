@@ -11,12 +11,22 @@ module PdfImageValidatable
 
     def image_filetypes
       self.class::PDF_IMAGES.each do |attr|
-        next if send(attr).blank?
-        next if VALID_IMAGE_TYPES.include?(send(attr).content_type)
+        attached = send(attr)
+        next if attached.blank?
 
-        send(attr).purge
-        errors.add(attr, 'must be a PNG, JPG, or JPEG')
+        if attached.is_a?(ActiveStorage::Attached::Many)
+          validate_many_image_filetypes(attr, attached)
+        elsif VALID_IMAGE_TYPES.exclude?(attached.content_type)
+          attached.purge
+          errors.add(attr, 'must be a PNG, JPG, or JPEG')
+        end
       end
+    end
+
+    def validate_many_image_filetypes(attr, attached)
+      return if attached.attachments.all? { |a| VALID_IMAGE_TYPES.include?(a.blob&.content_type) }
+
+      errors.add(attr, 'must all be PNG, JPG, or JPEG')
     end
   end
 end

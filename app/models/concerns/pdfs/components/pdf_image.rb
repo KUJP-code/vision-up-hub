@@ -10,12 +10,16 @@ module PdfImage
       @width = width
     end
 
-    def add_image(image:, y_pos:, height:)
+    def add_image(image:, y_pos:, height:, position: :left)
       return unless image.attached?
 
+      add_blob(blob: image.blob, y_pos:, height:, position:)
+    end
+
+    def add_blob(blob:, y_pos:, height:, position: :left)
       @pdf.bounding_box([@x_pos, y_pos], width: @width, height:) do
-        image.blob.open do |file|
-          @pdf.image(file.path, fit: [@width, height])
+        blob.open do |file|
+          @pdf.image(file.path, fit: [@width, height], position:)
         end
       end
     end
