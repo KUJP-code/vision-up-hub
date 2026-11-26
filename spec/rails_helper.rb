@@ -41,6 +41,15 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  # Close the browser and wait for its in-flight requests *before* the test
+  # data is rolled back. Otherwise a page that is still sending requests when
+  # the test ends (e.g. the CSV uploaders) hits the app after its records are
+  # gone and the test fails at random. `after` hooks run in reverse order, so
+  # this has to be registered after the DatabaseCleaner hook above.
+  config.after(type: :system) do
+    Capybara.reset_sessions!
+  end
+
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
 
