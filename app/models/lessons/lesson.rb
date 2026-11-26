@@ -57,11 +57,16 @@ class Lesson < ApplicationRecord
     resource_deletions.to_h.each do |attachment_name, blob_ids|
       next unless attachment_reflections.key?(attachment_name)
 
-      ids = Array(blob_ids).filter_map(&:presence).map(&:to_i)
-      public_send(:"#{attachment_name}_attachments").where(blob_id: ids).find_each(&:purge)
+      purge_attachments(attachment_name, Array(blob_ids).filter_map(&:presence).map(&:to_i))
     end
 
     update!(resource_deletions: {}) if persisted? && resource_deletions.present?
+  end
+
+  def purge_attachments(attachment_name, blob_ids)
+    public_send(:"#{attachment_name}_attachments").where(blob_id: blob_ids).find_each(&:purge)
+    # Drop the cached attachments so the guide (generated next) doesn't try to read purged files
+    association(:"#{attachment_name}_attachments").reset
   end
 
   scope :levelled, lambda {
